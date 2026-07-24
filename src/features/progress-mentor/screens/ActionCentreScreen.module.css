@@ -1,0 +1,172 @@
+.search {
+  min-width: min(22rem, 100%);
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border-subtle, #d5dde8);
+  border-radius: var(--radius-sm, 6px);
+  font: inherit;
+}
+
+.cycleStrip {
+  margin: 0 0 0.85rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #d7e4f5;
+  border-radius: 8px;
+  background: #f7fbff;
+  color: var(--text-secondary, #5b6b7c);
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.cycleStrip strong {
+  color: var(--color-navy-800, #0f2744);
+}
+
+.queueList {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.queueListHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0 0.15rem 0.15rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary, #5b6b7c);
+}
+
+.queueListHead span:first-child {
+  font-weight: 650;
+  color: var(--color-navy-800, #0f2744);
+}
+
+.queueEmpty {
+  margin: 0;
+  padding: 1.25rem;
+  border: 1px dashed #c5d3e6;
+  border-radius: 10px;
+  color: var(--text-secondary, #5b6b7c);
+  font-size: 0.9rem;
+  background: #fbfdff;
+}
+
+.queueRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.9rem;
+  border: 1px solid var(--border-subtle, #d5dde8);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.queueBody {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.queueTitleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.queueTitle {
+  font-size: 0.98rem;
+  font-weight: 750;
+  color: var(--color-navy-800, #0f2744);
+  text-decoration: none;
+}
+
+.queueTitle:hover {
+  text-decoration: underline;
+}
+
+.queueMeta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary, #5b6b7c);
+  line-height: 1.35;
+}
+
+.queueSource {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--color-navy-800, #0f2744);
+}
+
+.queueSource a {
+  font-weight: 700;
+  color: var(--color-navy-800, #0f2744);
+  text-decoration: none;
+}
+
+.queueSource a:hover {
+  text-decoration: underline;
+}
+
+.outcomeBlock {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.25rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
+}
+
+.outcomeWhy {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-navy-800, #0f2744);
+  line-height: 1.4;
+}
+
+.bringUp {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: #9a5b09;
+}
+
+.queueAside {
+  display: grid;
+  justify-items: end;
+  align-content: start;
+}
+
+.openBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  background: var(--color-navy-800, #0f2744);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.dueOverdue {
+  color: #a3231b;
+  font-weight: 700;
+}
+
+.dueToday {
+  color: #b45309;
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .queueRow {
+    grid-template-columns: 1fr;
+  }
+
+  .queueAside {
+    justify-items: start;
+  }
+}

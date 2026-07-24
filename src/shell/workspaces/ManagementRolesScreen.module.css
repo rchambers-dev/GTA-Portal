@@ -1,0 +1,131 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: none;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+}
+
+.lead {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.panel {
+  padding: var(--space-5);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+}
+
+.sectionTitle {
+  margin: 0 0 var(--space-1);
+  font-size: 1.1rem;
+}
+
+.meta {
+  margin: 0 0 var(--space-4);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.assignments {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.assignment {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+}
+
+.assignmentTitle {
+  margin: 0;
+  font-weight: 650;
+}
+
+.assignmentMeta {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.empty {
+  margin: 0 0 var(--space-4);
+  color: var(--text-secondary);
+}
+
+.grantRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-end;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.input {
+  width: 5rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+}
+
+.grantBtn,
+.revokeBtn {
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.55rem 0.9rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.grantBtn {
+  background: var(--action-primary);
+  color: var(--action-primary-text);
+}
+
+.revokeBtn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+}
+
+.hint {
+  padding: var(--space-4);
+  border-left: 3px solid var(--action-primary);
+  background: var(--bg-surface);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.hint p {
+  margin: 0;
+}

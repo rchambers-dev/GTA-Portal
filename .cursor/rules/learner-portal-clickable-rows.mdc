@@ -1,0 +1,37 @@
+---
+description: Learner portal list/card rows that navigate must use full clickable containers
+globs: src/features/learner-portal/**/*
+alwaysApply: false
+---
+
+# Learner portal — clickable containers
+
+When a list item, card, or glance tile navigates somewhere, the **entire container** is the hit target.
+
+## Do
+
+- Wrap the row in `Link` with `className={styles.rowLink}` (or `styles.glanceLink` for dashboard glance tiles).
+- Keep status chips / CTA text (`styles.linkish` with “→”) inside the container as visual affordance only — not the sole click target.
+- Use a plain `styles.row` (non-link) only when there is **no** destination (e.g. locked modules, completed reviews without a learner record URL, OTJ status-only rows).
+
+## Don’t
+
+- Put a small text-only `Link` (`styles.linkish`) inside a static `styles.row` as the only way to navigate.
+- Nest interactive links inside a `rowLink` container.
+
+## Pattern
+
+```tsx
+<li>
+  <Link href={href} className={styles.rowLink}>
+    <div className={styles.rowMain}>
+      <strong>{title}</strong>
+      <span>{detail}</span>
+    </div>
+    <div className={styles.rowEnd}>
+      <LearnerStatusChip tone="amber">Open</LearnerStatusChip>
+      <span className={styles.linkish}>{ctaLabel} →</span>
+    </div>
+  </Link>
+</li>
+```

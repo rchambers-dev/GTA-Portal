@@ -1,0 +1,153 @@
+.root {
+  position: relative;
+}
+
+.profileStatic,
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.trigger {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.triggerText {
+  min-width: 0;
+}
+
+.avatar {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 999px;
+  background: var(--color-navy-700);
+  color: var(--text-inverse);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.userName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.userRole {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.tempBadge {
+  margin: 0.15rem 0 0;
+  font-size: 0.72rem;
+  color: var(--color-amber-700);
+  font-weight: 600;
+}
+
+.chevron {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  margin-left: var(--space-1);
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: min(22rem, 90vw);
+  max-height: 24rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg, 0 12px 32px rgba(0, 0, 0, 0.12));
+  z-index: calc(var(--z-header) + 1);
+}
+
+.notice {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-amber-800);
+  background: var(--color-amber-50, #fffbeb);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.search {
+  margin: 0.5rem 0.75rem 0;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0 0.35rem 0.5rem;
+  overflow-y: auto;
+}
+
+.option,
+.optionActive {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.option:hover {
+  background: var(--bg-surface);
+}
+
+.optionActive {
+  background: var(--color-navy-50, #eef2ff);
+}
+
+.optionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.optionName {
+  font-weight: 650;
+  font-size: 0.88rem;
+}
+
+.currentPill {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--action-primary);
+}
+
+.optionMeta,
+.optionScope {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.optionScope {
+  margin-top: 0.15rem;
+}

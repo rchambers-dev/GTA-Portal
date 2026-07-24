@@ -1,0 +1,41 @@
+.root {
+  display: block;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.chart {
+  display: block;
+  overflow: visible;
+  shape-rendering: geometricPrecision;
+}
+
+.area {
+  pointer-events: none;
+}
+
+.line {
+  vector-effect: non-scaling-stroke;
+}
+
+.dot {
+  stroke: var(--bg-surface);
+  stroke-width: 2px;
+  paint-order: stroke fill;
+}
+
+.neutral {
+  color: var(--color-navy-600);
+}
+
+.green {
+  color: var(--status-on-track-fg);
+}
+
+.amber {
+  color: var(--status-monitoring-fg);
+}
+
+.red {
+  color: var(--status-priority-fg);
+}

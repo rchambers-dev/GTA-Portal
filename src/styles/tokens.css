@@ -1,0 +1,104 @@
+/* GTA design tokens — adapted from Website/src/styles/tokens.css.
+   Keep in sync with the main site when brand guidelines change.
+   Components must use semantic tokens / CSS variables, never hard-coded hex. */
+
+:root {
+  --color-navy-950: #0d1024;
+  --color-navy-900: #141833;
+  --color-navy-800: #1a1f3d;
+  --color-navy-700: #252b52;
+  --color-navy-600: #343c6b;
+  --color-navy-100: #d8dbe8;
+  --color-navy-50: #eef0f7;
+
+  --color-red-700: #a81f28;
+  --color-red-600: #c42830;
+  --color-red-500: #d12d33;
+  --color-red-400: #e0454b;
+
+  --color-white: #ffffff;
+  --color-grey-50: #f5f6f8;
+  --color-grey-100: #e8eaef;
+  --color-grey-200: #d1d5de;
+  --color-grey-400: #8b92a5;
+  --color-grey-600: #5a6174;
+
+  --color-amber-500: #c47f17;
+  --color-amber-100: #fef3d9;
+  --color-green-600: #1f7a45;
+  --color-green-100: #e4f5eb;
+
+  --font-display: var(--font-plus-jakarta, "Plus Jakarta Sans"), system-ui, sans-serif;
+  --font-body: var(--font-source-sans, "Source Sans 3"), system-ui, sans-serif;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --shadow-sm: 0 1px 2px rgb(13 16 36 / 0.06);
+  --shadow-md: 0 8px 24px rgb(13 16 36 / 0.1);
+  --shadow-lg: 0 16px 40px rgb(13 16 36 / 0.14);
+
+  --sidebar-width: 15.5rem;
+  --header-height: 3.75rem;
+  --z-header: 100;
+  --z-sidebar: 90;
+  --z-overlay: 190;
+
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --bg-page: var(--color-grey-50);
+  --bg-surface: var(--color-white);
+  --bg-elevated: var(--color-grey-50);
+  --bg-inverse: var(--color-navy-900);
+  --bg-sidebar: var(--color-navy-900);
+  --bg-header: var(--color-white);
+  --bg-card: var(--color-white);
+
+  --text-primary: var(--color-navy-800);
+  --text-secondary: var(--color-grey-600);
+  --text-inverse: var(--color-white);
+  --text-muted-inverse: var(--color-navy-100);
+
+  --action-primary: var(--color-red-500);
+  --action-primary-hover: var(--color-red-600);
+  --action-primary-text: var(--color-white);
+
+  --border-subtle: var(--color-grey-100);
+  --border-strong: var(--color-grey-200);
+  --focus-ring: var(--color-red-500);
+
+  --status-on-track-bg: var(--color-green-100);
+  --status-on-track-fg: var(--color-green-600);
+  --status-monitoring-bg: var(--color-amber-100);
+  --status-monitoring-fg: var(--color-amber-500);
+  --status-priority-bg: rgb(209 45 51 / 0.12);
+  --status-priority-fg: var(--color-red-600);
+  --status-neutral-bg: var(--color-grey-100);
+  --status-neutral-fg: var(--color-grey-600);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+  }
+}

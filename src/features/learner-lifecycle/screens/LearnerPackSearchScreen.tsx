@@ -1,0 +1,122 @@
+"use client";
+
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import styles from "./LearnerPackSearchScreen.module.css";
+
+export type LearnerSearchHit = {
+  learnerId: string;
+  displayName: string;
+  employerName: string | null;
+  programmeName: string;
+  tutorName: string | null;
+  learnerReference: string | null;
+};
+
+type Props = {
+  learners: LearnerSearchHit[];
+  fromContext?: string;
+};
+
+/**
+ * Blank entry to the shared ADM14 learner file pack.
+ * No pack is shown until a learner is searched and opened.
+ */
+export function LearnerPackSearchScreen({
+  learners,
+  fromContext = "learners",
+}: Props) {
+  const [search, setSearch] = useState("");
+  const query = search.trim().toLowerCase();
+
+  const rows = useMemo(() => {
+    if (!query) return [];
+    return learners.filter((l) => {
+      return (
+        l.displayName.toLowerCase().includes(query) ||
+        (l.employerName?.toLowerCase().includes(query) ?? false) ||
+        l.programmeName.toLowerCase().includes(query) ||
+        l.learnerId.toLowerCase().includes(query) ||
+        (l.learnerReference?.toLowerCase().includes(query) ?? false) ||
+        (l.tutorName?.toLowerCase().includes(query) ?? false)
+      );
+    });
+  }, [learners, query]);
+
+  return (
+    <div className={styles.root}>
+      <header className={styles.header}>
+        <p className={styles.eyebrow}>Learner file pack</p>
+        <h1 className={styles.title}>Apprenticeship Evidence Pack</h1>
+        <p className={styles.description}>
+          Search for a learner to open their ADM14.0 file pack. This page stays
+          empty until you choose someone.
+        </p>
+      </header>
+
+      <div className={styles.searchPanel}>
+        <label className={styles.searchLabel} htmlFor="learner-pack-search">
+          Find a learner
+        </label>
+        <input
+          id="learner-pack-search"
+          className={styles.searchInput}
+          type="search"
+          placeholder="Search by name, employer, programme, or learner ID…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          autoComplete="off"
+          autoFocus
+        />
+      </div>
+
+      {!query ? (
+        <div className={styles.blankState} role="status">
+          <p className={styles.blankTitle}>No learner selected</p>
+          <p className={styles.blankCopy}>
+            Start typing above to find a learner. Their complete file pack opens
+            next.
+          </p>
+        </div>
+      ) : rows.length === 0 ? (
+        <p className={styles.empty} role="status">
+          No learners match “{search.trim()}”.
+        </p>
+      ) : (
+        <div className={styles.tableWrap}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">Learner</th>
+                <th scope="col">Employer</th>
+                <th scope="col">Programme</th>
+                <th scope="col">Tutor</th>
+                <th scope="col">Open</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((l) => {
+                const href = `/learners/${l.learnerId}?from=${fromContext}`;
+                return (
+                  <tr key={l.learnerId}>
+                    <td>
+                      <Link className={styles.rowLink} href={href}>
+                        {l.displayName}
+                      </Link>
+                    </td>
+                    <td>{l.employerName ?? "—"}</td>
+                    <td>{l.programmeName}</td>
+                    <td>{l.tutorName ?? "—"}</td>
+                    <td>
+                      <Link href={href}>Open pack</Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
