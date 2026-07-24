@@ -88,16 +88,18 @@
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.portalLinkMine {
-  background: color-mix(in srgb, var(--color-white) 16%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-white) 40%, transparent);
-  color: var(--color-white);
+/* Portal link cards stay on a solid light panel so they're always readable,
+   whether sent by the learner (on a coloured bubble) or received. */
+.portalLinkMine,
+.portalLinkTheirs {
+  background: var(--color-white);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 16%, var(--border-subtle));
+  color: var(--color-navy-800);
+  box-shadow: 0 1px 2px rgb(13 16 36 / 0.08);
 }
 
-.portalLinkTheirs {
-  background: color-mix(in srgb, var(--color-navy-50) 75%, white);
-  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
-  color: var(--color-navy-800);
+.portalLinkMine {
+  border-color: color-mix(in srgb, var(--action-primary) 40%, white);
 }
 
 .portalLinkMine:hover,
@@ -111,26 +113,24 @@
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  opacity: 0.85;
+  color: var(--action-primary);
+}
+
+.portalLinkMine strong,
+.portalLinkTheirs strong {
+  color: var(--color-navy-800);
 }
 
 .portalLinkDetail {
   font-size: 0.78rem;
   line-height: 1.35;
-  opacity: 0.9;
+  color: var(--text-secondary);
 }
 
 .portalLinkCta {
   margin-top: 0.2rem;
   font-size: 0.8rem;
   font-weight: 750;
-}
-
-.portalLinkMine .portalLinkCta {
-  color: color-mix(in srgb, var(--color-white) 92%, transparent);
-}
-
-.portalLinkTheirs .portalLinkCta {
   color: var(--action-primary);
 }
 

@@ -54,9 +54,10 @@
   --shadow-lg: 0 16px 40px rgb(13 16 36 / 0.14);
 
   --sidebar-width: 15.5rem;
+  --sidebar-collapsed-width: 4.5rem;
   --header-height: 3.75rem;
   --z-header: 100;
-  --z-sidebar: 90;
+  --z-sidebar: 120;
   --z-overlay: 190;
 
   --duration-fast: 150ms;

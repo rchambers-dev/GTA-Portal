@@ -1,25 +1,54 @@
+.sidebarSlot {
+  flex-shrink: 0;
+  width: var(--sidebar-collapsed-width);
+  height: 100%;
+  z-index: var(--z-sidebar);
+  transition: width 0.22s var(--ease-out, ease);
+}
+
+.sidebarSlot:hover,
+.sidebarSlot:focus-within {
+  width: var(--sidebar-width);
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-  width: var(--sidebar-width);
+  width: 100%;
   height: 100%;
   max-height: 100%;
   overflow: hidden;
   background: var(--bg-sidebar);
   color: var(--text-inverse);
+  padding: var(--space-5) 0.7rem;
+  transition: padding 0.22s var(--ease-out, ease);
+}
+
+.sidebarSlot:hover .sidebar,
+.sidebar:focus-within {
   padding: var(--space-5) var(--space-4);
-  z-index: var(--z-sidebar);
 }
 
 .brand {
   display: flex;
-  gap: var(--space-3);
+  /* No gap while collapsed — a hidden label plus gap pushes the logo off-centre. */
+  gap: 0;
   align-items: center;
   flex-shrink: 0;
-  padding: var(--space-2) var(--space-2) var(--space-5);
+  min-height: 2.5rem;
+  padding: var(--space-2) 0 var(--space-5);
   border-bottom: 1px solid rgb(255 255 255 / 0.1);
   margin-bottom: var(--space-4);
+  justify-content: center;
+  transition: gap 0.16s ease;
+}
+
+.sidebarSlot:hover .brand,
+.sidebar:focus-within .brand {
+  justify-content: flex-start;
+  gap: var(--space-3);
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
 }
 
 .logoMark {
@@ -27,12 +56,30 @@
   place-items: center;
   width: 2.5rem;
   height: 2.5rem;
+  flex-shrink: 0;
   border-radius: var(--radius-md);
   background: var(--action-primary);
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 0.75rem;
   letter-spacing: 0.04em;
+}
+
+.brandText {
+  min-width: 0;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    opacity 0.16s ease,
+    max-width 0.22s var(--ease-out, ease);
+}
+
+.sidebarSlot:hover .brandText,
+.sidebar:focus-within .brandText {
+  opacity: 1;
+  max-width: 11rem;
 }
 
 .brandTitle,
@@ -56,6 +103,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
 }
 
@@ -75,6 +123,18 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted-inverse);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    opacity 0.16s ease,
+    max-height 0.22s ease;
+}
+
+.sidebarSlot:hover .sectionTitle,
+.sidebar:focus-within .sectionTitle {
+  opacity: 1;
+  max-height: 2rem;
 }
 
 .list {
@@ -88,15 +148,62 @@
 
 .link,
 .linkActive {
-  display: block;
-  padding: 0.65rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* No gap while collapsed — a hidden label plus gap pushes the icon off-centre. */
+  gap: 0;
+  min-height: 2.75rem;
+  padding: 0.55rem 0;
   border-radius: var(--radius-md);
   font-family: var(--font-display);
   font-size: 0.92rem;
   font-weight: 600;
   color: var(--text-muted-inverse);
-  transition: background-color var(--duration-fast) var(--ease-out),
-    color var(--duration-fast) var(--ease-out);
+  transition:
+    background-color var(--duration-fast, 0.15s) var(--ease-out, ease),
+    color var(--duration-fast, 0.15s) var(--ease-out, ease),
+    gap 0.16s ease,
+    padding 0.16s ease;
+}
+
+.sidebarSlot:hover .link,
+.sidebarSlot:hover .linkActive,
+.sidebar:focus-within .link,
+.sidebar:focus-within .linkActive {
+  justify-content: flex-start;
+  gap: 0.75rem;
+  padding: 0.55rem 0.75rem;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.label {
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    opacity 0.16s ease,
+    max-width 0.22s var(--ease-out, ease);
+}
+
+.sidebarSlot:hover .label,
+.sidebar:focus-within .label {
+  opacity: 1;
+  max-width: 11rem;
 }
 
 .link:hover {
@@ -114,16 +221,37 @@
   margin-top: auto;
   padding-top: var(--space-4);
   border-top: 1px solid rgb(255 255 255 / 0.1);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    opacity 0.16s ease,
+    max-height 0.22s ease,
+    padding 0.22s ease;
+}
+
+.sidebarSlot:hover .footer,
+.sidebar:focus-within .footer {
+  opacity: 1;
+  max-height: 5rem;
 }
 
 .shellNote {
   margin: 0;
   font-size: 0.72rem;
   color: var(--color-amber-100);
+  white-space: nowrap;
 }
 
 .version {
   margin: var(--space-1) 0 0;
   font-size: 0.72rem;
   color: var(--text-muted-inverse);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .sidebarSlot {
+    width: var(--sidebar-collapsed-width);
+  }
 }

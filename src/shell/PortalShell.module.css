@@ -12,18 +12,16 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-}
-
-.content {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-5) var(--space-6) var(--space-8);
   overflow: auto;
 }
 
-.contentWithDock {
+.mainWithDock {
   padding-bottom: calc(var(--space-8) + 4.5rem);
+}
+
+.content {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-5) var(--space-6) var(--space-8);
 }

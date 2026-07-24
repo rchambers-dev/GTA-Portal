@@ -6,7 +6,7 @@ import {
   PortalShareProvider,
 } from "@/features/learner-portal";
 import { DemoSessionProvider } from "./demo/DemoSessionProvider";
-import { GlobalHeader } from "./GlobalHeader";
+import { PortalMain } from "./PortalMain";
 import { SidebarNavigation } from "./SidebarNavigation";
 import styles from "./PortalShell.module.css";
 
@@ -30,16 +30,7 @@ export function PortalShell({
       data-portal-root={isLearner ? "" : undefined}
     >
       <SidebarNavigation />
-      <div className={styles.main}>
-        <GlobalHeader />
-        <div
-          className={
-            isLearner ? `${styles.content} ${styles.contentWithDock}` : styles.content
-          }
-        >
-          {children}
-        </div>
-      </div>
+      <PortalMain withDock={isLearner}>{children}</PortalMain>
       {isLearner ? <LearnerChatDock /> : null}
     </div>
   );
