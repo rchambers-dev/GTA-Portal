@@ -1,0 +1,200 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.text {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.mediaLink {
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: min(16rem, 70vw);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.media {
+  display: block;
+  width: 100%;
+  max-height: 12rem;
+  object-fit: cover;
+  background: color-mix(in srgb, var(--color-navy-50) 80%, white);
+}
+
+.gifBadge {
+  position: absolute;
+  left: 0.4rem;
+  bottom: 0.4rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.3rem;
+  background: rgb(13 16 36 / 0.72);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.fileMine,
+.fileTheirs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.7rem;
+  min-width: 9rem;
+}
+
+.fileMine {
+  background: color-mix(in srgb, var(--color-white) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-white) 35%, transparent);
+}
+
+.fileTheirs {
+  background: var(--color-grey-50);
+  border: 1px solid var(--border-subtle);
+}
+
+.fileMine strong,
+.fileTheirs strong {
+  font-size: 0.84rem;
+}
+
+.fileMine span,
+.fileTheirs span {
+  font-size: 0.72rem;
+  opacity: 0.85;
+}
+
+.portalLinkMine,
+.portalLinkTheirs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: min(18rem, 72vw);
+  max-width: min(22rem, 78vw);
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.85rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portalLinkMine {
+  background: color-mix(in srgb, var(--color-white) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-white) 40%, transparent);
+  color: var(--color-white);
+}
+
+.portalLinkTheirs {
+  background: color-mix(in srgb, var(--color-navy-50) 75%, white);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  color: var(--color-navy-800);
+}
+
+.portalLinkMine:hover,
+.portalLinkTheirs:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.portalLinkArea {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.portalLinkDetail {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  opacity: 0.9;
+}
+
+.portalLinkCta {
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.portalLinkMine .portalLinkCta {
+  color: color-mix(in srgb, var(--color-white) 92%, transparent);
+}
+
+.portalLinkTheirs .portalLinkCta {
+  color: var(--action-primary);
+}
+
+.cardKicker {
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.contactAvatar {
+  width: 2.2rem;
+  height: 2.2rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--color-navy-700) 12%, white);
+  color: var(--color-navy-800);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.fileMine .contactAvatar {
+  background: color-mix(in srgb, var(--color-white) 25%, transparent);
+  color: var(--color-white);
+}
+
+.contactMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.pollOptions {
+  list-style: none;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pollOptions li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+}
+
+.pollDot {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  opacity: 0.55;
+}

@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   LearnerPageShell,
   LearnerStatusChip,
 } from "../components/LearnerPageShell";
+import { Shareable } from "../components/portal-share/Shareable";
 import {
   ALEX_OTJ_ENTRIES,
   ALEX_PROFILE,
@@ -155,13 +156,39 @@ function toDateInputValue(iso?: string): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-function OtjLogEntry({ entry }: { entry: LearnerOtjEntry }) {
-  const [open, setOpen] = useState(false);
+function OtjLogEntry({
+  entry,
+  initialOpen = false,
+}: {
+  entry: LearnerOtjEntry;
+  initialOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(initialOpen);
   const panelId = `otj-detail-${entry.id}`;
   const catchUp = isOtjCatchUpEntry(entry);
+  const fullyAgreed =
+    entry.employerStatus === "agreed" && entry.tutorStatus === "agreed";
+  const needsInput =
+    entry.employerStatus === "returned" ||
+    entry.tutorStatus === "returned" ||
+    !fullyAgreed;
 
   return (
-    <li className={styles.otjEntry} data-catch-up={catchUp ? "true" : undefined}>
+    <Shareable
+      as="li"
+      id={`otj-entry-${entry.id}`}
+      kind={needsInput ? "action" : "view"}
+      href={`/learner/evidence?otj=${entry.id}`}
+      title={`OTJ · Task ${entry.taskNumber} · ${entry.taskName}`}
+      detail={`${formatOtjDuration(entry.durationMinutes)} · ${otjPipelineLabel(entry)}`}
+      area="OTJ log"
+      actionLabel={needsInput ? "Open OTJ entry" : "View OTJ entry"}
+      className={styles.otjEntry}
+      dataAttrs={{
+        "data-catch-up": catchUp ? "true" : undefined,
+        "data-focus": initialOpen ? "true" : undefined,
+      }}
+    >
       <button
         type="button"
         className={styles.otjEntryToggle}
@@ -219,7 +246,9 @@ function OtjLogEntry({ entry }: { entry: LearnerOtjEntry }) {
               <p className={styles.otjDetailLabel}>Submitted</p>
               <p className={styles.otjDetailValue}>
                 {formatModuleDate(entry.submittedAt)}
-                {entry.learnerConfirmed ? " · Learner confirmed OTJ definition" : ""}
+                {entry.learnerConfirmed
+                  ? " · Learner confirmed OTJ definition"
+                  : ""}
               </p>
             </div>
             <div>
@@ -266,7 +295,7 @@ function OtjLogEntry({ entry }: { entry: LearnerOtjEntry }) {
           </div>
         </div>
       ) : null}
-    </li>
+    </Shareable>
   );
 }
 
@@ -278,6 +307,7 @@ const DURATION_PRESETS = [
 ] as const;
 
 export function LearnerEvidenceScreen() {
+  const [focusOtjId, setFocusOtjId] = useState<string | null>(null);
   const [otjEntries, setOtjEntries] = useState(ALEX_OTJ_ENTRIES);
   const [activityDate, setActivityDate] = useState(toDateInputValue());
   const [activityDateEnd, setActivityDateEnd] = useState("");
@@ -295,6 +325,19 @@ export function LearnerEvidenceScreen() {
   const [formNote, setFormNote] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [showLog, setShowLog] = useState(false);
+
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("otj");
+    if (!id) return;
+    setFocusOtjId(id);
+    setShowLog(true);
+    const timer = window.setTimeout(() => {
+      document
+        .getElementById(`otj-entry-${id}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 80);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const dashboard = useMemo(
     () => buildOtjDashboardStats(otjEntries, ALEX_PROFILE.programmeWeek),
@@ -782,7 +825,11 @@ export function LearnerEvidenceScreen() {
                 ) : (
                   <ul className={styles.otjLogList}>
                     {otjEntries.map((entry) => (
-                      <OtjLogEntry key={entry.id} entry={entry} />
+                      <OtjLogEntry
+                        key={entry.id}
+                        entry={entry}
+                        initialOpen={focusOtjId === entry.id}
+                      />
                     ))}
                   </ul>
                 )}

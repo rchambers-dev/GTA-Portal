@@ -1,8 +1,10 @@
 import { ALEX_PROFILE } from "../mock-learner";
 import {
   privacyNoteForChannel,
+  type ChatAttachment,
   type ChatContact,
   type ChatMessage,
+  type ChatSendPayload,
   type ChatThread,
 } from "./types";
 
@@ -143,7 +145,7 @@ let THREADS: ChatThread[] = [
       ALEX_PROFILE.mentorId,
     ],
     privacyNote: privacyNoteForChannel("employer"),
-    lastMessageAt: "2026-07-19T10:30:00Z",
+    lastMessageAt: "2026-07-19T11:05:00Z",
     unreadForLearner: 2,
     messages: [
       msg(
@@ -162,6 +164,22 @@ let THREADS: ChatThread[] = [
         "Yes — I’ll add them this afternoon. Sorry they slipped.",
         "2026-07-19T10:30:00Z",
       ),
+      {
+        messageId: "e3",
+        threadId: "thread-employer",
+        senderId: "contact-alex",
+        senderName: ALEX_PROFILE.displayName,
+        body: "Thanks Priya — here’s the catch-up OTJ block ready for you to agree or return.",
+        sentAt: "2026-07-19T11:05:00Z",
+        attachment: {
+          type: "portal_link",
+          href: "/employer/otj?otj=otj-5",
+          title: "Agree OTJ · Catch-up OTJ block — May to early July",
+          detail: "Direct link for employer to agree or return this entry",
+          actionLabel: "Agree / return",
+          area: "Approvals",
+        },
+      },
     ],
   },
   {
@@ -222,9 +240,16 @@ export function markThreadRead(threadId: string): void {
   );
 }
 
-export function sendMessage(threadId: string, body: string): ChatMessage | null {
-  const text = body.trim();
-  if (!text) return null;
+export function sendMessage(
+  threadId: string,
+  payload: string | ChatSendPayload,
+): ChatMessage | null {
+  const next: ChatSendPayload =
+    typeof payload === "string" ? { body: payload } : payload;
+  const text = (next.body ?? "").trim();
+  const attachment = next.attachment;
+  if (!text && !attachment) return null;
+
   const thread = THREADS.find((t) => t.threadId === threadId);
   if (!thread) return null;
 
@@ -235,6 +260,7 @@ export function sendMessage(threadId: string, body: string): ChatMessage | null 
     senderName: ALEX_PROFILE.displayName,
     body: text,
     sentAt: new Date().toISOString(),
+    ...(attachment ? { attachment } : {}),
   };
 
   THREADS = THREADS.map((t) =>

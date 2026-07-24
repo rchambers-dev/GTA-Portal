@@ -40,6 +40,91 @@
   gap: 0.35rem;
 }
 
+.glance[data-tone="navy"] {
+  border-color: color-mix(in srgb, var(--color-navy-700) 28%, var(--border-subtle));
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--color-navy-700) 12%, white) 0%,
+      var(--color-white) 70%
+    );
+  border-top: 3px solid var(--color-navy-700);
+}
+
+.glance[data-tone="navy"] .glanceLabel,
+.glance[data-tone="navy"] .glanceValue,
+.glance[data-tone="navy"] .glanceValueSmall {
+  color: var(--color-navy-800);
+}
+
+.glance[data-tone="green"] {
+  border-color: color-mix(in srgb, var(--color-green-600) 35%, var(--border-subtle));
+  background:
+    linear-gradient(
+      160deg,
+      var(--color-green-100) 0%,
+      var(--color-white) 70%
+    );
+  border-top: 3px solid var(--color-green-600);
+}
+
+.glance[data-tone="green"] .glanceLabel,
+.glance[data-tone="green"] .glanceValue,
+.glance[data-tone="green"] .glanceValueSmall {
+  color: var(--color-green-600);
+}
+
+.glance[data-tone="amber"] {
+  border-color: color-mix(in srgb, var(--color-amber-500) 40%, var(--border-subtle));
+  background:
+    linear-gradient(
+      160deg,
+      var(--color-amber-100) 0%,
+      var(--color-white) 70%
+    );
+  border-top: 3px solid var(--color-amber-500);
+}
+
+.glance[data-tone="amber"] .glanceLabel,
+.glance[data-tone="amber"] .glanceValue,
+.glance[data-tone="amber"] .glanceValueSmall {
+  color: var(--color-amber-500);
+}
+
+.glance[data-tone="red"] {
+  border-color: color-mix(in srgb, var(--color-red-500) 35%, var(--border-subtle));
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--color-red-500) 12%, white) 0%,
+      var(--color-white) 70%
+    );
+  border-top: 3px solid var(--color-red-500);
+}
+
+.glance[data-tone="red"] .glanceLabel,
+.glance[data-tone="red"] .glanceValue,
+.glance[data-tone="red"] .glanceValueSmall {
+  color: var(--color-red-600);
+}
+
+.glance[data-tone="blue"] {
+  border-color: color-mix(in srgb, var(--action-primary) 35%, var(--border-subtle));
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--action-primary) 10%, white) 0%,
+      var(--color-white) 70%
+    );
+  border-top: 3px solid var(--action-primary);
+}
+
+.glance[data-tone="blue"] .glanceLabel,
+.glance[data-tone="blue"] .glanceValue,
+.glance[data-tone="blue"] .glanceValueSmall {
+  color: var(--action-primary);
+}
+
 .glanceLink {
   padding: var(--space-4);
   border: 1px solid var(--border-subtle);
@@ -1215,6 +1300,11 @@
   border-color: color-mix(in srgb, var(--status-warning, #b45309) 35%, var(--border-subtle));
 }
 
+.otjEntry[data-focus="true"] {
+  border-color: color-mix(in srgb, var(--action-primary) 45%, var(--border-subtle));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--action-primary) 14%, transparent);
+}
+
 .otjTrail {
   list-style: none;
   margin: 0;
@@ -1317,6 +1407,765 @@
   align-items: flex-end;
 }
 
+.attendanceRoot {
+  gap: var(--space-5);
+}
+
+.attendanceChartCard,
+.attendanceDayCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--color-navy-50) 80%, white) 0%,
+      var(--color-white) 55%
+    );
+}
+
+.attendanceDayStub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.attendanceDayStubToggle {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.95rem 1.1rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--color-navy-50) 85%, white) 0%,
+      var(--color-white) 70%
+    );
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.attendanceDayStubToggle:hover {
+  border-color: color-mix(in srgb, var(--color-navy-700) 40%, var(--border-subtle));
+  box-shadow: var(--shadow-sm);
+}
+
+.attendanceDayStubToggle:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.attendanceDayStubToggle[aria-expanded="true"] {
+  border-color: color-mix(in srgb, var(--color-green-600) 35%, var(--border-subtle));
+  background:
+    linear-gradient(
+      160deg,
+      var(--color-green-100) 0%,
+      var(--color-white) 70%
+    );
+}
+
+.attendanceDayStubMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.attendanceDayStubMain strong {
+  font-size: 1.05rem;
+  font-family: var(--font-display);
+}
+
+.attendanceDayStubMain span {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.attendanceDayStubHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--action-primary);
+}
+
+.attendanceDayCard {
+  gap: var(--space-3);
+}
+
+.attendanceChartHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.attendanceChartCopy {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  font-size: 0.9rem;
+}
+
+.attendanceChartGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.attendanceChartPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-white) 88%, var(--color-navy-50));
+}
+
+.attendanceMissedPanel {
+  grid-column: 1 / -1;
+  border-color: color-mix(in srgb, var(--color-red-500) 22%, var(--border-subtle));
+  background:
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--color-red-500) 6%, white) 0%,
+      var(--color-white) 55%
+    );
+}
+
+.attendanceMissedHead {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.attendanceMissedCopy {
+  margin: 0;
+  max-width: 40rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.attendanceMissedBody {
+  display: grid;
+  grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.attendanceMissedList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.attendanceMissedLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 0.75rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-red-500) 18%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.attendanceMissedLink:hover {
+  border-color: color-mix(in srgb, var(--color-red-500) 40%, var(--border-subtle));
+  box-shadow: var(--shadow-sm);
+}
+
+.attendanceMissedLink:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.attendanceMissedLinkMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.attendanceMissedLinkMain strong {
+  font-size: 0.9rem;
+}
+
+.attendanceMissedLinkMain span {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.attendanceMissedLinkEnd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.attendancePieHole[data-tone="missed"] strong {
+  color: var(--color-red-600);
+}
+
+.attendanceChartPanelTitle {
+  margin: 0;
+  font-size: 0.92rem;
+  font-family: var(--font-display);
+}
+
+.attendanceChartBody {
+  display: grid;
+  grid-template-columns: auto minmax(11rem, 1fr);
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.attendancePie {
+  width: 9.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--color-navy-50) 80%, white),
+    var(--shadow-sm);
+}
+
+.attendancePieHole {
+  width: 58%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+
+.attendancePieHole strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--color-green-600);
+}
+
+.attendancePieHole[data-tone="split"] strong {
+  color: var(--color-navy-800);
+}
+
+.attendancePieHole span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.attendanceLegend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+  max-width: 16.5rem;
+}
+
+.attendanceLegendItem {
+  display: grid;
+  grid-template-columns: 0.7rem minmax(0, 1fr) 1.85rem;
+  column-gap: 0.8rem;
+  align-items: center;
+  width: 100%;
+}
+
+.attendanceSwatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-white) 70%, transparent);
+}
+
+.attendanceLegendLabel {
+  min-width: 0;
+  font-size: 0.84rem;
+  font-weight: 650;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.attendanceLegendLabel em {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.attendanceLegendMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.attendanceLegendMain strong {
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.attendanceLegendMain span {
+  font-size: 0.72rem;
+  line-height: 1.3;
+  color: var(--text-secondary);
+}
+
+.attendanceLegendCount {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-navy-800);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.attendanceDayHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.attendanceToolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.attendanceSearchField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.attendanceSearchField input {
+  font: inherit;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--text-primary);
+}
+
+.attendanceSearchField input::placeholder {
+  color: var(--color-grey-400);
+}
+
+.attendanceSearchField input:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.attendancePresetBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.attendancePresetLabel {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.attendancePresetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.attendancePreset,
+.attendancePresetActive {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.7rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 650;
+  cursor: pointer;
+  background: var(--color-white);
+  color: var(--text-primary);
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.attendancePreset:hover {
+  border-color: var(--border-strong);
+}
+
+.attendancePresetActive {
+  border-color: color-mix(in srgb, var(--color-navy-700) 40%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-navy-50) 80%, white);
+  color: var(--color-navy-800);
+}
+
+.attendancePreset[data-tone="green"],
+.attendancePresetActive[data-tone="green"] {
+  border-color: color-mix(in srgb, var(--color-green-600) 35%, var(--border-subtle));
+}
+
+.attendancePresetActive[data-tone="green"] {
+  background: var(--color-green-100);
+  color: var(--color-green-600);
+}
+
+.attendancePreset[data-tone="amber"],
+.attendancePresetActive[data-tone="amber"] {
+  border-color: color-mix(in srgb, var(--color-amber-500) 40%, var(--border-subtle));
+}
+
+.attendancePresetActive[data-tone="amber"] {
+  background: var(--color-amber-100);
+  color: var(--color-amber-500);
+}
+
+.attendancePreset[data-tone="red"],
+.attendancePresetActive[data-tone="red"] {
+  border-color: color-mix(in srgb, var(--color-red-500) 35%, var(--border-subtle));
+}
+
+.attendancePresetActive[data-tone="red"] {
+  background: color-mix(in srgb, var(--color-red-500) 12%, white);
+  color: var(--color-red-700);
+}
+
+.attendancePreset[data-tone="navy"],
+.attendancePresetActive[data-tone="navy"] {
+  border-color: color-mix(in srgb, var(--color-navy-700) 30%, var(--border-subtle));
+}
+
+.attendancePresetActive[data-tone="navy"] {
+  background: var(--color-navy-50);
+  color: var(--color-navy-800);
+}
+
+.attendancePreset[data-tone="neutral"],
+.attendancePresetActive[data-tone="neutral"] {
+  border-color: color-mix(in srgb, var(--color-grey-600) 30%, var(--border-subtle));
+}
+
+.attendancePresetActive[data-tone="neutral"] {
+  background: var(--color-grey-100);
+  color: var(--color-grey-600);
+}
+
+.attendanceResultHint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.attendanceFilterField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 13rem;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.attendanceFilterField select {
+  font: inherit;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.attendanceFilterField select:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.attendanceDayList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.attendanceDayToggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.attendanceDayToggle:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.attendanceDayToggle:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.attendanceDayToggle[data-open="true"] {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
+}
+
+.attendanceDayMark {
+  width: 0.35rem;
+  align-self: stretch;
+  min-height: 2.2rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+  background: var(--color-grey-400);
+}
+
+.attendanceDayToggle[data-tone="green"] {
+  background: color-mix(in srgb, var(--color-green-100) 45%, white);
+  border-color: color-mix(in srgb, var(--color-green-600) 28%, var(--border-subtle));
+}
+
+.attendanceDayToggle[data-tone="green"] .attendanceDayMark {
+  background: var(--color-green-600);
+}
+
+.attendanceDayToggle[data-tone="amber"] {
+  background: color-mix(in srgb, var(--color-amber-100) 50%, white);
+  border-color: color-mix(in srgb, var(--color-amber-500) 30%, var(--border-subtle));
+}
+
+.attendanceDayToggle[data-tone="amber"] .attendanceDayMark {
+  background: var(--color-amber-500);
+}
+
+.attendanceDayToggle[data-tone="red"] {
+  background: color-mix(in srgb, var(--color-red-500) 7%, white);
+  border-color: color-mix(in srgb, var(--color-red-500) 28%, var(--border-subtle));
+}
+
+.attendanceDayToggle[data-tone="red"] .attendanceDayMark {
+  background: var(--color-red-500);
+}
+
+.attendanceDayToggle[data-tone="navy"] {
+  background: color-mix(in srgb, var(--color-navy-50) 75%, white);
+  border-color: color-mix(in srgb, var(--color-navy-700) 25%, var(--border-subtle));
+}
+
+.attendanceDayToggle[data-tone="navy"] .attendanceDayMark {
+  background: var(--color-navy-700);
+}
+
+.attendanceDayToggle[data-tone="neutral"] {
+  background: color-mix(in srgb, var(--color-grey-100) 55%, white);
+  border-color: color-mix(in srgb, var(--color-grey-600) 25%, var(--border-subtle));
+}
+
+.attendanceDayToggle[data-tone="neutral"] .attendanceDayMark {
+  background: var(--color-grey-600);
+}
+
+.attendanceDayMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.attendanceDayMain strong {
+  font-size: 0.95rem;
+}
+
+.attendanceDayMain span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.attendanceDayMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+
+.attendanceChevron {
+  width: 1rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.attendanceDayPanel {
+  padding: 0.85rem 1rem 1rem 1.7rem;
+  border: 1px solid var(--border-subtle);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: var(--color-white);
+}
+
+.attendanceDayPanel[data-tone="green"] {
+  border-color: color-mix(in srgb, var(--color-green-600) 28%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-green-100) 30%, white);
+}
+
+.attendanceDayPanel[data-tone="amber"] {
+  border-color: color-mix(in srgb, var(--color-amber-500) 30%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-amber-100) 35%, white);
+}
+
+.attendanceDayPanel[data-tone="red"] {
+  border-color: color-mix(in srgb, var(--color-red-500) 28%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-red-500) 5%, white);
+}
+
+.attendanceDayPanel[data-tone="navy"] {
+  border-color: color-mix(in srgb, var(--color-navy-700) 25%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-navy-50) 60%, white);
+}
+
+.attendanceDayPanel[data-tone="neutral"] {
+  border-color: color-mix(in srgb, var(--color-grey-600) 25%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-grey-100) 40%, white);
+}
+
+.attendanceDayNote {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.attendanceDayMissed {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.attendanceDayMissedTitle {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.attendanceDayMissedList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.attendanceDayMissedLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  text-decoration: none;
+  color: inherit;
+}
+
+.attendanceDayMissedLink:hover {
+  border-color: var(--border-strong);
+}
+
+.attendanceDayMissedLink:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.attendanceDayMissedLink span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.attendanceDayMissedLink strong {
+  font-size: 0.84rem;
+}
+
+.attendanceDayMissedLink span span {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 700px) {
   .twoCol {
     grid-template-columns: 1fr;
@@ -1341,6 +2190,52 @@
   }
 
   .otjEntryMeta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .attendanceChartGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .attendanceMissedBody {
+    grid-template-columns: 1fr;
+  }
+
+  .attendanceMissedLink {
+    flex-direction: column;
+  }
+
+  .attendanceMissedLinkEnd {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .attendanceChartBody {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .attendanceLegend {
+    max-width: none;
+  }
+
+  .attendanceDayHead {
+    align-items: stretch;
+  }
+
+  .attendanceFilterField,
+  .attendanceSearchField {
+    width: 100%;
+  }
+
+  .attendanceDayToggle {
+    flex-wrap: wrap;
+  }
+
+  .attendanceDayMeta {
     width: 100%;
     justify-content: space-between;
   }

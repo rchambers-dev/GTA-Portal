@@ -3,6 +3,7 @@ import type { EffectiveSession } from "@/lib/portal/types";
 import {
   LearnerChatDock,
   LearnerChatProvider,
+  PortalShareProvider,
 } from "@/features/learner-portal";
 import { DemoSessionProvider } from "./demo/DemoSessionProvider";
 import { GlobalHeader } from "./GlobalHeader";
@@ -24,7 +25,10 @@ export function PortalShell({
   const isLearner = session.account.workspace === "learner";
 
   const body = (
-    <div className={styles.shell}>
+    <div
+      className={styles.shell}
+      data-portal-root={isLearner ? "" : undefined}
+    >
       <SidebarNavigation />
       <div className={styles.main}>
         <GlobalHeader />
@@ -42,7 +46,13 @@ export function PortalShell({
 
   return (
     <DemoSessionProvider initialSession={session}>
-      {isLearner ? <LearnerChatProvider>{body}</LearnerChatProvider> : body}
+      {isLearner ? (
+        <LearnerChatProvider>
+          <PortalShareProvider>{body}</PortalShareProvider>
+        </LearnerChatProvider>
+      ) : (
+        body
+      )}
     </DemoSessionProvider>
   );
 }

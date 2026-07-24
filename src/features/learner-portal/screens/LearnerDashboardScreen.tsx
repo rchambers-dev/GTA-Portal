@@ -116,37 +116,6 @@ export function LearnerDashboardScreen() {
         </div>
 
         <section className={styles.section}>
-          <h2 className={styles.dashSectionTitle} data-accent="amber">
-            Open targets
-          </h2>
-          <p className={styles.meta}>
-            {ALEX_OPEN_TARGETS.length} open · due before your August review
-          </p>
-          <ul className={styles.list}>
-            {ALEX_OPEN_TARGETS.map((t, index) => (
-              <li key={t.id}>
-                <Link
-                  href={t.href}
-                  className={styles.rowLink}
-                  data-tone={TARGET_TONES[index % TARGET_TONES.length]}
-                >
-                  <div className={styles.rowMain}>
-                    <strong>{t.title}</strong>
-                    <span>
-                      Owner: {t.owner} · Due {formatDate(t.dueDate)}
-                    </span>
-                  </div>
-                  <div className={styles.rowEnd}>
-                    <LearnerStatusChip tone="amber">Open</LearnerStatusChip>
-                    <span className={styles.linkish}>{t.hrefLabel} →</span>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className={styles.section}>
           <h2 className={styles.dashSectionTitle} data-accent="navy">
             Shortcuts
           </h2>
@@ -194,6 +163,37 @@ export function LearnerDashboardScreen() {
               Get support
             </Link>
           </div>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.dashSectionTitle} data-accent="amber">
+            Open targets
+          </h2>
+          <p className={styles.meta}>
+            {ALEX_OPEN_TARGETS.length} open · due before your August review
+          </p>
+          <ul className={styles.list}>
+            {ALEX_OPEN_TARGETS.map((t, index) => (
+              <li key={t.id}>
+                <Link
+                  href={t.href}
+                  className={styles.rowLink}
+                  data-tone={TARGET_TONES[index % TARGET_TONES.length]}
+                >
+                  <div className={styles.rowMain}>
+                    <strong>{t.title}</strong>
+                    <span>
+                      Owner: {t.owner} · Due {formatDate(t.dueDate)}
+                    </span>
+                  </div>
+                  <div className={styles.rowEnd}>
+                    <LearnerStatusChip tone="amber">Open</LearnerStatusChip>
+                    <span className={styles.linkish}>{t.hrefLabel} →</span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </LearnerPageShell>

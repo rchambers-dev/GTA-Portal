@@ -18,6 +18,65 @@ export type ChatContact = {
   defaultChannel: ChatChannelType;
 };
 
+export type ChatGifAttachment = {
+  type: "gif";
+  url: string;
+  previewUrl: string;
+  title: string;
+};
+
+export type ChatImageAttachment = {
+  type: "image";
+  url: string;
+  name: string;
+};
+
+export type ChatFileAttachment = {
+  type: "file";
+  name: string;
+  sizeLabel: string;
+};
+
+/** Deep link into a portal screen / approval item. */
+export type ChatPortalLinkAttachment = {
+  type: "portal_link";
+  href: string;
+  title: string;
+  detail: string;
+  actionLabel: string;
+  area: string;
+};
+
+export type ChatContactCardAttachment = {
+  type: "contact";
+  name: string;
+  initials: string;
+  roleLabel: string;
+  organisation?: string;
+};
+
+export type ChatPollAttachment = {
+  type: "poll";
+  question: string;
+  options: string[];
+};
+
+export type ChatEventAttachment = {
+  type: "event";
+  title: string;
+  when: string;
+  location?: string;
+};
+
+export type ChatAttachment =
+  | ChatGifAttachment
+  | ChatImageAttachment
+  | ChatFileAttachment
+  | ChatPortalLinkAttachment
+  | ChatContactCardAttachment
+  | ChatPollAttachment
+  | ChatEventAttachment;
+
 export type ChatMessage = {
   messageId: string;
   threadId: string;
@@ -25,6 +84,7 @@ export type ChatMessage = {
   senderName: string;
   body: string;
   sentAt: string;
+  attachment?: ChatAttachment;
 };
 
 export type ChatThread = {
@@ -37,6 +97,11 @@ export type ChatThread = {
   lastMessageAt: string;
   unreadForLearner: number;
   messages: ChatMessage[];
+};
+
+export type ChatSendPayload = {
+  body?: string;
+  attachment?: ChatAttachment;
 };
 
 export function privacyNoteForChannel(channel: ChatChannelType): string {

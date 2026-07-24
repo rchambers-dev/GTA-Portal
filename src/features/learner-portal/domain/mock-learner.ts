@@ -116,12 +116,179 @@ export type LearnerReviewSummary = {
   href?: string;
 };
 
+/** College-session outcomes that can appear on a learner attendance record. */
+export type LearnerAttendanceStatus =
+  | "attended"
+  | "late"
+  | "authorised"
+  | "unauthorised"
+  | "absent"
+  | "college_closed";
+
 export type LearnerAttendanceDay = {
   date: string;
   dayName: string;
   session: string;
-  status: "attended" | "late" | "absent" | "authorised";
+  status: LearnerAttendanceStatus;
+  /** Optional short note (e.g. reason for absence or closure). */
+  note?: string;
+  /** Module topics / tasks / workshop slots missed when the learner was away. */
+  missedItems?: LearnerMissedLearningItem[];
 };
+
+export type LearnerMissedLearningKind = "module" | "task" | "workshop";
+
+export type LearnerMissedLearningItem = {
+  id: string;
+  kind: LearnerMissedLearningKind;
+  title: string;
+  detail: string;
+  moduleCode?: string;
+  href: string;
+  catchUpStatus: "needed" | "in_progress" | "done";
+};
+
+export type LearnerMissedLearningSlice = {
+  kind: LearnerMissedLearningKind;
+  label: string;
+  count: number;
+  color: string;
+};
+
+const MISSED_KIND_META: Record<
+  LearnerMissedLearningKind,
+  { label: string; color: string }
+> = {
+  module: {
+    label: "Module topics",
+    color: "var(--color-navy-600)",
+  },
+  task: {
+    label: "CEA / assignments",
+    color: "var(--color-amber-500)",
+  },
+  workshop: {
+    label: "Workshop practicals",
+    color: "var(--color-red-500)",
+  },
+};
+
+export function collectMissedLearningItems(
+  days: LearnerAttendanceDay[] = ALEX_ATTENDANCE_DAYS,
+): LearnerMissedLearningItem[] {
+  return days.flatMap((day) => day.missedItems ?? []);
+}
+
+export function summariseMissedLearning(
+  days: LearnerAttendanceDay[] = ALEX_ATTENDANCE_DAYS,
+): {
+  items: LearnerMissedLearningItem[];
+  slices: LearnerMissedLearningSlice[];
+  total: number;
+  stillNeeded: number;
+} {
+  const items = collectMissedLearningItems(days);
+  const counts: Record<LearnerMissedLearningKind, number> = {
+    module: 0,
+    task: 0,
+    workshop: 0,
+  };
+  for (const item of items) {
+    counts[item.kind] += 1;
+  }
+  const slices: LearnerMissedLearningSlice[] = (
+    Object.keys(MISSED_KIND_META) as LearnerMissedLearningKind[]
+  )
+    .map((kind) => ({
+      kind,
+      label: MISSED_KIND_META[kind].label,
+      color: MISSED_KIND_META[kind].color,
+      count: counts[kind],
+    }))
+    .filter((slice) => slice.count > 0);
+
+  return {
+    items,
+    slices,
+    total: items.length,
+    stillNeeded: items.filter((item) => item.catchUpStatus !== "done").length,
+  };
+}
+
+export type LearnerAttendanceBreakdownItem = {
+  status: LearnerAttendanceStatus;
+  label: string;
+  count: number;
+  /** CSS colour token used by the pie chart / legend. */
+  color: string;
+  /** Whether this status counts toward the attendance % denominator. */
+  countsTowardPercent: boolean;
+};
+
+/**
+ * Year-to-date session mix for Alex.
+ * Attendance % = (attended + late) / sessions that count toward percent.
+ * College-closed days are shown on the chart but excluded from the %.
+ */
+export const ALEX_ATTENDANCE_BREAKDOWN: LearnerAttendanceBreakdownItem[] = [
+  {
+    status: "attended",
+    label: "Attended",
+    count: 28,
+    color: "var(--color-green-600)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "late",
+    label: "Late",
+    count: 2,
+    color: "var(--color-amber-500)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "authorised",
+    label: "Authorised absence",
+    count: 1,
+    color: "var(--color-navy-600)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "unauthorised",
+    label: "Unauthorised absence",
+    count: 1,
+    color: "var(--color-red-600)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "absent",
+    label: "Absent",
+    count: 0,
+    color: "var(--color-red-400)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "college_closed",
+    label: "College closed",
+    count: 4,
+    color: "var(--color-grey-600)",
+    countsTowardPercent: false,
+  },
+];
+
+export function summariseAlexAttendance(
+  breakdown: LearnerAttendanceBreakdownItem[] = ALEX_ATTENDANCE_BREAKDOWN,
+) {
+  const expected = breakdown
+    .filter((b) => b.countsTowardPercent)
+    .reduce((sum, b) => sum + b.count, 0);
+  const present = breakdown
+    .filter((b) => b.status === "attended" || b.status === "late")
+    .reduce((sum, b) => sum + b.count, 0);
+  const catalogued = breakdown.reduce((sum, b) => sum + b.count, 0);
+  const percent =
+    expected === 0 ? 0 : Math.round((present / expected) * 100);
+  return { expected, present, catalogued, percent };
+}
 
 export type LearningPlanItemKind =
   | "college"
@@ -1417,12 +1584,133 @@ export const ALEX_REVIEWS: LearnerReviewSummary[] = [
 ];
 
 export const ALEX_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
-  { date: "2026-07-14", dayName: "Tuesday", session: "Workshop AM", status: "attended" },
-  { date: "2026-07-13", dayName: "Monday", session: "Theory AM", status: "attended" },
-  { date: "2026-07-07", dayName: "Tuesday", session: "Workshop AM", status: "late" },
-  { date: "2026-07-06", dayName: "Monday", session: "Theory AM", status: "attended" },
-  { date: "2026-06-30", dayName: "Tuesday", session: "Workshop AM", status: "attended" },
-  { date: "2026-06-29", dayName: "Monday", session: "Theory AM", status: "authorised" },
+  {
+    date: "2026-07-14",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "attended",
+  },
+  {
+    date: "2026-07-13",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "attended",
+  },
+  {
+    date: "2026-07-07",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "late",
+    note: "Signed in at reception 20 minutes after start.",
+  },
+  {
+    date: "2026-07-06",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "attended",
+  },
+  {
+    date: "2026-06-30",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "attended",
+  },
+  {
+    date: "2026-06-29",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "authorised",
+    note: "Authorised workplace visit with employer mentor.",
+    missedItems: [
+      {
+        id: "miss-1",
+        kind: "module",
+        title: "Cooling and lubrication overview",
+        detail: "MV-103 theory session — catch up with Daniel’s demo notes.",
+        moduleCode: "MV-103",
+        href: "/learner/modules/m3",
+        catchUpStatus: "in_progress",
+      },
+      {
+        id: "miss-2",
+        kind: "task",
+        title: "Cooling circuit worksheet",
+        detail: "Classroom worksheet issued that morning — still outstanding.",
+        moduleCode: "MV-103",
+        href: "/learner/assignments",
+        catchUpStatus: "needed",
+      },
+    ],
+  },
+  {
+    date: "2026-06-23",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "college_closed",
+    note: "Staff development day — college closed to learners.",
+  },
+  {
+    date: "2026-06-22",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "unauthorised",
+    note: "No contact received — employer notified.",
+    missedItems: [
+      {
+        id: "miss-3",
+        kind: "module",
+        title: "Braking system overview — intro",
+        detail: "First taught session for MV-103 braking outcomes.",
+        moduleCode: "MV-103",
+        href: "/learner/modules/m3",
+        catchUpStatus: "needed",
+      },
+      {
+        id: "miss-4",
+        kind: "workshop",
+        title: "Brake inspection bay walkthrough",
+        detail: "Practical demo on the training bay — book a catch-up slot.",
+        moduleCode: "MV-104",
+        href: "/learner/modules/m4",
+        catchUpStatus: "needed",
+      },
+      {
+        id: "miss-5",
+        kind: "task",
+        title: "Brake inspection worksheet start",
+        detail: "Peers started the assessed worksheet in class.",
+        moduleCode: "MV-104",
+        href: "/learner/assignments",
+        catchUpStatus: "needed",
+      },
+    ],
+  },
+  {
+    date: "2026-06-16",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "attended",
+  },
+  {
+    date: "2026-06-15",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "attended",
+  },
+  {
+    date: "2026-05-26",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "college_closed",
+    note: "Spring bank holiday — college closed.",
+  },
+  {
+    date: "2026-05-25",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "college_closed",
+    note: "Spring bank holiday — college closed.",
+  },
 ];
 
 export const ALEX_LEARNING: LearningFocus = {

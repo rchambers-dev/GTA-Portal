@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { ChatComposer } from "./ChatComposer";
+import { ChatMessageBody } from "./ChatMessageBody";
 import { useLearnerChat } from "./LearnerChatProvider";
 import type { ChatChannelType, ChatThread } from "../domain/chat/types";
 import styles from "./LearnerChatDock.module.css";
@@ -41,16 +43,33 @@ export function LearnerChatDock() {
     sendMessage,
     ensureThreadWithContact,
     getThreadById,
+    openDockSignal,
   } = useLearnerChat();
 
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<PanelView>("list");
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
-  const [draft, setDraft] = useState("");
+
+  useEffect(() => {
+    if (openDockSignal > 0) {
+      setOpen(true);
+      if (!activeThreadId && threads[0]) {
+        setActiveThreadId(threads[0].threadId);
+        setView("thread");
+      } else if (activeThreadId) {
+        setView("thread");
+      }
+    }
+    // Only react to signal bumps — not thread list churn.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openDockSignal]);
 
   const activeThread: ChatThread | undefined = useMemo(() => {
     if (!activeThreadId) return undefined;
-    return getThreadById(activeThreadId) ?? threads.find((t) => t.threadId === activeThreadId);
+    return (
+      getThreadById(activeThreadId) ??
+      threads.find((t) => t.threadId === activeThreadId)
+    );
   }, [activeThreadId, getThreadById, threads]);
 
   useEffect(() => {
@@ -63,18 +82,11 @@ export function LearnerChatDock() {
     setActiveThreadId(threadId);
     setView("thread");
     markThreadRead(threadId);
-    setDraft("");
   }
 
   function startWithContact(contactId: string) {
     const thread = ensureThreadWithContact(contactId);
     openThread(thread.threadId);
-  }
-
-  function handleSend() {
-    if (!activeThreadId || !draft.trim()) return;
-    sendMessage(activeThreadId, draft);
-    setDraft("");
   }
 
   function closePanel() {
@@ -220,7 +232,7 @@ export function LearnerChatDock() {
                         {!mine ? (
                           <span className={styles.sender}>{m.senderName}</span>
                         ) : null}
-                        <p className={styles.bubbleBody}>{m.body}</p>
+                        <ChatMessageBody message={m} mine={mine} />
                         <time className={styles.bubbleTime} dateTime={m.sentAt}>
                           {formatTime(m.sentAt)}
                         </time>
@@ -229,24 +241,13 @@ export function LearnerChatDock() {
                   })
                 )}
               </div>
-              <form
-                className={styles.composer}
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSend();
+              <ChatComposer
+                compact
+                onSend={(payload) => {
+                  if (!activeThreadId) return;
+                  sendMessage(activeThreadId, payload);
                 }}
-              >
-                <input
-                  className={styles.input}
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Write a message…"
-                  aria-label="Message"
-                />
-                <button type="submit" className={styles.sendBtn} disabled={!draft.trim()}>
-                  Send
-                </button>
-              </form>
+              />
             </div>
           ) : null}
         </div>

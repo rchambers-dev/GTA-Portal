@@ -1,5 +1,7 @@
 export { LearnerChatProvider } from "./components/LearnerChatProvider";
 export { LearnerChatDock } from "./components/LearnerChatDock";
+export { PortalShareProvider } from "./components/portal-share/PortalShareProvider";
+export { Shareable } from "./components/portal-share/Shareable";
 export { LearnerDashboardScreen } from "./screens/LearnerDashboardScreen";
 export { LearnerLearningScreen } from "./screens/LearnerLearningScreen";
 export { LearnerModulesScreen } from "./screens/LearnerModulesScreen";

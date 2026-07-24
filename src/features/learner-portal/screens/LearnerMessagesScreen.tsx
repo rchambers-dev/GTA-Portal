@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ChatComposer } from "../components/ChatComposer";
+import { ChatMessageBody } from "../components/ChatMessageBody";
 import { LearnerPageShell } from "../components/LearnerPageShell";
 import { useLearnerChat } from "../components/LearnerChatProvider";
 import type { ChatChannelType } from "../domain/chat/types";
@@ -30,6 +32,13 @@ function formatTime(iso: string): string {
   }
 }
 
+function initialsFromTitle(title: string): string {
+  const parts = title.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return `${parts[0][0] ?? ""}${parts[1][0] ?? ""}`.toUpperCase();
+}
+
 export function LearnerMessagesScreen() {
   const {
     contacts,
@@ -44,7 +53,6 @@ export function LearnerMessagesScreen() {
     () => threads[0]?.threadId ?? null,
   );
   const [showContacts, setShowContacts] = useState(false);
-  const [draft, setDraft] = useState("");
 
   const activeThread = useMemo(() => {
     if (!activeThreadId) return undefined;
@@ -61,7 +69,6 @@ export function LearnerMessagesScreen() {
   function openThread(threadId: string) {
     setActiveThreadId(threadId);
     setShowContacts(false);
-    setDraft("");
     markThreadRead(threadId);
   }
 
@@ -70,16 +77,11 @@ export function LearnerMessagesScreen() {
     openThread(thread.threadId);
   }
 
-  function handleSend() {
-    if (!activeThreadId || !draft.trim()) return;
-    sendMessage(activeThreadId, draft);
-    setDraft("");
-  }
-
   return (
     <LearnerPageShell
       title="Messages"
       description="Chat with your mentor, tutor, employer contact, or GTA Support. Each conversation has its own privacy rules."
+      fill
       actions={
         <button
           type="button"
@@ -92,6 +94,14 @@ export function LearnerMessagesScreen() {
     >
       <div className={styles.layout}>
         <aside className={styles.sidebar}>
+          <div className={styles.sideHead}>
+            <strong>{showContacts ? "New chat" : "Chats"}</strong>
+            <span>
+              {showContacts
+                ? `${contacts.length} people`
+                : `${threads.length} conversations`}
+            </span>
+          </div>
           {showContacts ? (
             <div className={styles.sideList}>
               <p className={styles.sideHint}>People in your programme scope</p>
@@ -102,7 +112,9 @@ export function LearnerMessagesScreen() {
                   className={styles.sideRow}
                   onClick={() => startWithContact(contact.contactId)}
                 >
-                  <span className={styles.avatar}>{contact.initials}</span>
+                  <span className={styles.avatar} data-tone="navy">
+                    {contact.initials}
+                  </span>
                   <span className={styles.sideMeta}>
                     <strong>{contact.name}</strong>
                     <span>
@@ -123,17 +135,28 @@ export function LearnerMessagesScreen() {
                     key={thread.threadId}
                     type="button"
                     className={styles.sideRow}
-                    data-active={thread.threadId === activeThreadId ? "true" : "false"}
+                    data-active={
+                      thread.threadId === activeThreadId ? "true" : "false"
+                    }
                     onClick={() => openThread(thread.threadId)}
                   >
+                    <span
+                      className={styles.avatar}
+                      data-tone={thread.channelType}
+                    >
+                      {initialsFromTitle(thread.title)}
+                    </span>
                     <span className={styles.sideMeta}>
                       <strong>{thread.title}</strong>
                       <span>
-                        {channelLabel(thread.channelType)} · {formatTime(thread.lastMessageAt)}
+                        {channelLabel(thread.channelType)} ·{" "}
+                        {formatTime(thread.lastMessageAt)}
                       </span>
                     </span>
                     {thread.unreadForLearner > 0 ? (
-                      <span className={styles.badge}>{thread.unreadForLearner}</span>
+                      <span className={styles.badge}>
+                        {thread.unreadForLearner}
+                      </span>
                     ) : null}
                   </button>
                 ))
@@ -151,11 +174,22 @@ export function LearnerMessagesScreen() {
           ) : (
             <>
               <header className={styles.threadHeader}>
-                <div>
-                  <h2>{activeThread.title}</h2>
-                  <p className={styles.privacy}>{activeThread.privacyNote}</p>
+                <div className={styles.threadHeaderMain}>
+                  <span
+                    className={styles.avatarLarge}
+                    data-tone={activeThread.channelType}
+                  >
+                    {initialsFromTitle(activeThread.title)}
+                  </span>
+                  <div>
+                    <h2>{activeThread.title}</h2>
+                    <p className={styles.privacy}>{activeThread.privacyNote}</p>
+                  </div>
                 </div>
-                <span className={styles.channelChip}>
+                <span
+                  className={styles.channelChip}
+                  data-tone={activeThread.channelType}
+                >
                   {channelLabel(activeThread.channelType)}
                 </span>
               </header>
@@ -168,33 +202,37 @@ export function LearnerMessagesScreen() {
                     return (
                       <div
                         key={m.messageId}
-                        className={mine ? styles.bubbleMine : styles.bubbleTheirs}
+                        className={
+                          mine ? styles.messageRowMine : styles.messageRowTheirs
+                        }
                       >
-                        {!mine ? <span className={styles.sender}>{m.senderName}</span> : null}
-                        <p>{m.body}</p>
-                        <time dateTime={m.sentAt}>{formatTime(m.sentAt)}</time>
+                        {!mine ? (
+                          <span className={styles.bubbleAvatar} aria-hidden>
+                            {initialsFromTitle(m.senderName)}
+                          </span>
+                        ) : null}
+                        <div
+                          className={
+                            mine ? styles.bubbleMine : styles.bubbleTheirs
+                          }
+                        >
+                          {!mine ? (
+                            <span className={styles.sender}>{m.senderName}</span>
+                          ) : null}
+                          <ChatMessageBody message={m} mine={mine} />
+                          <time dateTime={m.sentAt}>{formatTime(m.sentAt)}</time>
+                        </div>
                       </div>
                     );
                   })
                 )}
               </div>
-              <form
-                className={styles.composer}
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSend();
+              <ChatComposer
+                onSend={(payload) => {
+                  if (!activeThreadId) return;
+                  sendMessage(activeThreadId, payload);
                 }}
-              >
-                <input
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Write a message…"
-                  aria-label="Message"
-                />
-                <button type="submit" disabled={!draft.trim()}>
-                  Send
-                </button>
-              </form>
+              />
             </>
           )}
         </section>
