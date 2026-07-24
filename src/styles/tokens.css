@@ -28,6 +28,12 @@
   --color-green-600: #1f7a45;
   --color-green-100: #e4f5eb;
 
+  /* AI accent — used only for controls that actually call AI */
+  --color-ai-700: #5b21b6;
+  --color-ai-600: #6d28d9;
+  --color-ai-500: #7c3aed;
+  --color-ai-100: #ede4fb;
+
   --font-display: var(--font-plus-jakarta, "Plus Jakarta Sans"), system-ui, sans-serif;
   --font-body: var(--font-source-sans, "Source Sans 3"), system-ui, sans-serif;
 

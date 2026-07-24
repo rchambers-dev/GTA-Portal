@@ -65,3 +65,87 @@ h4 {
   letter-spacing: -0.02em;
   margin: 0;
 }
+
+/* Print: isolate a CV sheet (data-cv-sheet) so "Download PDF" via the browser
+   print dialog outputs only the document, not the app chrome. */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    overflow: visible !important;
+    height: auto !important;
+    background: #fff !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* When a CV sheet is present, hide everything else. */
+  body:has([data-cv-sheet]) * {
+    visibility: hidden;
+  }
+
+  body:has([data-cv-sheet]) [data-cv-sheet],
+  body:has([data-cv-sheet]) [data-cv-sheet] * {
+    visibility: visible;
+  }
+
+  [data-cv-sheet] {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    display: flex !important;
+    flex-direction: column !important;
+    /* One printable A4 page tall (297mm − 2 × 12mm margins). */
+    min-height: 273mm !important;
+    font-size: 9.5pt !important;
+    line-height: 1.42 !important;
+    aspect-ratio: auto !important;
+    max-height: 546mm !important;
+    overflow: hidden !important;
+  }
+
+  /* The @page margin already provides the paper gutter. */
+  [data-cv-sheet] > header {
+    padding: 0.85rem 1.1rem 0.75rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  [data-cv-sheet] > header h1 {
+    font-size: 1.5rem !important;
+  }
+
+  [data-cv-sheet] > div {
+    flex: 1 1 auto !important;
+    padding: 0.85rem 1.1rem 0.6rem !important;
+    gap: 0.85rem !important;
+    min-height: 0 !important;
+  }
+
+  [data-cv-sheet] > footer {
+    margin-top: auto !important;
+    flex-shrink: 0 !important;
+    padding: 0.55rem 1.1rem 0 !important;
+  }
+
+  [data-cv-sheet] section,
+  [data-cv-sheet] article {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  [data-print-hide] {
+    display: none !important;
+  }
+}

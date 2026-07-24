@@ -47,6 +47,9 @@ export const PERMISSIONS = {
   LEARNER_MODULES_VIEW: "learner.modules.view",
   LEARNER_OTJ_VIEW: "learner.otj.view",
 
+  /** Shared portal AI — CV, chat assist, learning explain, etc. */
+  AI_USE: "ai.use",
+
   // Employer
   EMPLOYER_WORKSPACE_VIEW: "employer.workspace.view",
   EMPLOYER_APPRENTICE_VIEW: "employer.apprentice.view",
@@ -106,4 +109,5 @@ export const STANDARD_TUTOR_PACK: Permission[] = [
   PERMISSIONS.MESSAGES_VIEW,
   PERMISSIONS.LIFECYCLE_KANBAN_VIEW,
   PERMISSIONS.LEARNER_WORKSPACE_VIEW,
+  PERMISSIONS.AI_USE,
 ];

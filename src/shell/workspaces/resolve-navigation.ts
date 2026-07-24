@@ -39,6 +39,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/learner/otj", label: "OTJ hours", permission: PERMISSIONS.LEARNER_OTJ_VIEW },
           { href: "/learner/attendance", label: "Attendance", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
           { href: "/learner/reviews", label: "Reviews", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
+          { href: "/learner/cv", label: "CV builder", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
           { href: "/learner/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
           { href: "/learner/support", label: "Support", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
         ],

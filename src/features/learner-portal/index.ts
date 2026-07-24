@@ -13,6 +13,7 @@ export { LearnerProgressScreen } from "./screens/LearnerProgressScreen";
 export { LearnerReviewsScreen } from "./screens/LearnerReviewsScreen";
 export { LearnerAttendanceScreen } from "./screens/LearnerAttendanceScreen";
 export { LearnerSupportScreen } from "./screens/LearnerSupportScreen";
+export { LearnerCvBuilderScreen } from "./screens/LearnerCvBuilderScreen";
 export { LearnerMessagesScreen } from "./screens/LearnerMessagesScreen";
 export { TutorModuleSignOffScreen } from "./screens/TutorModuleSignOffScreen";
 export { EmployerOtjApprovalsScreen } from "./screens/EmployerOtjApprovalsScreen";

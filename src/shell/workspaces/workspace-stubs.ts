@@ -39,6 +39,10 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Support",
       description: "Support requests and welfare contacts — learner-safe view only.",
     },
+    cv: {
+      title: "CV builder",
+      description: "Build, export, and email a professional CV from your details.",
+    },
     messages: {
       title: "Messages",
       description: "Secure messaging with GTA staff.",

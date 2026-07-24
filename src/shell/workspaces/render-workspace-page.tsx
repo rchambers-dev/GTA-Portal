@@ -3,6 +3,7 @@ import { FeatureStubScreen } from "@/features/learner-lifecycle";
 import {
   LearnerAttendanceScreen,
   LearnerCeaScreen,
+  LearnerCvBuilderScreen,
   LearnerDashboardScreen,
   LearnerOtjHoursScreen,
   LearnerLearningScreen,
@@ -72,6 +73,8 @@ function renderLearnerPage(segment: string) {
       return <LearnerAttendanceScreen />;
     case "support":
       return <LearnerSupportScreen />;
+    case "cv":
+      return <LearnerCvBuilderScreen />;
     case "messages":
       return <LearnerMessagesScreen />;
     default:

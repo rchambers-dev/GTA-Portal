@@ -1390,10 +1390,29 @@
 }
 
 .otjGapAlert {
+  display: block;
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
   border: 1px solid color-mix(in srgb, var(--status-warning, #b45309) 45%, var(--border-subtle));
   background: color-mix(in srgb, var(--status-warning, #b45309) 12%, white);
+  text-decoration: none;
+  color: inherit;
+}
+
+a.otjGapAlert {
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+a.otjGapAlert:hover {
+  border-color: color-mix(in srgb, var(--status-warning, #b45309) 70%, var(--border-subtle));
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+a.otjGapAlert[data-kind="month"]:hover,
+a.otjGapAlert[data-kind="never"]:hover {
+  border-color: color-mix(in srgb, var(--status-danger, #b42318) 65%, var(--border-subtle));
 }
 
 .otjGapAlert[data-kind="month"],
@@ -2369,5 +2388,1491 @@
   .attendanceDayMeta {
     width: 100%;
     justify-content: space-between;
+  }
+}
+
+/* ---------- CV builder ---------- */
+
+.cvActions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.cvActions .ghostBtn {
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 35%, var(--border-subtle));
+  background: white;
+  color: var(--color-navy-800);
+  font-weight: 750;
+  padding: 0.6rem 0.95rem;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-navy-900) 8%, transparent);
+}
+
+.cvActions .ghostBtn:hover {
+  border-color: var(--color-navy-700);
+  background: var(--color-navy-50);
+  color: var(--color-navy-900);
+}
+
+.cvActions .primaryBtn {
+  border: 1.5px solid var(--color-red-600);
+  background: var(--action-primary);
+  color: #fff;
+  font-weight: 750;
+  padding: 0.6rem 1rem;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--action-primary) 28%, transparent);
+}
+
+.cvActions .primaryBtn:hover {
+  background: var(--action-primary-hover);
+  filter: none;
+}
+
+.cvAddressLookup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.15rem;
+}
+
+.cvAddressLookupActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+}
+
+.cvAddressLookupActions .ghostBtn {
+  flex-shrink: 0;
+}
+
+.cvAddressSelected {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 550;
+  line-height: 1.4;
+  color: var(--color-green-700);
+}
+
+.cvAddressSelected strong {
+  font-weight: 750;
+  color: var(--color-navy-900);
+}
+
+.cvAddressResults {
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 16%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-navy-50) 70%, white);
+  max-height: 14rem;
+  overflow: auto;
+}
+
+.cvAddressResultBtn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--color-navy-900);
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 550;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.cvAddressResultBtn:hover,
+.cvAddressResultBtn:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--action-primary) 45%, var(--border-subtle));
+  background: color-mix(in srgb, var(--action-primary) 8%, white);
+}
+
+.cvPresetRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.75rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 16%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-navy-50) 65%, white);
+}
+
+.cvPresetText {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--color-navy-900);
+  line-height: 1.4;
+}
+
+.cvReferenceBlock {
+  margin: 0.35rem 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 550;
+  line-height: 1.45;
+  color: var(--color-navy-800);
+  white-space: pre-wrap;
+}
+
+.cvPortalNote {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 20%, var(--border-subtle));
+  border-left: 4px solid var(--color-navy-700);
+  background: color-mix(in srgb, var(--color-navy-50) 80%, white);
+  font-size: 0.88rem;
+  font-weight: 550;
+  line-height: 1.5;
+  color: var(--color-navy-800);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-navy-900) 5%, transparent);
+}
+
+.cvPortalBadge,
+.cvManualBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cvPortalBadge {
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 35%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-navy-700) 10%, white);
+  color: var(--color-navy-800);
+}
+
+.cvManualBadge {
+  border: 1px solid color-mix(in srgb, var(--color-amber-500) 45%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-amber-500) 16%, white);
+  color: #8a4b00;
+}
+
+.cvAiBar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+/* Active — soft green panel */
+.cvAiBar[data-state="on"] {
+  border-color: color-mix(in srgb, var(--color-green-600) 32%, var(--border-subtle));
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-green-600) 16%, white) 0%,
+      var(--color-green-100) 55%,
+      color-mix(in srgb, var(--color-green-100) 70%, white) 100%
+    );
+  box-shadow: inset 3px 0 0 var(--color-green-600);
+}
+
+/* Off — soft red panel */
+.cvAiBar[data-state="off"] {
+  border-color: color-mix(in srgb, var(--color-red-500) 32%, var(--border-subtle));
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-red-500) 14%, white) 0%,
+      color-mix(in srgb, var(--color-red-500) 8%, white) 55%,
+      color-mix(in srgb, var(--color-red-500) 4%, white) 100%
+    );
+  box-shadow: inset 3px 0 0 var(--color-red-500);
+}
+
+.cvAiBarMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.cvAiBarTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.cvAiBarHeading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.cvAiStatusDot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cvAiBar[data-state="on"] .cvAiStatusDot {
+  background: var(--color-green-600);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-green-600) 22%, transparent);
+}
+
+.cvAiBar[data-state="off"] .cvAiStatusDot {
+  background: var(--color-red-500);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-red-500) 18%, transparent);
+}
+
+.cvAiBarTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-navy-800);
+  letter-spacing: -0.01em;
+}
+
+.cvAiStateChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cvAiBar[data-state="on"] .cvAiStateChip {
+  border: 1px solid color-mix(in srgb, var(--color-green-600) 35%, transparent);
+  background: color-mix(in srgb, var(--color-green-600) 12%, white);
+  color: var(--color-green-600);
+}
+
+.cvAiBar[data-state="off"] .cvAiStateChip {
+  border: 1px solid color-mix(in srgb, var(--color-red-500) 35%, transparent);
+  background: color-mix(in srgb, var(--color-red-500) 10%, white);
+  color: var(--color-red-700);
+}
+
+.cvAiBarCopy {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  max-width: 42rem;
+}
+
+.cvAiBarMeta {
+  margin: 0;
+  flex-shrink: 0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--color-navy-800) 6%, white);
+  color: var(--color-navy-700);
+}
+
+.cvAiBar[data-state="on"] .cvAiBarMeta {
+  background: color-mix(in srgb, var(--color-green-600) 12%, white);
+  color: var(--color-green-600);
+}
+
+.cvAiBar[data-state="off"] .cvAiBarMeta {
+  background: color-mix(in srgb, var(--color-red-500) 10%, white);
+  color: var(--color-red-700);
+}
+
+.cvAiBarSide {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  padding-top: 0.05rem;
+}
+
+.cvAiAgreement {
+  margin-top: 0.25rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: color-mix(in srgb, white 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-green-600) 16%, var(--border-subtle));
+}
+
+.cvAiToggleOn,
+.cvAiToggleOff {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  padding: 0.48rem 0.95rem;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.cvAiToggleOn:hover,
+.cvAiToggleOff:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.cvAiToggleDot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* Green while AI is enabled */
+.cvAiToggleOn {
+  border: 1px solid color-mix(in srgb, var(--color-green-600) 50%, var(--border-subtle));
+  background: white;
+  color: var(--color-green-600);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-green-600) 12%, transparent);
+}
+
+.cvAiToggleOn:hover {
+  border-color: var(--color-green-600);
+  background: color-mix(in srgb, var(--color-green-600) 10%, white);
+}
+
+/* Red while AI is disabled */
+.cvAiToggleOff {
+  border: 1px solid color-mix(in srgb, var(--color-red-500) 50%, var(--border-subtle));
+  background: white;
+  color: var(--color-red-700);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-red-500) 12%, transparent);
+}
+
+.cvAiToggleOff:hover:not(:disabled) {
+  border-color: var(--color-red-500);
+  background: color-mix(in srgb, var(--color-red-500) 8%, white);
+}
+
+.cvAiToggleOff:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cvConsentNoticeCopy {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.cvConsentNoticeMeta {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-green-600);
+}
+
+.cvAiBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-ai-500) 55%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-ai-500) 14%, white);
+  color: var(--color-ai-700);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.85rem;
+  font: inherit;
+  font-weight: 750;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-ai-500) 14%, transparent);
+}
+
+/* Sparkle marker so AI actions read as AI at a glance */
+.cvAiBtn::before {
+  content: "✦";
+  font-size: 0.85em;
+  line-height: 1;
+  color: var(--color-ai-500);
+}
+
+.cvAiBtn:hover:not(:disabled) {
+  border-color: var(--color-ai-600);
+  background: color-mix(in srgb, var(--color-ai-500) 22%, white);
+  color: var(--color-ai-700);
+}
+
+.cvAiBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cvGroup .ghostBtn {
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  background: white;
+  color: var(--color-navy-800);
+  font-weight: 700;
+}
+
+.cvAiSuccess,
+.cvAiError {
+  margin: 0;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.85rem 1rem 0.85rem 1.05rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+  animation: cvNoticeIn 220ms ease-out;
+}
+
+.cvNoticeLabel {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cvAiSuccess {
+  border: 1px solid color-mix(in srgb, var(--color-green-600) 40%, var(--border-subtle));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-green-600) 18%, white) 0%,
+      var(--color-green-100) 100%
+    );
+  color: var(--color-green-600);
+  box-shadow:
+    inset 4px 0 0 var(--color-green-600),
+    0 4px 14px color-mix(in srgb, var(--color-green-600) 12%, transparent);
+}
+
+.cvAiSuccess .cvNoticeLabel {
+  color: var(--color-green-600);
+}
+
+.cvAiError {
+  border: 1px solid color-mix(in srgb, var(--color-red-500) 45%, var(--border-subtle));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-red-500) 16%, white) 0%,
+      color-mix(in srgb, var(--color-red-500) 8%, white) 100%
+    );
+  color: var(--color-red-700);
+  box-shadow:
+    inset 4px 0 0 var(--color-red-500),
+    0 4px 14px color-mix(in srgb, var(--color-red-500) 12%, transparent);
+}
+
+.cvAiError .cvNoticeLabel {
+  color: var(--color-red-700);
+}
+
+@keyframes cvNoticeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cvGroupActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.cvLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.cvEditor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  overflow-anchor: none;
+}
+
+.cvGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 1.15rem 1.2rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: white;
+  box-shadow:
+    inset 4px 0 0 var(--color-navy-700),
+    0 1px 2px color-mix(in srgb, var(--color-navy-900) 4%, transparent),
+    0 8px 24px color-mix(in srgb, var(--color-navy-900) 6%, transparent);
+}
+
+.cvGroupHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy-700) 12%, var(--border-subtle));
+}
+
+.cvGroupTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--color-navy-800);
+}
+
+.cvGroup > .meta {
+  margin: -0.15rem 0 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-navy-50);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, var(--border-subtle));
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--color-navy-700);
+}
+
+.cvField {
+  /* No flex gap — password managers (e.g. NordPass) inject zero-height
+     custom elements as siblings; flex gap still applies and shoves the form. */
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  min-width: 0;
+}
+
+.cvField > label {
+  margin-bottom: 0.45rem;
+}
+
+.cvField > p,
+.cvField > [class*="cvFieldFoot"],
+.cvField > [class*="cvFieldError"],
+.cvField > [class*="cvFieldOk"],
+.cvField > [class*="cvFieldHint"],
+.cvField > [class*="cvFieldMessage"] {
+  margin-top: 0.45rem;
+}
+
+/* Take extension widgets out of flow so they cannot affect layout. */
+.cvField > :not(label, input, textarea, select, p, div, span, button, ul, ol) {
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  pointer-events: none;
+}
+
+/* Keep feedback height stable so errors/ok text do not shove fields around. */
+.cvFieldMessage {
+  min-height: 1.2rem;
+  margin: 0;
+}
+
+.cvRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.cvLabel {
+  font-size: 0.86rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  color: var(--color-navy-800);
+}
+
+.cvInput,
+.cvTextarea {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  /* Fixed width — never change on focus or the form jumps. */
+  border: 2px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-navy-50) 55%, white);
+  color: var(--color-navy-900);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 550;
+  line-height: 1.4;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 120ms ease;
+}
+
+.cvInput::placeholder,
+.cvTextarea::placeholder {
+  color: color-mix(in srgb, var(--color-navy-700) 45%, transparent);
+  font-weight: 500;
+}
+
+.cvTextarea {
+  resize: vertical;
+  line-height: 1.5;
+  min-height: 4.25rem;
+}
+
+.cvInput:hover,
+.cvTextarea:hover {
+  border-color: color-mix(in srgb, var(--color-navy-700) 38%, var(--border-subtle));
+}
+
+.cvInput:focus,
+.cvTextarea:focus,
+.cvInput:focus-visible,
+.cvTextarea:focus-visible {
+  /* Kill global :focus-visible ring — it looked like a second border and
+     fought scroll-into-view when stacked with the sticky header. */
+  outline: none !important;
+  outline-offset: 0 !important;
+  border-width: 2px;
+  border-color: var(--action-primary);
+  box-shadow: none;
+  background: color-mix(in srgb, var(--color-navy-50) 55%, white);
+}
+
+.cvInput:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: var(--color-navy-50);
+}
+
+.cvInput[aria-invalid="true"],
+.cvTextarea[aria-invalid="true"] {
+  border-color: var(--color-red-500);
+  background: color-mix(in srgb, var(--color-red-500) 6%, white);
+}
+
+.cvInput[aria-invalid="true"]:focus,
+.cvTextarea[aria-invalid="true"]:focus,
+.cvInput[aria-invalid="true"]:focus-visible,
+.cvTextarea[aria-invalid="true"]:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+  border-width: 2px;
+  border-color: var(--color-red-500);
+  box-shadow: none;
+}
+
+.cvRequired {
+  margin-left: 0.4rem;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-red-700);
+}
+
+.cvFieldError {
+  margin: 0;
+  min-height: 1.2rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-red-700);
+}
+
+.cvFieldOk {
+  margin: 0;
+  min-height: 1.2rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-green-600);
+}
+
+.cvInput[data-valid="true"],
+.cvTextarea[data-valid="true"] {
+  border-color: var(--color-green-600);
+  background: color-mix(in srgb, var(--color-green-600) 8%, white);
+}
+
+.cvInput[data-valid="true"]:focus,
+.cvInput[data-valid="true"]:focus-visible,
+.cvTextarea[data-valid="true"]:focus,
+.cvTextarea[data-valid="true"]:focus-visible {
+  outline: none !important;
+  border-width: 2px;
+  border-color: var(--color-green-600);
+  box-shadow: none;
+  background: color-mix(in srgb, var(--color-green-600) 8%, white);
+}
+
+.cvFieldHint {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 550;
+  line-height: 1.35;
+  color: var(--color-navy-700);
+}
+
+.cvFieldFoot {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: 1rem;
+}
+
+.cvCharCount {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-navy-700);
+}
+
+.cvCharCount[data-over="true"] {
+  font-weight: 800;
+  color: var(--color-red-700);
+}
+
+.cvIssueBanner {
+  margin: 0;
+  padding: 0.85rem 1rem 0.85rem 1.05rem;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.45;
+  animation: cvNoticeIn 220ms ease-out;
+}
+
+.cvIssueBanner[data-tone="error"] {
+  border: 1px solid color-mix(in srgb, var(--color-red-500) 45%, var(--border-subtle));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-red-500) 16%, white) 0%,
+      color-mix(in srgb, var(--color-red-500) 8%, white) 100%
+    );
+  color: var(--color-red-700);
+  box-shadow:
+    inset 4px 0 0 var(--color-red-500),
+    0 4px 14px color-mix(in srgb, var(--color-red-500) 12%, transparent);
+}
+
+.cvIssueBanner[data-tone="error"] .cvNoticeLabel {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-red-700);
+}
+
+.cvIssueBanner[data-tone="warning"] {
+  border: 1px solid color-mix(in srgb, var(--color-amber-500) 45%, var(--border-subtle));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-amber-500) 18%, white) 0%,
+      var(--color-amber-100) 100%
+    );
+  color: var(--color-navy-800);
+  box-shadow:
+    inset 4px 0 0 var(--color-amber-500),
+    0 4px 14px color-mix(in srgb, var(--color-amber-500) 14%, transparent);
+}
+
+.cvIssueTitle {
+  margin: 0 0 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-amber-500);
+}
+
+.cvIssueList {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.3rem;
+  font-weight: 550;
+}
+
+.cvCheck {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: var(--color-navy-800);
+}
+
+.cvCheck input {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--color-navy-700);
+}
+
+.cvSkillAdd {
+  display: flex;
+  gap: var(--space-2);
+  align-items: stretch;
+}
+
+.cvSkillAdd .cvInput {
+  flex: 1;
+}
+
+.cvChips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.cvChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.4rem 0.4rem 0.75rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: 999px;
+  background: var(--color-navy-50);
+  color: var(--color-navy-800);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.cvChipRemove {
+  border: none;
+  background: color-mix(in srgb, var(--color-navy-700) 16%, transparent);
+  color: var(--color-navy-800);
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  line-height: 1;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.cvChipRemove:hover {
+  background: color-mix(in srgb, var(--color-red-500) 18%, transparent);
+  color: var(--color-red-700);
+}
+
+.cvItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 1rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 16%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-navy-50) 70%, white);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 70%, transparent);
+}
+
+.cvItemHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, var(--border-subtle));
+}
+
+.cvItemLabel {
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-navy-700);
+}
+
+.cvItemRemove {
+  border: none;
+  background: none;
+  color: var(--color-red-700);
+  font: inherit;
+  font-weight: 750;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.cvItemRemove:hover {
+  text-decoration: underline;
+}
+
+.cvBulletField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+  min-width: 0;
+}
+
+.cvBulletHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.cvBulletMeta {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-navy-700);
+}
+
+.cvBulletHint {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--color-navy-700);
+}
+
+.cvBulletList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.cvBulletRow {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.cvBulletMarker {
+  text-align: center;
+  font-size: 1.05rem;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--color-navy-800);
+}
+
+.cvBulletInput {
+  width: 100%;
+  min-width: 0;
+  padding: 0.65rem 0.8rem;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700) 20%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-navy-50) 55%, white);
+  color: var(--color-navy-900);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 550;
+  line-height: 1.4;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 120ms ease;
+}
+
+.cvBulletInput::placeholder {
+  color: color-mix(in srgb, var(--color-navy-700) 42%, transparent);
+}
+
+.cvBulletInput:hover {
+  border-color: color-mix(in srgb, var(--color-navy-700) 38%, var(--border-subtle));
+}
+
+.cvBulletInput:focus,
+.cvBulletInput:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+  border-width: 2px;
+  border-color: var(--action-primary);
+  box-shadow: none;
+  background: color-mix(in srgb, var(--color-navy-50) 55%, white);
+}
+
+.cvBulletInput[aria-invalid="true"] {
+  border-color: var(--color-red-500);
+  background: color-mix(in srgb, var(--color-red-500) 6%, white);
+}
+
+.cvBulletRowActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.cvBulletRefine {
+  border: 1.5px solid color-mix(in srgb, var(--color-ai-500) 45%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-ai-500) 12%, white);
+  color: var(--color-ai-700);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 750;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cvBulletRefine:hover:not(:disabled) {
+  border-color: var(--color-ai-600);
+  background: color-mix(in srgb, var(--color-ai-500) 20%, white);
+}
+
+.cvBulletRefine:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cvBulletRemove {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  background: white;
+  color: var(--color-navy-800);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cvBulletRemove:hover:not(:disabled) {
+  border-color: var(--color-red-500);
+  color: var(--color-red-700);
+  background: color-mix(in srgb, var(--color-red-500) 8%, white);
+}
+
+.cvBulletRemove:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cvBulletActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.cvBulletActions .ghostBtn,
+.cvBulletActions .cvAiBtn {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+/* ---- Preview sheet ---- */
+
+.cvPreviewWrap {
+  position: sticky;
+  top: var(--space-4);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cvPageMeter {
+  margin: 0;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.cvPageMeter[data-tone="ok"] {
+  border: 1px solid color-mix(in srgb, var(--color-green-600) 30%, var(--border-subtle));
+  background: var(--color-green-100);
+  color: var(--color-green-600);
+}
+
+.cvPageMeter[data-tone="limit"] {
+  border: 1px solid color-mix(in srgb, var(--color-amber-500) 40%, var(--border-subtle));
+  background: var(--color-amber-100);
+  color: var(--color-amber-500);
+}
+
+.cvPageMeter[data-tone="over"] {
+  border: 1px solid color-mix(in srgb, var(--color-red-500) 40%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-red-500) 10%, white);
+  color: var(--color-red-700);
+}
+
+.cvSheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* One-page height is set inline from measured width (width × 297/210).
+     Do not use container-query units here — they inflate the sheet. */
+  background: var(--color-white);
+  color: var(--color-navy-800);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: visible;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.cvPageBreak {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 2px dashed color-mix(in srgb, var(--color-navy-700) 40%, transparent);
+  pointer-events: none;
+}
+
+.cvPageBreak span {
+  position: absolute;
+  right: 0.6rem;
+  top: -0.7rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-navy-700);
+  color: var(--color-white);
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cvPageBreak span[data-cut="true"] {
+  background: var(--color-red-600);
+}
+
+/* Branded navy header band */
+.cvSheetHead {
+  position: relative;
+  padding: 1.6rem 2.2rem 1.4rem;
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-navy-900) 0%,
+      var(--color-navy-800) 55%,
+      var(--color-navy-700) 100%
+    );
+  color: var(--color-white);
+  border-bottom: 4px solid var(--action-primary);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.cvBrandRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.9rem;
+}
+
+.cvBrandMark {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--action-primary);
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.cvBrandText {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-navy-100);
+}
+
+.cvName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-white);
+}
+
+.cvHeadline {
+  margin: 0.2rem 0 0;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--action-primary);
+}
+
+.cvContact {
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
+  font-size: 0.78rem;
+  color: var(--color-navy-100);
+}
+
+.cvContact li {
+  position: relative;
+}
+
+.cvContact li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: -0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--action-primary);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.cvSheetBody {
+  flex: 1 1 auto;
+  padding: 1.6rem 2.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 0;
+}
+
+.cvSheetSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.cvSheetSectionTitle {
+  position: relative;
+  margin: 0;
+  padding-left: 0.65rem;
+  padding-bottom: 0.3rem;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-navy-800);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.cvSheetSectionTitle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  width: 3px;
+  height: 0.8rem;
+  border-radius: 2px;
+  background: var(--action-primary);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.cvSheetSummary {
+  margin: 0;
+  color: var(--color-grey-600);
+}
+
+.cvSheetSkills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+}
+
+.cvSheetSkills li {
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-navy-100);
+  background: var(--color-navy-50);
+  color: var(--color-navy-700);
+  font-size: 0.76rem;
+  font-weight: 600;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.cvEntry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cvEntry + .cvEntry {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.cvEntryHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.cvEntryRole {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-navy-800);
+}
+
+.cvEntryMeta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--action-primary);
+  white-space: nowrap;
+}
+
+.cvEntrySub {
+  margin: 0;
+  font-size: 0.79rem;
+  font-weight: 600;
+  color: var(--color-grey-600);
+}
+
+.cvEntryDesc {
+  margin: 0.1rem 0 0;
+  color: var(--color-grey-600);
+}
+
+.cvBullets {
+  margin: 0.25rem 0 0;
+  padding-left: 1rem;
+  color: var(--color-grey-600);
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+
+.cvBullets li::marker {
+  color: var(--action-primary);
+}
+
+.cvSheetFoot {
+  margin-top: auto;
+  flex-shrink: 0;
+  padding: 0.7rem 2.2rem 1.1rem;
+  border-top: 2px solid var(--color-navy-800);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--color-grey-400);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.cvSheetFootBrand {
+  color: var(--color-navy-700);
+}
+
+@media (max-width: 900px) {
+  .cvLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .cvPreviewWrap {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .cvRow {
+    grid-template-columns: 1fr;
+  }
+
+  .cvSheetHead {
+    padding: 1.25rem 1.4rem 1.1rem;
+  }
+
+  .cvSheetBody {
+    padding: 1.25rem 1.4rem 0.8rem;
+  }
+
+  .cvSheetFoot {
+    padding: 0.55rem 1.4rem 0.9rem;
+  }
+
+  .cvName {
+    font-size: 1.5rem;
   }
 }

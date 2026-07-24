@@ -45,7 +45,8 @@ export function LearnerDashboardScreen() {
     >
       <div className={`${styles.stack} ${styles.dashRoot}`}>
         {loggingHealth.alert && loggingHealth.learnerNudge ? (
-          <div
+          <Link
+            href="/learner/otj"
             className={styles.otjGapAlert}
             data-kind={loggingHealth.alertKind}
             role="status"
@@ -61,11 +62,9 @@ export function LearnerDashboardScreen() {
               </p>
             ) : null}
             <p className={styles.meta}>
-              <Link href="/learner/otj" className={styles.linkish}>
-                Open OTJ hours →
-              </Link>
+              <span className={styles.linkish}>Open OTJ hours →</span>
             </p>
-          </div>
+          </Link>
         ) : null}
 
         <div className={styles.grid}>
