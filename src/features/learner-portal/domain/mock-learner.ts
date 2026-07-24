@@ -89,24 +89,6 @@ export type LearnerModuleDetail = LearnerModuleRow & {
   upcoming: ModuleTopic[];
 };
 
-export type LearnerAssignment = {
-  id: string;
-  title: string;
-  moduleCode: string;
-  dueDate: string;
-  status: "outstanding" | "submitted" | "returned";
-  feedback?: string;
-};
-
-export type LearnerEvidenceItem = {
-  id: string;
-  title: string;
-  type: string;
-  uploadedAt: string;
-  status: "awaiting_feedback" | "accepted" | "more_required";
-  feedback?: string;
-};
-
 export type LearnerReviewSummary = {
   id: string;
   reviewDate: string;
@@ -136,7 +118,7 @@ export type LearnerAttendanceDay = {
   missedItems?: LearnerMissedLearningItem[];
 };
 
-export type LearnerMissedLearningKind = "module" | "task" | "workshop";
+export type LearnerMissedLearningKind = "module" | "cea" | "workshop";
 
 export type LearnerMissedLearningItem = {
   id: string;
@@ -163,8 +145,8 @@ const MISSED_KIND_META: Record<
     label: "Module topics",
     color: "var(--color-navy-600)",
   },
-  task: {
-    label: "CEA / assignments",
+  cea: {
+    label: "CEA tasks",
     color: "var(--color-amber-500)",
   },
   workshop: {
@@ -190,7 +172,7 @@ export function summariseMissedLearning(
   const items = collectMissedLearningItems(days);
   const counts: Record<LearnerMissedLearningKind, number> = {
     module: 0,
-    task: 0,
+    cea: 0,
     workshop: 0,
   };
   for (const item of items) {
@@ -293,9 +275,8 @@ export function summariseAlexAttendance(
 export type LearningPlanItemKind =
   | "college"
   | "workplace"
-  | "assignment"
+  | "cea"
   | "otj"
-  | "evidence"
   | "review";
 
 export type LearningPlanItem = {
@@ -898,49 +879,6 @@ export function getTutorSignOffQueue(): TutorSignOffItem[] {
   return items;
 }
 
-export const ALEX_ASSIGNMENTS: LearnerAssignment[] = [
-  {
-    id: "asg-1",
-    title: "Reflective account — safe working",
-    moduleCode: "MV-101",
-    dueDate: "2026-07-25",
-    status: "outstanding",
-  },
-  {
-    id: "asg-2",
-    title: "Brake inspection worksheet",
-    moduleCode: "MV-104",
-    dueDate: "2026-07-20",
-    status: "submitted",
-  },
-  {
-    id: "asg-3",
-    title: "Tool identification quiz",
-    moduleCode: "MV-102",
-    dueDate: "2026-06-28",
-    status: "returned",
-    feedback: "Strong — add one workplace example next time.",
-  },
-];
-
-export const ALEX_EVIDENCE: LearnerEvidenceItem[] = [
-  {
-    id: "ev-1",
-    title: "Observation — oil filter change",
-    type: "Workplace observation",
-    uploadedAt: "2026-07-10",
-    status: "accepted",
-    feedback: "Clear photos and mentor sign-off. Accepted.",
-  },
-  {
-    id: "ev-2",
-    title: "Reflective log — week 12",
-    type: "Reflective account",
-    uploadedAt: "2026-07-14",
-    status: "awaiting_feedback",
-  },
-];
-
 export type OtjPartyStatus = "not_ready" | "pending" | "agreed" | "returned";
 
 /**
@@ -1038,10 +976,10 @@ export function otjTrainingTypeLabel(code: OtjTrainingTypeCode): string {
 
 export type LearnerOtjEntry = {
   id: string;
-  /** Sequential task number on the learner's OTJ log. */
-  taskNumber: number;
+  /** Sequential entry number on the learner's OTJ log. */
+  entryNumber: number;
   /** Short name of the training activity. */
-  taskName: string;
+  activityName: string;
   /** Start (or single) date the training was completed (ISO date or datetime). */
   activityDate: string;
   /**
@@ -1240,8 +1178,8 @@ export function buildOtjLoggingHealth(
 export const ALEX_OTJ_ENTRIES: LearnerOtjEntry[] = [
   {
     id: "otj-1",
-    taskNumber: 1,
-    taskName: "Brake pad replacement — job card practice",
+    entryNumber: 1,
+    activityName: "Brake pad replacement — job card practice",
     activityDate: "2026-07-15T09:00:00",
     activityDateEnd: null,
     durationMinutes: 150,
@@ -1263,8 +1201,8 @@ export const ALEX_OTJ_ENTRIES: LearnerOtjEntry[] = [
   },
   {
     id: "otj-2",
-    taskNumber: 2,
-    taskName: "Diagnostic scanner mentoring",
+    entryNumber: 2,
+    activityName: "Diagnostic scanner mentoring",
     activityDate: "2026-07-10T13:00:00",
     activityDateEnd: null,
     durationMinutes: 90,
@@ -1286,8 +1224,8 @@ export const ALEX_OTJ_ENTRIES: LearnerOtjEntry[] = [
   },
   {
     id: "otj-3",
-    taskNumber: 3,
-    taskName: "Cooling systems e-learning module",
+    entryNumber: 3,
+    activityName: "Cooling systems e-learning module",
     activityDate: "2026-07-09T10:30:00",
     activityDateEnd: null,
     durationMinutes: 180,
@@ -1308,8 +1246,8 @@ export const ALEX_OTJ_ENTRIES: LearnerOtjEntry[] = [
   },
   {
     id: "otj-4",
-    taskNumber: 4,
-    taskName: "COSHH toolbox talk",
+    entryNumber: 4,
+    activityName: "COSHH toolbox talk",
     activityDate: "2026-07-08T15:00:00",
     activityDateEnd: null,
     durationMinutes: 60,
@@ -1330,8 +1268,8 @@ export const ALEX_OTJ_ENTRIES: LearnerOtjEntry[] = [
   },
   {
     id: "otj-5",
-    taskNumber: 5,
-    taskName: "Catch-up OTJ block — May to early July",
+    entryNumber: 5,
+    activityName: "Catch-up OTJ block — May to early July",
     activityDate: "2026-05-12T09:00:00",
     activityDateEnd: "2026-07-10T17:00:00",
     durationMinutes: 167 * 60,
@@ -1551,9 +1489,9 @@ export function buildOtjDashboardStats(
   };
 }
 
-export function nextOtjTaskNumber(entries: LearnerOtjEntry[]): number {
+export function nextOtjEntryNumber(entries: LearnerOtjEntry[]): number {
   if (entries.length === 0) return 1;
-  return Math.max(...entries.map((e) => e.taskNumber)) + 1;
+  return Math.max(...entries.map((e) => e.entryNumber)) + 1;
 }
 
 export function otjPipelineLabel(entry: LearnerOtjEntry): string {
@@ -1633,11 +1571,11 @@ export const ALEX_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
       },
       {
         id: "miss-2",
-        kind: "task",
+        kind: "cea",
         title: "Cooling circuit worksheet",
         detail: "Classroom worksheet issued that morning — still outstanding.",
         moduleCode: "MV-103",
-        href: "/learner/assignments",
+        href: "/learner/cea",
         catchUpStatus: "needed",
       },
     ],
@@ -1676,11 +1614,11 @@ export const ALEX_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
       },
       {
         id: "miss-5",
-        kind: "task",
+        kind: "cea",
         title: "Brake inspection worksheet start",
         detail: "Peers started the assessed worksheet in class.",
         moduleCode: "MV-104",
-        href: "/learner/assignments",
+        href: "/learner/cea",
         catchUpStatus: "needed",
       },
     ],
@@ -1715,7 +1653,7 @@ export const ALEX_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
 
 export const ALEX_LEARNING: LearningFocus = {
   purpose:
-    "Your current learning plan — what to prioritise this week at college, at work, and for evidence.",
+    "Your current learning plan — what to prioritise this week at college, at work, for CEA, and for OTJ.",
   weekLabel: `Week ${ALEX_PROFILE.programmeWeek}`,
   notes:
     "Catch-up OTJ is with Priya for agreement. Keep CEA Group 3 tyre evidence moving before the August progress review.",
@@ -1726,7 +1664,7 @@ export const ALEX_LEARNING: LearningFocus = {
       title: "Chase catch-up OTJ agreement with Priya",
       detail: "167h catch-up block is with the employer — follow up if needed before review.",
       kind: "otj",
-      href: "/learner/evidence",
+      href: "/learner/otj",
       hrefLabel: "Open OTJ hours",
     },
     {
@@ -1734,15 +1672,15 @@ export const ALEX_LEARNING: LearningFocus = {
       title: "Log this week’s OTJ (or a small catch-up)",
       detail: "Logging gap reminder is active — a single catch-up entry is fine if you need to backfill.",
       kind: "otj",
-      href: "/learner/evidence",
+      href: "/learner/otj",
       hrefLabel: "Log OTJ hours",
     },
     {
       id: "lp-3",
       title: "CEA Group 3 — tyre task ready for sign-off",
       detail: "Mark workplace tyre practice ready so employer/teacher can sign.",
-      kind: "assignment",
-      href: "/learner/assignments",
+      kind: "cea",
+      href: "/learner/cea",
       hrefLabel: "Open CEA tasks",
     },
     {
@@ -1786,12 +1724,10 @@ export function learningKindLabel(kind: LearningPlanItemKind): string {
       return "College";
     case "workplace":
       return "Workplace";
-    case "assignment":
-      return "CEA Task";
+    case "cea":
+      return "CEA tasks";
     case "otj":
       return "OTJ";
-    case "evidence":
-      return "Evidence";
     case "review":
       return "Review";
   }
@@ -1804,7 +1740,7 @@ export const ALEX_OPEN_TARGETS = [
     owner: "Priya Shah (employer)",
     dueDate: "2026-07-25",
     status: "open",
-    href: "/learner/evidence",
+    href: "/learner/otj",
     hrefLabel: "Open OTJ hours",
   },
   {
@@ -1813,7 +1749,7 @@ export const ALEX_OPEN_TARGETS = [
     owner: "Alex Morgan",
     dueDate: "2026-07-25",
     status: "open",
-    href: "/learner/evidence",
+    href: "/learner/otj",
     hrefLabel: "Log OTJ hours",
   },
   {
@@ -1822,7 +1758,7 @@ export const ALEX_OPEN_TARGETS = [
     owner: "Alex Morgan",
     dueDate: "2026-07-25",
     status: "open",
-    href: "/learner/assignments",
+    href: "/learner/cea",
     hrefLabel: "Open CEA tasks",
   },
 ];

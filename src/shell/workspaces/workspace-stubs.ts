@@ -8,18 +8,18 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     learning: {
       title: "My Learning",
-      description: "Active learning plan and assigned activities for the signed-in learner.",
+      description: "Active learning plan and this week’s focus items for the signed-in learner.",
     },
     modules: {
       title: "Modules",
       description: "Published curriculum modules available to this learner.",
     },
-    assignments: {
-      title: "CEA Task",
+    cea: {
+      title: "CEA tasks",
       description:
         "Autocare ST0499 personal tracking — mandatory CEA tasks, additional workplace activities, gateways and milestones.",
     },
-    evidence: {
+    otj: {
       title: "OTJ hours",
       description: "Off-the-job hours log and approval status.",
     },

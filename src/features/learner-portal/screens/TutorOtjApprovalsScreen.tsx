@@ -102,7 +102,7 @@ export function TutorOtjApprovalsScreen() {
                 <div className={styles.cardMain}>
                   <p className={styles.learner}>{ALEX_PROFILE.displayName}</p>
                   <h3 className={styles.topic}>
-                    Task {entry.taskNumber} · {entry.taskName}
+                    Entry {entry.entryNumber} · {entry.activityName}
                   </h3>
                   <p className={styles.meta}>
                     {formatOtjDuration(entry.durationMinutes)} ·{" "}
@@ -158,7 +158,7 @@ export function TutorOtjApprovalsScreen() {
               <article key={entry.id} className={styles.card}>
                 <div className={styles.cardMain}>
                   <h3 className={styles.topic}>
-                    Task {entry.taskNumber} · {entry.taskName}
+                    Entry {entry.entryNumber} · {entry.activityName}
                   </h3>
                   <p className={styles.meta}>
                     {entry.tutorStatus === "agreed"

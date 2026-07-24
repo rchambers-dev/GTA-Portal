@@ -113,7 +113,7 @@ export type CeaLearnerState = {
   >;
 };
 
-export function getGroupTasks(group: CeaGroupDef): CeaTaskDef[] {
+export function getCeaGroupTasks(group: CeaGroupDef): CeaTaskDef[] {
   return group.tasks;
 }
 
@@ -125,7 +125,7 @@ export function isMandatoryAllocated(
   return (state.mandatoryByGroup[groupId] ?? []).includes(taskId);
 }
 
-export function getTaskProgress(
+export function getCeaTaskProgress(
   state: CeaLearnerState,
   taskId: string,
 ): CeaTaskProgress | undefined {
@@ -218,7 +218,7 @@ export function expectedSignOffRole(kind: CeaTaskKind): CeaSignOffRole {
   return kind === "mandatory" ? "teacher" : "employer";
 }
 
-export function statusLabel(status: CeaTaskStatus): string {
+export function ceaStatusLabel(status: CeaTaskStatus): string {
   switch (status) {
     case "not_started":
       return "Not started";
@@ -233,7 +233,7 @@ export function statusLabel(status: CeaTaskStatus): string {
   }
 }
 
-export function statusTone(
+export function ceaStatusTone(
   status: CeaTaskStatus,
 ): "neutral" | "blue" | "amber" | "green" | "red" {
   switch (status) {

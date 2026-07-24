@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { FeatureStubScreen } from "@/features/learner-lifecycle";
 import {
-  LearnerAssignmentsScreen,
   LearnerAttendanceScreen,
+  LearnerCeaScreen,
   LearnerDashboardScreen,
-  LearnerEvidenceScreen,
+  LearnerOtjHoursScreen,
   LearnerLearningScreen,
   LearnerMessagesScreen,
   LearnerModuleDetailScreen,
@@ -54,10 +54,16 @@ function renderLearnerPage(segment: string) {
       return <LearnerLearningScreen />;
     case "modules":
       return <LearnerModulesScreen />;
+    case "cea":
+      return <LearnerCeaScreen />;
+    case "otj":
+      return <LearnerOtjHoursScreen />;
     case "assignments":
-      return <LearnerAssignmentsScreen />;
+      // Legacy path — CEA replaced Assignments.
+      redirect("/learner/cea");
     case "evidence":
-      return <LearnerEvidenceScreen />;
+      // Legacy path — OTJ hours used to live under /learner/evidence.
+      redirect("/learner/otj");
     case "progress":
       return <LearnerProgressScreen />;
     case "reviews":

@@ -61,7 +61,7 @@ export function LearnerDashboardScreen() {
               </p>
             ) : null}
             <p className={styles.meta}>
-              <Link href="/learner/evidence" className={styles.linkish}>
+              <Link href="/learner/otj" className={styles.linkish}>
                 Open OTJ hours →
               </Link>
             </p>
@@ -88,7 +88,7 @@ export function LearnerDashboardScreen() {
             <p className={styles.glanceHint}>College days: {profile.collegeDays}</p>
           </Link>
           <Link
-            href="/learner/evidence"
+            href="/learner/otj"
             className={styles.glanceLink}
             data-tone="amber"
           >
@@ -136,14 +136,14 @@ export function LearnerDashboardScreen() {
             </Link>
             <Link
               className={styles.shortcut}
-              href="/learner/evidence"
+              href="/learner/otj"
               data-tone="amber"
             >
               OTJ hours
             </Link>
             <Link
               className={styles.shortcut}
-              href="/learner/assignments"
+              href="/learner/cea"
               data-tone="green"
             >
               CEA tasks

@@ -491,6 +491,10 @@
   background: var(--color-green-600);
 }
 
+.dashSectionTitle[data-accent="blue"]::before {
+  background: var(--color-blue-600, #2563eb);
+}
+
 .dashRoot {
   gap: var(--space-5);
 }
@@ -540,16 +544,143 @@
 }
 
 .progressBar {
-  height: 0.55rem;
+  position: relative;
+  height: 0.7rem;
   border-radius: 999px;
-  background: var(--bg-surface);
+  background: color-mix(in srgb, var(--color-navy-700) 6%, white);
   border: 1px solid var(--border-subtle);
   overflow: hidden;
 }
 
 .progressFill {
+  position: absolute;
+  inset: 0 auto 0 0;
   height: 100%;
+  border-radius: inherit;
   background: var(--action-primary);
+  z-index: 1;
+}
+
+.progressFill[data-tone="green"] {
+  background: linear-gradient(
+    90deg,
+    var(--color-green-600),
+    color-mix(in srgb, var(--color-green-600) 70%, var(--color-navy-700))
+  );
+}
+
+.progressFill[data-tone="amber"] {
+  background: linear-gradient(
+    90deg,
+    var(--color-amber-500),
+    color-mix(in srgb, var(--color-amber-500) 65%, var(--action-primary))
+  );
+}
+
+.progressFillPlanned {
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--color-navy-700) 22%, white);
+  z-index: 0;
+}
+
+.progressCompare {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.progressLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--text-secondary);
+}
+
+.progressLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.progressLegend i {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-navy-700) 28%, white);
+}
+
+.progressLegend span[data-tone="navy"] {
+  color: var(--color-navy-800);
+}
+
+.progressLegend span[data-tone="green"] {
+  color: var(--color-green-700, #15803d);
+}
+
+.progressLegend span[data-tone="green"] i {
+  background: var(--color-green-600);
+}
+
+.progressLegend span[data-tone="amber"] {
+  color: var(--color-amber-800, #92400e);
+}
+
+.progressLegend span[data-tone="amber"] i {
+  background: var(--color-amber-500);
+}
+
+.progressStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: var(--space-3);
+}
+
+.progressStat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.progressStat strong {
+  font-size: 0.95rem;
+}
+
+.progressStat[data-tone="green"] {
+  background: color-mix(in srgb, var(--color-green-600) 12%, white);
+  border-color: color-mix(in srgb, var(--color-green-600) 28%, white);
+  color: var(--color-green-800, #166534);
+}
+
+.progressStat[data-tone="amber"] {
+  background: color-mix(in srgb, var(--color-amber-500) 14%, white);
+  border-color: color-mix(in srgb, var(--color-amber-500) 30%, white);
+  color: var(--color-amber-900, #78350f);
+}
+
+.progressStat[data-tone="blue"] {
+  background: color-mix(in srgb, var(--color-blue-600, #2563eb) 10%, white);
+  border-color: color-mix(in srgb, var(--color-blue-600, #2563eb) 24%, white);
+  color: var(--color-blue-800, #1e40af);
+}
+
+.rowLink[data-tone="blue"] {
+  background: color-mix(in srgb, var(--color-blue-600, #2563eb) 6%, white);
+  border-color: color-mix(in srgb, var(--color-blue-600, #2563eb) 18%, var(--border-subtle));
+}
+
+.rowLink[data-tone="blue"] .rowMain strong {
+  color: var(--color-blue-800, #1e40af);
 }
 
 .twoCol {

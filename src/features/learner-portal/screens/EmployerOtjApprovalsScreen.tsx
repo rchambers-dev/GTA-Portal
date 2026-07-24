@@ -96,7 +96,7 @@ export function EmployerOtjApprovalsScreen() {
                 <div className={styles.cardMain}>
                   <p className={styles.learner}>{ALEX_PROFILE.displayName}</p>
                   <h3 className={styles.topic}>
-                    Task {entry.taskNumber} · {entry.taskName}
+                    Entry {entry.entryNumber} · {entry.activityName}
                   </h3>
                   <p className={styles.meta}>
                     {formatOtjDuration(entry.durationMinutes)} ·{" "}
@@ -152,7 +152,7 @@ export function EmployerOtjApprovalsScreen() {
               <article key={entry.id} className={styles.card}>
                 <div className={styles.cardMain}>
                   <h3 className={styles.topic}>
-                    Task {entry.taskNumber} · {entry.taskName}
+                    Entry {entry.entryNumber} · {entry.activityName}
                   </h3>
                   <p className={styles.meta}>
                     {entry.employerStatus === "agreed"

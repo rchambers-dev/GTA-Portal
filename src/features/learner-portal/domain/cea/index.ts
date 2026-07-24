@@ -1,15 +1,15 @@
 export type * from "./types";
 export {
-  getGroupTasks,
+  getCeaGroupTasks,
   isMandatoryAllocated,
-  getTaskProgress,
+  getCeaTaskProgress,
   groupMandatoryComplete,
   groupAdditionalSignedOffCount,
   milestoneProgressPercent,
   packOverview,
   expectedSignOffRole,
-  statusLabel,
-  statusTone,
+  ceaStatusLabel,
+  ceaStatusTone,
 } from "./types";
 export {
   AUTOCARE_CEA_PACK,

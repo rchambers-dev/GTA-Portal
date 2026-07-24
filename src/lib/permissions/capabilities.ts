@@ -45,7 +45,7 @@ export const PERMISSIONS = {
   // Learner
   LEARNER_WORKSPACE_OWN: "learner.workspace.own",
   LEARNER_MODULES_VIEW: "learner.modules.view",
-  LEARNER_EVIDENCE_VIEW: "learner.evidence.view",
+  LEARNER_OTJ_VIEW: "learner.otj.view",
 
   // Employer
   EMPLOYER_WORKSPACE_VIEW: "employer.workspace.view",

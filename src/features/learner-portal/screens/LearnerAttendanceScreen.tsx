@@ -156,8 +156,8 @@ export function LearnerAttendanceScreen() {
     switch (kind) {
       case "module":
         return "Module";
-      case "task":
-        return "Task";
+      case "cea":
+        return "CEA task";
       case "workshop":
         return "Workshop";
     }

@@ -15,10 +15,9 @@ import styles from "./learner-pages.module.css";
 
 function kindTone(kind: LearningPlanItemKind) {
   switch (kind) {
-    case "assignment":
+    case "cea":
       return "amber" as const;
     case "otj":
-    case "evidence":
       return "blue" as const;
     case "review":
       return "green" as const;
@@ -135,10 +134,10 @@ export function LearnerLearningScreen() {
             <Link className={styles.shortcut} href="/learner/modules">
               All modules
             </Link>
-            <Link className={styles.shortcut} href="/learner/assignments">
-              CEA Task
+            <Link className={styles.shortcut} href="/learner/cea">
+              CEA tasks
             </Link>
-            <Link className={styles.shortcut} href="/learner/evidence">
+            <Link className={styles.shortcut} href="/learner/otj">
               OTJ hours
             </Link>
             <Link className={styles.shortcut} href="/learner/reviews">

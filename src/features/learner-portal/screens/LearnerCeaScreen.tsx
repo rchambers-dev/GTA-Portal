@@ -13,8 +13,8 @@ import {
   groupAdditionalSignedOffCount,
   groupMandatoryComplete,
   packOverview,
-  statusLabel,
-  statusTone,
+  ceaStatusLabel,
+  ceaStatusTone,
   type CeaGroupDef,
   type CeaLearnerState,
   type CeaTaskDef,
@@ -63,7 +63,7 @@ function TaskRow({
       >
         <span className={styles.ceaTaskMain}>
           <strong>
-            Task {task.number}: {task.title}
+            CEA task {task.number}: {task.title}
           </strong>
           <span>
             {progress.kind === "mandatory" ? "Mandatory" : "Additional @ work"} · Sign-off:{" "}
@@ -72,8 +72,8 @@ function TaskRow({
           </span>
         </span>
         <span className={styles.ceaTaskMeta}>
-          <LearnerStatusChip tone={statusTone(progress.status)}>
-            {statusLabel(progress.status)}
+          <LearnerStatusChip tone={ceaStatusTone(progress.status)}>
+            {ceaStatusLabel(progress.status)}
           </LearnerStatusChip>
           <span className={styles.otjChevron} aria-hidden>
             {open ? "▾" : "▸"}
@@ -377,8 +377,8 @@ function GatewayBlock({
                 <span>
                   {item.code} · {item.title}
                 </span>
-                <LearnerStatusChip tone={statusTone(item.status)}>
-                  {statusLabel(item.status)}
+                <LearnerStatusChip tone={ceaStatusTone(item.status)}>
+                  {ceaStatusLabel(item.status)}
                 </LearnerStatusChip>
               </li>
             ))}
@@ -499,7 +499,7 @@ export function LearnerCeaScreen() {
 
   return (
     <LearnerPageShell
-      title="CEA Task"
+      title="CEA tasks"
       description={`${pack.standardLabel} · ${pack.title} ${pack.version}. Read top to bottom — induction items first, then groups in order, with gateways where they sit on the tracking sheet.`}
     >
       <div className={styles.stack}>
@@ -625,9 +625,4 @@ export function LearnerCeaScreen() {
       </div>
     </LearnerPageShell>
   );
-}
-
-/** @deprecated Use LearnerCeaScreen — kept name for route wiring. */
-export function LearnerAssignmentsScreen() {
-  return <LearnerCeaScreen />;
 }

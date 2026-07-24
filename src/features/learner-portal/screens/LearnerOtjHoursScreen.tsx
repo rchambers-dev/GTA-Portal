@@ -17,7 +17,7 @@ import {
   formatOtjActivityPeriod,
   formatOtjDuration,
   isOtjCatchUpEntry,
-  nextOtjTaskNumber,
+  nextOtjEntryNumber,
   otjHours,
   otjPipelineLabel,
   otjTrainingTypeLabel,
@@ -178,8 +178,8 @@ function OtjLogEntry({
       as="li"
       id={`otj-entry-${entry.id}`}
       kind={needsInput ? "action" : "view"}
-      href={`/learner/evidence?otj=${entry.id}`}
-      title={`OTJ · Task ${entry.taskNumber} · ${entry.taskName}`}
+      href={`/learner/otj?otj=${entry.id}`}
+      title={`OTJ · Entry ${entry.entryNumber} · ${entry.activityName}`}
       detail={`${formatOtjDuration(entry.durationMinutes)} · ${otjPipelineLabel(entry)}`}
       area="OTJ log"
       actionLabel={needsInput ? "Open OTJ entry" : "View OTJ entry"}
@@ -198,7 +198,7 @@ function OtjLogEntry({
       >
         <span className={styles.otjEntryMain}>
           <strong>
-            Task {entry.taskNumber} · {entry.taskName}
+            Entry {entry.entryNumber} · {entry.activityName}
           </strong>
           <span>
             {formatOtjDuration(entry.durationMinutes)} ·{" "}
@@ -306,13 +306,13 @@ const DURATION_PRESETS = [
   { label: "2 hours", minutes: 120 },
 ] as const;
 
-export function LearnerEvidenceScreen() {
+export function LearnerOtjHoursScreen() {
   const [focusOtjId, setFocusOtjId] = useState<string | null>(null);
   const [otjEntries, setOtjEntries] = useState(ALEX_OTJ_ENTRIES);
   const [activityDate, setActivityDate] = useState(toDateInputValue());
   const [activityDateEnd, setActivityDateEnd] = useState("");
   const [isCatchUp, setIsCatchUp] = useState(false);
-  const [taskName, setTaskName] = useState("");
+  const [activityName, setActivityName] = useState("");
   const [durationMinutes, setDurationMinutes] = useState(60);
   const [customMinutes, setCustomMinutes] = useState("");
   const [customHours, setCustomHours] = useState("");
@@ -373,8 +373,8 @@ export function LearnerEvidenceScreen() {
   function submitOtj(e: FormEvent) {
     e.preventDefault();
     const mins = resolvedMinutes();
-    if (!taskName.trim()) {
-      setFormNote("Add a task name for this training activity.");
+    if (!activityName.trim()) {
+      setFormNote("Add an activity name for this training.");
       return;
     }
     if (mins <= 0) {
@@ -416,8 +416,8 @@ export function LearnerEvidenceScreen() {
 
     const next: LearnerOtjEntry = {
       id: `otj-${Date.now().toString(36)}`,
-      taskNumber: nextOtjTaskNumber(otjEntries),
-      taskName: taskName.trim(),
+      entryNumber: nextOtjEntryNumber(otjEntries),
+      activityName: activityName.trim(),
       activityDate: draftFlags.activityDate,
       activityDateEnd: endIso,
       durationMinutes: mins,
@@ -439,7 +439,7 @@ export function LearnerEvidenceScreen() {
     };
 
     setOtjEntries((prev) => [next, ...prev]);
-    setTaskName("");
+    setActivityName("");
     setComments("");
     setTrainingType("PM");
     setTrainingTypeOther("");
@@ -456,8 +456,8 @@ export function LearnerEvidenceScreen() {
     setShowLog(true);
     setFormNote(
       treatAsCatchUp
-        ? `Submitted catch-up Task ${next.taskNumber} (${formatOtjDuration(next.durationMinutes)} · ${formatOtjActivityPeriod(next)}) — next: ${ALEX_PROFILE.employerContact} must agree, then ${ALEX_PROFILE.tutorName} gives final teacher agree.`
-        : `Submitted Task ${next.taskNumber} (${formatOtjDuration(next.durationMinutes)}) — next: ${ALEX_PROFILE.employerContact} must agree, then ${ALEX_PROFILE.tutorName} gives final teacher agree.`,
+        ? `Submitted catch-up entry ${next.entryNumber} (${formatOtjDuration(next.durationMinutes)} · ${formatOtjActivityPeriod(next)}) — next: ${ALEX_PROFILE.employerContact} must agree, then ${ALEX_PROFILE.tutorName} gives final teacher agree.`
+        : `Submitted entry ${next.entryNumber} (${formatOtjDuration(next.durationMinutes)}) — next: ${ALEX_PROFILE.employerContact} must agree, then ${ALEX_PROFILE.tutorName} gives final teacher agree.`,
     );
   }
 
@@ -605,10 +605,10 @@ export function LearnerEvidenceScreen() {
                   </label>
                 ) : (
                   <label className={styles.field}>
-                    <span>Task number (auto)</span>
+                    <span>Entry number (auto)</span>
                     <input
                       type="text"
-                      value={String(nextOtjTaskNumber(otjEntries))}
+                      value={String(nextOtjEntryNumber(otjEntries))}
                       readOnly
                       aria-readonly="true"
                     />
@@ -618,10 +618,10 @@ export function LearnerEvidenceScreen() {
 
               {isCatchUp ? (
                 <label className={styles.field}>
-                  <span>Task number (auto)</span>
+                  <span>Entry number (auto)</span>
                   <input
                     type="text"
-                    value={String(nextOtjTaskNumber(otjEntries))}
+                    value={String(nextOtjEntryNumber(otjEntries))}
                     readOnly
                     aria-readonly="true"
                   />
@@ -629,11 +629,11 @@ export function LearnerEvidenceScreen() {
               ) : null}
 
               <label className={styles.field}>
-                <span>Task name</span>
+                <span>Activity name</span>
                 <input
                   type="text"
-                  value={taskName}
-                  onChange={(e) => setTaskName(e.target.value)}
+                  value={activityName}
+                  onChange={(e) => setActivityName(e.target.value)}
                   placeholder={
                     isCatchUp
                       ? "e.g. Catch-up OTJ block — May to July"
