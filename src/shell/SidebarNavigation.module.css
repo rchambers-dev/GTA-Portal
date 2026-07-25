@@ -191,10 +191,12 @@
 }
 
 .label {
+  min-width: 0;
   opacity: 0;
   max-width: 0;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
   transition:
     opacity 0.16s ease,
     max-width 0.22s var(--ease-out, ease);
@@ -203,7 +205,8 @@
 .sidebarSlot:hover .label,
 .sidebar:focus-within .label {
   opacity: 1;
-  max-width: 11rem;
+  /* Sidebar width minus sidebar padding, link padding, icon and gap. */
+  max-width: calc(var(--sidebar-width) - 5.75rem);
 }
 
 .premiumBadge {

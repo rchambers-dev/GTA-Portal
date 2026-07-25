@@ -75,7 +75,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
   const programmes: AdminProgrammeRecord[] = [
     {
       id: "prog-autocare-l2",
-      name: "Autocare Technician L2",
+      name: "Autocare Level 2",
       standardCode: "ST0499",
       level: 2,
       route: "Engineering and manufacturing",
@@ -83,16 +83,16 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       awardingBody: "IMI / City & Guilds",
       status: "active",
       summary:
-        "Services and repairs on cars, car-derived vans and light goods vehicles in autocare or fast-fit centres.",
+        "Official title: Autocare Technician. Carries out services and repairs on cars, car-derived vans and light goods vehicles in autocare or fast-fit centres.",
       skillsEnglandUrl:
         "https://skillsengland.education.gov.uk/apprenticeships/st0499-v1-3",
-      notes: "Core GTA automotive starter pathway.",
+      notes: "Skills England reference ST0499 · Level 2 · typically 30 months.",
       createdAt: now,
       updatedAt: now,
     },
     {
-      id: "prog-mv-l3",
-      name: "Motor Vehicle Service & Maintenance Technician (Light Vehicle) L3",
+      id: "prog-vmr-l3",
+      name: "Vehicle Maintenance and Repair Level 3",
       standardCode: "ST0033",
       level: 3,
       route: "Engineering and manufacturing",
@@ -100,16 +100,50 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       awardingBody: "IMI",
       status: "active",
       summary:
-        "Servicing and repairing light vehicles in dealerships or independent garages, including diagnostics and complex repairs.",
+        "Official title: Motor vehicle service and maintenance technician – light vehicle. Servicing, inspecting, diagnosing and repairing light vehicles in dealerships or independent garages.",
       skillsEnglandUrl:
         "https://skillsengland.education.gov.uk/apprenticeships/st0033-v1-5",
-      notes: "",
+      notes: "Skills England reference ST0033 · Level 3 · typically 36 months.",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: "prog-hv-l3",
+      name: "Heavy Vehicle Technician Level 3",
+      standardCode: "ST0068",
+      level: 3,
+      route: "Engineering and manufacturing",
+      durationMonths: 36,
+      awardingBody: "IMI",
+      status: "active",
+      summary:
+        "Official title: Heavy vehicle service and maintenance technician. Services, inspects and repairs heavy vehicles (N2/N3) and associated trailers, including diagnostics and roadside-related competence.",
+      skillsEnglandUrl:
+        "https://skillsengland.education.gov.uk/apprenticeships/st0068-v1-5",
+      notes: "Skills England reference ST0068 · Level 3 · typically 36 months.",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: "prog-paint-l3",
+      name: "Vehicle Damage Paint Level 3",
+      standardCode: "ST0448",
+      level: 3,
+      route: "Engineering and manufacturing",
+      durationMonths: 36,
+      awardingBody: "IMI",
+      status: "active",
+      summary:
+        "Official title: Vehicle damage paint technician. Prepares, sprays and finishes cars and light commercial vehicles after collision or other damage to manufacturer and customer standards.",
+      skillsEnglandUrl:
+        "https://skillsengland.education.gov.uk/apprenticeships/st0448-v1-2",
+      notes: "Skills England reference ST0448 · Level 3 · typically 36 months.",
       createdAt: now,
       updatedAt: now,
     },
     {
       id: "prog-panel-l3",
-      name: "Vehicle Damage Panel Technician L3",
+      name: "Vehicle Damage Panel Level 3",
       standardCode: "ST0403",
       level: 3,
       route: "Engineering and manufacturing",
@@ -117,10 +151,62 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       awardingBody: "IMI",
       status: "active",
       summary:
-        "Removal, repair and replacement of vehicle body panels to manufacturer specification in collision repair workshops.",
+        "Official title: Vehicle damage panel technician. Removes, repairs and replaces vehicle body panels to manufacturer specification in collision repair workshops.",
       skillsEnglandUrl:
         "https://skillsengland.education.gov.uk/apprenticeships/st0403-v1-3",
-      notes: "Useful for bodyworks employers such as Don Valley.",
+      notes: "Skills England reference ST0403 · Level 3 · typically 36 months.",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: "prog-cs-practitioner",
+      name: "Customer Service Level 2",
+      standardCode: "ST0072",
+      level: 2,
+      route: "Sales, marketing and procurement",
+      durationMonths: 12,
+      awardingBody: "IMI / Institute of Customer Service",
+      status: "active",
+      summary:
+        "Official title: Customer service practitioner. Delivers high-quality customer service face-to-face, by phone, digitally or in writing — the entry customer service standard often paired with Specialist.",
+      skillsEnglandUrl:
+        "https://skillsengland.education.gov.uk/apprenticeships/st0072-v1-1",
+      notes:
+        "Skills England sets this at Level 2 (not Level 3). Reference ST0072 · typically 12 months.",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: "prog-cs-specialist-l3",
+      name: "Customer Service Specialist Level 3",
+      standardCode: "ST0071",
+      level: 3,
+      route: "Sales, marketing and procurement",
+      durationMonths: 15,
+      awardingBody: "IMI / Institute of Customer Service",
+      status: "active",
+      summary:
+        "Official title: Customer service specialist. Handles complex or escalated customer requests, complaints and queries, and uses insight to improve service.",
+      skillsEnglandUrl:
+        "https://skillsengland.education.gov.uk/apprenticeships/st0071-v1-3",
+      notes: "Skills England reference ST0071 · Level 3 · typically 15 months.",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: "prog-business-admin-l3",
+      name: "Business Administration Level 3",
+      standardCode: "ST0070",
+      level: 3,
+      route: "Business and administration",
+      durationMonths: 18,
+      awardingBody: "Various EPAOs",
+      status: "active",
+      summary:
+        "Official title: Business administrator. Supports and improves administrative services across teams, with strong IT, communication, planning and stakeholder skills.",
+      skillsEnglandUrl:
+        "https://skillsengland.education.gov.uk/apprenticeships/st0070-v1-0",
+      notes: "Skills England reference ST0070 · Level 3 · typically 12–18 months.",
       createdAt: now,
       updatedAt: now,
     },
@@ -136,7 +222,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       phone: "07700 900 111",
       dateOfBirth: "2006-03-14",
       uln: "1234567890",
-      programmeName: "Autocare Technician L2",
+      programmeName: "Autocare Level 2",
       standardCode: "ST0499",
       employerId: "emp-riverside",
       employerName: "Riverside Autocare",
@@ -162,7 +248,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       phone: "07700 900 112",
       dateOfBirth: "2005-11-02",
       uln: "1234567891",
-      programmeName: "Autocare Technician L2",
+      programmeName: "Autocare Level 2",
       standardCode: "ST0499",
       employerId: "emp-riverside",
       employerName: "Riverside Autocare",
@@ -188,7 +274,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       phone: "07700 900 113",
       dateOfBirth: "2007-01-20",
       uln: "",
-      programmeName: "Autocare Technician L2",
+      programmeName: "Autocare Level 2",
       standardCode: "ST0499",
       employerId: "emp-riverside",
       employerName: "Riverside Autocare",
@@ -222,5 +308,5 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
     updatedAt: now,
   }));
 
-  return { version: 3, enrolments, employers, programmes, users };
+  return { version: 4, enrolments, employers, programmes, users };
 }

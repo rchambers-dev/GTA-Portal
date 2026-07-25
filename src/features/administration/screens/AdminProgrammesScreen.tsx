@@ -272,7 +272,7 @@ export function AdminProgrammesScreen() {
                       setForm((prev) => ({ ...prev, name: e.target.value }))
                     }
                     required
-                    placeholder="e.g. Autocare Technician L2"
+                    placeholder="e.g. Autocare Level 2"
                   />
                 </label>
                 <label className={styles.field}>

@@ -60,7 +60,7 @@ export type AdminEmployerRecord = {
 
 export type AdminProgrammeRecord = {
   id: string;
-  /** Portal display name, e.g. Autocare Technician L2 */
+  /** Portal display name, e.g. Autocare Level 2 */
   name: string;
   /** Skills England / IfATE standard reference, e.g. ST0499 */
   standardCode: string;
@@ -102,7 +102,7 @@ export type AdminPortalUser = {
 };
 
 export type AdminStoreSnapshot = {
-  version: 3;
+  version: 4;
   enrolments: AdminLearnerEnrolment[];
   employers: AdminEmployerRecord[];
   programmes: AdminProgrammeRecord[];
