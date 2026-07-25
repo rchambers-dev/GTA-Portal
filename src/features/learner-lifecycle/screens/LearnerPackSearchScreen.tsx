@@ -46,11 +46,11 @@ export function LearnerPackSearchScreen({
   return (
     <div className={styles.root}>
       <header className={styles.header}>
-        <p className={styles.eyebrow}>Learner file pack</p>
-        <h1 className={styles.title}>Apprenticeship Evidence Pack</h1>
+        <p className={styles.eyebrow}>Shared across workspaces</p>
+        <h1 className={styles.title}>Learners</h1>
         <p className={styles.description}>
-          Search for a learner to open their ADM14.0 file pack. This page stays
-          empty until you choose someone.
+          Search for a learner to open their apprenticeship evidence pack. This
+          page stays empty until you choose someone.
         </p>
       </header>
 

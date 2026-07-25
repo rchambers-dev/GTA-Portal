@@ -139,20 +139,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
       PERMISSIONS.ADMIN_WORKSPACE_VIEW,
       PERMISSIONS.ADMIN_USERS_MANAGE,
       PERMISSIONS.ADMIN_RECORDS_MANAGE,
-    ],
-  },
-  {
-    id: "laura-bennett",
-    name: "Laura Bennett",
-    initials: "LB",
-    email: "laura.bennett@example.gta.local",
-    baseRole: "Safeguarding Lead",
-    responsibilities: [],
-    workspace: "safeguarding",
-    permissions: [
-      PERMISSIONS.SAFEGUARDING_WORKSPACE_VIEW,
-      PERMISSIONS.SAFEGUARDING_CASES_VIEW,
-      PERMISSIONS.SAFEGUARDING_CONFIDENTIAL_VIEW,
+      PERMISSIONS.LEARNER_WORKSPACE_VIEW,
     ],
   },
 ];

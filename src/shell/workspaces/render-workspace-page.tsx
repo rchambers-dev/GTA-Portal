@@ -19,6 +19,13 @@ import {
   EmployerOtjApprovalsScreen,
   TutorOtjApprovalsScreen,
 } from "@/features/learner-portal";
+import {
+  AdministrationDashboardScreen,
+  AdminEnrolmentsScreen,
+  AdminEmployersScreen,
+  AdminProgrammesScreen,
+  AdminUsersScreen,
+} from "@/features/administration";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
@@ -165,6 +172,25 @@ export async function renderWorkspacePage(
 
   if (workspace === "employer" && segment === "otj") {
     return <EmployerOtjApprovalsScreen />;
+  }
+
+  if (workspace === "administration") {
+    switch (segment) {
+      case "dashboard":
+        return <AdministrationDashboardScreen />;
+      case "users":
+        redirect("/learners?from=administration");
+      case "enrolments":
+        return <AdminEnrolmentsScreen />;
+      case "accounts":
+        return <AdminUsersScreen />;
+      case "employers":
+        return <AdminEmployersScreen />;
+      case "programmes":
+        return <AdminProgrammesScreen />;
+      default:
+        break;
+    }
   }
 
   const stub = resolveWorkspaceStub(workspace, slug);

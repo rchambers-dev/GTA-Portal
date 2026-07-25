@@ -124,14 +124,14 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       {
         items: [
           { href: "/administration/dashboard", label: "Administration Dashboard", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
-          { href: "/administration/users", label: "User Records", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
-          { href: "/administration/enrolments", label: "Learner Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/employers", label: "Employer Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/programmes", label: "Programme Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/cohorts", label: "Cohorts & Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/administration/enrolments", label: "Learner Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/learners?from=administration", label: "Learners", permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW },
+          { href: "/administration/accounts", label: "Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/administration/documents", label: "Documents", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/data-quality", label: "Data Quality", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/accounts", label: "Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/administration/system", label: "System Actions", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
         ],
       },

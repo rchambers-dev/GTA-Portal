@@ -277,8 +277,8 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       description: "Records and account administration overview.",
     },
     users: {
-      title: "User Records",
-      description: "Portal user administration.",
+      title: "Learners",
+      description: "Shared learner file pack search — same Learners page used across workspaces.",
     },
     enrolments: {
       title: "Learner Enrolments",
@@ -290,7 +290,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     programmes: {
       title: "Programme Records",
-      description: "Programme reference data.",
+      description: "Apprenticeship standards and programme reference data.",
     },
     cohorts: {
       title: "Cohorts & Groups",

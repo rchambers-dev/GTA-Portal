@@ -1,0 +1,951 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toolbarActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.primaryBtn,
+.secondaryBtn,
+.dangerBtn {
+  appearance: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.05rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primaryBtn {
+  border: 1.5px solid var(--color-navy-700);
+  background: var(--color-navy-700);
+  color: white;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--color-navy-900, #0f172a) 20%, transparent);
+}
+
+.primaryBtn:hover {
+  filter: brightness(1.06);
+}
+
+.secondaryBtn {
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  background: white;
+  color: var(--color-navy-800, #1e3a5f);
+  font-weight: 700;
+}
+
+.secondaryBtn:hover {
+  border-color: var(--color-navy-700);
+  background: color-mix(in srgb, var(--color-navy-50) 70%, white);
+}
+
+.dangerBtn {
+  border: 1px solid color-mix(in srgb, var(--color-red-600, #dc2626) 40%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-red-100, #fee2e2) 70%, white);
+  color: var(--color-red-800, #991b1b);
+}
+
+.searchField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: min(18rem, 100%);
+}
+
+.searchField span,
+.field span {
+  font-size: 0.86rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.searchField input,
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.7rem 0.85rem;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-navy-50) 55%, white);
+  color: var(--color-navy-900, #0f172a);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 550;
+  line-height: 1.4;
+  outline: none;
+}
+
+.searchField input:hover,
+.field input:hover,
+.field select:hover,
+.field textarea:hover {
+  border-color: color-mix(in srgb, var(--color-navy-700) 38%, var(--border-subtle));
+}
+
+.searchField input:focus,
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none !important;
+  border-width: 2px;
+  border-color: var(--action-primary);
+  box-shadow: none;
+  background: color-mix(in srgb, var(--color-navy-50) 55%, white);
+}
+
+.searchField input[type="search"]::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.searchBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 28%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-navy-700) 10%, white);
+}
+
+.searchModeRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.searchResultCount {
+  margin: 0 0 0 auto;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-navy-700) 12%, white);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  color: var(--color-navy-800, #1e3a5f);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.searchModeLabel {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.searchModeTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.searchModeBtn,
+.searchModeActive {
+  appearance: none;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  padding: 0.45rem 0.85rem;
+  font-weight: 650;
+  font-size: 0.88rem;
+  cursor: pointer;
+  color: inherit;
+}
+
+.searchModeBtn:hover {
+  border-color: var(--color-navy-700);
+}
+
+.searchModeActive {
+  border-color: var(--color-navy-700);
+  background: var(--color-navy-700);
+  color: white;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--color-navy-900, #0f172a) 20%, transparent);
+}
+
+.searchBlock .searchField {
+  width: 100%;
+  min-width: 0;
+}
+
+.field textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.formStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 1.15rem 1.2rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: white;
+  box-shadow:
+    inset 4px 0 0 var(--color-navy-700),
+    0 1px 2px color-mix(in srgb, var(--color-navy-900) 4%, transparent),
+    0 8px 24px color-mix(in srgb, var(--color-navy-900) 6%, transparent);
+}
+
+.formGroupHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-navy-700) 12%, var(--border-subtle));
+}
+
+.formGroupTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.formGroupBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-navy-700) 10%, white);
+  color: var(--color-navy-700);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.formGroupMeta {
+  margin: -0.15rem 0 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-navy-50);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, var(--border-subtle));
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--color-navy-700);
+}
+
+.fieldRequired {
+  margin-left: 0.35rem;
+  font-style: normal;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-navy-700);
+}
+
+.fieldHint {
+  margin: 0.45rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 550;
+  line-height: 1.35;
+  color: var(--color-navy-700);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.field > span {
+  margin-bottom: 0.45rem;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.1rem;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 1.15rem 1.2rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: white;
+  box-shadow:
+    inset 4px 0 0 var(--color-navy-700),
+    0 1px 2px color-mix(in srgb, var(--color-navy-900) 4%, transparent),
+    0 8px 24px color-mix(in srgb, var(--color-navy-900) 6%, transparent);
+}
+
+.panelTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.panelLead {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-navy-50);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, var(--border-subtle));
+  color: var(--color-navy-700);
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.45;
+  max-width: none;
+}
+
+.kindTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.kindTab,
+.kindTabActive {
+  appearance: none;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  padding: 0.55rem 0.85rem;
+  font-weight: 650;
+  cursor: pointer;
+  color: inherit;
+}
+
+.kindTabActive {
+  border-color: var(--color-navy-700);
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--color-navy-700) 12%, white) 0%,
+      var(--color-white) 70%
+    );
+  box-shadow: inset 3px 0 0 var(--color-navy-700);
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.error {
+  margin: 0;
+  color: var(--color-red-700, #b91c1c);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.success {
+  margin: 0;
+  color: var(--color-green-700, #15803d);
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.empty {
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.7rem 0.65rem;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+
+.table th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+.table tr:hover td {
+  background: color-mix(in srgb, var(--color-navy-50) 55%, transparent);
+}
+
+.rowName {
+  font-weight: 650;
+}
+
+.rowMeta {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.muted {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.employerList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.employerCard {
+  position: relative;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  border-top: 3px solid var(--border-strong);
+  transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+  cursor: pointer;
+  transform: none;
+}
+
+.employerCard:hover {
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--color-navy-700) 10%, transparent);
+}
+
+.employerCard:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.employerCard[data-menu-open="true"] {
+  z-index: 30;
+}
+
+.employerCard[data-tone="green"] {
+  border-top-width: 4px;
+  border-top-color: var(--color-green-600, #16a34a);
+  border-color: color-mix(in srgb, var(--color-green-600, #16a34a) 42%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-green-500, #22c55e) 18%, white);
+}
+
+.employerCard[data-tone="amber"] {
+  border-top-width: 4px;
+  border-top-color: var(--color-amber-500, #f59e0b);
+  border-color: color-mix(in srgb, var(--color-amber-500, #f59e0b) 48%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-amber-400, #fbbf24) 22%, white);
+}
+
+.employerCard[data-tone="neutral"] {
+  border-top-width: 4px;
+  border-top-color: var(--color-grey-500, #6b7280);
+  border-color: color-mix(in srgb, var(--color-grey-500, #6b7280) 38%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-grey-400, #9ca3af) 16%, white);
+}
+
+.employerCard[data-open="true"] {
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-navy-700) 10%, transparent);
+}
+
+.employerCardHeader {
+  display: grid;
+  /* Details capped so pills sit in a fixed place beside them;
+     leftover card width is absorbed after the pills. */
+  grid-template-columns: minmax(14rem, 28rem) minmax(9.5rem, 11.5rem) 1fr;
+  gap: var(--space-3) var(--space-4);
+  align-items: center;
+  padding: var(--space-4);
+}
+
+.employerCardMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.employerCardMain > span,
+.employerMetaBtn span {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+}
+
+.employerMetaBtn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.employerPillColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+  cursor: default;
+}
+
+.employerCardTitleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.65rem;
+  min-width: 0;
+}
+
+.employerNameBtn {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  min-width: 0;
+}
+
+.employerName,
+.employerNameBtn strong {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.employerNameBtn:hover strong {
+  color: var(--color-navy-700);
+}
+
+.employerStatusToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2.15rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-grey-500, #6b7280) 28%, var(--border-subtle));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-grey-400, #9ca3af) 18%, white);
+  color: var(--color-grey-700, #374151);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 750;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, box-shadow 120ms ease;
+}
+
+.employerStatusToggle[data-active="true"] {
+  border-color: color-mix(in srgb, var(--status-success, #1a7f4b) 35%, transparent);
+  background: color-mix(in srgb, var(--status-success, #1a7f4b) 28%, white);
+  color: #0f6a3d;
+}
+
+.employerStatusToggle:hover {
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 16%, transparent);
+}
+
+.employerStatusToggle:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 2px;
+}
+
+.employerApprenticeMenu {
+  position: relative;
+  width: 100%;
+}
+
+.employerApprenticePill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  min-height: 2.15rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--color-amber-500, #f59e0b) 35%, transparent);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 750;
+  line-height: 1.2;
+  text-align: center;
+  background: color-mix(in srgb, var(--color-amber-400, #fbbf24) 28%, white);
+  color: #9a4a08;
+  cursor: default;
+}
+
+button.employerApprenticePill {
+  cursor: pointer;
+}
+
+.employerApprenticePill[data-has="true"] {
+  border-color: color-mix(in srgb, var(--color-navy-700) 32%, transparent);
+  background: color-mix(in srgb, var(--color-navy-700) 22%, white);
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.employerApprenticePill[data-open="true"] {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-navy-700) 18%, transparent);
+}
+
+.employerApprenticePill span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.employerApprenticeDropdown {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  left: 50%;
+  right: auto;
+  z-index: 40;
+  width: max(100%, 18.5rem);
+  margin: 0;
+  padding: 0.45rem;
+  list-style: none;
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: white;
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-navy-900) 6%, transparent),
+    0 14px 32px color-mix(in srgb, var(--color-navy-900) 14%, transparent);
+  transform: translateX(-50%);
+}
+
+.employerApprenticeDropdown li + li {
+  margin-top: 0.2rem;
+  padding-top: 0.2rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, var(--border-subtle));
+}
+
+.employerApprenticeOption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  transition: background 120ms ease;
+}
+
+.employerApprenticeOption strong {
+  display: block;
+  width: 100%;
+  font-size: 0.92rem;
+  font-weight: 750;
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.employerApprenticeOption span {
+  display: block;
+  width: 100%;
+  font-size: 0.8rem;
+  font-weight: 550;
+  line-height: 1.35;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.employerApprenticeOption:hover {
+  background: color-mix(in srgb, var(--color-navy-700) 8%, white);
+}
+
+.employerApprenticeOption[data-selected="true"] {
+  background: color-mix(in srgb, var(--color-navy-700) 10%, white);
+  box-shadow: inset 3px 0 0 var(--color-navy-700);
+}
+
+.employerApprenticeOption:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 1px;
+}
+
+.employerCardToggle {
+  min-width: min(12rem, 100%);
+  flex: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.employerCardToggle:hover {
+  color: var(--color-navy-700);
+}
+
+.employerCardEnd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4rem;
+  flex: none;
+}
+
+.employerCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: 0 var(--space-4) var(--space-4);
+  border-top: 1px solid color-mix(in srgb, var(--color-navy-700) 12%, var(--border-subtle));
+  padding-top: var(--space-4);
+  cursor: default;
+}
+
+.employerDetailGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.1rem;
+  align-items: start;
+}
+
+.detailField {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.detailFieldWide {
+  grid-column: 1 / -1;
+}
+
+.detailFieldLabel {
+  display: block;
+  margin: 0 0 0.45rem;
+  font-size: 0.86rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.detailFieldInput {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.7rem 0.85rem;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-navy-50) 55%, white);
+  color: var(--color-navy-900, #0f172a);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 550;
+  line-height: 1.4;
+  outline: none;
+  overflow-wrap: anywhere;
+}
+
+.detailFieldInput::placeholder {
+  color: color-mix(in srgb, var(--color-navy-700) 45%, transparent);
+  font-weight: 500;
+}
+
+textarea.detailFieldInput {
+  resize: vertical;
+  min-height: 4.25rem;
+  line-height: 1.5;
+}
+
+.detailFieldInput:hover {
+  border-color: color-mix(in srgb, var(--color-navy-700) 38%, var(--border-subtle));
+}
+
+.detailFieldInput:focus,
+.detailFieldInput:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+  border-width: 2px;
+  border-color: var(--action-primary);
+  box-shadow: none;
+  background: color-mix(in srgb, var(--color-navy-50) 55%, white);
+}
+
+.detailWide {
+  grid-column: 1 / -1;
+}
+
+.detailLabel {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.detailValue {
+  margin: 0.2rem 0 0;
+  font-weight: 550;
+  overflow-wrap: anywhere;
+}
+
+.detailValue a {
+  color: var(--action-primary);
+}
+
+@media (max-width: 720px) {
+  .employerCardHeader {
+    grid-template-columns: minmax(0, 1fr) minmax(8.5rem, 10.5rem);
+  }
+
+  .employerDetailGrid,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.linkedLearners {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 30%, var(--border-subtle));
+  border-left: 4px solid var(--color-navy-700);
+  background: color-mix(in srgb, var(--color-navy-700) 12%, white);
+}
+
+.linkedLearnersHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.linkedLearnersHead h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.linkedLearnerList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.linkedLearnerList li {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--color-green-600, #16a34a);
+  background: var(--bg-elevated);
+  overflow: hidden;
+}
+
+.linkedLearnerList li[data-selected="true"] {
+  border-color: color-mix(in srgb, var(--color-navy-700) 35%, var(--border-subtle));
+  border-left-color: var(--color-navy-700);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-navy-700) 12%, transparent);
+}
+
+.linkedLearnerSelect {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.linkedLearnerSelect:hover {
+  background: color-mix(in srgb, var(--color-navy-50) 70%, transparent);
+}
+
+.linkedLearnerMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.linkedLearnerMain strong {
+  font-weight: 650;
+}
+
+.linkedLearnerMain span {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
