@@ -23,6 +23,8 @@ import {
   AdministrationDashboardScreen,
   AdminEnrolmentsScreen,
   AdminEmployersScreen,
+  AdminCohortsScreen,
+  AdminLearnerIntakeScreen,
   AdminProgrammesScreen,
   AdminUsersScreen,
 } from "@/features/administration";
@@ -188,6 +190,10 @@ export async function renderWorkspacePage(
         return <AdminEmployersScreen />;
       case "programmes":
         return <AdminProgrammesScreen />;
+      case "cohorts":
+        return <AdminCohortsScreen />;
+      case "intake":
+        return <AdminLearnerIntakeScreen />;
       default:
         break;
     }

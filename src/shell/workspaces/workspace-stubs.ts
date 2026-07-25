@@ -280,9 +280,15 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Learners",
       description: "Shared learner file pack search — same Learners page used across workspaces.",
     },
+    intake: {
+      title: "Learner Intake",
+      description:
+        "Start potential learners, save drafts mid-way, and mark them ready for enrolment.",
+    },
     enrolments: {
       title: "Learner Enrolments",
-      description: "Enrolment records and intake status.",
+      description:
+        "Enrol learners already on the system onto programmes — employer, cohort and position.",
     },
     employers: {
       title: "Employer Records",
@@ -294,7 +300,8 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     cohorts: {
       title: "Cohorts & Groups",
-      description: "Cohort and teaching group administration.",
+      description:
+        "Intakes and teaching groups, each locked to a Skills England programme version.",
     },
     documents: {
       title: "Documents",

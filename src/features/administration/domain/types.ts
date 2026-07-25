@@ -7,10 +7,58 @@ export type EnrolmentStatus =
   | "completed"
   | "withdrawn";
 
+/**
+ * A person on the learner intake funnel. Personal details are captured once
+ * here; enrolments link to this record instead of re-keying the data.
+ */
+export type AdminLearnerRecord = {
+  id: string;
+  displayName: string;
+  /** GTA learner reference, e.g. GTA-2026-01021. Generated if left blank. */
+  learnerReference: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  uln: string;
+  addressLine1: string;
+  addressLine2: string;
+  town: string;
+  postcode: string;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+  emergencyContactRelationship: string;
+  /** Learning support / access arrangements to know about. */
+  supportNotes: string;
+  /**
+   * Draft vs finished personal intake.
+   * Admins can save mid-way and come back — evidence pack amendments
+   * still happen on the Learners page after they're on the system.
+   */
+  intakeStatus: "in_progress" | "ready";
+  /**
+   * Evidence pack state, keyed by ADM14 reference (e.g. "1.2").
+   * Items not present default to missing (or future for end-of-programme
+   * items) — the pack fills in over the learner's lifecycle.
+   */
+  pack: Record<string, AdminPackItemStatus>;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AdminPackItemStatus =
+  | "missing"
+  | "requested"
+  | "received"
+  | "checked"
+  | "not_applicable";
+
 export type AdminLearnerEnrolment = {
   id: string;
   kind: EnrolmentKind;
   status: EnrolmentStatus;
+  /** Link to the intake learner record this enrolment belongs to. */
+  learnerId: string | null;
   displayName: string;
   email: string;
   phone: string;
@@ -18,6 +66,8 @@ export type AdminLearnerEnrolment = {
   uln: string;
   programmeName: string;
   standardCode: string;
+  /** Cohort this learner belongs to — pins programme version for their journey. */
+  cohortId: string | null;
   employerId: string;
   employerName: string;
   workplaceContact: string;
@@ -79,6 +129,40 @@ export type AdminProgrammeRecord = {
   updatedAt: string;
 };
 
+/**
+ * An intake / teaching group delivering one version of a programme.
+ * Multiple cohorts of the same standard can run at once (e.g. v1.2 and v1.3)
+ * while older starts finish what they started.
+ */
+export type AdminCohortRecord = {
+  id: string;
+  /** e.g. Autocare L2 · Sept 2024 */
+  name: string;
+  programmeId: string;
+  programmeName: string;
+  standardCode: string;
+  /** Skills England version this cohort delivers, e.g. 1.2 */
+  standardVersion: string;
+  /**
+   * Date the intake opens for enrolment (ISO date). New pupils auto-flow into a
+   * planned cohort from this date until it goes active.
+   */
+  enrolmentOpensDate: string;
+  /** Intake start date — when teaching/delivery begins (ISO date). */
+  startDate: string;
+  /** Expected end / gateway date (ISO date), optional. */
+  expectedEndDate: string;
+  /** Teaching group label, e.g. Mon–Tue Group A */
+  teachingGroup: string;
+  collegeDays: string;
+  tutorName: string;
+  /** Intake lifecycle — not a pause control. */
+  status: "planned" | "active" | "completed";
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type AdminPortalRole =
   | "Learner"
   | "Employer"
@@ -102,9 +186,11 @@ export type AdminPortalUser = {
 };
 
 export type AdminStoreSnapshot = {
-  version: 4;
+  version: 9;
+  learners: AdminLearnerRecord[];
   enrolments: AdminLearnerEnrolment[];
   employers: AdminEmployerRecord[];
   programmes: AdminProgrammeRecord[];
+  cohorts: AdminCohortRecord[];
   users: AdminPortalUser[];
 };

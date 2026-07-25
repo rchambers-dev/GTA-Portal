@@ -127,6 +127,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/administration/employers", label: "Employer Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/programmes", label: "Programme Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/cohorts", label: "Cohorts & Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/administration/intake", label: "Learner Intake", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/enrolments", label: "Learner Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/learners?from=administration", label: "Learners", permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW },
           { href: "/administration/accounts", label: "Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },

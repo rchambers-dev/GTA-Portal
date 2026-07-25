@@ -1,7 +1,10 @@
 import { createSeedSnapshot } from "./seed";
 import type {
+  AdminCohortRecord,
   AdminEmployerRecord,
   AdminLearnerEnrolment,
+  AdminLearnerRecord,
+  AdminPackItemStatus,
   AdminPortalUser,
   AdminProgrammeRecord,
   AdminStoreSnapshot,
@@ -21,7 +24,7 @@ function loadSnapshot(): AdminStoreSnapshot {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return createSeedSnapshot();
     const parsed = JSON.parse(raw) as AdminStoreSnapshot;
-    if (parsed?.version !== 4) return createSeedSnapshot();
+    if (parsed?.version !== 9) return createSeedSnapshot();
     return parsed;
   } catch {
     return createSeedSnapshot();
@@ -67,9 +70,158 @@ export function resetAdminStore(): void {
   emit();
 }
 
+export type LearnerInput = {
+  displayName: string;
+  learnerReference: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  uln: string;
+  addressLine1: string;
+  addressLine2: string;
+  town: string;
+  postcode: string;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+  emergencyContactRelationship: string;
+  supportNotes: string;
+  intakeStatus: AdminLearnerRecord["intakeStatus"];
+  notes: string;
+};
+
+/** e.g. GTA-2026-04831 */
+function generateLearnerReference(): string {
+  const year = new Date().getFullYear();
+  const serial = String(Math.floor(Math.random() * 90000) + 10000);
+  return `GTA-${year}-0${serial.slice(0, 4)}`;
+}
+
+export function listLearners(): AdminLearnerRecord[] {
+  ensureHydrated();
+  return [...snapshot.learners].sort((a, b) =>
+    a.displayName.localeCompare(b.displayName),
+  );
+}
+
+export function getLearner(idValue: string): AdminLearnerRecord | undefined {
+  ensureHydrated();
+  return snapshot.learners.find((l) => l.id === idValue);
+}
+
+export function createLearner(input: LearnerInput): AdminLearnerRecord {
+  ensureHydrated();
+  const stamp = new Date().toISOString();
+  const row: AdminLearnerRecord = {
+    id: id("lrn"),
+    displayName: input.displayName.trim(),
+    learnerReference:
+      input.learnerReference.trim() || generateLearnerReference(),
+    email: input.email.trim(),
+    phone: input.phone.trim(),
+    dateOfBirth: input.dateOfBirth,
+    uln: input.uln.trim(),
+    addressLine1: input.addressLine1.trim(),
+    addressLine2: input.addressLine2.trim(),
+    town: input.town.trim(),
+    postcode: input.postcode.trim().toUpperCase(),
+    emergencyContactName: input.emergencyContactName.trim(),
+    emergencyContactPhone: input.emergencyContactPhone.trim(),
+    emergencyContactRelationship: input.emergencyContactRelationship.trim(),
+    supportNotes: input.supportNotes.trim(),
+    intakeStatus: input.intakeStatus,
+    pack: {},
+    notes: input.notes.trim(),
+    createdAt: stamp,
+    updatedAt: stamp,
+  };
+  snapshot = {
+    ...snapshot,
+    learners: [row, ...snapshot.learners],
+  };
+  emit();
+  return row;
+}
+
+export function updateLearner(
+  idValue: string,
+  patch: Partial<LearnerInput>,
+): AdminLearnerRecord | null {
+  ensureHydrated();
+  const existing = snapshot.learners.find((l) => l.id === idValue);
+  if (!existing) return null;
+  const next: AdminLearnerRecord = {
+    ...existing,
+    ...patch,
+    displayName: (patch.displayName ?? existing.displayName).trim(),
+    learnerReference: (
+      patch.learnerReference ?? existing.learnerReference
+    ).trim(),
+    email: (patch.email ?? existing.email).trim(),
+    phone: (patch.phone ?? existing.phone).trim(),
+    uln: (patch.uln ?? existing.uln).trim(),
+    addressLine1: (patch.addressLine1 ?? existing.addressLine1).trim(),
+    addressLine2: (patch.addressLine2 ?? existing.addressLine2).trim(),
+    town: (patch.town ?? existing.town).trim(),
+    postcode: (patch.postcode ?? existing.postcode).trim().toUpperCase(),
+    emergencyContactName: (
+      patch.emergencyContactName ?? existing.emergencyContactName
+    ).trim(),
+    emergencyContactPhone: (
+      patch.emergencyContactPhone ?? existing.emergencyContactPhone
+    ).trim(),
+    emergencyContactRelationship: (
+      patch.emergencyContactRelationship ??
+      existing.emergencyContactRelationship
+    ).trim(),
+    supportNotes: (patch.supportNotes ?? existing.supportNotes).trim(),
+    notes: (patch.notes ?? existing.notes).trim(),
+    updatedAt: new Date().toISOString(),
+  };
+  snapshot = {
+    ...snapshot,
+    learners: snapshot.learners.map((l) => (l.id === idValue ? next : l)),
+    // Keep enrolment snapshots of personal details in step with the record.
+    enrolments: snapshot.enrolments.map((e) =>
+      e.learnerId === idValue
+        ? {
+            ...e,
+            displayName: next.displayName,
+            email: next.email,
+            phone: next.phone,
+            dateOfBirth: next.dateOfBirth,
+            uln: next.uln,
+          }
+        : e,
+    ),
+  };
+  emit();
+  return next;
+}
+
+export function setLearnerPackItem(
+  learnerId: string,
+  reference: string,
+  status: AdminPackItemStatus,
+): void {
+  ensureHydrated();
+  const existing = snapshot.learners.find((l) => l.id === learnerId);
+  if (!existing) return;
+  const next: AdminLearnerRecord = {
+    ...existing,
+    pack: { ...existing.pack, [reference]: status },
+    updatedAt: new Date().toISOString(),
+  };
+  snapshot = {
+    ...snapshot,
+    learners: snapshot.learners.map((l) => (l.id === learnerId ? next : l)),
+  };
+  emit();
+}
+
 export type EnrolmentInput = {
   kind: EnrolmentKind;
   status?: EnrolmentStatus;
+  learnerId: string | null;
   displayName: string;
   email: string;
   phone: string;
@@ -77,6 +229,7 @@ export type EnrolmentInput = {
   uln: string;
   programmeName: string;
   standardCode: string;
+  cohortId: string | null;
   employerId: string;
   employerName: string;
   workplaceContact: string;
@@ -112,6 +265,7 @@ export function createEnrolment(input: EnrolmentInput): AdminLearnerEnrolment {
     status:
       input.status ??
       (input.kind === "new_starter" ? "pending_start" : "active"),
+    learnerId: input.learnerId,
     displayName: input.displayName.trim(),
     email: input.email.trim(),
     phone: input.phone.trim(),
@@ -119,6 +273,7 @@ export function createEnrolment(input: EnrolmentInput): AdminLearnerEnrolment {
     uln: input.uln.trim(),
     programmeName: input.programmeName,
     standardCode: input.standardCode,
+    cohortId: input.cohortId,
     employerId: input.employerId,
     employerName: input.employerName,
     workplaceContact: input.workplaceContact.trim(),
@@ -331,6 +486,140 @@ export function updateProgramme(
   snapshot = {
     ...snapshot,
     programmes: snapshot.programmes.map((p) => (p.id === idValue ? next : p)),
+  };
+  emit();
+  return next;
+}
+
+export type CohortInput = {
+  name: string;
+  programmeId: string;
+  programmeName: string;
+  standardCode: string;
+  standardVersion: string;
+  enrolmentOpensDate: string;
+  startDate: string;
+  expectedEndDate: string;
+  teachingGroup: string;
+  collegeDays: string;
+  tutorName: string;
+  status: AdminCohortRecord["status"];
+  notes: string;
+};
+
+export function listCohorts(): AdminCohortRecord[] {
+  ensureHydrated();
+  return [...snapshot.cohorts].sort((a, b) =>
+    b.startDate.localeCompare(a.startDate),
+  );
+}
+
+export function createCohort(input: CohortInput): AdminCohortRecord {
+  ensureHydrated();
+  const stamp = new Date().toISOString();
+  const row: AdminCohortRecord = {
+    id: id("cohort"),
+    name: input.name.trim(),
+    programmeId: input.programmeId,
+    programmeName: input.programmeName.trim(),
+    standardCode: input.standardCode.trim().toUpperCase(),
+    standardVersion: input.standardVersion.trim().replace(/^v/i, ""),
+    enrolmentOpensDate: input.enrolmentOpensDate,
+    startDate: input.startDate,
+    expectedEndDate: input.expectedEndDate,
+    teachingGroup: input.teachingGroup.trim(),
+    collegeDays: input.collegeDays.trim(),
+    tutorName: input.tutorName.trim(),
+    status: input.status,
+    notes: input.notes.trim(),
+    createdAt: stamp,
+    updatedAt: stamp,
+  };
+  snapshot = {
+    ...snapshot,
+    cohorts: [row, ...snapshot.cohorts],
+  };
+  emit();
+  return row;
+}
+
+export function updateCohort(
+  idValue: string,
+  patch: Partial<CohortInput>,
+): AdminCohortRecord | null {
+  ensureHydrated();
+  const existing = snapshot.cohorts.find((c) => c.id === idValue);
+  if (!existing) return null;
+  const next: AdminCohortRecord = {
+    ...existing,
+    ...patch,
+    name: (patch.name ?? existing.name).trim(),
+    programmeName: (patch.programmeName ?? existing.programmeName).trim(),
+    standardCode: (patch.standardCode ?? existing.standardCode)
+      .trim()
+      .toUpperCase(),
+    standardVersion: (patch.standardVersion ?? existing.standardVersion)
+      .trim()
+      .replace(/^v/i, ""),
+    teachingGroup: (patch.teachingGroup ?? existing.teachingGroup).trim(),
+    collegeDays: (patch.collegeDays ?? existing.collegeDays).trim(),
+    tutorName: (patch.tutorName ?? existing.tutorName).trim(),
+    notes: (patch.notes ?? existing.notes).trim(),
+    updatedAt: new Date().toISOString(),
+  };
+  snapshot = {
+    ...snapshot,
+    cohorts: snapshot.cohorts.map((c) => (c.id === idValue ? next : c)),
+  };
+  emit();
+  return next;
+}
+
+/**
+ * Find the cohort a new pupil should auto-flow into for a given standard.
+ * Only planned (not-yet-active) cohorts accept auto-flow, and only once their
+ * enrolment window has opened. Once a cohort is active, learners must be placed
+ * manually for accuracy. Returns the soonest-starting eligible cohort.
+ */
+export function findIntakeCohort(
+  standardCode: string,
+  onDate: string = new Date().toISOString().slice(0, 10),
+): AdminCohortRecord | null {
+  ensureHydrated();
+  const code = standardCode.trim().toUpperCase();
+  const eligible = snapshot.cohorts
+    .filter(
+      (c) =>
+        c.standardCode.toUpperCase() === code &&
+        c.status === "planned" &&
+        (!c.enrolmentOpensDate || c.enrolmentOpensDate <= onDate),
+    )
+    .sort((a, b) => a.startDate.localeCompare(b.startDate));
+  return eligible[0] ?? null;
+}
+
+/** Assign or remove a learner from a cohort (pins them to that version). */
+export function setEnrolmentCohort(
+  enrolmentId: string,
+  cohortId: string | null,
+): AdminLearnerEnrolment | null {
+  ensureHydrated();
+  const existing = snapshot.enrolments.find((e) => e.id === enrolmentId);
+  if (!existing) return null;
+  if (cohortId) {
+    const cohort = snapshot.cohorts.find((c) => c.id === cohortId);
+    if (!cohort) return null;
+  }
+  const next: AdminLearnerEnrolment = {
+    ...existing,
+    cohortId,
+    updatedAt: new Date().toISOString(),
+  };
+  snapshot = {
+    ...snapshot,
+    enrolments: snapshot.enrolments.map((e) =>
+      e.id === enrolmentId ? next : e,
+    ),
   };
   emit();
   return next;

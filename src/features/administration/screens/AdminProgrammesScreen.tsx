@@ -82,17 +82,6 @@ function programmeMatchesQuery(
   }
 }
 
-function statusTone(status: AdminProgrammeRecord["status"]) {
-  switch (status) {
-    case "active":
-      return "green" as const;
-    case "inactive":
-      return "amber" as const;
-    case "retired":
-      return "neutral" as const;
-  }
-}
-
 function ProgrammeInlineField({
   label,
   value,
@@ -311,22 +300,6 @@ export function AdminProgrammesScreen() {
                   </select>
                 </label>
                 <label className={styles.field}>
-                  <span>Status</span>
-                  <select
-                    value={form.status}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        status: e.target.value as FormState["status"],
-                      }))
-                    }
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="retired">Retired</option>
-                  </select>
-                </label>
-                <label className={styles.field}>
                   <span>Typical duration (months)</span>
                   <input
                     type="number"
@@ -470,12 +443,7 @@ export function AdminProgrammesScreen() {
             {filtered.map((row) => {
               const linked = learnersForProgramme(store.enrolments, row);
               const open = expandedId === row.id;
-              const tone =
-                row.status === "active"
-                  ? linked.length > 0
-                    ? "green"
-                    : "amber"
-                  : "neutral";
+              const tone = linked.length > 0 ? "green" : "amber";
               return (
                 <article
                   key={row.id}
@@ -520,25 +488,6 @@ export function AdminProgrammesScreen() {
                       onClick={(event) => event.stopPropagation()}
                       onKeyDown={(event) => event.stopPropagation()}
                     >
-                      <button
-                        type="button"
-                        className={styles.employerStatusToggle}
-                        data-active={row.status === "active" ? "true" : "false"}
-                        aria-pressed={row.status === "active"}
-                        aria-label={`${row.status === "active" ? "Deactivate" : "Activate"} ${row.name}`}
-                        onClick={() => {
-                          const nextStatus =
-                            row.status === "active" ? "inactive" : "active";
-                          updateProgramme(row.id, { status: nextStatus });
-                          setSuccess(`${row.name} is now ${nextStatus}.`);
-                        }}
-                      >
-                        {row.status === "active"
-                          ? "Active"
-                          : row.status === "retired"
-                            ? "Retired"
-                            : "Inactive"}
-                      </button>
                       <span
                         className={styles.employerApprenticePill}
                         data-has={linked.length > 0 ? "true" : "false"}
@@ -704,9 +653,6 @@ export function AdminProgrammesScreen() {
                         >
                           Open full edit form
                         </button>
-                        <LearnerStatusChip tone={statusTone(row.status)}>
-                          {row.status}
-                        </LearnerStatusChip>
                       </div>
                     </div>
                   ) : null}

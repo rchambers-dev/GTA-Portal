@@ -134,6 +134,15 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
+  if (key.includes("/administration/intake")) {
+    return (
+      <svg {...common}>
+        <circle cx="9" cy="8" r="3.5" />
+        <path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
+        <path d="M18 5v6M15 8h6" />
+      </svg>
+    );
+  }
   if (key.includes("/administration/enrolments")) {
     return (
       <svg {...common}>
