@@ -244,17 +244,6 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
             ) : null}
           </div>
 
-          <button
-            type="button"
-            className={styles.iconBtn}
-            aria-label="Flags (preview)"
-            title="Flags coming soon"
-          >
-            <span className={styles.iconGlyph} aria-hidden>
-              F
-            </span>
-            <span className={`${styles.badge} ${styles.badgeAmber}`}>9</span>
-          </button>
           <div className={styles.user}>
             <DevAccountSwitcher currentAccount={account} />
           </div>

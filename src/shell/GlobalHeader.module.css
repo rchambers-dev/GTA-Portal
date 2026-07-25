@@ -130,10 +130,6 @@
   place-items: center;
 }
 
-.badgeAmber {
-  background: var(--color-amber-500);
-}
-
 .notifWrap {
   position: relative;
 }
