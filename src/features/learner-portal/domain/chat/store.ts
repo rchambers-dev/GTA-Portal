@@ -10,12 +10,31 @@ import {
 } from "./types";
 
 const LEARNER_ID = ALEX_PROFILE.learnerId;
+
+/** Signed-in chat identity — shared Messages page switches this per workspace. */
+export const CHAT_SELF_LEARNER = "contact-alex";
+export const CHAT_SELF_EMPLOYER = "contact-employer-priya";
+
+let selfContactId = CHAT_SELF_LEARNER;
+
+export function setChatSelfContactId(contactId: string): void {
+  selfContactId = contactId;
+}
+
+export function getChatSelfContactId(): string {
+  return selfContactId;
+}
+
+function selfContact(): ChatContact {
+  return getContact(selfContactId) ?? APPRENTICE;
+}
+
 const APPRENTICE: ChatContact = {
-  contactId: "contact-alex",
+  contactId: CHAT_SELF_LEARNER,
   name: ALEX_PROFILE.displayName,
   initials: ALEX_PROFILE.initials,
   role: "apprentice",
-  roleLabel: "You",
+  roleLabel: "Apprentice",
   defaultChannel: "direct",
 };
 
@@ -40,7 +59,7 @@ export const CHAT_CONTACTS: ChatContact[] = [
     defaultChannel: "direct",
   },
   {
-    contactId: "contact-employer-priya",
+    contactId: CHAT_SELF_EMPLOYER,
     name: ALEX_PROFILE.employerContact,
     initials: "PS",
     role: "employer",
@@ -266,7 +285,12 @@ let THREADS: ChatThread[] = [
 ];
 
 export function contactsForLearner(): ChatContact[] {
-  return CHAT_CONTACTS.filter((c) => c.role !== "apprentice");
+  return contactsForViewer(CHAT_SELF_LEARNER);
+}
+
+/** People the signed-in viewer can message (excludes self). */
+export function contactsForViewer(viewerId = getChatSelfContactId()): ChatContact[] {
+  return CHAT_CONTACTS.filter((c) => c.contactId !== viewerId);
 }
 
 export function getContact(contactId: string): ChatContact | undefined {
@@ -274,9 +298,16 @@ export function getContact(contactId: string): ChatContact | undefined {
 }
 
 export function listThreads(): ChatThread[] {
-  return [...THREADS].sort((a, b) =>
-    b.lastMessageAt.localeCompare(a.lastMessageAt),
-  );
+  return listThreadsForViewer(getChatSelfContactId());
+}
+
+/** Threads the signed-in viewer belongs to. */
+export function listThreadsForViewer(
+  viewerId = getChatSelfContactId(),
+): ChatThread[] {
+  return [...THREADS]
+    .filter((t) => t.participantIds.includes(viewerId))
+    .sort((a, b) => b.lastMessageAt.localeCompare(a.lastMessageAt));
 }
 
 export function getThread(threadId: string): ChatThread | undefined {
@@ -284,7 +315,19 @@ export function getThread(threadId: string): ChatThread | undefined {
 }
 
 export function unreadTotal(): number {
-  return THREADS.reduce((sum, t) => sum + t.unreadForLearner, 0);
+  const self = getChatSelfContactId();
+  if (self === CHAT_SELF_LEARNER) {
+    return listThreadsForViewer(self).reduce(
+      (sum, t) => sum + t.unreadForLearner,
+      0,
+    );
+  }
+  // Employer / other roles: treat a thread as unread when the last message isn't yours.
+  return listThreadsForViewer(self).reduce((sum, t) => {
+    const last = t.messages[t.messages.length - 1];
+    if (last && last.senderId !== self) return sum + 1;
+    return sum;
+  }, 0);
 }
 
 export function markThreadRead(threadId: string): void {
@@ -306,11 +349,12 @@ export function sendMessage(
   const thread = THREADS.find((t) => t.threadId === threadId);
   if (!thread) return null;
 
+  const me = selfContact();
   const message: ChatMessage = {
     messageId: `msg-${Date.now().toString(36)}`,
     threadId,
-    senderId: "contact-alex",
-    senderName: ALEX_PROFILE.displayName,
+    senderId: me.contactId,
+    senderName: me.name,
     body: text,
     sentAt: new Date().toISOString(),
     ...(attachment ? { attachment } : {}),
@@ -322,7 +366,8 @@ export function sendMessage(
           ...t,
           messages: [...t.messages, message],
           lastMessageAt: message.sentAt,
-          unreadForLearner: 0,
+          unreadForLearner:
+            me.contactId === CHAT_SELF_LEARNER ? 0 : t.unreadForLearner,
         }
       : t,
   );
@@ -339,8 +384,9 @@ export function editMessage(
   const thread = THREADS.find((t) => t.threadId === threadId);
   if (!thread) return null;
 
+  const me = getChatSelfContactId();
   const existing = thread.messages.find((m) => m.messageId === messageId);
-  if (!existing || existing.senderId !== "contact-alex") return null;
+  if (!existing || existing.senderId !== me) return null;
   if (!text && !existing.attachment) return null;
   if (text === existing.body) return existing;
 
@@ -369,8 +415,9 @@ export function deleteMessage(threadId: string, messageId: string): boolean {
   const thread = THREADS.find((t) => t.threadId === threadId);
   if (!thread) return false;
 
+  const me = getChatSelfContactId();
   const existing = thread.messages.find((m) => m.messageId === messageId);
-  if (!existing || existing.senderId !== "contact-alex") return false;
+  if (!existing || existing.senderId !== me) return false;
 
   THREADS = THREADS.map((t) => {
     if (t.threadId !== threadId) return t;
@@ -390,25 +437,39 @@ export function ensureThreadWithContact(contactId: string): ChatThread {
   const contact = getContact(contactId);
   if (!contact) throw new Error(`Unknown contact ${contactId}`);
 
+  const self = getChatSelfContactId();
   const existing = THREADS.find(
     (t) =>
       t.participantIds.includes(contactId) &&
+      t.participantIds.includes(self) &&
       t.channelType === contact.defaultChannel,
   );
   if (existing) return existing;
 
   const participantIds =
     contact.defaultChannel === "employer"
-      ? ["contact-alex", contactId, ALEX_PROFILE.mentorId]
-      : ["contact-alex", contactId];
+      ? Array.from(
+          new Set([
+            CHAT_SELF_LEARNER,
+            CHAT_SELF_EMPLOYER,
+            ALEX_PROFILE.mentorId,
+            self,
+            contactId,
+          ]),
+        )
+      : Array.from(new Set([self, contactId]));
 
   const thread: ChatThread = {
-    threadId: `thread-new-${contactId}`,
+    threadId: `thread-new-${contactId}-${Date.now().toString(36)}`,
     learnerId: LEARNER_ID,
     channelType: contact.defaultChannel,
     title:
       contact.defaultChannel === "employer"
-        ? `${contact.name} · ${contact.organisation ?? "Employer"}`
+        ? `${getContact(CHAT_SELF_EMPLOYER)?.name ?? contact.name} · ${
+            getContact(CHAT_SELF_EMPLOYER)?.organisation ??
+            contact.organisation ??
+            "Employer"
+          }`
         : contact.name,
     participantIds,
     privacyNote: privacyNoteForChannel(contact.defaultChannel),
@@ -422,8 +483,9 @@ export function ensureThreadWithContact(contactId: string): ChatThread {
 }
 
 function otherParticipantNames(participantIds: string[]): string[] {
+  const self = getChatSelfContactId();
   return participantIds
-    .filter((id) => id !== "contact-alex")
+    .filter((id) => id !== self)
     .map((id) => getContact(id)?.name)
     .filter((name): name is string => Boolean(name));
 }
@@ -437,17 +499,19 @@ export function defaultGroupTitle(participantIds: string[]): string {
 }
 
 /**
- * Create a group chat with the learner plus at least one other person.
+ * Create a group chat with the signed-in viewer plus at least one other person.
  * Pass 2+ others for a typical multi-teacher / team group.
  */
 export function createGroupThread(
   participantIds: string[],
   title?: string,
 ): ChatThread {
+  const self = getChatSelfContactId();
+  const me = selfContact();
   const others = [
     ...new Set(
       participantIds.filter(
-        (id) => id !== "contact-alex" && Boolean(getContact(id)),
+        (id) => id !== self && Boolean(getContact(id)),
       ),
     ),
   ];
@@ -455,12 +519,13 @@ export function createGroupThread(
     throw new Error("Add at least one person to start a group chat.");
   }
 
-  const allIds = ["contact-alex", ...others];
+  const allIds = [self, ...others];
   const sortedKey = [...others].sort().join("|");
   const existing = THREADS.find((t) => {
     if (t.channelType !== "group") return false;
+    if (!t.participantIds.includes(self)) return false;
     const key = t.participantIds
-      .filter((id) => id !== "contact-alex")
+      .filter((id) => id !== self)
       .sort()
       .join("|");
     return key === sortedKey;
@@ -483,8 +548,8 @@ export function createGroupThread(
       {
         messageId: `sys-${Date.now().toString(36)}`,
         threadId,
-        senderId: "contact-alex",
-        senderName: ALEX_PROFILE.displayName,
+        senderId: me.contactId,
+        senderName: me.name,
         body: `Group created with ${otherParticipantNames(allIds).join(", ")}.`,
         sentAt: now,
       },
@@ -503,11 +568,13 @@ export function addParticipantsToThread(
   const thread = THREADS.find((t) => t.threadId === threadId);
   if (!thread || thread.channelType !== "group") return null;
 
+  const self = getChatSelfContactId();
+  const me = selfContact();
   const additions = [
     ...new Set(
       contactIds.filter(
         (id) =>
-          id !== "contact-alex" &&
+          id !== self &&
           Boolean(getContact(id)) &&
           !thread.participantIds.includes(id),
       ),
@@ -523,8 +590,8 @@ export function addParticipantsToThread(
   const notice: ChatMessage = {
     messageId: `sys-${Date.now().toString(36)}`,
     threadId,
-    senderId: "contact-alex",
-    senderName: ALEX_PROFILE.displayName,
+    senderId: me.contactId,
+    senderName: me.name,
     body: `Added ${addedNames.join(", ")} to the group.`,
     sentAt: now,
   };

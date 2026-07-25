@@ -41,6 +41,7 @@ type PanelView = "list" | "thread" | "contacts" | "group";
 
 export function LearnerChatDock() {
   const {
+    selfContactId,
     contacts,
     threads,
     unread,
@@ -344,7 +345,7 @@ export function LearnerChatDock() {
                     <ChatMessageItem
                       key={m.messageId}
                       message={m}
-                      mine={m.senderId === "contact-alex"}
+                      mine={m.senderId === selfContactId}
                       compact
                       onEdit={(messageId, body) => {
                         if (!activeThreadId) return;

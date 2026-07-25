@@ -124,31 +124,49 @@ const HELPLINES = [
   },
 ];
 
-export function LearnerSupportScreen() {
+export type SupportAudience = "learner" | "employer";
+
+export function LearnerSupportScreen({
+  audience = "learner",
+}: {
+  /** Shared Support page — learner or employer copy and message routes. */
+  audience?: SupportAudience;
+} = {}) {
   const { ensureThreadWithContact } = useLearnerChat();
+  const isEmployer = audience === "employer";
+  const messagesHref = isEmployer ? "/employer/messages" : "/learner/messages";
+  const supportHref = isEmployer ? "/employer/support" : "/learner/support";
 
   const openChat = (contactId: string) => () =>
     ensureThreadWithContact(contactId);
 
   return (
     <LearnerPageShell
+      eyebrow={isEmployer ? "Employer workspace" : "Learner portal"}
       title="Support"
-      description="Wellbeing, safeguarding, and everyday help — all in one place. Support chat stays private from your mentor unless you choose to involve them."
+      description={
+        isEmployer
+          ? "Ask GTA, raise a concern, or get help with an apprentice — GTA handles sensitive cases first. The apprentice is not contacted directly from employer concerns."
+          : "Wellbeing, safeguarding, and everyday help — all in one place. Support chat stays private from your mentor unless you choose to involve them."
+      }
     >
       <div className={styles.page}>
-        {/* Hero + urgent help */}
         <section className={styles.hero}>
           <div className={styles.heroMain}>
-            <p className={styles.heroEyebrow}>You are not on your own</p>
-            <h1 className={styles.heroTitle}>Support &amp; wellbeing</h1>
+            <p className={styles.heroEyebrow}>
+              {isEmployer ? "We're here for employers too" : "You are not on your own"}
+            </p>
+            <h1 className={styles.heroTitle}>
+              {isEmployer ? "Support & Concerns" : "Support & Wellbeing"}
+            </h1>
             <p className={styles.heroText}>
-              Whether it&apos;s your apprenticeship, life at work, or how
-              you&apos;re feeling — there&apos;s always someone here to help. Reach
-              out however feels easiest.
+              {isEmployer
+                ? "Whether you need clarity on progress, training arrangements, or you're worried about an apprentice — reach out to GTA. Sensitive concerns stay with GTA until the right next step is agreed."
+                : "Whether it's your apprenticeship, life at work, or how you're feeling — there's always someone here to help. Reach out however feels easiest."}
             </p>
             <div className={styles.heroChips}>
               <span className={styles.heroChip}>
-                <HeartIcon /> Confidential
+                <HeartIcon /> {isEmployer ? "GTA-first" : "Confidential"}
               </span>
               <span className={styles.heroChip}>
                 <ShieldIcon /> Safe &amp; supported
@@ -164,9 +182,9 @@ export function LearnerSupportScreen() {
               <AlertIcon /> Need help right now?
             </span>
             <p className={styles.urgentText}>
-              Talk to a trusted adult, message Safeguarding below, or call
-              Samaritans any time. If someone is in immediate danger, use
-              emergency services.
+              {isEmployer
+                ? "If an apprentice or colleague is at risk, message Safeguarding below or call Samaritans. If someone is in immediate danger, use emergency services."
+                : "Talk to a trusted adult, message Safeguarding below, or call Samaritans any time. If someone is in immediate danger, use emergency services."}
             </p>
             <div className={styles.urgentRow}>
               <a className={styles.urgentBtn} href="tel:116123">
@@ -175,7 +193,7 @@ export function LearnerSupportScreen() {
               <a
                 className={styles.urgentBtn}
                 data-variant="ghost"
-                href="/learner/messages"
+                href={messagesHref}
                 onClick={openChat("contact-safeguarding-dsl")}
               >
                 <ShieldIcon /> Message Safeguarding
@@ -184,35 +202,43 @@ export function LearnerSupportScreen() {
           </div>
         </section>
 
-        {/* Ways to get help */}
         <section className={styles.section}>
           <div className={styles.sectionHead}>
             <h2 className={styles.sectionTitle}>Ways to get help</h2>
           </div>
           <p className={styles.sectionSub}>
-            Start a conversation with the right person for what you need.
+            {isEmployer
+              ? "Start a conversation with the right GTA contact for what you need."
+              : "Start a conversation with the right person for what you need."}
           </p>
 
           <div className={styles.cardGrid}>
             <Link
               className={styles.helpCard}
               data-tone="red"
-              href="/learner/messages"
+              href={messagesHref}
               onClick={openChat("contact-support-gta")}
             >
               <span className={styles.iconChip}>
                 <ChatIcon />
               </span>
               <span className={styles.helpCardBody}>
-                <strong>GTA Support chat</strong>
+                <strong>{isEmployer ? "Ask GTA" : "GTA Support chat"}</strong>
                 <span>
-                  Welfare, Ask GTA questions, and navigating your
-                  apprenticeship.
+                  {isEmployer
+                    ? "General questions about delivery, reviews, attendance, or employer obligations."
+                    : "Welfare, Ask GTA questions, and navigating your apprenticeship."}
                 </span>
               </span>
-              <span className={styles.privacyTag}>
-                <LockIcon /> Private from your mentor
-              </span>
+              {!isEmployer ? (
+                <span className={styles.privacyTag}>
+                  <LockIcon /> Private from your mentor
+                </span>
+              ) : (
+                <span className={styles.privacyTag}>
+                  <LockIcon /> Handled by GTA first
+                </span>
+              )}
               <span className={styles.helpCardCta}>
                 Open Support chat <ArrowIcon />
               </span>
@@ -221,7 +247,7 @@ export function LearnerSupportScreen() {
             <Link
               className={styles.helpCard}
               data-tone="navy"
-              href="/learner/messages"
+              href={messagesHref}
               onClick={openChat(ALEX_PROFILE.mentorId)}
             >
               <span className={styles.iconChip}>
@@ -230,8 +256,9 @@ export function LearnerSupportScreen() {
               <span className={styles.helpCardBody}>
                 <strong>Progress mentor</strong>
                 <span>
-                  {ALEX_PROFILE.mentorName} — day-to-day pastoral and progress
-                  questions.
+                  {isEmployer
+                    ? `${ALEX_PROFILE.mentorName} — progress, reviews, and workplace arrangements for your apprentices.`
+                    : `${ALEX_PROFILE.mentorName} — day-to-day pastoral and progress questions.`}
                 </span>
               </span>
               <span className={styles.helpCardCta}>
@@ -239,53 +266,89 @@ export function LearnerSupportScreen() {
               </span>
             </Link>
 
-            <Link
-              className={styles.helpCard}
-              data-tone="green"
-              href="/learner/messages"
-              onClick={openChat(ALEX_PROFILE.tutorId)}
-            >
-              <span className={styles.iconChip}>
-                <TutorIcon />
-              </span>
-              <span className={styles.helpCardBody}>
-                <strong>Tutor</strong>
-                <span>
-                  {ALEX_PROFILE.tutorName} — academic and workshop questions.
+            {isEmployer ? (
+              <Link
+                className={styles.helpCard}
+                data-tone="green"
+                href={messagesHref}
+                onClick={openChat("contact-support-gta")}
+              >
+                <span className={styles.iconChip}>
+                  <TutorIcon />
                 </span>
-              </span>
-              <span className={styles.helpCardCta}>
-                Message tutor <ArrowIcon />
-              </span>
-            </Link>
+                <span className={styles.helpCardBody}>
+                  <strong>Clarify learner progress</strong>
+                  <span>
+                    Request clarification on progress summaries visible to
+                    employers — GTA will respond.
+                  </span>
+                </span>
+                <span className={styles.helpCardCta}>
+                  Ask about progress <ArrowIcon />
+                </span>
+              </Link>
+            ) : (
+              <Link
+                className={styles.helpCard}
+                data-tone="green"
+                href={messagesHref}
+                onClick={openChat(ALEX_PROFILE.tutorId)}
+              >
+                <span className={styles.iconChip}>
+                  <TutorIcon />
+                </span>
+                <span className={styles.helpCardBody}>
+                  <strong>Tutor</strong>
+                  <span>
+                    {ALEX_PROFILE.tutorName} — academic and workshop questions.
+                  </span>
+                </span>
+                <span className={styles.helpCardCta}>
+                  Message tutor <ArrowIcon />
+                </span>
+              </Link>
+            )}
 
             <Link
               className={styles.helpCard}
               data-tone="teal"
-              href="/learner/messages"
+              href={messagesHref}
               onClick={openChat("contact-safeguarding-dsl")}
             >
               <span className={styles.iconChip}>
                 <ShieldIcon />
               </span>
               <span className={styles.helpCardBody}>
-                <strong>Safeguarding</strong>
+                <strong>
+                  {isEmployer ? "Raise a concern" : "Safeguarding"}
+                </strong>
                 <span>
-                  Report a concern or talk privately with the Safeguarding
-                  team.
+                  {isEmployer
+                    ? "Raise a welfare or workplace concern about an apprentice. GTA handles this first — the learner is not contacted directly from this route."
+                    : "Report a concern or talk privately with the Safeguarding team."}
                 </span>
               </span>
               <span className={styles.privacyTag}>
-                <LockIcon /> Private from mentor &amp; tutor
+                <LockIcon />
+                {isEmployer
+                  ? " GTA first — learner not auto-contacted"
+                  : " Private from mentor & tutor"}
               </span>
               <span className={styles.helpCardCta}>
-                Open Safeguarding chat <ArrowIcon />
+                {isEmployer ? (
+                  <>
+                    Open concern chat <ArrowIcon />
+                  </>
+                ) : (
+                  <>
+                    Open Safeguarding chat <ArrowIcon />
+                  </>
+                )}
               </span>
             </Link>
           </div>
         </section>
 
-        {/* Safeguarding */}
         <section className={styles.safeguard}>
           <div className={styles.safeguardHead}>
             <span className={styles.safeguardBadge}>
@@ -294,11 +357,9 @@ export function LearnerSupportScreen() {
             <div className={styles.safeguardHeadText}>
               <h2>Safeguarding</h2>
               <p>
-                Safeguarding means keeping you safe from harm, abuse, bullying,
-                or neglect — at GTA, at work, or at home. If something
-                doesn&apos;t feel right for you or someone you know, tell a
-                Safeguarding Lead. You will be listened to, taken seriously, and
-                kept informed.
+                {isEmployer
+                  ? "Safeguarding means keeping apprentices safe from harm, abuse, bullying, or neglect — at GTA, at work, or at home. If something doesn't feel right about an apprentice or colleague, tell a Safeguarding Lead. You will be listened to and GTA will decide next steps."
+                  : "Safeguarding means keeping you safe from harm, abuse, bullying, or neglect — at GTA, at work, or at home. If something doesn't feel right for you or someone you know, tell a Safeguarding Lead. You will be listened to, taken seriously, and kept informed."}
               </p>
             </div>
           </div>
@@ -328,7 +389,7 @@ export function LearnerSupportScreen() {
                   </a>
                   <Link
                     className={styles.sgAction}
-                    href="/learner/messages"
+                    href={messagesHref}
                     onClick={openChat("contact-safeguarding-dsl")}
                   >
                     <ChatIcon /> Chat
@@ -357,19 +418,18 @@ export function LearnerSupportScreen() {
           </div>
 
           <div className={styles.policyRow}>
-            <Link className={styles.policyLink} href="/learner/support">
+            <Link className={styles.policyLink} href={supportHref}>
               <DocIcon /> Read the GTA safeguarding policy
             </Link>
           </div>
         </section>
 
-        {/* Privacy note */}
         <p className={styles.note}>
           <LockIcon />
           <span>
-            Confidential staff case notes and internal welfare assessments stay
-            with Support and authorised handlers. This page never shows those
-            records.
+            {isEmployer
+              ? "Internal GTA case notes and safeguarding detail are never shown in employer views. Concerns are handled by GTA before any learner contact."
+              : "Confidential staff case notes and internal welfare assessments stay with Support and authorised handlers. This page never shows those records."}
           </span>
         </p>
       </div>

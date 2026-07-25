@@ -22,6 +22,7 @@ import {
 import { getStandalonePorts } from "@/adapters/standalone";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
+import { EmployerDashboardScreen } from "./EmployerDashboardScreen";
 import { resolveWorkspaceStub } from "./workspace-stubs";
 
 /** Workspace-local stubs that duplicate shared operational queues. */
@@ -139,6 +140,23 @@ export async function renderWorkspacePage(
 
   if (workspace === "staff" && segment === "otj-approvals") {
     return <TutorOtjApprovalsScreen />;
+  }
+
+  if (workspace === "employer" && segment === "dashboard") {
+    return <EmployerDashboardScreen />;
+  }
+
+  if (workspace === "employer" && segment === "messages") {
+    return (
+      <LearnerMessagesScreen
+        eyebrow="Employer workspace"
+        description="Message your apprentice, GTA mentor, and others in your employer scope."
+      />
+    );
+  }
+
+  if (workspace === "employer" && segment === "support") {
+    return <LearnerSupportScreen audience="employer" />;
   }
 
   if (workspace === "employer" && segment === "otj") {

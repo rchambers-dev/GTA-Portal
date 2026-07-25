@@ -8,6 +8,10 @@ import {
   LearnerChatProvider,
   PortalShareProvider,
 } from "@/features/learner-portal";
+import {
+  CHAT_SELF_EMPLOYER,
+  CHAT_SELF_LEARNER,
+} from "@/features/learner-portal/domain/chat/store";
 import { DemoSessionProvider } from "./demo/DemoSessionProvider";
 import { PortalMain } from "./PortalMain";
 import { SidebarNavigation } from "./SidebarNavigation";
@@ -32,8 +36,12 @@ export function PortalShell({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  const isLearner = session.account.workspace === "learner";
+  const workspace = session.account.workspace;
+  const isLearner = workspace === "learner";
+  const isEmployer = workspace === "employer";
+  const withSharedChat = isLearner || isEmployer;
   const onMessagesPage = isMessagesRoute(pathname);
+  const chatSelfId = isEmployer ? CHAT_SELF_EMPLOYER : CHAT_SELF_LEARNER;
 
   const body = (
     <div
@@ -48,8 +56,8 @@ export function PortalShell({
 
   return (
     <DemoSessionProvider initialSession={session}>
-      {isLearner ? (
-        <LearnerChatProvider>
+      {withSharedChat ? (
+        <LearnerChatProvider selfContactId={chatSelfId}>
           <PortalShareProvider>{body}</PortalShareProvider>
         </LearnerChatProvider>
       ) : (

@@ -59,7 +59,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/employer/reviews", label: "Reviews", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/commitments", label: "Employer Commitments", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
-          { href: "/employer/support", label: "Employer Support & Concerns", permission: PERMISSIONS.EMPLOYER_ASK_GTA },
+          { href: "/employer/support", label: "Support & Concerns", permission: PERMISSIONS.EMPLOYER_ASK_GTA },
         ],
       },
     ]);

@@ -5,7 +5,7 @@ import { ChatComposer } from "../components/ChatComposer";
 import { ChatMessageItem } from "../components/ChatMessageItem";
 import { LearnerPageShell } from "../components/LearnerPageShell";
 import { useLearnerChat } from "../components/LearnerChatProvider";
-import { defaultGroupTitle } from "../domain/chat/store";
+import { CHAT_SELF_LEARNER, defaultGroupTitle } from "../domain/chat/store";
 import type { ChatChannelType, ChatContact, ChatThread } from "../domain/chat/types";
 import styles from "./LearnerMessagesScreen.module.css";
 
@@ -123,8 +123,15 @@ function AvatarStack({
   );
 }
 
-export function LearnerMessagesScreen() {
+export function LearnerMessagesScreen({
+  eyebrow = "Learner portal",
+  description = "Message one person, or start a group with teachers and others in your scope.",
+}: {
+  eyebrow?: string;
+  description?: string;
+} = {}) {
   const {
+    selfContactId,
     contacts,
     threads,
     markThreadRead,
@@ -173,13 +180,20 @@ export function LearnerMessagesScreen() {
     );
   }, [activeThreadId, getThreadById, threads]);
 
+  function threadUnreadCount(thread: ChatThread): number {
+    if (selfContactId === CHAT_SELF_LEARNER) return thread.unreadForLearner;
+    const last = thread.messages[thread.messages.length - 1];
+    if (last && last.senderId !== selfContactId) return 1;
+    return 0;
+  }
+
   const activeOtherContacts = useMemo(() => {
     if (!activeThread) return [];
     return activeThread.participantIds
-      .filter((id) => id !== "contact-alex")
+      .filter((id) => id !== selfContactId)
       .map((id) => getContactById(id))
       .filter((c): c is ChatContact => Boolean(c));
-  }, [activeThread, getContactById]);
+  }, [activeThread, getContactById, selfContactId]);
 
   const addableContacts = useMemo(() => {
     if (!activeThread) return contacts;
@@ -250,7 +264,7 @@ export function LearnerMessagesScreen() {
       );
     }
     const people = thread.participantIds
-      .filter((id) => id !== "contact-alex")
+      .filter((id) => id !== selfContactId)
       .map((id) => getContactById(id))
       .filter((c): c is ChatContact => Boolean(c));
     return (
@@ -289,7 +303,8 @@ export function LearnerMessagesScreen() {
   return (
     <LearnerPageShell
       title="Messages"
-      description="Message one person, or start a group with teachers and others in your scope."
+      description={description}
+      eyebrow={eyebrow}
       fill
       compactHeader
     >
@@ -395,9 +410,9 @@ export function LearnerMessagesScreen() {
                         {previewForThread(thread)}
                       </span>
                     </span>
-                    {thread.unreadForLearner > 0 ? (
+                    {threadUnreadCount(thread) > 0 ? (
                       <span className={styles.badge}>
-                        {thread.unreadForLearner}
+                        {threadUnreadCount(thread)}
                       </span>
                     ) : null}
                   </button>
@@ -461,7 +476,7 @@ export function LearnerMessagesScreen() {
                     onChange={(e) => setGroupTitle(e.target.value)}
                     placeholder={
                       selectedIds.length
-                        ? defaultGroupTitle(["contact-alex", ...selectedIds])
+                        ? defaultGroupTitle([selfContactId, ...selectedIds])
                         : "e.g. College catch-up"
                     }
                   />
@@ -586,7 +601,7 @@ export function LearnerMessagesScreen() {
                     <ChatMessageItem
                       key={m.messageId}
                       message={m}
-                      mine={m.senderId === "contact-alex"}
+                      mine={m.senderId === selfContactId}
                       onEdit={(messageId, body) => {
                         if (!activeThreadId) return;
                         editMessage(activeThreadId, messageId, body);

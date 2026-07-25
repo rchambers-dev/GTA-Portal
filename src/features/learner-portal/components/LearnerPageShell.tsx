@@ -8,6 +8,7 @@ export function LearnerPageShell({
   actions,
   fill = false,
   compactHeader = false,
+  eyebrow = "Learner portal",
 }: {
   title: string;
   description: string;
@@ -17,6 +18,8 @@ export function LearnerPageShell({
   fill?: boolean;
   /** Tighter page header so content (e.g. chat) gets more room. */
   compactHeader?: boolean;
+  /** Workspace label above the title (shared screens override this). */
+  eyebrow?: string;
 }) {
   const rootClass = [
     styles.root,
@@ -30,7 +33,7 @@ export function LearnerPageShell({
     <div className={rootClass}>
       <header className={styles.header}>
         <div>
-          <p className={styles.eyebrow}>Learner portal</p>
+          <p className={styles.eyebrow}>{eyebrow}</p>
           <h1 className={styles.title}>{title}</h1>
           <p className={styles.description}>{description}</p>
         </div>

@@ -4,12 +4,14 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
 import {
-  contactsForLearner,
+  CHAT_SELF_LEARNER,
+  contactsForViewer,
   ensureThreadWithContact as ensureThreadInStore,
   createGroupThread as createGroupInStore,
   addParticipantsToThread as addParticipantsInStore,
@@ -20,6 +22,7 @@ import {
   sendMessage as sendInStore,
   editMessage as editInStore,
   deleteMessage as deleteInStore,
+  setChatSelfContactId,
   unreadTotal,
 } from "../domain/chat/store";
 import type {
@@ -31,6 +34,7 @@ import type {
 } from "../domain/chat/types";
 
 type LearnerChatContextValue = {
+  selfContactId: string;
   contacts: ChatContact[];
   threads: ChatThread[];
   unread: number;
@@ -67,19 +71,29 @@ type LearnerChatContextValue = {
 
 const LearnerChatContext = createContext<LearnerChatContextValue | null>(null);
 
-export function LearnerChatProvider({ children }: { children: ReactNode }) {
+export function LearnerChatProvider({
+  children,
+  selfContactId = CHAT_SELF_LEARNER,
+}: {
+  children: ReactNode;
+  /** Signed-in chat identity — learner or employer contact id. */
+  selfContactId?: string;
+}) {
   const [version, setVersion] = useState(0);
   const [pendingShare, setPendingShare] =
     useState<ChatPortalLinkAttachment | null>(null);
   const [openDockSignal, setOpenDockSignal] = useState(0);
+
+  useEffect(() => {
+    setChatSelfContactId(selfContactId);
+    setVersion((v) => v + 1);
+  }, [selfContactId]);
 
   const refresh = useCallback(() => {
     setVersion((v) => v + 1);
   }, []);
 
   const markThreadRead = useCallback((threadId: string) => {
-    const thread = getThread(threadId);
-    if (!thread || thread.unreadForLearner === 0) return;
     markReadInStore(threadId);
     setVersion((v) => v + 1);
   }, []);
@@ -156,8 +170,10 @@ export function LearnerChatProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<LearnerChatContextValue>(() => {
     void version;
+    setChatSelfContactId(selfContactId);
     return {
-      contacts: contactsForLearner(),
+      selfContactId,
+      contacts: contactsForViewer(selfContactId),
       threads: listThreads(),
       unread: unreadTotal(),
       pendingShare,
@@ -178,6 +194,7 @@ export function LearnerChatProvider({ children }: { children: ReactNode }) {
     };
   }, [
     version,
+    selfContactId,
     pendingShare,
     openDockSignal,
     refresh,

@@ -82,7 +82,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       description: "Employer messaging with GTA.",
     },
     support: {
-      title: "Employer Support & Concerns",
+      title: "Support & Concerns",
       description: "GTA-first support and concern workflows — cases are handled by GTA before learner contact.",
     },
   },
