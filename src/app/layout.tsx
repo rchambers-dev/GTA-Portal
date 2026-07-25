@@ -17,10 +17,32 @@ const sourceSans = Source_Sans_3({
   display: "swap",
 });
 
+const SITE_URL = "https://gta-portal.vercel.app";
+const SITE_TITLE = "GTA Apprenticeship Portal";
+const SITE_DESCRIPTION =
+  "Manage apprentice progress, evidence, reviews and gateway activity securely in one place.";
+
 export const metadata: Metadata = {
-  title: "GTA Learner Lifecycle",
-  description:
-    "Standalone design shell for the GTA Learner Lifecycle and Evidence Pack module",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: `%s · ${SITE_TITLE}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_TITLE,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: SITE_TITLE,
+    type: "website",
+    locale: "en_GB",
+  },
+  twitter: {
+    card: "summary",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
 };
 
 /**

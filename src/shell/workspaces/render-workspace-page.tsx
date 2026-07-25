@@ -159,6 +159,10 @@ export async function renderWorkspacePage(
     return <LearnerSupportScreen audience="employer" />;
   }
 
+  if (workspace === "employer" && segment === "attendance") {
+    return <LearnerAttendanceScreen audience="employer" />;
+  }
+
   if (workspace === "employer" && segment === "otj") {
     return <EmployerOtjApprovalsScreen />;
   }

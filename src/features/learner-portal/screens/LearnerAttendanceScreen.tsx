@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import {
   LearnerPageShell,
   LearnerStatusChip,
@@ -12,13 +13,29 @@ import {
   ALEX_PROFILE,
   summariseAlexAttendance,
   summariseMissedLearning,
+  type LearnerAttendanceBreakdownItem,
+  type LearnerAttendanceDay,
   type LearnerAttendanceStatus,
   type LearnerMissedLearningItem,
 } from "../domain/mock-learner";
+import {
+  getEmployerAttendanceBundle,
+  getEmployerCaseload,
+} from "@/shell/workspaces/employer-dashboard-data";
 import styles from "./learner-pages.module.css";
-import Link from "next/link";
 
 type ChipTone = "neutral" | "green" | "amber" | "red" | "blue" | "navy";
+
+type AttendanceAudience = "learner" | "employer";
+
+type AttendanceView = {
+  learnerId: string;
+  displayName: string;
+  collegeDays: string;
+  attendancePercent: number;
+  days: LearnerAttendanceDay[];
+  breakdown: LearnerAttendanceBreakdownItem[];
+};
 
 function tone(status: LearnerAttendanceStatus): ChipTone {
   switch (status) {
@@ -61,7 +78,7 @@ function formatDate(iso: string): string {
   });
 }
 
-function dayKey(day: (typeof ALEX_ATTENDANCE_DAYS)[number]): string {
+function dayKey(day: LearnerAttendanceDay): string {
   return `${day.date}|${day.session}`;
 }
 
@@ -84,11 +101,59 @@ function buildConicGradient(
     : "var(--color-grey-100)";
 }
 
-export function LearnerAttendanceScreen() {
-  const summary = useMemo(() => summariseAlexAttendance(), []);
+function learnerAttendanceView(): AttendanceView {
+  return {
+    learnerId: ALEX_PROFILE.learnerId,
+    displayName: ALEX_PROFILE.displayName,
+    collegeDays: ALEX_PROFILE.collegeDays,
+    attendancePercent: ALEX_PROFILE.attendancePercent,
+    days: ALEX_ATTENDANCE_DAYS,
+    breakdown: ALEX_ATTENDANCE_BREAKDOWN,
+  };
+}
+
+export function LearnerAttendanceScreen({
+  audience = "learner",
+}: {
+  audience?: AttendanceAudience;
+} = {}) {
+  const isEmployer = audience === "employer";
+  const caseload = useMemo(
+    () => (isEmployer ? getEmployerCaseload() : []),
+    [isEmployer],
+  );
+  const [selectedLearnerId, setSelectedLearnerId] = useState(
+    () => caseload[0]?.learnerId ?? ALEX_PROFILE.learnerId,
+  );
+
+  useEffect(() => {
+    if (!isEmployer) return;
+    if (!caseload.some((a) => a.learnerId === selectedLearnerId)) {
+      setSelectedLearnerId(caseload[0]?.learnerId ?? ALEX_PROFILE.learnerId);
+    }
+  }, [caseload, isEmployer, selectedLearnerId]);
+
+  const view = useMemo((): AttendanceView => {
+    if (!isEmployer) return learnerAttendanceView();
+    return (
+      getEmployerAttendanceBundle(selectedLearnerId) ??
+      getEmployerAttendanceBundle(caseload[0]?.learnerId ?? "") ??
+      learnerAttendanceView()
+    );
+  }, [caseload, isEmployer, selectedLearnerId]);
+
+  const attendanceHref = isEmployer
+    ? "/employer/attendance"
+    : "/learner/attendance";
+  const showSwitcher = isEmployer && caseload.length > 1;
+
+  const summary = useMemo(
+    () => summariseAlexAttendance(view.breakdown),
+    [view.breakdown],
+  );
   const mixSlices = useMemo(
-    () => ALEX_ATTENDANCE_BREAKDOWN.filter((item) => item.count > 0),
-    [],
+    () => view.breakdown.filter((item) => item.count > 0),
+    [view.breakdown],
   );
   const mixTotal = useMemo(
     () => mixSlices.reduce((sum, item) => sum + item.count, 0),
@@ -100,15 +165,17 @@ export function LearnerAttendanceScreen() {
   );
 
   const outcomeSlices = useMemo(() => {
-    const attended = ALEX_ATTENDANCE_BREAKDOWN.filter(
-      (item) => item.status === "attended" || item.status === "late",
-    ).reduce((sum, item) => sum + item.count, 0);
-    const missed = ALEX_ATTENDANCE_BREAKDOWN.filter(
-      (item) =>
-        item.status === "authorised" ||
-        item.status === "unauthorised" ||
-        item.status === "absent",
-    ).reduce((sum, item) => sum + item.count, 0);
+    const attended = view.breakdown
+      .filter((item) => item.status === "attended" || item.status === "late")
+      .reduce((sum, item) => sum + item.count, 0);
+    const missed = view.breakdown
+      .filter(
+        (item) =>
+          item.status === "authorised" ||
+          item.status === "unauthorised" ||
+          item.status === "absent",
+      )
+      .reduce((sum, item) => sum + item.count, 0);
     return [
       {
         id: "attended",
@@ -125,7 +192,7 @@ export function LearnerAttendanceScreen() {
         color: "var(--color-red-500)",
       },
     ] as const;
-  }, []);
+  }, [view.breakdown]);
   const outcomeTotal = useMemo(
     () => outcomeSlices.reduce((sum, item) => sum + item.count, 0),
     [outcomeSlices],
@@ -139,7 +206,10 @@ export function LearnerAttendanceScreen() {
       ? 0
       : Math.round((outcomeSlices[0].count / outcomeTotal) * 100);
 
-  const missedLearning = useMemo(() => summariseMissedLearning(), []);
+  const missedLearning = useMemo(
+    () => summariseMissedLearning(view.days),
+    [view.days],
+  );
   const missedPieBackground = useMemo(
     () =>
       buildConicGradient(
@@ -189,21 +259,27 @@ export function LearnerAttendanceScreen() {
     }
   }
 
-  const [statusFilter, setStatusFilter] = useState<"all" | LearnerAttendanceStatus>(
-    "all",
-  );
+  const [statusFilter, setStatusFilter] = useState<
+    "all" | LearnerAttendanceStatus
+  >("all");
   const [dateQuery, setDateQuery] = useState("");
   const [daysOpen, setDaysOpen] = useState(false);
   const [expandedKey, setExpandedKey] = useState<string | null>(null);
 
+  useEffect(() => {
+    setStatusFilter("all");
+    setDateQuery("");
+    setExpandedKey(null);
+  }, [view.learnerId]);
+
   const filterOptions = useMemo(() => {
-    const present = new Set(ALEX_ATTENDANCE_DAYS.map((day) => day.status));
-    return ALEX_ATTENDANCE_BREAKDOWN.filter((item) => present.has(item.status));
-  }, []);
+    const present = new Set(view.days.map((day) => day.status));
+    return view.breakdown.filter((item) => present.has(item.status));
+  }, [view.breakdown, view.days]);
 
   const filteredDays = useMemo(() => {
     const query = dateQuery.trim().toLowerCase();
-    return ALEX_ATTENDANCE_DAYS.filter((day) => {
+    return view.days.filter((day) => {
       if (statusFilter !== "all" && day.status !== statusFilter) return false;
       if (!query) return true;
 
@@ -228,11 +304,11 @@ export function LearnerAttendanceScreen() {
 
       return haystack.includes(query);
     });
-  }, [statusFilter, dateQuery]);
+  }, [dateQuery, statusFilter, view.days]);
 
   const presetCounts = useMemo(() => {
     const counts: Record<"all" | LearnerAttendanceStatus, number> = {
-      all: ALEX_ATTENDANCE_DAYS.length,
+      all: view.days.length,
       attended: 0,
       late: 0,
       authorised: 0,
@@ -240,11 +316,11 @@ export function LearnerAttendanceScreen() {
       absent: 0,
       college_closed: 0,
     };
-    for (const day of ALEX_ATTENDANCE_DAYS) {
+    for (const day of view.days) {
       counts[day.status] += 1;
     }
     return counts;
-  }, []);
+  }, [view.days]);
 
   function shortPresetLabel(status: LearnerAttendanceStatus): string {
     switch (status) {
@@ -263,27 +339,73 @@ export function LearnerAttendanceScreen() {
     }
   }
 
+  const firstName = view.displayName.split(" ")[0] ?? view.displayName;
+  const missedAwayTitle = isEmployer
+    ? `Missed while ${firstName} was away`
+    : "Missed while you were away";
+  const missedAwayCopy = isEmployer
+    ? `Modules, tasks and workshop slots from days ${firstName} was not in college — catch these up so they do not fall behind.`
+    : "Modules, tasks and workshop slots from days you were not in college — catch these up so you do not fall behind.";
+  const glanceCopy = isEmployer
+    ? `Year-to-date college sessions — and what ${firstName} needs to catch up when they missed a day (college closures excluded from missed).`
+    : "Year-to-date college sessions — and what you need to catch up when you missed a day (college closures excluded from missed).";
+
   return (
     <LearnerPageShell
+      eyebrow={isEmployer ? "Employer workspace" : "Learner portal"}
       title="Attendance"
-      description={`College days are ${ALEX_PROFILE.collegeDays}. Overall attendance is ${ALEX_PROFILE.attendancePercent}%.`}
+      description={
+        isEmployer
+          ? `${view.displayName} · college days are ${view.collegeDays}. Overall attendance is ${view.attendancePercent}%.`
+          : `College days are ${view.collegeDays}. Overall attendance is ${view.attendancePercent}%.`
+      }
     >
       <div className={`${styles.stack} ${styles.attendanceRoot}`}>
+        {showSwitcher ? (
+          <div
+            className={styles.apprenticeSwitcher}
+            role="tablist"
+            aria-label="Select apprentice"
+          >
+            {caseload.map((apprentice) => {
+              const active = apprentice.learnerId === view.learnerId;
+              return (
+                <button
+                  key={apprentice.learnerId}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  className={
+                    active
+                      ? styles.apprenticeSwitcherActive
+                      : styles.apprenticeSwitcherBtn
+                  }
+                  onClick={() => setSelectedLearnerId(apprentice.learnerId)}
+                >
+                  <span className={styles.apprenticeSwitcherAvatar}>
+                    {apprentice.initials}
+                  </span>
+                  <span className={styles.apprenticeSwitcherText}>
+                    <strong>{apprentice.displayName}</strong>
+                    <span>{apprentice.attendancePercent}% attendance</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
+
         <div className={styles.grid}>
           <div className={styles.glance} data-tone="green">
             <p className={styles.glanceLabel}>Attendance</p>
-            <p className={styles.glanceValue}>
-              {ALEX_PROFILE.attendancePercent}%
-            </p>
+            <p className={styles.glanceValue}>{view.attendancePercent}%</p>
             <p className={styles.glanceHint}>
               {summary.present} of {summary.expected} expected sessions
             </p>
           </div>
           <div className={styles.glance} data-tone="navy">
             <p className={styles.glanceLabel}>Pattern</p>
-            <p className={styles.glanceValueSmall}>
-              {ALEX_PROFILE.collegeDays}
-            </p>
+            <p className={styles.glanceValueSmall}>{view.collegeDays}</p>
             <p className={styles.glanceHint}>Expected on campus</p>
           </div>
           <div className={styles.glance} data-tone="amber">
@@ -298,35 +420,30 @@ export function LearnerAttendanceScreen() {
         <section className={styles.attendanceChartCard}>
           <div className={styles.attendanceChartHead}>
             <h2 className={styles.sectionTitle}>Attendance at a glance</h2>
-            <p className={styles.attendanceChartCopy}>
-              Year-to-date college sessions — and what you need to catch up when
-              you missed a day (college closures excluded from missed).
-            </p>
+            <p className={styles.attendanceChartCopy}>{glanceCopy}</p>
           </div>
 
           <div className={styles.attendanceChartGrid}>
             <Shareable
               as="article"
               kind="view"
-              href="/learner/attendance"
+              href={attendanceHref}
               title="Attendance overall mix"
-              detail={`${ALEX_PROFILE.attendancePercent}% overall · year-to-date college sessions`}
+              detail={`${view.attendancePercent}% overall · year-to-date college sessions`}
               area="Attendance"
               actionLabel="Open chart"
               className={styles.attendanceChartPanel}
             >
-              <h3 className={styles.attendanceChartPanelTitle}>
-                Overall mix
-              </h3>
+              <h3 className={styles.attendanceChartPanelTitle}>Overall mix</h3>
               <div className={styles.attendanceChartBody}>
                 <div
                   className={styles.attendancePie}
                   style={{ background: mixPieBackground }}
                   role="img"
-                  aria-label={`Attendance mix pie chart: ${ALEX_PROFILE.attendancePercent}% overall`}
+                  aria-label={`Attendance mix pie chart: ${view.attendancePercent}% overall`}
                 >
                   <div className={styles.attendancePieHole}>
-                    <strong>{ALEX_PROFILE.attendancePercent}%</strong>
+                    <strong>{view.attendancePercent}%</strong>
                     <span>Overall</span>
                   </div>
                 </div>
@@ -360,7 +477,7 @@ export function LearnerAttendanceScreen() {
             <Shareable
               as="article"
               kind="view"
-              href="/learner/attendance"
+              href={attendanceHref}
               title="Lessons attended vs missed"
               detail={`${attendedPercent}% attended · ${outcomeSlices.map((s) => `${s.count} ${s.label.toLowerCase()}`).join(" · ")}`}
               area="Attendance"
@@ -377,10 +494,7 @@ export function LearnerAttendanceScreen() {
                   role="img"
                   aria-label={`Attended versus missed: ${attendedPercent}% attended`}
                 >
-                  <div
-                    className={styles.attendancePieHole}
-                    data-tone="split"
-                  >
+                  <div className={styles.attendancePieHole} data-tone="split">
                     <strong>{attendedPercent}%</strong>
                     <span>Attended</span>
                   </div>
@@ -410,8 +524,8 @@ export function LearnerAttendanceScreen() {
             <Shareable
               as="article"
               kind="view"
-              href="/learner/attendance"
-              title="Missed while you were away"
+              href={attendanceHref}
+              title={missedAwayTitle}
               detail={`${missedLearning.stillNeeded} still need catch-up`}
               area="Attendance"
               actionLabel="Open catch-up overview"
@@ -419,12 +533,9 @@ export function LearnerAttendanceScreen() {
             >
               <div className={styles.attendanceMissedHead}>
                 <h3 className={styles.attendanceChartPanelTitle}>
-                  Missed while you were away
+                  {missedAwayTitle}
                 </h3>
-                <p className={styles.attendanceMissedCopy}>
-                  Modules, tasks and workshop slots from days you were not in
-                  college — catch these up so you do not fall behind.
-                </p>
+                <p className={styles.attendanceMissedCopy}>{missedAwayCopy}</p>
               </div>
 
               <div className={styles.attendanceMissedBody}>
@@ -524,7 +635,7 @@ export function LearnerAttendanceScreen() {
             <span className={styles.attendanceDayStubMain}>
               <strong>Recent college days</strong>
               <span>
-                {ALEX_ATTENDANCE_DAYS.length} sessions · tap a day for notes
+                {view.days.length} sessions · tap a day for notes
               </span>
             </span>
             <span className={styles.attendanceDayStubHint}>
@@ -589,7 +700,8 @@ export function LearnerAttendanceScreen() {
                           setExpandedKey(null);
                         }}
                       >
-                        {shortPresetLabel(item.status)} ({presetCounts[item.status]})
+                        {shortPresetLabel(item.status)} (
+                        {presetCounts[item.status]})
                       </button>
                     ))}
                   </div>
@@ -597,8 +709,7 @@ export function LearnerAttendanceScreen() {
               </div>
 
               <p className={styles.attendanceResultHint}>
-                Showing {filteredDays.length} of {ALEX_ATTENDANCE_DAYS.length}{" "}
-                sessions
+                Showing {filteredDays.length} of {view.days.length} sessions
                 {statusFilter !== "all"
                   ? ` · ${shortPresetLabel(statusFilter)}`
                   : null}
@@ -661,14 +772,18 @@ export function LearnerAttendanceScreen() {
                             {day.missedItems && day.missedItems.length > 0 ? (
                               <div className={styles.attendanceDayMissed}>
                                 <p className={styles.attendanceDayMissedTitle}>
-                                  What you missed this day
+                                  {isEmployer
+                                    ? "What was missed this day"
+                                    : "What you missed this day"}
                                 </p>
                                 <ul className={styles.attendanceDayMissedList}>
                                   {day.missedItems.map((item) => (
                                     <li key={item.id}>
                                       <Link
                                         href={item.href}
-                                        className={styles.attendanceDayMissedLink}
+                                        className={
+                                          styles.attendanceDayMissedLink
+                                        }
                                       >
                                         <span>
                                           <strong>{item.title}</strong>
@@ -684,7 +799,9 @@ export function LearnerAttendanceScreen() {
                                             item.catchUpStatus,
                                           )}
                                         >
-                                          {missedCatchUpLabel(item.catchUpStatus)}
+                                          {missedCatchUpLabel(
+                                            item.catchUpStatus,
+                                          )}
                                         </LearnerStatusChip>
                                       </Link>
                                     </li>

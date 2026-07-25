@@ -1,4 +1,6 @@
 import {
+  ALEX_ATTENDANCE_BREAKDOWN,
+  ALEX_ATTENDANCE_DAYS,
   ALEX_OTJ_ENTRIES,
   ALEX_PROFILE,
   ALEX_REVIEWS,
@@ -6,6 +8,8 @@ import {
   isOtjCatchUpEntry,
   otjHours,
   summariseOtjHours,
+  type LearnerAttendanceBreakdownItem,
+  type LearnerAttendanceDay,
   type LearnerOtjEntry,
   type LearnerReviewSummary,
 } from "@/features/learner-portal/domain/mock-learner";
@@ -22,6 +26,7 @@ export type EmployerApprentice = {
   plannedProgressPercent: number;
   actualProgressPercent: number;
   nextReviewDate: string;
+  collegeDays: string;
   /** OTJ entries waiting for employer agreement. */
   otjPendingCount: number;
   otjPendingHours: number;
@@ -29,11 +34,168 @@ export type EmployerApprentice = {
   linked: boolean;
 };
 
+/** Attendance bundle shown on the shared Attendance page for one apprentice. */
+export type EmployerAttendanceBundle = {
+  learnerId: string;
+  displayName: string;
+  collegeDays: string;
+  attendancePercent: number;
+  days: LearnerAttendanceDay[];
+  breakdown: LearnerAttendanceBreakdownItem[];
+};
+
 /** The employer signed into the workspace (workplace contact for the account). */
 export const EMPLOYER_VIEWER = {
   displayName: ALEX_PROFILE.employerContact,
   employerName: ALEX_PROFILE.employerName,
 } as const;
+
+function remapMissedHrefsForEmployer(
+  days: LearnerAttendanceDay[],
+): LearnerAttendanceDay[] {
+  return days.map((day) => ({
+    ...day,
+    missedItems: day.missedItems?.map((item) => ({
+      ...item,
+      href: "/employer/progress",
+    })),
+  }));
+}
+
+/**
+ * Second apprentice — lighter demo attendance so the student switcher has
+ * something distinct to show.
+ */
+const JORDAN_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
+  {
+    date: "2026-07-14",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "attended",
+  },
+  {
+    date: "2026-07-13",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "attended",
+  },
+  {
+    date: "2026-07-07",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "attended",
+  },
+  {
+    date: "2026-07-06",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "late",
+    note: "Arrived 15 minutes after start — bus delay.",
+  },
+  {
+    date: "2026-06-30",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "authorised",
+    note: "Authorised dental appointment — employer aware.",
+    missedItems: [
+      {
+        id: "jb-miss-1",
+        kind: "workshop",
+        title: "Wheel bearing practical",
+        detail: "Workshop demo — catch up with tutor notes.",
+        moduleCode: "MV-102",
+        href: "/employer/progress",
+        catchUpStatus: "needed",
+      },
+    ],
+  },
+  {
+    date: "2026-06-29",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "attended",
+  },
+  {
+    date: "2026-06-23",
+    dayName: "Tuesday",
+    session: "Workshop AM",
+    status: "college_closed",
+    note: "Staff development day — college closed to learners.",
+  },
+  {
+    date: "2026-06-22",
+    dayName: "Monday",
+    session: "Theory AM",
+    status: "unauthorised",
+    note: "No contact received — employer notified.",
+    missedItems: [
+      {
+        id: "jb-miss-2",
+        kind: "module",
+        title: "Steering geometry intro",
+        detail: "Theory session missed — notes on portal.",
+        moduleCode: "MV-102",
+        href: "/employer/progress",
+        catchUpStatus: "in_progress",
+      },
+      {
+        id: "jb-miss-3",
+        kind: "cea",
+        title: "Steering evidence sheet",
+        detail: "CEA task issued that morning.",
+        moduleCode: "MV-102",
+        href: "/employer/progress",
+        catchUpStatus: "needed",
+      },
+    ],
+  },
+];
+
+const JORDAN_ATTENDANCE_BREAKDOWN: LearnerAttendanceBreakdownItem[] = [
+  {
+    status: "attended",
+    label: "Attended",
+    count: 22,
+    color: "var(--color-green-600)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "late",
+    label: "Late",
+    count: 3,
+    color: "var(--color-amber-500)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "authorised",
+    label: "Authorised absence",
+    count: 2,
+    color: "var(--color-navy-600)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "unauthorised",
+    label: "Unauthorised absence",
+    count: 2,
+    color: "var(--color-red-600)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "absent",
+    label: "Absent",
+    count: 0,
+    color: "var(--color-red-400)",
+    countsTowardPercent: true,
+  },
+  {
+    status: "college_closed",
+    label: "College closed",
+    count: 3,
+    color: "var(--color-grey-600)",
+    countsTowardPercent: false,
+  },
+];
 
 function buildAlexApprentice(): EmployerApprentice {
   const otjSummary = summariseOtjHours(ALEX_OTJ_ENTRIES);
@@ -48,6 +210,7 @@ function buildAlexApprentice(): EmployerApprentice {
     plannedProgressPercent: ALEX_PROFILE.plannedProgressPercent,
     actualProgressPercent: ALEX_PROFILE.actualProgressPercent,
     nextReviewDate: ALEX_PROFILE.nextReviewDate,
+    collegeDays: ALEX_PROFILE.collegeDays,
     otjPendingCount: otjSummary.awaitingEmployerCount,
     otjPendingHours: otjSummary.awaitingEmployerHours,
     linked: true,
@@ -56,7 +219,6 @@ function buildAlexApprentice(): EmployerApprentice {
 
 /**
  * Second apprentice — lightweight demo record so the caseload feels real.
- * Detail screens are not wired for this learner yet.
  */
 const JORDAN_APPRENTICE: EmployerApprentice = {
   learnerId: "lrn-jordan-blake",
@@ -69,6 +231,7 @@ const JORDAN_APPRENTICE: EmployerApprentice = {
   plannedProgressPercent: 20,
   actualProgressPercent: 18,
   nextReviewDate: "2026-09-02",
+  collegeDays: "Monday & Tuesday",
   otjPendingCount: 0,
   otjPendingHours: 0,
   linked: false,
@@ -76,6 +239,32 @@ const JORDAN_APPRENTICE: EmployerApprentice = {
 
 export function getEmployerCaseload(): EmployerApprentice[] {
   return [buildAlexApprentice(), JORDAN_APPRENTICE];
+}
+
+export function getEmployerAttendanceBundle(
+  learnerId: string,
+): EmployerAttendanceBundle | null {
+  if (learnerId === ALEX_PROFILE.learnerId) {
+    return {
+      learnerId: ALEX_PROFILE.learnerId,
+      displayName: ALEX_PROFILE.displayName,
+      collegeDays: ALEX_PROFILE.collegeDays,
+      attendancePercent: ALEX_PROFILE.attendancePercent,
+      days: remapMissedHrefsForEmployer(ALEX_ATTENDANCE_DAYS),
+      breakdown: ALEX_ATTENDANCE_BREAKDOWN,
+    };
+  }
+  if (learnerId === JORDAN_APPRENTICE.learnerId) {
+    return {
+      learnerId: JORDAN_APPRENTICE.learnerId,
+      displayName: JORDAN_APPRENTICE.displayName,
+      collegeDays: JORDAN_APPRENTICE.collegeDays,
+      attendancePercent: JORDAN_APPRENTICE.attendancePercent,
+      days: JORDAN_ATTENDANCE_DAYS,
+      breakdown: JORDAN_ATTENDANCE_BREAKDOWN,
+    };
+  }
+  return null;
 }
 
 /** OTJ entries across the caseload that still need employer agreement. */

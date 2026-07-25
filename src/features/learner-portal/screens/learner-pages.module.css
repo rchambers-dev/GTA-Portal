@@ -1594,6 +1594,69 @@ a.otjGapAlert[data-kind="never"]:hover {
   gap: var(--space-5);
 }
 
+.apprenticeSwitcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.apprenticeSwitcherBtn,
+.apprenticeSwitcherActive {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.apprenticeSwitcherBtn:hover {
+  border-color: var(--action-primary);
+}
+
+.apprenticeSwitcherActive {
+  border-color: var(--color-navy-700);
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--color-navy-700) 12%, white) 0%,
+      var(--color-white) 70%
+    );
+  box-shadow: inset 3px 0 0 var(--color-navy-700);
+}
+
+.apprenticeSwitcherAvatar {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: none;
+  border-radius: 999px;
+  background: var(--color-navy-700);
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.apprenticeSwitcherText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.apprenticeSwitcherText strong {
+  font-weight: 650;
+}
+
+.apprenticeSwitcherText span {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
 .attendanceChartCard,
 .attendanceDayCard {
   display: flex;

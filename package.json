@@ -1,8 +1,8 @@
 {
-  "name": "gta-learner-lifecycle",
+  "name": "gta-portal",
   "version": "0.1.0",
   "private": true,
-  "description": "Modular GTA Learner Lifecycle and Evidence Pack feature (standalone shell for design approval)",
+  "description": "GTA Apprenticeship Portal — apprentice progress, evidence, reviews and gateway activity in one place",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
