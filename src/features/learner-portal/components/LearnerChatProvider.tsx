@@ -11,6 +11,9 @@ import {
 import {
   contactsForLearner,
   ensureThreadWithContact as ensureThreadInStore,
+  createGroupThread as createGroupInStore,
+  addParticipantsToThread as addParticipantsInStore,
+  getContact,
   getThread,
   listThreads,
   markThreadRead as markReadInStore,
@@ -47,6 +50,15 @@ type LearnerChatContextValue = {
   ) => ChatMessage | null;
   deleteMessage: (threadId: string, messageId: string) => boolean;
   ensureThreadWithContact: (contactId: string) => ChatThread;
+  createGroupThread: (
+    participantIds: string[],
+    title?: string,
+  ) => ChatThread;
+  addParticipantsToThread: (
+    threadId: string,
+    contactIds: string[],
+  ) => ChatThread | null;
+  getContactById: (contactId: string) => ChatContact | undefined;
   getThreadById: (threadId: string) => ChatThread | undefined;
   queueShare: (link: ChatPortalLinkAttachment) => void;
   clearPendingShare: () => void;
@@ -102,6 +114,29 @@ export function LearnerChatProvider({ children }: { children: ReactNode }) {
     return thread;
   }, []);
 
+  const createGroupThread = useCallback(
+    (participantIds: string[], title?: string) => {
+      const thread = createGroupInStore(participantIds, title);
+      setVersion((v) => v + 1);
+      return thread;
+    },
+    [],
+  );
+
+  const addParticipantsToThread = useCallback(
+    (threadId: string, contactIds: string[]) => {
+      const thread = addParticipantsInStore(threadId, contactIds);
+      if (thread) setVersion((v) => v + 1);
+      return thread;
+    },
+    [],
+  );
+
+  const getContactById = useCallback(
+    (contactId: string) => getContact(contactId),
+    [],
+  );
+
   const getThreadById = useCallback(
     (threadId: string) => getThread(threadId),
     [],
@@ -133,6 +168,9 @@ export function LearnerChatProvider({ children }: { children: ReactNode }) {
       editMessage,
       deleteMessage,
       ensureThreadWithContact,
+      createGroupThread,
+      addParticipantsToThread,
+      getContactById,
       getThreadById,
       queueShare,
       clearPendingShare,
@@ -148,6 +186,9 @@ export function LearnerChatProvider({ children }: { children: ReactNode }) {
     editMessage,
     deleteMessage,
     ensureThreadWithContact,
+    createGroupThread,
+    addParticipantsToThread,
+    getContactById,
     getThreadById,
     queueShare,
     clearPendingShare,

@@ -1,6 +1,7 @@
 import { ALEX_PROFILE } from "../mock-learner";
 import {
   privacyNoteForChannel,
+  privacyNoteForGroup,
   type ChatAttachment,
   type ChatContact,
   type ChatMessage,
@@ -219,6 +220,49 @@ let THREADS: ChatThread[] = [
       ),
     ],
   },
+  {
+    threadId: "thread-group-college",
+    learnerId: LEARNER_ID,
+    channelType: "group",
+    title: "College catch-up",
+    participantIds: [
+      "contact-alex",
+      ALEX_PROFILE.mentorId,
+      ALEX_PROFILE.tutorId,
+    ],
+    privacyNote: privacyNoteForGroup([
+      ALEX_PROFILE.mentorName,
+      ALEX_PROFILE.tutorName,
+    ]),
+    lastMessageAt: "2026-07-22T09:40:00Z",
+    unreadForLearner: 1,
+    messages: [
+      msg(
+        "thread-group-college",
+        "g1",
+        ALEX_PROFILE.mentorId,
+        ALEX_PROFILE.mentorName,
+        "Quick group so Daniel and I can both see workshop prep for Tuesday.",
+        "2026-07-22T09:15:00Z",
+      ),
+      msg(
+        "thread-group-college",
+        "g2",
+        ALEX_PROFILE.tutorId,
+        ALEX_PROFILE.tutorName,
+        "Thanks Reiss — Alex, bring the inspection sheet and we’ll mark after lunch.",
+        "2026-07-22T09:28:00Z",
+      ),
+      msg(
+        "thread-group-college",
+        "g3",
+        "contact-alex",
+        ALEX_PROFILE.displayName,
+        "Got it — sheet is on my phone and printed.",
+        "2026-07-22T09:40:00Z",
+      ),
+    ],
+  },
 ];
 
 export function contactsForLearner(): ChatContact[] {
@@ -375,4 +419,146 @@ export function ensureThreadWithContact(contactId: string): ChatThread {
 
   THREADS = [thread, ...THREADS];
   return thread;
+}
+
+function otherParticipantNames(participantIds: string[]): string[] {
+  return participantIds
+    .filter((id) => id !== "contact-alex")
+    .map((id) => getContact(id)?.name)
+    .filter((name): name is string => Boolean(name));
+}
+
+export function defaultGroupTitle(participantIds: string[]): string {
+  const names = otherParticipantNames(participantIds);
+  if (names.length === 0) return "Group chat";
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} & ${names[1]}`;
+  return `${names[0]}, ${names[1]} +${names.length - 2}`;
+}
+
+/**
+ * Create a group chat with the learner plus at least one other person.
+ * Pass 2+ others for a typical multi-teacher / team group.
+ */
+export function createGroupThread(
+  participantIds: string[],
+  title?: string,
+): ChatThread {
+  const others = [
+    ...new Set(
+      participantIds.filter(
+        (id) => id !== "contact-alex" && Boolean(getContact(id)),
+      ),
+    ),
+  ];
+  if (others.length < 1) {
+    throw new Error("Add at least one person to start a group chat.");
+  }
+
+  const allIds = ["contact-alex", ...others];
+  const sortedKey = [...others].sort().join("|");
+  const existing = THREADS.find((t) => {
+    if (t.channelType !== "group") return false;
+    const key = t.participantIds
+      .filter((id) => id !== "contact-alex")
+      .sort()
+      .join("|");
+    return key === sortedKey;
+  });
+  if (existing) return existing;
+
+  const resolvedTitle = (title ?? "").trim() || defaultGroupTitle(allIds);
+  const now = new Date().toISOString();
+  const threadId = `thread-group-${Date.now().toString(36)}`;
+  const thread: ChatThread = {
+    threadId,
+    learnerId: LEARNER_ID,
+    channelType: "group",
+    title: resolvedTitle,
+    participantIds: allIds,
+    privacyNote: privacyNoteForGroup(otherParticipantNames(allIds)),
+    lastMessageAt: now,
+    unreadForLearner: 0,
+    messages: [
+      {
+        messageId: `sys-${Date.now().toString(36)}`,
+        threadId,
+        senderId: "contact-alex",
+        senderName: ALEX_PROFILE.displayName,
+        body: `Group created with ${otherParticipantNames(allIds).join(", ")}.`,
+        sentAt: now,
+      },
+    ],
+  };
+
+  THREADS = [thread, ...THREADS];
+  return thread;
+}
+
+/** Add people to an existing group chat. */
+export function addParticipantsToThread(
+  threadId: string,
+  contactIds: string[],
+): ChatThread | null {
+  const thread = THREADS.find((t) => t.threadId === threadId);
+  if (!thread || thread.channelType !== "group") return null;
+
+  const additions = [
+    ...new Set(
+      contactIds.filter(
+        (id) =>
+          id !== "contact-alex" &&
+          Boolean(getContact(id)) &&
+          !thread.participantIds.includes(id),
+      ),
+    ),
+  ];
+  if (additions.length === 0) return thread;
+
+  const nextIds = [...thread.participantIds, ...additions];
+  const addedNames = additions
+    .map((id) => getContact(id)?.name)
+    .filter((name): name is string => Boolean(name));
+  const now = new Date().toISOString();
+  const notice: ChatMessage = {
+    messageId: `sys-${Date.now().toString(36)}`,
+    threadId,
+    senderId: "contact-alex",
+    senderName: ALEX_PROFILE.displayName,
+    body: `Added ${addedNames.join(", ")} to the group.`,
+    sentAt: now,
+  };
+
+  let updated: ChatThread | null = null;
+  THREADS = THREADS.map((t) => {
+    if (t.threadId !== threadId) return t;
+    updated = {
+      ...t,
+      participantIds: nextIds,
+      privacyNote: privacyNoteForGroup(otherParticipantNames(nextIds)),
+      lastMessageAt: now,
+      messages: [...t.messages, notice],
+    };
+    return updated;
+  });
+
+  return updated;
+}
+
+export function renameGroupThread(
+  threadId: string,
+  title: string,
+): ChatThread | null {
+  const next = title.trim();
+  if (!next) return null;
+  const thread = THREADS.find((t) => t.threadId === threadId);
+  if (!thread || thread.channelType !== "group") return null;
+
+  let updated: ChatThread | null = null;
+  THREADS = THREADS.map((t) => {
+    if (t.threadId !== threadId) return t;
+    updated = { ...t, title: next };
+    return updated;
+  });
+  return updated;
 }

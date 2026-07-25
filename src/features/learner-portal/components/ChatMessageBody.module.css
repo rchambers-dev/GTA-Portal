@@ -30,6 +30,10 @@
   background: color-mix(in srgb, var(--color-navy-50) 80%, white);
 }
 
+.mediaLink video.media {
+  background: #0b1018;
+}
+
 .gifBadge {
   position: absolute;
   left: 0.4rem;
@@ -41,6 +45,23 @@
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.04em;
+}
+
+.stickerWrap {
+  display: block;
+  width: fit-content;
+  max-width: min(9.5rem, 46vw);
+  line-height: 0;
+}
+
+.sticker {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 9.5rem;
+  object-fit: contain;
+  background: transparent;
+  pointer-events: none;
 }
 
 .fileMine,

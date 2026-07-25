@@ -152,6 +152,53 @@
   box-shadow: inset 3px 0 0 var(--action-primary);
 }
 
+.threadRow[data-selected="true"] {
+  background: color-mix(in srgb, var(--action-primary) 8%, white);
+  border-color: color-mix(in srgb, var(--action-primary) 28%, white);
+}
+
+.pickMark {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--action-primary);
+  flex-shrink: 0;
+}
+
+.threadRow[data-selected="true"] .pickMark {
+  background: var(--action-primary);
+  border-color: var(--action-primary);
+  color: white;
+}
+
+.createGroupBtn {
+  margin: 0.35rem 0.2rem 0.15rem;
+  border: none;
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  background: var(--action-primary);
+  color: white;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.createGroupBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.createGroupBtn:not(:disabled):hover {
+  filter: brightness(0.96);
+}
+
 .avatar {
   width: 2rem;
   height: 2rem;
@@ -212,6 +259,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow: visible;
 }
 
 .messages {

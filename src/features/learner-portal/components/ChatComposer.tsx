@@ -14,10 +14,13 @@ import {
 import {
   CHAT_EMOJI_CATEGORIES,
   CHAT_GIF_MOODS,
-  CHAT_STICKERS,
+  CHAT_STICKER_MOODS,
   formatFileSize,
   searchChatGifs,
+  searchChatStickers,
   searchEmojis,
+  type ChatGifOption,
+  type ChatStickerOption,
 } from "../domain/chat/composer-assets";
 import { searchShareablePortalLinks } from "../domain/chat/portal-links";
 import type { ChatAttachment, ChatSendPayload } from "../domain/chat/types";
@@ -26,6 +29,7 @@ import {
   toChatPortalLink,
 } from "../domain/portal-share/types";
 import { useLearnerChat } from "./LearnerChatProvider";
+import { GifGridTile } from "./GifGridTile";
 import styles from "./ChatComposer.module.css";
 
 type TrayTab = "emoji" | "gif" | "sticker";
@@ -81,8 +85,21 @@ export function ChatComposer({
     CHAT_EMOJI_CATEGORIES[0]?.id ?? "smileys",
   );
   const [gifMood, setGifMood] = useState(CHAT_GIF_MOODS[0]?.id ?? "trending");
+  const [stickerMood, setStickerMood] = useState(
+    CHAT_STICKER_MOODS[0]?.id ?? "trending",
+  );
   const [emojiQuery, setEmojiQuery] = useState("");
   const [gifQuery, setGifQuery] = useState("");
+  const [stickerQuery, setStickerQuery] = useState("");
+  const [brokenGifIds, setBrokenGifIds] = useState<string[]>([]);
+  const [brokenStickerIds, setBrokenStickerIds] = useState<string[]>([]);
+  const [liveGifs, setLiveGifs] = useState<ChatGifOption[] | null>(null);
+  const [liveStickers, setLiveStickers] = useState<ChatStickerOption[] | null>(
+    null,
+  );
+  const [gifsLoading, setGifsLoading] = useState(false);
+  const [stickersLoading, setStickersLoading] = useState(false);
+  const [hoveredStickerId, setHoveredStickerId] = useState<string | null>(null);
   const [linkQuery, setLinkQuery] = useState("");
   const [attachment, setAttachment] = useState<ChatAttachment | null>(null);
   const rootRef = useRef<HTMLFormElement>(null);
@@ -108,34 +125,150 @@ export function ChatComposer({
   }, [pendingShare, clearPendingShare]);
 
   const activeMood = CHAT_GIF_MOODS.find((m) => m.id === gifMood) ?? null;
+  const activeStickerMood =
+    CHAT_STICKER_MOODS.find((m) => m.id === stickerMood) ?? null;
   const emojis = searchEmojis(emojiQuery, emojiCategory);
-  const gifs = searchChatGifs(gifQuery, activeMood?.tag ?? null);
+  const gifTabOpen = shell === "tray" && trayTab === "gif";
+  const stickerTabOpen = shell === "tray" && trayTab === "sticker";
+  // Live GIPHY results when the API is configured; curated catalog otherwise.
+  const gifs = (
+    liveGifs ?? searchChatGifs(gifQuery, activeMood?.tag ?? null)
+  ).filter((gif) => !brokenGifIds.includes(gif.id));
+  const stickers = (
+    liveStickers ??
+    searchChatStickers(stickerQuery, activeStickerMood?.tag ?? null)
+  ).filter((sticker) => !brokenStickerIds.includes(sticker.id));
+
+  useEffect(() => {
+    if (!gifTabOpen) return;
+    const term = gifQuery.trim() || (activeMood?.searchTerm ?? "");
+    const controller = new AbortController();
+    setGifsLoading(true);
+    const timer = setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `/api/gifs?type=gifs&q=${encodeURIComponent(term)}&limit=24`,
+          { signal: controller.signal },
+        );
+        if (!response.ok) throw new Error(`GIF API ${response.status}`);
+        const payload = (await response.json()) as {
+          configured: boolean;
+          items?: {
+            id: string;
+            title: string;
+            url: string;
+            previewUrl: string;
+            stillUrl?: string;
+            mp4Url?: string;
+          }[];
+          gifs?: {
+            id: string;
+            title: string;
+            url: string;
+            previewUrl: string;
+            stillUrl?: string;
+            mp4Url?: string;
+          }[];
+        };
+        if (!payload.configured) {
+          setLiveGifs(null);
+          return;
+        }
+        const items = payload.items ?? payload.gifs ?? [];
+        setLiveGifs(
+          items.map((gif) => ({
+            ...gif,
+            type: "gif" as const,
+            tags: [],
+          })),
+        );
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setLiveGifs(null);
+      } finally {
+        if (!controller.signal.aborted) setGifsLoading(false);
+      }
+    }, 300);
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [gifTabOpen, gifQuery, activeMood?.searchTerm]);
+
+  useEffect(() => {
+    if (!stickerTabOpen) return;
+    const term =
+      stickerQuery.trim() || (activeStickerMood?.searchTerm ?? "");
+    const controller = new AbortController();
+    setStickersLoading(true);
+    const timer = setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `/api/gifs?type=stickers&q=${encodeURIComponent(term)}&limit=24`,
+          { signal: controller.signal },
+        );
+        if (!response.ok) throw new Error(`Sticker API ${response.status}`);
+        const payload = (await response.json()) as {
+          configured: boolean;
+          items?: ChatStickerOption[];
+        };
+        if (!payload.configured) {
+          setLiveStickers(null);
+          return;
+        }
+        setLiveStickers(
+          (payload.items ?? []).map((sticker) => ({
+            ...sticker,
+            tags: sticker.tags ?? [],
+          })),
+        );
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setLiveStickers(null);
+      } finally {
+        if (!controller.signal.aborted) setStickersLoading(false);
+      }
+    }, 300);
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [stickerTabOpen, stickerQuery, activeStickerMood?.searchTerm]);
+
   const portalLinks = searchShareablePortalLinks(linkQuery);
   const activeEmojiCategory =
     CHAT_EMOJI_CATEGORIES.find((c) => c.id === emojiCategory) ??
     CHAT_EMOJI_CATEGORIES[0];
 
   useEffect(() => {
-    function onPointerDown(event: MouseEvent) {
+    if (!shell && !contextMenu) return;
+
+    function onPointerDown(event: MouseEvent | TouchEvent) {
       if (!rootRef.current) return;
-      if (!rootRef.current.contains(event.target as Node)) {
-        setShell(null);
-        setContextMenu(null);
-      }
+      const target = event.target as Node | null;
+      if (!target) return;
+      // Keep open when interacting with the composer, picker, or attach menus.
+      if (rootRef.current.contains(target)) return;
+      setShell(null);
+      setContextMenu(null);
     }
+
     function onKeyDown(event: globalThis.KeyboardEvent) {
       if (event.key === "Escape") {
         setContextMenu(null);
         setShell(null);
       }
     }
+
     document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("touchstart", onPointerDown, { passive: true });
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("touchstart", onPointerDown);
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, [shell]);
+  }, [shell, contextMenu]);
 
   function openContextMenu(event: ReactMouseEvent) {
     event.preventDefault();
@@ -331,7 +464,17 @@ export function ChatComposer({
     >
       {attachment ? (
         <div className={styles.preview}>
-          {attachment.type === "gif" || attachment.type === "image" ? (
+          {attachment.type === "gif" && attachment.mp4Url ? (
+            <video
+              src={attachment.mp4Url}
+              poster={attachment.previewUrl}
+              className={styles.previewMedia}
+              muted
+              loop
+              playsInline
+              autoPlay
+            />
+          ) : attachment.type === "gif" || attachment.type === "image" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={
@@ -374,6 +517,13 @@ export function ChatComposer({
                 {attachment.location ? ` · ${attachment.location}` : ""}
               </span>
             </div>
+          ) : attachment.type === "sticker" ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={attachment.previewUrl}
+              alt={attachment.title}
+              className={styles.previewSticker}
+            />
           ) : (
             <div className={styles.previewFile}>
               <strong>{attachment.name}</strong>
@@ -479,27 +629,32 @@ export function ChatComposer({
                 </label>
                 <div className={styles.gifGrid}>
                   {gifs.length === 0 ? (
-                    <p className={styles.empty}>No GIFs match that search.</p>
+                    <p className={styles.empty}>
+                      {gifsLoading
+                        ? "Loading GIFs…"
+                        : "No GIFs match that search."}
+                    </p>
                   ) : (
                     gifs.map((gif) => (
-                      <button
+                      <GifGridTile
                         key={gif.id}
-                        type="button"
-                        className={styles.gifTile}
-                        onClick={() => {
+                        gif={gif}
+                        onSelect={() => {
                           setAttachment({
                             type: "gif",
                             url: gif.url,
                             previewUrl: gif.previewUrl,
                             title: gif.title,
+                            ...(gif.mp4Url ? { mp4Url: gif.mp4Url } : {}),
                           });
                           setShell(null);
                         }}
-                        aria-label={`Attach GIF: ${gif.title}`}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={gif.previewUrl} alt="" />
-                      </button>
+                        onBroken={() => {
+                          setBrokenGifIds((prev) =>
+                            prev.includes(gif.id) ? prev : [...prev, gif.id],
+                          );
+                        }}
+                      />
                     ))
                   )}
                 </div>
@@ -508,23 +663,93 @@ export function ChatComposer({
 
             {trayTab === "sticker" ? (
               <>
-                <p className={styles.sectionLabel}>Stickers</p>
-                <div className={styles.stickerGrid}>
-                  {CHAT_STICKERS.map((sticker) => (
+                <div
+                  className={styles.categoryRow}
+                  role="tablist"
+                  aria-label="Sticker moods"
+                >
+                  {CHAT_STICKER_MOODS.map((mood) => (
                     <button
-                      key={sticker.id}
+                      key={mood.id}
                       type="button"
-                      className={styles.stickerBtn}
-                      onClick={() => {
-                        insertEmoji(sticker.glyph);
-                        setShell(null);
-                      }}
-                      aria-label={sticker.label}
-                      title={sticker.label}
+                      role="tab"
+                      aria-selected={stickerMood === mood.id}
+                      className={
+                        stickerMood === mood.id
+                          ? styles.categoryActive
+                          : styles.categoryBtn
+                      }
+                      onClick={() => setStickerMood(mood.id)}
+                      title={mood.label}
                     >
-                      {sticker.glyph}
+                      <span aria-hidden>{mood.icon}</span>
                     </button>
                   ))}
+                </div>
+                <label className={styles.searchWrap}>
+                  <span className={styles.searchIcon} aria-hidden>
+                    ⌕
+                  </span>
+                  <input
+                    value={stickerQuery}
+                    onChange={(event) => setStickerQuery(event.target.value)}
+                    placeholder="Search stickers via GIPHY"
+                    aria-label="Search stickers"
+                  />
+                </label>
+                <div className={styles.stickerGrid}>
+                  {stickers.length === 0 ? (
+                    <p className={styles.empty}>
+                      {stickersLoading
+                        ? "Loading stickers…"
+                        : "No stickers match that search."}
+                    </p>
+                  ) : (
+                    stickers.map((sticker) => (
+                      <button
+                        key={sticker.id}
+                        type="button"
+                        className={styles.stickerBtn}
+                        onClick={() => {
+                          if (disabled) return;
+                          onSend({
+                            attachment: {
+                              type: "sticker",
+                              url: sticker.url,
+                              previewUrl: sticker.previewUrl,
+                              title: sticker.title,
+                            },
+                          });
+                          setShell(null);
+                        }}
+                        onMouseEnter={() => setHoveredStickerId(sticker.id)}
+                        onMouseLeave={() => setHoveredStickerId(null)}
+                        onFocus={() => setHoveredStickerId(sticker.id)}
+                        onBlur={() => setHoveredStickerId(null)}
+                        aria-label={`Send sticker: ${sticker.title}`}
+                        title={sticker.title}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={
+                            hoveredStickerId === sticker.id
+                              ? sticker.previewUrl
+                              : (sticker.stillUrl ?? sticker.previewUrl)
+                          }
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          onError={() => {
+                            setBrokenStickerIds((prev) =>
+                              prev.includes(sticker.id)
+                                ? prev
+                                : [...prev, sticker.id],
+                            );
+                          }}
+                        />
+                      </button>
+                    ))
+                  )}
                 </div>
               </>
             ) : null}

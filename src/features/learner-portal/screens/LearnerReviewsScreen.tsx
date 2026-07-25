@@ -3,7 +3,11 @@ import {
   LearnerPageShell,
   LearnerStatusChip,
 } from "../components/LearnerPageShell";
-import { ALEX_PROFILE, ALEX_REVIEWS } from "../domain/mock-learner";
+import {
+  ALEX_PROFILE,
+  ALEX_REVIEW_DETAILS,
+  type LearnerReviewDetail,
+} from "../domain/mock-learner";
 import styles from "./learner-pages.module.css";
 
 function formatDate(iso: string): string {
@@ -14,7 +18,7 @@ function formatDate(iso: string): string {
   });
 }
 
-function tone(status: (typeof ALEX_REVIEWS)[number]["status"]) {
+function tone(status: LearnerReviewDetail["status"]) {
   switch (status) {
     case "upcoming":
       return "blue" as const;
@@ -25,7 +29,7 @@ function tone(status: (typeof ALEX_REVIEWS)[number]["status"]) {
   }
 }
 
-function label(status: (typeof ALEX_REVIEWS)[number]["status"]) {
+function label(status: LearnerReviewDetail["status"]) {
   switch (status) {
     case "upcoming":
       return "Upcoming";
@@ -36,62 +40,94 @@ function label(status: (typeof ALEX_REVIEWS)[number]["status"]) {
   }
 }
 
+function ctaLabel(review: LearnerReviewDetail): string {
+  if (review.status === "upcoming") return "Open prep →";
+  if (review.status === "awaiting_sign_off") return "View draft →";
+  return "Read review →";
+}
+
 export function LearnerReviewsScreen() {
+  const upcoming = ALEX_REVIEW_DETAILS.filter((r) => r.status === "upcoming");
+  const past = ALEX_REVIEW_DETAILS.filter((r) => r.status !== "upcoming");
+
   return (
     <LearnerPageShell
       title="Reviews"
-      description={`Progress reviews with ${ALEX_PROFILE.mentorName}. Prepare evidence and actions ahead of each meeting.`}
+      description={`Progress reviews with ${ALEX_PROFILE.mentorName}. Open a review to read what was said, the outcome, and which statistics were used.`}
     >
-      <ul className={styles.list}>
-        {ALEX_REVIEWS.map((review) => {
-          const body = (
-            <>
-              <div className={styles.rowMain}>
-                <strong>
-                  {review.type} · {formatDate(review.reviewDate)}
-                </strong>
-                {review.judgement ? (
-                  <span>Outcome: {review.judgement}</span>
-                ) : (
-                  <span>With {ALEX_PROFILE.mentorName}</span>
-                )}
-                {review.status === "completed" ? (
-                  <span className={styles.meta}>
-                    Full review record opens for staff after the meeting. Ask your mentor if you
-                    need a copy of the summary.
-                  </span>
-                ) : review.href ? (
-                  <span className={styles.meta}>
-                    Use My Learning to prepare actions and evidence for this review.
-                  </span>
-                ) : null}
-              </div>
-              <div className={styles.rowEnd}>
-                <LearnerStatusChip tone={tone(review.status)}>
-                  {label(review.status)}
-                </LearnerStatusChip>
-                {review.href ? (
-                  <span className={styles.linkish}>
-                    {review.status === "upcoming" ? "Prepare →" : "Open review →"}
-                  </span>
-                ) : null}
-              </div>
-            </>
-          );
+      <div className={styles.stack}>
+        <p className={styles.note}>
+          Learners can open completed reviews — not only staff. Figures link
+          through to Progress, Attendance, OTJ, and My Learning as those areas
+          grow.
+        </p>
 
-          return (
-            <li key={review.id}>
-              {review.href ? (
-                <Link href={review.href} className={styles.rowLink}>
-                  {body}
-                </Link>
-              ) : (
-                <div className={styles.row}>{body}</div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+        {upcoming.length > 0 ? (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Coming up</h2>
+            <ul className={styles.list}>
+              {upcoming.map((review) => (
+                <li key={review.id}>
+                  <Link href={review.href!} className={styles.rowLink}>
+                    <div className={styles.rowMain}>
+                      <strong>
+                        {review.type} · {formatDate(review.reviewDate)}
+                      </strong>
+                      <span>With {review.mentorName}</span>
+                      <span className={styles.meta}>
+                        See the planned focus and the live stats that will be
+                        discussed.
+                      </span>
+                    </div>
+                    <div className={styles.rowEnd}>
+                      <LearnerStatusChip tone={tone(review.status)}>
+                        {label(review.status)}
+                      </LearnerStatusChip>
+                      <span className={styles.linkish}>{ctaLabel(review)}</span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Your review history</h2>
+          {past.length === 0 ? (
+            <p className={styles.empty}>No completed reviews yet.</p>
+          ) : (
+            <ul className={styles.list}>
+              {past.map((review) => (
+                <li key={review.id}>
+                  <Link href={review.href!} className={styles.rowLink}>
+                    <div className={styles.rowMain}>
+                      <strong>
+                        {review.type} · {formatDate(review.reviewDate)}
+                      </strong>
+                      {review.judgement ? (
+                        <span>Outcome: {review.judgement}</span>
+                      ) : (
+                        <span>With {review.mentorName}</span>
+                      )}
+                      <span className={styles.meta}>
+                        Read discussion notes, contributions, and the statistics
+                        used on the day.
+                      </span>
+                    </div>
+                    <div className={styles.rowEnd}>
+                      <LearnerStatusChip tone={tone(review.status)}>
+                        {label(review.status)}
+                      </LearnerStatusChip>
+                      <span className={styles.linkish}>{ctaLabel(review)}</span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </div>
     </LearnerPageShell>
   );
 }

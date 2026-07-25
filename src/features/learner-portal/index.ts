@@ -11,6 +11,7 @@ export { LearnerCeaScreen } from "./screens/LearnerCeaScreen";
 export { LearnerOtjHoursScreen } from "./screens/LearnerOtjHoursScreen";
 export { LearnerProgressScreen } from "./screens/LearnerProgressScreen";
 export { LearnerReviewsScreen } from "./screens/LearnerReviewsScreen";
+export { LearnerReviewDetailScreen } from "./screens/LearnerReviewDetailScreen";
 export { LearnerAttendanceScreen } from "./screens/LearnerAttendanceScreen";
 export { LearnerSupportScreen } from "./screens/LearnerSupportScreen";
 export { LearnerCvBuilderScreen } from "./screens/LearnerCvBuilderScreen";

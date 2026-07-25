@@ -475,9 +475,9 @@ export function LearnerOtjHoursScreen() {
                 OTJ hours
               </h2>
               <p className={styles.otjHeroCopy}>
-                Log week-by-week when you can. Catch-up blocks (one entry for a
-                longer period) are allowed — just mark them clearly for
-                employer and teacher review.
+                Log your hours every week — that is what we expect, and it keeps
+                your evidence accurate. Catch-up blocks are a last resort only,
+                and must be marked clearly for employer and teacher review.
               </p>
             </div>
             <button

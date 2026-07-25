@@ -12,14 +12,29 @@ export type ChatGifMood = {
   id: string;
   label: string;
   icon: string;
-  /** Tag used to filter the curated GIF catalog. */
+  /** Tag used to filter the curated (offline fallback) GIF catalog. */
   tag: string | null;
+  /** Search term sent to the live GIF API. Null = trending feed. */
+  searchTerm: string | null;
 };
 
-export type ChatSticker = {
+export type ChatStickerMood = {
   id: string;
-  glyph: string;
   label: string;
+  icon: string;
+  /** Offline fallback tag filter. */
+  tag: string | null;
+  /** Live GIPHY sticker search term. Null = trending stickers. */
+  searchTerm: string | null;
+};
+
+export type ChatStickerOption = {
+  id: string;
+  title: string;
+  url: string;
+  previewUrl: string;
+  stillUrl?: string;
+  tags: string[];
 };
 
 /** WhatsApp-style emoji categories for the tray. */
@@ -1148,37 +1163,121 @@ export const CHAT_EMOJI_CATEGORIES: ChatEmojiCategory[] = [
 ];
 
 export const CHAT_GIF_MOODS: ChatGifMood[] = [
-  { id: "trending", label: "Trending", icon: "📈", tag: null },
-  { id: "happy", label: "Happy", icon: "😊", tag: "hello" },
-  { id: "sad", label: "Sad", icon: "😢", tag: "thinking" },
-  { id: "love", label: "Love", icon: "❤️", tag: "thanks" },
-  { id: "yes", label: "Agree", icon: "👍", tag: "yes" },
-  { id: "celebrate", label: "Celebrate", icon: "🎉", tag: "celebrate" },
-  { id: "work", label: "Work", icon: "💼", tag: "work" },
+  { id: "trending", label: "Trending", icon: "📈", tag: null, searchTerm: null },
+  { id: "happy", label: "Happy", icon: "😊", tag: "hello", searchTerm: "happy" },
+  { id: "sad", label: "Sad", icon: "😢", tag: "thinking", searchTerm: "sad" },
+  { id: "love", label: "Love", icon: "❤️", tag: "thanks", searchTerm: "love" },
+  { id: "yes", label: "Agree", icon: "👍", tag: "yes", searchTerm: "thumbs up" },
+  {
+    id: "celebrate",
+    label: "Celebrate",
+    icon: "🎉",
+    tag: "celebrate",
+    searchTerm: "celebration",
+  },
+  { id: "work", label: "Work", icon: "💼", tag: "work", searchTerm: "working hard" },
 ];
 
-export const CHAT_STICKERS: ChatSticker[] = [
-  { id: "s1", glyph: "👍", label: "Thumbs up" },
-  { id: "s2", glyph: "👏", label: "Clap" },
-  { id: "s3", glyph: "🙌", label: "Raised hands" },
-  { id: "s4", glyph: "🙏", label: "Thanks" },
-  { id: "s5", glyph: "🔥", label: "Fire" },
-  { id: "s6", glyph: "💯", label: "Hundred" },
-  { id: "s7", glyph: "✅", label: "Done" },
-  { id: "s8", glyph: "🎉", label: "Party" },
-  { id: "s9", glyph: "💪", label: "Strong" },
-  { id: "s10", glyph: "🛠️", label: "Tools" },
-  { id: "s11", glyph: "🚗", label: "Car" },
-  { id: "s12", glyph: "📝", label: "Notes" },
-  { id: "s13", glyph: "⏰", label: "Time" },
-  { id: "s14", glyph: "🤝", label: "Deal" },
-  { id: "s15", glyph: "😄", label: "Smile" },
-  { id: "s16", glyph: "😅", label: "Sweat smile" },
-  { id: "s17", glyph: "🤔", label: "Thinking" },
-  { id: "s18", glyph: "😎", label: "Cool" },
-  { id: "s19", glyph: "🫡", label: "Salute" },
-  { id: "s20", glyph: "❤️", label: "Heart" },
+function giphyAsset(id: string, file: string): string {
+  return `https://media.giphy.com/media/${id}/${file}`;
+}
+
+export const CHAT_STICKER_MOODS: ChatStickerMood[] = [
+  { id: "trending", label: "Trending", icon: "📈", tag: null, searchTerm: null },
+  { id: "hello", label: "Hello", icon: "👋", tag: "hello", searchTerm: "hello" },
+  { id: "love", label: "Love", icon: "❤️", tag: "love", searchTerm: "love" },
+  { id: "thanks", label: "Thanks", icon: "🙏", tag: "thanks", searchTerm: "thank you" },
+  { id: "yes", label: "Agree", icon: "👍", tag: "yes", searchTerm: "thumbs up" },
+  {
+    id: "celebrate",
+    label: "Celebrate",
+    icon: "🎉",
+    tag: "celebrate",
+    searchTerm: "celebrate",
+  },
+  { id: "funny", label: "Funny", icon: "😂", tag: "funny", searchTerm: "funny" },
 ];
+
+/** Curated animated GIPHY stickers used when the API key is unavailable. */
+const STICKER_SEEDS: {
+  id: string;
+  title: string;
+  giphyId: string;
+  tags: string[];
+}[] = [
+  {
+    id: "st-thumbs",
+    title: "Thumbs up",
+    giphyId: "3o7abKhOpu0NwenH3O",
+    tags: ["yes", "hello"],
+  },
+  {
+    id: "st-wave",
+    title: "Wave",
+    giphyId: "3oz8xIsloV7zOmt81G",
+    tags: ["hello"],
+  },
+  {
+    id: "st-heart",
+    title: "Heart",
+    giphyId: "l0MYt5jPR6QX5pnqM",
+    tags: ["love"],
+  },
+  {
+    id: "st-clap",
+    title: "Clap",
+    giphyId: "7rj2Zg2XCAQWc",
+    tags: ["thanks", "celebrate"],
+  },
+  {
+    id: "st-party",
+    title: "Party",
+    giphyId: "g9582DNuQppxC",
+    tags: ["celebrate", "funny"],
+  },
+  {
+    id: "st-thanks",
+    title: "Thanks",
+    giphyId: "kyLYXonQYYfwYDIeZl",
+    tags: ["thanks"],
+  },
+  {
+    id: "st-cool",
+    title: "Cool",
+    giphyId: "3o6Zt6ML6BklcajjsA",
+    tags: ["yes", "funny"],
+  },
+  {
+    id: "st-cat",
+    title: "Cat",
+    giphyId: "JIX9t2j0ZTN9S",
+    tags: ["funny", "hello"],
+  },
+];
+
+export const CHAT_STICKER_CATALOG: ChatStickerOption[] = STICKER_SEEDS.map(
+  (seed) => ({
+    id: seed.id,
+    title: seed.title,
+    url: giphyAsset(seed.giphyId, "200w.webp"),
+    previewUrl: giphyAsset(seed.giphyId, "200w.webp"),
+    stillUrl: giphyAsset(seed.giphyId, "200_s.gif"),
+    tags: seed.tags,
+  }),
+);
+
+export function searchChatStickers(
+  query: string,
+  moodTag: string | null = null,
+): ChatStickerOption[] {
+  const q = query.trim().toLowerCase();
+  return CHAT_STICKER_CATALOG.filter((sticker) => {
+    if (moodTag && !sticker.tags.includes(moodTag)) return false;
+    if (!q) return true;
+    const hay = `${sticker.title} ${sticker.tags.join(" ")}`.toLowerCase();
+    return hay.includes(q);
+  });
+}
 
 type GifSeed = {
   id: string;
@@ -1197,25 +1296,25 @@ const GIF_SEEDS: GifSeed[] = [
   {
     id: "clap",
     title: "Clapping",
-    giphyId: "7rj2Zg2X0qDm8",
+    giphyId: "26BRuo6sLetdllPAQ",
     tags: ["clap", "well done", "congrats", "celebrate"],
   },
   {
     id: "wave",
     title: "Waving hello",
-    giphyId: "xdXTyq67sq3cY",
-    tags: ["hello", "hi", "wave"],
+    giphyId: "3oz8xIsloV7zOmt81G",
+    tags: ["hello", "hi", "wave", "thanks"],
   },
   {
     id: "thanks",
     title: "Thank you",
-    giphyId: "osjgQPWRx3cac",
+    giphyId: "kyLYXonQYYfwYDIeZl",
     tags: ["thanks", "thank you"],
   },
   {
     id: "thinking",
     title: "Thinking",
-    giphyId: "d3mlE7uhX8KFgNJc",
+    giphyId: "3oriO0OEd9QIDdllqo",
     tags: ["thinking", "hmm", "maybe"],
   },
   {
@@ -1243,16 +1342,16 @@ const GIF_SEEDS: GifSeed[] = [
     tags: ["lol", "laugh", "funny", "hello"],
   },
   {
-    id: "nod",
-    title: "Nodding yes",
-    giphyId: "WRg2xWJGxW8aY",
-    tags: ["yes", "agree", "nod"],
+    id: "cheers",
+    title: "Cheers",
+    giphyId: "26u4cqiYI30juCOGY",
+    tags: ["yes", "agree", "cheers", "celebrate"],
   },
   {
-    id: "coffee",
-    title: "Coffee time",
-    giphyId: "UQ1EI1ML2ABQdjobDb",
-    tags: ["coffee", "break", "tired", "work"],
+    id: "cat",
+    title: "Happy cat",
+    giphyId: "JIX9t2j0ZTN9S",
+    tags: ["hello", "cat", "happy", "thanks"],
   },
   {
     id: "highfive",
@@ -1260,23 +1359,44 @@ const GIF_SEEDS: GifSeed[] = [
     giphyId: "artj92V8o75VPL7AeQ",
     tags: ["high five", "team", "nice", "celebrate"],
   },
+  {
+    id: "excited",
+    title: "Excited",
+    giphyId: "3o6Zt6ML6BklcajjsA",
+    tags: ["celebrate", "yes", "excited", "hello"],
+  },
+  {
+    id: "nod",
+    title: "Nodding yes",
+    giphyId: "26ufdipQqU2lhNA4g",
+    tags: ["yes", "agree", "nod"],
+  },
+  {
+    id: "coffee",
+    title: "Coffee time",
+    giphyId: "l0HlvtIPzPdt2usKs",
+    tags: ["coffee", "break", "tired", "work"],
+  },
 ];
-
-function giphyUrl(id: string, size: "giphy" | "200w" = "giphy"): string {
-  return `https://media.giphy.com/media/${id}/${size}.gif`;
-}
 
 export type ChatGifOption = ChatGifAttachment & {
   id: string;
   tags: string[];
+  /** Static frame / video poster for the picker grid. */
+  stillUrl?: string;
+  /** Smaller MP4 for the picker grid (falls back to mp4Url). */
+  mp4PreviewUrl?: string;
 };
 
 export const CHAT_GIF_CATALOG: ChatGifOption[] = GIF_SEEDS.map((seed) => ({
   id: seed.id,
   type: "gif" as const,
   title: seed.title,
-  url: giphyUrl(seed.giphyId, "giphy"),
-  previewUrl: giphyUrl(seed.giphyId, "200w"),
+  url: giphyAsset(seed.giphyId, "200w.webp"),
+  previewUrl: giphyAsset(seed.giphyId, "200w_d.webp"),
+  stillUrl: giphyAsset(seed.giphyId, "200_s.gif"),
+  mp4Url: giphyAsset(seed.giphyId, "200w.mp4"),
+  mp4PreviewUrl: giphyAsset(seed.giphyId, "100w.mp4"),
   tags: seed.tags,
 }));
 

@@ -79,6 +79,29 @@
   border-radius: 1rem 1rem 1rem 0.28rem;
 }
 
+.bubbleStickerMine,
+.bubbleStickerTheirs {
+  padding: 0.15rem 0.2rem 0.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  min-width: 0;
+  position: relative;
+  color: var(--color-navy-700);
+}
+
+.bubbleStickerMine .metaRow time,
+.bubbleStickerTheirs .metaRow time {
+  color: var(--text-secondary);
+}
+
+.bubbleStickerMine .actionBtn {
+  color: var(--color-navy-700);
+}
+
 .sender {
   font-size: 0.68rem;
   font-weight: 750;

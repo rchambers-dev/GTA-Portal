@@ -23,7 +23,41 @@ function AttachmentBlock({
     );
   }
 
-  if (attachment.type === "gif" || attachment.type === "image") {
+  if (attachment.type === "gif") {
+    return (
+      <a
+        href={attachment.url}
+        target="_blank"
+        rel="noreferrer"
+        className={styles.mediaLink}
+      >
+        {attachment.mp4Url ? (
+          <video
+            src={attachment.mp4Url}
+            poster={attachment.previewUrl}
+            className={styles.media}
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="metadata"
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={attachment.previewUrl}
+            alt={attachment.title}
+            className={styles.media}
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+        <span className={styles.gifBadge}>GIF</span>
+      </a>
+    );
+  }
+
+  if (attachment.type === "image") {
     return (
       <a
         href={attachment.url}
@@ -33,16 +67,28 @@ function AttachmentBlock({
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={
-            attachment.type === "gif" ? attachment.previewUrl : attachment.url
-          }
-          alt={attachment.type === "gif" ? attachment.title : attachment.name}
+          src={attachment.url}
+          alt={attachment.name}
           className={styles.media}
+          loading="lazy"
+          decoding="async"
         />
-        {attachment.type === "gif" ? (
-          <span className={styles.gifBadge}>GIF</span>
-        ) : null}
       </a>
+    );
+  }
+
+  if (attachment.type === "sticker") {
+    return (
+      <div className={styles.stickerWrap} role="img" aria-label={attachment.title}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={attachment.previewUrl}
+          alt={attachment.title}
+          className={styles.sticker}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
     );
   }
 

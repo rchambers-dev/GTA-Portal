@@ -40,8 +40,11 @@ export function ChatMessageItem({
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(message.body);
+  const isStickerOnly =
+    message.attachment?.type === "sticker" && !message.body.trim();
   const canManage = mine && Boolean(onEdit || onDelete);
-  const canEditText = mine && Boolean(onEdit);
+  const canEditText =
+    mine && Boolean(onEdit) && Boolean(message.body.trim()) && !isStickerOnly;
 
   useEffect(() => {
     if (!editing) setDraft(message.body);
@@ -76,7 +79,13 @@ export function ChatMessageItem({
     : compact
       ? styles.rowTheirsCompact
       : styles.rowTheirs;
-  const bubbleClass = mine ? styles.bubbleMine : styles.bubbleTheirs;
+  const bubbleClass = isStickerOnly
+    ? mine
+      ? styles.bubbleStickerMine
+      : styles.bubbleStickerTheirs
+    : mine
+      ? styles.bubbleMine
+      : styles.bubbleTheirs;
 
   return (
     <div className={rowClass} data-editing={editing ? "true" : undefined}>

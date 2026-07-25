@@ -19,6 +19,8 @@ function channelLabel(type: ChatChannelType): string {
       return "Support";
     case "safeguarding":
       return "Safeguarding";
+    case "group":
+      return "Group";
   }
 }
 
@@ -35,7 +37,7 @@ function formatTime(iso: string): string {
   }
 }
 
-type PanelView = "list" | "thread" | "contacts";
+type PanelView = "list" | "thread" | "contacts" | "group";
 
 export function LearnerChatDock() {
   const {
@@ -47,6 +49,7 @@ export function LearnerChatDock() {
     editMessage,
     deleteMessage,
     ensureThreadWithContact,
+    createGroupThread,
     getThreadById,
     openDockSignal,
   } = useLearnerChat();
@@ -55,6 +58,7 @@ export function LearnerChatDock() {
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<PanelView>("list");
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   // On the full Messages page the dock is redundant and would overlap the
   // composer, so hide it there (shell also skips mounting it).
@@ -100,6 +104,21 @@ export function LearnerChatDock() {
     openThread(thread.threadId);
   }
 
+  function toggleSelected(contactId: string) {
+    setSelectedIds((prev) =>
+      prev.includes(contactId)
+        ? prev.filter((id) => id !== contactId)
+        : [...prev, contactId],
+    );
+  }
+
+  function createGroup() {
+    if (selectedIds.length === 0) return;
+    const thread = createGroupThread(selectedIds);
+    setSelectedIds([]);
+    openThread(thread.threadId);
+  }
+
   function closePanel() {
     setOpen(false);
   }
@@ -132,7 +151,9 @@ export function LearnerChatDock() {
                     ? activeThread.title
                     : view === "contacts"
                       ? "New message"
-                      : "Messages"}
+                      : view === "group"
+                        ? "New group"
+                        : "Messages"}
                 </strong>
                 {view === "thread" && activeThread ? (
                   <span className={styles.privacy}>{activeThread.privacyNote}</span>
@@ -141,13 +162,28 @@ export function LearnerChatDock() {
             </div>
             <div className={styles.panelActions}>
               {view === "list" ? (
-                <button
-                  type="button"
-                  className={styles.textBtn}
-                  onClick={() => setView("contacts")}
-                >
-                  New
-                </button>
+                <>
+                  <button
+                    type="button"
+                    className={styles.textBtn}
+                    onClick={() => {
+                      setSelectedIds([]);
+                      setView("contacts");
+                    }}
+                  >
+                    New
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.textBtn}
+                    onClick={() => {
+                      setSelectedIds([]);
+                      setView("group");
+                    }}
+                  >
+                    Group
+                  </button>
+                </>
               ) : null}
               <button
                 type="button"
@@ -210,6 +246,16 @@ export function LearnerChatDock() {
               >
                 ← Back to conversations
               </button>
+              <button
+                type="button"
+                className={styles.textBtn}
+                onClick={() => {
+                  setSelectedIds([]);
+                  setView("group");
+                }}
+              >
+                Start a group instead →
+              </button>
               {contacts.map((contact) => (
                 <button
                   key={contact.contactId}
@@ -229,6 +275,62 @@ export function LearnerChatDock() {
                   </span>
                 </button>
               ))}
+            </div>
+          ) : null}
+
+          {view === "group" ? (
+            <div className={styles.list}>
+              <button
+                type="button"
+                className={styles.textBtn}
+                onClick={() => {
+                  setSelectedIds([]);
+                  setView("list");
+                }}
+              >
+                ← Back to conversations
+              </button>
+              <p className={styles.empty}>
+                Select people to include, then create the group.
+              </p>
+              {contacts.map((contact) => {
+                const checked = selectedIds.includes(contact.contactId);
+                return (
+                  <button
+                    key={contact.contactId}
+                    type="button"
+                    className={styles.threadRow}
+                    data-selected={checked ? "true" : "false"}
+                    onClick={() => toggleSelected(contact.contactId)}
+                    aria-pressed={checked}
+                  >
+                    <span className={styles.avatar} aria-hidden>
+                      {contact.initials}
+                    </span>
+                    <span className={styles.threadMeta}>
+                      <span className={styles.threadTitle}>{contact.name}</span>
+                      <span className={styles.threadSub}>
+                        {contact.roleLabel}
+                        {contact.organisation
+                          ? ` · ${contact.organisation}`
+                          : ""}
+                      </span>
+                    </span>
+                    <span className={styles.pickMark} aria-hidden>
+                      {checked ? "✓" : ""}
+                    </span>
+                  </button>
+                );
+              })}
+              <button
+                type="button"
+                className={styles.createGroupBtn}
+                disabled={selectedIds.length === 0}
+                onClick={createGroup}
+              >
+                Create group
+                {selectedIds.length ? ` (${selectedIds.length})` : ""}
+              </button>
             </div>
           ) : null}
 

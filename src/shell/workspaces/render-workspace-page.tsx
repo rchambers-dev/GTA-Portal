@@ -12,6 +12,7 @@ import {
   LearnerModuleTopicScreen,
   LearnerModulesScreen,
   LearnerProgressScreen,
+  LearnerReviewDetailScreen,
   LearnerReviewsScreen,
   LearnerSupportScreen,
   TutorModuleSignOffScreen,
@@ -46,6 +47,11 @@ function renderLearnerPage(segment: string) {
       );
     }
     return <LearnerModuleDetailScreen moduleId={moduleId} />;
+  }
+
+  const reviewMatch = /^reviews\/([^/]+)$/.exec(segment);
+  if (reviewMatch) {
+    return <LearnerReviewDetailScreen reviewId={reviewMatch[1]} />;
   }
 
   switch (segment) {

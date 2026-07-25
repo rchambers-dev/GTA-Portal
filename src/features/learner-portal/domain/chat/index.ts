@@ -5,10 +5,14 @@ export type {
   ChatMessage,
   ChatThread,
 } from "./types";
-export { privacyNoteForChannel } from "./types";
+export { privacyNoteForChannel, privacyNoteForGroup } from "./types";
 export {
   contactsForLearner,
   ensureThreadWithContact,
+  createGroupThread,
+  addParticipantsToThread,
+  renameGroupThread,
+  defaultGroupTitle,
   getContact,
   getThread,
   listThreads,

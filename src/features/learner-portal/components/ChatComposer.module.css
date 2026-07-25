@@ -48,6 +48,14 @@
   background: var(--chat-wash);
 }
 
+.previewSticker {
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  object-fit: contain;
+  background: transparent;
+}
+
 .previewFile,
 .previewLink {
   display: flex;
@@ -95,23 +103,26 @@
 }
 
 .tray {
+  position: absolute;
+  left: 0.75rem;
+  bottom: calc(100% + 0.4rem);
+  z-index: 30;
   display: flex;
   flex-direction: column;
-  align-self: flex-start;
-  width: min(100%, 22.5rem);
+  width: min(calc(100% - 1.5rem), 26rem);
   border: 1px solid var(--chat-border);
   border-radius: 1rem;
   background: var(--chat-panel);
-  box-shadow: 0 8px 24px rgb(11 20 26 / 0.12);
+  box-shadow: 0 10px 28px rgb(11 20 26 / 0.16);
   overflow: hidden;
-  max-height: min(22rem, 52dvh);
+  max-height: min(28rem, 62dvh);
 }
 
 .trayBody {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  padding: 0.65rem 0.7rem 0.4rem;
+  padding: 0.65rem 0.7rem 0.55rem;
   min-height: 0;
   flex: 1;
   overflow: hidden;
@@ -119,10 +130,16 @@
 
 .categoryRow {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 0.15rem;
   overflow-x: auto;
-  padding-bottom: 0.15rem;
+  overflow-y: visible;
+  flex-shrink: 0;
+  min-height: 2.75rem;
+  padding: 0.2rem 0 0.45rem;
   scrollbar-width: none;
+  width: 100%;
 }
 
 .categoryRow::-webkit-scrollbar {
@@ -132,16 +149,20 @@
 .categoryBtn,
 .categoryActive {
   flex: 0 0 auto;
-  width: 2.35rem;
-  height: 2.2rem;
+  width: 2.55rem;
+  height: 2.55rem;
   border: none;
   background: transparent;
-  border-radius: 0;
+  border-radius: 0.45rem;
   cursor: pointer;
-  font-size: 1.05rem;
+  font-size: 1.3rem;
   line-height: 1;
   color: var(--chat-muted);
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
 }
 
 .categoryActive {
@@ -151,12 +172,19 @@
 .categoryActive::after {
   content: "";
   position: absolute;
-  left: 0.35rem;
-  right: 0.35rem;
-  bottom: 0;
+  left: 0.4rem;
+  right: 0.4rem;
+  bottom: 0.1rem;
   height: 0.18rem;
   border-radius: 999px;
   background: var(--chat-accent);
+}
+
+.categoryBtn span,
+.categoryActive span {
+  display: block;
+  line-height: 1;
+  font-size: 1.3rem;
 }
 
 .searchWrap {
@@ -200,11 +228,22 @@
 .emojiGrid {
   display: grid;
   grid-template-columns: repeat(8, minmax(0, 1fr));
-  gap: 0.15rem;
-  overflow: auto;
-  min-height: 11rem;
+  gap: 0.2rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 0;
   flex: 1;
-  padding-bottom: 0.25rem;
+  padding: 0.1rem 0.05rem 0;
+  scroll-padding-bottom: 1.25rem;
+  /* Grid padding-bottom is unreliable for scroll extent; use a full-width spacer. */
+  align-content: start;
+}
+
+.emojiGrid::after {
+  content: "";
+  display: block;
+  grid-column: 1 / -1;
+  height: 1.25rem;
 }
 
 .compact .emojiGrid {
@@ -217,8 +256,14 @@
   border-radius: 0.45rem;
   font-size: 1.35rem;
   line-height: 1;
-  padding: 0.35rem 0.15rem;
+  min-height: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
 }
 
 .emojiBtn:hover {
@@ -229,22 +274,30 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-flow: row dense;
-  grid-auto-rows: 5.75rem;
-  gap: 0.45rem;
+  gap: 0.5rem;
   overflow-x: hidden;
   overflow-y: auto;
-  min-height: 11rem;
-  flex: 1 1 auto;
+  min-height: 0;
+  flex: 1;
   align-content: start;
-  padding-bottom: 0.25rem;
+  padding: 0;
+  scroll-padding-bottom: 1.5rem;
+}
+
+/* Full-width spacer so the last GIF row can scroll clear of the footer. */
+.gifGrid::after {
+  content: "";
+  display: block;
+  grid-column: 1 / -1;
+  height: 1.5rem;
 }
 
 .gifTile {
   position: relative;
   display: block;
   width: 100%;
-  height: 5.75rem;
-  min-height: 5.75rem;
+  height: 7.25rem;
+  min-height: 7.25rem;
   border: none;
   padding: 0;
   margin: 0;
@@ -255,7 +308,8 @@
   isolation: isolate;
 }
 
-.gifTile img {
+.gifTile img,
+.gifTileMedia {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -264,29 +318,61 @@
   object-position: center;
   display: block;
   pointer-events: none;
+  border: none;
 }
 
 .stickerGrid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.45rem;
-  overflow: auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 5.75rem;
+  gap: 0.5rem;
+  overflow-x: hidden;
+  overflow-y: auto;
   min-height: 0;
-  padding-bottom: 0.35rem;
+  flex: 1;
+  align-content: start;
+  padding: 0;
+  scroll-padding-bottom: 1.25rem;
+}
+
+.stickerGrid::after {
+  content: "";
+  display: block;
+  grid-column: 1 / -1;
 }
 
 .stickerBtn {
-  border: 1px solid var(--chat-border);
-  background: var(--chat-wash);
-  border-radius: 1rem;
-  aspect-ratio: 1;
-  font-size: 1.85rem;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 5.75rem;
+  min-height: 5.75rem;
+  max-height: 5.75rem;
+  border: 1px solid transparent;
+  background: color-mix(in srgb, var(--chat-wash) 55%, transparent);
+  border-radius: 0.85rem;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  display: block;
+}
+
+.stickerBtn img {
+  position: absolute;
+  inset: 0.35rem;
+  width: calc(100% - 0.7rem);
+  height: calc(100% - 0.7rem);
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
+  display: block;
 }
 
 .stickerBtn:hover {
-  border-color: color-mix(in srgb, var(--chat-accent) 45%, white);
-  background: var(--chat-accent-soft);
+  border-color: color-mix(in srgb, var(--chat-accent) 35%, white);
+  background: color-mix(in srgb, var(--chat-accent-soft) 70%, transparent);
 }
 
 .trayFooter {
@@ -326,16 +412,19 @@
 }
 
 .attachSheet {
+  position: absolute;
+  left: 0.75rem;
+  bottom: calc(100% + 0.4rem);
+  z-index: 30;
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
-  align-self: flex-start;
-  width: min(100%, 13.5rem);
+  width: min(calc(100% - 1.5rem), 13.5rem);
   padding: 0.4rem;
   border: 1px solid var(--chat-border);
   border-radius: 0.9rem;
   background: var(--chat-panel);
-  box-shadow: 0 8px 24px rgb(11 20 26 / 0.12);
+  box-shadow: 0 10px 28px rgb(11 20 26 / 0.16);
   max-height: min(24rem, 60dvh);
   overflow: auto;
 }
@@ -417,16 +506,19 @@
 }
 
 .linkSheet {
+  position: absolute;
+  left: 0.75rem;
+  bottom: calc(100% + 0.4rem);
+  z-index: 30;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  align-self: flex-start;
-  width: min(100%, 22.5rem);
+  width: min(calc(100% - 1.5rem), 22.5rem);
   padding: 0.75rem;
   border: 1px solid var(--chat-border);
   border-radius: 1rem;
   background: var(--chat-panel);
-  box-shadow: 0 8px 24px rgb(11 20 26 / 0.12);
+  box-shadow: 0 10px 28px rgb(11 20 26 / 0.16);
   max-height: min(20rem, 50dvh);
   overflow: hidden;
 }
@@ -717,7 +809,8 @@
 
 @media (max-width: 640px) {
   .tray {
-    width: min(100%, 20rem);
+    width: min(100%, 23rem);
+    max-height: min(26rem, 58dvh);
   }
 
   .emojiGrid {

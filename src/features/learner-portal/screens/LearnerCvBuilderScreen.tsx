@@ -1016,11 +1016,11 @@ export function LearnerCvBuilderScreen() {
           >
             Save editable copy
           </button>
-          <button type="button" className={styles.ghostBtn} onClick={resetCv}>
-            Reset
-          </button>
           <button type="button" className={styles.ghostBtn} onClick={emailCopy}>
             Email a copy
+          </button>
+          <button type="button" className={styles.ghostBtn} onClick={resetCv}>
+            Reset
           </button>
           <button
             type="button"

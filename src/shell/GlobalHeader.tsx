@@ -5,6 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { DevAccountSwitcher } from "./demo/DevAccountSwitcher";
 import { useDemoSession } from "./demo/DemoSessionProvider";
 import { NavIcon } from "./nav-icons";
+import {
+  categoryLabel,
+  getPortalNotifications,
+  type PortalNotification,
+} from "./notifications";
 import { resolveNavigation } from "./workspaces/resolve-navigation";
 import styles from "./GlobalHeader.module.css";
 
@@ -17,10 +22,23 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);
+  const notifWrapRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [readIds, setReadIds] = useState<string[]>([]);
   const account = session?.account;
+
+  const allNotifications = useMemo(
+    () => (account ? getPortalNotifications(account.workspace) : []),
+    [account],
+  );
+
+  const unreadNotifications = useMemo(
+    () => allNotifications.filter((item) => !readIds.includes(item.id)),
+    [allNotifications, readIds],
+  );
 
   const pages = useMemo(
     () =>
@@ -51,8 +69,12 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setOpen((current) => !current);
+        setNotifOpen(false);
       }
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        setNotifOpen(false);
+      }
     }
     document.addEventListener("keydown", onShortcut);
     return () => document.removeEventListener("keydown", onShortcut);
@@ -69,23 +91,54 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
     setSelectedIndex(0);
   }, [query]);
 
+  useEffect(() => {
+    if (!notifOpen) return;
+    function onPointerDown(event: MouseEvent) {
+      const target = event.target as Node | null;
+      if (!target || !notifWrapRef.current) return;
+      if (notifWrapRef.current.contains(target)) return;
+      setNotifOpen(false);
+    }
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, [notifOpen]);
+
   if (!account) return null;
 
   function goTo(href: string) {
     setOpen(false);
+    setNotifOpen(false);
     router.push(href);
   }
+
+  function selectNotification(item: PortalNotification) {
+    setReadIds((prev) =>
+      prev.includes(item.id) ? prev : [...prev, item.id],
+    );
+    goTo(item.href);
+  }
+
+  function markAllRead() {
+    setReadIds(allNotifications.map((item) => item.id));
+  }
+
+  const unreadCount = unreadNotifications.length;
 
   return (
     <>
       <header
-        className={hidden ? `${styles.header} ${styles.headerHidden}` : styles.header}
+        className={
+          hidden ? `${styles.header} ${styles.headerHidden}` : styles.header
+        }
       >
         <div className={styles.headerStart} aria-hidden />
         <button
           type="button"
           className={styles.commandTrigger}
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setOpen(true);
+            setNotifOpen(false);
+          }}
           aria-haspopup="dialog"
           aria-expanded={open}
         >
@@ -99,13 +152,104 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
         </button>
 
         <div className={styles.actions}>
-          <button type="button" className={styles.iconBtn} aria-label="Notifications (preview)">
-            <span className={styles.iconGlyph} aria-hidden>
-              N
-            </span>
-            <span className={styles.badge}>12</span>
-          </button>
-          <button type="button" className={styles.iconBtn} aria-label="Flags (preview)">
+          <div className={styles.notifWrap} ref={notifWrapRef}>
+            <button
+              type="button"
+              className={styles.iconBtn}
+              aria-label={
+                unreadCount
+                  ? `Notifications, ${unreadCount} unread`
+                  : "Notifications"
+              }
+              aria-haspopup="menu"
+              aria-expanded={notifOpen}
+              onClick={() => {
+                setNotifOpen((current) => !current);
+                setOpen(false);
+              }}
+            >
+              <span className={styles.iconGlyph} aria-hidden>
+                N
+              </span>
+              {unreadCount > 0 ? (
+                <span className={styles.badge}>
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              ) : null}
+            </button>
+
+            {notifOpen ? (
+              <div
+                className={styles.notifPanel}
+                role="menu"
+                aria-label="Notifications"
+              >
+                <div className={styles.notifHead}>
+                  <div>
+                    <strong>Notifications</strong>
+                    <span>
+                      {unreadCount
+                        ? `${unreadCount} to action`
+                        : "You're up to date"}
+                    </span>
+                  </div>
+                  {unreadCount > 0 ? (
+                    <button
+                      type="button"
+                      className={styles.notifMarkAll}
+                      onClick={markAllRead}
+                    >
+                      Mark all read
+                    </button>
+                  ) : null}
+                </div>
+
+                <div className={styles.notifList}>
+                  {unreadNotifications.length === 0 ? (
+                    <p className={styles.notifEmpty}>
+                      No open notifications. New actions and messages will show
+                      here.
+                    </p>
+                  ) : (
+                    unreadNotifications.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="menuitem"
+                        className={styles.notifItem}
+                        data-urgent={item.urgent ? "true" : "false"}
+                        onClick={() => selectNotification(item)}
+                      >
+                        <span className={styles.notifItemTop}>
+                          <span
+                            className={styles.notifCategory}
+                            data-category={item.category}
+                          >
+                            {categoryLabel(item.category)}
+                          </span>
+                          <span className={styles.notifWhen}>{item.when}</span>
+                        </span>
+                        <strong className={styles.notifTitle}>
+                          {item.title}
+                        </strong>
+                        <span className={styles.notifDetail}>{item.detail}</span>
+                        <span className={styles.notifCta}>
+                          {item.hrefLabel} →
+                        </span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          <button
+            type="button"
+            className={styles.iconBtn}
+            aria-label="Flags (preview)"
+            title="Flags coming soon"
+          >
             <span className={styles.iconGlyph} aria-hidden>
               F
             </span>
@@ -204,9 +348,16 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
             </div>
 
             <footer className={styles.commandFooter}>
-              <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-              <span><kbd>Enter</kbd> open</span>
-              <span><kbd>Esc</kbd> close</span>
+              <span>
+                <kbd>↑</kbd>
+                <kbd>↓</kbd> navigate
+              </span>
+              <span>
+                <kbd>Enter</kbd> open
+              </span>
+              <span>
+                <kbd>Esc</kbd> close
+              </span>
             </footer>
           </section>
         </div>

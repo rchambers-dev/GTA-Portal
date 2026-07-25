@@ -5,8 +5,11 @@ import { ChatComposer } from "../components/ChatComposer";
 import { ChatMessageItem } from "../components/ChatMessageItem";
 import { LearnerPageShell } from "../components/LearnerPageShell";
 import { useLearnerChat } from "../components/LearnerChatProvider";
-import type { ChatChannelType } from "../domain/chat/types";
+import { defaultGroupTitle } from "../domain/chat/store";
+import type { ChatChannelType, ChatContact, ChatThread } from "../domain/chat/types";
 import styles from "./LearnerMessagesScreen.module.css";
+
+type SideMode = "chats" | "contacts" | "new-group" | "add-people";
 
 function channelLabel(type: ChatChannelType): string {
   switch (type) {
@@ -18,6 +21,8 @@ function channelLabel(type: ChatChannelType): string {
       return "Support";
     case "safeguarding":
       return "Safeguarding";
+    case "group":
+      return "Group";
   }
 }
 
@@ -61,6 +66,8 @@ function previewForThread(thread: {
   switch (last.attachment?.type) {
     case "gif":
       return "GIF";
+    case "sticker":
+      return "Sticker";
     case "image":
       return "Photo";
     case "file":
@@ -78,6 +85,44 @@ function previewForThread(thread: {
   }
 }
 
+function AvatarStack({
+  contacts,
+  fallbackTitle,
+  large = false,
+}: {
+  contacts: ChatContact[];
+  fallbackTitle: string;
+  large?: boolean;
+}) {
+  const shown = contacts.slice(0, 3);
+  if (shown.length <= 1) {
+    return (
+      <span
+        className={large ? styles.avatarLarge : styles.avatar}
+        data-tone="group"
+      >
+        {shown[0]?.initials ?? initialsFromTitle(fallbackTitle)}
+      </span>
+    );
+  }
+  return (
+    <span
+      className={large ? styles.avatarStackLarge : styles.avatarStack}
+      aria-hidden
+    >
+      {shown.map((contact, index) => (
+        <span
+          key={contact.contactId}
+          className={styles.avatarStackItem}
+          style={{ zIndex: shown.length - index }}
+        >
+          {contact.initials}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export function LearnerMessagesScreen() {
   const {
     contacts,
@@ -87,14 +132,19 @@ export function LearnerMessagesScreen() {
     editMessage,
     deleteMessage,
     ensureThreadWithContact,
+    createGroupThread,
+    addParticipantsToThread,
+    getContactById,
     getThreadById,
   } = useLearnerChat();
 
   const [activeThreadId, setActiveThreadId] = useState<string | null>(
     () => threads[0]?.threadId ?? null,
   );
-  const [showContacts, setShowContacts] = useState(false);
+  const [sideMode, setSideMode] = useState<SideMode>("chats");
   const [search, setSearch] = useState("");
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [groupTitle, setGroupTitle] = useState("");
 
   const query = search.trim().toLowerCase();
 
@@ -123,13 +173,30 @@ export function LearnerMessagesScreen() {
     );
   }, [activeThreadId, getThreadById, threads]);
 
+  const activeOtherContacts = useMemo(() => {
+    if (!activeThread) return [];
+    return activeThread.participantIds
+      .filter((id) => id !== "contact-alex")
+      .map((id) => getContactById(id))
+      .filter((c): c is ChatContact => Boolean(c));
+  }, [activeThread, getContactById]);
+
+  const addableContacts = useMemo(() => {
+    if (!activeThread) return contacts;
+    const inThread = new Set(activeThread.participantIds);
+    return contacts.filter((c) => !inThread.has(c.contactId));
+  }, [activeThread, contacts]);
+
   useEffect(() => {
     if (activeThreadId) markThreadRead(activeThreadId);
   }, [activeThreadId, markThreadRead]);
 
   function openThread(threadId: string) {
     setActiveThreadId(threadId);
-    setShowContacts(false);
+    setSideMode("chats");
+    setSelectedIds([]);
+    setGroupTitle("");
+    setSearch("");
     markThreadRead(threadId);
   }
 
@@ -138,10 +205,91 @@ export function LearnerMessagesScreen() {
     openThread(thread.threadId);
   }
 
+  function toggleSelected(contactId: string) {
+    setSelectedIds((prev) =>
+      prev.includes(contactId)
+        ? prev.filter((id) => id !== contactId)
+        : [...prev, contactId],
+    );
+  }
+
+  function beginNewGroup() {
+    setSideMode("new-group");
+    setSelectedIds([]);
+    setGroupTitle("");
+    setSearch("");
+  }
+
+  function beginAddPeople() {
+    setSideMode("add-people");
+    setSelectedIds([]);
+    setSearch("");
+  }
+
+  function createGroup() {
+    if (selectedIds.length === 0) return;
+    const thread = createGroupThread(
+      selectedIds,
+      groupTitle.trim() || undefined,
+    );
+    openThread(thread.threadId);
+  }
+
+  function confirmAddPeople() {
+    if (!activeThreadId || selectedIds.length === 0) return;
+    const thread = addParticipantsToThread(activeThreadId, selectedIds);
+    if (thread) openThread(thread.threadId);
+  }
+
+  function threadAvatar(thread: ChatThread) {
+    if (thread.channelType !== "group") {
+      return (
+        <span className={styles.avatar} data-tone={thread.channelType}>
+          {initialsFromTitle(thread.title)}
+        </span>
+      );
+    }
+    const people = thread.participantIds
+      .filter((id) => id !== "contact-alex")
+      .map((id) => getContactById(id))
+      .filter((c): c is ChatContact => Boolean(c));
+    return (
+      <AvatarStack contacts={people} fallbackTitle={thread.title} />
+    );
+  }
+
+  const sideTitle =
+    sideMode === "contacts"
+      ? "New chat"
+      : sideMode === "new-group"
+        ? "New group"
+        : sideMode === "add-people"
+          ? "Add people"
+          : "Chats";
+
+  const sideCount =
+    sideMode === "chats"
+      ? `${threads.length} conversations`
+      : sideMode === "add-people"
+        ? `${addableContacts.length} available`
+        : `${contacts.length} people`;
+
+  const pickerContacts =
+    sideMode === "add-people"
+      ? addableContacts.filter((contact) => {
+          if (!query) return true;
+          return (
+            contact.name.toLowerCase().includes(query) ||
+            contact.roleLabel.toLowerCase().includes(query) ||
+            (contact.organisation ?? "").toLowerCase().includes(query)
+          );
+        })
+      : visibleContacts;
+
   return (
     <LearnerPageShell
       title="Messages"
-      description="Mentor, tutor, employer, or GTA Support — each chat has its own privacy rules."
+      description="Message one person, or start a group with teachers and others in your scope."
       fill
       compactHeader
     >
@@ -149,20 +297,45 @@ export function LearnerMessagesScreen() {
         <aside className={styles.sidebar}>
           <div className={styles.sideHead}>
             <div className={styles.sideHeadText}>
-              <strong>{showContacts ? "New chat" : "Chats"}</strong>
-              <span>
-                {showContacts
-                  ? `${contacts.length} people`
-                  : `${threads.length} conversations`}
-              </span>
+              <strong>{sideTitle}</strong>
+              <span>{sideCount}</span>
             </div>
-            <button
-              type="button"
-              className={styles.newChatBtn}
-              onClick={() => setShowContacts((v) => !v)}
-            >
-              {showContacts ? "Back to chats" : "New message"}
-            </button>
+            <div className={styles.sideHeadActions}>
+              {sideMode === "chats" ? (
+                <>
+                  <button
+                    type="button"
+                    className={styles.newChatBtn}
+                    onClick={() => {
+                      setSideMode("contacts");
+                      setSearch("");
+                    }}
+                  >
+                    New message
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.newGroupBtn}
+                    onClick={beginNewGroup}
+                  >
+                    New group
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className={styles.newChatBtn}
+                  onClick={() => {
+                    setSideMode("chats");
+                    setSelectedIds([]);
+                    setGroupTitle("");
+                    setSearch("");
+                  }}
+                >
+                  Back to chats
+                </button>
+              )}
+            </div>
             <div className={styles.sideSearch}>
               <span className={styles.sideSearchIcon} aria-hidden>
                 🔍
@@ -172,10 +345,10 @@ export function LearnerMessagesScreen() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={
-                  showContacts ? "Search people" : "Search chats"
+                  sideMode === "chats" ? "Search chats" : "Search people"
                 }
                 aria-label={
-                  showContacts ? "Search people" : "Search chats"
+                  sideMode === "chats" ? "Search chats" : "Search people"
                 }
               />
               {search ? (
@@ -190,9 +363,60 @@ export function LearnerMessagesScreen() {
               ) : null}
             </div>
           </div>
-          {showContacts ? (
+
+          {sideMode === "chats" ? (
             <div className={styles.sideList}>
-              <p className={styles.sideHint}>People in your programme scope</p>
+              {threads.length === 0 ? (
+                <p className={styles.empty}>No conversations yet.</p>
+              ) : visibleThreads.length === 0 ? (
+                <p className={styles.empty}>
+                  No chats match “{search.trim()}”.
+                </p>
+              ) : (
+                visibleThreads.map((thread) => (
+                  <button
+                    key={thread.threadId}
+                    type="button"
+                    className={styles.sideRow}
+                    data-active={
+                      thread.threadId === activeThreadId ? "true" : "false"
+                    }
+                    onClick={() => openThread(thread.threadId)}
+                  >
+                    {threadAvatar(thread)}
+                    <span className={styles.sideMeta}>
+                      <span className={styles.sideMetaTop}>
+                        <strong>{thread.title}</strong>
+                        <span className={styles.sideTime}>
+                          {formatShortTime(thread.lastMessageAt)}
+                        </span>
+                      </span>
+                      <span className={styles.sidePreview}>
+                        {previewForThread(thread)}
+                      </span>
+                    </span>
+                    {thread.unreadForLearner > 0 ? (
+                      <span className={styles.badge}>
+                        {thread.unreadForLearner}
+                      </span>
+                    ) : null}
+                  </button>
+                ))
+              )}
+            </div>
+          ) : sideMode === "contacts" ? (
+            <div className={styles.sideList}>
+              <p className={styles.sideHint}>
+                Message one person, or{" "}
+                <button
+                  type="button"
+                  className={styles.textBtn}
+                  onClick={beginNewGroup}
+                >
+                  start a group
+                </button>
+                .
+              </p>
               {visibleContacts.length === 0 ? (
                 <p className={styles.empty}>
                   No people match “{search.trim()}”.
@@ -223,48 +447,81 @@ export function LearnerMessagesScreen() {
             </div>
           ) : (
             <div className={styles.sideList}>
-              {threads.length === 0 ? (
-                <p className={styles.empty}>No conversations yet.</p>
-              ) : visibleThreads.length === 0 ? (
+              <p className={styles.sideHint}>
+                {sideMode === "new-group"
+                  ? "Select teachers or anyone in your scope, then create the group."
+                  : "Add more people to this group chat."}
+              </p>
+              {sideMode === "new-group" ? (
+                <label className={styles.groupTitleField}>
+                  <span>Group name (optional)</span>
+                  <input
+                    type="text"
+                    value={groupTitle}
+                    onChange={(e) => setGroupTitle(e.target.value)}
+                    placeholder={
+                      selectedIds.length
+                        ? defaultGroupTitle(["contact-alex", ...selectedIds])
+                        : "e.g. College catch-up"
+                    }
+                  />
+                </label>
+              ) : null}
+              {pickerContacts.length === 0 ? (
                 <p className={styles.empty}>
-                  No chats match “{search.trim()}”.
+                  {sideMode === "add-people"
+                    ? "Everyone in your scope is already in this group."
+                    : `No people match “${search.trim()}”.`}
                 </p>
               ) : (
-                visibleThreads.map((thread) => (
-                  <button
-                    key={thread.threadId}
-                    type="button"
-                    className={styles.sideRow}
-                    data-active={
-                      thread.threadId === activeThreadId ? "true" : "false"
-                    }
-                    onClick={() => openThread(thread.threadId)}
-                  >
-                    <span
-                      className={styles.avatar}
-                      data-tone={thread.channelType}
+                pickerContacts.map((contact) => {
+                  const checked = selectedIds.includes(contact.contactId);
+                  return (
+                    <button
+                      key={contact.contactId}
+                      type="button"
+                      className={styles.sideRow}
+                      data-selected={checked ? "true" : "false"}
+                      onClick={() => toggleSelected(contact.contactId)}
+                      aria-pressed={checked}
                     >
-                      {initialsFromTitle(thread.title)}
-                    </span>
-                    <span className={styles.sideMeta}>
-                      <span className={styles.sideMetaTop}>
-                        <strong>{thread.title}</strong>
-                        <span className={styles.sideTime}>
-                          {formatShortTime(thread.lastMessageAt)}
+                      <span className={styles.avatar} data-tone="navy">
+                        {contact.initials}
+                      </span>
+                      <span className={styles.sideMeta}>
+                        <strong>{contact.name}</strong>
+                        <span>
+                          {contact.roleLabel}
+                          {contact.organisation
+                            ? ` · ${contact.organisation}`
+                            : ""}
                         </span>
                       </span>
-                      <span className={styles.sidePreview}>
-                        {previewForThread(thread)}
+                      <span
+                        className={styles.checkMark}
+                        data-on={checked ? "true" : "false"}
+                        aria-hidden
+                      >
+                        {checked ? "✓" : ""}
                       </span>
-                    </span>
-                    {thread.unreadForLearner > 0 ? (
-                      <span className={styles.badge}>
-                        {thread.unreadForLearner}
-                      </span>
-                    ) : null}
-                  </button>
-                ))
+                    </button>
+                  );
+                })
               )}
+              <div className={styles.groupActions}>
+                <button
+                  type="button"
+                  className={styles.primarySideBtn}
+                  disabled={selectedIds.length === 0}
+                  onClick={
+                    sideMode === "new-group" ? createGroup : confirmAddPeople
+                  }
+                >
+                  {sideMode === "new-group"
+                    ? `Create group${selectedIds.length ? ` (${selectedIds.length})` : ""}`
+                    : `Add${selectedIds.length ? ` (${selectedIds.length})` : ""}`}
+                </button>
+              </div>
             </div>
           )}
         </aside>
@@ -273,29 +530,53 @@ export function LearnerMessagesScreen() {
           {!activeThread ? (
             <div className={styles.emptyState}>
               <h2>Select a conversation</h2>
-              <p>Or start a new message with someone in your scope.</p>
+              <p>Or start a new message / group with people in your scope.</p>
             </div>
           ) : (
             <>
               <header className={styles.threadHeader}>
                 <div className={styles.threadHeaderMain}>
-                  <span
-                    className={styles.avatarLarge}
-                    data-tone={activeThread.channelType}
-                  >
-                    {initialsFromTitle(activeThread.title)}
-                  </span>
+                  {activeThread.channelType === "group" ? (
+                    <AvatarStack
+                      contacts={activeOtherContacts}
+                      fallbackTitle={activeThread.title}
+                      large
+                    />
+                  ) : (
+                    <span
+                      className={styles.avatarLarge}
+                      data-tone={activeThread.channelType}
+                    >
+                      {initialsFromTitle(activeThread.title)}
+                    </span>
+                  )}
                   <div>
                     <h2>{activeThread.title}</h2>
                     <p className={styles.privacy}>{activeThread.privacyNote}</p>
+                    {activeThread.channelType === "group" ? (
+                      <p className={styles.membersLine}>
+                        {activeOtherContacts.map((c) => c.name).join(", ")}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
-                <span
-                  className={styles.channelChip}
-                  data-tone={activeThread.channelType}
-                >
-                  {channelLabel(activeThread.channelType)}
-                </span>
+                <div className={styles.threadHeaderEnd}>
+                  {activeThread.channelType === "group" ? (
+                    <button
+                      type="button"
+                      className={styles.addPeopleBtn}
+                      onClick={beginAddPeople}
+                    >
+                      Add people
+                    </button>
+                  ) : null}
+                  <span
+                    className={styles.channelChip}
+                    data-tone={activeThread.channelType}
+                  >
+                    {channelLabel(activeThread.channelType)}
+                  </span>
+                </div>
               </header>
               <div className={styles.messages}>
                 {activeThread.messages.length === 0 ? (

@@ -98,6 +98,51 @@ export type LearnerReviewSummary = {
   href?: string;
 };
 
+export type LearnerReviewStat = {
+  id: string;
+  label: string;
+  value: string;
+  hint?: string;
+  tone?: "navy" | "green" | "amber" | "red" | "blue";
+  href?: string;
+};
+
+export type LearnerReviewContribution = {
+  id: string;
+  fromLabel: string;
+  roleLabel: string;
+  body: string;
+};
+
+export type LearnerReviewAction = {
+  id: string;
+  title: string;
+  owner: string;
+  status: "open" | "done" | "due_soon";
+};
+
+/** Learner-readable review record (notes + the statistics used in the meeting). */
+export type LearnerReviewDetail = LearnerReviewSummary & {
+  mentorName: string;
+  programmeName: string;
+  employerName: string;
+  /** Short headline under the title. */
+  summary: string;
+  discussionSummary: string;
+  learningFocus: string;
+  workplaceNotes?: string;
+  barriersNotes?: string;
+  wellbeingNotes?: string;
+  nextSteps: string[];
+  actionsFromReview: LearnerReviewAction[];
+  contributions: LearnerReviewContribution[];
+  /** Progress / attendance / OTJ figures discussed or snapshotted for this review. */
+  statsUsed: LearnerReviewStat[];
+  statsNote: string;
+  /** Prep destination for upcoming reviews. */
+  prepareHref?: string;
+};
+
 /** College-session outcomes that can appear on a learner attendance record. */
 export type LearnerAttendanceStatus =
   | "attended"
@@ -1504,13 +1549,113 @@ export function otjPipelineLabel(entry: LearnerOtjEntry): string {
   return "3/3 Fully agreed";
 }
 
-export const ALEX_REVIEWS: LearnerReviewSummary[] = [
+export const ALEX_REVIEW_DETAILS: LearnerReviewDetail[] = [
   {
     id: "rev-alex-upcoming",
     reviewDate: "2026-08-08",
     type: "Progress review",
     status: "upcoming",
-    href: "/learner/learning",
+    href: "/learner/reviews/rev-alex-upcoming",
+    prepareHref: "/learner/learning",
+    mentorName: ALEX_PROFILE.mentorName,
+    programmeName: ALEX_PROFILE.programmeName,
+    employerName: ALEX_PROFILE.employerName,
+    summary: `Upcoming meeting with ${ALEX_PROFILE.mentorName}. Use this page to see what will be covered and which figures will be discussed.`,
+    discussionSummary:
+      "This review is not written up yet. Your mentor will capture discussion notes during and after the meeting on 8 Aug 2026.",
+    learningFocus:
+      "Expect to talk about CEA Group 3 tyre evidence, OTJ catch-up with your employer, and how module topics are landing in the workshop.",
+    workplaceNotes:
+      "Bring any workplace examples of diagnostics or customer handovers you are proud of — Priya can add employer feedback in the meeting.",
+    nextSteps: [
+      "Complete or update open actions on My Learning before the review.",
+      "Make sure recent OTJ entries are submitted for employer agreement.",
+      "Have evidence links ready for CEA Group 3 where you can.",
+    ],
+    actionsFromReview: [
+      {
+        id: "act-prep-1",
+        title: "Finish CEA Group 3 tyre evidence pack",
+        owner: "You",
+        status: "due_soon",
+      },
+      {
+        id: "act-prep-2",
+        title: "Submit OTJ catch-up block for Priya to agree",
+        owner: "You",
+        status: "open",
+      },
+      {
+        id: "act-prep-3",
+        title: "Confirm college attendance notes for late July",
+        owner: "You",
+        status: "open",
+      },
+    ],
+    contributions: [
+      {
+        id: "c-prep-you",
+        fromLabel: "You",
+        roleLabel: "Apprentice reflection (to bring)",
+        body: "Add a short reflection on My Learning before the meeting — what went well, what felt hard, and what support would help next.",
+      },
+      {
+        id: "c-prep-employer",
+        fromLabel: ALEX_PROFILE.employerContact,
+        roleLabel: "Employer (to confirm in meeting)",
+        body: "Workplace feedback will be captured with your employer contact during the review.",
+      },
+      {
+        id: "c-prep-tutor",
+        fromLabel: ALEX_PROFILE.tutorName,
+        roleLabel: "Tutor evidence",
+        body: "College attendance and released module progress will be pulled from your portal record for the meeting pack.",
+      },
+    ],
+    statsUsed: [
+      {
+        id: "s-planned",
+        label: "Planned progress",
+        value: `${ALEX_PROFILE.plannedProgressPercent}%`,
+        hint: `Expected by week ${ALEX_PROFILE.programmeWeek}`,
+        tone: "navy",
+        href: "/learner/progress",
+      },
+      {
+        id: "s-actual",
+        label: "Actual progress",
+        value: `${ALEX_PROFILE.actualProgressPercent}%`,
+        hint: "Live figure — will be snapshotted at the meeting",
+        tone: "amber",
+        href: "/learner/progress",
+      },
+      {
+        id: "s-attend",
+        label: "Attendance",
+        value: `${ALEX_PROFILE.attendancePercent}%`,
+        hint: `College days: ${ALEX_PROFILE.collegeDays}`,
+        tone: "green",
+        href: "/learner/attendance",
+      },
+      {
+        id: "s-otj",
+        label: "OTJ (live)",
+        value: "See OTJ",
+        hint: "Hours and agreement status from your log",
+        tone: "blue",
+        href: "/learner/otj",
+      },
+      {
+        id: "s-actions",
+        label: "Open actions",
+        value: String(ALEX_PROFILE.openActionCount),
+        hint: "On My Learning",
+        tone: "amber",
+        href: "/learner/learning",
+      },
+    ],
+    statsNote:
+      "These are your live portal figures today. At the review they will be frozen into a snapshot so everyone can see what was discussed on the day. Other pages are still being built out — expect this view to get richer as Progress, Attendance, and OTJ mature.",
   },
   {
     id: "rev-alex-last",
@@ -1518,8 +1663,149 @@ export const ALEX_REVIEWS: LearnerReviewSummary[] = [
     type: "Progress review",
     status: "completed",
     judgement: "On track with support",
+    href: "/learner/reviews/rev-alex-last",
+    mentorName: ALEX_PROFILE.mentorName,
+    programmeName: ALEX_PROFILE.programmeName,
+    employerName: ALEX_PROFILE.employerName,
+    summary:
+      "Completed progress review. Read what was discussed, what each person contributed, and which statistics were used on the day.",
+    discussionSummary:
+      "Alex is settling well at Riverside Autocare. Workshop confidence is growing on routine servicing; theory recall is solid when linked to live jobs. Agreed that OTJ logging needs to stay steadier through summer so evidence keeps pace with planned progress.",
+    learningFocus:
+      "Next focus: tyre and braking practicals in CEA, plus clearer reflective notes on OTJ entries so tutor and employer can see learning, not only hours.",
+    workplaceNotes:
+      "Priya reported Alex is reliable on booking-in tasks and asks good questions on diagnostics. Would like Alex to practise explaining work to customers in plain language.",
+    barriersNotes:
+      "Occasional late college mornings after early starts — flagged for monitoring, not a formal concern. Travel and sleep routine discussed.",
+    wellbeingNotes:
+      "Alex said workplace feels supportive. No safeguarding concerns raised. Reminded of Support contacts in the portal if anything changes.",
+    nextSteps: [
+      "Keep OTJ entries weekly rather than batching at month end.",
+      "Bring one customer-handover example to the August review.",
+      "Complete open CEA evidence items before the next checkpoint.",
+    ],
+    actionsFromReview: [
+      {
+        id: "act-last-1",
+        title: "Log OTJ at least once per week",
+        owner: "You",
+        status: "done",
+      },
+      {
+        id: "act-last-2",
+        title: "Draft a short customer explanation for a service job",
+        owner: "You",
+        status: "open",
+      },
+      {
+        id: "act-last-3",
+        title: "Employer to note one strengths example before next review",
+        owner: ALEX_PROFILE.employerContact,
+        status: "done",
+      },
+    ],
+    contributions: [
+      {
+        id: "c-last-you",
+        fromLabel: "You",
+        roleLabel: "Apprentice",
+        body: "Felt more confident stripping wheels and checking tyre wear. Still nervous explaining work to customers. Want more practice on ABS warning diagnostics with Daniel.",
+      },
+      {
+        id: "c-last-employer",
+        fromLabel: ALEX_PROFILE.employerContact,
+        roleLabel: "Employer",
+        body: "Alex is punctual and keen. Good with routine service checklists. Needs coaching on customer conversations and keeping the OTJ log up to date in the week the work happens.",
+      },
+      {
+        id: "c-last-tutor",
+        fromLabel: ALEX_PROFILE.tutorName,
+        roleLabel: "Tutor",
+        body: "College attendance is strong. Theory links well when tied to workshop jobs. Released modules are being used; reflective depth on OTJ could be stronger.",
+      },
+      {
+        id: "c-last-mentor",
+        fromLabel: ALEX_PROFILE.mentorName,
+        roleLabel: "Learning & Progress Mentor",
+        body: "Judgement: on track with support. Progress is a little behind plan on paper but trajectory is positive. Support actions agreed; no intervention required.",
+      },
+    ],
+    statsUsed: [
+      {
+        id: "s2-planned",
+        label: "Planned progress",
+        value: "22%",
+        hint: "Snapshotted for 30 May 2026",
+        tone: "navy",
+        href: "/learner/progress",
+      },
+      {
+        id: "s2-actual",
+        label: "Actual progress",
+        value: "20%",
+        hint: "2% behind plan at review",
+        tone: "amber",
+        href: "/learner/progress",
+      },
+      {
+        id: "s2-attend",
+        label: "Attendance",
+        value: "96%",
+        hint: "College sessions to review date",
+        tone: "green",
+        href: "/learner/attendance",
+      },
+      {
+        id: "s2-otj",
+        label: "OTJ hours",
+        value: "46h",
+        hint: "Agreed hours in the period",
+        tone: "blue",
+        href: "/learner/otj",
+      },
+      {
+        id: "s2-modules",
+        label: "Modules",
+        value: "2 / 2 / 8",
+        hint: "Completed / in progress / remaining",
+        tone: "navy",
+        href: "/learner/modules",
+      },
+      {
+        id: "s2-actions",
+        label: "Open actions",
+        value: "2",
+        hint: "Carried into My Learning",
+        tone: "amber",
+        href: "/learner/learning",
+      },
+    ],
+    statsNote:
+      "These figures were frozen for the 30 May review so you can see exactly what the meeting used. Live numbers on Progress, Attendance, and OTJ may have moved on since — open those pages for today’s position.",
   },
 ];
+
+export const ALEX_REVIEWS: LearnerReviewSummary[] = ALEX_REVIEW_DETAILS.map(
+  ({
+    id,
+    reviewDate,
+    type,
+    status,
+    judgement,
+    href,
+  }) => ({
+    id,
+    reviewDate,
+    type,
+    status,
+    judgement,
+    href,
+  }),
+);
+
+export function getAlexReview(reviewId: string): LearnerReviewDetail | null {
+  return ALEX_REVIEW_DETAILS.find((review) => review.id === reviewId) ?? null;
+}
 
 export const ALEX_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
   {
