@@ -1,10 +1,11 @@
-export type ChatChannelType = "direct" | "employer" | "support";
+export type ChatChannelType = "direct" | "employer" | "support" | "safeguarding";
 
 export type ChatContactRole =
   | "mentor"
   | "tutor"
   | "employer"
   | "support"
+  | "safeguarding"
   | "apprentice";
 
 export type ChatContact = {
@@ -84,6 +85,8 @@ export type ChatMessage = {
   senderName: string;
   body: string;
   sentAt: string;
+  /** Set when the sender edits the message. */
+  editedAt?: string;
   attachment?: ChatAttachment;
 };
 
@@ -112,5 +115,7 @@ export function privacyNoteForChannel(channel: ChatChannelType): string {
       return "You, your employer contact, and your progress mentor can read this conversation.";
     case "support":
       return "Only you and the GTA Support team can read this. Your mentor cannot see the contents.";
+    case "safeguarding":
+      return "Only you and the GTA Safeguarding team can read this. Your mentor and tutor cannot see the contents.";
   }
 }

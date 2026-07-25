@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ChatComposer } from "./ChatComposer";
-import { ChatMessageBody } from "./ChatMessageBody";
+import { ChatMessageItem } from "./ChatMessageItem";
 import { useLearnerChat } from "./LearnerChatProvider";
 import type { ChatChannelType, ChatThread } from "../domain/chat/types";
 import styles from "./LearnerChatDock.module.css";
@@ -16,6 +17,8 @@ function channelLabel(type: ChatChannelType): string {
       return "Employer";
     case "support":
       return "Support";
+    case "safeguarding":
+      return "Safeguarding";
   }
 }
 
@@ -41,14 +44,22 @@ export function LearnerChatDock() {
     unread,
     markThreadRead,
     sendMessage,
+    editMessage,
+    deleteMessage,
     ensureThreadWithContact,
     getThreadById,
     openDockSignal,
   } = useLearnerChat();
 
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [view, setView] = useState<PanelView>("list");
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
+
+  // On the full Messages page the dock is redundant and would overlap the
+  // composer, so hide it there (shell also skips mounting it).
+  const path = (pathname.split("?")[0] ?? pathname).replace(/\/+$/, "");
+  const onMessagesPage = path === "/messages" || path.endsWith("/messages");
 
   useEffect(() => {
     if (openDockSignal > 0) {
@@ -96,6 +107,8 @@ export function LearnerChatDock() {
   function minimiseToBar() {
     setOpen(false);
   }
+
+  if (onMessagesPage) return null;
 
   return (
     <div className={styles.dock} data-open={open ? "true" : "false"}>
@@ -165,6 +178,9 @@ export function LearnerChatDock() {
                     key={thread.threadId}
                     type="button"
                     className={styles.threadRow}
+                    data-active={
+                      thread.threadId === activeThreadId ? "true" : "false"
+                    }
                     onClick={() => openThread(thread.threadId)}
                   >
                     <span className={styles.threadMeta}>
@@ -222,23 +238,22 @@ export function LearnerChatDock() {
                 {activeThread.messages.length === 0 ? (
                   <p className={styles.empty}>No messages yet. Say hello.</p>
                 ) : (
-                  activeThread.messages.map((m) => {
-                    const mine = m.senderId === "contact-alex";
-                    return (
-                      <div
-                        key={m.messageId}
-                        className={mine ? styles.bubbleMine : styles.bubbleTheirs}
-                      >
-                        {!mine ? (
-                          <span className={styles.sender}>{m.senderName}</span>
-                        ) : null}
-                        <ChatMessageBody message={m} mine={mine} />
-                        <time className={styles.bubbleTime} dateTime={m.sentAt}>
-                          {formatTime(m.sentAt)}
-                        </time>
-                      </div>
-                    );
-                  })
+                  activeThread.messages.map((m) => (
+                    <ChatMessageItem
+                      key={m.messageId}
+                      message={m}
+                      mine={m.senderId === "contact-alex"}
+                      compact
+                      onEdit={(messageId, body) => {
+                        if (!activeThreadId) return;
+                        editMessage(activeThreadId, messageId, body);
+                      }}
+                      onDelete={(messageId) => {
+                        if (!activeThreadId) return;
+                        deleteMessage(activeThreadId, messageId);
+                      }}
+                    />
+                  ))
                 )}
               </div>
               <ChatComposer

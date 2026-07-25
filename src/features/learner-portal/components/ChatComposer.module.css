@@ -1,22 +1,24 @@
 .root {
-  --chat-accent: #00a884;
-  --chat-accent-soft: #d9f5ee;
-  --chat-ink: #111b21;
-  --chat-muted: #667781;
-  --chat-border: #e9edef;
-  --chat-panel: #ffffff;
-  --chat-wash: #f0f2f5;
+  --chat-accent: var(--action-primary);
+  --chat-accent-soft: color-mix(in srgb, var(--action-primary) 12%, white);
+  --chat-ink: var(--color-navy-900);
+  --chat-muted: var(--text-secondary);
+  --chat-border: color-mix(in srgb, var(--color-navy-700) 12%, var(--border-subtle));
+  --chat-panel: var(--color-white);
+  --chat-wash: #f3efe8;
 
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  padding: 0.55rem 0.75rem 0.7rem;
+  gap: 0.5rem;
+  padding: 0.55rem 0.8rem 0.7rem;
   border-top: 1px solid var(--chat-border);
   background:
-    radial-gradient(circle at 8% 20%, rgb(0 168 132 / 0.05), transparent 28%),
-    radial-gradient(circle at 92% 80%, rgb(37 43 82 / 0.04), transparent 30%),
-    var(--chat-wash);
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, #f3efe8 70%, white) 0%,
+      #efeae2 100%
+    );
 }
 
 .compact {
@@ -226,12 +228,14 @@
 .gifGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-content: start;
-  align-items: start;
-  gap: 0.4rem;
-  overflow: auto;
+  grid-auto-flow: row dense;
+  grid-auto-rows: 5.75rem;
+  gap: 0.45rem;
+  overflow-x: hidden;
+  overflow-y: auto;
   min-height: 11rem;
-  flex: 1;
+  flex: 1 1 auto;
+  align-content: start;
   padding-bottom: 0.25rem;
 }
 
@@ -239,14 +243,16 @@
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  height: auto;
+  height: 5.75rem;
+  min-height: 5.75rem;
   border: none;
   padding: 0;
+  margin: 0;
   border-radius: 0.55rem;
   overflow: hidden;
   background: var(--chat-wash);
   cursor: pointer;
+  isolation: isolate;
 }
 
 .gifTile img {
@@ -257,6 +263,7 @@
   object-fit: cover;
   object-position: center;
   display: block;
+  pointer-events: none;
 }
 
 .stickerGrid {
@@ -546,7 +553,7 @@
 
 .contextItem:hover {
   background: var(--chat-accent-soft);
-  color: #006d58;
+  color: var(--color-red-700);
 }
 
 .attachLinks {
@@ -671,19 +678,19 @@
 }
 
 .sendFab {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.65rem;
+  height: 2.65rem;
   border: none;
   border-radius: 999px;
   background: var(--chat-accent);
   color: white;
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   cursor: pointer;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-red-700) 28%, transparent);
 }
 
 .sendFab:hover:not(:disabled) {

@@ -228,6 +228,124 @@ function buildDefaultState(): CvState {
   return buildCvFromPortal();
 }
 
+type GtaCvFile = {
+  format: "gta-cv";
+  version: 1;
+  savedAt: string;
+  cv: CvState;
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function importedString(value: unknown, max: number): string {
+  return typeof value === "string" ? value.slice(0, max) : "";
+}
+
+function normaliseImportedCv(value: unknown): CvState | null {
+  const source =
+    isRecord(value) && value.format === "gta-cv" && isRecord(value.cv)
+      ? value.cv
+      : value;
+  if (!isRecord(source)) return null;
+  const recognisedKeys = [
+    "fullName",
+    "headline",
+    "summary",
+    "skills",
+    "experience",
+    "education",
+    "referencePeople",
+    "referencesOnRequest",
+  ];
+  if (!recognisedKeys.some((key) => key in source)) return null;
+
+  const experience = Array.isArray(source.experience)
+    ? source.experience
+        .filter(isRecord)
+        .slice(0, 12)
+        .map((item) => ({
+          id: importedString(item.id, 100) || newId(),
+          role: importedString(item.role, CV_LIMITS.role),
+          company: importedString(item.company, CV_LIMITS.company),
+          location: importedString(item.location, 80),
+          start: importedString(item.start, 7),
+          end: importedString(item.end, 7),
+          current: item.current === true,
+          description: importedString(item.description, CV_LIMITS.description),
+        }))
+    : [];
+
+  const education = Array.isArray(source.education)
+    ? source.education
+        .filter(isRecord)
+        .slice(0, 12)
+        .map((item) => ({
+          id: importedString(item.id, 100) || newId(),
+          qualification: importedString(
+            item.qualification,
+            CV_LIMITS.qualification,
+          ),
+          institution: importedString(item.institution, CV_LIMITS.institution),
+          start: importedString(item.start, 7),
+          end: importedString(item.end, 7),
+          detail: importedString(item.detail, CV_LIMITS.detail),
+        }))
+    : [];
+
+  const referencePeople = Array.isArray(source.referencePeople)
+    ? source.referencePeople
+        .filter(isRecord)
+        .slice(0, CV_LIMITS.referenceCount)
+        .map((person) => ({
+          id: importedString(person.id, 100) || newId(),
+          name: importedString(person.name, CV_LIMITS.referenceName),
+          role: importedString(person.role, CV_LIMITS.referenceRole),
+          organisation: importedString(
+            person.organisation,
+            CV_LIMITS.referenceOrganisation,
+          ),
+          email: importedString(person.email, CV_LIMITS.referenceEmail),
+          phone: importedString(person.phone, CV_LIMITS.referencePhone),
+        }))
+    : [];
+
+  const skills = Array.isArray(source.skills)
+    ? source.skills
+        .filter((skill): skill is string => typeof skill === "string")
+        .map((skill) => skill.trim().slice(0, CV_LIMITS.skillLabel))
+        .filter(Boolean)
+        .slice(0, CV_LIMITS.skillCount)
+    : [];
+
+  return {
+    fullName: importedString(source.fullName, CV_LIMITS.fullName),
+    headline: importedString(source.headline, CV_LIMITS.headline),
+    email: importedString(source.email, CV_LIMITS.email),
+    phone: importedString(source.phone, CV_LIMITS.phone),
+    houseNumber: importedString(source.houseNumber, CV_LIMITS.houseNumber),
+    postcode: importedString(source.postcode, CV_LIMITS.postcode),
+    addressLine: importedString(source.addressLine, 250),
+    summary: importedString(source.summary, CV_LIMITS.summary),
+    skills,
+    experience,
+    education,
+    referencesOnRequest: source.referencesOnRequest !== false,
+    referencePeople,
+  };
+}
+
+function cvFileName(name: string): string {
+  const safe =
+    name
+      .trim()
+      .replace(/[^\w\s-]+/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-") || "My";
+  return `${safe}-CV.gta-cv`;
+}
+
 function toAiDraft(state: CvState) {
   return {
     ...state,
@@ -289,6 +407,7 @@ export function LearnerCvBuilderScreen() {
   const [consent, setConsent] = useState<AiConsentRecord>(defaultAiConsent);
   const [consentOpen, setConsentOpen] = useState(false);
   const sheetRef = useRef<HTMLDivElement | null>(null);
+  const importCvRef = useRef<HTMLInputElement | null>(null);
   const [pageEstimate, setPageEstimate] = useState(1);
   const [pageHeightPx, setPageHeightPx] = useState(0);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -642,6 +761,61 @@ export function LearnerCvBuilderScreen() {
     setExportError(null);
   }
 
+  function saveEditableCopy() {
+    const file: GtaCvFile = {
+      format: "gta-cv",
+      version: 1,
+      savedAt: new Date().toISOString(),
+      cv,
+    };
+    const blob = new Blob([JSON.stringify(file, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = cvFileName(cv.fullName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    setExportError(null);
+    setAiMessage("Editable GTA CV copy downloaded.");
+  }
+
+  async function importPreviousCv(file: File) {
+    setExportError(null);
+    setAiMessage(null);
+    try {
+      const parsed = JSON.parse(await file.text()) as unknown;
+      const imported = normaliseImportedCv(parsed);
+      if (!imported) {
+        throw new Error("This is not a recognised GTA CV file.");
+      }
+
+      const confirmed = window.confirm(
+        "Import this GTA CV? It will replace the CV currently in the builder.",
+      );
+      if (!confirmed) return;
+
+      setCv(imported);
+      setTouched({});
+      setShowAllErrors(false);
+      setSkillError(null);
+      setAddressSuggestions([]);
+      setAddressLookupError(null);
+      setAiMessage("Previous GTA CV imported. Review it before downloading.");
+    } catch (error) {
+      setExportError(
+        error instanceof Error
+          ? error.message
+          : "Could not import that GTA CV file.",
+      );
+    } finally {
+      if (importCvRef.current) importCvRef.current.value = "";
+    }
+  }
+
   /** Reveals every outstanding error and returns false when export should stop. */
   function blockedByValidation(): boolean {
     if (validation.canExport) {
@@ -818,6 +992,30 @@ export function LearnerCvBuilderScreen() {
       description="Build a clean, professional CV from your details. Use AI to polish wording — everything saves as you type, then export as PDF or email yourself a copy."
       actions={
         <div className={styles.cvActions} data-print-hide>
+          <input
+            ref={importCvRef}
+            className={styles.cvImportInput}
+            type="file"
+            accept=".gta-cv,.json,application/json"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              if (file) void importPreviousCv(file);
+            }}
+          />
+          <button
+            type="button"
+            className={styles.ghostBtn}
+            onClick={() => importCvRef.current?.click()}
+          >
+            Import previous CV
+          </button>
+          <button
+            type="button"
+            className={styles.ghostBtn}
+            onClick={saveEditableCopy}
+          >
+            Save editable copy
+          </button>
           <button type="button" className={styles.ghostBtn} onClick={resetCv}>
             Reset
           </button>

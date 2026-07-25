@@ -229,7 +229,11 @@
   border-radius: 0.45rem;
   background: color-mix(in srgb, var(--color-navy-700) 8%, white);
   color: var(--color-navy-700);
-  font-weight: 800;
+}
+
+.resultIcon svg {
+  width: 1.05rem;
+  height: 1.05rem;
 }
 
 .commandResultSelected .resultIcon {

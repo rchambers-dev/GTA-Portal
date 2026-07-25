@@ -7,6 +7,7 @@ export function LearnerPageShell({
   children,
   actions,
   fill = false,
+  compactHeader = false,
 }: {
   title: string;
   description: string;
@@ -14,9 +15,19 @@ export function LearnerPageShell({
   actions?: ReactNode;
   /** Grow to fill the portal content area (e.g. Messages). */
   fill?: boolean;
+  /** Tighter page header so content (e.g. chat) gets more room. */
+  compactHeader?: boolean;
 }) {
+  const rootClass = [
+    styles.root,
+    fill ? styles.fill : "",
+    compactHeader ? styles.compactHeader : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div className={fill ? `${styles.root} ${styles.fill}` : styles.root}>
+    <div className={rootClass}>
       <header className={styles.header}>
         <div>
           <p className={styles.eyebrow}>Learner portal</p>

@@ -1,4 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import type { EffectiveSession } from "@/lib/portal/types";
 import {
   LearnerChatDock,
@@ -9,6 +12,12 @@ import { DemoSessionProvider } from "./demo/DemoSessionProvider";
 import { PortalMain } from "./PortalMain";
 import { SidebarNavigation } from "./SidebarNavigation";
 import styles from "./PortalShell.module.css";
+
+function isMessagesRoute(pathname: string | null): boolean {
+  if (!pathname) return false;
+  const path = pathname.split("?")[0]?.replace(/\/+$/, "") ?? "";
+  return path === "/messages" || path.endsWith("/messages");
+}
 
 /**
  * TEMPORARY standalone chrome.
@@ -22,7 +31,9 @@ export function PortalShell({
   session: EffectiveSession;
   children: ReactNode;
 }) {
+  const pathname = usePathname();
   const isLearner = session.account.workspace === "learner";
+  const onMessagesPage = isMessagesRoute(pathname);
 
   const body = (
     <div
@@ -30,8 +41,8 @@ export function PortalShell({
       data-portal-root={isLearner ? "" : undefined}
     >
       <SidebarNavigation />
-      <PortalMain withDock={isLearner}>{children}</PortalMain>
-      {isLearner ? <LearnerChatDock /> : null}
+      <PortalMain withDock={isLearner && !onMessagesPage}>{children}</PortalMain>
+      {isLearner && !onMessagesPage ? <LearnerChatDock /> : null}
     </div>
   );
 

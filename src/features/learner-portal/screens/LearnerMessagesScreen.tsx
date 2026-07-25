@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { ChatComposer } from "../components/ChatComposer";
-import { ChatMessageBody } from "../components/ChatMessageBody";
+import { ChatMessageItem } from "../components/ChatMessageItem";
 import { LearnerPageShell } from "../components/LearnerPageShell";
 import { useLearnerChat } from "../components/LearnerChatProvider";
 import type { ChatChannelType } from "../domain/chat/types";
@@ -16,19 +16,8 @@ function channelLabel(type: ChatChannelType): string {
       return "Employer";
     case "support":
       return "Support";
-  }
-}
-
-function formatTime(iso: string): string {
-  try {
-    return new Date(iso).toLocaleString("en-GB", {
-      day: "numeric",
-      month: "short",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  } catch {
-    return iso;
+    case "safeguarding":
+      return "Safeguarding";
   }
 }
 
@@ -39,12 +28,64 @@ function initialsFromTitle(title: string): string {
   return `${parts[0][0] ?? ""}${parts[1][0] ?? ""}`.toUpperCase();
 }
 
+function formatShortTime(iso: string): string {
+  try {
+    const date = new Date(iso);
+    const now = new Date();
+    const sameDay =
+      date.getFullYear() === now.getFullYear() &&
+      date.getMonth() === now.getMonth() &&
+      date.getDate() === now.getDate();
+    if (sameDay) {
+      return date.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+    });
+  } catch {
+    return iso;
+  }
+}
+
+function previewForThread(thread: {
+  messages: { body: string; attachment?: { type: string } }[];
+}): string {
+  const last = thread.messages[thread.messages.length - 1];
+  if (!last) return "No messages yet";
+  const text = last.body.trim();
+  if (text) return text;
+  switch (last.attachment?.type) {
+    case "gif":
+      return "GIF";
+    case "image":
+      return "Photo";
+    case "file":
+      return "Document";
+    case "portal_link":
+      return "Portal link";
+    case "contact":
+      return "Contact";
+    case "poll":
+      return "Poll";
+    case "event":
+      return "Event";
+    default:
+      return "Attachment";
+  }
+}
+
 export function LearnerMessagesScreen() {
   const {
     contacts,
     threads,
     markThreadRead,
     sendMessage,
+    editMessage,
+    deleteMessage,
     ensureThreadWithContact,
     getThreadById,
   } = useLearnerChat();
@@ -53,6 +94,26 @@ export function LearnerMessagesScreen() {
     () => threads[0]?.threadId ?? null,
   );
   const [showContacts, setShowContacts] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const query = search.trim().toLowerCase();
+
+  const visibleThreads = useMemo(() => {
+    if (!query) return threads;
+    return threads.filter((thread) =>
+      thread.title.toLowerCase().includes(query),
+    );
+  }, [threads, query]);
+
+  const visibleContacts = useMemo(() => {
+    if (!query) return contacts;
+    return contacts.filter(
+      (contact) =>
+        contact.name.toLowerCase().includes(query) ||
+        contact.roleLabel.toLowerCase().includes(query) ||
+        (contact.organisation ?? "").toLowerCase().includes(query),
+    );
+  }, [contacts, query]);
 
   const activeThread = useMemo(() => {
     if (!activeThreadId) return undefined;
@@ -80,57 +141,96 @@ export function LearnerMessagesScreen() {
   return (
     <LearnerPageShell
       title="Messages"
-      description="Chat with your mentor, tutor, employer contact, or GTA Support. Each conversation has its own privacy rules."
+      description="Mentor, tutor, employer, or GTA Support — each chat has its own privacy rules."
       fill
-      actions={
-        <button
-          type="button"
-          className={styles.primaryBtn}
-          onClick={() => setShowContacts((v) => !v)}
-        >
-          {showContacts ? "Back to chats" : "New message"}
-        </button>
-      }
+      compactHeader
     >
       <div className={styles.layout}>
         <aside className={styles.sidebar}>
           <div className={styles.sideHead}>
-            <strong>{showContacts ? "New chat" : "Chats"}</strong>
-            <span>
-              {showContacts
-                ? `${contacts.length} people`
-                : `${threads.length} conversations`}
-            </span>
+            <div className={styles.sideHeadText}>
+              <strong>{showContacts ? "New chat" : "Chats"}</strong>
+              <span>
+                {showContacts
+                  ? `${contacts.length} people`
+                  : `${threads.length} conversations`}
+              </span>
+            </div>
+            <button
+              type="button"
+              className={styles.newChatBtn}
+              onClick={() => setShowContacts((v) => !v)}
+            >
+              {showContacts ? "Back to chats" : "New message"}
+            </button>
+            <div className={styles.sideSearch}>
+              <span className={styles.sideSearchIcon} aria-hidden>
+                🔍
+              </span>
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={
+                  showContacts ? "Search people" : "Search chats"
+                }
+                aria-label={
+                  showContacts ? "Search people" : "Search chats"
+                }
+              />
+              {search ? (
+                <button
+                  type="button"
+                  className={styles.sideSearchClear}
+                  onClick={() => setSearch("")}
+                  aria-label="Clear search"
+                >
+                  ×
+                </button>
+              ) : null}
+            </div>
           </div>
           {showContacts ? (
             <div className={styles.sideList}>
               <p className={styles.sideHint}>People in your programme scope</p>
-              {contacts.map((contact) => (
-                <button
-                  key={contact.contactId}
-                  type="button"
-                  className={styles.sideRow}
-                  onClick={() => startWithContact(contact.contactId)}
-                >
-                  <span className={styles.avatar} data-tone="navy">
-                    {contact.initials}
-                  </span>
-                  <span className={styles.sideMeta}>
-                    <strong>{contact.name}</strong>
-                    <span>
-                      {contact.roleLabel}
-                      {contact.organisation ? ` · ${contact.organisation}` : ""}
+              {visibleContacts.length === 0 ? (
+                <p className={styles.empty}>
+                  No people match “{search.trim()}”.
+                </p>
+              ) : (
+                visibleContacts.map((contact) => (
+                  <button
+                    key={contact.contactId}
+                    type="button"
+                    className={styles.sideRow}
+                    onClick={() => startWithContact(contact.contactId)}
+                  >
+                    <span className={styles.avatar} data-tone="navy">
+                      {contact.initials}
                     </span>
-                  </span>
-                </button>
-              ))}
+                    <span className={styles.sideMeta}>
+                      <strong>{contact.name}</strong>
+                      <span>
+                        {contact.roleLabel}
+                        {contact.organisation
+                          ? ` · ${contact.organisation}`
+                          : ""}
+                      </span>
+                    </span>
+                  </button>
+                ))
+              )}
             </div>
           ) : (
             <div className={styles.sideList}>
               {threads.length === 0 ? (
                 <p className={styles.empty}>No conversations yet.</p>
+              ) : visibleThreads.length === 0 ? (
+                <p className={styles.empty}>
+                  No chats match “{search.trim()}”.
+                </p>
               ) : (
-                threads.map((thread) => (
+                visibleThreads.map((thread) => (
                   <button
                     key={thread.threadId}
                     type="button"
@@ -147,10 +247,14 @@ export function LearnerMessagesScreen() {
                       {initialsFromTitle(thread.title)}
                     </span>
                     <span className={styles.sideMeta}>
-                      <strong>{thread.title}</strong>
-                      <span>
-                        {channelLabel(thread.channelType)} ·{" "}
-                        {formatTime(thread.lastMessageAt)}
+                      <span className={styles.sideMetaTop}>
+                        <strong>{thread.title}</strong>
+                        <span className={styles.sideTime}>
+                          {formatShortTime(thread.lastMessageAt)}
+                        </span>
+                      </span>
+                      <span className={styles.sidePreview}>
+                        {previewForThread(thread)}
                       </span>
                     </span>
                     {thread.unreadForLearner > 0 ? (
@@ -197,34 +301,21 @@ export function LearnerMessagesScreen() {
                 {activeThread.messages.length === 0 ? (
                   <p className={styles.empty}>No messages yet. Say hello.</p>
                 ) : (
-                  activeThread.messages.map((m) => {
-                    const mine = m.senderId === "contact-alex";
-                    return (
-                      <div
-                        key={m.messageId}
-                        className={
-                          mine ? styles.messageRowMine : styles.messageRowTheirs
-                        }
-                      >
-                        {!mine ? (
-                          <span className={styles.bubbleAvatar} aria-hidden>
-                            {initialsFromTitle(m.senderName)}
-                          </span>
-                        ) : null}
-                        <div
-                          className={
-                            mine ? styles.bubbleMine : styles.bubbleTheirs
-                          }
-                        >
-                          {!mine ? (
-                            <span className={styles.sender}>{m.senderName}</span>
-                          ) : null}
-                          <ChatMessageBody message={m} mine={mine} />
-                          <time dateTime={m.sentAt}>{formatTime(m.sentAt)}</time>
-                        </div>
-                      </div>
-                    );
-                  })
+                  activeThread.messages.map((m) => (
+                    <ChatMessageItem
+                      key={m.messageId}
+                      message={m}
+                      mine={m.senderId === "contact-alex"}
+                      onEdit={(messageId, body) => {
+                        if (!activeThreadId) return;
+                        editMessage(activeThreadId, messageId, body);
+                      }}
+                      onDelete={(messageId) => {
+                        if (!activeThreadId) return;
+                        deleteMessage(activeThreadId, messageId);
+                      }}
+                    />
+                  ))
                 )}
               </div>
               <ChatComposer

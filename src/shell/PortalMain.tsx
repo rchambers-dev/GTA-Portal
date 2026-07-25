@@ -63,15 +63,11 @@ export function PortalMain({
       if (!el?.contains(target)) return;
       if ("button" in event && event.button !== 0) return;
 
-      const y = el.scrollTop;
-      pinnedScrollTop.current = y;
+      // Pin the scroll position but let the browser handle focus natively —
+      // preventDefault() here would break caret placement and text selection.
+      // onFocusIn + onScroll undo any scroll-into-view during the lock window.
+      pinnedScrollTop.current = el.scrollTop;
       lockUntil.current = Date.now() + 150;
-      event.preventDefault();
-      target.focus({ preventScroll: true });
-      el.scrollTop = y;
-      requestAnimationFrame(() => {
-        if (el) el.scrollTop = y;
-      });
     }
 
     /** Capture scroll before Tab moves focus (browser scrolls after). */
@@ -155,15 +151,32 @@ export function PortalMain({
   // While a field is focused, keep the header visible so it cannot toggle mid-edit.
   const headerIsHidden = fieldFocused ? false : headerHidden;
 
+  // Full-height pages (e.g. Messages) manage their own internal scrolling and
+  // should fill the viewport rather than float with wasted space below.
+  const activePath = pathname.split("?")[0] ?? pathname;
+  const isFillPage = FILL_ROUTES.some((route) => activePath.endsWith(route));
+
+  const mainClass = [
+    styles.main,
+    withDock && !isFillPage ? styles.mainWithDock : "",
+    isFillPage ? styles.mainFill : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      ref={scrollRef}
-      className={
-        withDock ? `${styles.main} ${styles.mainWithDock}` : styles.main
-      }
-    >
+    <div ref={scrollRef} className={mainClass}>
       <GlobalHeader hidden={headerIsHidden} />
-      <div className={styles.content}>{children}</div>
+      <div
+        className={
+          isFillPage ? `${styles.content} ${styles.contentFill}` : styles.content
+        }
+      >
+        {children}
+      </div>
     </div>
   );
 }
+
+/** Routes that should fill the viewport height (own internal scroll). */
+const FILL_ROUTES = ["/messages"];

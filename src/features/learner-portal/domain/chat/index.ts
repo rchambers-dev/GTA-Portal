@@ -14,6 +14,8 @@ export {
   listThreads,
   markThreadRead,
   sendMessage,
+  editMessage,
+  deleteMessage,
   unreadTotal,
   CHAT_CONTACTS,
 } from "./store";

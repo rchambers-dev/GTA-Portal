@@ -133,16 +133,23 @@
   gap: 0.65rem;
   width: 100%;
   text-align: left;
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
-  padding: 0.65rem 0.55rem;
+  padding: 0.6rem 0.55rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
   color: inherit;
+  transition: background 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
 }
 
 .threadRow:hover {
-  background: rgb(0 0 0 / 0.04);
+  background: color-mix(in srgb, var(--color-navy-50) 70%, white);
+}
+
+.threadRow[data-active="true"] {
+  background: color-mix(in srgb, var(--action-primary) 12%, white);
+  border-color: color-mix(in srgb, var(--action-primary) 30%, white);
+  box-shadow: inset 3px 0 0 var(--action-primary);
 }
 
 .avatar {
@@ -210,51 +217,65 @@
 .messages {
   flex: 1;
   overflow: auto;
-  padding: 0.75rem;
+  padding: 0.8rem 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.45rem;
+  background:
+    radial-gradient(circle at 12% 10%, color-mix(in srgb, var(--action-primary) 6%, transparent), transparent 28%),
+    #f3efe8;
 }
 
 .bubbleMine,
 .bubbleTheirs {
-  max-width: 88%;
-  padding: 0.55rem 0.7rem;
-  border-radius: 0.85rem;
+  max-width: min(16rem, 84%);
+  padding: 0.5rem 0.65rem 0.35rem;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.18rem;
+  box-shadow: 0 1px 1.5px rgb(17 24 39 / 0.06);
 }
 
 .bubbleMine {
   align-self: flex-end;
-  background: color-mix(in srgb, var(--action-primary) 16%, white);
-  border: 1px solid color-mix(in srgb, var(--action-primary) 28%, white);
+  background: var(--action-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 0.95rem 0.95rem 0.25rem 0.95rem;
 }
 
 .bubbleTheirs {
   align-self: flex-start;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: var(--color-white);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, var(--border-subtle));
+  border-radius: 0.95rem 0.95rem 0.95rem 0.25rem;
 }
 
 .sender {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--text-secondary);
+  font-size: 0.66rem;
+  font-weight: 750;
+  color: var(--action-primary);
 }
 
 .bubbleBody {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   line-height: 1.4;
   white-space: pre-wrap;
 }
 
 .bubbleTime {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--text-secondary);
   align-self: flex-end;
+}
+
+.bubbleMine .bubbleTime {
+  color: color-mix(in srgb, var(--color-white) 70%, transparent);
+}
+
+.bubbleMine .sender {
+  color: color-mix(in srgb, var(--color-white) 82%, transparent);
 }
 
 .composer {

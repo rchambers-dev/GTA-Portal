@@ -2400,6 +2400,10 @@ a.otjGapAlert[data-kind="never"]:hover {
   align-items: center;
 }
 
+.cvImportInput {
+  display: none;
+}
+
 .cvActions .ghostBtn {
   border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 35%, var(--border-subtle));
   background: white;

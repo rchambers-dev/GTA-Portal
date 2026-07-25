@@ -15,6 +15,8 @@ import {
   listThreads,
   markThreadRead as markReadInStore,
   sendMessage as sendInStore,
+  editMessage as editInStore,
+  deleteMessage as deleteInStore,
   unreadTotal,
 } from "../domain/chat/store";
 import type {
@@ -38,6 +40,12 @@ type LearnerChatContextValue = {
     threadId: string,
     payload: string | ChatSendPayload,
   ) => ChatMessage | null;
+  editMessage: (
+    threadId: string,
+    messageId: string,
+    body: string,
+  ) => ChatMessage | null;
+  deleteMessage: (threadId: string, messageId: string) => boolean;
   ensureThreadWithContact: (contactId: string) => ChatThread;
   getThreadById: (threadId: string) => ChatThread | undefined;
   queueShare: (link: ChatPortalLinkAttachment) => void;
@@ -73,6 +81,21 @@ export function LearnerChatProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const editMessage = useCallback(
+    (threadId: string, messageId: string, body: string) => {
+      const msg = editInStore(threadId, messageId, body);
+      if (msg) setVersion((v) => v + 1);
+      return msg;
+    },
+    [],
+  );
+
+  const deleteMessage = useCallback((threadId: string, messageId: string) => {
+    const ok = deleteInStore(threadId, messageId);
+    if (ok) setVersion((v) => v + 1);
+    return ok;
+  }, []);
+
   const ensureThreadWithContact = useCallback((contactId: string) => {
     const thread = ensureThreadInStore(contactId);
     setVersion((v) => v + 1);
@@ -107,6 +130,8 @@ export function LearnerChatProvider({ children }: { children: ReactNode }) {
       refresh,
       markThreadRead,
       sendMessage,
+      editMessage,
+      deleteMessage,
       ensureThreadWithContact,
       getThreadById,
       queueShare,
@@ -120,6 +145,8 @@ export function LearnerChatProvider({ children }: { children: ReactNode }) {
     refresh,
     markThreadRead,
     sendMessage,
+    editMessage,
+    deleteMessage,
     ensureThreadWithContact,
     getThreadById,
     queueShare,

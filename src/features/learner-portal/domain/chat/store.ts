@@ -56,6 +56,15 @@ export const CHAT_CONTACTS: ChatContact[] = [
     organisation: "GTA Doncaster",
     defaultChannel: "support",
   },
+  {
+    contactId: "contact-safeguarding-dsl",
+    name: "Safeguarding",
+    initials: "SG",
+    role: "safeguarding",
+    roleLabel: "Designated Safeguarding Lead",
+    organisation: "GTA Doncaster",
+    defaultChannel: "safeguarding",
+  },
 ];
 
 function msg(
@@ -275,6 +284,62 @@ export function sendMessage(
   );
 
   return message;
+}
+
+export function editMessage(
+  threadId: string,
+  messageId: string,
+  body: string,
+): ChatMessage | null {
+  const text = body.trim();
+  const thread = THREADS.find((t) => t.threadId === threadId);
+  if (!thread) return null;
+
+  const existing = thread.messages.find((m) => m.messageId === messageId);
+  if (!existing || existing.senderId !== "contact-alex") return null;
+  if (!text && !existing.attachment) return null;
+  if (text === existing.body) return existing;
+
+  const editedAt = new Date().toISOString();
+  let updated: ChatMessage | null = null;
+
+  THREADS = THREADS.map((t) => {
+    if (t.threadId !== threadId) return t;
+    const messages = t.messages.map((m) => {
+      if (m.messageId !== messageId) return m;
+      updated = { ...m, body: text, editedAt };
+      return updated;
+    });
+    const last = messages[messages.length - 1];
+    return {
+      ...t,
+      messages,
+      lastMessageAt: last?.sentAt ?? t.lastMessageAt,
+    };
+  });
+
+  return updated;
+}
+
+export function deleteMessage(threadId: string, messageId: string): boolean {
+  const thread = THREADS.find((t) => t.threadId === threadId);
+  if (!thread) return false;
+
+  const existing = thread.messages.find((m) => m.messageId === messageId);
+  if (!existing || existing.senderId !== "contact-alex") return false;
+
+  THREADS = THREADS.map((t) => {
+    if (t.threadId !== threadId) return t;
+    const messages = t.messages.filter((m) => m.messageId !== messageId);
+    const last = messages[messages.length - 1];
+    return {
+      ...t,
+      messages,
+      lastMessageAt: last?.sentAt ?? t.lastMessageAt,
+    };
+  });
+
+  return true;
 }
 
 export function ensureThreadWithContact(contactId: string): ChatThread {

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { DevAccountSwitcher } from "./demo/DevAccountSwitcher";
 import { useDemoSession } from "./demo/DemoSessionProvider";
+import { NavIcon } from "./nav-icons";
 import { resolveNavigation } from "./workspaces/resolve-navigation";
 import styles from "./GlobalHeader.module.css";
 
@@ -181,7 +182,7 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
                       onClick={() => goTo(page.href)}
                     >
                       <span className={styles.resultIcon} aria-hidden>
-                        →
+                        <NavIcon href={page.href} />
                       </span>
                       <span className={styles.resultMain}>
                         <strong>{page.label}</strong>

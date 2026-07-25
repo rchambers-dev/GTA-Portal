@@ -1,0 +1,216 @@
+.rowMine,
+.rowTheirs {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  max-width: min(28rem, 72%);
+  width: fit-content;
+}
+
+.rowMine {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.rowTheirs {
+  align-self: flex-start;
+}
+
+.rowMineCompact,
+.rowTheirsCompact {
+  display: flex;
+  flex-direction: column;
+  max-width: min(16rem, 84%);
+  width: fit-content;
+}
+
+.rowMineCompact {
+  align-self: flex-end;
+}
+
+.rowTheirsCompact {
+  align-self: flex-start;
+}
+
+.avatar {
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 750;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+  font-size: 0.58rem;
+  background: var(--color-navy-700);
+  color: var(--color-white);
+  margin-bottom: 0.1rem;
+}
+
+.bubbleMine,
+.bubbleTheirs {
+  padding: 0.55rem 0.75rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  box-shadow: 0 1px 1.5px rgb(17 24 39 / 0.06);
+  min-width: 0;
+  position: relative;
+}
+
+.rowMineCompact .bubbleMine,
+.rowMineCompact .bubbleTheirs,
+.rowTheirsCompact .bubbleMine,
+.rowTheirsCompact .bubbleTheirs {
+  padding: 0.5rem 0.65rem 0.35rem;
+}
+
+.bubbleMine {
+  background: var(--action-primary);
+  color: var(--color-white);
+  border-radius: 1rem 1rem 0.28rem 1rem;
+}
+
+.bubbleTheirs {
+  background: var(--color-white);
+  color: var(--color-navy-800);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, var(--border-subtle));
+  border-radius: 1rem 1rem 1rem 0.28rem;
+}
+
+.sender {
+  font-size: 0.68rem;
+  font-weight: 750;
+  color: var(--action-primary);
+  margin-bottom: 0.05rem;
+}
+
+.bubbleMine .sender {
+  color: color-mix(in srgb, var(--color-white) 82%, transparent);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  margin-top: 0.1rem;
+  min-height: 1rem;
+}
+
+.metaRow time {
+  font-size: 0.64rem;
+  line-height: 1;
+  color: var(--text-secondary);
+}
+
+.bubbleMine .metaRow time {
+  color: color-mix(in srgb, var(--color-white) 70%, transparent);
+}
+
+.actions {
+  display: none;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.rowMine:hover .actions,
+.rowMineCompact:hover .actions,
+.rowMine[data-editing="true"] .actions,
+.rowMineCompact[data-editing="true"] .actions,
+.rowMine:focus-within .actions,
+.rowMineCompact:focus-within .actions {
+  display: inline-flex;
+}
+
+.actionBtn {
+  border: none;
+  background: transparent;
+  padding: 0.05rem 0.25rem;
+  border-radius: 0.3rem;
+  font: inherit;
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--color-white) 88%, transparent);
+}
+
+.actionBtn:hover {
+  background: color-mix(in srgb, var(--color-white) 16%, transparent);
+  color: white;
+}
+
+.actionBtn[data-tone="danger"]:hover {
+  background: color-mix(in srgb, #000 18%, transparent);
+}
+
+.editBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: min(16rem, 70vw);
+}
+
+.editInput {
+  width: 100%;
+  min-height: 3.2rem;
+  resize: vertical;
+  border: 1px solid color-mix(in srgb, var(--color-white) 45%, transparent);
+  border-radius: 0.55rem;
+  padding: 0.45rem 0.55rem;
+  font: inherit;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--color-navy-900);
+  background: white;
+}
+
+.editInput:focus {
+  outline: 2px solid color-mix(in srgb, var(--color-white) 55%, transparent);
+  outline-offset: 1px;
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.editCancel,
+.editSave {
+  border: none;
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.editCancel {
+  background: color-mix(in srgb, var(--color-white) 18%, transparent);
+  color: white;
+}
+
+.editSave {
+  background: white;
+  color: var(--action-primary);
+}
+
+.editSave:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 800px) {
+  .rowMine,
+  .rowTheirs {
+    max-width: min(22rem, 86%);
+  }
+
+  .actions {
+    display: inline-flex;
+  }
+}

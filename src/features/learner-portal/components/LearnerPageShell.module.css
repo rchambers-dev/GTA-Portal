@@ -14,6 +14,24 @@
   gap: var(--space-4);
 }
 
+.compactHeader {
+  gap: var(--space-3);
+}
+
+.compactHeader .title {
+  font-size: 1.35rem;
+}
+
+.compactHeader .description {
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  max-width: 34rem;
+}
+
+.compactHeader .eyebrow {
+  margin-bottom: 0.15rem;
+}
+
 .fillBody {
   flex: 1;
   min-height: 0;
