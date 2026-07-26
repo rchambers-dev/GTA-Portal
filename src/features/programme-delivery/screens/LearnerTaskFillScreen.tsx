@@ -530,9 +530,9 @@ export function LearnerTaskFillScreen({ taskId }: Props) {
   useEffect(() => {
     if (locked || !dirty) return;
 
-    setSaveState("saving");
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
+      setSaveState("saving");
       const current = getTaskSubmission(taskId);
       if (
         !isEditableStatus(current.status) &&

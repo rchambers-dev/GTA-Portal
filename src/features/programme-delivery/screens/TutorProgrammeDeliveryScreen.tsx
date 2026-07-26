@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import {
   LearnerPageShell,
   LearnerStatusChip,
@@ -31,16 +31,13 @@ type Tab = "queue" | "blocks";
  */
 export function TutorProgrammeDeliveryScreen() {
   const [tab, setTab] = useState<Tab>("queue");
-  const snapshot = useSyncExternalStore(
+  useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
 
-  const awaiting = useMemo(
-    () => listAwaitingTrainer(AUTOCARE_PRACTICAL_TASKS),
-    [snapshot],
-  );
+  const awaiting = listAwaitingTrainer(AUTOCARE_PRACTICAL_TASKS);
 
   const trainingBlocks = AUTOCARE_BLOCKS.filter((b) => b.kind === "training");
 

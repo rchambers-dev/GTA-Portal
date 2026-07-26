@@ -82,12 +82,9 @@ export function canCreateReview(
   checklist: ChecklistItem[],
   overrides: SoftOverride[] = [],
 ): { allowed: boolean; blocking: string[]; warnings: string[] } {
+  void overrides;
   const hard = hardItemsIncomplete(checklist);
   const soft = softItemsIncomplete(checklist);
-  const overriddenKeys = new Set(overrides.map((o) => o.itemKey));
-  const blocking = hard
-    .filter((i) => !overriddenKeys.has(i.key) || i.hard)
-    .map((i) => i.label);
   // Hard items cannot be overridden without being marked overridden on the item itself
   const stillBlocking = hard.filter((i) => i.state !== "overridden").map((i) => i.label);
   return {

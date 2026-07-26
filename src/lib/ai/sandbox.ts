@@ -129,7 +129,7 @@ export function packAiSandbox(request: AiSandboxedRequest): AiPackedPrompt {
     contextBlocks.push(`### scope:${bag.scope}\n${safeJson(bag.data)}`);
   }
 
-  let userText = (request.userText ?? "").trim();
+  const userText = (request.userText ?? "").trim();
   if (userText && !container.allowFreeformUserText) {
     // Fold free-form into a note that we ignore — or reject hard.
     throw new AiAccessDeniedError(

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   LearnerPageShell,
   LearnerStatusChip,
@@ -100,10 +100,11 @@ function ProgrammeInlineField({
   multiline?: boolean;
 }) {
   const [draft, setDraft] = useState(value);
-
-  useEffect(() => {
+  const [prevValue, setPrevValue] = useState(value);
+  if (value !== prevValue) {
+    setPrevValue(value);
     setDraft(value);
-  }, [value]);
+  }
 
   function commit() {
     if (draft.trim() !== value.trim()) onCommit(draft);

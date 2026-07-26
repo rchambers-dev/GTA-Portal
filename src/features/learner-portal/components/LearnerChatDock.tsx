@@ -60,13 +60,10 @@ export function LearnerChatDock() {
   const [view, setView] = useState<PanelView>("list");
   const [activeThreadId, setActiveThreadId] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [prevOpenDockSignal, setPrevOpenDockSignal] = useState(openDockSignal);
 
-  // On the full Messages page the dock is redundant and would overlap the
-  // composer, so hide it there (shell also skips mounting it).
-  const path = (pathname.split("?")[0] ?? pathname).replace(/\/+$/, "");
-  const onMessagesPage = path === "/messages" || path.endsWith("/messages");
-
-  useEffect(() => {
+  if (openDockSignal !== prevOpenDockSignal) {
+    setPrevOpenDockSignal(openDockSignal);
     if (openDockSignal > 0) {
       setOpen(true);
       if (!activeThreadId && threads[0]) {
@@ -76,9 +73,12 @@ export function LearnerChatDock() {
         setView("thread");
       }
     }
-    // Only react to signal bumps — not thread list churn.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openDockSignal]);
+  }
+
+  // On the full Messages page the dock is redundant and would overlap the
+  // composer, so hide it there (shell also skips mounting it).
+  const path = (pathname.split("?")[0] ?? pathname).replace(/\/+$/, "");
+  const onMessagesPage = path === "/messages" || path.endsWith("/messages");
 
   const activeThread: ChatThread | undefined = useMemo(() => {
     if (!activeThreadId) return undefined;

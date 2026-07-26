@@ -306,8 +306,14 @@ const DURATION_PRESETS = [
   { label: "2 hours", minutes: 120 },
 ] as const;
 
+function readOtjQueryId(): string | null {
+  if (typeof window === "undefined") return null;
+  return new URLSearchParams(window.location.search).get("otj");
+}
+
 export function LearnerOtjHoursScreen() {
-  const [focusOtjId, setFocusOtjId] = useState<string | null>(null);
+  const initialOtjId = readOtjQueryId();
+  const [focusOtjId] = useState<string | null>(initialOtjId);
   const [otjEntries, setOtjEntries] = useState(ALEX_OTJ_ENTRIES);
   const [activityDate, setActivityDate] = useState(toDateInputValue());
   const [activityDateEnd, setActivityDateEnd] = useState("");
@@ -324,20 +330,17 @@ export function LearnerOtjHoursScreen() {
   const [learnerConfirmed, setLearnerConfirmed] = useState(false);
   const [formNote, setFormNote] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [showLog, setShowLog] = useState(false);
+  const [showLog, setShowLog] = useState(() => initialOtjId !== null);
 
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("otj");
-    if (!id) return;
-    setFocusOtjId(id);
-    setShowLog(true);
+    if (!focusOtjId) return;
     const timer = window.setTimeout(() => {
       document
-        .getElementById(`otj-entry-${id}`)
+        .getElementById(`otj-entry-${focusOtjId}`)
         ?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 80);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [focusOtjId]);
 
   const dashboard = useMemo(
     () => buildOtjDashboardStats(otjEntries, ALEX_PROFILE.programmeWeek),

@@ -190,10 +190,11 @@ function CohortInlineField({
   multiline?: boolean;
 }) {
   const [draft, setDraft] = useState(value);
-
-  useEffect(() => {
+  const [prevValue, setPrevValue] = useState(value);
+  if (value !== prevValue) {
+    setPrevValue(value);
     setDraft(value);
-  }, [value]);
+  }
 
   function commit() {
     if (draft.trim() !== value.trim()) onCommit(draft);
@@ -236,6 +237,9 @@ export function AdminCohortsScreen() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [apprenticeMenuId, setApprenticeMenuId] = useState<string | null>(null);
+  const [prevApprenticeMenuId, setPrevApprenticeMenuId] = useState<
+    string | null
+  >(null);
   const [learnerFilter, setLearnerFilter] = useState("");
   const apprenticeMenuRef = useRef<HTMLDivElement | null>(null);
   const learnerModalRef = useRef<HTMLDivElement | null>(null);
@@ -258,11 +262,15 @@ export function AdminCohortsScreen() {
   const totalCohorts = store.cohorts.length;
   const activeSearch = SEARCH_MODES.find((m) => m.id === searchMode)!;
 
-  useEffect(() => {
+  if (apprenticeMenuId !== prevApprenticeMenuId) {
+    setPrevApprenticeMenuId(apprenticeMenuId);
     if (!apprenticeMenuId) {
       setLearnerFilter("");
-      return;
     }
+  }
+
+  useEffect(() => {
+    if (!apprenticeMenuId) return;
     function onPointerDown(event: MouseEvent) {
       const target = event.target as Node;
       const inDropdown =
@@ -785,7 +793,11 @@ export function AdminCohortsScreen() {
                                   aria-label={`Learners in ${row.name}`}
                                 >
                                   {linked.map((learner) => (
-                                    <li key={learner.id} role="option">
+                                    <li
+                                      key={learner.id}
+                                      role="option"
+                                      aria-selected={false}
+                                    >
                                       <button
                                         type="button"
                                         className={
@@ -873,6 +885,7 @@ export function AdminCohortsScreen() {
                                           <li
                                             key={learner.id}
                                             role="option"
+                                            aria-selected={false}
                                           >
                                             <button
                                               type="button"

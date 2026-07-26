@@ -4,7 +4,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -83,11 +82,13 @@ export function LearnerChatProvider({
   const [pendingShare, setPendingShare] =
     useState<ChatPortalLinkAttachment | null>(null);
   const [openDockSignal, setOpenDockSignal] = useState(0);
+  const [prevSelfContactId, setPrevSelfContactId] = useState(selfContactId);
 
-  useEffect(() => {
+  if (selfContactId !== prevSelfContactId) {
+    setPrevSelfContactId(selfContactId);
     setChatSelfContactId(selfContactId);
     setVersion((v) => v + 1);
-  }, [selfContactId]);
+  }
 
   const refresh = useCallback(() => {
     setVersion((v) => v + 1);

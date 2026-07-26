@@ -373,7 +373,7 @@ function buildCollegeDays(
     note: string | null;
   }> = [];
   // Last 12 college days before review (Mon/Tue workshop pattern demo)
-  let cursor = new Date(end);
+  const cursor = new Date(end);
   let safety = 0;
   while (days.length < 12 && safety < 60) {
     safety += 1;

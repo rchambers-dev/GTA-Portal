@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   LearnerPageShell,
   LearnerStatusChip,
@@ -126,12 +126,15 @@ export function LearnerAttendanceScreen({
     () => caseload[0]?.learnerId ?? ALEX_PROFILE.learnerId,
   );
 
-  useEffect(() => {
-    if (!isEmployer) return;
-    if (!caseload.some((a) => a.learnerId === selectedLearnerId)) {
-      setSelectedLearnerId(caseload[0]?.learnerId ?? ALEX_PROFILE.learnerId);
+  if (
+    isEmployer &&
+    !caseload.some((a) => a.learnerId === selectedLearnerId)
+  ) {
+    const fallbackId = caseload[0]?.learnerId ?? ALEX_PROFILE.learnerId;
+    if (selectedLearnerId !== fallbackId) {
+      setSelectedLearnerId(fallbackId);
     }
-  }, [caseload, isEmployer, selectedLearnerId]);
+  }
 
   const view = useMemo((): AttendanceView => {
     if (!isEmployer) return learnerAttendanceView();
@@ -265,12 +268,14 @@ export function LearnerAttendanceScreen({
   const [dateQuery, setDateQuery] = useState("");
   const [daysOpen, setDaysOpen] = useState(false);
   const [expandedKey, setExpandedKey] = useState<string | null>(null);
+  const [filterLearnerId, setFilterLearnerId] = useState(view.learnerId);
 
-  useEffect(() => {
+  if (filterLearnerId !== view.learnerId) {
+    setFilterLearnerId(view.learnerId);
     setStatusFilter("all");
     setDateQuery("");
     setExpandedKey(null);
-  }, [view.learnerId]);
+  }
 
   const filterOptions = useMemo(() => {
     const present = new Set(view.days.map((day) => day.status));

@@ -45,14 +45,26 @@ export function Select({
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevValue, setPrevValue] = useState(value);
 
   const selected = options.find((opt) => opt.value === value);
+  const enabledOptions = options.filter((opt) => !opt.disabled);
+
+  if (open && (prevOpen !== open || prevValue !== value)) {
+    const selectedIdx = enabledOptions.findIndex((opt) => opt.value === value);
+    const nextIndex = selectedIdx >= 0 ? selectedIdx : 0;
+    if (activeIndex !== nextIndex) {
+      setActiveIndex(nextIndex);
+    }
+  }
+  if (prevOpen !== open || prevValue !== value) {
+    setPrevOpen(open);
+    setPrevValue(value);
+  }
 
   useEffect(() => {
     if (!open) return;
-    const enabled = options.filter((opt) => !opt.disabled);
-    const selectedIdx = enabled.findIndex((opt) => opt.value === value);
-    setActiveIndex(selectedIdx >= 0 ? selectedIdx : 0);
 
     function onPointerDown(event: MouseEvent) {
       if (!rootRef.current?.contains(event.target as Node)) {
@@ -68,9 +80,7 @@ export function Select({
       document.removeEventListener("mousedown", onPointerDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [open, options, value]);
-
-  const enabledOptions = options.filter((opt) => !opt.disabled);
+  }, [open]);
 
   function choose(next: string) {
     onChange(next);

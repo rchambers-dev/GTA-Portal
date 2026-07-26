@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LearnerPageShell } from "@/features/learner-portal/components/LearnerPageShell";
 import {
   createLearner,
@@ -75,10 +75,11 @@ function IntakeInlineField({
   multiline?: boolean;
 }) {
   const [draft, setDraft] = useState(value);
-
-  useEffect(() => {
+  const [prevValue, setPrevValue] = useState(value);
+  if (value !== prevValue) {
+    setPrevValue(value);
     setDraft(value);
-  }, [value]);
+  }
 
   function commit() {
     if (draft.trim() !== value.trim()) onCommit(draft);

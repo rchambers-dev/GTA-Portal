@@ -17,7 +17,6 @@ import {
 
 function toSessionUser(session: EffectiveSession): SessionUser {
   const { account } = session;
-  const roleLabels = [account.baseRole, ...session.temporaryAccessLabels];
   return {
     id: account.id,
     displayName: account.name,

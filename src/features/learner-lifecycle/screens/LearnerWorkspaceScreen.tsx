@@ -239,16 +239,13 @@ export function LearnerWorkspaceScreen({
     ...(from ? { from } : {}),
   });
 
-  const packVersion = useSyncExternalStore(
+  useSyncExternalStore(
     subscribePackStore,
     () => JSON.stringify(getPackSnapshot().byLearner[resolvedLearnerId] ?? {}),
     () => "",
   );
 
-  const evidenceRows = useMemo(
-    () => mergePackOntoRows(resolvedLearnerId, workspace.evidenceRows),
-    [packVersion, resolvedLearnerId, workspace.evidenceRows],
-  );
+  const evidenceRows = mergePackOntoRows(resolvedLearnerId, workspace.evidenceRows);
 
   const sections = useMemo(
     () => groupEvidenceBySection(evidenceRows),

@@ -31,7 +31,7 @@ import styles from "./learner-pages.module.css";
  */
 export function LearnerProgressScreen() {
   const profile = ALEX_PROFILE;
-  const snapshot = useSyncExternalStore(
+  useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
     getTaskServerSnapshot,
@@ -42,18 +42,21 @@ export function LearnerProgressScreen() {
     [],
   );
 
-  const taskStats = useMemo(() => {
-    let verified = 0;
-    let inFlight = 0;
-    let notStarted = 0;
-    for (const task of AUTOCARE_PRACTICAL_TASKS) {
-      const status = getTaskSubmission(task.id).status;
-      if (status === "verified") verified += 1;
-      else if (status === "not_started") notStarted += 1;
-      else inFlight += 1;
-    }
-    return { verified, inFlight, notStarted, total: AUTOCARE_PRACTICAL_TASKS.length };
-  }, [snapshot]);
+  let verified = 0;
+  let inFlight = 0;
+  let notStarted = 0;
+  for (const task of AUTOCARE_PRACTICAL_TASKS) {
+    const status = getTaskSubmission(task.id).status;
+    if (status === "verified") verified += 1;
+    else if (status === "not_started") notStarted += 1;
+    else inFlight += 1;
+  }
+  const taskStats = {
+    verified,
+    inFlight,
+    notStarted,
+    total: AUTOCARE_PRACTICAL_TASKS.length,
+  };
 
   const behindPlan =
     profile.actualProgressPercent < profile.plannedProgressPercent;

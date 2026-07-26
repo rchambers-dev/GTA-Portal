@@ -14,7 +14,6 @@ import type { TemporaryAssignment } from "@/lib/portal/types";
 
 const daniel = DEMO_ACCOUNTS.find((a) => a.id === "daniel-turner")!;
 const sarah = DEMO_ACCOUNTS.find((a) => a.id === "sarah-patel")!;
-const james = DEMO_ACCOUNTS.find((a) => a.id === "james-wilson")!;
 
 function makeAssignment(
   partial: Partial<TemporaryAssignment> & Pick<TemporaryAssignment, "userId">,

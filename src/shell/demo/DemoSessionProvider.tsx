@@ -11,8 +11,8 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import type { DemoAccount, DemoAuditEvent, EffectiveSession, TemporaryAssignment } from "@/lib/portal/types";
-import { buildEffectiveSession, isAssignmentActive } from "@/lib/permissions/effective-permissions";
-import { canAccessRoute, getRedirectForDeniedRoute } from "@/lib/permissions/route-access";
+import { buildEffectiveSession } from "@/lib/permissions/effective-permissions";
+import { canAccessRoute } from "@/lib/permissions/route-access";
 import { getDefaultWorkspaceRoute } from "@/lib/permissions/workspace";
 import { DEMO_ACCOUNTS } from "@/adapters/fictional/demo-accounts";
 import { CURRICULUM_EDITOR_PACK } from "@/lib/permissions/capabilities";
@@ -60,45 +60,52 @@ export function DemoSessionProvider({
   const [auditLog, setAuditLog] = useState<DemoAuditEvent[]>(() =>
     demoEnabled ? readAuditLog() : [],
   );
+  const [prevInitialAccountId, setPrevInitialAccountId] = useState(
+    initialSession.account.id,
+  );
 
-  useEffect(() => {
+  if (initialSession.account.id !== prevInitialAccountId) {
+    setPrevInitialAccountId(initialSession.account.id);
     setActiveAccountId(initialSession.account.id);
-  }, [initialSession.account.id]);
+  }
 
   /** Keep HTTPS cookie in sync with localStorage so Vercel server renders the switched user. */
   useEffect(() => {
     if (!demoEnabled) return;
-    const stored = readDemoAccountId();
-    if (!stored) {
-      persistDemoAccountId(initialSession.account.id);
-      return;
-    }
-    persistDemoAccountId(stored);
-    if (stored !== initialSession.account.id) {
-      setActiveAccountId(stored);
-      const account = DEMO_ACCOUNTS.find((a) => a.id === stored);
-      if (!account) return;
-      const next = buildEffectiveSession(account, readAssignments());
-      const pathname = window.location.pathname;
-      const destination = canAccessRoute(next, pathname)
-        ? pathname
-        : getDefaultWorkspaceRoute(account.workspace, next);
-      if (destination !== pathname) {
-        router.replace(destination);
+    queueMicrotask(() => {
+      const stored = readDemoAccountId();
+      if (!stored) {
+        persistDemoAccountId(initialSession.account.id);
+        return;
       }
-      router.refresh();
-    }
+      persistDemoAccountId(stored);
+      if (stored !== initialSession.account.id) {
+        setActiveAccountId(stored);
+        const account = DEMO_ACCOUNTS.find((a) => a.id === stored);
+        if (!account) return;
+        const next = buildEffectiveSession(account, readAssignments());
+        const pathname = window.location.pathname;
+        const destination = canAccessRoute(next, pathname)
+          ? pathname
+          : getDefaultWorkspaceRoute(account.workspace, next);
+        if (destination !== pathname) {
+          router.replace(destination);
+        }
+        router.refresh();
+      }
+    });
     // Intentionally once on mount for cookie/localStorage hydration.
     // eslint-disable-next-line react-hooks/exhaustive-deps -- hydrate once
   }, [demoEnabled]);
 
   useEffect(() => {
     if (!demoEnabled) return;
-    const stored = readAssignments();
-    if (stored.length > 0) {
-      setAssignments(stored);
-      persistAssignments(stored);
-    }
+    queueMicrotask(() => {
+      const stored = readAssignments();
+      if (stored.length > 0) {
+        persistAssignments(stored);
+      }
+    });
   }, [demoEnabled]);
 
   const activeAccount = useMemo(

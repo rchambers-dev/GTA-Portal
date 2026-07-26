@@ -181,7 +181,7 @@ function req(
 }
 
 /** Mutable demo store — Create Review updates these in-session. */
-export let REVIEW_REQUIREMENTS: ReviewRequirement[] = [
+export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   // Needs creating / prep (not ready)
   req({
     requirementId: "req-ava",
@@ -942,15 +942,6 @@ export let FORMAL_REVIEWS: FormalReview[] = [
     });
   }),
 ];
-
-// Link open formal reviews back onto requirements where useful
-REVIEW_REQUIREMENTS = REVIEW_REQUIREMENTS.map((r) => {
-  const linked = FORMAL_REVIEWS.find(
-    (f) => f.requirementId === r.requirementId || f.learnerId === r.learnerId,
-  );
-  // Only link if requirement was intended as created — keep needs_creating separate
-  return r;
-});
 
 export function getRequirement(id: string): ReviewRequirement | undefined {
   return REVIEW_REQUIREMENTS.find((r) => r.requirementId === id);

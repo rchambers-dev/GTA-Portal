@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChatMessageBody } from "./ChatMessageBody";
 import type { ChatMessage } from "../domain/chat/types";
 import styles from "./ChatMessageItem.module.css";
@@ -40,15 +40,18 @@ export function ChatMessageItem({
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(message.body);
+  const [prevBody, setPrevBody] = useState(message.body);
+
+  if (!editing && message.body !== prevBody) {
+    setPrevBody(message.body);
+    setDraft(message.body);
+  }
+
   const isStickerOnly =
     message.attachment?.type === "sticker" && !message.body.trim();
   const canManage = mine && Boolean(onEdit || onDelete);
   const canEditText =
     mine && Boolean(onEdit) && Boolean(message.body.trim()) && !isStickerOnly;
-
-  useEffect(() => {
-    if (!editing) setDraft(message.body);
-  }, [message.body, editing]);
 
   function saveEdit() {
     const next = draft.trim();

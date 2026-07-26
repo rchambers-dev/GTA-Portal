@@ -32,9 +32,6 @@ export function buildReviewNarrative(
   const employerReady =
     requirement.checklist.find((c) => c.key === "employer_feedback_received")
       ?.state === "complete";
-  const tutorReady =
-    requirement.checklist.find((c) => c.key === "tutor_evidence_received")
-      ?.state === "complete";
 
   return {
     progressJudgement: judgement,

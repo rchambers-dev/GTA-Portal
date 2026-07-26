@@ -23,7 +23,11 @@ import {
   type ChatStickerOption,
 } from "../domain/chat/composer-assets";
 import { searchShareablePortalLinks } from "../domain/chat/portal-links";
-import type { ChatAttachment, ChatSendPayload } from "../domain/chat/types";
+import type {
+  ChatAttachment,
+  ChatPortalLinkAttachment,
+  ChatSendPayload,
+} from "../domain/chat/types";
 import {
   decodeShareClipboard,
   toChatPortalLink,
@@ -115,14 +119,18 @@ export function ChatComposer({
   const [eventTitle, setEventTitle] = useState("");
   const [eventWhen, setEventWhen] = useState("");
   const [eventLocation, setEventLocation] = useState("");
+  const [prevPendingShare, setPrevPendingShare] =
+    useState<ChatPortalLinkAttachment | null>(null);
 
-  useEffect(() => {
-    if (!pendingShare) return;
-    setAttachment(pendingShare);
-    clearPendingShare();
-    setShell(null);
-    setContextMenu(null);
-  }, [pendingShare, clearPendingShare]);
+  if (pendingShare !== prevPendingShare) {
+    setPrevPendingShare(pendingShare);
+    if (pendingShare) {
+      setAttachment(pendingShare);
+      clearPendingShare();
+      setShell(null);
+      setContextMenu(null);
+    }
+  }
 
   const activeMood = CHAT_GIF_MOODS.find((m) => m.id === gifMood) ?? null;
   const activeStickerMood =
@@ -143,8 +151,8 @@ export function ChatComposer({
     if (!gifTabOpen) return;
     const term = gifQuery.trim() || (activeMood?.searchTerm ?? "");
     const controller = new AbortController();
-    setGifsLoading(true);
     const timer = setTimeout(async () => {
+      setGifsLoading(true);
       try {
         const response = await fetch(
           `/api/gifs?type=gifs&q=${encodeURIComponent(term)}&limit=24`,
@@ -200,8 +208,8 @@ export function ChatComposer({
     const term =
       stickerQuery.trim() || (activeStickerMood?.searchTerm ?? "");
     const controller = new AbortController();
-    setStickersLoading(true);
     const timer = setTimeout(async () => {
+      setStickersLoading(true);
       try {
         const response = await fetch(
           `/api/gifs?type=stickers&q=${encodeURIComponent(term)}&limit=24`,

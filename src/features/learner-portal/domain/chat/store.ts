@@ -2,7 +2,6 @@ import { ALEX_PROFILE } from "../mock-learner";
 import {
   privacyNoteForChannel,
   privacyNoteForGroup,
-  type ChatAttachment,
   type ChatContact,
   type ChatMessage,
   type ChatSendPayload,

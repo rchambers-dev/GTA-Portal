@@ -37,6 +37,13 @@ export function PortalMain({
   const lockUntil = useRef(0);
   const [headerHidden, setHeaderHidden] = useState(false);
   const [fieldFocused, setFieldFocused] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setHeaderHidden(false);
+    setFieldFocused(false);
+  }
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -140,8 +147,6 @@ export function PortalMain({
   }, []);
 
   useEffect(() => {
-    setHeaderHidden(false);
-    setFieldFocused(false);
     lockUntil.current = 0;
     lastScrollTop.current = 0;
     pinnedScrollTop.current = 0;

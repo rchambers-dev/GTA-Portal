@@ -446,74 +446,74 @@ export function LearnerCvBuilderScreen() {
   }, [cv, hydrated]);
 
   useEffect(() => {
-    try {
-      const raw =
-        window.localStorage.getItem(STORAGE_KEY) ||
-        window.localStorage.getItem("gta.learner.cv.v6") ||
-        window.localStorage.getItem("gta.learner.cv.v5");
-      if (raw) {
-        const parsed = JSON.parse(raw) as Partial<CvState> & {
-          references?: string;
-        };
-        setCv((prev) => {
-          const legacyText =
-            typeof parsed.references === "string" ? parsed.references.trim() : "";
-          const referencesOnRequest =
-            typeof parsed.referencesOnRequest === "boolean"
-              ? parsed.referencesOnRequest
-              : !legacyText ||
-                /references available on request/i.test(legacyText);
-          const referencePeople = Array.isArray(parsed.referencePeople)
-            ? parsed.referencePeople.map((person) => ({
-                id: person.id || newId(),
-                name: person.name || "",
-                role: person.role || "",
-                organisation: person.organisation || "",
-                email: person.email || "",
-                phone: person.phone || "",
-              }))
-            : [];
-
-          const {
-            references: _legacyReferences,
-            ...parsedWithoutLegacy
-          } = parsed;
-
-          const merged: CvState = {
-            ...prev,
-            ...parsedWithoutLegacy,
-            addressLine:
-              typeof parsed.addressLine === "string" ? parsed.addressLine : "",
-            referencesOnRequest,
-            referencePeople,
-            experience: sortExperience(parsed.experience ?? prev.experience),
-            education: sortEducation(parsed.education ?? prev.education),
+    queueMicrotask(() => {
+      try {
+        const raw =
+          window.localStorage.getItem(STORAGE_KEY) ||
+          window.localStorage.getItem("gta.learner.cv.v6") ||
+          window.localStorage.getItem("gta.learner.cv.v5");
+        if (raw) {
+          const parsed = JSON.parse(raw) as Partial<CvState> & {
+            references?: string;
           };
-          // Auto-draft empty current-role bullets from portal modules (no button).
-          const moduleDrafts = suggestExperienceBulletsFromModules(
-            "",
-            Math.min(6, CV_LIMITS.bulletCount),
-          );
-          if (moduleDrafts.length === 0) return merged;
-          return {
-            ...merged,
-            experience: merged.experience.map((item) => {
-              if (!item.current || countCvBullets(item.description) > 0) return item;
-              return { ...item, description: joinCvBullets(moduleDrafts) };
-            }),
-          };
-        });
+          setCv((prev) => {
+            const legacyText =
+              typeof parsed.references === "string" ? parsed.references.trim() : "";
+            const referencesOnRequest =
+              typeof parsed.referencesOnRequest === "boolean"
+                ? parsed.referencesOnRequest
+                : !legacyText ||
+                  /references available on request/i.test(legacyText);
+            const referencePeople = Array.isArray(parsed.referencePeople)
+              ? parsed.referencePeople.map((person) => ({
+                  id: person.id || newId(),
+                  name: person.name || "",
+                  role: person.role || "",
+                  organisation: person.organisation || "",
+                  email: person.email || "",
+                  phone: person.phone || "",
+                }))
+              : [];
+
+            const parsedWithoutLegacy = { ...parsed };
+            delete parsedWithoutLegacy.references;
+
+            const merged: CvState = {
+              ...prev,
+              ...parsedWithoutLegacy,
+              addressLine:
+                typeof parsed.addressLine === "string" ? parsed.addressLine : "",
+              referencesOnRequest,
+              referencePeople,
+              experience: sortExperience(parsed.experience ?? prev.experience),
+              education: sortEducation(parsed.education ?? prev.education),
+            };
+            // Auto-draft empty current-role bullets from portal modules (no button).
+            const moduleDrafts = suggestExperienceBulletsFromModules(
+              "",
+              Math.min(6, CV_LIMITS.bulletCount),
+            );
+            if (moduleDrafts.length === 0) return merged;
+            return {
+              ...merged,
+              experience: merged.experience.map((item) => {
+                if (!item.current || countCvBullets(item.description) > 0) return item;
+                return { ...item, description: joinCvBullets(moduleDrafts) };
+              }),
+            };
+          });
+        }
+      } catch {
+        // Ignore malformed storage; fall back to defaults.
       }
-    } catch {
-      // Ignore malformed storage; fall back to defaults.
-    }
-    // Read consent only after mount so SSR HTML matches the first client paint.
-    const storedConsent = readAiConsent();
-    setConsent(storedConsent);
-    if (storedConsent.agreed === null) {
-      setConsentOpen(true);
-    }
-    setHydrated(true);
+      // Read consent only after mount so SSR HTML matches the first client paint.
+      const storedConsent = readAiConsent();
+      setConsent(storedConsent);
+      if (storedConsent.agreed === null) {
+        setConsentOpen(true);
+      }
+      setHydrated(true);
+    });
   }, []);
 
   useEffect(() => {

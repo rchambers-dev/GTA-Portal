@@ -28,7 +28,22 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [readIds, setReadIds] = useState<string[]>([]);
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevQuery, setPrevQuery] = useState(query);
   const account = session?.account;
+
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) {
+      setQuery("");
+      setSelectedIndex(0);
+    }
+  }
+
+  if (query !== prevQuery) {
+    setPrevQuery(query);
+    setSelectedIndex(0);
+  }
 
   const allNotifications = useMemo(
     () => (account ? getPortalNotifications(account.workspace) : []),
@@ -82,14 +97,8 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
 
   useEffect(() => {
     if (!open) return;
-    setQuery("");
-    setSelectedIndex(0);
     requestAnimationFrame(() => inputRef.current?.focus());
   }, [open]);
-
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [query]);
 
   useEffect(() => {
     if (!notifOpen) return;

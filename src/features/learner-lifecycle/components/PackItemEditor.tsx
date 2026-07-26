@@ -59,14 +59,17 @@ export function PackItemEditor({ learnerId, row, onClose, onSaved }: Props) {
   const schema = schemaForReference(row.reference);
   const endOfProgramme = row.status === "future_requirement" ||
     row.originalBookletSection === "Section 6";
+  const draftSourceKey = `${learnerId}:${row.reference}`;
+  const [draftSourceKeyState, setDraftSourceKeyState] = useState(draftSourceKey);
   const [draft, setDraft] = useState<PackItemRecord>(() =>
     recordFromRow(learnerId, row),
   );
   const [savedFlash, setSavedFlash] = useState(false);
 
-  useEffect(() => {
+  if (draftSourceKeyState !== draftSourceKey) {
+    setDraftSourceKeyState(draftSourceKey);
     setDraft(recordFromRow(learnerId, row));
-  }, [learnerId, row]);
+  }
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {

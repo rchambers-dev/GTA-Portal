@@ -142,10 +142,11 @@ function EmployerInlineField({
   multiline?: boolean;
 }) {
   const [draft, setDraft] = useState(value);
-
-  useEffect(() => {
+  const [prevValue, setPrevValue] = useState(value);
+  if (value !== prevValue) {
+    setPrevValue(value);
     setDraft(value);
-  }, [value]);
+  }
 
   function commit() {
     if (draft.trim() !== value.trim()) onCommit(draft);
@@ -737,7 +738,13 @@ export function AdminEmployersScreen() {
                               aria-label={`Apprentices at ${row.name}`}
                             >
                               {linked.map((learner) => (
-                                <li key={learner.id} role="option">
+                                <li
+                                  key={learner.id}
+                                  role="option"
+                                  aria-selected={
+                                    selectedLearnerId === learner.id
+                                  }
+                                >
                                   <button
                                     type="button"
                                     className={styles.employerApprenticeOption}

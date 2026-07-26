@@ -815,19 +815,19 @@ export function getAlexModuleTopic(
   moduleId: string,
   topicId: string,
 ): { module: LearnerModuleDetail; topic: ModuleTopic; section: "covered" | "previouslyCovered" | "upcoming" } | null {
-  const module = getAlexModuleDetail(moduleId);
-  if (!module) return null;
+  const moduleItem = getAlexModuleDetail(moduleId);
+  if (!moduleItem) return null;
 
-  const covered = module.covered.find((t) => t.id === topicId);
-  if (covered) return { module, topic: covered, section: "covered" };
+  const covered = moduleItem.covered.find((t) => t.id === topicId);
+  if (covered) return { module: moduleItem, topic: covered, section: "covered" };
 
-  const previouslyCovered = module.previouslyCovered.find((t) => t.id === topicId);
+  const previouslyCovered = moduleItem.previouslyCovered.find((t) => t.id === topicId);
   if (previouslyCovered) {
-    return { module, topic: previouslyCovered, section: "previouslyCovered" };
+    return { module: moduleItem, topic: previouslyCovered, section: "previouslyCovered" };
   }
 
-  const upcoming = module.upcoming.find((t) => t.id === topicId);
-  if (upcoming) return { module, topic: upcoming, section: "upcoming" };
+  const upcoming = moduleItem.upcoming.find((t) => t.id === topicId);
+  if (upcoming) return { module: moduleItem, topic: upcoming, section: "upcoming" };
 
   return null;
 }
