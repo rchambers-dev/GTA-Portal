@@ -29,7 +29,7 @@ export const ALEX_PROFILE: LearnerPortalProfile = {
   initials: "AM",
   programmeName: "Autocare Technician L2 · ST0499",
   programmeYear: 1,
-  programmeWeek: 14,
+  programmeWeek: 8,
   employerName: "Riverside Autocare",
   employerContact: "Priya Shah",
   mentorName: "Reiss Chambers",
@@ -1939,58 +1939,62 @@ export const ALEX_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
 
 export const ALEX_LEARNING: LearningFocus = {
   purpose:
-    "Your current learning plan — what to prioritise this week at college, at work, for CEA, and for OTJ.",
+    "Your Autocare plan — college practicals and block reflections this week, plus OTJ at work.",
   weekLabel: `Week ${ALEX_PROFILE.programmeWeek}`,
   notes:
-    "Catch-up OTJ is with Priya for agreement. Keep CEA Group 3 tyre evidence moving before the August progress review.",
+    "Block 1 foundation skills — complete Task 3 and Task 4 in the portal (or upload PDFs if you could not get on). Catch-up OTJ is with Priya for agreement.",
   activeModuleIds: ["m3", "m4"],
   thisWeek: [
     {
       id: "lp-1",
+      title: "College — Block 1 Task 3 vehicle safety inspection",
+      detail:
+        "Fill in the portal form preferred; upload the PDF only if you could not get on that day.",
+      kind: "college",
+      href: "/learner/college-tasks/block-1-task-3",
+      hrefLabel: "Open task",
+    },
+    {
+      id: "lp-2",
+      title: "College — Block 1 Task 4 brake and tyre check",
+      detail: "Second practical for this block — same submission rules.",
+      kind: "college",
+      href: "/learner/college-tasks/block-1-task-4",
+      hrefLabel: "Open task",
+    },
+    {
+      id: "lp-3",
       title: "Chase catch-up OTJ agreement with Priya",
-      detail: "167h catch-up block is with the employer — follow up if needed before review.",
+      detail:
+        "167h catch-up block is with the employer — follow up if needed before review.",
       kind: "otj",
       href: "/learner/otj",
       hrefLabel: "Open OTJ hours",
     },
     {
-      id: "lp-2",
+      id: "lp-4",
       title: "Log this week’s OTJ (or a small catch-up)",
-      detail: "Logging gap reminder is active — a single catch-up entry is fine if you need to backfill.",
+      detail:
+        "Logging gap reminder is active — a single catch-up entry is fine if you need to backfill.",
       kind: "otj",
       href: "/learner/otj",
       hrefLabel: "Log OTJ hours",
-    },
-    {
-      id: "lp-3",
-      title: "CEA Group 3 — tyre task ready for sign-off",
-      detail: "Mark workplace tyre practice ready so employer/teacher can sign.",
-      kind: "cea",
-      href: "/learner/cea",
-      hrefLabel: "Open CEA tasks",
-    },
-    {
-      id: "lp-4",
-      title: "College — inspection sheet marking",
-      detail: "Bring your draft Tuesday; Daniel will mark the workshop assessment after lunch.",
-      kind: "college",
-      href: "/learner/modules/m4",
-      hrefLabel: "Module coverage",
     },
   ],
   lookingAhead: [
     {
       id: "lp-5",
-      title: "Finish Vehicle systems overview assessments",
-      detail: "Close remaining MV-103 outcomes before the next review cycle.",
+      title: "Block 1 Task 5 reflection",
+      detail:
+        "End-of-block reflection — apprentice → mentor → trainer verifies before Block 2 unlocks.",
       kind: "college",
-      href: "/learner/modules/m3",
-      hrefLabel: "Open module",
+      href: "/learner/college-tasks/block-1-task-5",
+      hrefLabel: "Open reflection",
     },
     {
       id: "lp-6",
       title: "Build evidence pack for August review",
-      detail: `Progress review with ${ALEX_PROFILE.mentorName} on 8 Aug — gather accepted evidence and open actions.`,
+      detail: `Progress review with ${ALEX_PROFILE.mentorName} on 8 Aug — gather verified tasks and open actions.`,
       kind: "review",
       href: "/learner/reviews",
       hrefLabel: "View reviews",
@@ -2040,12 +2044,12 @@ export const ALEX_OPEN_TARGETS = [
   },
   {
     id: "tgt-3",
-    title: "CEA — mark Group 3 tyre task ready for sign-off",
+    title: "College — complete Block 1 Task 3 safety inspection",
     owner: "Alex Morgan",
     dueDate: "2026-07-25",
     status: "open",
-    href: "/learner/cea",
-    hrefLabel: "Open CEA tasks",
+    href: "/learner/college-tasks/block-1-task-3",
+    hrefLabel: "Open college task",
   },
 ];
 

@@ -152,7 +152,7 @@ export function AdministrationDashboardScreen() {
               href="/administration/accounts"
               data-tone="red"
             >
-              Account Setup
+              Learner Account Setup
             </Link>
             <Link
               className={learnerStyles.shortcut}

@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import {
+  getAdminServerSnapshot,
   getAdminSnapshot,
   subscribeAdminStore,
 } from "../domain/store";
@@ -11,6 +12,6 @@ export function useAdminStore(): AdminStoreSnapshot {
   return useSyncExternalStore(
     subscribeAdminStore,
     getAdminSnapshot,
-    getAdminSnapshot,
+    getAdminServerSnapshot,
   );
 }

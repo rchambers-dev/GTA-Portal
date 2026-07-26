@@ -142,10 +142,10 @@ export function LearnerDashboardScreen() {
             </Link>
             <Link
               className={styles.shortcut}
-              href="/learner/cea"
+              href="/learner/college-tasks"
               data-tone="green"
             >
-              CEA tasks
+              College tasks
             </Link>
             <Link
               className={styles.shortcut}

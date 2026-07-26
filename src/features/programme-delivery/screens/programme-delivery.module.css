@@ -1,0 +1,479 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.purpose {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.purposeLead {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.purposeLabel {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.purposeBody {
+  margin: 0;
+  color: var(--text-primary, #0f172a);
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.objectives {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--text-primary, #0f172a);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.objectives li + li {
+  margin-top: 0.35rem;
+}
+
+.purposeNote {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-navy-500) 7%, white);
+  border: 1px solid color-mix(in srgb, var(--color-navy-700) 12%, var(--border-subtle));
+  color: var(--color-navy-900, #0f172a);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.autosaveBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-green-500, #22c55e) 8%, white);
+}
+
+.autosaveBar[data-state="saving"] {
+  background: color-mix(in srgb, var(--color-amber-400, #fbbf24) 12%, white);
+}
+
+.autosaveText {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 650;
+  color: var(--text-primary, #0f172a);
+}
+
+.blockList {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.blockCard {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  overflow: hidden;
+}
+
+.blockHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.blockTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+
+.blockMeta {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.taskList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.taskRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0.85rem var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  text-decoration: none;
+  color: inherit;
+}
+
+.taskRow:last-child {
+  border-bottom: none;
+}
+
+.taskRow:hover {
+  background: rgb(0 0 0 / 0.02);
+}
+
+.taskMain strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.taskMain span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.taskEnd {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.linkish {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--action-primary);
+}
+
+.locked {
+  opacity: 0.65;
+}
+
+.lessonList {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  display: grid;
+  gap: 0.4rem;
+}
+
+.lessonItem {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-navy-500) 6%, white);
+  font-size: 0.85rem;
+}
+
+.staffOnly {
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.formStack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.sectionCard {
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.fieldLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.fieldHint {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.fieldStaffOnly {
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.fieldStaffNote {
+  margin: 0;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--radius-md);
+  border: 1px dashed color-mix(in srgb, var(--color-navy-500) 25%, var(--border-subtle));
+  background: color-mix(in srgb, var(--color-navy-500) 4%, white);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.fieldStaffOnly .input,
+.fieldStaffOnly .textarea,
+.fieldStaffOnly .select {
+  background: color-mix(in srgb, var(--color-navy-500) 3%, #f8fafc);
+  border-color: color-mix(in srgb, var(--color-navy-500) 20%, var(--border-subtle));
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.wrenchCheck {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: fit-content;
+  min-height: 2.1rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary, #0f172a);
+  user-select: none;
+  text-align: left;
+}
+
+.wrenchCheckDisabled {
+  cursor: not-allowed;
+  opacity: 0.78;
+}
+
+.wrenchCheckBox {
+  display: inline-grid;
+  place-items: center;
+  width: 2.05rem;
+  height: 2.05rem;
+  flex-shrink: 0;
+  border: 2px solid var(--color-navy-600, #475569);
+  border-radius: 0.4rem;
+  background: white;
+  color: transparent;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.wrenchIcon {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  opacity: 0;
+  transform: scale(0.75) rotate(-12deg);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.wrenchCheck:focus-visible .wrenchCheckBox {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--action-primary) 22%, transparent);
+  border-color: var(--action-primary);
+}
+
+.wrenchCheckOn .wrenchCheckBox {
+  background: var(--action-primary);
+  border-color: var(--action-primary);
+  color: white;
+}
+
+.wrenchCheckOn .wrenchIcon {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.wrenchCheckDisabled .wrenchCheckBox {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.wrenchCheckDisabled.wrenchCheckOn .wrenchCheckBox {
+  background: color-mix(in srgb, var(--action-primary) 55%, #94a3b8);
+  border-color: transparent;
+  color: white;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1.5px solid var(--color-navy-300, #94a3b8);
+  border-radius: var(--radius-md);
+  font: inherit;
+  background: white;
+}
+
+.input:hover,
+.textarea:hover,
+.select:hover {
+  border-color: var(--color-navy-500, #64748b);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--action-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--action-primary) 18%, transparent);
+}
+
+.textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.methodBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.methodBtn,
+.methodActive,
+.methodFallback,
+.methodFallbackActive,
+.primaryBtn,
+.secondaryBtn {
+  font: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  font-weight: 650;
+  font-size: 0.85rem;
+}
+
+.methodBtn,
+.secondaryBtn {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--border-subtle);
+  background: white;
+}
+
+.methodActive,
+.primaryBtn {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid transparent;
+  background: var(--action-primary);
+  color: white;
+}
+
+.methodFallback {
+  padding: 0.45rem 0.8rem;
+  border: 1.5px solid var(--color-red-600, #dc2626);
+  background: white;
+  color: var(--text-primary, #0f172a);
+}
+
+.methodFallbackActive {
+  padding: 0.45rem 0.8rem;
+  border: 1.5px solid var(--color-red-600, #dc2626);
+  background: color-mix(in srgb, var(--color-red-600, #dc2626) 10%, white);
+  color: var(--color-red-800, #991b1b);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.uploadList {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+
+.queueCard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.tabRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tab,
+.tabActive {
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: white;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.tabActive {
+  background: color-mix(in srgb, var(--color-navy-500) 14%, white);
+  border-color: color-mix(in srgb, var(--color-navy-700) 30%, var(--border-subtle));
+}
+
+.back {
+  width: fit-content;
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--action-primary);
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.empty {
+  margin: 0;
+  padding: var(--space-4);
+  color: var(--text-secondary);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+}

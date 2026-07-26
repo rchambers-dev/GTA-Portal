@@ -11,7 +11,7 @@ export function LearnerPageShell({
   eyebrow = "Learner portal",
 }: {
   title: string;
-  description: string;
+  description?: string;
   children: ReactNode;
   actions?: ReactNode;
   /** Grow to fill the portal content area (e.g. Messages). */
@@ -35,7 +35,9 @@ export function LearnerPageShell({
         <div>
           <p className={styles.eyebrow}>{eyebrow}</p>
           <h1 className={styles.title}>{title}</h1>
-          <p className={styles.description}>{description}</p>
+          {description ? (
+            <p className={styles.description}>{description}</p>
+          ) : null}
         </div>
         {actions ? <div className={styles.actions}>{actions}</div> : null}
       </header>
@@ -47,9 +49,17 @@ export function LearnerPageShell({
 export function LearnerStatusChip({
   children,
   tone = "neutral",
+  size = "md",
 }: {
   children: ReactNode;
   tone?: "neutral" | "green" | "amber" | "red" | "blue" | "navy";
+  size?: "md" | "lg";
 }) {
-  return <span className={`${styles.chip} ${styles[tone]}`}>{children}</span>;
+  return (
+    <span
+      className={`${styles.chip} ${styles[tone]}${size === "lg" ? ` ${styles.chipLg}` : ""}`}
+    >
+      {children}
+    </span>
+  );
 }

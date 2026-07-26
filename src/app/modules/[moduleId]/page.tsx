@@ -1,12 +1,9 @@
-import { renderSharedRecordPage } from "@/shell/guards/shared-record-page";
+import { redirect } from "next/navigation";
 
 type Props = { params: Promise<{ moduleId: string }> };
 
+/** Old module record — superseded by programme delivery / college tasks. */
 export default async function ModuleRecordPage({ params }: Props) {
-  const { moduleId } = await params;
-  return renderSharedRecordPage(
-    `/modules/${moduleId}`,
-    "Module record",
-    `Canonical module page (${moduleId}).`,
-  );
+  await params;
+  redirect("/staff/programme-delivery");
 }

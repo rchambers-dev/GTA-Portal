@@ -36,14 +36,33 @@ function persist(snapshot: AdminStoreSnapshot): void {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
 }
 
-let snapshot: AdminStoreSnapshot = createSeedSnapshot();
+/** Stable seed used for SSR + the first client paint (avoids hydration mismatch). */
+const SERVER_SNAPSHOT: AdminStoreSnapshot = createSeedSnapshot();
+let snapshot: AdminStoreSnapshot = clone(SERVER_SNAPSHOT);
 let hydrated = false;
+let hydrateScheduled = false;
 const listeners = new Set<() => void>();
 
 function ensureHydrated(): void {
   if (hydrated || typeof window === "undefined") return;
   snapshot = loadSnapshot();
   hydrated = true;
+}
+
+/**
+ * Load localStorage after the first paint so SSR HTML matches the initial
+ * client render. Mutations still call ensureHydrated() synchronously.
+ */
+function scheduleHydrateFromStorage(): void {
+  if (hydrated || hydrateScheduled || typeof window === "undefined") return;
+  hydrateScheduled = true;
+  queueMicrotask(() => {
+    if (hydrated) return;
+    const next = loadSnapshot();
+    hydrated = true;
+    snapshot = next;
+    for (const listener of listeners) listener();
+  });
 }
 
 function emit(): void {
@@ -57,16 +76,22 @@ function id(prefix: string): string {
 
 export function subscribeAdminStore(listener: () => void): () => void {
   listeners.add(listener);
+  scheduleHydrateFromStorage();
   return () => listeners.delete(listener);
 }
 
 export function getAdminSnapshot(): AdminStoreSnapshot {
-  ensureHydrated();
   return snapshot;
+}
+
+/** Server / hydration snapshot — never reads localStorage. */
+export function getAdminServerSnapshot(): AdminStoreSnapshot {
+  return SERVER_SNAPSHOT;
 }
 
 export function resetAdminStore(): void {
   snapshot = createSeedSnapshot();
+  hydrated = true;
   emit();
 }
 

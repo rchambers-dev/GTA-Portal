@@ -2,23 +2,24 @@ import { redirect } from "next/navigation";
 import { FeatureStubScreen } from "@/features/learner-lifecycle";
 import {
   LearnerAttendanceScreen,
-  LearnerCeaScreen,
   LearnerCvBuilderScreen,
   LearnerDashboardScreen,
   LearnerOtjHoursScreen,
   LearnerLearningScreen,
   LearnerMessagesScreen,
-  LearnerModuleDetailScreen,
-  LearnerModuleTopicScreen,
-  LearnerModulesScreen,
   LearnerProgressScreen,
   LearnerReviewDetailScreen,
   LearnerReviewsScreen,
   LearnerSupportScreen,
-  TutorModuleSignOffScreen,
   EmployerOtjApprovalsScreen,
   TutorOtjApprovalsScreen,
 } from "@/features/learner-portal";
+import {
+  LearnerProgrammeTasksScreen,
+  LearnerTaskFillScreen,
+  TutorProgrammeDeliveryScreen,
+  TutorTaskReviewScreen,
+} from "@/features/programme-delivery";
 import {
   AdministrationDashboardScreen,
   AdminEnrolmentsScreen,
@@ -43,21 +44,19 @@ const STAFF_SHARED_REDIRECTS: Record<string, string> = {
   "employer-concerns": "/employer-concerns?from=staff",
   "support-plans": "/support-plans?from=staff",
   "employer-contacts": "/employers?from=staff",
-  modules: "/modules?from=staff",
-  "curriculum-feedback": "/curriculum-feedback?from=staff",
+  // Old module catalogue — Autocare delivery is blocks + tasks now
+  modules: "/staff/programme-delivery",
+  "module-sign-offs": "/staff/programme-delivery",
+  assessments: "/staff/programme-delivery",
+  resources: "/staff/programme-delivery",
+  "curriculum-feedback": "/staff/programme-delivery",
 };
 
 function renderLearnerPage(segment: string) {
   const moduleMatch = /^modules\/([^/]+)(?:\/([^/]+))?$/.exec(segment);
   if (moduleMatch) {
-    const moduleId = moduleMatch[1];
-    const topicId = moduleMatch[2];
-    if (topicId) {
-      return (
-        <LearnerModuleTopicScreen moduleId={moduleId} topicId={topicId} />
-      );
-    }
-    return <LearnerModuleDetailScreen moduleId={moduleId} />;
+    // Old MV module catalogue — superseded by Autocare college tasks (blocks)
+    redirect("/learner/college-tasks");
   }
 
   const reviewMatch = /^reviews\/([^/]+)$/.exec(segment);
@@ -65,20 +64,27 @@ function renderLearnerPage(segment: string) {
     return <LearnerReviewDetailScreen reviewId={reviewMatch[1]} />;
   }
 
+  const collegeTaskMatch = /^college-tasks\/([^/]+)$/.exec(segment);
+  if (collegeTaskMatch) {
+    return <LearnerTaskFillScreen taskId={collegeTaskMatch[1]} />;
+  }
+
   switch (segment) {
     case "dashboard":
       return <LearnerDashboardScreen />;
     case "learning":
       return <LearnerLearningScreen />;
+    case "college-tasks":
+      return <LearnerProgrammeTasksScreen />;
     case "modules":
-      return <LearnerModulesScreen />;
+      redirect("/learner/college-tasks");
     case "cea":
-      return <LearnerCeaScreen />;
+      // Old CEA personal-tracking UI — college delivery is block tasks now
+      redirect("/learner/college-tasks");
     case "otj":
       return <LearnerOtjHoursScreen />;
     case "assignments":
-      // Legacy path — CEA replaced Assignments.
-      redirect("/learner/cea");
+      redirect("/learner/college-tasks");
     case "evidence":
       // Legacy path — OTJ hours used to live under /learner/evidence.
       redirect("/learner/otj");
@@ -144,12 +150,20 @@ export async function renderWorkspacePage(
     if (page) return page;
   }
 
-  if (workspace === "staff" && segment === "module-sign-offs") {
-    return <TutorModuleSignOffScreen />;
-  }
-
   if (workspace === "staff" && segment === "otj-approvals") {
     return <TutorOtjApprovalsScreen />;
+  }
+
+  if (workspace === "staff" && segment === "programme-delivery") {
+    return <TutorProgrammeDeliveryScreen />;
+  }
+
+  const staffTaskMatch =
+    workspace === "staff"
+      ? /^programme-delivery\/([^/]+)$/.exec(segment)
+      : null;
+  if (staffTaskMatch) {
+    return <TutorTaskReviewScreen taskId={staffTaskMatch[1]} />;
   }
 
   if (workspace === "employer" && segment === "dashboard") {
@@ -186,7 +200,9 @@ export async function renderWorkspacePage(
       case "enrolments":
         return <AdminEnrolmentsScreen />;
       case "accounts":
-        return <AdminUsersScreen />;
+        return (
+          <AdminUsersScreen scope="learner" eyebrow="Administration" />
+        );
       case "employers":
         return <AdminEmployersScreen />;
       case "programmes":
@@ -216,9 +232,30 @@ export async function renderWorkspacePage(
   if (workspace === "management") {
     switch (segment) {
       case "accounts":
-        return <AdminUsersScreen />;
+        return <AdminUsersScreen scope="learner" eyebrow="Management" />;
+      case "staff-accounts":
+        return <AdminUsersScreen scope="staff" eyebrow="Management" />;
+      case "employers":
+        return <AdminEmployersScreen />;
+      case "programmes-records":
+        return <AdminProgrammesScreen />;
+      case "cohorts":
+        return <AdminCohortsScreen />;
+      case "intake":
+        return <AdminLearnerIntakeScreen />;
+      case "enrolments":
+        return <AdminEnrolmentsScreen />;
       case "shared-drive":
         return <SharedDriveScreen audience="management" />;
+      case "messages":
+        return (
+          <LearnerMessagesScreen
+            eyebrow="Management"
+            description="Message learners, employers, and GTA colleagues from the management workspace."
+          />
+        );
+      case "safeguarding":
+        return <LearnerSupportScreen audience="management" />;
       default:
         break;
     }

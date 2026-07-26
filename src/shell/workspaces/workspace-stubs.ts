@@ -246,7 +246,62 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
   management: {
     dashboard: {
       title: "Management Dashboard",
-      description: "Operational management overview.",
+      description:
+        "Management overview — includes Administration learner ops plus management-owned staffing, roles, and programme setup.",
+    },
+    employers: {
+      title: "Employer Records",
+      description: "Shared employer records — same surface as Administration.",
+    },
+    "programmes-records": {
+      title: "Programme Records",
+      description: "Shared programme records — same surface as Administration.",
+    },
+    cohorts: {
+      title: "Cohorts & Groups",
+      description: "Shared cohorts and teaching groups — same surface as Administration.",
+    },
+    intake: {
+      title: "Learner Intake",
+      description: "Shared learner intake — same surface as Administration.",
+    },
+    "staff-intake": {
+      title: "Staff Intake",
+      description:
+        "Staff onboarding — left blank for now until intake steps are agreed with leadership.",
+    },
+    "staff-accounts": {
+      title: "Staff Account Setup",
+      description:
+        "Enable or disable staff portal environments — same surface as Learner Account Setup.",
+    },
+    enrolments: {
+      title: "Learner Enrolments",
+      description: "Shared learner enrolments — same surface as Administration.",
+    },
+    accounts: {
+      title: "Learner Account Setup",
+      description: "Enable or disable learner portal environments.",
+    },
+    "shared-drive": {
+      title: "Shared Drive",
+      description:
+        "Tenant Shared Drive — same shared page template used across environments.",
+    },
+    system: {
+      title: "System Actions",
+      description:
+        "Reserved for override actions. Scope to be agreed with leadership — left blank until then.",
+    },
+    messages: {
+      title: "Messages",
+      description:
+        "Shared messaging — contact learners, employers, and GTA colleagues.",
+    },
+    safeguarding: {
+      title: "Safeguarding",
+      description:
+        "Shared safeguarding contacts and welfare routes for management staff.",
     },
     programmes: {
       title: "Programme Setup",
@@ -279,11 +334,6 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     audit: {
       title: "Audit History",
       description: "Demo audit log of responsibility changes.",
-    },
-    "shared-drive": {
-      title: "Shared Drive",
-      description:
-        "Tenant Shared Drive — same shared page template used across environments.",
     },
   },
   administration: {
@@ -333,7 +383,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       description: "Data quality checks and remediation queues.",
     },
     accounts: {
-      title: "Account Setup",
+      title: "Learner Account Setup",
       description:
         "Enable or disable learner portal environments. Staff environments are managed on Management.",
     },

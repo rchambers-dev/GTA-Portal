@@ -92,6 +92,51 @@
   line-height: 1.2;
 }
 
+.chipLg {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  border-width: 1.5px;
+  box-shadow: 0 1px 2px color-mix(in srgb, #0f172a 8%, transparent);
+}
+
+.chipLg.neutral {
+  background: white;
+  color: var(--color-navy-800, #1e3a5f);
+  border-color: var(--color-navy-400, #94a3b8);
+}
+
+.chipLg.amber {
+  background: color-mix(in srgb, var(--status-warning, #b45309) 34%, white);
+  color: #7c3a06;
+  border: 1.5px solid color-mix(in srgb, var(--status-warning, #b45309) 45%, white);
+}
+
+.chipLg.green {
+  background: color-mix(in srgb, var(--status-success, #1a7f4b) 32%, white);
+  color: #0b5c34;
+  border: 1.5px solid color-mix(in srgb, var(--status-success, #1a7f4b) 40%, white);
+}
+
+.chipLg.red {
+  background: color-mix(in srgb, var(--status-danger, #b91c1c) 28%, white);
+  color: #991b1b;
+  border: 1.5px solid color-mix(in srgb, var(--status-danger, #b91c1c) 40%, white);
+}
+
+.chipLg.blue {
+  background: color-mix(in srgb, var(--action-primary) 28%, white);
+  color: var(--action-primary);
+  border: 1.5px solid color-mix(in srgb, var(--action-primary) 40%, white);
+}
+
+.chipLg.navy {
+  background: color-mix(in srgb, var(--color-navy-700) 28%, white);
+  color: var(--color-navy-900, #0f172a);
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 40%, white);
+}
+
 .neutral {
   background: var(--bg-surface);
   color: var(--text-secondary);

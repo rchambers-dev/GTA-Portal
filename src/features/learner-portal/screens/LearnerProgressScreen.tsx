@@ -1,29 +1,60 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo, useSyncExternalStore } from "react";
 import {
   LearnerPageShell,
   LearnerStatusChip,
 } from "../components/LearnerPageShell";
-import { ALEX_MODULES, ALEX_PROFILE } from "../domain/mock-learner";
+import { ALEX_PROFILE } from "../domain/mock-learner";
+import {
+  AUTOCARE_BLOCKS,
+  AUTOCARE_STANDARD,
+} from "@/features/programme-delivery/domain/autocare-blocks";
+import {
+  AUTOCARE_PRACTICAL_TASKS,
+  tasksForBlock,
+} from "@/features/programme-delivery/domain/autocare-tasks";
+import {
+  getTaskServerSnapshot,
+  getTaskSnapshot,
+  getTaskSubmission,
+  isBlockReflectionVerified,
+  statusLabel,
+  statusTone,
+  subscribeTaskStore,
+} from "@/features/programme-delivery/domain/task-submission-store";
 import styles from "./learner-pages.module.css";
 
-function moduleTone(status: "completed" | "in_progress" | "remaining", released: boolean) {
-  if (!released) return "navy" as const;
-  switch (status) {
-    case "completed":
-      return "green" as const;
-    case "in_progress":
-      return "amber" as const;
-    default:
-      return "blue" as const;
-  }
-}
-
+/**
+ * Progress against Autocare blocks (weeks) — not the old module catalogue.
+ */
 export function LearnerProgressScreen() {
   const profile = ALEX_PROFILE;
-  const completed = ALEX_MODULES.filter((m) => m.status === "completed").length;
-  const inProgress = ALEX_MODULES.filter((m) => m.status === "in_progress").length;
-  const remaining = ALEX_MODULES.filter((m) => m.status === "remaining").length;
-  const releasedCount = ALEX_MODULES.filter((m) => m.released).length;
+  const snapshot = useSyncExternalStore(
+    subscribeTaskStore,
+    getTaskSnapshot,
+    getTaskServerSnapshot,
+  );
+
+  const trainingBlocks = useMemo(
+    () => AUTOCARE_BLOCKS.filter((b) => b.kind === "training"),
+    [],
+  );
+
+  const taskStats = useMemo(() => {
+    let verified = 0;
+    let inFlight = 0;
+    let notStarted = 0;
+    for (const task of AUTOCARE_PRACTICAL_TASKS) {
+      const status = getTaskSubmission(task.id).status;
+      if (status === "verified") verified += 1;
+      else if (status === "not_started") notStarted += 1;
+      else inFlight += 1;
+    }
+    return { verified, inFlight, notStarted, total: AUTOCARE_PRACTICAL_TASKS.length };
+  }, [snapshot]);
+
   const behindPlan =
     profile.actualProgressPercent < profile.plannedProgressPercent;
   const gap = Math.max(
@@ -34,17 +65,15 @@ export function LearnerProgressScreen() {
   return (
     <LearnerPageShell
       title="Progress"
-      description="Planned versus actual progress on your programme, plus a simple module snapshot."
+      description={`Planned versus actual on ${AUTOCARE_STANDARD.label} — tracked by programme weeks and college block tasks.`}
     >
       <div className={styles.stack}>
         <div className={styles.grid}>
           <div className={styles.glance} data-tone="navy">
-            <p className={styles.glanceLabel}>Planned</p>
-            <p className={styles.glanceValue}>
-              {profile.plannedProgressPercent}%
-            </p>
+            <p className={styles.glanceLabel}>Programme week</p>
+            <p className={styles.glanceValue}>{profile.programmeWeek}</p>
             <p className={styles.glanceHint}>
-              Expected by week {profile.programmeWeek}
+              of {AUTOCARE_STANDARD.deliveryWeeks} delivery weeks
             </p>
           </div>
           <div
@@ -57,16 +86,18 @@ export function LearnerProgressScreen() {
             </p>
             <p className={styles.glanceHint}>
               {behindPlan
-                ? `${gap}% behind plan — focus on OTJ and reflective work`
+                ? `${gap}% behind plan — focus on college tasks and OTJ`
                 : "On or ahead of plan"}
             </p>
           </div>
           <div className={styles.glance} data-tone="blue">
-            <p className={styles.glanceLabel}>Modules released</p>
+            <p className={styles.glanceLabel}>College tasks</p>
             <p className={styles.glanceValue}>
-              {releasedCount}/{ALEX_MODULES.length}
+              {taskStats.verified}/{taskStats.total}
             </p>
-            <p className={styles.glanceHint}>Tutor-controlled unlocks</p>
+            <p className={styles.glanceHint}>
+              {taskStats.inFlight} in flight · {taskStats.notStarted} not started
+            </p>
           </div>
         </div>
 
@@ -95,89 +126,130 @@ export function LearnerProgressScreen() {
               </span>
             </div>
           </div>
-          <div className={styles.progressStats}>
-            <span className={styles.progressStat} data-tone="green">
-              <strong>{completed}</strong> completed
-            </span>
-            <span className={styles.progressStat} data-tone="amber">
-              <strong>{inProgress}</strong> in progress
-            </span>
-            <span className={styles.progressStat} data-tone="blue">
-              <strong>{remaining}</strong> remaining
-            </span>
-          </div>
         </section>
+
+        {AUTOCARE_PRACTICAL_TASKS.length > 0 ? (
+          <section className={styles.section}>
+            <h2 className={styles.dashSectionTitle} data-accent="amber">
+              Live college tasks
+            </h2>
+            <ul className={styles.list}>
+              {AUTOCARE_PRACTICAL_TASKS.map((task) => {
+                const sub = getTaskSubmission(task.id);
+                return (
+                  <li key={task.id}>
+                    <Link
+                      href={`/learner/college-tasks/${task.id}`}
+                      className={styles.rowLink}
+                    >
+                      <div className={styles.rowMain}>
+                        <strong>{task.title}</strong>
+                        <span>
+                          Block {task.blockId} · {task.evidenceRef}
+                        </span>
+                      </div>
+                      <div className={styles.rowEnd}>
+                        <LearnerStatusChip tone={statusTone(sub.status)}>
+                          {statusLabel(sub.status)}
+                        </LearnerStatusChip>
+                        <span className={styles.linkish}>Open →</span>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ) : null}
 
         <section className={styles.section}>
           <h2 className={styles.dashSectionTitle} data-accent="navy">
-            Module snapshot
+            Blocks
           </h2>
+          <p className={styles.meta}>
+            Training blocks 1–10. Gateway and EPA are date-tracked (no OTJ).
+            Task 5 reflection must be trainer-verified before the next block
+            unlocks.
+          </p>
           <ul className={styles.list}>
-            {ALEX_MODULES.map((mod) => {
-              const tone = moduleTone(mod.status, mod.released);
-              const body = (
-                <>
-                  <div className={styles.rowMain}>
-                    <strong>
-                      {mod.code} · {mod.title}
-                    </strong>
-                    {mod.released ? (
-                      <span>
-                        {mod.status === "completed"
-                          ? "Coverage signed off"
-                          : mod.status === "in_progress"
-                            ? "In learning now"
-                            : "Ready when you are"}
-                      </span>
-                    ) : (
-                      <span>Waiting for tutor release</span>
-                    )}
-                  </div>
-                  <div className={styles.rowEnd}>
-                    {mod.released ? (
-                      <>
-                        <LearnerStatusChip
-                          tone={
-                            mod.status === "completed"
-                              ? "green"
-                              : mod.status === "in_progress"
-                                ? "amber"
-                                : "blue"
-                          }
-                        >
-                          {mod.status === "completed"
-                            ? "Done"
-                            : mod.status === "in_progress"
-                              ? "Active"
-                              : "Todo"}
-                        </LearnerStatusChip>
-                        <span className={styles.linkish}>Open coverage →</span>
-                      </>
-                    ) : (
-                      <LearnerStatusChip tone="neutral">Locked</LearnerStatusChip>
-                    )}
-                  </div>
-                </>
-              );
+            {trainingBlocks.map((block) => {
+              const tasks = tasksForBlock(block.id);
+              const priorOk =
+                block.id === 1 ||
+                isBlockReflectionVerified(
+                  block.id - 1,
+                  tasksForBlock(block.id - 1),
+                );
+              const verifiedCount = tasks.filter(
+                (t) => getTaskSubmission(t.id).status === "verified",
+              ).length;
+              const current =
+                block.weekStart != null &&
+                block.weekEnd != null &&
+                profile.programmeWeek >= block.weekStart &&
+                profile.programmeWeek <= block.weekEnd;
+              const complete =
+                tasks.length > 0 && verifiedCount === tasks.length;
+              const locked = !priorOk || tasks.length === 0;
 
               return (
-                <li key={mod.id}>
-                  {mod.released ? (
-                    <Link
-                      href={`/learner/modules/${mod.id}`}
-                      className={styles.rowLink}
-                      data-tone={tone}
-                    >
-                      {body}
-                    </Link>
-                  ) : (
-                    <div
-                      className={`${styles.rowLink} ${styles.rowLocked}`}
-                      aria-disabled="true"
-                    >
-                      {body}
+                <li key={block.id}>
+                  <Link
+                    href={locked ? "#" : "/learner/college-tasks"}
+                    className={`${styles.rowLink}${locked ? ` ${styles.rowLocked}` : ""}`}
+                    data-tone={
+                      locked
+                        ? "navy"
+                        : complete
+                          ? "green"
+                          : current
+                            ? "amber"
+                            : "blue"
+                    }
+                    aria-disabled={locked}
+                    onClick={(e) => {
+                      if (locked) e.preventDefault();
+                    }}
+                  >
+                    <div className={styles.rowMain}>
+                      <strong>
+                        Block {block.id} · {block.name}
+                      </strong>
+                      <span>
+                        Weeks {block.weekStart}–{block.weekEnd}
+                        {tasks.length > 0
+                          ? ` · ${verifiedCount}/${tasks.length} tasks verified`
+                          : " · locked until previous reflection verified"}
+                        {!priorOk && tasks.length > 0
+                          ? " · locked until previous reflection verified"
+                          : ""}
+                      </span>
                     </div>
-                  )}
+                    <div className={styles.rowEnd}>
+                      <LearnerStatusChip
+                        tone={
+                          locked
+                            ? "neutral"
+                            : complete
+                              ? "green"
+                              : current
+                                ? "amber"
+                                : "blue"
+                        }
+                      >
+                        {locked
+                          ? "Locked"
+                          : complete
+                            ? "Complete"
+                            : current
+                              ? "Current"
+                              : "Open"}
+                      </LearnerStatusChip>
+                      {!locked ? (
+                        <span className={styles.linkish}>Tasks →</span>
+                      ) : null}
+                    </div>
+                  </Link>
                 </li>
               );
             })}

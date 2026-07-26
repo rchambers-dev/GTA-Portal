@@ -124,7 +124,11 @@ const HELPLINES = [
   },
 ];
 
-export type SupportAudience = "learner" | "employer" | "administration";
+export type SupportAudience =
+  | "learner"
+  | "employer"
+  | "administration"
+  | "management";
 
 const AUDIENCE_COPY = {
   learner: {
@@ -187,6 +191,26 @@ const AUDIENCE_COPY = {
     messagesHref: "/administration/messages",
     supportHref: "/administration/safeguarding",
   },
+  management: {
+    eyebrow: "Management",
+    title: "Safeguarding",
+    description:
+      "Shared safeguarding contacts and urgent help — available from every workspace. Use this when a learner, staff, or employer concern needs a safe, confidential route.",
+    heroEyebrow: "Shared safeguarding route",
+    heroTitle: "Safeguarding & Welfare",
+    heroText:
+      "If something in operations, staffing, or learner delivery raises a welfare concern, contact Safeguarding here. Sensitive cases stay with GTA leads until the right next step is agreed.",
+    chipPrimary: "Confidential",
+    urgentText:
+      "If a learner or colleague is at risk, message Safeguarding below or call Samaritans. If someone is in immediate danger, use emergency services.",
+    waysSub: "Start a conversation with Safeguarding or GTA support.",
+    askTitle: "GTA Support chat",
+    askBody:
+      "Management questions that need a welfare-aware response from GTA.",
+    privacy: "Handled by GTA first",
+    messagesHref: "/management/messages",
+    supportHref: "/management/safeguarding",
+  },
 } as const;
 
 export function LearnerSupportScreen({
@@ -198,7 +222,8 @@ export function LearnerSupportScreen({
   const { ensureThreadWithContact } = useLearnerChat();
   const copy = AUDIENCE_COPY[audience];
   const isEmployer = audience === "employer";
-  const isAdministration = audience === "administration";
+  const isAdministration =
+    audience === "administration" || audience === "management";
   const messagesHref = copy.messagesHref;
   const supportHref = copy.supportHref;
 

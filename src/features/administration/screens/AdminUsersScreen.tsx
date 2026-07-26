@@ -4,42 +4,37 @@ import { Fragment, useId, useMemo, useState } from "react";
 import { FormField } from "@/components/ui/FormField";
 import { Select } from "@/components/ui/Select";
 import { TextInput } from "@/components/ui/TextInput";
-import {
-  LearnerPageShell,
-} from "@/features/learner-portal/components/LearnerPageShell";
+import { LearnerPageShell } from "@/features/learner-portal/components/LearnerPageShell";
 import learnerStyles from "@/features/learner-portal/screens/learner-pages.module.css";
 import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
 import {
+  assignableRoles,
   canManagePortalAccount,
   isNewStarter,
   newStarterDaysRemaining,
   sessionPortalRole,
+  workspaceForRole,
 } from "../domain/account-access";
-import { setPortalEnvironment } from "../domain/store";
-import type { AdminPortalUser } from "../domain/types";
+import { createUser, setPortalEnvironment } from "../domain/store";
+import type { AdminPortalRole, AdminPortalUser } from "../domain/types";
 import { useAdminStore } from "../hooks/useAdminStore";
 import styles from "./admin-pages.module.css";
+
+export type AccountSetupScope = "learner" | "staff";
 
 type FormState = {
   status: AdminPortalUser["status"];
 };
 
-type ListTab = "all" | "awaiting_enable" | "new_starters";
-type SearchMode = "name" | "teacher";
-type EnvironmentFilter = "all" | AdminPortalUser["status"];
+type StaffCreateForm = {
+  displayName: string;
+  email: string;
+  role: AdminPortalRole | "";
+};
 
-const SEARCH_MODES: Array<{
-  id: SearchMode;
-  label: string;
-  placeholder: string;
-}> = [
-  { id: "name", label: "Name", placeholder: "Search by learner name…" },
-  {
-    id: "teacher",
-    label: "Teacher",
-    placeholder: "Tutor or mentor name — shows their learners…",
-  },
-];
+type ListTab = "all" | "awaiting_enable" | "new_starters" | "disabled";
+type SearchMode = "name" | "teacher" | "role";
+type EnvironmentFilter = "all" | AdminPortalUser["status"];
 
 type EnrolmentStaff = {
   id: string;
@@ -47,6 +42,19 @@ type EnrolmentStaff = {
   tutorName: string;
   mentorName: string;
 };
+
+function emptyStaffCreateForm(): StaffCreateForm {
+  return { displayName: "", email: "", role: "" };
+}
+
+function formatWorkspace(workspace: string): string {
+  if (!workspace) return "—";
+  return workspace.charAt(0).toUpperCase() + workspace.slice(1);
+}
+
+function isStaffAccount(row: AdminPortalUser): boolean {
+  return row.role !== "Learner" && row.role !== "Employer";
+}
 
 function linkLabel(
   row: AdminPortalUser,
@@ -95,11 +103,93 @@ function accountRowTone(
   return "green";
 }
 
-export function AdminUsersScreen() {
+const COPY = {
+  learner: {
+    title: "Learner Account Setup",
+    description:
+      "Learner environments only — they arrive here after enrolment. Enable or disable each learner’s portal. Staff accounts are managed on Management.",
+    personSingular: "learner",
+    personPlural: "learners",
+    personColumn: "Learner",
+    linksColumn: "Links",
+    remitLabel: "Learners",
+    remitHint: "Learner accounts in your remit",
+    allTab: "All learners",
+    searchLabel: "Search learners",
+    searchAria: "Search learners by",
+    envHint:
+      "Turn this learner’s portal on or off. Identity and links stay with enrolment.",
+    empty: "No learners match this view.",
+  },
+  staff: {
+    title: "Staff Account Setup",
+    description:
+      "Staff environments only — enable or disable each staff member’s portal. Learners are managed on Learner Account Setup.",
+    personSingular: "staff member",
+    personPlural: "staff",
+    personColumn: "Staff",
+    linksColumn: "Role",
+    remitLabel: "Staff",
+    remitHint: "Staff accounts in your remit",
+    allTab: "All staff",
+    searchLabel: "Search staff",
+    searchAria: "Search staff by",
+    envHint:
+      "Turn this staff member’s portal on or off. Role and workspace stay as set at intake.",
+    empty: "No staff match this view.",
+  },
+} as const;
+
+type AdminUsersScreenProps = {
+  scope?: AccountSetupScope;
+  /** Workspace eyebrow — Administration or Management. */
+  eyebrow?: string;
+};
+
+/**
+ * Shared Account Setup — identical UI for learners and staff; only the
+ * filtered remit and copy differ.
+ */
+export function AdminUsersScreen({
+  scope = "learner",
+  eyebrow = "Administration",
+}: AdminUsersScreenProps) {
   const store = useAdminStore();
   const { session } = useDemoSession();
   const actorRole = sessionPortalRole(session.account);
   const searchInputId = useId();
+  const copy = COPY[scope];
+  const isStaff = scope === "staff";
+
+  const searchModes = useMemo(
+    () =>
+      isStaff
+        ? ([
+            {
+              id: "name" as const,
+              label: "Name",
+              placeholder: "Search by staff name…",
+            },
+            {
+              id: "role" as const,
+              label: "Role",
+              placeholder: "Search by role…",
+            },
+          ] as const)
+        : ([
+            {
+              id: "name" as const,
+              label: "Name",
+              placeholder: "Search by learner name…",
+            },
+            {
+              id: "teacher" as const,
+              label: "Teacher",
+              placeholder: "Tutor or mentor name — shows their learners…",
+            },
+          ] as const),
+    [isStaff],
+  );
 
   const [query, setQuery] = useState("");
   const [searchMode, setSearchMode] = useState<SearchMode>("name");
@@ -108,6 +198,10 @@ export function AdminUsersScreen() {
     useState<EnvironmentFilter>("all");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState | null>(null);
+  const [creating, setCreating] = useState(false);
+  const [createForm, setCreateForm] = useState<StaffCreateForm>(() =>
+    emptyStaffCreateForm(),
+  );
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -116,20 +210,22 @@ export function AdminUsersScreen() {
     : null;
 
   const activeSearch =
-    SEARCH_MODES.find((mode) => mode.id === searchMode) ?? SEARCH_MODES[0];
+    searchModes.find((mode) => mode.id === searchMode) ?? searchModes[0];
 
-  /**
-   * Account Setup is learners only — staff environments are managed on
-   * Management. You still only see accounts ranked below your own role.
-   */
+  const staffRoleOptions = useMemo(
+    () => assignableRoles(actorRole).filter((role) => role !== "Learner"),
+    [actorRole],
+  );
+
   const manageableUsers = useMemo(
     () =>
-      store.users.filter(
-        (row) =>
-          row.role === "Learner" &&
-          canManagePortalAccount(actorRole, row.role),
-      ),
-    [actorRole, store.users],
+      store.users.filter((row) => {
+        const inScope = isStaff
+          ? isStaffAccount(row)
+          : row.role === "Learner";
+        return inScope && canManagePortalAccount(actorRole, row.role);
+      }),
+    [actorRole, isStaff, store.users],
   );
 
   const newStarterCount = useMemo(
@@ -141,6 +237,11 @@ export function AdminUsersScreen() {
 
   const awaitingEnableCount = useMemo(
     () => manageableUsers.filter((row) => row.status === "invited").length,
+    [manageableUsers],
+  );
+
+  const disabledCount = useMemo(
+    () => manageableUsers.filter((row) => row.status === "disabled").length,
     [manageableUsers],
   );
 
@@ -159,6 +260,8 @@ export function AdminUsersScreen() {
       rows = rows.filter((row) => row.status === "invited");
     } else if (tab === "new_starters") {
       rows = rows.filter((row) => isNewStarter(row.programmeStartDate));
+    } else if (tab === "disabled") {
+      rows = rows.filter((row) => row.status === "disabled");
     }
 
     if (environmentFilter !== "all") {
@@ -169,6 +272,9 @@ export function AdminUsersScreen() {
     return rows.filter((row) => {
       if (searchMode === "teacher") {
         return matchesTeacher(row, q, store.enrolments);
+      }
+      if (searchMode === "role") {
+        return row.role.toLowerCase().includes(q);
       }
       return row.displayName.toLowerCase().includes(q);
     });
@@ -190,7 +296,8 @@ export function AdminUsersScreen() {
 
   function openEdit(idValue: string) {
     const row = store.users.find((u) => u.id === idValue);
-    if (!row || row.role !== "Learner") return;
+    if (!row) return;
+    if (isStaff ? !isStaffAccount(row) : row.role !== "Learner") return;
     if (!canManagePortalAccount(actorRole, row.role)) {
       setError("You can only manage accounts below your own role.");
       return;
@@ -236,7 +343,7 @@ export function AdminUsersScreen() {
     row: AdminPortalUser,
   ) {
     event.stopPropagation();
-    if (row.role !== "Learner") return;
+    if (isStaff ? !isStaffAccount(row) : row.role !== "Learner") return;
     if (!canManagePortalAccount(actorRole, row.role)) return;
     const nextStatus: AdminPortalUser["status"] =
       row.status === "active" ? "disabled" : "active";
@@ -252,11 +359,161 @@ export function AdminUsersScreen() {
     setError(null);
   }
 
+  function startCreateStaff() {
+    setCreating(true);
+    setCreateForm(emptyStaffCreateForm());
+    setEditingId(null);
+    setForm(null);
+    setError(null);
+    setSuccess(null);
+  }
+
+  function createStaffMember() {
+    if (!createForm.displayName.trim()) {
+      setError("A name is needed to add a staff member.");
+      return;
+    }
+    if (!createForm.email.trim()) {
+      setError("An email is needed so their account can be set up.");
+      return;
+    }
+    if (!createForm.role) {
+      setError("Choose the role they'll hold.");
+      return;
+    }
+    const emailKey = createForm.email.trim().toLowerCase();
+    if (store.users.some((u) => u.email.trim().toLowerCase() === emailKey)) {
+      setError("An account with that email already exists.");
+      return;
+    }
+    createUser({
+      displayName: createForm.displayName,
+      email: createForm.email,
+      role: createForm.role,
+      workspace: workspaceForRole(createForm.role),
+      linkedEnrolmentId: null,
+      linkedLearnerId: null,
+      linkedEmployerId: null,
+      programmeStartDate: null,
+      status: "invited",
+    });
+    setSuccess(
+      `${createForm.displayName.trim()} added as ${createForm.role} — enable their environment below.`,
+    );
+    setError(null);
+    setCreating(false);
+    setCreateForm(emptyStaffCreateForm());
+    setTab("awaiting_enable");
+  }
+
+  if (creating && isStaff) {
+    return (
+      <LearnerPageShell
+        eyebrow={`${eyebrow} · Staff Account Setup`}
+        title="Add a staff member"
+        description="Capture who they are and the role they hold. Their workspace is set automatically from the role — enable their environment once created."
+      >
+        <div className={styles.stack}>
+          <section className={styles.formGroup}>
+            <div className={styles.formGroupHead}>
+              <h2 className={styles.formGroupTitle}>Add a staff member</h2>
+              <span className={styles.formGroupBadge}>Account details</span>
+            </div>
+            <p className={styles.formGroupMeta}>
+              They&apos;ll appear as awaiting enable. You can only create roles
+              below your own.
+            </p>
+            <div className={styles.formGrid}>
+              <FormField label="Full name">
+                <TextInput
+                  value={createForm.displayName}
+                  autoFocus
+                  onChange={(e) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      displayName: e.target.value,
+                    }))
+                  }
+                />
+              </FormField>
+              <FormField label="Email">
+                <TextInput
+                  type="email"
+                  value={createForm.email}
+                  onChange={(e) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }))
+                  }
+                />
+              </FormField>
+              <FormField
+                label="Role"
+                hint={
+                  createForm.role
+                    ? `Workspace: ${formatWorkspace(workspaceForRole(createForm.role))}`
+                    : "Sets which workspace they sign into"
+                }
+              >
+                <Select
+                  value={createForm.role}
+                  placeholder="Choose a role…"
+                  onChange={(next) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      role: next as AdminPortalRole,
+                    }))
+                  }
+                  options={staffRoleOptions.map((role) => ({
+                    value: role,
+                    label: role,
+                  }))}
+                />
+              </FormField>
+            </div>
+            {error ? <p className={styles.error}>{error}</p> : null}
+            <div className={styles.formActions}>
+              <button
+                type="button"
+                className={styles.secondaryBtn}
+                onClick={() => {
+                  setCreating(false);
+                  setError(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.primaryBtn}
+                onClick={createStaffMember}
+              >
+                Add staff member
+              </button>
+            </div>
+          </section>
+        </div>
+      </LearnerPageShell>
+    );
+  }
+
   return (
     <LearnerPageShell
-      eyebrow="Administration"
-      title="Account Setup"
-      description="Learner environments only — they arrive here after enrolment. Enable or disable each learner’s portal. Staff accounts are managed on Management."
+      eyebrow={eyebrow}
+      title={copy.title}
+      description={copy.description}
+      actions={
+        isStaff ? (
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            onClick={startCreateStaff}
+          >
+            Add staff member
+          </button>
+        ) : undefined
+      }
     >
       <div className={styles.stack}>
         <div className={learnerStyles.grid}>
@@ -271,13 +528,11 @@ export function AdminUsersScreen() {
               setSearchMode("name");
             }}
           >
-            <p className={learnerStyles.glanceLabel}>Learners</p>
+            <p className={learnerStyles.glanceLabel}>{copy.remitLabel}</p>
             <p className={learnerStyles.glanceValue}>
               {manageableUsers.length}
             </p>
-            <p className={learnerStyles.glanceHint}>
-              Learner accounts in your remit
-            </p>
+            <p className={learnerStyles.glanceHint}>{copy.remitHint}</p>
           </button>
           <button
             type="button"
@@ -291,24 +546,43 @@ export function AdminUsersScreen() {
               Ready for environment setup
             </p>
           </button>
-          <button
-            type="button"
-            className={learnerStyles.glanceLink}
-            data-tone="green"
-            onClick={() => setTab("new_starters")}
-          >
-            <p className={learnerStyles.glanceLabel}>New starters</p>
-            <p className={learnerStyles.glanceValue}>{newStarterCount}</p>
-            <p className={learnerStyles.glanceHint}>
-              First 14 days — badge on the row
-            </p>
-          </button>
+          {isStaff ? (
+            <button
+              type="button"
+              className={learnerStyles.glanceLink}
+              data-tone="red"
+              onClick={() => setTab("disabled")}
+            >
+              <p className={learnerStyles.glanceLabel}>Disabled</p>
+              <p className={learnerStyles.glanceValue}>{disabledCount}</p>
+              <p className={learnerStyles.glanceHint}>
+                Environments turned off
+              </p>
+            </button>
+          ) : (
+            <button
+              type="button"
+              className={learnerStyles.glanceLink}
+              data-tone="green"
+              onClick={() => setTab("new_starters")}
+            >
+              <p className={learnerStyles.glanceLabel}>New starters</p>
+              <p className={learnerStyles.glanceValue}>{newStarterCount}</p>
+              <p className={learnerStyles.glanceHint}>
+                First 14 days — badge on the row
+              </p>
+            </button>
+          )}
         </div>
 
         {success ? <p className={styles.success}>{success}</p> : null}
         {error && !form ? <p className={styles.error}>{error}</p> : null}
 
-        <div className={styles.tabRow} role="tablist" aria-label="Account queues">
+        <div
+          className={styles.tabRow}
+          role="tablist"
+          aria-label="Account queues"
+        >
           <button
             type="button"
             role="tab"
@@ -316,7 +590,7 @@ export function AdminUsersScreen() {
             className={tab === "all" ? styles.tabActive : styles.tab}
             onClick={() => setTab("all")}
           >
-            All learners
+            {copy.allTab}
           </button>
           <button
             type="button"
@@ -332,20 +606,35 @@ export function AdminUsersScreen() {
               <span className={styles.tabCount}>{awaitingEnableCount}</span>
             ) : null}
           </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={tab === "new_starters"}
-            className={
-              tab === "new_starters" ? styles.tabActiveNavy : styles.tabNavy
-            }
-            onClick={() => setTab("new_starters")}
-          >
-            New starters
-            {newStarterCount > 0 ? (
-              <span className={styles.tabCount}>{newStarterCount}</span>
-            ) : null}
-          </button>
+          {isStaff ? (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={tab === "disabled"}
+              className={tab === "disabled" ? styles.tabActive : styles.tab}
+              onClick={() => setTab("disabled")}
+            >
+              Disabled
+              {disabledCount > 0 ? (
+                <span className={styles.tabCount}>{disabledCount}</span>
+              ) : null}
+            </button>
+          ) : (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={tab === "new_starters"}
+              className={
+                tab === "new_starters" ? styles.tabActiveNavy : styles.tabNavy
+              }
+              onClick={() => setTab("new_starters")}
+            >
+              New starters
+              {newStarterCount > 0 ? (
+                <span className={styles.tabCount}>{newStarterCount}</span>
+              ) : null}
+            </button>
+          )}
         </div>
 
         <div className={styles.searchBlock}>
@@ -354,9 +643,9 @@ export function AdminUsersScreen() {
             <div
               className={styles.searchModeTabs}
               role="group"
-              aria-label="Search learners by"
+              aria-label={copy.searchAria}
             >
-              {SEARCH_MODES.map((mode) => (
+              {searchModes.map((mode) => (
                 <button
                   key={mode.id}
                   type="button"
@@ -375,11 +664,15 @@ export function AdminUsersScreen() {
             <p className={styles.searchResultCount}>
               {filtersActive
                 ? `Showing ${filtered.length} of ${manageableUsers.length}`
-                : `${manageableUsers.length} learner${manageableUsers.length === 1 ? "" : "s"}`}
+                : `${manageableUsers.length} ${
+                    manageableUsers.length === 1
+                      ? copy.personSingular
+                      : copy.personPlural
+                  }`}
             </p>
           </div>
 
-          <FormField label="Search learners" htmlFor={searchInputId}>
+          <FormField label={copy.searchLabel} htmlFor={searchInputId}>
             <TextInput
               id={searchInputId}
               type="search"
@@ -428,8 +721,8 @@ export function AdminUsersScreen() {
             </colgroup>
             <thead>
               <tr>
-                <th scope="col">Learner</th>
-                <th scope="col">Links</th>
+                <th scope="col">{copy.personColumn}</th>
+                <th scope="col">{copy.linksColumn}</th>
                 <th scope="col">Status</th>
                 <th scope="col">By</th>
               </tr>
@@ -438,17 +731,20 @@ export function AdminUsersScreen() {
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={4}>
-                    <p className={styles.muted}>No learners match this view.</p>
+                    <p className={styles.muted}>{copy.empty}</p>
                   </td>
                 </tr>
               ) : (
                 filtered.map((row) => {
-                  const linked =
-                    linkLabel(row, store.enrolments, store.employers) || "—";
-                  const staff = staffForLearner(row, store.enrolments);
-                  const daysLeft = newStarterDaysRemaining(
-                    row.programmeStartDate,
-                  );
+                  const linked = isStaff
+                    ? `${row.role} · ${formatWorkspace(row.workspace)}`
+                    : linkLabel(row, store.enrolments, store.employers) || "—";
+                  const teachers = isStaff
+                    ? null
+                    : staffForLearner(row, store.enrolments);
+                  const daysLeft = isStaff
+                    ? null
+                    : newStarterDaysRemaining(row.programmeStartDate);
                   const canManage = canManagePortalAccount(actorRole, row.role);
                   const tone = accountRowTone(row.status, daysLeft != null);
                   const expanded = editingId === row.id && form != null;
@@ -488,15 +784,15 @@ export function AdminUsersScreen() {
                         </td>
                         <td>
                           <span className={styles.cellText}>{linked}</span>
-                          {staff?.tutorName || staff?.mentorName ? (
+                          {teachers?.tutorName || teachers?.mentorName ? (
                             <span className={styles.rowMeta}>
                               {[
-                                staff.tutorName
-                                  ? `Tutor ${staff.tutorName}`
+                                teachers.tutorName
+                                  ? `Tutor ${teachers.tutorName}`
                                   : null,
-                                staff.mentorName &&
-                                staff.mentorName !== staff.tutorName
-                                  ? `Mentor ${staff.mentorName}`
+                                teachers.mentorName &&
+                                teachers.mentorName !== teachers.tutorName
+                                  ? `Mentor ${teachers.mentorName}`
                                   : null,
                               ]
                                 .filter(Boolean)
@@ -603,7 +899,7 @@ export function AdminUsersScreen() {
                                 <div className={styles.envSetupField}>
                                   <FormField
                                     label="Environment"
-                                    hint="Turn this learner’s portal on or off. Identity and links stay with enrolment."
+                                    hint={copy.envHint}
                                   >
                                     <Select
                                       value={form.status}

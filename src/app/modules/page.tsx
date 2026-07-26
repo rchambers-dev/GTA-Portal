@@ -1,9 +1,9 @@
-import { renderSharedQueuePage } from "@/shell/guards/shared-record-page";
+import { redirect } from "next/navigation";
 
+/**
+ * Old shared modules queue — Autocare delivery is now blocks + college tasks
+ * under Programme delivery (tutor) / College tasks (learner).
+ */
 export default async function ModulesQueuePage() {
-  return renderSharedQueuePage(
-    "/modules",
-    "Modules",
-    "Shared modules queue — delivery-filtered for tutors; opens the canonical module record.",
-  );
+  redirect("/staff/programme-delivery");
 }

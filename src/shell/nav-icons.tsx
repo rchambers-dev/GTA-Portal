@@ -104,8 +104,11 @@ export function NavIcon({ href }: { href: string }) {
     );
   }
 
-  // Administration workspace
-  if (key.includes("/administration/employers")) {
+  // Administration / Management shared learner-ops surfaces
+  if (
+    key.includes("/administration/employers") ||
+    key.includes("/management/employers")
+  ) {
     return (
       <svg {...common}>
         <path d="M3 21h18" />
@@ -115,7 +118,10 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/programmes")) {
+  if (
+    key.includes("/administration/programmes") ||
+    key.includes("/management/programmes-records")
+  ) {
     return (
       <svg {...common}>
         <path d="M22 10 12 5 2 10l10 5 10-5z" />
@@ -124,7 +130,10 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/cohorts")) {
+  if (
+    key.includes("/administration/cohorts") ||
+    key.includes("/management/cohorts")
+  ) {
     return (
       <svg {...common}>
         <path d="M16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
@@ -134,7 +143,11 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/intake")) {
+  if (
+    key.includes("/administration/intake") ||
+    key.includes("/management/intake") ||
+    key.includes("/management/staff-intake")
+  ) {
     return (
       <svg {...common}>
         <circle cx="9" cy="8" r="3.5" />
@@ -143,7 +156,10 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/enrolments")) {
+  if (
+    key.includes("/administration/enrolments") ||
+    key.includes("/management/enrolments")
+  ) {
     return (
       <svg {...common}>
         <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
@@ -152,7 +168,11 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/accounts") || key.includes("/management/accounts")) {
+  if (
+    key.includes("/administration/accounts") ||
+    key.includes("/management/accounts") ||
+    key.includes("/management/staff-accounts")
+  ) {
     return (
       <svg {...common}>
         <circle cx="12" cy="8" r="3.5" />
@@ -161,7 +181,7 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/safeguarding") || key.includes("/safeguarding")) {
+  if (key.includes("/administration/safeguarding") || key.includes("/safeguarding") || key.includes("/management/safeguarding")) {
     return (
       <svg {...common}>
         <path d="M12 3 4.5 6.5v5.2c0 4.4 3.1 7.7 7.5 9.3 4.4-1.6 7.5-4.9 7.5-9.3V6.5L12 3z" />
@@ -188,7 +208,10 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/system")) {
+  if (
+    key.includes("/administration/system") ||
+    key.includes("/management/system")
+  ) {
     return (
       <svg {...common}>
         <circle cx="12" cy="12" r="3" />
@@ -196,7 +219,12 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/dashboard") || key.endsWith("/administration")) {
+  if (
+    key.includes("/administration/dashboard") ||
+    key.endsWith("/administration") ||
+    key.includes("/management/dashboard") ||
+    key.endsWith("/management")
+  ) {
     return (
       <svg {...common}>
         <rect x="3" y="3" width="8" height="8" rx="1.4" />
@@ -206,12 +234,29 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
+  if (key.includes("/learner/college-tasks") || key.includes("/staff/programme-delivery")) {
+    return (
+      <svg {...common}>
+        <path d="M8 4h8a2 2 0 0 1 2 2v14l-6-3-6 3V6a2 2 0 0 1 2-2z" />
+        <path d="M10 9h4M10 12h4" />
+      </svg>
+    );
+  }
   if (key === "/learners" || key.startsWith("/learners?")) {
     return (
       <svg {...common}>
         <circle cx="11" cy="11" r="6.5" />
         <path d="M16.2 16.2 21 21" />
         <path d="M9 11h4M11 9v4" />
+      </svg>
+    );
+  }
+  if (key === "/staff-records" || key.startsWith("/staff-records?")) {
+    return (
+      <svg {...common}>
+        <circle cx="9" cy="8" r="3.5" />
+        <path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
+        <path d="M16 7h5M16 11h5M16 15h3" />
       </svg>
     );
   }

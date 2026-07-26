@@ -41,11 +41,13 @@ export function PortalShell({
   const isLearner = workspace === "learner";
   const isEmployer = workspace === "employer";
   const isAdministration = workspace === "administration";
-  const withSharedChat = isLearner || isEmployer || isAdministration;
+  const isManagement = workspace === "management";
+  const withSharedChat =
+    isLearner || isEmployer || isAdministration || isManagement;
   const onMessagesPage = isMessagesRoute(pathname);
   const chatSelfId = isEmployer
     ? CHAT_SELF_EMPLOYER
-    : isAdministration
+    : isAdministration || isManagement
       ? CHAT_SELF_ADMIN
       : CHAT_SELF_LEARNER;
 

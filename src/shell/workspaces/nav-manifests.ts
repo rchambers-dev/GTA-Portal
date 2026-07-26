@@ -5,10 +5,9 @@ export const STAFF_BASE_NAV: NavItem[] = [
   { href: "/staff/dashboard", label: "Dashboard", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
   { href: "/learners/lifecycle", label: "My Learners", permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
   { href: "/staff/schedule", label: "Teaching Schedule", permission: PERMISSIONS.SCHEDULE_VIEW },
-  { href: "/modules?from=tutor", label: "Modules", permission: PERMISSIONS.MODULES_DELIVER },
   {
-    href: "/staff/module-sign-offs",
-    label: "Module sign-offs",
+    href: "/staff/programme-delivery",
+    label: "Programme delivery",
     permission: PERMISSIONS.MODULES_DELIVER,
   },
   {
@@ -16,15 +15,8 @@ export const STAFF_BASE_NAV: NavItem[] = [
     label: "OTJ hours",
     permission: PERMISSIONS.MODULES_DELIVER,
   },
-  { href: "/staff/assessments", label: "Assessments & Marking", permission: PERMISSIONS.ASSESSMENTS_MARK },
   { href: "/reviews?from=tutor", label: "Reviews", permission: PERMISSIONS.REVIEWS_MANAGE },
-  { href: "/staff/resources", label: "Teaching Resources", permission: PERMISSIONS.RESOURCES_OWN_MANAGE },
   { href: "/staff/shared-drive", label: "Shared Drive", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
-  {
-    href: "/curriculum-feedback?from=tutor",
-    label: "Curriculum Feedback",
-    permission: PERMISSIONS.CURRICULUM_FEEDBACK_SUBMIT,
-  },
   { href: "/staff/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
 ];
 
