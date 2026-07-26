@@ -1,0 +1,154 @@
+import type { PracticalTaskDef } from "../task-schema";
+import { makeBlockReflection, makePractical } from "./shared";
+
+export const BLOCK_10_TASKS: PracticalTaskDef[] = [
+  makePractical({
+    blockId: 10,
+    taskNumber: 3,
+    evidenceRef: "Block_10_Task_3_EPA_Mock_Integrated_Inspection",
+    title: "EPA Mock Integrated Practical Inspection",
+    scenario:
+      "As part of final readiness, you must complete an integrated practical inspection under mock assessment conditions. You will inspect, record evidence, explain findings and identify any further work or authorisation needed.",
+    objectives: [
+      "Demonstrate safe independent working under mock conditions.",
+      "Carry out an integrated vehicle inspection methodically.",
+      "Record findings, measurements and recommendations clearly.",
+      "Explain decisions using evidence and correct terminology.",
+      "Reflect on EPA-style practical readiness.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Block_10_Task_3_EPA_Mock_Integrated_Inspection_v1.0.pdf",
+    weeks: "Weeks 95-113",
+    dutiesCovered: "All duties consolidated",
+    ksbsCovered: "All KSBs revisited and evidenced",
+    materials: [
+      "Light vehicle for integrated inspection",
+      "Inspection checklist and measuring tools",
+      "PPE and housekeeping equipment",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Plan and complete an integrated inspection under mock assessment conditions.",
+      "Record findings, measurements and recommendations clearly.",
+      "Explain decisions using evidence and correct terminology.",
+      "Identify any further work or authorisation needed.",
+      "Reflect on EPA-style practical readiness.",
+    ],
+    measurementFields: [
+      { key: "defectsIdentified", type: "text", label: "Defects identified" },
+      {
+        key: "safetyCritical",
+        type: "text",
+        label: "Safety-critical item",
+      },
+      { key: "tyreMeasurement", type: "text", label: "Tyre measurement" },
+      {
+        key: "brakeMeasurement",
+        type: "text",
+        label: "Brake measurement",
+      },
+      {
+        key: "batteryElectrical",
+        type: "text",
+        label: "Battery/electrical check",
+      },
+      {
+        key: "fluidEnvironmental",
+        type: "text",
+        label: "Fluid/environmental check",
+      },
+      { key: "torqueSetting", type: "text", label: "Torque setting" },
+      {
+        key: "furtherWork",
+        type: "text",
+        label: "Further work required",
+      },
+    ],
+    knowledgeQuestions: [
+      "How did you plan the inspection sequence?",
+      "What evidence supports your main defect finding?",
+      "How did you decide which defects were urgent?",
+      "What documentation is needed before further work?",
+      "How did you maintain safety and housekeeping?",
+      "What customer explanation would you give?",
+      "What would you improve before final EPA?",
+    ],
+  }),
+  makePractical({
+    blockId: 10,
+    taskNumber: 4,
+    evidenceRef: "Block_10_Task_4_Capstone_Practical_Task",
+    title: "Capstone Practical Task, QA and Professional Discussion Evidence",
+    scenario:
+      "You must complete a capstone practical task that brings together technical work, safe working, documentation, quality checks and professional explanation. The task should be agreed with the assessor before starting.",
+    objectives: [
+      "Plan and complete a practical task using workplace procedures.",
+      "Apply safe working, tool control and documentation standards.",
+      "Carry out quality checks and record evidence.",
+      "Explain the work completed and recommendations.",
+      "Prepare evidence suitable for portfolio/EPA readiness.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Block_10_Task_4_Capstone_Practical_Task_v1.0.pdf",
+    weeks: "Weeks 95-113",
+    dutiesCovered: "All duties consolidated",
+    ksbsCovered: "All KSBs revisited and evidenced",
+    materials: [
+      "Task and vehicle/equipment agreed with the assessor",
+      "Technical data, tools and PPE for the selected task",
+      "Quality-check and evidence recording materials",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Agree the capstone task with the assessor before starting.",
+      "Plan and complete the work using workplace procedures.",
+      "Apply safe working, tool control and documentation standards.",
+      "Carry out quality checks and record evidence.",
+      "Explain the work and prepare portfolio/EPA-ready evidence.",
+    ],
+    measurementFields: [
+      { key: "taskSelected", type: "text", label: "Task selected" },
+      {
+        key: "technicalDataUsed",
+        type: "text",
+        label: "Technical data used",
+      },
+      {
+        key: "toolsUsed",
+        type: "text",
+        label: "Tools/equipment used",
+      },
+      { key: "safetyControls", type: "text", label: "Safety controls" },
+      {
+        key: "qualityCheck",
+        type: "text",
+        label: "Quality check result",
+      },
+      {
+        key: "customerRecommendation",
+        type: "text",
+        label: "Customer recommendation",
+      },
+      {
+        key: "evidenceUploaded",
+        type: "text",
+        label: "Evidence uploaded",
+      },
+      {
+        key: "reflectionNext",
+        type: "textarea",
+        label: "Reflection/next step",
+      },
+    ],
+    knowledgeQuestions: [
+      "How did you plan the task before starting?",
+      "What safety controls were most important?",
+      "How did you confirm the work was completed correctly?",
+      "What evidence would you upload to the portfolio?",
+      "How did the task show independence or teamwork?",
+      "How would you explain the work to a customer?",
+      "What learning point will you take into EPA preparation?",
+    ],
+  }),
+  makeBlockReflection(10),
+];

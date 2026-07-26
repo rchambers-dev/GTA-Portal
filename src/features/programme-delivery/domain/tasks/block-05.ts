@@ -1,0 +1,156 @@
+import type { PracticalTaskDef } from "../task-schema";
+import { makeBlockReflection, makePractical } from "./shared";
+
+export const BLOCK_05_TASKS: PracticalTaskDef[] = [
+  makePractical({
+    blockId: 5,
+    taskNumber: 3,
+    evidenceRef: "Block_5_Task_3_Brake_Inspection_and_Replacement",
+    title: "Brake Inspection, Measurement and Replacement",
+    scenario:
+      "A vehicle has been reported with worn brake components during inspection. You must inspect, measure and remove/refit brake components, record technical data and explain any customer recommendations.",
+    objectives: [
+      "Carry out brake inspection using safe working practices.",
+      "Measure brake component condition and compare with manufacturer specification.",
+      "Remove and replace brake pads/discs or equivalent components as instructed.",
+      "Record torque settings, thickness measurements and recommendations.",
+      "Explain how evidence supports diagnostic and customer communication decisions.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Block_5_Task_3_Brake_Inspection_and_Replacement_v1.0.pdf",
+    weeks: "Weeks 41-50",
+    dutiesCovered: "1, 2, 3, 4, 5, 6, 7, 8, 9, 10",
+    ksbsCovered: "K12-K19, S8-S15, B1, B2",
+    materials: [
+      "Light vehicle with accessible brake components",
+      "Brake measuring tools and torque wrench",
+      "Manufacturer brake specifications",
+      "PPE and safe lifting equipment",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Inspect and measure brake components safely.",
+      "Compare measurements with manufacturer specification.",
+      "Remove and replace pads/discs or equivalent components as instructed.",
+      "Tighten to 50% of specified torque for assessment purposes unless otherwise instructed, and record the correct manufacturer settings.",
+      "Explain customer recommendations using the recorded evidence.",
+    ],
+    measurementFields: [
+      {
+        key: "discRunout",
+        type: "text",
+        label: "Measured disc run-out",
+      },
+      {
+        key: "runoutMax",
+        type: "text",
+        label: "Run-out max tolerance",
+      },
+      {
+        key: "discThickness",
+        type: "text",
+        label: "Disc measured thickness",
+      },
+      {
+        key: "discMin",
+        type: "text",
+        label: "Disc minimum thickness",
+      },
+      {
+        key: "padMin",
+        type: "text",
+        label: "Minimum pad thickness",
+      },
+      { key: "wheelTorque", type: "text", label: "Wheel torque setting" },
+      {
+        key: "caliperTorque",
+        type: "text",
+        label: "Caliper/carrier torque",
+      },
+      {
+        key: "otherTorque",
+        type: "text",
+        label: "Other torque settings",
+      },
+    ],
+    knowledgeQuestions: [
+      "State the manufacturer brake pad minimum thickness.",
+      "Explain what is meant by the term brake fade.",
+      "What recommendations should be given to the customer when new pads and/or discs have been fitted?",
+      "Name a typical customer complaint that may require checking brake disc run-out.",
+      "What effect can excessively worn pads and/or discs have on braking performance?",
+      "Explain how you confirmed the repair was safe and complete before returning the vehicle.",
+      "Identify any further work, customer authorisation or documentation required.",
+    ],
+  }),
+  makePractical({
+    blockId: 5,
+    taskNumber: 4,
+    evidenceRef: "Block_5_Task_4_Suspension_Component_Replacement",
+    title: "Suspension Component Replacement and Alignment Preparation",
+    scenario:
+      "A vehicle has been reported with a worn suspension component. You must inspect the component, remove/refit the part as instructed, record torque data and identify whether alignment or further checks are required.",
+    objectives: [
+      "Inspect suspension components using safe working practices.",
+      "Remove and refit a suspension component as instructed.",
+      "Record manufacturer torque settings and relevant measurements.",
+      "Identify how the component affects handling and tyre wear.",
+      "Explain alignment and customer recommendation requirements.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Block_5_Task_4_Suspension_Component_Replacement_v1.0.pdf",
+    weeks: "Weeks 41-50",
+    dutiesCovered: "1, 2, 3, 4, 5, 6, 7, 8, 9, 10",
+    ksbsCovered: "K12-K19, S8-S15, B1, B2",
+    materials: [
+      "Light vehicle with a worn suspension component",
+      "Torque wrench and suspension tools",
+      "Manufacturer torque and alignment information",
+      "PPE and safe lifting equipment",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Inspect the suspension component safely.",
+      "Remove and refit the component as instructed.",
+      "Record manufacturer torque settings and relevant measurements.",
+      "Identify whether alignment or further checks are required.",
+      "Explain customer recommendations clearly.",
+    ],
+    measurementFields: [
+      { key: "componentReplaced", type: "text", label: "Component replaced" },
+      { key: "suspensionType", type: "text", label: "Suspension type" },
+      {
+        key: "topMountTorque",
+        type: "text",
+        label: "Top mounting torque",
+      },
+      {
+        key: "bottomMountTorque",
+        type: "text",
+        label: "Bottom mounting torque",
+      },
+      { key: "wheelTorque", type: "text", label: "Wheel torque setting" },
+      {
+        key: "alignmentRequired",
+        type: "text",
+        label: "Alignment required yes/no",
+      },
+      { key: "tyreWear", type: "text", label: "Visible tyre wear" },
+      {
+        key: "postRepairCheck",
+        type: "text",
+        label: "Post-repair check result",
+      },
+    ],
+    knowledgeQuestions: [
+      "What safety precautions apply when working with suspension components?",
+      "What defects can be found on ball joints, bushes or dampers?",
+      "How can a worn suspension component affect handling?",
+      "Why may alignment be required after replacement?",
+      "Why must torque settings be recorded?",
+      "How would you explain the repair to a customer?",
+      "What quality checks are needed before releasing the vehicle?",
+    ],
+  }),
+  makeBlockReflection(5),
+];

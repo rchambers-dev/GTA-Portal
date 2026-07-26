@@ -128,13 +128,28 @@ export function LearnerProgressScreen() {
           </div>
         </section>
 
-        {AUTOCARE_PRACTICAL_TASKS.length > 0 ? (
+        {(() => {
+          const currentBlock =
+            trainingBlocks.find(
+              (b) =>
+                b.weekStart != null &&
+                b.weekEnd != null &&
+                profile.programmeWeek >= b.weekStart &&
+                profile.programmeWeek <= b.weekEnd,
+            ) ?? trainingBlocks[0];
+          const liveTasks = tasksForBlock(currentBlock?.id ?? 1);
+          if (liveTasks.length === 0) return null;
+          return (
           <section className={styles.section}>
             <h2 className={styles.dashSectionTitle} data-accent="amber">
               Live college tasks
             </h2>
+            <p className={styles.meta}>
+              Block {currentBlock?.id} · {currentBlock?.name}. Open any task
+              below, or browse all blocks from College tasks.
+            </p>
             <ul className={styles.list}>
-              {AUTOCARE_PRACTICAL_TASKS.map((task) => {
+              {liveTasks.map((task) => {
                 const sub = getTaskSubmission(task.id);
                 return (
                   <li key={task.id}>
@@ -143,7 +158,9 @@ export function LearnerProgressScreen() {
                       className={styles.rowLink}
                     >
                       <div className={styles.rowMain}>
-                        <strong>{task.title}</strong>
+                        <strong>
+                          Task {task.taskNumber}: {task.title}
+                        </strong>
                         <span>
                           Block {task.blockId} · {task.evidenceRef}
                         </span>
@@ -160,7 +177,8 @@ export function LearnerProgressScreen() {
               })}
             </ul>
           </section>
-        ) : null}
+          );
+        })()}
 
         <section className={styles.section}>
           <h2 className={styles.dashSectionTitle} data-accent="navy">
@@ -190,7 +208,14 @@ export function LearnerProgressScreen() {
                 profile.programmeWeek <= block.weekEnd;
               const complete =
                 tasks.length > 0 && verifiedCount === tasks.length;
-              const locked = !priorOk || tasks.length === 0;
+              const locked = !priorOk;
+              const taskCountLabel =
+                tasks.length > 0
+                  ? ` · ${verifiedCount}/${tasks.length} tasks verified`
+                  : "";
+              const lockLabel = !priorOk
+                ? " · locked until previous reflection verified"
+                : "";
 
               return (
                 <li key={block.id}>
@@ -217,12 +242,8 @@ export function LearnerProgressScreen() {
                       </strong>
                       <span>
                         Weeks {block.weekStart}–{block.weekEnd}
-                        {tasks.length > 0
-                          ? ` · ${verifiedCount}/${tasks.length} tasks verified`
-                          : " · locked until previous reflection verified"}
-                        {!priorOk && tasks.length > 0
-                          ? " · locked until previous reflection verified"
-                          : ""}
+                        {taskCountLabel}
+                        {lockLabel}
                       </span>
                     </div>
                     <div className={styles.rowEnd}>

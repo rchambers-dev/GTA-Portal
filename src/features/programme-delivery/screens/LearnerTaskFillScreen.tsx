@@ -9,6 +9,11 @@ import {
 import { taskById } from "../domain/autocare-tasks";
 import type { TaskFieldDef } from "../domain/task-schema";
 import {
+  parseActionRows,
+  parseJsonList,
+  parseRatingRows,
+} from "../domain/task-schema";
+import {
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
@@ -92,6 +97,7 @@ function FieldInput({
   staffLocked?: boolean;
 }) {
   const locked = Boolean(disabled || staffLocked);
+  const wrapClass = `${styles.field}${staffLocked ? ` ${styles.fieldStaffOnly}` : ""}`;
 
   if (field.type === "heading" || field.type === "description") {
     return <p className={styles.purposeBody}>{field.label}</p>;
@@ -99,7 +105,7 @@ function FieldInput({
 
   if (field.type === "sign_off") {
     return (
-      <div className={`${styles.field}${staffLocked ? ` ${styles.fieldStaffOnly}` : ""}`}>
+      <div className={wrapClass}>
         <span className={styles.fieldLabel}>{field.label}</span>
         <p className={staffLocked ? styles.fieldStaffNote : styles.fieldHint}>
           {staffLocked
@@ -116,39 +122,239 @@ function FieldInput({
     );
   }
 
-  if (field.type === "difficulty_feedback") {
+  if (field.type === "checkbox_group") {
+    const selected = parseJsonList(value);
     return (
-      <div className={styles.field}>
-        <label className={styles.fieldLabel} htmlFor={field.key}>
-          {field.label}
-        </label>
-        {field.hint ? <p className={styles.fieldHint}>{field.hint}</p> : null}
-        <select
-          id={field.key}
-          className={styles.select}
-          value={value}
-          disabled={locked}
-          onChange={(e) => onChange(e.target.value)}
-        >
-          <option value="">Choose…</option>
+      <div className={wrapClass}>
+        <span className={styles.fieldLabel}>{field.label}</span>
+        {staffLocked ? (
+          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
+        ) : field.hint ? (
+          <p className={styles.fieldHint}>{field.hint}</p>
+        ) : null}
+        <div className={styles.choiceStack}>
+          {(field.options ?? []).map((opt) => {
+            const checked = selected.includes(opt);
+            return (
+              <WrenchCheckbox
+                key={opt}
+                checked={checked}
+                disabled={locked}
+                label={opt}
+                onChange={(next) => {
+                  const set = new Set(selected);
+                  if (next) set.add(opt);
+                  else set.delete(opt);
+                  onChange(JSON.stringify([...set]));
+                }}
+              />
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  if (field.type === "radio_group" || field.type === "difficulty_feedback") {
+    return (
+      <div className={wrapClass}>
+        <span className={styles.fieldLabel}>{field.label}</span>
+        {staffLocked ? (
+          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
+        ) : field.hint ? (
+          <p className={styles.fieldHint}>{field.hint}</p>
+        ) : null}
+        <div className={styles.choiceStack} role="radiogroup" aria-label={field.label}>
           {(field.options ?? []).map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
+            <label key={opt} className={styles.radioOption}>
+              <input
+                type="radio"
+                name={field.key}
+                value={opt}
+                checked={value === opt}
+                disabled={locked}
+                onChange={() => onChange(opt)}
+              />
+              <span>{opt}</span>
+            </label>
           ))}
-        </select>
+        </div>
+      </div>
+    );
+  }
+
+  if (field.type === "rating_rows") {
+    const rows = parseRatingRows(value, field.rowCount ?? 6);
+    return (
+      <div className={wrapClass}>
+        <span className={styles.fieldLabel}>{field.label}</span>
+        {staffLocked ? (
+          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
+        ) : field.hint ? (
+          <p className={styles.fieldHint}>{field.hint}</p>
+        ) : null}
+        <div className={styles.tableScroll}>
+          <table className={styles.dataTable}>
+            <thead>
+              <tr>
+                <th>Knowledge / skill / behaviour</th>
+                <th>Before (1–5)</th>
+                <th>Now (1–5)</th>
+                <th>Evidence or example</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, i) => (
+                <tr key={i}>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.area}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], area: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      type="number"
+                      min={1}
+                      max={5}
+                      value={row.before}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], before: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      type="number"
+                      min={1}
+                      max={5}
+                      value={row.now}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], now: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.evidence}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], evidence: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
+
+  if (field.type === "action_rows") {
+    const rows = parseActionRows(value, field.rowCount ?? 3);
+    return (
+      <div className={wrapClass}>
+        <span className={styles.fieldLabel}>{field.label}</span>
+        {staffLocked ? (
+          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
+        ) : field.hint ? (
+          <p className={styles.fieldHint}>{field.hint}</p>
+        ) : null}
+        <div className={styles.tableScroll}>
+          <table className={styles.dataTable}>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Agreed action / development objective</th>
+                <th>Support or opportunity needed</th>
+                <th>Owner / review date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, i) => (
+                <tr key={i}>
+                  <td>{i + 1}</td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.action}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], action: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.support}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], support: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.ownerReview}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], ownerReview: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
 
   if (field.type === "textarea" || field.type === "knowledge_question") {
     return (
-      <div className={`${styles.field}${staffLocked ? ` ${styles.fieldStaffOnly}` : ""}`}>
+      <div className={wrapClass}>
         <label className={styles.fieldLabel} htmlFor={field.key}>
           {field.label}
         </label>
         {staffLocked ? (
           <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
+        ) : field.hint ? (
+          <p className={styles.fieldHint}>{field.hint}</p>
         ) : null}
         <textarea
           id={field.key}
@@ -164,12 +370,14 @@ function FieldInput({
   }
 
   return (
-    <div className={`${styles.field}${staffLocked ? ` ${styles.fieldStaffOnly}` : ""}`}>
+    <div className={wrapClass}>
       <label className={styles.fieldLabel} htmlFor={field.key}>
         {field.label}
       </label>
       {staffLocked ? (
         <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
+      ) : field.hint ? (
+        <p className={styles.fieldHint}>{field.hint}</p>
       ) : null}
       <input
         id={field.key}
@@ -406,6 +614,35 @@ export function LearnerTaskFillScreen({ taskId }: Props) {
               <li key={o}>{o}</li>
             ))}
           </ul>
+          {task.materials && task.materials.length > 0 ? (
+            <>
+              <p className={styles.purposeLabel}>
+                Materials you need at the workstation
+              </p>
+              <ul className={styles.objectives}>
+                {task.materials.map((m) => (
+                  <li key={m}>{m}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {task.instructions && task.instructions.length > 0 ? (
+            <>
+              <p className={styles.purposeLabel}>Practical task instructions</p>
+              <ol className={styles.objectives}>
+                {task.instructions.map((step, i) => (
+                  <li key={`${i}-${step}`}>{step}</li>
+                ))}
+              </ol>
+            </>
+          ) : null}
+          {(task.weeks || task.dutiesCovered || task.ksbsCovered) && (
+            <p className={styles.purposeNote}>
+              {[task.weeks, task.dutiesCovered ? `Duties ${task.dutiesCovered}` : null, task.ksbsCovered ? `KSBs ${task.ksbsCovered}` : null, task.assessmentType]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
+          )}
           <p className={styles.purposeNote}>
             Preferred: portal form. Upload PDFs only if you could not get on
             that day — upload every PDF needed for this task.

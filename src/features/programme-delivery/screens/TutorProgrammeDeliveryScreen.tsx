@@ -199,8 +199,7 @@ export function TutorProgrammeDeliveryScreen() {
                     </ul>
                   ) : (
                     <p className={styles.empty} style={{ margin: "0.75rem" }}>
-                      Practical tasks for this block not transcribed yet —
-                      curriculum can add them in the editor later.
+                      No practical tasks listed for this block.
                     </p>
                   )}
                 </article>

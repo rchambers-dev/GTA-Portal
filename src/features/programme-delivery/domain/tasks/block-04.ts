@@ -1,0 +1,147 @@
+import type { PracticalTaskDef } from "../task-schema";
+import { makeBlockReflection, makePractical } from "./shared";
+
+export const BLOCK_04_TASKS: PracticalTaskDef[] = [
+  makePractical({
+    blockId: 4,
+    taskNumber: 3,
+    evidenceRef: "Block_4_Task_3_Front_Wheel_Alignment",
+    title: "Front Wheel Alignment and Steering Geometry Checks",
+    scenario:
+      "A customer reports uneven tyre wear and the steering wheel is off-centre. You must carry out alignment pre-checks, record geometry readings and explain whether adjustment or further repair is required.",
+    objectives: [
+      "Carry out wheel alignment pre-checks safely.",
+      "Record camber, caster and toe readings where equipment allows.",
+      "Identify whether readings are within manufacturer specification.",
+      "Explain the relationship between geometry and tyre wear.",
+      "Record findings and customer recommendations.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Block_4_Task_3_Front_Wheel_Alignment_v1.0.pdf",
+    weeks: "Weeks 31-40",
+    dutiesCovered: "1, 2, 3, 4, 5, 6, 7, 8",
+    ksbsCovered: "K10-K18, S8-S14, B1, B2",
+    materials: [
+      "Light vehicle suitable for alignment checks",
+      "Alignment equipment or geometry measuring tools",
+      "Manufacturer geometry specifications",
+      "Tyre pressure gauge and PPE",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Carry out wheel alignment pre-checks safely.",
+      "Record camber, caster and toe readings where equipment allows.",
+      "Compare readings with manufacturer specification.",
+      "Explain the relationship between geometry and tyre wear.",
+      "Record findings and customer recommendations.",
+    ],
+    measurementFields: [
+      { key: "frontToeMeasured", type: "text", label: "Front toe measured" },
+      {
+        key: "frontToeSpec",
+        type: "text",
+        label: "Front toe specification",
+      },
+      { key: "camberMeasured", type: "text", label: "Camber measured" },
+      {
+        key: "camberSpec",
+        type: "text",
+        label: "Camber specification",
+      },
+      { key: "casterMeasured", type: "text", label: "Caster measured" },
+      {
+        key: "rearToeThrust",
+        type: "text",
+        label: "Rear toe/thrust angle",
+      },
+      { key: "tyrePressures", type: "text", label: "Tyre pressures" },
+      {
+        key: "rideHeight",
+        type: "text",
+        label: "Ride height/pre-check result",
+      },
+    ],
+    knowledgeQuestions: [
+      "Why are tyre pressures checked before alignment?",
+      "What effect can incorrect toe have on tyre wear?",
+      "Why should suspension condition be checked before adjustment?",
+      "What does thrust angle indicate?",
+      "How would you explain alignment findings to a customer?",
+      "When should alignment not be adjusted immediately?",
+      "What evidence should be retained from the alignment task?",
+    ],
+  }),
+  makePractical({
+    blockId: 4,
+    taskNumber: 4,
+    evidenceRef: "Block_4_Task_4_EV_Hybrid_Component_Location",
+    title: "EV/Hybrid Component Location and Safety Awareness",
+    scenario:
+      "A hybrid or electric vehicle/rig is being used for awareness training. You must identify visible EV or hybrid components, explain their function and show safe non-invasive working boundaries.",
+    objectives: [
+      "Identify main EV/hybrid components from a safe position.",
+      "Explain the basic function of high-voltage and low-voltage systems.",
+      "Recognise warning labels and high-voltage risk areas.",
+      "Record safe boundaries and referral requirements.",
+      "Communicate limitations to the assessor or customer.",
+    ],
+    estimatedMinutes: 45,
+    sourcePdf: "Block_4_Task_4_EV_Hybrid_Component_Location_v1.0.pdf",
+    weeks: "Weeks 31-40",
+    dutiesCovered: "1, 2, 3, 4, 5, 6, 7, 8",
+    ksbsCovered: "K10-K18, S8-S14, B1, B2",
+    materials: [
+      "EV or hybrid vehicle/rig for awareness training",
+      "PPE and safe working boundary markers",
+      "Manufacturer or training safety information",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Identify main EV/hybrid components from a safe position.",
+      "Explain basic high-voltage and low-voltage system functions.",
+      "Recognise warning labels and high-voltage risk areas.",
+      "Record safe boundaries and referral requirements.",
+      "Communicate limitations to the assessor or customer.",
+    ],
+    measurementFields: [
+      { key: "hvBattery", type: "text", label: "HV battery location" },
+      { key: "lvBattery", type: "text", label: "12V battery location" },
+      {
+        key: "inverterMotor",
+        type: "text",
+        label: "Inverter/motor location",
+      },
+      {
+        key: "chargingPoint",
+        type: "text",
+        label: "Charging point location",
+      },
+      {
+        key: "warningLabels",
+        type: "text",
+        label: "Warning labels identified",
+      },
+      { key: "systemStatus", type: "text", label: "System status noted" },
+      {
+        key: "safetyBoundary",
+        type: "text",
+        label: "PPE/safety boundary",
+      },
+      {
+        key: "referralRequired",
+        type: "text",
+        label: "Referral required yes/no",
+      },
+    ],
+    knowledgeQuestions: [
+      "Why must high-voltage work be referred to a qualified person?",
+      "What does orange cabling normally indicate?",
+      "Why is the 12V system still important on EV/hybrid vehicles?",
+      "What information should be recorded before working near EV systems?",
+      "How would you explain safe limitations to a customer?",
+      "What should you do if a warning label or fault message is present?",
+      "Why is this activity non-invasive at Level 2?",
+    ],
+  }),
+  makeBlockReflection(4),
+];

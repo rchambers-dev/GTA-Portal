@@ -213,7 +213,9 @@ export function statusTone(
   }
 }
 
-/** Reflection gate: next block unlocked only after trainer verifies Task 5. */
+/** Reflection gate: next block unlocked only after trainer verifies Task 5.
+ * Fails closed — if the block has no reflection task yet, it stays locked.
+ */
 export function isBlockReflectionVerified(
   blockId: number,
   tasks: PracticalTaskDef[],
@@ -222,7 +224,7 @@ export function isBlockReflectionVerified(
   const reflection = tasks.find(
     (t) => t.blockId === blockId && t.kind === "reflection",
   );
-  if (!reflection) return true;
+  if (!reflection) return false;
   return getTaskSubmission(reflection.id, learnerId).status === "verified";
 }
 

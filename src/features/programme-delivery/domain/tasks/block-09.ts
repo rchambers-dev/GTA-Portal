@@ -1,0 +1,154 @@
+import type { PracticalTaskDef } from "../task-schema";
+import { makeBlockReflection, makePractical } from "./shared";
+
+export const BLOCK_09_TASKS: PracticalTaskDef[] = [
+  makePractical({
+    blockId: 9,
+    taskNumber: 3,
+    evidenceRef: "Block_9_Task_3_EV_Customer_Handover",
+    title: "EV/Hybrid Customer Handover and Charging Awareness",
+    scenario:
+      "A customer asks for advice after an EV/hybrid service or warning message. You must complete non-invasive checks, prepare a customer handover explanation and identify safe referral points.",
+    objectives: [
+      "Carry out safe EV/hybrid awareness checks.",
+      "Record charging and warning information without invasive HV work.",
+      "Explain customer guidance in plain English.",
+      "Identify when specialist referral is required.",
+      "Document safe limitations and next steps.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Block_9_Task_3_EV_Customer_Handover_v1.0.pdf",
+    weeks: "Weeks 81-94",
+    dutiesCovered: "1, 2, 4, 5, 8, 10",
+    ksbsCovered: "K18-K23, S10-S15, B1, B2",
+    materials: [
+      "EV or hybrid vehicle for awareness checks",
+      "Manufacturer customer/charging information",
+      "PPE and safe working boundaries",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Complete safe, non-invasive EV/hybrid awareness checks.",
+      "Record charging and warning information without invasive HV work.",
+      "Prepare a plain-English customer handover explanation.",
+      "Identify when specialist referral is required.",
+      "Document safe limitations and next steps.",
+    ],
+    measurementFields: [
+      {
+        key: "vehicleSystemType",
+        type: "text",
+        label: "Vehicle/system type",
+      },
+      { key: "warningMessage", type: "text", label: "Warning message" },
+      {
+        key: "chargingConnector",
+        type: "text",
+        label: "Charging connector/type",
+      },
+      {
+        key: "safetyLabels",
+        type: "text",
+        label: "Visible safety labels",
+      },
+      { key: "customerConcern", type: "text", label: "Customer concern" },
+      {
+        key: "checksCompleted",
+        type: "text",
+        label: "Checks completed",
+      },
+      {
+        key: "referralRequired",
+        type: "text",
+        label: "Referral required",
+      },
+      {
+        key: "customerAdvice",
+        type: "textarea",
+        label: "Customer advice summary",
+      },
+    ],
+    knowledgeQuestions: [
+      "What should you include in an EV customer handover?",
+      "Why must HV components not be disturbed at this level?",
+      "What common EV range or charging concerns arise?",
+      "How would you explain inspection limitations?",
+      "What evidence should be recorded for referral?",
+      "Why is accurate communication important with emerging technology?",
+      "How should you respond if the customer asks for work beyond your competence?",
+    ],
+  }),
+  makePractical({
+    blockId: 9,
+    taskNumber: 4,
+    evidenceRef: "Block_9_Task_4_ADAS_Pre_Calibration_Check",
+    title: "ADAS Pre-Calibration and Sensor Awareness Check",
+    scenario:
+      "A vehicle has had alignment, tyre or body-related work and may require ADAS checks. You must complete non-invasive pre-calibration checks, record findings and identify whether specialist calibration referral is required.",
+    objectives: [
+      "Identify visible ADAS sensor locations and affected systems.",
+      "Complete non-invasive pre-calibration checks.",
+      "Record tyre, ride-height and alignment evidence.",
+      "Recognise when specialist calibration is required.",
+      "Explain safety implications and referral needs.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Block_9_Task_4_ADAS_Pre_Calibration_Check_v1.0.pdf",
+    weeks: "Weeks 81-94",
+    dutiesCovered: "1, 2, 4, 5, 8, 10",
+    ksbsCovered: "K18-K23, S10-S15, B1, B2",
+    materials: [
+      "Light vehicle with ADAS features",
+      "Tyre pressure gauge and alignment/ride-height information",
+      "Manufacturer ADAS awareness guidance",
+      "PPE and Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Identify visible ADAS sensor locations and affected systems.",
+      "Complete non-invasive pre-calibration checks.",
+      "Record tyre, ride-height and alignment evidence.",
+      "Identify whether specialist calibration referral is required.",
+      "Explain safety implications and referral needs.",
+    ],
+    measurementFields: [
+      {
+        key: "adasFeatures",
+        type: "text",
+        label: "ADAS features identified",
+      },
+      { key: "tyrePressures", type: "text", label: "Tyre pressures" },
+      {
+        key: "rideHeight",
+        type: "text",
+        label: "Ride height observation",
+      },
+      { key: "alignmentStatus", type: "text", label: "Alignment status" },
+      {
+        key: "sensorDamage",
+        type: "text",
+        label: "Sensor damage/obstruction",
+      },
+      {
+        key: "warningDtc",
+        type: "text",
+        label: "Warning message/DTC",
+      },
+      {
+        key: "calibrationReferral",
+        type: "text",
+        label: "Calibration referral yes/no",
+      },
+      { key: "customerAdvice", type: "textarea", label: "Customer advice" },
+    ],
+    knowledgeQuestions: [
+      "Why can alignment affect ADAS calibration?",
+      "Which visible ADAS sensors may be fitted?",
+      "Why is calibration specialist work?",
+      "What pre-checks should be completed before referral?",
+      "What are the risks if ADAS faults are ignored?",
+      "How would you explain a calibration referral to a customer?",
+      "What evidence should be included in the job record?",
+    ],
+  }),
+  makeBlockReflection(9),
+];

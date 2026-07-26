@@ -126,12 +126,7 @@ export function LearnerProgrammeTasksScreen() {
                         >
                           <div className={styles.taskMain}>
                             <strong>
-                              {task.kind === "reflection"
-                                ? "Task 5"
-                                : task.evidenceRef.includes("Task_3")
-                                  ? "Task 3"
-                                  : "Task 4"}
-                              : {task.title}
+                              Task {task.taskNumber}: {task.title}
                             </strong>
                             <span>
                               {task.estimatedMinutes} min · {task.kind}

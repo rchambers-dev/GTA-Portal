@@ -60,16 +60,21 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
 
   function verifyAsTrainer() {
     const isReflection = task?.kind === "reflection";
+    const fields = {
+      ...sub.fields,
+      trainerSign: "signed",
+      trainerDecision: sub.fields.trainerDecision || "Progress verified",
+      assessorSign: "signed",
+      assessmentDecision:
+        sub.fields.assessmentDecision ||
+        (isReflection ? "Progress verified" : "Pass"),
+    };
     upsertTaskSubmission(taskId, {
       trainerSignedAt: new Date().toISOString(),
       trainerSignedBy: session.account.name,
-      trainerDecision: "Progress verified",
+      trainerDecision: fields.trainerDecision,
       status: "verified",
-      fields: {
-        ...sub.fields,
-        trainerSign: "signed",
-        trainerDecision: "Progress verified",
-      },
+      fields,
     });
     setMessage(
       isReflection
@@ -160,7 +165,7 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
                 Simulate mentor sign-off
               </button>
             ) : null}
-            {sub.status === "awaiting_trainer" || sub.status === "awaiting_mentor" ? (
+            {sub.status === "awaiting_trainer" ? (
               <button type="button" className={styles.primaryBtn} onClick={verifyAsTrainer}>
                 Verify as trainer
               </button>
