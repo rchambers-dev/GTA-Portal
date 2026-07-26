@@ -1,0 +1,173 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.control {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 2.65rem;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background-color: var(--color-white, white);
+  color: var(--color-navy-900, #0f172a);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 550;
+  line-height: 1.4;
+  outline: none;
+  transition:
+    border-color var(--duration-fast, 120ms) ease,
+    box-shadow var(--duration-fast, 120ms) ease;
+}
+
+.control::placeholder {
+  color: color-mix(in srgb, var(--color-navy-700) 45%, transparent);
+  font-weight: 500;
+}
+
+.control:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--color-navy-700) 38%, var(--border-subtle));
+}
+
+.control:focus,
+.control:focus-visible {
+  outline: none !important;
+  outline-offset: 0 !important;
+  border-color: var(--color-navy-700);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-navy-700) 16%, transparent);
+}
+
+.control:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background-color: color-mix(in srgb, var(--color-navy-50) 70%, white);
+}
+
+.control[data-invalid="true"] {
+  border-color: var(--color-red-500, #ef4444);
+}
+
+.control[data-invalid="true"]:focus,
+.control[data-invalid="true"]:focus-visible {
+  border-color: var(--color-red-500, #ef4444);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-red-500, #ef4444) 18%, transparent);
+}
+
+.textarea {
+  min-height: 5rem;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Custom select — matches TextInput look; navy options, not browser blue. */
+.selectWrap {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.selectTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.selectValue {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selectChevron {
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid var(--color-navy-700);
+  border-bottom: 2px solid var(--color-navy-700);
+  transform: rotate(45deg);
+  margin-top: -0.2rem;
+  opacity: 0.75;
+}
+
+.selectTrigger[aria-expanded="true"] .selectChevron {
+  transform: rotate(225deg);
+  margin-top: 0.15rem;
+}
+
+.selectMenu {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 28%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: var(--color-white, white);
+  box-shadow:
+    0 8px 24px color-mix(in srgb, var(--color-navy-900, #0f172a) 12%, transparent),
+    0 1px 0 color-mix(in srgb, var(--color-navy-900, #0f172a) 4%, transparent);
+  max-height: 16rem;
+  overflow-y: auto;
+}
+
+.selectOption {
+  display: block;
+  width: 100%;
+  appearance: none;
+  border: 0;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: transparent;
+  color: var(--color-navy-900, #0f172a);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 550;
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+}
+
+.selectOption:hover,
+.selectOption[data-active="true"] {
+  background: color-mix(in srgb, var(--color-navy-700) 10%, white);
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.selectOption[data-selected="true"] {
+  background: var(--color-navy-700);
+  color: white;
+  font-weight: 650;
+}
+
+.selectOption[data-selected="true"]:hover,
+.selectOption[data-selected="true"][data-active="true"] {
+  background: color-mix(in srgb, var(--color-navy-700) 88%, black);
+  color: white;
+}

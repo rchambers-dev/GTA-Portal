@@ -18,8 +18,12 @@ export type { Adm14RequirementDefinition };
 
 /**
  * PROVISIONAL — items that must be in place before a learner can be moved
- * onto a programme. The GTA admin team are highlighting the definitive
- * per-section list (expected Monday); update this array when that lands.
+ * onto a programme.
+ *
+ * GTA admin team are highlighting the definitive per-section list (expected
+ * Monday). Until then Intake only gates on personal details (name / DOB /
+ * email). Keep this array as the single place to drop Monday's list into —
+ * enrolment / Learners pack gating can then use it without a redesign.
  */
 export const PRE_START_REQUIRED_REFERENCES: string[] = [
   "1.1", // ILR
@@ -152,21 +156,15 @@ export function missingPersonalFields(learner: AdminLearnerRecord): string[] {
 }
 
 /**
- * Everything still stopping intake from being signed off: identity fields
- * plus the pre-start required pack items walked through during intake.
+ * Everything still stopping intake from being signed off.
+ * Progressive pack documents are chased on Learners — not here.
  */
 export function intakeCompletionBlockers(
   learner: AdminLearnerRecord,
 ): string[] {
-  const blockers = missingPersonalFields(learner);
-  for (const reference of PRE_START_REQUIRED_REFERENCES) {
-    const item = requirementFor(reference);
-    if (!item) continue;
-    if (!packItemSatisfied(packItemStatus(learner, item))) {
-      blockers.push(`${item.reference} ${item.title}`);
-    }
-  }
-  return blockers;
+  return missingPersonalFields(learner).filter((field) =>
+    ["full name", "date of birth", "email"].includes(field),
+  );
 }
 
 /**

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import type {
   EvidenceRequirementRowDto,
   EvidenceRequirementStatus,
@@ -21,6 +21,12 @@ import {
   ADM14_FORM_TITLE,
 } from "../domain/adm14-checklist";
 import {
+  getPackSnapshot,
+  mergePackOntoRows,
+  subscribePackStore,
+} from "../domain/pack-store";
+import { PackItemEditor } from "../components/PackItemEditor";
+import {
   learnerRecordHref,
   type LearnerTab,
 } from "@/features/shared-records";
@@ -28,6 +34,7 @@ import styles from "./LearnerWorkspaceScreen.module.css";
 
 type Props = {
   workspace: LearnerWorkspaceDto;
+  learnerId?: string;
   activeTab?: LearnerTab;
   from?: string | null;
   returnHref?: string;
@@ -218,6 +225,7 @@ const ATTENTION_ROW_CLASS: Record<RowAttention, string> = {
  */
 export function LearnerWorkspaceScreen({
   workspace,
+  learnerId,
   activeTab = "evidence",
   from = null,
   returnHref = "/learners",
@@ -225,13 +233,26 @@ export function LearnerWorkspaceScreen({
   canViewSupportDetail = false,
 }: Props) {
   const { card } = workspace;
+  const resolvedLearnerId = learnerId ?? card.learnerId;
   const packHref = learnerRecordHref(card.learnerId, {
     tab: "evidence",
     ...(from ? { from } : {}),
   });
+
+  const packVersion = useSyncExternalStore(
+    subscribePackStore,
+    () => JSON.stringify(getPackSnapshot().byLearner[resolvedLearnerId] ?? {}),
+    () => "",
+  );
+
+  const evidenceRows = useMemo(
+    () => mergePackOntoRows(resolvedLearnerId, workspace.evidenceRows),
+    [packVersion, resolvedLearnerId, workspace.evidenceRows],
+  );
+
   const sections = useMemo(
-    () => groupEvidenceBySection(workspace.evidenceRows),
-    [workspace.evidenceRows],
+    () => groupEvidenceBySection(evidenceRows),
+    [evidenceRows],
   );
 
   const defaultSectionKey = useMemo(() => {
@@ -243,8 +264,12 @@ export function LearnerWorkspaceScreen({
   }, [sections]);
 
   const [activeSectionKey, setActiveSectionKey] = useState(defaultSectionKey);
+  const [editingRowId, setEditingRowId] = useState<string | null>(null);
   const activeSection =
     sections.find((s) => s.sectionKey === activeSectionKey) ?? sections[0];
+
+  const editingRow =
+    evidenceRows.find((row) => row.id === editingRowId) ?? null;
 
   const packTotals = useMemo(() => {
     const critical = sections.reduce((n, s) => n + sectionCriticalCount(s), 0);
@@ -252,11 +277,26 @@ export function LearnerWorkspaceScreen({
       (n, s) => n + sectionAttentionCount(s),
       0,
     );
-    const checked = workspace.evidenceRows.filter(
+    const checked = evidenceRows.filter(
       (r) => r.status === "checked_and_accepted",
     ).length;
-    return { critical, attention, checked, total: workspace.evidenceRows.length };
-  }, [sections, workspace.evidenceRows]);
+    return { critical, attention, checked, total: evidenceRows.length };
+  }, [evidenceRows, sections]);
+
+  function openFirstGap() {
+    const gap =
+      evidenceRows.find(
+        (row) =>
+          row.requirementKind === "mandatory" &&
+          (row.status === "missing" ||
+            row.status === "requested" ||
+            row.status === "correction_required"),
+      ) ?? evidenceRows.find((row) => row.status !== "future_requirement");
+    if (gap) {
+      setActiveSectionKey(gap.sectionKey);
+      setEditingRowId(gap.id);
+    }
+  }
 
   const recentTimeline = workspace.timeline.slice(0, 5);
 
@@ -340,10 +380,10 @@ export function LearnerWorkspaceScreen({
                   </Button>
                   <Button
                     size="sm"
-                    disabled
-                    title="Add Evidence workflow in Stage 6"
+                    onClick={openFirstGap}
+                    disabled={evidenceRows.length === 0}
                   >
-                    Add Evidence
+                    Add / update evidence
                   </Button>
                 </>
               )}
@@ -384,7 +424,7 @@ export function LearnerWorkspaceScreen({
           </div>
         </div>
 
-        {workspace.evidenceRows.length > 0 ? (
+        {evidenceRows.length > 0 ? (
           <div className={styles.packPulse} aria-label="Pack status summary">
             <div
               className={
@@ -595,7 +635,7 @@ export function LearnerWorkspaceScreen({
                 </nav>
               ) : null}
 
-              {workspace.evidenceRows.length === 0 ? (
+              {evidenceRows.length === 0 ? (
                 <EmptyState
                   title="Evidence pack not yet initialised"
                   description="Requirements will attach when the learner is linked to a framework version during intake."
@@ -643,6 +683,16 @@ export function LearnerWorkspaceScreen({
                         <li
                           key={row.id}
                           className={`${styles.requirementRow} ${ATTENTION_ROW_CLASS[attention]}`}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={`${row.status === "future_requirement" ? "View" : "Enter data for"} ${row.reference} ${row.title}`}
+                          onClick={() => setEditingRowId(row.id)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              setEditingRowId(row.id);
+                            }
+                          }}
                         >
                           <div className={styles.requirementTop}>
                             <div className={styles.requirementIdentity}>
@@ -775,6 +825,17 @@ export function LearnerWorkspaceScreen({
           </div>
         </aside>
       </div>
+
+      {editingRow ? (
+        <PackItemEditor
+          learnerId={resolvedLearnerId}
+          row={editingRow}
+          onClose={() => setEditingRowId(null)}
+          onSaved={() => {
+            /* pack store subscription refreshes rows */
+          }}
+        />
+      ) : null}
     </div>
   );
 }

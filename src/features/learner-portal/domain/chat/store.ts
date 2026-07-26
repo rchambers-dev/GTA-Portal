@@ -14,6 +14,7 @@ const LEARNER_ID = ALEX_PROFILE.learnerId;
 /** Signed-in chat identity — shared Messages page switches this per workspace. */
 export const CHAT_SELF_LEARNER = "contact-alex";
 export const CHAT_SELF_EMPLOYER = "contact-employer-priya";
+export const CHAT_SELF_ADMIN = "contact-admin-emma";
 
 let selfContactId = CHAT_SELF_LEARNER;
 
@@ -66,6 +67,15 @@ export const CHAT_CONTACTS: ChatContact[] = [
     roleLabel: "Employer contact",
     organisation: ALEX_PROFILE.employerName,
     defaultChannel: "employer",
+  },
+  {
+    contactId: CHAT_SELF_ADMIN,
+    name: "Emma Clarke",
+    initials: "EC",
+    role: "support",
+    roleLabel: "Administrator",
+    organisation: "GTA Doncaster",
+    defaultChannel: "direct",
   },
   {
     contactId: "contact-support-gta",

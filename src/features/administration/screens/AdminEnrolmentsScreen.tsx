@@ -5,7 +5,8 @@ import {
   LearnerPageShell,
   LearnerStatusChip,
 } from "@/features/learner-portal/components/LearnerPageShell";
-import { ALEX_PROFILE } from "@/features/learner-portal/domain/mock-learner";
+import { calculateProgrammeWeek } from "@/features/learner-lifecycle/domain/programme-week";
+import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
 import {
   createEnrolment,
   findIntakeCohort,
@@ -15,12 +16,20 @@ import {
 import { awaitingEnrolment, enrolmentBlockers } from "../domain/intake-pack";
 import type {
   AdminCohortRecord,
+  AdminEmployerRecord,
   AdminLearnerEnrolment,
+  AdminProgrammeRecord,
   EnrolmentKind,
   EnrolmentStatus,
 } from "../domain/types";
 import { useAdminStore } from "../hooks/useAdminStore";
 import styles from "./admin-pages.module.css";
+
+type TransferDraft = {
+  cohortId: string;
+  employerId: string;
+  reason: string;
+};
 
 type FormState = {
   kind: EnrolmentKind;
@@ -81,17 +90,114 @@ function emptyForm(
     cohortId: null,
     employerId: "",
     workplaceContact: "",
-    mentorName: ALEX_PROFILE.mentorName,
-    tutorName: ALEX_PROFILE.tutorName,
+    mentorName: "",
+    tutorName: "",
     startDate: "",
-    programmeYear: kind === "currently_studying" ? "1" : "",
-    programmeWeek: kind === "currently_studying" ? "1" : "",
-    attendancePercent: kind === "currently_studying" ? "100" : "",
-    actualProgressPercent: kind === "currently_studying" ? "0" : "",
-    collegeDays: "Mon, Tue",
+    programmeYear: "",
+    programmeWeek: "",
+    attendancePercent: "",
+    actualProgressPercent: "",
+    collegeDays: "",
     notes: "",
     status: kind === "new_starter" ? "pending_start" : "active",
   };
+}
+
+function yearFromWeek(week: number | null): 1 | 2 | 3 | null {
+  if (week == null || week < 1) return null;
+  if (week <= 52) return 1;
+  if (week <= 104) return 2;
+  return 3;
+}
+
+function derivePosition(startDate: string): {
+  programmeWeek: number | null;
+  programmeYear: 1 | 2 | 3 | null;
+} {
+  if (!startDate) return { programmeWeek: null, programmeYear: null };
+  const week = calculateProgrammeWeek(new Date(`${startDate}T00:00:00`));
+  return { programmeWeek: week, programmeYear: yearFromWeek(week) };
+}
+
+function deriveEnrolmentStatus(
+  kind: EnrolmentKind,
+  startDate: string,
+  existing?: EnrolmentStatus,
+): EnrolmentStatus {
+  if (existing === "withdrawn" || existing === "completed") return existing;
+  if (!startDate) {
+    return kind === "new_starter" ? "pending_start" : "draft";
+  }
+  const start = new Date(`${startDate}T00:00:00`);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (start > today) return "pending_start";
+  return "active";
+}
+
+function applyCohortFields(
+  prev: FormState,
+  cohort: AdminCohortRecord | null,
+  programmes: AdminProgrammeRecord[],
+): FormState {
+  if (!cohort) {
+    return {
+      ...prev,
+      cohortId: null,
+    };
+  }
+  const programme = programmes.find((p) => p.id === cohort.programmeId);
+  const position = derivePosition(cohort.startDate);
+  const studying = prev.kind === "currently_studying";
+  return {
+    ...prev,
+    cohortId: cohort.id,
+    programmeName: programme?.name ?? prev.programmeName,
+    standardCode: cohort.standardCode || prev.standardCode,
+    startDate: cohort.startDate,
+    collegeDays: cohort.collegeDays,
+    tutorName: cohort.tutorName,
+    programmeWeek: studying && position.programmeWeek != null
+      ? String(position.programmeWeek)
+      : "",
+    programmeYear: studying && position.programmeYear != null
+      ? String(position.programmeYear)
+      : "",
+    status: deriveEnrolmentStatus(prev.kind, cohort.startDate, prev.status),
+  };
+}
+
+function applyEmployerFields(
+  prev: FormState,
+  employer: AdminEmployerRecord | null,
+): FormState {
+  if (!employer) {
+    return { ...prev, employerId: "", workplaceContact: "", mentorName: "" };
+  }
+  return {
+    ...prev,
+    employerId: employer.id,
+    workplaceContact: employer.mainContact,
+    mentorName: employer.mainContact,
+  };
+}
+
+function ReadonlyDetail({
+  label,
+  value,
+  hint,
+}: {
+  label: string;
+  value: string;
+  hint?: string;
+}) {
+  return (
+    <label className={styles.detailField}>
+      <span className={styles.detailFieldLabel}>{label}</span>
+      <input className={styles.detailFieldInput} value={value || "—"} readOnly />
+      {hint ? <span className={styles.fieldHint}>{hint}</span> : null}
+    </label>
+  );
 }
 
 function statusTone(status: EnrolmentStatus) {
@@ -200,12 +306,19 @@ function EnrolmentInlineField({
 
 export function AdminEnrolmentsScreen() {
   const store = useAdminStore();
+  const { session } = useDemoSession();
   const [query, setQuery] = useState("");
   const [searchMode, setSearchMode] = useState<EnrolmentSearchMode>("name");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(() => emptyForm("new_starter"));
+  const [transferringId, setTransferringId] = useState<string | null>(null);
+  const [transferDraft, setTransferDraft] = useState<TransferDraft>({
+    cohortId: "",
+    employerId: "",
+    reason: "",
+  });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -353,21 +466,26 @@ export function AdminEnrolmentsScreen() {
 
   function openCreate(kind: EnrolmentKind, learnerId = "") {
     setEditingId(null);
+    setTransferringId(null);
     setError(null);
     setSuccess(null);
-    const employer = employers[0];
-    setForm({
+    const employer = employers[0] ?? null;
+    const autoCohort = autoCohortId(kind, defaultProgramme?.standardCode)
+      ? findIntakeCohort(defaultProgramme?.standardCode ?? "")
+      : null;
+    let next = {
       ...emptyForm(kind, defaultProgramme),
       learnerId,
-      cohortId: autoCohortId(kind, defaultProgramme?.standardCode),
-      employerId: employer?.id ?? "",
-      workplaceContact: employer?.mainContact ?? "",
-    });
+    };
+    next = applyEmployerFields(next, employer);
+    if (autoCohort) next = applyCohortFields(next, autoCohort, programmes);
+    setForm(next);
     setShowForm(true);
   }
 
   function openEdit(row: AdminLearnerEnrolment) {
     setEditingId(row.id);
+    setTransferringId(null);
     setError(null);
     setSuccess(null);
     setForm({
@@ -396,24 +514,29 @@ export function AdminEnrolmentsScreen() {
   function onProgrammeChange(name: string) {
     const match = programmes.find((p) => p.name === name);
     const standardCode = match?.standardCode ?? "";
-    setForm((prev) => ({
-      ...prev,
-      programmeName: name,
-      standardCode: standardCode || prev.standardCode,
-      cohortId:
-        prev.kind === "new_starter" && !editingId
-          ? (findIntakeCohort(standardCode)?.id ?? null)
-          : prev.cohortId,
-    }));
+    const autoCohort =
+      form.kind === "new_starter" && !editingId
+        ? findIntakeCohort(standardCode)
+        : null;
+    setForm((prev) => {
+      const next = {
+        ...prev,
+        programmeName: name,
+        standardCode: standardCode || prev.standardCode,
+      };
+      if (autoCohort) return applyCohortFields(next, autoCohort, programmes);
+      return { ...next, cohortId: prev.cohortId };
+    });
+  }
+
+  function onCohortChange(cohortId: string) {
+    const cohort = store.cohorts.find((c) => c.id === cohortId) ?? null;
+    setForm((prev) => applyCohortFields(prev, cohort, programmes));
   }
 
   function onEmployerChange(employerId: string) {
-    const employer = employers.find((e) => e.id === employerId);
-    setForm((prev) => ({
-      ...prev,
-      employerId,
-      workplaceContact: employer?.mainContact ?? prev.workplaceContact,
-    }));
+    const employer = employers.find((e) => e.id === employerId) ?? null;
+    setForm((prev) => applyEmployerFields(prev, employer));
   }
 
   function buildInput(): EnrolmentInput | null {
@@ -424,8 +547,6 @@ export function AdminEnrolmentsScreen() {
       );
       return null;
     }
-    // Gate on the pre-start checklist for new enrolments only — existing
-    // records stay editable while remaining paperwork is chased.
     if (!editingId) {
       const blockers = enrolmentBlockers(learner);
       if (blockers.length > 0) {
@@ -440,7 +561,7 @@ export function AdminEnrolmentsScreen() {
       return null;
     }
     if (!form.startDate) {
-      setError("Start date is required.");
+      setError("Pick a cohort so the start date can fill from the intake.");
       return null;
     }
     const employer = employers.find((e) => e.id === form.employerId);
@@ -449,20 +570,19 @@ export function AdminEnrolmentsScreen() {
       return null;
     }
 
+    const position = derivePosition(form.startDate);
     const studying = form.kind === "currently_studying";
-    const year = studying ? (Number(form.programmeYear) as 1 | 2 | 3) : null;
-    const week = studying ? Number(form.programmeWeek) : null;
-    if (
-      studying &&
-      (![1, 2, 3].includes(year as number) || Number.isNaN(week))
-    ) {
-      setError("Currently studying learners need programme year and week.");
-      return null;
-    }
+    const existing = editingId
+      ? store.enrolments.find((e) => e.id === editingId)
+      : null;
 
     return {
       kind: form.kind,
-      status: form.status,
+      status: deriveEnrolmentStatus(
+        form.kind,
+        form.startDate,
+        existing?.status,
+      ),
       learnerId: learner.id,
       displayName: learner.displayName,
       email: learner.email,
@@ -474,15 +594,16 @@ export function AdminEnrolmentsScreen() {
       cohortId: form.cohortId,
       employerId: employer.id,
       employerName: employer.name,
-      workplaceContact: form.workplaceContact,
-      mentorName: form.mentorName,
+      workplaceContact: employer.mainContact,
+      mentorName: employer.mainContact,
       tutorName: form.tutorName,
       startDate: form.startDate,
-      programmeYear: studying ? year : null,
-      programmeWeek: studying ? week : null,
-      attendancePercent: studying ? Number(form.attendancePercent || 0) : null,
+      programmeYear: studying ? position.programmeYear : null,
+      programmeWeek: studying ? position.programmeWeek : null,
+      // Attendance / progress come from register & tracking — preserve existing only.
+      attendancePercent: studying ? (existing?.attendancePercent ?? null) : null,
       actualProgressPercent: studying
-        ? Number(form.actualProgressPercent || 0)
+        ? (existing?.actualProgressPercent ?? null)
         : null,
       collegeDays: form.collegeDays,
       notes: form.notes,
@@ -521,11 +642,115 @@ export function AdminEnrolmentsScreen() {
     if (next) setSuccess(`Updated ${next.displayName}.`);
   }
 
+  function openTransfer(row: AdminLearnerEnrolment) {
+    setShowForm(false);
+    setEditingId(null);
+    setError(null);
+    setSuccess(null);
+    setExpandedId(row.id);
+    setTransferringId(row.id);
+    setTransferDraft({
+      cohortId: row.cohortId ?? "",
+      employerId: row.employerId,
+      reason: "",
+    });
+  }
+
+  function closeTransfer() {
+    setTransferringId(null);
+    setTransferDraft({ cohortId: "", employerId: "", reason: "" });
+    setError(null);
+  }
+
+  /**
+   * Pre-framed transfer: college day/group (cohort) and/or employer.
+   * Formal rules (approvals, version pinning, progress reset) still TBC with Jon.
+   */
+  function applyTransfer(row: AdminLearnerEnrolment) {
+    const nextCohort = transferDraft.cohortId
+      ? store.cohorts.find((c) => c.id === transferDraft.cohortId) ?? null
+      : null;
+    const nextEmployer = transferDraft.employerId
+      ? store.employers.find((e) => e.id === transferDraft.employerId) ?? null
+      : null;
+
+    if (!nextEmployer) {
+      setError("Pick an employer for the transfer.");
+      return;
+    }
+
+    const cohortChanged =
+      (row.cohortId ?? "") !== (transferDraft.cohortId || "");
+    const employerChanged = row.employerId !== transferDraft.employerId;
+
+    if (!cohortChanged && !employerChanged) {
+      setError("Nothing has changed — pick a new group or employer.");
+      return;
+    }
+
+    const stamp = new Date().toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+    const parts: string[] = [];
+    if (cohortChanged) {
+      parts.push(
+        `group ${row.collegeDays || "unset"} → ${nextCohort?.collegeDays || "unset"} (${nextCohort?.name ?? "no cohort"})`,
+      );
+    }
+    if (employerChanged) {
+      parts.push(`employer ${row.employerName} → ${nextEmployer.name}`);
+    }
+    const reasonNote = transferDraft.reason.trim()
+      ? ` Reason: ${transferDraft.reason.trim()}.`
+      : "";
+    const transferNote = `Transfer ${stamp} by ${session.account.name}: ${parts.join("; ")}.${reasonNote}`;
+
+    const patch: Partial<EnrolmentInput> = {
+      notes: row.notes
+        ? `${row.notes}\n${transferNote}`
+        : transferNote,
+    };
+
+    if (cohortChanged) {
+      // College day / group move — tutor and days follow the cohort.
+      // Start date and year/week are left alone until Jon confirms the rule.
+      patch.cohortId = nextCohort?.id ?? null;
+      if (nextCohort) {
+        patch.collegeDays = nextCohort.collegeDays;
+        patch.tutorName = nextCohort.tutorName;
+        if (nextCohort.standardCode) {
+          patch.standardCode = nextCohort.standardCode;
+        }
+        const programme = store.programmes.find(
+          (p) => p.id === nextCohort.programmeId,
+        );
+        if (programme) patch.programmeName = programme.name;
+      }
+    }
+
+    if (employerChanged) {
+      patch.employerId = nextEmployer.id;
+      patch.employerName = nextEmployer.name;
+      patch.workplaceContact = nextEmployer.mainContact;
+      patch.mentorName = nextEmployer.mainContact;
+    }
+
+    const updated = updateEnrolment(row.id, patch);
+    if (!updated) {
+      setError("Could not apply the transfer.");
+      return;
+    }
+    setSuccess(`Transfer recorded for ${updated.displayName}.`);
+    closeTransfer();
+  }
+
   return (
     <LearnerPageShell
       eyebrow="Administration"
       title="Learner Enrolments"
-      description="Enrol learners who are already on the system onto a programme — employer, cohort and progress position. Personal details are captured once in Learner Intake."
+      description="Enrol learners who are already on the system onto a programme — employer, cohort and progress position. Transfer covers college-day / group moves and employer changes. Personal details are captured once in Learner Intake."
       actions={
         <div className={styles.toolbarActions}>
           <button
@@ -591,10 +816,10 @@ export function AdminEnrolmentsScreen() {
                 </span>
               </div>
               <p className={styles.formGroupMeta}>
-                This is the programme record — pick the learner, then set
-                programme, employer, cohort and where they are on programme.
-                New people are added in Learner Intake first; portal logins are
-                created separately in Account Setup.
+                Place the learner on a programme, cohort and employer. Start
+                date, tutor, college days, mentor and progress position fill
+                from those records — attendance and progress come from register
+                and tracking when those exist.
               </p>
 
               {!editingId ? (
@@ -668,24 +893,6 @@ export function AdminEnrolmentsScreen() {
                   </>
                 ) : null}
                 <label className={styles.field}>
-                  <span>Status</span>
-                  <select
-                    value={form.status}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        status: e.target.value as EnrolmentStatus,
-                      }))
-                    }
-                  >
-                    <option value="draft">Draft</option>
-                    <option value="pending_start">Pending start</option>
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
-                    <option value="withdrawn">Withdrawn</option>
-                  </select>
-                </label>
-                <label className={styles.field}>
                   <span>Programme</span>
                   <select
                     value={form.programmeName}
@@ -706,12 +913,7 @@ export function AdminEnrolmentsScreen() {
                   <span>Cohort</span>
                   <select
                     value={form.cohortId ?? ""}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        cohortId: e.target.value || null,
-                      }))
-                    }
+                    onChange={(e) => onCohortChange(e.target.value)}
                   >
                     <option value="">No cohort yet</option>
                     {cohortsForProgramme.map((cohort) => (
@@ -741,138 +943,84 @@ export function AdminEnrolmentsScreen() {
                   </select>
                 </label>
                 <label className={styles.field}>
-                  <span>Workplace contact</span>
+                  <span>Status</span>
                   <input
-                    value={form.workplaceContact}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        workplaceContact: e.target.value,
-                      }))
-                    }
+                    value={form.status.replace(/_/g, " ")}
+                    readOnly
                   />
+                  <span className={styles.fieldHint}>
+                    From start date — pending until they start, then active.
+                  </span>
                 </label>
                 <label className={styles.field}>
-                  <span>Progress mentor</span>
-                  <input
-                    value={form.mentorName}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        mentorName: e.target.value,
-                      }))
-                    }
-                  />
+                  <span>Start date</span>
+                  <input type="date" value={form.startDate} readOnly />
+                  <span className={styles.fieldHint}>From the cohort intake.</span>
                 </label>
                 <label className={styles.field}>
                   <span>Tutor</span>
-                  <input
-                    value={form.tutorName}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        tutorName: e.target.value,
-                      }))
-                    }
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>
-                    {form.kind === "new_starter"
-                      ? "Planned start date"
-                      : "Programme start date"}{" "}
-                    <em className={styles.fieldRequired}>required</em>
-                  </span>
-                  <input
-                    type="date"
-                    value={form.startDate}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        startDate: e.target.value,
-                      }))
-                    }
-                    required
-                  />
+                  <input value={form.tutorName || "—"} readOnly />
+                  <span className={styles.fieldHint}>From the cohort.</span>
                 </label>
                 <label className={styles.field}>
                   <span>College days</span>
-                  <input
-                    value={form.collegeDays}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        collegeDays: e.target.value,
-                      }))
-                    }
-                  />
+                  <input value={form.collegeDays || "—"} readOnly />
+                  <span className={styles.fieldHint}>From the cohort.</span>
                 </label>
-
+                <label className={styles.field}>
+                  <span>Workplace contact</span>
+                  <input value={form.workplaceContact || "—"} readOnly />
+                  <span className={styles.fieldHint}>From the employer record.</span>
+                </label>
+                <label className={styles.field}>
+                  <span>Progress mentor</span>
+                  <input value={form.mentorName || "—"} readOnly />
+                  <span className={styles.fieldHint}>
+                    From the employer record (workplace mentor).
+                  </span>
+                </label>
                 {form.kind === "currently_studying" ? (
                   <>
                     <label className={styles.field}>
-                      <span>Programme year</span>
-                      <select
-                        value={form.programmeYear}
-                        onChange={(e) =>
-                          setForm((prev) => ({
-                            ...prev,
-                            programmeYear: e.target.value,
-                          }))
-                        }
-                      >
-                        <option value="1">Year 1</option>
-                        <option value="2">Year 2</option>
-                        <option value="3">Year 3</option>
-                      </select>
-                    </label>
-                    <label className={styles.field}>
-                      <span>Programme week</span>
+                      <span>Programme year / week</span>
                       <input
-                        type="number"
-                        min={1}
-                        max={52}
-                        value={form.programmeWeek}
-                        onChange={(e) =>
-                          setForm((prev) => ({
-                            ...prev,
-                            programmeWeek: e.target.value,
-                          }))
+                        value={
+                          form.programmeYear && form.programmeWeek
+                            ? `Y${form.programmeYear} · W${form.programmeWeek}`
+                            : "Calculated from start date"
                         }
+                        readOnly
                       />
+                      <span className={styles.fieldHint}>
+                        Calculated from cohort start date.
+                      </span>
                     </label>
                     <label className={styles.field}>
                       <span>Attendance %</span>
-                      <input
-                        type="number"
-                        min={0}
-                        max={100}
-                        value={form.attendancePercent}
-                        onChange={(e) =>
-                          setForm((prev) => ({
-                            ...prev,
-                            attendancePercent: e.target.value,
-                          }))
-                        }
-                      />
+                      <input value="From register" readOnly />
+                      <span className={styles.fieldHint}>
+                        Pulled from the teaching register when that exists.
+                      </span>
                     </label>
                     <label className={styles.field}>
                       <span>Progress %</span>
-                      <input
-                        type="number"
-                        min={0}
-                        max={100}
-                        value={form.actualProgressPercent}
-                        onChange={(e) =>
-                          setForm((prev) => ({
-                            ...prev,
-                            actualProgressPercent: e.target.value,
-                          }))
-                        }
-                      />
+                      <input value="From programme tracking" readOnly />
+                      <span className={styles.fieldHint}>
+                        Pulled from programme progress — not edited here.
+                      </span>
                     </label>
                   </>
                 ) : null}
+                <label className={`${styles.field} ${styles.fieldWide}`}>
+                  <span>Notes</span>
+                  <textarea
+                    value={form.notes}
+                    rows={2}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, notes: e.target.value }))
+                    }
+                  />
+                </label>
 
                 <label className={`${styles.field} ${styles.fieldWide}`}>
                   <span>Notes</span>
@@ -1040,49 +1188,16 @@ export function AdminEnrolmentsScreen() {
                         );
                       })()}
                       <div className={styles.employerDetailGrid}>
-                        <label className={styles.detailField}>
-                          <span className={styles.detailFieldLabel}>Status</span>
-                          <select
-                            className={styles.detailFieldInput}
-                            value={row.status}
-                            onChange={(e) =>
-                              patchEnrolment(row.id, {
-                                status: e.target.value as EnrolmentStatus,
-                              })
-                            }
-                          >
-                            <option value="draft">Draft</option>
-                            <option value="pending_start">Pending start</option>
-                            <option value="active">Active</option>
-                            <option value="completed">Completed</option>
-                            <option value="withdrawn">Withdrawn</option>
-                          </select>
-                        </label>
-                        <label className={styles.detailField}>
-                          <span className={styles.detailFieldLabel}>
-                            Programme
-                          </span>
-                          <select
-                            className={styles.detailFieldInput}
-                            value={row.programmeName}
-                            onChange={(e) => {
-                              const match = programmes.find(
-                                (p) => p.name === e.target.value,
-                              );
-                              patchEnrolment(row.id, {
-                                programmeName: e.target.value,
-                                standardCode:
-                                  match?.standardCode ?? row.standardCode,
-                              });
-                            }}
-                          >
-                            {programmes.map((p) => (
-                              <option key={p.id} value={p.name}>
-                                {p.name}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
+                        <ReadonlyDetail
+                          label="Status"
+                          value={row.status.replace(/_/g, " ")}
+                          hint="From start date (pending until they start, then active)."
+                        />
+                        <ReadonlyDetail
+                          label="Programme"
+                          value={`${row.programmeName} · ${row.standardCode}`}
+                          hint="From the selected programme / cohort."
+                        />
                         <label className={styles.detailField}>
                           <span className={styles.detailFieldLabel}>
                             Cohort
@@ -1090,11 +1205,42 @@ export function AdminEnrolmentsScreen() {
                           <select
                             className={styles.detailFieldInput}
                             value={row.cohortId ?? ""}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                              const cohort =
+                                store.cohorts.find(
+                                  (c) => c.id === e.target.value,
+                                ) ?? null;
+                              if (!cohort) {
+                                patchEnrolment(row.id, { cohortId: null });
+                                return;
+                              }
+                              const programme = programmes.find(
+                                (p) => p.id === cohort.programmeId,
+                              );
+                              const position = derivePosition(cohort.startDate);
                               patchEnrolment(row.id, {
-                                cohortId: e.target.value || null,
-                              })
-                            }
+                                cohortId: cohort.id,
+                                programmeName:
+                                  programme?.name ?? row.programmeName,
+                                standardCode: cohort.standardCode,
+                                startDate: cohort.startDate,
+                                collegeDays: cohort.collegeDays,
+                                tutorName: cohort.tutorName,
+                                programmeWeek:
+                                  row.kind === "currently_studying"
+                                    ? position.programmeWeek
+                                    : null,
+                                programmeYear:
+                                  row.kind === "currently_studying"
+                                    ? position.programmeYear
+                                    : null,
+                                status: deriveEnrolmentStatus(
+                                  row.kind,
+                                  cohort.startDate,
+                                  row.status,
+                                ),
+                              });
+                            }}
                           >
                             <option value="">No cohort yet</option>
                             {store.cohorts
@@ -1126,6 +1272,7 @@ export function AdminEnrolmentsScreen() {
                                 employerId: employer.id,
                                 employerName: employer.name,
                                 workplaceContact: employer.mainContact,
+                                mentorName: employer.mainContact,
                               });
                             }}
                           >
@@ -1136,97 +1283,64 @@ export function AdminEnrolmentsScreen() {
                             ))}
                           </select>
                         </label>
-                        <EnrolmentInlineField
+                        <ReadonlyDetail
                           label="Workplace contact"
                           value={row.workplaceContact}
-                          onCommit={(next) =>
-                            patchEnrolment(row.id, { workplaceContact: next })
-                          }
+                          hint="From the employer record."
                         />
-                        <EnrolmentInlineField
+                        <ReadonlyDetail
                           label="Progress mentor"
                           value={row.mentorName}
-                          onCommit={(next) =>
-                            patchEnrolment(row.id, { mentorName: next })
-                          }
+                          hint="From the employer record."
                         />
-                        <EnrolmentInlineField
+                        <ReadonlyDetail
                           label="Tutor"
                           value={row.tutorName}
-                          onCommit={(next) =>
-                            patchEnrolment(row.id, { tutorName: next })
-                          }
+                          hint="From the cohort."
                         />
-                        <EnrolmentInlineField
+                        <ReadonlyDetail
                           label={
                             row.kind === "new_starter"
                               ? "Planned start"
                               : "Programme start"
                           }
                           value={row.startDate}
-                          type="date"
-                          onCommit={(next) =>
-                            patchEnrolment(row.id, { startDate: next })
-                          }
+                          hint="From the cohort intake date."
                         />
-                        <EnrolmentInlineField
+                        <ReadonlyDetail
                           label="College days"
                           value={row.collegeDays}
-                          onCommit={(next) =>
-                            patchEnrolment(row.id, { collegeDays: next })
-                          }
+                          hint="From the cohort."
                         />
                         {row.kind === "currently_studying" ? (
                           <>
-                            <label className={styles.detailField}>
-                              <span className={styles.detailFieldLabel}>
-                                Programme year
-                              </span>
-                              <select
-                                className={styles.detailFieldInput}
-                                value={row.programmeYear ?? 1}
-                                onChange={(e) =>
-                                  patchEnrolment(row.id, {
-                                    programmeYear: Number(
-                                      e.target.value,
-                                    ) as 1 | 2 | 3,
-                                  })
-                                }
-                              >
-                                <option value={1}>Year 1</option>
-                                <option value={2}>Year 2</option>
-                                <option value={3}>Year 3</option>
-                              </select>
-                            </label>
-                            <EnrolmentInlineField
-                              label="Programme week"
-                              value={String(row.programmeWeek ?? "")}
-                              type="number"
-                              onCommit={(next) =>
-                                patchEnrolment(row.id, {
-                                  programmeWeek: Number(next) || 1,
-                                })
+                            <ReadonlyDetail
+                              label="Programme year / week"
+                              value={
+                                row.programmeYear != null &&
+                                row.programmeWeek != null
+                                  ? `Y${row.programmeYear} · W${row.programmeWeek}`
+                                  : "—"
                               }
+                              hint="Calculated from start date."
                             />
-                            <EnrolmentInlineField
+                            <ReadonlyDetail
                               label="Attendance %"
-                              value={String(row.attendancePercent ?? "")}
-                              type="number"
-                              onCommit={(next) =>
-                                patchEnrolment(row.id, {
-                                  attendancePercent: Number(next) || 0,
-                                })
+                              value={
+                                row.attendancePercent != null
+                                  ? `${row.attendancePercent}%`
+                                  : "Awaiting register"
                               }
+                              hint="From the teaching register — not edited here."
                             />
-                            <EnrolmentInlineField
+                            <ReadonlyDetail
                               label="Progress %"
-                              value={String(row.actualProgressPercent ?? "")}
-                              type="number"
-                              onCommit={(next) =>
-                                patchEnrolment(row.id, {
-                                  actualProgressPercent: Number(next) || 0,
-                                })
+                              value={
+                                row.actualProgressPercent != null
+                                  ? `${row.actualProgressPercent}%`
+                                  : "From programme tracking"
                               }
+                              hint="From programme tracking — not edited here."
                             />
                           </>
                         ) : null}
@@ -1248,11 +1362,163 @@ export function AdminEnrolmentsScreen() {
                         <button
                           type="button"
                           className={styles.secondaryBtn}
+                          onClick={() => openTransfer(row)}
+                        >
+                          Transfer
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.secondaryBtn}
                           onClick={() => openEdit(row)}
                         >
                           Open full edit form
                         </button>
                       </div>
+
+                      {transferringId === row.id ? (
+                        <section className={styles.transferPanel}>
+                          <div className={styles.formGroupHead}>
+                            <h3 className={styles.formGroupTitle}>
+                              Transfer · {row.displayName}
+                            </h3>
+                            <span className={styles.formGroupBadge}>
+                              Pre-framed
+                            </span>
+                          </div>
+                          <p className={styles.formGroupMeta}>
+                            Two common moves: college day / teaching group
+                            (cohort), or employer. Formal rules — approvals,
+                            whether start date or programme version move with a
+                            group change — still to agree with Jon. This frame
+                            updates group days, tutor, and employer only.
+                          </p>
+
+                          <div className={styles.transferGrid}>
+                            <div className={styles.transferBlock}>
+                              <h4 className={styles.transferBlockTitle}>
+                                College day / group
+                              </h4>
+                              <p className={styles.transferCurrent}>
+                                Now:{" "}
+                                {cohort
+                                  ? `${cohort.name} · ${row.collegeDays || "days unset"}`
+                                  : row.collegeDays || "No group assigned"}
+                                {row.tutorName
+                                  ? ` · Tutor ${row.tutorName}`
+                                  : ""}
+                              </p>
+                              <label className={styles.field}>
+                                <span>Move to cohort</span>
+                                <select
+                                  value={transferDraft.cohortId}
+                                  onChange={(e) =>
+                                    setTransferDraft((prev) => ({
+                                      ...prev,
+                                      cohortId: e.target.value,
+                                    }))
+                                  }
+                                >
+                                  <option value="">No cohort</option>
+                                  {store.cohorts
+                                    .filter(
+                                      (c) =>
+                                        !row.standardCode ||
+                                        c.standardCode === row.standardCode ||
+                                        c.id === row.cohortId,
+                                    )
+                                    .map((c) => (
+                                      <option key={c.id} value={c.id}>
+                                        {c.name}
+                                        {c.collegeDays
+                                          ? ` · ${c.collegeDays}`
+                                          : ""}
+                                        {c.tutorName
+                                          ? ` · ${c.tutorName}`
+                                          : ""}
+                                      </option>
+                                    ))}
+                                </select>
+                                <span className={styles.fieldHint}>
+                                  Same standard only for now. Cross-programme
+                                  moves TBC.
+                                </span>
+                              </label>
+                            </div>
+
+                            <div className={styles.transferBlock}>
+                              <h4 className={styles.transferBlockTitle}>
+                                Employer
+                              </h4>
+                              <p className={styles.transferCurrent}>
+                                Now: {row.employerName || "—"}
+                                {row.mentorName
+                                  ? ` · Mentor ${row.mentorName}`
+                                  : ""}
+                              </p>
+                              <label className={styles.field}>
+                                <span>Move to employer</span>
+                                <select
+                                  value={transferDraft.employerId}
+                                  onChange={(e) =>
+                                    setTransferDraft((prev) => ({
+                                      ...prev,
+                                      employerId: e.target.value,
+                                    }))
+                                  }
+                                >
+                                  {employers.map((e) => (
+                                    <option key={e.id} value={e.id}>
+                                      {e.name}
+                                      {e.mainContact
+                                        ? ` · ${e.mainContact}`
+                                        : ""}
+                                    </option>
+                                  ))}
+                                </select>
+                                <span className={styles.fieldHint}>
+                                  Workplace mentor follows the employer record.
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+
+                          <label className={styles.field}>
+                            <span>Reason / note</span>
+                            <textarea
+                              value={transferDraft.reason}
+                              rows={2}
+                              placeholder="Optional — e.g. changed college day, new employer…"
+                              onChange={(e) =>
+                                setTransferDraft((prev) => ({
+                                  ...prev,
+                                  reason: e.target.value,
+                                }))
+                              }
+                            />
+                          </label>
+
+                          {error && transferringId === row.id ? (
+                            <p className={styles.error}>{error}</p>
+                          ) : null}
+
+                          <div className={styles.formActions}>
+                            <button
+                              type="button"
+                              className={styles.secondaryBtn}
+                              onClick={closeTransfer}
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="button"
+                              className={styles.primaryBtn}
+                              onClick={() => applyTransfer(row)}
+                            >
+                              Apply transfer
+                            </button>
+                          </div>
+                        </section>
+                      ) : null}
                     </div>
                   ) : null}
                 </article>

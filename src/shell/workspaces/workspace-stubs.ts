@@ -120,6 +120,11 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Teaching Resources",
       description: "Tutor-owned resources linked to published curriculum.",
     },
+    "shared-drive": {
+      title: "Shared Drive",
+      description:
+        "Tenant Shared Drive — same shared page template used across environments.",
+    },
     "curriculum-feedback": {
       title: "Curriculum Feedback",
       description: "Submit curriculum improvement feedback for aggregation.",
@@ -232,6 +237,11 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Version & Change History",
       description: "Read-only curriculum version history for QA.",
     },
+    "shared-drive": {
+      title: "Shared Drive",
+      description:
+        "Tenant Shared Drive — same shared page template used across environments.",
+    },
   },
   management: {
     dashboard: {
@@ -270,6 +280,11 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Audit History",
       description: "Demo audit log of responsibility changes.",
     },
+    "shared-drive": {
+      title: "Shared Drive",
+      description:
+        "Tenant Shared Drive — same shared page template used across environments.",
+    },
   },
   administration: {
     dashboard: {
@@ -283,7 +298,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     intake: {
       title: "Learner Intake",
       description:
-        "Start potential learners, save drafts mid-way, and mark them ready for enrolment.",
+        "Personal details only — get learners onto the system. Staff onboarding sits on Management. Pack documents live on Learners.",
     },
     enrolments: {
       title: "Learner Enrolments",
@@ -304,8 +319,14 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
         "Intakes and teaching groups, each locked to a Skills England programme version.",
     },
     documents: {
-      title: "Documents",
-      description: "Administrative document management.",
+      title: "Shared Drive",
+      description:
+        "Tenant Shared Drive — same shared page template used across environments.",
+    },
+    "shared-drive": {
+      title: "Shared Drive",
+      description:
+        "Tenant Shared Drive — org files via Microsoft sign-in. Learner packs stay on Learners.",
     },
     "data-quality": {
       title: "Data Quality",
@@ -313,11 +334,23 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     accounts: {
       title: "Account Setup",
-      description: "New account provisioning.",
+      description:
+        "Enable or disable learner portal environments. Staff environments are managed on Management.",
+    },
+    messages: {
+      title: "Messages",
+      description:
+        "Shared messaging — contact learners, employers, and GTA colleagues.",
+    },
+    safeguarding: {
+      title: "Safeguarding",
+      description:
+        "Shared safeguarding contacts and welfare routes for administration staff.",
     },
     system: {
       title: "System Actions",
-      description: "Administrative system actions.",
+      description:
+        "Reserved for override actions. Scope to be agreed with leadership — left blank until then.",
     },
   },
   safeguarding: {

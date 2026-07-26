@@ -19,6 +19,7 @@ export const STAFF_BASE_NAV: NavItem[] = [
   { href: "/staff/assessments", label: "Assessments & Marking", permission: PERMISSIONS.ASSESSMENTS_MARK },
   { href: "/reviews?from=tutor", label: "Reviews", permission: PERMISSIONS.REVIEWS_MANAGE },
   { href: "/staff/resources", label: "Teaching Resources", permission: PERMISSIONS.RESOURCES_OWN_MANAGE },
+  { href: "/staff/shared-drive", label: "Shared Drive", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
   {
     href: "/curriculum-feedback?from=tutor",
     label: "Curriculum Feedback",

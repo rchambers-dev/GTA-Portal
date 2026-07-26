@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
 import styles from "./LearnerPackSearchScreen.module.css";
 
 export type LearnerSearchHit = {
@@ -20,18 +21,43 @@ type Props = {
 
 /**
  * Blank entry to the shared ADM14 learner file pack.
- * No pack is shown until a learner is searched and opened.
+ * Merges demo pack learners with administration intake records.
  */
 export function LearnerPackSearchScreen({
   learners,
   fromContext = "learners",
 }: Props) {
   const [search, setSearch] = useState("");
+  const admin = useAdminStore();
   const query = search.trim().toLowerCase();
+
+  const mergedLearners = useMemo(() => {
+    const byId = new Map<string, LearnerSearchHit>();
+    for (const hit of learners) byId.set(hit.learnerId, hit);
+
+    for (const learner of admin.learners) {
+      // Only surface people who are ready or already enrolled — unfinished
+      // intake drafts stay on the Intake queue.
+      const enrolment = admin.enrolments.find((e) => e.learnerId === learner.id);
+      if (learner.intakeStatus !== "ready" && !enrolment) continue;
+      byId.set(learner.id, {
+        learnerId: learner.id,
+        displayName: learner.displayName,
+        employerName: enrolment?.employerName ?? null,
+        programmeName: enrolment?.programmeName ?? "Awaiting enrolment",
+        tutorName: enrolment?.tutorName ?? null,
+        learnerReference: learner.learnerReference,
+      });
+    }
+
+    return [...byId.values()].sort((a, b) =>
+      a.displayName.localeCompare(b.displayName),
+    );
+  }, [admin.enrolments, admin.learners, learners]);
 
   const rows = useMemo(() => {
     if (!query) return [];
-    return learners.filter((l) => {
+    return mergedLearners.filter((l) => {
       return (
         l.displayName.toLowerCase().includes(query) ||
         (l.employerName?.toLowerCase().includes(query) ?? false) ||
@@ -41,7 +67,7 @@ export function LearnerPackSearchScreen({
         (l.tutorName?.toLowerCase().includes(query) ?? false)
       );
     });
-  }, [learners, query]);
+  }, [mergedLearners, query]);
 
   return (
     <div className={styles.root}>
@@ -49,8 +75,8 @@ export function LearnerPackSearchScreen({
         <p className={styles.eyebrow}>Shared across workspaces</p>
         <h1 className={styles.title}>Learners</h1>
         <p className={styles.description}>
-          Search for a learner to open their apprenticeship evidence pack. This
-          page stays empty until you choose someone.
+          Search for a learner to open their apprenticeship evidence pack.
+          Enter and update progressive documents here — not on Intake.
         </p>
       </header>
 
@@ -75,7 +101,7 @@ export function LearnerPackSearchScreen({
           <p className={styles.blankTitle}>No learner selected</p>
           <p className={styles.blankCopy}>
             Start typing above to find a learner. Their complete file pack opens
-            next.
+            next — including form data and document evidence as they progress.
           </p>
         </div>
       ) : rows.length === 0 ? (

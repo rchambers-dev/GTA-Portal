@@ -28,6 +28,7 @@ import {
   AdminProgrammesScreen,
   AdminUsersScreen,
 } from "@/features/administration";
+import { SharedDriveScreen } from "@/features/shared-drive";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
@@ -194,9 +195,41 @@ export async function renderWorkspacePage(
         return <AdminCohortsScreen />;
       case "intake":
         return <AdminLearnerIntakeScreen />;
+      case "shared-drive":
+        return <SharedDriveScreen audience="administration" />;
+      case "documents":
+        redirect("/administration/shared-drive");
+      case "messages":
+        return (
+          <LearnerMessagesScreen
+            eyebrow="Administration"
+            description="Message learners, employers, and GTA colleagues from the administration workspace."
+          />
+        );
+      case "safeguarding":
+        return <LearnerSupportScreen audience="administration" />;
       default:
         break;
     }
+  }
+
+  if (workspace === "management") {
+    switch (segment) {
+      case "accounts":
+        return <AdminUsersScreen />;
+      case "shared-drive":
+        return <SharedDriveScreen audience="management" />;
+      default:
+        break;
+    }
+  }
+
+  if (workspace === "staff" && segment === "shared-drive") {
+    return <SharedDriveScreen audience="staff" />;
+  }
+
+  if (workspace === "quality" && segment === "shared-drive") {
+    return <SharedDriveScreen audience="quality" />;
   }
 
   const stub = resolveWorkspaceStub(workspace, slug);

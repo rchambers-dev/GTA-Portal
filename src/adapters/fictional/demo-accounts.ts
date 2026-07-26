@@ -114,7 +114,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
     name: "Jon Harrison",
     initials: "JH",
     email: "jon.harrison@example.gta.local",
-    baseRole: "Manager",
+    baseRole: "Owner",
     responsibilities: [],
     workspace: "management",
     permissions: [
@@ -123,6 +123,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
       PERMISSIONS.MANAGEMENT_ROLES_ASSIGN,
       PERMISSIONS.MANAGEMENT_CURRICULUM_HEALTH,
       PERMISSIONS.MANAGEMENT_EMPLOYER_CONCERNS,
+      PERMISSIONS.ADMIN_USERS_MANAGE,
       PERMISSIONS.LIFECYCLE_KANBAN_VIEW,
       PERMISSIONS.LEARNER_WORKSPACE_VIEW,
     ],
@@ -140,6 +141,7 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
       PERMISSIONS.ADMIN_USERS_MANAGE,
       PERMISSIONS.ADMIN_RECORDS_MANAGE,
       PERMISSIONS.LEARNER_WORKSPACE_VIEW,
+      PERMISSIONS.MESSAGES_VIEW,
     ],
   },
 ];

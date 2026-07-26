@@ -9,6 +9,7 @@ import {
   PortalShareProvider,
 } from "@/features/learner-portal";
 import {
+  CHAT_SELF_ADMIN,
   CHAT_SELF_EMPLOYER,
   CHAT_SELF_LEARNER,
 } from "@/features/learner-portal/domain/chat/store";
@@ -39,9 +40,14 @@ export function PortalShell({
   const workspace = session.account.workspace;
   const isLearner = workspace === "learner";
   const isEmployer = workspace === "employer";
-  const withSharedChat = isLearner || isEmployer;
+  const isAdministration = workspace === "administration";
+  const withSharedChat = isLearner || isEmployer || isAdministration;
   const onMessagesPage = isMessagesRoute(pathname);
-  const chatSelfId = isEmployer ? CHAT_SELF_EMPLOYER : CHAT_SELF_LEARNER;
+  const chatSelfId = isEmployer
+    ? CHAT_SELF_EMPLOYER
+    : isAdministration
+      ? CHAT_SELF_ADMIN
+      : CHAT_SELF_LEARNER;
 
   const body = (
     <div

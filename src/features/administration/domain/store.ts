@@ -24,7 +24,7 @@ function loadSnapshot(): AdminStoreSnapshot {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return createSeedSnapshot();
     const parsed = JSON.parse(raw) as AdminStoreSnapshot;
-    if (parsed?.version !== 9) return createSeedSnapshot();
+    if (parsed?.version !== 13) return createSeedSnapshot();
     return parsed;
   } catch {
     return createSeedSnapshot();
@@ -289,9 +289,42 @@ export function createEnrolment(input: EnrolmentInput): AdminLearnerEnrolment {
     createdAt: stamp,
     updatedAt: stamp,
   };
+
+  /** Enrolment queues Account Setup — staff enable the learner environment. */
+  const emailKey = row.email.toLowerCase();
+  const alreadyHasPortal = snapshot.users.some(
+    (u) =>
+      u.linkedLearnerId === row.learnerId ||
+      u.linkedEnrolmentId === row.id ||
+      (u.email.trim().toLowerCase() === emailKey && emailKey.length > 0),
+  );
+  const provisionedUser: AdminPortalUser | null = alreadyHasPortal
+    ? null
+    : {
+        id: id("user"),
+        displayName: row.displayName,
+        email: row.email,
+        role: "Learner",
+        workspace: "learner",
+        linkedEnrolmentId: row.id,
+        linkedLearnerId: row.learnerId,
+        linkedEmployerId: row.employerId,
+        programmeStartDate: row.startDate || null,
+        status: "invited",
+        enabledBy: null,
+        enabledAt: null,
+        disabledBy: null,
+        disabledAt: null,
+        createdAt: stamp,
+        updatedAt: stamp,
+      };
+
   snapshot = {
     ...snapshot,
     enrolments: [row, ...snapshot.enrolments],
+    users: provisionedUser
+      ? [provisionedUser, ...snapshot.users]
+      : snapshot.users,
   };
   emit();
   return row;
@@ -631,8 +664,14 @@ export type UserInput = {
   role: AdminPortalUser["role"];
   workspace: string;
   linkedEnrolmentId: string | null;
+  linkedLearnerId: string | null;
   linkedEmployerId: string | null;
+  programmeStartDate: string | null;
   status: AdminPortalUser["status"];
+  enabledBy?: string | null;
+  enabledAt?: string | null;
+  disabledBy?: string | null;
+  disabledAt?: string | null;
 };
 
 export function listUsers(): AdminPortalUser[] {
@@ -652,8 +691,14 @@ export function createUser(input: UserInput): AdminPortalUser {
     role: input.role,
     workspace: input.workspace,
     linkedEnrolmentId: input.linkedEnrolmentId,
+    linkedLearnerId: input.linkedLearnerId,
     linkedEmployerId: input.linkedEmployerId,
+    programmeStartDate: input.programmeStartDate,
     status: input.status,
+    enabledBy: input.enabledBy ?? null,
+    enabledAt: input.enabledAt ?? null,
+    disabledBy: input.disabledBy ?? null,
+    disabledAt: input.disabledAt ?? null,
     createdAt: stamp,
     updatedAt: stamp,
   };
@@ -685,6 +730,42 @@ export function updateUser(
   };
   emit();
   return next;
+}
+
+/** Staff turn on the portal environment after enrolment / invite. */
+export function enablePortalEnvironment(
+  idValue: string,
+  enabledBy: string,
+): AdminPortalUser | null {
+  return updateUser(idValue, {
+    status: "active",
+    enabledBy,
+    enabledAt: new Date().toISOString(),
+  });
+}
+
+/** Change environment state, stamping who enabled or disabled it. */
+export function setPortalEnvironment(
+  idValue: string,
+  status: AdminPortalUser["status"],
+  actorName: string,
+): AdminPortalUser | null {
+  const stamp = new Date().toISOString();
+  if (status === "active") {
+    return updateUser(idValue, {
+      status,
+      enabledBy: actorName,
+      enabledAt: stamp,
+    });
+  }
+  if (status === "disabled") {
+    return updateUser(idValue, {
+      status,
+      disabledBy: actorName,
+      disabledAt: stamp,
+    });
+  }
+  return updateUser(idValue, { status });
 }
 
 export function getAdminStats() {

@@ -412,7 +412,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       employerName: "Riverside Autocare",
       workplaceContact: "Priya Shah",
       mentorName: "Priya Shah",
-      tutorName: "Sam Reed",
+      tutorName: "Daniel Turner",
       startDate: "2024-09-02",
       programmeYear: 2,
       programmeWeek: 12,
@@ -440,7 +440,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       employerName: "Riverside Autocare",
       workplaceContact: "Priya Shah",
       mentorName: "Priya Shah",
-      tutorName: "Sam Reed",
+      tutorName: "Daniel Turner",
       startDate: "2024-09-02",
       programmeYear: 2,
       programmeWeek: 10,
@@ -468,14 +468,14 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       employerName: "Riverside Autocare",
       workplaceContact: "Priya Shah",
       mentorName: "Priya Shah",
-      tutorName: "Sam Reed",
-      startDate: "2026-09-07",
+      tutorName: "Daniel Turner",
+      startDate: "2026-07-18",
       programmeYear: null,
       programmeWeek: null,
       attendancePercent: null,
       actualProgressPercent: null,
       collegeDays: "Mon, Tue",
-      notes: "Awaiting start paperwork.",
+      notes: "Awaiting start paperwork — portal environment not enabled yet.",
       createdAt: now,
       updatedAt: now,
     },
@@ -494,7 +494,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       expectedEndDate: "2027-03-02",
       teachingGroup: "Mon–Tue Group A",
       collegeDays: "Mon, Tue",
-      tutorName: "Sam Reed",
+      tutorName: "Daniel Turner",
       status: "active",
       notes:
         "Started on Skills England v1.2 — finish on this version even if v1.3 is live for new starts.",
@@ -513,7 +513,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       expectedEndDate: "2029-03-07",
       teachingGroup: "Mon–Tue Group B",
       collegeDays: "Mon, Tue",
-      tutorName: "Sam Reed",
+      tutorName: "Daniel Turner",
       status: "planned",
       notes: "New intake on Skills England v1.3.",
       createdAt: now,
@@ -531,7 +531,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       expectedEndDate: "2028-09-01",
       teachingGroup: "Wed–Thu Group A",
       collegeDays: "Wed, Thu",
-      tutorName: "Sam Reed",
+      tutorName: "Daniel Turner",
       status: "active",
       notes: "",
       createdAt: now,
@@ -539,23 +539,91 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
     },
   ];
 
-  const users: AdminPortalUser[] = DEMO_ACCOUNTS.map((account) => ({
-    id: `user-${account.id}`,
-    displayName: account.name,
-    email: account.email,
-    role: account.baseRole as AdminPortalRole,
-    workspace: account.workspace,
-    linkedEnrolmentId:
-      account.id === "alex-morgan" ? "enr-alex-morgan" : null,
-    linkedEmployerId:
-      account.id === "james-wilson" ? "emp-northline" : null,
-    status: "active" as const,
-    createdAt: now,
-    updatedAt: now,
-  }));
+  const users: AdminPortalUser[] = [
+    ...DEMO_ACCOUNTS.map((account) => {
+      const role = mapDemoAccountRole(account);
+      return {
+        id: `user-${account.id}`,
+        displayName: account.name,
+        email: account.email,
+        role,
+        workspace:
+          role === "Owner" ? "management" : account.workspace,
+        linkedEnrolmentId:
+          account.id === "alex-morgan" ? "enr-alex-morgan" : null,
+        linkedLearnerId:
+          account.id === "alex-morgan" ? "lrn-alex-morgan" : null,
+        linkedEmployerId:
+          account.id === "james-wilson" ? "emp-northline" : null,
+        programmeStartDate:
+          account.id === "alex-morgan" ? "2024-09-02" : null,
+        status: "active" as const,
+        enabledBy: "Emma Clarke",
+        enabledAt: now,
+        disabledBy: null,
+        disabledAt: null,
+        createdAt: now,
+        updatedAt: now,
+      };
+    }),
+    {
+      id: "user-jordan-blake",
+      displayName: "Jordan Blake",
+      email: "jordan.blake@example.gta.local",
+      role: "Learner",
+      workspace: "learner",
+      linkedEnrolmentId: "enr-jordan-blake",
+      linkedLearnerId: "lrn-jordan-blake",
+      linkedEmployerId: "emp-riverside",
+      programmeStartDate: "2024-09-02",
+      status: "active",
+      enabledBy: "Emma Clarke",
+      enabledAt: now,
+      disabledBy: null,
+      disabledAt: null,
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: "user-sam-reed-starter",
+      displayName: "Sam Reed",
+      email: "sam.reed.apprentice@example.gta.local",
+      role: "Learner",
+      workspace: "learner",
+      linkedEnrolmentId: "enr-sam-reed-starter",
+      linkedLearnerId: "lrn-sam-reed",
+      linkedEmployerId: "emp-riverside",
+      programmeStartDate: "2026-07-18",
+      status: "invited",
+      enabledBy: null,
+      enabledAt: null,
+      disabledBy: null,
+      disabledAt: null,
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: "user-priya-manager",
+      displayName: "Priya Shah",
+      email: "priya.shah@example.gta.local",
+      role: "Management",
+      workspace: "management",
+      linkedEnrolmentId: null,
+      linkedLearnerId: null,
+      linkedEmployerId: null,
+      programmeStartDate: null,
+      status: "active",
+      enabledBy: "Jon Harrison",
+      enabledAt: now,
+      disabledBy: null,
+      disabledAt: null,
+      createdAt: now,
+      updatedAt: now,
+    },
+  ];
 
   return {
-    version: 9,
+    version: 13,
     learners,
     enrolments,
     employers,
@@ -563,4 +631,16 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
     cohorts,
     users,
   };
+}
+
+function mapDemoAccountRole(account: {
+  id: string;
+  baseRole: string;
+}): AdminPortalRole {
+  if (account.id === "jon-harrison" || account.baseRole === "Owner") {
+    return "Owner";
+  }
+  if (account.baseRole === "Manager") return "Management";
+  if (account.baseRole === "Quality Assurance") return "Quality";
+  return account.baseRole as AdminPortalRole;
 }

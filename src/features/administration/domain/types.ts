@@ -170,7 +170,8 @@ export type AdminPortalRole =
   | "Learning and Progress Mentor"
   | "Administrator"
   | "Quality"
-  | "Management";
+  | "Management"
+  | "Owner";
 
 export type AdminPortalUser = {
   id: string;
@@ -179,14 +180,23 @@ export type AdminPortalUser = {
   role: AdminPortalRole;
   workspace: string;
   linkedEnrolmentId: string | null;
+  linkedLearnerId: string | null;
   linkedEmployerId: string | null;
+  /** When the linked learner's programme start began — drives new-starter badge. */
+  programmeStartDate: string | null;
   status: "active" | "invited" | "disabled";
+  /** Name of the staff member who last enabled the portal environment. */
+  enabledBy: string | null;
+  enabledAt: string | null;
+  /** Name of the staff member who last disabled the portal environment. */
+  disabledBy: string | null;
+  disabledAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
 
 export type AdminStoreSnapshot = {
-  version: 9;
+  version: 13;
   learners: AdminLearnerRecord[];
   enrolments: AdminLearnerEnrolment[];
   employers: AdminEmployerRecord[];

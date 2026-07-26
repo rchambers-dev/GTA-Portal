@@ -124,49 +124,102 @@ const HELPLINES = [
   },
 ];
 
-export type SupportAudience = "learner" | "employer";
+export type SupportAudience = "learner" | "employer" | "administration";
+
+const AUDIENCE_COPY = {
+  learner: {
+    eyebrow: "Learner portal",
+    title: "Support",
+    description:
+      "Wellbeing, safeguarding, and everyday help — all in one place. Support chat stays private from your mentor unless you choose to involve them.",
+    heroEyebrow: "You are not on your own",
+    heroTitle: "Support & Wellbeing",
+    heroText:
+      "Whether it's your apprenticeship, life at work, or how you're feeling — there's always someone here to help. Reach out however feels easiest.",
+    chipPrimary: "Confidential",
+    urgentText:
+      "Talk to a trusted adult, message Safeguarding below, or call Samaritans any time. If someone is in immediate danger, use emergency services.",
+    waysSub: "Start a conversation with the right person for what you need.",
+    askTitle: "GTA Support chat",
+    askBody:
+      "Welfare, Ask GTA questions, and navigating your apprenticeship.",
+    privacy: "Private from your mentor",
+    messagesHref: "/learner/messages",
+    supportHref: "/learner/support",
+  },
+  employer: {
+    eyebrow: "Employer workspace",
+    title: "Support",
+    description:
+      "Ask GTA, raise a concern, or get help with an apprentice — GTA handles sensitive cases first. The apprentice is not contacted directly from employer concerns.",
+    heroEyebrow: "We're here for employers too",
+    heroTitle: "Support & Concerns",
+    heroText:
+      "Whether you need clarity on progress, training arrangements, or you're worried about an apprentice — reach out to GTA. Sensitive concerns stay with GTA until the right next step is agreed.",
+    chipPrimary: "GTA-first",
+    urgentText:
+      "If an apprentice or colleague is at risk, message Safeguarding below or call Samaritans. If someone is in immediate danger, use emergency services.",
+    waysSub: "Start a conversation with the right GTA contact for what you need.",
+    askTitle: "Ask GTA",
+    askBody:
+      "General questions about delivery, reviews, attendance, or employer obligations.",
+    privacy: "Handled by GTA first",
+    messagesHref: "/employer/messages",
+    supportHref: "/employer/support",
+  },
+  administration: {
+    eyebrow: "Administration",
+    title: "Safeguarding",
+    description:
+      "Shared safeguarding contacts and urgent help — available from every workspace. Use this when a learner or employer concern needs a safe, confidential route.",
+    heroEyebrow: "Shared safeguarding route",
+    heroTitle: "Safeguarding & Welfare",
+    heroText:
+      "If something in enrolment, employer records, or day-to-day admin raises a welfare concern, contact Safeguarding here. Sensitive cases stay with GTA leads until the right next step is agreed.",
+    chipPrimary: "Confidential",
+    urgentText:
+      "If a learner or colleague is at risk, message Safeguarding below or call Samaritans. If someone is in immediate danger, use emergency services.",
+    waysSub: "Start a conversation with Safeguarding or GTA support.",
+    askTitle: "GTA Support chat",
+    askBody:
+      "General admin questions that need a welfare-aware response from GTA.",
+    privacy: "Handled by GTA first",
+    messagesHref: "/administration/messages",
+    supportHref: "/administration/safeguarding",
+  },
+} as const;
 
 export function LearnerSupportScreen({
   audience = "learner",
 }: {
-  /** Shared Support page — learner or employer copy and message routes. */
+  /** Shared Support / Safeguarding page — copy and message routes by workspace. */
   audience?: SupportAudience;
 } = {}) {
   const { ensureThreadWithContact } = useLearnerChat();
+  const copy = AUDIENCE_COPY[audience];
   const isEmployer = audience === "employer";
-  const messagesHref = isEmployer ? "/employer/messages" : "/learner/messages";
-  const supportHref = isEmployer ? "/employer/support" : "/learner/support";
+  const isAdministration = audience === "administration";
+  const messagesHref = copy.messagesHref;
+  const supportHref = copy.supportHref;
 
   const openChat = (contactId: string) => () =>
     ensureThreadWithContact(contactId);
 
   return (
     <LearnerPageShell
-      eyebrow={isEmployer ? "Employer workspace" : "Learner portal"}
-      title="Support"
-      description={
-        isEmployer
-          ? "Ask GTA, raise a concern, or get help with an apprentice — GTA handles sensitive cases first. The apprentice is not contacted directly from employer concerns."
-          : "Wellbeing, safeguarding, and everyday help — all in one place. Support chat stays private from your mentor unless you choose to involve them."
-      }
+      eyebrow={copy.eyebrow}
+      title={copy.title}
+      description={copy.description}
     >
       <div className={styles.page}>
         <section className={styles.hero}>
           <div className={styles.heroMain}>
-            <p className={styles.heroEyebrow}>
-              {isEmployer ? "We're here for employers too" : "You are not on your own"}
-            </p>
-            <h1 className={styles.heroTitle}>
-              {isEmployer ? "Support & Concerns" : "Support & Wellbeing"}
-            </h1>
-            <p className={styles.heroText}>
-              {isEmployer
-                ? "Whether you need clarity on progress, training arrangements, or you're worried about an apprentice — reach out to GTA. Sensitive concerns stay with GTA until the right next step is agreed."
-                : "Whether it's your apprenticeship, life at work, or how you're feeling — there's always someone here to help. Reach out however feels easiest."}
-            </p>
+            <p className={styles.heroEyebrow}>{copy.heroEyebrow}</p>
+            <h1 className={styles.heroTitle}>{copy.heroTitle}</h1>
+            <p className={styles.heroText}>{copy.heroText}</p>
             <div className={styles.heroChips}>
               <span className={styles.heroChip}>
-                <HeartIcon /> {isEmployer ? "GTA-first" : "Confidential"}
+                <HeartIcon /> {copy.chipPrimary}
               </span>
               <span className={styles.heroChip}>
                 <ShieldIcon /> Safe &amp; supported
@@ -181,11 +234,7 @@ export function LearnerSupportScreen({
             <span className={styles.urgentHead}>
               <AlertIcon /> Need help right now?
             </span>
-            <p className={styles.urgentText}>
-              {isEmployer
-                ? "If an apprentice or colleague is at risk, message Safeguarding below or call Samaritans. If someone is in immediate danger, use emergency services."
-                : "Talk to a trusted adult, message Safeguarding below, or call Samaritans any time. If someone is in immediate danger, use emergency services."}
-            </p>
+            <p className={styles.urgentText}>{copy.urgentText}</p>
             <div className={styles.urgentRow}>
               <a className={styles.urgentBtn} href="tel:116123">
                 <PhoneIcon /> Samaritans 116 123
@@ -206,11 +255,7 @@ export function LearnerSupportScreen({
           <div className={styles.sectionHead}>
             <h2 className={styles.sectionTitle}>Ways to get help</h2>
           </div>
-          <p className={styles.sectionSub}>
-            {isEmployer
-              ? "Start a conversation with the right GTA contact for what you need."
-              : "Start a conversation with the right person for what you need."}
-          </p>
+          <p className={styles.sectionSub}>{copy.waysSub}</p>
 
           <div className={styles.cardGrid}>
             <Link
@@ -223,48 +268,40 @@ export function LearnerSupportScreen({
                 <ChatIcon />
               </span>
               <span className={styles.helpCardBody}>
-                <strong>{isEmployer ? "Ask GTA" : "GTA Support chat"}</strong>
-                <span>
-                  {isEmployer
-                    ? "General questions about delivery, reviews, attendance, or employer obligations."
-                    : "Welfare, Ask GTA questions, and navigating your apprenticeship."}
-                </span>
+                <strong>{copy.askTitle}</strong>
+                <span>{copy.askBody}</span>
               </span>
-              {!isEmployer ? (
-                <span className={styles.privacyTag}>
-                  <LockIcon /> Private from your mentor
-                </span>
-              ) : (
-                <span className={styles.privacyTag}>
-                  <LockIcon /> Handled by GTA first
-                </span>
-              )}
+              <span className={styles.privacyTag}>
+                <LockIcon /> {copy.privacy}
+              </span>
               <span className={styles.helpCardCta}>
                 Open Support chat <ArrowIcon />
               </span>
             </Link>
 
-            <Link
-              className={styles.helpCard}
-              data-tone="navy"
-              href={messagesHref}
-              onClick={openChat(ALEX_PROFILE.mentorId)}
-            >
-              <span className={styles.iconChip}>
-                <MentorIcon />
-              </span>
-              <span className={styles.helpCardBody}>
-                <strong>Progress mentor</strong>
-                <span>
-                  {isEmployer
-                    ? `${ALEX_PROFILE.mentorName} — progress, reviews, and workplace arrangements for your apprentices.`
-                    : `${ALEX_PROFILE.mentorName} — day-to-day pastoral and progress questions.`}
+            {!isAdministration ? (
+              <Link
+                className={styles.helpCard}
+                data-tone="navy"
+                href={messagesHref}
+                onClick={openChat(ALEX_PROFILE.mentorId)}
+              >
+                <span className={styles.iconChip}>
+                  <MentorIcon />
                 </span>
-              </span>
-              <span className={styles.helpCardCta}>
-                Message mentor <ArrowIcon />
-              </span>
-            </Link>
+                <span className={styles.helpCardBody}>
+                  <strong>Progress mentor</strong>
+                  <span>
+                    {isEmployer
+                      ? `${ALEX_PROFILE.mentorName} — progress, reviews, and workplace arrangements for your apprentices.`
+                      : `${ALEX_PROFILE.mentorName} — day-to-day pastoral and progress questions.`}
+                  </span>
+                </span>
+                <span className={styles.helpCardCta}>
+                  Message mentor <ArrowIcon />
+                </span>
+              </Link>
+            ) : null}
 
             {isEmployer ? (
               <Link
@@ -287,7 +324,7 @@ export function LearnerSupportScreen({
                   Ask about progress <ArrowIcon />
                 </span>
               </Link>
-            ) : (
+            ) : !isAdministration ? (
               <Link
                 className={styles.helpCard}
                 data-tone="green"
@@ -307,7 +344,7 @@ export function LearnerSupportScreen({
                   Message tutor <ArrowIcon />
                 </span>
               </Link>
-            )}
+            ) : null}
 
             <Link
               className={styles.helpCard}
@@ -325,14 +362,18 @@ export function LearnerSupportScreen({
                 <span>
                   {isEmployer
                     ? "Raise a welfare or workplace concern about an apprentice. GTA handles this first — the learner is not contacted directly from this route."
-                    : "Report a concern or talk privately with the Safeguarding team."}
+                    : isAdministration
+                      ? "Report a welfare concern arising from enrolment, employer, or learner admin work. GTA Safeguarding leads handle next steps."
+                      : "Report a concern or talk privately with the Safeguarding team."}
                 </span>
               </span>
               <span className={styles.privacyTag}>
                 <LockIcon />
                 {isEmployer
                   ? " GTA first — learner not auto-contacted"
-                  : " Private from mentor & tutor"}
+                  : isAdministration
+                    ? " Confidential — DSL first"
+                    : " Private from mentor & tutor"}
               </span>
               <span className={styles.helpCardCta}>
                 {isEmployer ? (
@@ -359,7 +400,9 @@ export function LearnerSupportScreen({
               <p>
                 {isEmployer
                   ? "Safeguarding means keeping apprentices safe from harm, abuse, bullying, or neglect — at GTA, at work, or at home. If something doesn't feel right about an apprentice or colleague, tell a Safeguarding Lead. You will be listened to and GTA will decide next steps."
-                  : "Safeguarding means keeping you safe from harm, abuse, bullying, or neglect — at GTA, at work, or at home. If something doesn't feel right for you or someone you know, tell a Safeguarding Lead. You will be listened to, taken seriously, and kept informed."}
+                  : isAdministration
+                    ? "Safeguarding means keeping learners and colleagues safe from harm, abuse, bullying, or neglect. If something in admin work doesn't feel right, tell a Safeguarding Lead. You will be listened to and GTA will decide next steps."
+                    : "Safeguarding means keeping you safe from harm, abuse, bullying, or neglect — at GTA, at work, or at home. If something doesn't feel right for you or someone you know, tell a Safeguarding Lead. You will be listened to, taken seriously, and kept informed."}
               </p>
             </div>
           </div>

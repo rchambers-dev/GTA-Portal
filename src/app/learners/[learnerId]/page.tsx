@@ -1,5 +1,4 @@
-import { notFound } from "next/navigation";
-import { LearnerWorkspaceScreen } from "@/features/learner-lifecycle";
+import { LearnerWorkspaceClient } from "@/features/learner-lifecycle/components/LearnerWorkspaceClient";
 import {
   getReturnLink,
   parseFromContext,
@@ -23,7 +22,6 @@ export default async function LearnerPage({ params, searchParams }: Props) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
   const workspace = await ports.data.getLearnerWorkspace(learnerId);
-  if (!workspace) notFound();
 
   const activeTab = parseLearnerTab(query.tab);
   const from = parseFromContext(query.from);
@@ -35,8 +33,9 @@ export default async function LearnerPage({ params, searchParams }: Props) {
     : false;
 
   return (
-    <LearnerWorkspaceScreen
-      workspace={workspace}
+    <LearnerWorkspaceClient
+      learnerId={learnerId}
+      initialWorkspace={workspace}
       activeTab={activeTab}
       from={from}
       returnHref={returnHref}

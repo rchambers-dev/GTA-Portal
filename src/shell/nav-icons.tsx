@@ -152,7 +152,7 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/accounts")) {
+  if (key.includes("/administration/accounts") || key.includes("/management/accounts")) {
     return (
       <svg {...common}>
         <circle cx="12" cy="8" r="3.5" />
@@ -161,12 +161,22 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/administration/documents")) {
+  if (key.includes("/administration/safeguarding") || key.includes("/safeguarding")) {
     return (
       <svg {...common}>
-        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
-        <path d="M14 3v5h5" />
-        <path d="M8 13h8M8 17h5" />
+        <path d="M12 3 4.5 6.5v5.2c0 4.4 3.1 7.7 7.5 9.3 4.4-1.6 7.5-4.9 7.5-9.3V6.5L12 3z" />
+        <path d="M9.2 12.2 11 14l3.8-4" />
+      </svg>
+    );
+  }
+  if (
+    key.includes("/shared-drive") ||
+    key.includes("/administration/documents")
+  ) {
+    return (
+      <svg {...common}>
+        <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H10l2 2h5.5A2.5 2.5 0 0 1 20 9.5v7A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9z" />
+        <path d="M8 13h8M8 16h5" />
       </svg>
     );
   }
