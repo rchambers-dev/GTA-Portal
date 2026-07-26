@@ -95,6 +95,443 @@ export const difficultySection: TaskSectionDef = {
   ],
 };
 
+function blockContext(blockId: number): { name: string; weeks?: string } {
+  const block = AUTOCARE_BLOCKS.find((b) => b.id === blockId);
+  return {
+    name: block?.name ?? `Block ${blockId}`,
+    weeks:
+      block?.weekStart != null && block?.weekEnd != null
+        ? `Weeks ${block.weekStart}–${block.weekEnd}`
+        : undefined,
+  };
+}
+
+/**
+ * Task 1 — knowledge test result record, one per block.
+ * The trainer records the score and decision; the apprentice signs to
+ * acknowledge the result, so almost every field here is staff-filled.
+ */
+export function makeKnowledgeTest(blockId: number): PracticalTaskDef {
+  const { name, weeks } = blockContext(blockId);
+
+  return {
+    id: `block-${blockId}-task-1`,
+    evidenceRef: "Knowledge_Test_Result_Record_Simple",
+    blockId,
+    taskNumber: 1,
+    kind: "knowledge_test",
+    title: `Block ${blockId} Knowledge Test Result`,
+    scenario:
+      "Your knowledge test result for this block is recorded here. Your trainer enters the score and decision after marking, then you sign to confirm you have seen the result and the feedback.",
+    objectives: [
+      "Sit the block knowledge test under the conditions your trainer sets.",
+      "Review the score, decision and feedback recorded by your trainer.",
+      "Confirm you have seen the result and understand any referral action.",
+    ],
+    estimatedMinutes: 30,
+    sourcePdf: "Knowledge_Test_Result_Record_Simple_v1.0.pdf",
+    weeks,
+    assessmentType: "Knowledge test",
+    materials: [
+      "Block knowledge test paper or online test",
+      "Revision notes from this block",
+    ],
+    instructions: [
+      "Sit the knowledge test for this block.",
+      "Your trainer marks the test and records the score and decision.",
+      "Review the feedback, then sign to confirm you have seen the result.",
+    ],
+    reviewStatus: "curriculum_review",
+    sections: [
+      {
+        id: "test",
+        title: "Test details",
+        fields: [
+          {
+            key: "blockContext",
+            type: "description",
+            label: `Block ${blockId} · ${name}${weeks ? ` · ${weeks}` : ""}`,
+          },
+          {
+            key: "examTitle",
+            type: "text",
+            label: "Exam title",
+            filledBy: "trainer",
+            required: true,
+          },
+          {
+            key: "testDate",
+            type: "date",
+            label: "Date",
+            filledBy: "trainer",
+            required: true,
+          },
+          {
+            key: "score",
+            type: "text",
+            label: "Score",
+            filledBy: "trainer",
+            required: true,
+          },
+          {
+            key: "percentage",
+            type: "text",
+            label: "Percentage",
+            filledBy: "trainer",
+            required: true,
+          },
+          {
+            key: "result",
+            type: "text",
+            label: "Result",
+            filledBy: "trainer",
+            required: true,
+          },
+        ],
+      },
+      {
+        id: "decision",
+        title: "Assessment decision and feedback",
+        fields: [
+          {
+            key: "assessmentDecision",
+            type: "radio_group",
+            label: "Assessment decision",
+            options: ["Pass", "Referred"],
+            filledBy: "trainer",
+            required: true,
+          },
+          {
+            key: "trainerFeedback",
+            type: "textarea",
+            label: "Feedback",
+            filledBy: "trainer",
+          },
+        ],
+      },
+      {
+        id: "signoff",
+        title: "Sign-off",
+        fields: [
+          {
+            key: "apprenticeSign",
+            type: "sign_off",
+            label: "Apprentice — I confirm I have seen this result and feedback",
+            signOffRole: "apprentice",
+            required: true,
+          },
+          {
+            key: "trainerSign",
+            type: "sign_off",
+            label: "Trainer confirmation of result",
+            signOffRole: "trainer",
+            filledBy: "trainer",
+            required: true,
+          },
+        ],
+      },
+      difficultySection,
+    ],
+  };
+}
+
+/**
+ * Task 2 — apprentice job card, workplace evidence signed by the mentor.
+ * Modelled as one instance per block pending confirmation of whether
+ * apprentices raise several job cards per block.
+ */
+export function makeJobCard(blockId: number): PracticalTaskDef {
+  const { name, weeks } = blockContext(blockId);
+
+  return {
+    id: `block-${blockId}-task-2`,
+    evidenceRef: "Apprentice_Job_Card",
+    blockId,
+    taskNumber: 2,
+    kind: "job_card",
+    title: `Block ${blockId} Apprentice Job Card`,
+    scenario:
+      "Record a real job you completed at work under your mentor's supervision during this block. Capture the vehicle, the customer complaint, what you diagnosed and repaired, the parts and tools you used, and how you worked safely. Your mentor reviews and signs it.",
+    objectives: [
+      "Record a workplace job accurately using the correct documentation.",
+      "Show the technical data, tools and parts used to complete the job.",
+      "Evidence safe working, correct PPE and proper waste disposal.",
+      "Record time control and any delays honestly.",
+      "Obtain mentor confirmation that the record reflects the work completed.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Apprentice_Job_Card_v1.0.pdf",
+    weeks,
+    assessmentType: "Workplace evidence / mentor observation",
+    materials: [
+      "A real workplace job completed under mentor supervision",
+      "Manufacturer or workshop technical data",
+      "Parts and materials records",
+      "Mentor available to review and sign",
+    ],
+    instructions: [
+      "Complete a workplace job under your mentor's supervision.",
+      "Record the vehicle, complaint and work requested.",
+      "Record the diagnosis, repair, technical data, tools and parts used.",
+      "Record time control, road test and any delays.",
+      "Confirm PPE and safe working, then ask your mentor to review and sign.",
+    ],
+    reviewStatus: "curriculum_review",
+    sections: [
+      {
+        id: "job",
+        title: "Job and workplace details",
+        fields: [
+          {
+            key: "blockContext",
+            type: "description",
+            label: `Block ${blockId} · ${name}${weeks ? ` · ${weeks}` : ""}`,
+          },
+          { key: "jobReference", type: "text", label: "Job reference" },
+          { key: "evidenceNo", type: "text", label: "Evidence no." },
+          {
+            key: "employerGarage",
+            type: "text",
+            label: "Employer / garage",
+            required: true,
+          },
+          {
+            key: "mentorName",
+            type: "text",
+            label: "Mentor name",
+            required: true,
+          },
+          {
+            key: "dateCompleted",
+            type: "date",
+            label: "Date completed",
+            required: true,
+          },
+        ],
+      },
+      {
+        id: "vehicle",
+        title: "Vehicle details",
+        fields: [
+          { key: "make", type: "text", label: "Make", required: true },
+          { key: "model", type: "text", label: "Model", required: true },
+          { key: "regNo", type: "text", label: "Reg no.", required: true },
+          { key: "mileage", type: "text", label: "Mileage" },
+          { key: "vin", type: "text", label: "VIN / chassis" },
+          { key: "engineSize", type: "text", label: "Engine size" },
+        ],
+      },
+      {
+        id: "summary",
+        title: "Workplace task summary",
+        fields: [
+          {
+            key: "jobTitle",
+            type: "text",
+            label: "Job / task title",
+            required: true,
+          },
+          {
+            key: "customerComplaint",
+            type: "textarea",
+            label: "Customer complaint / work requested",
+            required: true,
+          },
+          {
+            key: "furtherAttention",
+            type: "textarea",
+            label: "Items requiring further attention",
+          },
+        ],
+      },
+      {
+        id: "bodyCondition",
+        title: "Vehicle body condition and damage record",
+        fields: [
+          {
+            key: "bodyDamageNotes",
+            type: "textarea",
+            label: "Body condition and damage notes",
+            hint: "Describe the location of any dents (D), scratches or stone chips (S) and corrosion (C). The paper job card uses a vehicle diagram — if you marked one up, upload the PDF as well using the fallback below.",
+            required: true,
+          },
+        ],
+      },
+      {
+        id: "timeControl",
+        title: "Time control and road test",
+        fields: [
+          { key: "timeIn", type: "text", label: "Time in" },
+          { key: "timeRequired", type: "text", label: "Time required" },
+          { key: "timeOut", type: "text", label: "Time out" },
+          {
+            key: "withinTimescale",
+            type: "radio_group",
+            label: "Completed within timescale",
+            options: ["Yes", "No"],
+            required: true,
+          },
+          {
+            key: "roadTest",
+            type: "checkbox_group",
+            label: "Road test carried out",
+            options: ["Pre-repair road test", "Post-repair road test"],
+          },
+          {
+            key: "anyDelays",
+            type: "radio_group",
+            label: "Any delays",
+            options: ["No", "Yes"],
+            required: true,
+          },
+          {
+            key: "delayReason",
+            type: "textarea",
+            label: "Delay reason / notes",
+          },
+        ],
+      },
+      {
+        id: "repair",
+        title: "Diagnosis and repair carried out",
+        fields: [
+          {
+            key: "diagnosisRepair",
+            type: "textarea",
+            label: "Diagnosis and repair carried out",
+            required: true,
+          },
+          {
+            key: "technicalData",
+            type: "textarea",
+            label: "Technical data employed",
+            hint: "Record technical information used, manufacturer data, measurements, torque settings and test results.",
+            required: true,
+          },
+          {
+            key: "specialTools",
+            type: "textarea",
+            label: "Special tools and equipment used",
+          },
+          {
+            key: "partsUsed",
+            type: "parts_rows",
+            label: "Parts / materials used",
+            rowCount: 4,
+          },
+        ],
+      },
+      {
+        id: "safeWorking",
+        title: "Protective equipment and working practice",
+        fields: [
+          {
+            key: "ppeUsed",
+            type: "checkbox_group",
+            label: "Use of appropriate protective equipment",
+            options: [
+              "Vehicle protection",
+              "Footwear",
+              "Goggles",
+              "Gloves",
+              "Overalls",
+              "Mask",
+              "Ear defenders",
+              "Head protection",
+              "Skin protection",
+            ],
+            required: true,
+          },
+          {
+            key: "ppeOther",
+            type: "text",
+            label: "Other protective equipment — please state",
+          },
+          {
+            key: "learnerStatements",
+            type: "checkbox_group",
+            label: "Tick the statements that apply to you on this job",
+            options: [
+              "Dealt directly with customer",
+              "Carried out test / fault diagnosis",
+              "Work area cleaned down after repair",
+              "Estimated time to complete job",
+              "Worked in a safe manner",
+              "Tools and equipment checked for serviceability pre and post task",
+              "Recorded the job on appropriate documents",
+              "Disposed of waste material correctly (COSHH)",
+            ],
+            required: true,
+          },
+        ],
+      },
+      {
+        id: "declarations",
+        title: "Declarations and mentor sign-off",
+        fields: [
+          {
+            key: "apprenticeSign",
+            type: "sign_off",
+            label:
+              "Apprentice declaration — this job card records work I completed at work under mentor supervision",
+            signOffRole: "apprentice",
+            required: true,
+          },
+          {
+            key: "mentorObservation",
+            type: "textarea",
+            label: "Mentor observation comments",
+            filledBy: "mentor",
+            required: true,
+          },
+          {
+            key: "mentorJobRole",
+            type: "text",
+            label: "Mentor job role",
+            filledBy: "mentor",
+          },
+          {
+            key: "mentorContact",
+            type: "text",
+            label: "Mentor contact no.",
+            filledBy: "mentor",
+          },
+          {
+            key: "mentorSign",
+            type: "sign_off",
+            label:
+              "Mentor declaration — I observed or reviewed this work and it reflects the task completed",
+            signOffRole: "mentor",
+            filledBy: "mentor",
+            required: true,
+          },
+        ],
+      },
+      {
+        id: "assessor",
+        title: "Assessor / IQA use only",
+        fields: [
+          {
+            key: "assessorDecision",
+            type: "radio_group",
+            label: "Assessor decision",
+            options: ["Accepted", "Query", "Resubmission required"],
+            filledBy: "assessor",
+            required: true,
+          },
+          {
+            key: "assessorFeedback",
+            type: "textarea",
+            label: "Assessor / IQA feedback and action points",
+            filledBy: "assessor",
+          },
+        ],
+      },
+      difficultySection,
+    ],
+  };
+}
+
 export type PracticalInput = {
   blockId: number;
   taskNumber: 3 | 4;
@@ -180,12 +617,7 @@ export function makePractical(input: PracticalInput): PracticalTaskDef {
 
 /** Full Task 5 reflection from the shared PDF template — one instance per block. */
 export function makeBlockReflection(blockId: number): PracticalTaskDef {
-  const block = AUTOCARE_BLOCKS.find((b) => b.id === blockId);
-  const blockName = block?.name ?? `Block ${blockId}`;
-  const weeks =
-    block?.weekStart != null && block?.weekEnd != null
-      ? `Weeks ${block.weekStart}–${block.weekEnd}`
-      : undefined;
+  const { name: blockName, weeks } = blockContext(blockId);
 
   return {
     id: `block-${blockId}-task-5`,

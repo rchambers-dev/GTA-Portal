@@ -15,6 +15,7 @@ import {
 } from "../domain/mock-learner";
 import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "@/features/programme-delivery/domain/autocare-blocks";
 import { tasksForBlock } from "@/features/programme-delivery/domain/autocare-tasks";
+import { taskKindLabel } from "@/features/programme-delivery/domain/task-schema";
 import {
   getTaskServerSnapshot,
   getTaskSnapshot,
@@ -134,7 +135,7 @@ export function LearnerLearningScreen() {
                       <div className={styles.rowMain}>
                         <strong>{task.title}</strong>
                         <span>
-                          {task.evidenceRef} · {task.kind} · ~
+                          {task.evidenceRef} · {taskKindLabel(task.kind)} · ~
                           {task.estimatedMinutes} min
                         </span>
                       </div>

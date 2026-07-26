@@ -1,7 +1,14 @@
 import type { PracticalTaskDef } from "../task-schema";
-import { makeBlockReflection, makePractical } from "./shared";
+import {
+  makeBlockReflection,
+  makeJobCard,
+  makeKnowledgeTest,
+  makePractical,
+} from "./shared";
 
 export const BLOCK_06_TASKS: PracticalTaskDef[] = [
+  makeKnowledgeTest(6),
+  makeJobCard(6),
   makePractical({
     blockId: 6,
     taskNumber: 3,

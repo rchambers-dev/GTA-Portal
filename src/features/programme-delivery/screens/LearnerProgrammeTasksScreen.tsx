@@ -9,6 +9,7 @@ import {
 import { ALEX_PROFILE } from "@/features/learner-portal/domain/mock-learner";
 import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "../domain/autocare-blocks";
 import { tasksForBlock } from "../domain/autocare-tasks";
+import { taskKindLabel } from "../domain/task-schema";
 import {
   getTaskServerSnapshot,
   getTaskSnapshot,
@@ -21,7 +22,7 @@ import {
 import styles from "./programme-delivery.module.css";
 
 /**
- * Learner college tasks — practicals and reflections only.
+ * Learner college tasks — knowledge test, job card, practicals and reflection.
  * Lesson plans are never shown here (staff/tutor only).
  */
 export function LearnerProgrammeTasksScreen() {
@@ -129,7 +130,8 @@ export function LearnerProgrammeTasksScreen() {
                               Task {task.taskNumber}: {task.title}
                             </strong>
                             <span>
-                              {task.estimatedMinutes} min · {task.kind}
+                              {task.estimatedMinutes} min ·{" "}
+                              {taskKindLabel(task.kind)}
                               {task.reviewStatus === "curriculum_review"
                                 ? " · Curriculum reviewing content"
                                 : ""}

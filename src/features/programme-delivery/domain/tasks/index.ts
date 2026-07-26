@@ -10,7 +10,7 @@ import { BLOCK_08_TASKS } from "./block-08";
 import { BLOCK_09_TASKS } from "./block-09";
 import { BLOCK_10_TASKS } from "./block-10";
 
-/** All Autocare practical and reflection tasks — Blocks 1–10. */
+/** All Autocare tasks — knowledge test, job card, practicals and reflection per block. */
 export const AUTOCARE_PRACTICAL_TASKS: PracticalTaskDef[] = [
   ...BLOCK_01_TASKS,
   ...BLOCK_02_TASKS,
@@ -80,4 +80,9 @@ export function lessonPlansForBlock(blockId: number): LessonPlanDef[] {
   return AUTOCARE_LESSON_PLANS.filter((p) => p.blockId === blockId);
 }
 
-export { makeBlockReflection, makePractical } from "./shared";
+export {
+  makeBlockReflection,
+  makeJobCard,
+  makeKnowledgeTest,
+  makePractical,
+} from "./shared";

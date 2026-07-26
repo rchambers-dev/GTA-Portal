@@ -11,6 +11,7 @@ import type { TaskFieldDef } from "../domain/task-schema";
 import {
   parseActionRows,
   parseJsonList,
+  parsePartsRows,
   parseRatingRows,
 } from "../domain/task-schema";
 import {
@@ -332,6 +333,90 @@ function FieldInput({
                       onChange={(e) => {
                         const next = [...rows];
                         next[i] = { ...next[i], ownerReview: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  }
+
+  if (field.type === "parts_rows") {
+    const rows = parsePartsRows(value, field.rowCount ?? 4);
+    return (
+      <div className={wrapClass}>
+        <span className={styles.fieldLabel}>{field.label}</span>
+        {staffLocked ? (
+          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
+        ) : field.hint ? (
+          <p className={styles.fieldHint}>{field.hint}</p>
+        ) : null}
+        <div className={styles.tableScroll}>
+          <table className={styles.dataTable}>
+            <thead>
+              <tr>
+                <th>Qty</th>
+                <th>Part / material description</th>
+                <th>Part no.</th>
+                <th>Supplier / notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row, i) => (
+                <tr key={i}>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.qty}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], qty: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.description}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], description: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.partNo}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], partNo: e.target.value };
+                        onChange(JSON.stringify(next));
+                      }}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      className={styles.input}
+                      value={row.supplier}
+                      disabled={locked}
+                      readOnly={staffLocked}
+                      onChange={(e) => {
+                        const next = [...rows];
+                        next[i] = { ...next[i], supplier: e.target.value };
                         onChange(JSON.stringify(next));
                       }}
                     />
