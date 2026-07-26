@@ -33,7 +33,6 @@ export function AdministrationDashboardScreen() {
   const awaitingEnable = store.users.filter(
     (u) => u.role === "Learner" && u.status === "invited",
   );
-  const activeLearners = store.enrolments.filter((e) => e.status === "active");
   const pendingStart = store.enrolments.filter(
     (e) => e.status === "pending_start" || e.status === "draft",
   );
@@ -127,15 +126,6 @@ export function AdministrationDashboardScreen() {
               Live presence connects with portal sessions
             </p>
           </div>
-          <Link
-            href="/administration/enrolments"
-            className={learnerStyles.glanceLink}
-            data-tone="navy"
-          >
-            <p className={learnerStyles.glanceLabel}>On programme</p>
-            <p className={learnerStyles.glanceValue}>{activeLearners.length}</p>
-            <p className={learnerStyles.glanceHint}>Active enrolments</p>
-          </Link>
         </div>
 
         <section className={learnerStyles.section}>
