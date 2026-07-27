@@ -121,7 +121,7 @@ May be needed for:
 
 | Item | Notes |
 |------|--------|
-| Vercel project + Production env vars | AI, Giphy, Supabase URL + keys, hCaptcha |
+| Vercel project + Production env vars | Keys only: AI_API_KEY, GIPHY, Supabase URL/keys, hCaptcha. AI provider/model/cap use code defaults. |
 | Supabase project created | `https://cjtgjxgghfiskqnuttzd.supabase.co` |
 | Supabase publishable + secret API keys | Named `gta_portal` / `gta_portal_server` |
 | Auth: Email provider enabled | Azure SSO left off for now |
