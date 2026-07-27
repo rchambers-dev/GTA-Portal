@@ -4,8 +4,8 @@ Living list of infrastructure items we need from IT so the portal can go live pr
 We will add to this document as we discover more requirements.
 
 **Project:** GTA Portal (Group Training Association — apprenticeship / training centre)  
-**Hosting:** Vercel (`gta-portal.vercel.app`)  
-**Database / Auth:** Supabase project `GTA-Portal`  
+**Hosting:** Vercel — `gta-portal` + `gta-website` (leave Wix; see §3)  
+**Database / Auth:** Supabase — `GTA-Portal` + `GTA-Website` (separate DBs on purpose)  
 **Owner (GTA):** Reiss Chambers  
 
 ---
@@ -95,14 +95,74 @@ When ready, we will ask IT for an **Entra ID (Azure AD) app registration** so st
 
 ---
 
-## 3. Domain / DNS (if needed) — **Pending (as required)**
+## 3. Domain / DNS — leave Wix, host on Vercel — **Pending**
 
-May be needed for:
+### Goal
 
-- [ ] Verifying the custom From domain for SMTP / Resend / SendGrid  
-- [ ] Optional: custom portal hostname (e.g. `portal.<gta-domain>`) pointing at Vercel  
+Drop **Wix** as the public hoster. Keep one GTA brand domain, with separate apps:
 
-*Add exact DNS records here when IT/provider give them.*
+| App | Vercel project | Supabase project | Purpose |
+|-----|----------------|------------------|---------|
+| Public website | `gta-website` | `GTA-Website` | Exhibition cars, trade stands, events, announcements |
+| Apprenticeship portal | `gta-portal` | `GTA-Portal` | Logins, learners, tasks, OTJ, evidence |
+
+Same organisation domain; **not** the same hostname for both apps.
+
+### Recommended hostnames (subdomains)
+
+A **subdomain** is the label in front of the main domain (e.g. `portal` in `portal.gta….co.uk`).
+
+| Hostname | Points to |
+|----------|-----------|
+| `www.<gta-domain>` (and/or apex `<gta-domain>`) | Vercel project **gta-website** |
+| `portal.<gta-domain>` | Vercel project **gta-portal** |
+
+Website top-right “Portal” button → link to `https://portal.<gta-domain>`.
+
+### Why not one path like `/portal` on the same site?
+
+Possible, but messier for Auth redirects, cookies, and deploys. **Subdomain is preferred.**
+
+### What we need from IT / domain owner
+
+Currently domain DNS may sit with **Wix**. We want to move off Wix hosting entirely.
+
+Please either:
+
+1. **Move DNS** to a proper DNS host (registrar, Cloudflare, or Vercel DNS), **or**  
+2. Keep nameservers where they are but ensure we can add records Wix cannot block  
+
+Then add records (exact targets come from Vercel when domains are added):
+
+| Type | Name | Target (typical) |
+|------|------|------------------|
+| CNAME or A/ALIAS | `www` / `@` | Vercel website project (per Vercel Domains UI) |
+| CNAME | `portal` | Vercel portal project (often `cname.vercel-dns.com` — confirm in Vercel) |
+
+Also needed for SMTP (Section 1), if using Resend/SendGrid:
+
+- [ ] DNS records to verify sending from `@<gta-domain>`
+
+### After DNS is live — GTA / Reiss to do
+
+- [ ] Vercel → `gta-website` → Domains → add `www` / apex  
+- [ ] Vercel → `gta-portal` → Domains → add `portal.<gta-domain>`  
+- [ ] Supabase **GTA-Portal** → Auth URL config: Site URL + Redirect URLs = portal hostname  
+- [ ] Website nav “Portal” button → `https://portal.<gta-domain>`  
+- [ ] Cancel / stop Wix site hosting once cutover is confirmed  
+
+### Acceptance check
+
+- [ ] `https://www.<gta-domain>` (or apex) loads the Vercel website  
+- [ ] `https://portal.<gta-domain>` loads the Vercel portal  
+- [ ] Auth emails / login redirects use the portal hostname (not `localhost`, not only `*.vercel.app`)  
+- [ ] Wix no longer required for public pages  
+
+### Temporary (until cutover)
+
+- Website: `https://gta-website-two.vercel.app`  
+- Portal: `https://gta-portal.vercel.app`  
+Fine for building; not the long-term pupil-facing URLs.
 
 ---
 
@@ -144,8 +204,9 @@ These are configured in Supabase/Vercel but **not connected in the app UI yet**.
 |------|--------|--------|
 | Wire hCaptcha into login / sign-up / reset forms | Pending | Use `NEXT_PUBLIC_HCAPTCHA_SITE_KEY` in the browser; Supabase already has the secret for Auth API verification |
 | Supabase JS clients (`@supabase/ssr`) | Pending | Install + browser/server clients when replacing demo auth |
-| Final Site URL + Redirect URLs | Waiting | Set when main GTA website portal button / custom domain is ready |
+| Final Site URL + Redirect URLs | Waiting | Set to `https://portal.<gta-domain>` after Section 3 DNS cutover |
 | Custom SMTP (`noreply@…`) | Pending IT | Section 1 — required before raising email rate limits |
+| Leave Wix / attach custom domains | Pending | Section 3 |
 
 ---
 
@@ -171,3 +232,4 @@ These are configured in Supabase/Vercel but **not connected in the app UI yet**.
 |------|--------|
 | 2026-07-27 | Created list; added SMTP / noreply mailbox request; noted SSO and DNS as later items; recorded Auth settings already configured in Supabase |
 | 2026-07-27 | Org name noted as Group Training Association; added hCaptcha + frontend wiring backlog; expanded “already done” Auth hardening |
+| 2026-07-27 | Expanded §3: leave Wix, www + portal subdomains on Vercel, separate website/portal Supabase projects |
