@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@giphy/js-fetch-api": "^5.8.0",
+    "@supabase/ssr": "^0.12.3",
+    "@supabase/supabase-js": "^2.110.9",
     "@vercel/analytics": "^2.0.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
