@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Source_Sans_3 } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { PortalShell } from "@/shell/PortalShell";
 import "@/styles/globals.css";
@@ -66,6 +67,7 @@ export default async function RootLayout({
           children
         )}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
