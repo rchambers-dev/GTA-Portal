@@ -1,21 +1,32 @@
 # Autocare / programme delivery — settled decisions
 
 Source pack: `Portal Questions/AutoCare L2` + Jon answers (Jul 2026).
+Gateway model aligned to MBB `mbb-gta-duplicate` (Jul 2026).
 
 ## Standard & OTJ
 
 - New starts lock **newest** ST0499 version (**v1.3**). Existing learners stay on the version they started.
 - Published minimum OTJ **605 hrs**; portal planned OTJ can be higher (Autocare **611.50**). **No maximum.**
-- Headroom (**6.5 hrs**) is fixed on the programme master; change only when standard version changes.
-- Primary calendar measure: **weeks** (not months).
-- Blocks **11–12** (gateway / EPA): **dates only**, 0 OTJ.
+- Headroom (**6.5 hrs**) is fixed on the programme master; revise only when standard version changes.
+- Primary calendar measure for **learners**: **programme weeks** from the **cohort start date** (no fast-track).
+- Blocks **1–10**: AutoCare L2 training spine (lesson index + practical Task 3/4 PDFs).
+- Block **10** remains the heavy end (EPA mock + capstone; weeks 95–113).
+- Block **11**: **Pre-EPA consolidation** (lighter readiness tasks; **0 planned OTJ**) — not a gateway container.
+- Block **12**: EPA task records (**0 planned OTJ**).
+- **Gateways are separate milestones** (MBB-style), not Block 11:
+  - **Gateway 1** — after Block 5 / ~12 months
+  - **Gateway 2** — after Block 10 / ~24 months
+  - **EPA** — cohort delivery end / ~25 months
+- Programme still **60 tasks** (12 blocks × 5). Knowledge-test pattern left unchanged pending Jon verify.
 
 ## RPL & funding
 
-- Assessors adjust RPL in **10% steps per block**; programme % may be weighted (e.g. 17.3%).
+- Assessors adjust RPL in **10% steps per block** via K / S / B % (weights 30% / 50% / 20%, max **30%** OTJ deduction per block).
 - Foundation Block 1: **10 FS sessions ↔ 10% steps**.
 - Never auto-cut every block’s £ by full RPL%; DfE-style band reduction then TNP1.
 - Portal calculates live (source of truth); Excel = audit. Must support **KSB adjustments** from RPL.
+- **GTA does not fast-track delivery.** RPL updates **funding / compliance planned hours and expected finish** for management only.
+- **Learners** keep cohort week windows (and optional cohort calendar dates) — they do **not** see RPL-compressed finish dates.
 
 ## Evidence & visibility
 
@@ -36,4 +47,5 @@ Source pack: `Portal Questions/AutoCare L2` + Jon answers (Jul 2026).
 
 - **Learner:** My Learning + College tasks (no Modules / CEA catalogue in nav). Old `/learner/modules` and `/learner/cea` redirect to college tasks.
 - **Tutor:** Programme delivery is the hub (lesson plans + tasks + sign-off). Old Modules / module sign-offs / assessments / resources stubs redirect here.
-- **Weeks** are the primary progress measure; Alex demo sits in Block 1 (week 8) for the foundation pilot.
+- **Weeks** are the primary progress measure.
+- **Management BRAG:** training blocks Blue/Green/Amber/Red; Gateway 1 / Gateway 2 / EPA use Green/Amber/Red (RAG).

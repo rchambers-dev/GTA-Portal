@@ -29,7 +29,7 @@ function loadSnapshot(): AdminStoreSnapshot {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return createSeedSnapshot();
     const parsed = JSON.parse(raw) as AdminStoreSnapshot;
-    if (parsed?.version !== 13) return createSeedSnapshot();
+    if (parsed?.version !== 15) return createSeedSnapshot();
     return parsed;
   } catch {
     return createSeedSnapshot();

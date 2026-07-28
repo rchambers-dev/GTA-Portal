@@ -39,7 +39,9 @@ export function TutorProgrammeDeliveryScreen() {
 
   const awaiting = listAwaitingTrainer(AUTOCARE_PRACTICAL_TASKS);
 
-  const trainingBlocks = AUTOCARE_BLOCKS.filter((b) => b.kind === "training");
+  const taskedBlocks = AUTOCARE_BLOCKS.filter(
+    (b) => tasksForBlock(b.id).length > 0,
+  );
 
   return (
     <LearnerPageShell
@@ -125,7 +127,7 @@ export function TutorProgrammeDeliveryScreen() {
           )
         ) : (
           <div className={styles.blockList}>
-            {trainingBlocks.map((block) => {
+            {taskedBlocks.map((block) => {
               const tasks = tasksForBlock(block.id);
               const plans = lessonPlansForBlock(block.id);
               return (
@@ -136,7 +138,11 @@ export function TutorProgrammeDeliveryScreen() {
                         Block {block.id} · {block.name}
                       </h2>
                       <p className={styles.blockMeta}>
-                        Weeks {block.weekStart}–{block.weekEnd}
+                        {block.weekStart != null && block.weekEnd != null
+                          ? `Weeks ${block.weekStart}–${block.weekEnd}`
+                          : block.kind === "epa"
+                            ? "EPA assessment"
+                            : "Pre-EPA consolidation"}
                         {" · "}
                         {block.plannedOtjHours} OTJ / {block.plannedNonOtjHours}{" "}
                         non-OTJ hrs

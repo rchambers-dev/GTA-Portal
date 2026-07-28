@@ -198,7 +198,7 @@ export type AdminPortalUser = {
 };
 
 export type AdminStoreSnapshot = {
-  version: 13;
+  version: 15;
   learners: AdminLearnerRecord[];
   enrolments: AdminLearnerEnrolment[];
   employers: AdminEmployerRecord[];

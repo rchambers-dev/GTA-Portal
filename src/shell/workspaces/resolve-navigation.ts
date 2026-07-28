@@ -112,6 +112,8 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/management/intake", label: "Learner Intake", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/staff-intake", label: "Staff Intake", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/management/enrolments", label: "Learner Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/management/learner-funding", label: "Learner funding (RPL / KSB)", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
+          { href: "/management/learner-brag", label: "Learner progression BRAG", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
           { href: "/learners?from=management", label: "Learners", permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW },
           { href: "/staff-records?from=management", label: "Staff", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/management/accounts", label: "Learner Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },

@@ -23,7 +23,13 @@ import {
   statusLabel,
   statusTone,
   subscribeTaskStore,
+  DEMO_LEARNER_ID,
 } from "@/features/programme-delivery/domain/task-submission-store";
+import {
+  learnerBlockRag,
+  learnerBlockRagLabel,
+  summariseBlockCompletion,
+} from "@/features/programme-delivery/domain/progression-status";
 import styles from "./learner-pages.module.css";
 
 /**
@@ -37,8 +43,8 @@ export function LearnerProgressScreen() {
     getTaskServerSnapshot,
   );
 
-  const trainingBlocks = useMemo(
-    () => AUTOCARE_BLOCKS.filter((b) => b.kind === "training"),
+  const taskedBlocks = useMemo(
+    () => AUTOCARE_BLOCKS.filter((b) => tasksForBlock(b.id).length > 0),
     [],
   );
 
@@ -133,13 +139,13 @@ export function LearnerProgressScreen() {
 
         {(() => {
           const currentBlock =
-            trainingBlocks.find(
+            taskedBlocks.find(
               (b) =>
                 b.weekStart != null &&
                 b.weekEnd != null &&
                 profile.programmeWeek >= b.weekStart &&
                 profile.programmeWeek <= b.weekEnd,
-            ) ?? trainingBlocks[0];
+            ) ?? taskedBlocks[0];
           const liveTasks = tasksForBlock(currentBlock?.id ?? 1);
           if (liveTasks.length === 0) return null;
           return (
@@ -188,12 +194,12 @@ export function LearnerProgressScreen() {
             Blocks
           </h2>
           <p className={styles.meta}>
-            Training blocks 1–10. Gateway and EPA are date-tracked (no OTJ).
-            Task 5 reflection must be trainer-verified before the next block
-            unlocks.
+            All 12 blocks (60 tasks). Green = complete, amber = in progress, red
+            = needs completing. Locked blocks stay grey until the previous Task 5
+            reflection is verified.
           </p>
           <ul className={styles.list}>
-            {trainingBlocks.map((block) => {
+            {taskedBlocks.map((block) => {
               const tasks = tasksForBlock(block.id);
               const priorOk =
                 block.id === 1 ||
@@ -201,39 +207,23 @@ export function LearnerProgressScreen() {
                   block.id - 1,
                   tasksForBlock(block.id - 1),
                 );
-              const verifiedCount = tasks.filter(
-                (t) => getTaskSubmission(t.id).status === "verified",
-              ).length;
+              const locked = !priorOk;
+              const summary = summariseBlockCompletion(tasks, DEMO_LEARNER_ID);
+              const rag = learnerBlockRag(summary, locked);
               const current =
                 block.weekStart != null &&
                 block.weekEnd != null &&
                 profile.programmeWeek >= block.weekStart &&
                 profile.programmeWeek <= block.weekEnd;
-              const complete =
-                tasks.length > 0 && verifiedCount === tasks.length;
-              const locked = !priorOk;
-              const taskCountLabel =
-                tasks.length > 0
-                  ? ` · ${verifiedCount}/${tasks.length} tasks verified`
-                  : "";
-              const lockLabel = !priorOk
-                ? " · locked until previous reflection verified"
-                : "";
+              const tone =
+                rag === "neutral" ? "navy" : rag === "green" ? "green" : rag === "amber" ? "amber" : "red";
 
               return (
                 <li key={block.id}>
                   <Link
                     href={locked ? "#" : "/learner/college-tasks"}
                     className={`${styles.rowLink}${locked ? ` ${styles.rowLocked}` : ""}`}
-                    data-tone={
-                      locked
-                        ? "navy"
-                        : complete
-                          ? "green"
-                          : current
-                            ? "amber"
-                            : "blue"
-                    }
+                    data-tone={tone}
                     aria-disabled={locked}
                     onClick={(e) => {
                       if (locked) e.preventDefault();
@@ -244,30 +234,20 @@ export function LearnerProgressScreen() {
                         Block {block.id} · {block.name}
                       </strong>
                       <span>
-                        Weeks {block.weekStart}–{block.weekEnd}
-                        {taskCountLabel}
-                        {lockLabel}
+                        {block.weekStart != null && block.weekEnd != null
+                          ? `Weeks ${block.weekStart}–${block.weekEnd}`
+                          : block.kind === "epa"
+                            ? "EPA assessment"
+                            : "Pre-EPA consolidation"}
+                        {current ? " · current week" : ""}
+                        {` · ${summary.verified}/${summary.total} verified`}
                       </span>
                     </div>
                     <div className={styles.rowEnd}>
                       <LearnerStatusChip
-                        tone={
-                          locked
-                            ? "neutral"
-                            : complete
-                              ? "green"
-                              : current
-                                ? "amber"
-                                : "blue"
-                        }
+                        tone={rag === "neutral" ? "neutral" : rag}
                       >
-                        {locked
-                          ? "Locked"
-                          : complete
-                            ? "Complete"
-                            : current
-                              ? "Current"
-                              : "Open"}
+                        {learnerBlockRagLabel(rag, summary)}
                       </LearnerStatusChip>
                       {!locked ? (
                         <span className={styles.linkish}>Tasks →</span>

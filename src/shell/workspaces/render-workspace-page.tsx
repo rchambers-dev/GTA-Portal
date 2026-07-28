@@ -22,6 +22,9 @@ import {
   LearnerTaskFillScreen,
   TutorProgrammeDeliveryScreen,
   TutorTaskReviewScreen,
+  ManagementLearnerRplScreen,
+  ManagementLearnerBragScreen,
+  ManagementTaskViewScreen,
 } from "@/features/programme-delivery";
 import {
   AdministrationDashboardScreen,
@@ -298,6 +301,12 @@ export async function renderWorkspacePage(
         return <AdminLearnerIntakeScreen />;
       case "enrolments":
         return <AdminEnrolmentsScreen />;
+      case "learner-funding":
+      case "ksb-rpl":
+        return <ManagementLearnerRplScreen />;
+      case "learner-brag":
+      case "progression-brag":
+        return <ManagementLearnerBragScreen />;
       case "shared-drive":
         return <SharedDriveScreen audience="management" />;
       case "system":
@@ -312,8 +321,13 @@ export async function renderWorkspacePage(
         );
       case "safeguarding":
         return <LearnerSupportScreen audience="management" />;
-      default:
+      default: {
+        const bragTaskMatch = /^learner-brag\/task\/([^/]+)$/.exec(segment);
+        if (bragTaskMatch) {
+          return <ManagementTaskViewScreen taskId={bragTaskMatch[1]} />;
+        }
         break;
+      }
     }
   }
 

@@ -19,30 +19,34 @@ export type LearnerPortalProfile = {
   lastReviewDate: string | null;
   openActionCount: number;
   collegeDays: string;
+  /** Cohort / programme start (ISO) — learner calendar weeks map from this, not RPL. */
+  programmeStartDate: string;
 };
 
-/** Signed-in demo apprentice (Alex Morgan). */
+/** Signed-in demo apprentice (Alex Morgan) — halfway through Autocare (Block 6 / week 56). */
 export const ALEX_PROFILE: LearnerPortalProfile = {
   accountId: "alex-morgan",
   learnerId: "lrn-alex-morgan",
   displayName: "Alex Morgan",
   initials: "AM",
   programmeName: "Autocare Technician L2 · ST0499",
-  programmeYear: 1,
-  programmeWeek: 8,
+  programmeYear: 2,
+  programmeWeek: 56,
   employerName: "Riverside Autocare",
   employerContact: "Priya Shah",
   mentorName: "Reiss Chambers",
   mentorId: "contact-mentor-reiss",
   tutorName: "Daniel Turner",
   tutorId: "contact-tutor-daniel",
-  plannedProgressPercent: 28,
-  actualProgressPercent: 24,
+  plannedProgressPercent: 50,
+  actualProgressPercent: 48,
   attendancePercent: 94,
   nextReviewDate: "2026-08-08",
   lastReviewDate: "2026-05-30",
   openActionCount: 3,
   collegeDays: "Monday & Tuesday",
+  /** Aligned so week 56 ≈ late Jul 2026 (Block 6 current). */
+  programmeStartDate: "2025-07-08",
 };
 
 export type LearnerModuleRow = {

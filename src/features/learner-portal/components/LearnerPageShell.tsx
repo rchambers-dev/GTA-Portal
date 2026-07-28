@@ -52,7 +52,7 @@ export function LearnerStatusChip({
   size = "md",
 }: {
   children: ReactNode;
-  tone?: "neutral" | "green" | "amber" | "red" | "blue" | "navy";
+  tone?: "neutral" | "green" | "amber" | "red" | "blue" | "navy" | "violet";
   size?: "md" | "lg";
 }) {
   return (

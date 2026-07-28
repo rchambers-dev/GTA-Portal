@@ -96,7 +96,7 @@ function formatIntakeMonthYear(isoDate: string): string | null {
   return `${INTAKE_MONTHS[monthIndex]} ${year}`;
 }
 
-/** e.g. Autocare L2 · Sept 2026 · Mon–Tue Group A */
+/** e.g. Autocare L2 · Jul 2026 · Mon–Tue Group A */
 function buildCohortName(
   programmeName: string,
   startDate: string,

@@ -5,16 +5,21 @@ import {
   tasksForBlock,
 } from "@/features/programme-delivery/domain/tasks";
 
-const trainingBlocks = AUTOCARE_BLOCKS.filter((b) => b.kind === "training");
+/** All 12 programme blocks carry the 1–5 task spine (60 total). */
+const taskedBlocks = AUTOCARE_BLOCKS;
 
 describe("Autocare task data", () => {
-  it("covers every training block with tasks 1 to 5", () => {
-    for (const block of trainingBlocks) {
+  it("covers every programme block with tasks 1 to 5", () => {
+    for (const block of taskedBlocks) {
       const numbers = tasksForBlock(block.id)
         .map((t) => t.taskNumber)
         .sort((a, b) => a - b);
       expect(numbers, `block ${block.id}`).toEqual([1, 2, 3, 4, 5]);
     }
+  });
+
+  it("totals 60 tasks (12 blocks × 5)", () => {
+    expect(AUTOCARE_PRACTICAL_TASKS).toHaveLength(60);
   });
 
   it("assigns the expected kind to each task number", () => {
@@ -31,7 +36,7 @@ describe("Autocare task data", () => {
   });
 
   it("gives every block exactly one reflection so the unlock gate resolves", () => {
-    for (const block of trainingBlocks) {
+    for (const block of taskedBlocks) {
       const reflections = tasksForBlock(block.id).filter(
         (t) => t.kind === "reflection",
       );

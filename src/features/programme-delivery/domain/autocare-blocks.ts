@@ -35,7 +35,11 @@ export type ProgrammeBlockDef = {
   monthHint: string | null;
 };
 
-/** Blocks 1–10 training; 11 gateway; 12 EPA (dates only, 0 OTJ). */
+/**
+ * Blocks 1–10 training (AutoCare L2 pack); 11 pre-EPA consolidation; 12 EPA tasks.
+ * Gateways (GW1 / GW2 / EPA) are separate dated milestones — see `gateways.ts`.
+ * Each block has 5 tasks (60 total). Blocks 11–12 carry 0 planned OTJ.
+ */
 export const AUTOCARE_BLOCKS: ProgrammeBlockDef[] = [
   {
     id: 1,
@@ -139,13 +143,13 @@ export const AUTOCARE_BLOCKS: ProgrammeBlockDef[] = [
   },
   {
     id: 11,
-    name: "Gateway Readiness",
-    kind: "gateway",
+    name: "Pre-EPA Consolidation",
+    kind: "training",
     weekStart: null,
     weekEnd: null,
     plannedOtjHours: 0,
     plannedNonOtjHours: 0,
-    monthHint: "Within programme duration",
+    monthHint: "After Block 10 — readiness / consolidation (0 OTJ)",
   },
   {
     id: 12,

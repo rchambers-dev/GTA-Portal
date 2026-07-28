@@ -172,7 +172,11 @@ export function NavIcon({ href }: { href: string }) {
   }
   if (
     key.includes("/administration/enrolments") ||
-    key.includes("/management/enrolments")
+    key.includes("/management/enrolments") ||
+    key.includes("/management/learner-funding") ||
+    key.includes("/management/ksb-rpl") ||
+    key.includes("/management/learner-brag") ||
+    key.includes("/management/progression-brag")
   ) {
     return (
       <svg {...common}>

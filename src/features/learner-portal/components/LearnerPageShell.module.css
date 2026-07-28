@@ -137,6 +137,12 @@
   border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 40%, white);
 }
 
+.chipLg.violet {
+  background: color-mix(in srgb, #7c3aed 28%, white);
+  color: #5b21b6;
+  border: 1.5px solid color-mix(in srgb, #7c3aed 42%, white);
+}
+
 .neutral {
   background: var(--bg-surface);
   color: var(--text-secondary);
@@ -166,4 +172,9 @@
 .navy {
   background: color-mix(in srgb, var(--color-navy-700) 22%, white);
   color: var(--color-navy-800, #1e3a5f);
+}
+
+.violet {
+  background: color-mix(in srgb, #7c3aed 22%, white);
+  color: #5b21b6;
 }

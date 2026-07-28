@@ -283,6 +283,16 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Learner Enrolments",
       description: "Shared learner enrolments — same surface as Administration.",
     },
+    "learner-funding": {
+      title: "Learner funding (RPL / KSB)",
+      description:
+        "Per-learner Knowledge / Skills / Behaviours RPL adjustments for funding and compliance. Does not fast-track classroom delivery.",
+    },
+    "learner-brag": {
+      title: "Learner progression BRAG",
+      description:
+        "Pick a learner to see overall and per-block progression BRAG (Blue / Green / Amber / Red) against cohort dates.",
+    },
     accounts: {
       title: "Learner Account Setup",
       description: "Enable or disable learner portal environments.",

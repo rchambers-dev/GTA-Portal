@@ -5,6 +5,7 @@
  */
 
 import type { PracticalTaskDef } from "./task-schema";
+import { buildAlexHalfwayTaskSeed } from "./alex-halfway-task-seed";
 
 export type SubmissionMethod = "portal_form" | "pdf_upload";
 
@@ -39,14 +40,17 @@ export type TaskSubmission = {
 };
 
 type Snapshot = {
-  version: 1;
+  version: 2;
+  /** Bump to re-apply Alex mid-course demo task pack. */
+  demoSeed?: string;
   byLearner: Record<string, Record<string, TaskSubmission>>;
 };
 
-const STORAGE_KEY = "gta-portal.programme-tasks.v1";
+const STORAGE_KEY = "gta-portal.programme-tasks.v2";
 const DEMO_LEARNER_ID = "alex-morgan";
+const ALEX_DEMO_SEED = "alex-halfway-v2";
 
-const EMPTY_SNAPSHOT: Snapshot = { version: 1, byLearner: {} };
+const EMPTY_SNAPSHOT: Snapshot = { version: 2, byLearner: {} };
 let snapshot: Snapshot = EMPTY_SNAPSHOT;
 let hydrated = false;
 let hydrateScheduled = false;
@@ -65,19 +69,36 @@ function loadSnapshot(): Snapshot {
   if (typeof window === "undefined") return EMPTY_SNAPSHOT;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return EMPTY_SNAPSHOT;
+    if (!raw) return withAlexDemoSeed(EMPTY_SNAPSHOT);
     const parsed = JSON.parse(raw) as Snapshot;
-    if (parsed?.version === 1 && parsed.byLearner) return parsed;
+    if (parsed?.version !== 2 || !parsed.byLearner) {
+      return withAlexDemoSeed(EMPTY_SNAPSHOT);
+    }
+    return withAlexDemoSeed(parsed);
   } catch {
     // ignore
   }
-  return EMPTY_SNAPSHOT;
+  return withAlexDemoSeed(EMPTY_SNAPSHOT);
+}
+
+/** Apply / refresh Alex mid-course demo progress when seed tag is missing. */
+function withAlexDemoSeed(base: Snapshot): Snapshot {
+  if (base.demoSeed === ALEX_DEMO_SEED) return base;
+  return {
+    version: 2,
+    demoSeed: ALEX_DEMO_SEED,
+    byLearner: {
+      ...base.byLearner,
+      [DEMO_LEARNER_ID]: buildAlexHalfwayTaskSeed(),
+    },
+  };
 }
 
 function ensureHydrated() {
   if (hydrated || typeof window === "undefined") return;
   snapshot = loadSnapshot();
   hydrated = true;
+  persist(snapshot);
 }
 
 /**
@@ -91,6 +112,7 @@ function scheduleHydrateFromStorage() {
     if (hydrated) return;
     snapshot = loadSnapshot();
     hydrated = true;
+    persist(snapshot);
     for (const listener of listeners) listener();
   });
 }
@@ -205,11 +227,13 @@ export function statusTone(
     case "awaiting_trainer":
     case "in_progress":
       return "amber";
+    case "not_started":
+      return "neutral";
     case "returned":
     case "referred":
       return "red";
     default:
-      return "neutral";
+      return "red";
   }
 }
 

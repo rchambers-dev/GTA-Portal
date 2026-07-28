@@ -9,8 +9,13 @@ import { BLOCK_07_TASKS } from "./block-07";
 import { BLOCK_08_TASKS } from "./block-08";
 import { BLOCK_09_TASKS } from "./block-09";
 import { BLOCK_10_TASKS } from "./block-10";
+import { BLOCK_11_TASKS } from "./block-11";
+import { BLOCK_12_TASKS } from "./block-12";
 
-/** All Autocare tasks — knowledge test, job card, practicals and reflection per block. */
+/**
+ * All Autocare tasks — knowledge test, job card, practicals and reflection.
+ * Blocks 1–12 × 5 tasks = 60 (matches live Autocare ops spine).
+ */
 export const AUTOCARE_PRACTICAL_TASKS: PracticalTaskDef[] = [
   ...BLOCK_01_TASKS,
   ...BLOCK_02_TASKS,
@@ -22,6 +27,8 @@ export const AUTOCARE_PRACTICAL_TASKS: PracticalTaskDef[] = [
   ...BLOCK_08_TASKS,
   ...BLOCK_09_TASKS,
   ...BLOCK_10_TASKS,
+  ...BLOCK_11_TASKS,
+  ...BLOCK_12_TASKS,
 ];
 
 /** Lesson plans — staff/tutor only. Apprentices never see these. */

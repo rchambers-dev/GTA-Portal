@@ -9,14 +9,21 @@ import {
 import { ALEX_PROFILE } from "@/features/learner-portal/domain/mock-learner";
 import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "../domain/autocare-blocks";
 import { tasksForBlock } from "../domain/autocare-tasks";
+import { formatCohortBlockWindow } from "../domain/rpl-funding-calc";
+import {
+  learnerBlockRag,
+  learnerBlockRagLabel,
+  learnerTaskRag,
+  learnerTaskRagLabel,
+  summariseBlockCompletion,
+} from "../domain/progression-status";
 import { taskKindLabel } from "../domain/task-schema";
 import {
+  DEMO_LEARNER_ID,
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
   isBlockReflectionVerified,
-  statusLabel,
-  statusTone,
   subscribeTaskStore,
 } from "../domain/task-submission-store";
 import styles from "./programme-delivery.module.css";
@@ -24,6 +31,9 @@ import styles from "./programme-delivery.module.css";
 /**
  * Learner college tasks — knowledge test, job card, practicals and reflection.
  * Lesson plans are never shown here (staff/tutor only).
+ *
+ * Dates: programme weeks + cohort calendar from cohort start.
+ * RAG: green complete · amber in progress · red needs completing (no Blue).
  */
 export function LearnerProgrammeTasksScreen() {
   useSyncExternalStore(
@@ -32,8 +42,8 @@ export function LearnerProgrammeTasksScreen() {
     getTaskServerSnapshot,
   );
 
-  const trainingBlocks = useMemo(
-    () => AUTOCARE_BLOCKS.filter((b) => b.kind === "training"),
+  const taskedBlocks = useMemo(
+    () => AUTOCARE_BLOCKS.filter((b) => tasksForBlock(b.id).length > 0),
     [],
   );
 
@@ -58,60 +68,69 @@ export function LearnerProgrammeTasksScreen() {
             reflection must be verified by your trainer before the next block
             unlocks.
           </p>
+          <ul className={styles.ragLegend} aria-label="Status colours">
+            <li>
+              <span className={styles.ragDot} data-tone="green" /> Green — complete
+            </li>
+            <li>
+              <span className={styles.ragDot} data-tone="amber" /> Amber — in progress
+            </li>
+            <li>
+              <span className={styles.ragDot} data-tone="red" /> Red — needs completing
+            </li>
+          </ul>
         </div>
 
         <div className={styles.blockList}>
-          {trainingBlocks.map((block) => {
+          {taskedBlocks.map((block) => {
             const tasks = tasksForBlock(block.id);
-            if (tasks.length === 0) {
-              return (
-                <article key={block.id} className={styles.blockCard}>
-                  <div className={styles.blockHead}>
-                    <div>
-                      <h2 className={styles.blockTitle}>
-                        Block {block.id} · {block.name}
-                      </h2>
-                      <p className={styles.blockMeta}>
-                        Weeks {block.weekStart}–{block.weekEnd}
-                        {block.monthHint ? ` · ${block.monthHint}` : ""}
-                        {" · "}
-                        Locked until previous reflection verified
-                      </p>
-                    </div>
-                    <LearnerStatusChip tone="neutral">Locked</LearnerStatusChip>
-                  </div>
-                </article>
-              );
-            }
-
+            const cohortWindow = formatCohortBlockWindow(
+              ALEX_PROFILE.programmeStartDate,
+              block.weekStart,
+              block.weekEnd,
+            );
             const priorOk =
               block.id === 1 ||
-              isBlockReflectionVerified(block.id - 1, tasksForBlock(block.id - 1));
+              isBlockReflectionVerified(
+                block.id - 1,
+                tasksForBlock(block.id - 1),
+              );
+            const locked = !priorOk;
+            const summary = summariseBlockCompletion(tasks, DEMO_LEARNER_ID);
+            const blockRag = learnerBlockRag(summary, locked);
 
             return (
-              <article key={block.id} className={styles.blockCard}>
+              <article
+                key={block.id}
+                className={styles.blockCard}
+                data-rag={blockRag}
+              >
                 <div className={styles.blockHead}>
                   <div>
                     <h2 className={styles.blockTitle}>
                       Block {block.id} · {block.name}
                     </h2>
                     <p className={styles.blockMeta}>
-                      Weeks {block.weekStart}–{block.weekEnd}
+                      {block.weekStart != null && block.weekEnd != null
+                        ? `Weeks ${block.weekStart}–${block.weekEnd}`
+                        : block.kind === "epa"
+                          ? "EPA assessment"
+                          : "Pre-EPA consolidation"}
+                      {cohortWindow ? ` · ${cohortWindow}` : ""}
                       {block.monthHint ? ` · ${block.monthHint}` : ""}
-                      {" · "}
-                      {block.plannedOtjHours} hrs planned OTJ
+                      {block.plannedOtjHours > 0
+                        ? ` · ${block.plannedOtjHours} hrs planned OTJ`
+                        : ""}
                     </p>
                   </div>
-                  {!priorOk ? (
-                    <LearnerStatusChip tone="amber">
-                      Locked — finish Block {block.id - 1} reflection
-                    </LearnerStatusChip>
-                  ) : null}
+                  <LearnerStatusChip tone={blockRag === "neutral" ? "neutral" : blockRag}>
+                    {learnerBlockRagLabel(blockRag, summary)}
+                  </LearnerStatusChip>
                 </div>
                 <ul className={styles.taskList}>
                   {tasks.map((task) => {
                     const sub = getTaskSubmission(task.id);
-                    const locked = !priorOk;
+                    const taskRag = learnerTaskRag(sub.status, locked);
                     const href = locked
                       ? "#"
                       : `/learner/college-tasks/${task.id}`;
@@ -120,6 +139,7 @@ export function LearnerProgrammeTasksScreen() {
                         <Link
                           href={href}
                           className={`${styles.taskRow} ${locked ? styles.locked : ""}`}
+                          data-rag={taskRag}
                           aria-disabled={locked}
                           onClick={(e) => {
                             if (locked) e.preventDefault();
@@ -138,8 +158,10 @@ export function LearnerProgrammeTasksScreen() {
                             </span>
                           </div>
                           <div className={styles.taskEnd}>
-                            <LearnerStatusChip tone={statusTone(sub.status)}>
-                              {statusLabel(sub.status)}
+                            <LearnerStatusChip
+                              tone={taskRag === "neutral" ? "neutral" : taskRag}
+                            >
+                              {learnerTaskRagLabel(sub.status, locked)}
                             </LearnerStatusChip>
                             {!locked ? (
                               <span className={styles.linkish}>Open →</span>

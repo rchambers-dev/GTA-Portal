@@ -1,0 +1,152 @@
+import type { PracticalTaskDef } from "../task-schema";
+import {
+  makeBlockReflection,
+  makeJobCard,
+  makeKnowledgeTest,
+  makePractical,
+} from "./shared";
+
+/** EPA block — Block 12 (final 5 tasks; programme total 60). */
+export const BLOCK_12_TASKS: PracticalTaskDef[] = [
+  makeKnowledgeTest(12),
+  makeJobCard(12),
+  makePractical({
+    blockId: 12,
+    taskNumber: 3,
+    evidenceRef: "Block_12_Task_3_EPA_Practical_Assessment_Record",
+    title: "EPA Practical Assessment Record",
+    scenario:
+      "Record the End-Point Assessment practical under assessment conditions. Capture what was assessed, the evidence produced, the outcome, and any further actions. This sits on the EPA block — it is assessment evidence, not day-release training OTJ.",
+    objectives: [
+      "Complete EPA practical recording accurately.",
+      "Capture assessment conditions and evidence references.",
+      "Record outcome and any resit / further action needs.",
+      "Confirm declarations with assessor support.",
+      "Store evidence against the EPA block.",
+    ],
+    estimatedMinutes: 90,
+    sourcePdf: "Block_12_Task_3_EPA_Practical_Assessment_Record_v1.0.pdf",
+    weeks: "EPA assessment",
+    dutiesCovered: "EPA practical",
+    ksbsCovered: "EPA — practical assessment",
+    materials: [
+      "EPA practical brief",
+      "Assessment recording materials",
+      "PPE and required tools for the assessed task",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Follow EPA assessment conditions for the practical.",
+      "Record the task, evidence and outcome accurately.",
+      "Note any further action or resit requirement.",
+      "Confirm declarations with the assessor.",
+      "Store the record against this EPA block.",
+    ],
+    measurementFields: [
+      { key: "epaDate", type: "date", label: "EPA practical date", required: true },
+      { key: "epaReference", type: "text", label: "EPA / assessment reference" },
+      {
+        key: "taskAssessed",
+        type: "textarea",
+        label: "Task assessed",
+        required: true,
+      },
+      {
+        key: "outcome",
+        type: "radio_group",
+        label: "Outcome",
+        options: ["Pass", "Fail", "Partial / further action", "Awaiting result"],
+        required: true,
+      },
+      {
+        key: "furtherAction",
+        type: "textarea",
+        label: "Further action / resit notes",
+      },
+    ],
+    knowledgeQuestions: [
+      "How did you prepare for the EPA practical?",
+      "What went well under assessment conditions?",
+      "What would you improve if you repeated the assessment?",
+      "How did you manage time and safety during the task?",
+      "What evidence did you produce for the assessor?",
+      "How did this compare with your mock EPA?",
+      "What support helped you most before EPA day?",
+    ],
+  }),
+  makePractical({
+    blockId: 12,
+    taskNumber: 4,
+    evidenceRef: "Block_12_Task_4_EPA_Professional_Discussion_Record",
+    title: "EPA Professional Discussion Record",
+    scenario:
+      "Record the End-Point Assessment professional discussion. Capture themes covered, examples used from your portfolio, the outcome, and any follow-up. This completes the EPA block evidence set.",
+    objectives: [
+      "Record EPA professional discussion accurately.",
+      "Link discussion themes to portfolio examples.",
+      "Capture outcome and any further action.",
+      "Confirm declarations with assessor support.",
+      "Close the EPA block evidence set.",
+    ],
+    estimatedMinutes: 60,
+    sourcePdf: "Block_12_Task_4_EPA_Professional_Discussion_Record_v1.0.pdf",
+    weeks: "EPA assessment",
+    dutiesCovered: "EPA discussion",
+    ksbsCovered: "EPA — professional discussion",
+    materials: [
+      "Portfolio examples for discussion",
+      "EPA discussion record template",
+      "Assessor notes",
+      "Apprentice Assessment Record",
+    ],
+    instructions: [
+      "Attend the EPA professional discussion as scheduled.",
+      "Use portfolio examples to evidence your answers.",
+      "Record themes covered and outcome.",
+      "Note any further action required.",
+      "Confirm the record with the assessor.",
+    ],
+    measurementFields: [
+      {
+        key: "discussionDate",
+        type: "date",
+        label: "Discussion date",
+        required: true,
+      },
+      {
+        key: "themesCovered",
+        type: "textarea",
+        label: "Themes covered",
+        required: true,
+      },
+      {
+        key: "examplesUsed",
+        type: "textarea",
+        label: "Portfolio examples used",
+        required: true,
+      },
+      {
+        key: "outcome",
+        type: "radio_group",
+        label: "Outcome",
+        options: ["Pass", "Fail", "Partial / further action", "Awaiting result"],
+        required: true,
+      },
+      {
+        key: "furtherAction",
+        type: "textarea",
+        label: "Further action notes",
+      },
+    ],
+    knowledgeQuestions: [
+      "Which examples best showed your competence?",
+      "How did you explain a complex repair simply?",
+      "How did you evidence safe working and behaviours?",
+      "What question challenged you most?",
+      "How did gateway prep help on EPA day?",
+      "What would you tell next year's apprentices?",
+      "How will you use this outcome in your next steps?",
+    ],
+  }),
+  makeBlockReflection(12),
+];
