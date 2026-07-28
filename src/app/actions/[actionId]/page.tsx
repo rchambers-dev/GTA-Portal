@@ -1,5 +1,6 @@
 import { getStandalonePorts } from "@/adapters/standalone";
 import { ActionRecordScreen } from "@/features/progress-mentor/screens/ActionRecordScreen";
+import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { redirect } from "next/navigation";
 
@@ -11,7 +12,7 @@ type Props = {
 export default async function ActionRecordPage({ params, searchParams }: Props) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
-  if (!session) redirect("/staff/dashboard");
+  if (!session) redirect(getUnauthenticatedRedirect("/actions"));
   const { actionId } = await params;
   assertRouteAccess(session, `/actions/${actionId}`);
   const sp = await searchParams;

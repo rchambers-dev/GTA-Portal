@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { LifecycleBoardScreen } from "@/features/learner-lifecycle";
 import { getStandalonePorts } from "@/adapters/standalone";
+import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { parseBoardQuery } from "@/lib/board-query";
 
@@ -11,9 +12,8 @@ type Props = {
 export default async function LearnerLifecyclePage({ searchParams }: Props) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
-  // Avoid / ↔ /learners/lifecycle bounce when session is missing
   if (!session) {
-    redirect("/staff/dashboard");
+    redirect(getUnauthenticatedRedirect("/learners/lifecycle"));
   }
   assertRouteAccess(session, "/learners/lifecycle");
 

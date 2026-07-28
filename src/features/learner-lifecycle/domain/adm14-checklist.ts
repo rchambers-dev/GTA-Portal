@@ -1,10 +1,14 @@
 /**
  * ADM14.0 Apprenticeship Evidence Pack checklist (From August 2022) v2.1.
  * Source form: ADM14.0_Apprenticeship_File_Checklist_v2.1
- * This is the canonical document list for the shared learner file pack page.
+ * This is the canonical document list for the shared learner file pack page
+ * and the learner / employer Documents portals.
  */
 
 export type Adm14RequirementKind = "mandatory" | "conditional";
+
+/** Who can see this row on the learner / employer Documents portals. */
+export type Adm14PortalRole = "learner" | "employer";
 
 export type Adm14RequirementDefinition = {
   reference: string;
@@ -18,11 +22,81 @@ export type Adm14RequirementDefinition = {
   isRecurring: boolean;
   /** Section 6 items typically apply once the apprenticeship has ended */
   endOfProgramme: boolean;
+  /**
+   * Portal visibility. Staff ADM14 pack always sees every item.
+   * Empty = staff / accounts only (hidden on learner & employer Documents).
+   */
+  portalVisibility: Adm14PortalRole[];
+};
+
+export type Adm14SectionDefinition = {
+  key: string;
+  title: string;
+  bookletSection: string;
+  /** Short blurb for Documents hub cards */
+  summary: string;
 };
 
 export const ADM14_FORM_CODE = "ADM14.0";
 export const ADM14_FORM_TITLE =
   "Apprenticeship Evidence Pack Form (From August 2022)";
+
+/** Booklet sections in order — one Documents page per section. */
+export const ADM14_SECTIONS: Adm14SectionDefinition[] = [
+  {
+    key: "eligibility",
+    title: "Programme Eligibility",
+    bookletSection: "Section 1",
+    summary: "ILR, enrolment, interview, and initial assessment evidence.",
+  },
+  {
+    key: "employer",
+    title: "Employer Enrolment",
+    bookletSection: "Section 2",
+    summary: "Employer TNA, recruit declaration, waiver, and H&S audit.",
+  },
+  {
+    key: "agreement",
+    title: "Apprenticeship Agreement",
+    bookletSection: "Section 3",
+    summary: "Signed apprenticeship agreement between the parties.",
+  },
+  {
+    key: "contract",
+    title: "Contract",
+    bookletSection: "Section 4",
+    summary: "Training plan and contract for services.",
+  },
+  {
+    key: "induction",
+    title: "Apprenticeship Induction",
+    bookletSection: "Section 5",
+    summary: "Induction record completed at programme start.",
+  },
+  {
+    key: "ended",
+    title: "Apprenticeship Ended",
+    bookletSection: "Section 6",
+    summary: "Completion pack, EPA booking, results, and EPAO evidence.",
+  },
+  {
+    key: "otj",
+    title: "Off-The-Job Training",
+    bookletSection: "Section 7",
+    summary: "PDR, OTJ log, progress reviews, and related records.",
+  },
+  {
+    key: "misc",
+    title: "Miscellaneous Items",
+    bookletSection: "Section 8",
+    summary: "Additional evidence required by individual circumstances.",
+  },
+];
+
+const LEARNER: Adm14PortalRole[] = ["learner"];
+const EMPLOYER: Adm14PortalRole[] = ["employer"];
+const BOTH: Adm14PortalRole[] = ["learner", "employer"];
+const STAFF_ONLY: Adm14PortalRole[] = [];
 
 export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
   // Section 1 — Programme Eligibility
@@ -36,6 +110,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
   {
     reference: "1.2",
@@ -43,10 +118,11 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     sectionTitle: "Programme Eligibility",
     originalBookletSection: "Section 1",
     requirementKind: "mandatory",
-    title: "Learner Enrolment Form",
+    title: "Learner Enrolment Form (AF1.1)",
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: LEARNER,
   },
   {
     reference: "1.3",
@@ -54,10 +130,11 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     sectionTitle: "Programme Eligibility",
     originalBookletSection: "Section 1",
     requirementKind: "mandatory",
-    title: "Learner Interview Form",
+    title: "Learner Interview Form (AF1.2)",
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: LEARNER,
   },
   {
     reference: "1.4",
@@ -69,6 +146,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: LEARNER,
   },
   {
     reference: "1.5",
@@ -76,10 +154,11 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     sectionTitle: "Programme Eligibility",
     originalBookletSection: "Section 1",
     requirementKind: "mandatory",
-    title: "Initial Assessment – Knowledge, Skills and Behaviours Testing Record",
+    title: "Initial Assessment – KSB / RPLE Assessment (AF1.30–35)",
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: LEARNER,
   },
   {
     reference: "1.6",
@@ -87,10 +166,11 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     sectionTitle: "Programme Eligibility",
     originalBookletSection: "Section 1",
     requirementKind: "mandatory",
-    title: "Initial Assessment – PLR Report",
+    title: "Initial Assessment – PLR Report (LRS)",
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: LEARNER,
   },
   {
     reference: "1.7",
@@ -98,10 +178,11 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     sectionTitle: "Programme Eligibility",
     originalBookletSection: "Section 1",
     requirementKind: "conditional",
-    title: "Initial Assessment – Additional Learning Support Assessment",
+    title: "Initial Assessment – Additional Learning Support / LLDD (AF1.2 Parts 2–4)",
     applicability: "Where ALS is identified",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: LEARNER,
   },
 
   // Section 2 — Employer Enrolment
@@ -115,6 +196,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: EMPLOYER,
   },
   {
     reference: "2.2",
@@ -126,6 +208,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: EMPLOYER,
   },
   {
     reference: "2.3",
@@ -137,6 +220,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Where applicable",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: EMPLOYER,
   },
   {
     reference: "2.4",
@@ -148,6 +232,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes — tick each inspection when completed",
     isRecurring: true,
     endOfProgramme: false,
+    portalVisibility: EMPLOYER,
   },
 
   // Section 3 — App Agreement
@@ -161,6 +246,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
 
   // Section 4 — Contract
@@ -174,6 +260,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
   {
     reference: "4.2",
@@ -185,6 +272,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
 
   // Section 5 — App Induction
@@ -198,6 +286,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: LEARNER,
   },
 
   // Section 6 — Apprenticeship Ended
@@ -211,6 +300,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Once the apprenticeship has ended",
     isRecurring: false,
     endOfProgramme: true,
+    portalVisibility: BOTH,
   },
   {
     reference: "6.2",
@@ -222,6 +312,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Once the apprenticeship has ended / EPA pathway",
     isRecurring: false,
     endOfProgramme: true,
+    portalVisibility: BOTH,
   },
   {
     reference: "6.3",
@@ -233,6 +324,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Once EPA is booked",
     isRecurring: false,
     endOfProgramme: true,
+    portalVisibility: BOTH,
   },
   {
     reference: "6.4",
@@ -244,6 +336,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Once EPA results are issued",
     isRecurring: false,
     endOfProgramme: true,
+    portalVisibility: BOTH,
   },
   {
     reference: "6.5",
@@ -255,6 +348,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Once EPA feedback is issued",
     isRecurring: false,
     endOfProgramme: true,
+    portalVisibility: BOTH,
   },
   {
     reference: "6.6",
@@ -266,6 +360,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Accounts — once EPA invoiced",
     isRecurring: false,
     endOfProgramme: true,
+    portalVisibility: STAFF_ONLY,
   },
   {
     reference: "6.7",
@@ -277,6 +372,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Accounts — EPAO contract evidence",
     isRecurring: false,
     endOfProgramme: true,
+    portalVisibility: STAFF_ONLY,
   },
 
   // Section 7 — Off-The-Job Training
@@ -290,6 +386,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: true,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
   {
     reference: "7.2",
@@ -301,6 +398,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: true,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
   {
     reference: "7.3",
@@ -312,6 +410,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: true,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
   {
     reference: "7.4",
@@ -323,6 +422,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "All programmes",
     isRecurring: true,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
   {
     reference: "7.5",
@@ -334,6 +434,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Where a concern is raised",
     isRecurring: true,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
   {
     reference: "7.6",
@@ -345,6 +446,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Where a break in learning occurs",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
   {
     reference: "7.7",
@@ -356,6 +458,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Where redundancy affects the apprenticeship",
     isRecurring: false,
     endOfProgramme: false,
+    portalVisibility: EMPLOYER,
   },
   {
     reference: "7.8",
@@ -367,6 +470,7 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "Where ALS support is in place",
     isRecurring: true,
     endOfProgramme: false,
+    portalVisibility: LEARNER,
   },
 
   // Section 8 — Misc. Items
@@ -380,5 +484,31 @@ export const ADM14_REQUIREMENTS: Adm14RequirementDefinition[] = [
     applicability: "As required by individual circumstances",
     isRecurring: true,
     endOfProgramme: false,
+    portalVisibility: BOTH,
   },
 ];
+
+export function adm14SectionByKey(
+  sectionKey: string,
+): Adm14SectionDefinition | undefined {
+  return ADM14_SECTIONS.find((s) => s.key === sectionKey);
+}
+
+export function adm14RequirementByReference(
+  reference: string,
+): Adm14RequirementDefinition | undefined {
+  return ADM14_REQUIREMENTS.find((r) => r.reference === reference);
+}
+
+export function adm14RequirementsForSection(
+  sectionKey: string,
+): Adm14RequirementDefinition[] {
+  return ADM14_REQUIREMENTS.filter((r) => r.sectionKey === sectionKey);
+}
+
+export function adm14VisibleToPortal(
+  item: Adm14RequirementDefinition,
+  role: Adm14PortalRole,
+): boolean {
+  return item.portalVisibility.includes(role);
+}

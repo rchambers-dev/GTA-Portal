@@ -16,6 +16,13 @@ export { LearnerAttendanceScreen } from "./screens/LearnerAttendanceScreen";
 export { LearnerSupportScreen } from "./screens/LearnerSupportScreen";
 export { LearnerCvBuilderScreen } from "./screens/LearnerCvBuilderScreen";
 export { LearnerMessagesScreen } from "./screens/LearnerMessagesScreen";
+export { LearnerTrainingPlanScreen } from "./screens/LearnerTrainingPlanScreen";
+export { EmployerCommitmentsScreen } from "./screens/EmployerCommitmentsScreen";
+export {
+  DocumentsHubScreen,
+  DocumentsSectionScreen,
+  DocumentsItemScreen,
+} from "./screens/DocumentsScreens";
 export { TutorModuleSignOffScreen } from "./screens/TutorModuleSignOffScreen";
 export { EmployerOtjApprovalsScreen } from "./screens/EmployerOtjApprovalsScreen";
 export { TutorOtjApprovalsScreen } from "./screens/TutorOtjApprovalsScreen";

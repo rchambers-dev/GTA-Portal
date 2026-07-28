@@ -75,6 +75,8 @@ export type AdminLearnerEnrolment = {
   tutorName: string;
   /** Planned / actual start — required for both kinds. */
   startDate: string;
+  /** Original planned finish date used for slippage framing. */
+  originalPlannedEndDate: string;
   /** For currently studying — where they are now. */
   programmeYear: 1 | 2 | 3 | null;
   programmeWeek: number | null;

@@ -9,6 +9,29 @@
   gap: var(--space-3);
 }
 
+.signOut {
+  margin-left: var(--space-2);
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.signOut:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: var(--color-navy-600);
+}
+
+.signOut:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
 .trigger {
   border: none;
   background: transparent;

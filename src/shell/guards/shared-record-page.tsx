@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { RecordStubScreen } from "@/features/shared-records";
 import { getStandalonePorts } from "@/adapters/standalone";
+import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 
 export async function renderSharedQueuePage(
@@ -10,7 +11,7 @@ export async function renderSharedQueuePage(
 ) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
-  if (!session) redirect("/staff/dashboard");
+  if (!session) redirect(getUnauthenticatedRedirect(pathname));
   assertRouteAccess(session, pathname);
   return <RecordStubScreen title={title} description={description} />;
 }

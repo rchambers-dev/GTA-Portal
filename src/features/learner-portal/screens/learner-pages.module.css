@@ -1404,6 +1404,27 @@
   color: var(--action-primary);
 }
 
+.checkRow {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+.checkRow input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.choiceStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
 .otjConfirm {
   display: flex;
   gap: 0.65rem;

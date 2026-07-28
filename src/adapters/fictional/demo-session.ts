@@ -1,4 +1,5 @@
 import type { DemoAuditEvent, TemporaryAssignment } from "@/lib/portal/types";
+import { isDemoModeEnabled as getDemoModeEnabled } from "@/lib/env/portal";
 
 export const DEMO_COOKIE_ACCOUNT = "gta-demo-active-account";
 export const DEMO_COOKIE_ASSIGNMENTS = "gta-demo-assignments";
@@ -8,12 +9,7 @@ export const DEMO_STORAGE_ASSIGNMENTS = "gta-demo-assignments";
 export const DEMO_STORAGE_AUDIT = "gta-demo-audit-log";
 
 export function isDemoModeEnabled(): boolean {
-  if (process.env.NEXT_PUBLIC_DEMO_MODE === "false") return false;
-  return (
-    process.env.NEXT_PUBLIC_DEMO_MODE === "true" ||
-    process.env.NODE_ENV === "development" ||
-    process.env.VERCEL === "1"
-  );
+  return getDemoModeEnabled();
 }
 
 export function parseAssignmentsCookie(value: string | undefined): TemporaryAssignment[] {

@@ -12,11 +12,12 @@ export type WorkspaceId =
   | "administration"
   | "safeguarding";
 
-export type DemoAccount = {
+export type PortalAccount = {
   id: string;
   name: string;
   initials: string;
   email: string;
+  username?: string;
   baseRole: string;
   responsibilities: string[];
   department?: string;
@@ -26,6 +27,8 @@ export type DemoAccount = {
   programmeScope?: string[];
   moduleScope?: string[];
 };
+
+export type DemoAccount = PortalAccount;
 
 export type TemporaryAssignment = {
   id: string;
@@ -53,7 +56,7 @@ export type DemoAuditEvent = {
 };
 
 export type EffectiveSession = {
-  account: DemoAccount;
+  account: PortalAccount;
   permissions: string[];
   activeTemporaryAssignments: TemporaryAssignment[];
   temporaryAccessLabels: string[];

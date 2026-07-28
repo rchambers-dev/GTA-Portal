@@ -74,8 +74,12 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       description: "Employer participation in progress reviews.",
     },
     commitments: {
-      title: "Employer Commitments",
-      description: "Training opportunities and employer actions.",
+      title: "Documents",
+      description: "ADM14 apprenticeship evidence pack for employers.",
+    },
+    documents: {
+      title: "Documents",
+      description: "ADM14 apprenticeship evidence pack for employers.",
     },
     messages: {
       title: "Messages",
@@ -400,7 +404,12 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     system: {
       title: "System Actions",
       description:
-        "Reserved for override actions. Scope to be agreed with leadership — left blank until then.",
+        "Proxy write actions for management — load learner progress on behalf of pupils.",
+    },
+    "learner-data": {
+      title: "Load Learner Data",
+      description:
+        "Enter actual progress against planned dates without requiring learner form flows.",
     },
   },
   safeguarding: {

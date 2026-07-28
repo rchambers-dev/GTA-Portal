@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import type { DemoAccount } from "@/lib/portal/types";
 import { formatRoleLabel } from "@/adapters/fictional/demo-accounts";
+import { logoutAction } from "@/app/logout/actions";
 import { useDemoSession } from "./DemoSessionProvider";
 import styles from "./DevAccountSwitcher.module.css";
 
@@ -21,6 +22,7 @@ export function DevAccountSwitcher({
   const { demoEnabled, accounts, session, switchAccount } = useDemoSession();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [isPending, startTransition] = useTransition();
   const rootRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
@@ -53,6 +55,14 @@ export function DevAccountSwitcher({
           <p className={styles.userName}>{currentAccount.name}</p>
           <p className={styles.userRole}>{formatRoleLabel(currentAccount)}</p>
         </div>
+        <button
+          type="button"
+          className={styles.signOut}
+          disabled={isPending}
+          onClick={() => startTransition(() => logoutAction())}
+        >
+          {isPending ? "Signing out…" : "Sign out"}
+        </button>
       </div>
     );
   }

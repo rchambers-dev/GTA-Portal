@@ -165,25 +165,25 @@ export function AdminLearnerIntakeScreen() {
     setActiveId(learner.id);
   }
 
-  function createDraft() {
+  async function createDraft() {
     if (!newForm.displayName.trim()) {
       setError("A name is needed to start the intake.");
       return;
     }
-    const created = createLearner({ ...newForm, intakeStatus: "in_progress" });
+    const created = await createLearner({ ...newForm, intakeStatus: "in_progress" });
     setError(null);
     setCreating(false);
     setActiveId(created.id);
   }
 
-  function completeIntake(learner: AdminLearnerRecord) {
+  async function completeIntake(learner: AdminLearnerRecord) {
     if (!canMarkReady(learner)) {
       setError(
         "Name, date of birth and email are needed before intake can be marked ready.",
       );
       return;
     }
-    updateLearner(learner.id, { intakeStatus: "ready" });
+    await updateLearner(learner.id, { intakeStatus: "ready" });
     setSuccess(
       `${learner.displayName} is ready for enrolment. Programme documents are chased on the Learners page.`,
     );

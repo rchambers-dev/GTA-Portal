@@ -74,6 +74,7 @@ export const PERMISSIONS = {
   ADMIN_WORKSPACE_VIEW: "admin.workspace.view",
   ADMIN_USERS_MANAGE: "admin.users.manage",
   ADMIN_RECORDS_MANAGE: "admin.records.manage",
+  RECORDS_PROXY_WRITE: "records.proxy.write",
 
   // Safeguarding
   SAFEGUARDING_WORKSPACE_VIEW: "safeguarding.workspace.view",

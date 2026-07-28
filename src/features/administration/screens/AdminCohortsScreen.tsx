@@ -379,13 +379,16 @@ export function AdminCohortsScreen() {
     setEditingId(null);
   }
 
-  function toggleLearner(cohort: AdminCohortRecord, learner: AdminLearnerEnrolment) {
+  async function toggleLearner(
+    cohort: AdminCohortRecord,
+    learner: AdminLearnerEnrolment,
+  ) {
     if (learner.cohortId === cohort.id) {
-      setEnrolmentCohort(learner.id, null);
+      await setEnrolmentCohort(learner.id, null);
       setSuccess(`${learner.displayName} removed from ${cohort.name}.`);
       return;
     }
-    setEnrolmentCohort(learner.id, cohort.id);
+    await setEnrolmentCohort(learner.id, cohort.id);
     setSuccess(
       `${learner.displayName} assigned to ${cohort.name} (v${cohort.standardVersion}).`,
     );
@@ -1078,7 +1081,7 @@ export function AdminCohortsScreen() {
                                       type="button"
                                       className={styles.secondaryBtn}
                                       onClick={() =>
-                                        toggleLearner(row, learner)
+                                        void toggleLearner(row, learner)
                                       }
                                     >
                                       {assigned ? "Remove" : "Assign"}

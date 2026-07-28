@@ -33,11 +33,8 @@ function toSessionUser(session: EffectiveSession): SessionUser {
 }
 
 export async function getServerEffectiveSession(): Promise<EffectiveSession | null> {
-  if (!isDemoModeEnabled()) {
-    const fallback = getDemoAccountById(DEFAULT_DEMO_ACCOUNT_ID);
-    if (!fallback) return null;
-    return buildEffectiveSession(fallback, []);
-  }
+  // Live mode uses the Supabase auth adapter — never fall back to a demo account.
+  if (!isDemoModeEnabled()) return null;
 
   const cookieStore = await cookies();
   const accountId =

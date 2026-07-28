@@ -1,0 +1,114 @@
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at top, rgba(209, 45, 51, 0.12), transparent 35%),
+    linear-gradient(180deg, #0d1024 0%, #141833 100%);
+}
+
+.card {
+  width: min(100%, 440px);
+  padding: 32px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 24px 60px rgba(5, 10, 26, 0.32);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c42830;
+}
+
+.title {
+  margin: 0;
+  font-size: 2rem;
+  color: #141833;
+}
+
+.copy {
+  margin: 12px 0 0;
+  color: #3e4867;
+  line-height: 1.55;
+}
+
+.hint {
+  margin: 18px 0 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #eef0f7;
+  color: #1a1f3d;
+  font-size: 0.95rem;
+}
+
+.hint p {
+  margin: 0;
+}
+
+.hint p + p {
+  margin-top: 6px;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1f3d;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cfd6e6;
+  border-radius: 12px;
+  font: inherit;
+  color: #141833;
+  background: #fff;
+}
+
+.input:focus {
+  outline: 2px solid rgba(209, 45, 51, 0.22);
+  border-color: #c42830;
+}
+
+.submit {
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #d12d33 0%, #a81f28 100%);
+  cursor: pointer;
+}
+
+.submit:disabled {
+  opacity: 0.72;
+  cursor: wait;
+}
+
+.captcha {
+  display: grid;
+  justify-content: start;
+}
+
+.error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fdeceb;
+  color: #8c1b24;
+  font-size: 0.94rem;
+}

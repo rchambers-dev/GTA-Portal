@@ -2,9 +2,9 @@
 
 ## Checklist source of truth
 
-The shared learner **Evidence** tab displays **ADM14.0 Apprenticeship Evidence Pack Form (From August 2022) v2.1** — the complete file checklist each learner should hold or start completing.
+The shared learner **Evidence** tab and the learner / employer **Documents** portals use **ADM14.0 Apprenticeship Evidence Pack Form (From August 2022) v2.1** — the complete file checklist each learner should hold or start completing.
 
-Canonical definitions live in `src/features/learner-lifecycle/domain/adm14-checklist.ts` (sections 1–8, M/O). Further GTA paper forms will be mapped into this model as they are supplied.
+Canonical definitions live in `src/features/learner-lifecycle/domain/adm14-checklist.ts` (sections 1–8, M/O, portal visibility). Learner and employer each get a Documents hub plus one page per booklet section; individual document UIs are wired as GTA paper forms are supplied.
 
 ## Goals (approved)
 

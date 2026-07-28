@@ -42,6 +42,7 @@ type FormState = {
   mentorName: string;
   tutorName: string;
   startDate: string;
+  originalPlannedEndDate: string;
   programmeYear: string;
   programmeWeek: string;
   attendancePercent: string;
@@ -93,6 +94,7 @@ function emptyForm(
     mentorName: "",
     tutorName: "",
     startDate: "",
+    originalPlannedEndDate: "",
     programmeYear: "",
     programmeWeek: "",
     attendancePercent: "",
@@ -155,6 +157,7 @@ function applyCohortFields(
     programmeName: programme?.name ?? prev.programmeName,
     standardCode: cohort.standardCode || prev.standardCode,
     startDate: cohort.startDate,
+    originalPlannedEndDate: cohort.expectedEndDate,
     collegeDays: cohort.collegeDays,
     tutorName: cohort.tutorName,
     programmeWeek: studying && position.programmeWeek != null
@@ -500,6 +503,7 @@ export function AdminEnrolmentsScreen() {
       mentorName: row.mentorName,
       tutorName: row.tutorName,
       startDate: row.startDate,
+      originalPlannedEndDate: row.originalPlannedEndDate,
       programmeYear: row.programmeYear?.toString() ?? "",
       programmeWeek: row.programmeWeek?.toString() ?? "",
       attendancePercent: row.attendancePercent?.toString() ?? "",
@@ -565,6 +569,10 @@ export function AdminEnrolmentsScreen() {
       setError("Pick a cohort so the start date can fill from the intake.");
       return null;
     }
+    if (!form.originalPlannedEndDate) {
+      setError("Pick a cohort with a planned finish date.");
+      return null;
+    }
     const employer = employers.find((e) => e.id === form.employerId);
     if (!employer) {
       setError("Select a valid employer.");
@@ -599,6 +607,7 @@ export function AdminEnrolmentsScreen() {
       mentorName: employer.mainContact,
       tutorName: form.tutorName,
       startDate: form.startDate,
+      originalPlannedEndDate: form.originalPlannedEndDate,
       programmeYear: studying ? position.programmeYear : null,
       programmeWeek: studying ? position.programmeWeek : null,
       // Attendance / progress come from register & tracking — preserve existing only.
@@ -611,7 +620,7 @@ export function AdminEnrolmentsScreen() {
     };
   }
 
-  function submit(event: React.FormEvent) {
+  async function submit(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
     setSuccess(null);
@@ -619,11 +628,11 @@ export function AdminEnrolmentsScreen() {
     if (!input) return;
 
     if (editingId) {
-      updateEnrolment(editingId, input);
+      await updateEnrolment(editingId, input);
       setSuccess(`Updated ${input.displayName}.`);
       setExpandedId(editingId);
     } else {
-      const created = createEnrolment(input);
+      const created = await createEnrolment(input);
       setSuccess(
         input.kind === "new_starter"
           ? `Added new starter ${input.displayName}.`
@@ -635,11 +644,11 @@ export function AdminEnrolmentsScreen() {
     setEditingId(null);
   }
 
-  function patchEnrolment(
+  async function patchEnrolment(
     idValue: string,
     patch: Partial<EnrolmentInput> & { status?: EnrolmentStatus },
   ) {
-    const next = updateEnrolment(idValue, patch);
+    const next = await updateEnrolment(idValue, patch);
     if (next) setSuccess(`Updated ${next.displayName}.`);
   }
 
@@ -667,7 +676,7 @@ export function AdminEnrolmentsScreen() {
    * Pre-framed transfer: college day/group (cohort) and/or employer.
    * Formal rules (approvals, version pinning, progress reset) still TBC with Jon.
    */
-  function applyTransfer(row: AdminLearnerEnrolment) {
+  async function applyTransfer(row: AdminLearnerEnrolment) {
     const nextCohort = transferDraft.cohortId
       ? store.cohorts.find((c) => c.id === transferDraft.cohortId) ?? null
       : null;
@@ -738,7 +747,7 @@ export function AdminEnrolmentsScreen() {
       patch.mentorName = nextEmployer.mainContact;
     }
 
-    const updated = updateEnrolment(row.id, patch);
+    const updated = await updateEnrolment(row.id, patch);
     if (!updated) {
       setError("Could not apply the transfer.");
       return;

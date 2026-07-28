@@ -60,6 +60,11 @@ export const MENTOR_NAV_SECTIONS: NavSection[] = [
         label: "Action Centre",
         permission: PERMISSIONS.ACTIONS_MANAGE,
       },
+      {
+        href: "/workspaces/progress-mentor/training-plans",
+        label: "Training Plans",
+        permission: PERMISSIONS.REVIEWS_MANAGE,
+      },
     ],
   },
   {

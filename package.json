@@ -8,10 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "bootstrap:superadmin": "node scripts/bootstrap-superadmin.mjs"
   },
   "dependencies": {
     "@giphy/js-fetch-api": "^5.8.0",
+    "@hcaptcha/react-hcaptcha": "^2.0.2",
     "@supabase/ssr": "^0.12.3",
     "@supabase/supabase-js": "^2.110.9",
     "@vercel/analytics": "^2.0.1",

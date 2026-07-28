@@ -2,6 +2,9 @@ import { redirect } from "next/navigation";
 import { FeatureStubScreen } from "@/features/learner-lifecycle";
 import {
   LearnerAttendanceScreen,
+  DocumentsHubScreen,
+  DocumentsItemScreen,
+  DocumentsSectionScreen,
   LearnerCvBuilderScreen,
   LearnerDashboardScreen,
   LearnerOtjHoursScreen,
@@ -28,9 +31,11 @@ import {
   AdminLearnerIntakeScreen,
   AdminProgrammesScreen,
   AdminUsersScreen,
+  ManagementProxyWriteScreen,
 } from "@/features/administration";
 import { SharedDriveScreen } from "@/features/shared-drive";
 import { getStandalonePorts } from "@/adapters/standalone";
+import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
 import { EmployerDashboardScreen } from "./EmployerDashboardScreen";
@@ -52,6 +57,38 @@ const STAFF_SHARED_REDIRECTS: Record<string, string> = {
   "curriculum-feedback": "/staff/programme-delivery",
 };
 
+function renderDocumentsPage(
+  audience: "learner" | "employer",
+  segment: string,
+) {
+  const itemMatch = /^documents\/([^/]+)\/([^/]+)$/.exec(segment);
+  if (itemMatch) {
+    return (
+      <DocumentsItemScreen
+        audience={audience}
+        sectionKey={itemMatch[1]}
+        reference={itemMatch[2]}
+      />
+    );
+  }
+
+  const sectionMatch = /^documents\/([^/]+)$/.exec(segment);
+  if (sectionMatch) {
+    return (
+      <DocumentsSectionScreen
+        audience={audience}
+        sectionKey={sectionMatch[1]}
+      />
+    );
+  }
+
+  if (segment === "documents") {
+    return <DocumentsHubScreen audience={audience} />;
+  }
+
+  return null;
+}
+
 function renderLearnerPage(segment: string) {
   const moduleMatch = /^modules\/([^/]+)(?:\/([^/]+))?$/.exec(segment);
   if (moduleMatch) {
@@ -69,6 +106,9 @@ function renderLearnerPage(segment: string) {
     return <LearnerTaskFillScreen taskId={collegeTaskMatch[1]} />;
   }
 
+  const documentsPage = renderDocumentsPage("learner", segment);
+  if (documentsPage) return documentsPage;
+
   switch (segment) {
     case "dashboard":
       return <LearnerDashboardScreen />;
@@ -83,6 +123,9 @@ function renderLearnerPage(segment: string) {
       redirect("/learner/college-tasks");
     case "otj":
       return <LearnerOtjHoursScreen />;
+    case "training-plan":
+      // Legacy path — Documents hub replaces the single training-plan page.
+      redirect("/learner/documents");
     case "assignments":
       redirect("/learner/college-tasks");
     case "evidence":
@@ -111,7 +154,7 @@ export async function renderWorkspacePage(
 ) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
-  if (!session) redirect("/");
+  if (!session) redirect(getUnauthenticatedRedirect(`/${workspace}`));
 
   const rawSegment = slug?.join("/") ?? "";
   const segment = rawSegment || "dashboard";
@@ -191,6 +234,16 @@ export async function renderWorkspacePage(
     return <EmployerOtjApprovalsScreen />;
   }
 
+  if (workspace === "employer") {
+    const documentsPage = renderDocumentsPage("employer", segment);
+    if (documentsPage) return documentsPage;
+  }
+
+  if (workspace === "employer" && segment === "commitments") {
+    // Legacy path — Documents hub replaces employer commitments.
+    redirect("/employer/documents");
+  }
+
   if (workspace === "administration") {
     switch (segment) {
       case "dashboard":
@@ -247,6 +300,9 @@ export async function renderWorkspacePage(
         return <AdminEnrolmentsScreen />;
       case "shared-drive":
         return <SharedDriveScreen audience="management" />;
+      case "system":
+      case "learner-data":
+        return <ManagementProxyWriteScreen />;
       case "messages":
         return (
           <LearnerMessagesScreen

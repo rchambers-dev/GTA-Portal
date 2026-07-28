@@ -7,6 +7,7 @@ export { EmployerRelationshipsScreen } from "./screens/EmployerRelationshipsScre
 export { EmployerConcernsScreen } from "./screens/EmployerConcernsScreen";
 export { InterventionsScreen } from "./screens/InterventionsScreen";
 export { MentorMessagesScreen } from "./screens/MentorMessagesScreen";
+export { TrainingPlanReviewsScreen } from "./screens/TrainingPlanReviewsScreen";
 export {
   metricHref,
   learnerStatusHref,

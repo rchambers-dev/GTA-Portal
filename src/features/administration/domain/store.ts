@@ -1,4 +1,5 @@
 import { createSeedSnapshot } from "./seed";
+import { isDemoModeEnabled } from "@/lib/env/portal";
 import type {
   AdminCohortRecord,
   AdminEmployerRecord,
@@ -13,6 +14,10 @@ import type {
 } from "./types";
 
 const STORAGE_KEY = "gta-portal.administration.v1";
+
+function isLiveAdminStoreEnabled(): boolean {
+  return typeof window !== "undefined" && !isDemoModeEnabled();
+}
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
@@ -32,7 +37,7 @@ function loadSnapshot(): AdminStoreSnapshot {
 }
 
 function persist(snapshot: AdminStoreSnapshot): void {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || isLiveAdminStoreEnabled()) return;
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
 }
 
@@ -45,6 +50,7 @@ const listeners = new Set<() => void>();
 
 function ensureHydrated(): void {
   if (hydrated || typeof window === "undefined") return;
+  if (isLiveAdminStoreEnabled()) return;
   snapshot = loadSnapshot();
   hydrated = true;
 }
@@ -53,11 +59,36 @@ function ensureHydrated(): void {
  * Load localStorage after the first paint so SSR HTML matches the initial
  * client render. Mutations still call ensureHydrated() synchronously.
  */
+async function fetchLiveAdminSlice(): Promise<void> {
+  if (typeof window === "undefined") return;
+  const response = await fetch("/api/admin/store", {
+    credentials: "include",
+    cache: "no-store",
+  });
+  if (!response.ok) return;
+  const data = (await response.json()) as {
+    learners: AdminLearnerRecord[];
+    enrolments: AdminLearnerEnrolment[];
+  };
+  snapshot = {
+    ...snapshot,
+    learners: data.learners,
+    enrolments: data.enrolments,
+  };
+}
+
 function scheduleHydrateFromStorage(): void {
   if (hydrated || hydrateScheduled || typeof window === "undefined") return;
   hydrateScheduled = true;
   queueMicrotask(() => {
     if (hydrated) return;
+    if (isLiveAdminStoreEnabled()) {
+      hydrated = true;
+      void fetchLiveAdminSlice().then(() => {
+        for (const listener of listeners) listener();
+      });
+      return;
+    }
     const next = loadSnapshot();
     hydrated = true;
     snapshot = next;
@@ -133,8 +164,26 @@ export function getLearner(idValue: string): AdminLearnerRecord | undefined {
   return snapshot.learners.find((l) => l.id === idValue);
 }
 
-export function createLearner(input: LearnerInput): AdminLearnerRecord {
+export async function createLearner(input: LearnerInput): Promise<AdminLearnerRecord> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const response = await fetch("/api/admin/store", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ action: "createLearner", input }),
+    });
+    if (!response.ok) {
+      throw new Error("Unable to create learner");
+    }
+    const data = (await response.json()) as { learner: AdminLearnerRecord };
+    snapshot = {
+      ...snapshot,
+      learners: [data.learner, ...snapshot.learners.filter((row) => row.id !== data.learner.id)],
+    };
+    emit();
+    return data.learner;
+  }
   const stamp = new Date().toISOString();
   const row: AdminLearnerRecord = {
     id: id("lrn"),
@@ -167,11 +216,39 @@ export function createLearner(input: LearnerInput): AdminLearnerRecord {
   return row;
 }
 
-export function updateLearner(
+export async function updateLearner(
   idValue: string,
   patch: Partial<LearnerInput>,
-): AdminLearnerRecord | null {
+): Promise<AdminLearnerRecord | null> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const response = await fetch("/api/admin/store", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ action: "updateLearner", id: idValue, patch }),
+    });
+    if (!response.ok) return null;
+    const data = (await response.json()) as { learner: AdminLearnerRecord };
+    snapshot = {
+      ...snapshot,
+      learners: snapshot.learners.map((row) => (row.id === idValue ? data.learner : row)),
+      enrolments: snapshot.enrolments.map((e) =>
+        e.learnerId === idValue
+          ? {
+              ...e,
+              displayName: data.learner.displayName,
+              email: data.learner.email,
+              phone: data.learner.phone,
+              dateOfBirth: data.learner.dateOfBirth,
+              uln: data.learner.uln,
+            }
+          : e,
+      ),
+    };
+    emit();
+    return data.learner;
+  }
   const existing = snapshot.learners.find((l) => l.id === idValue);
   if (!existing) return null;
   const next: AdminLearnerRecord = {
@@ -261,6 +338,7 @@ export type EnrolmentInput = {
   mentorName: string;
   tutorName: string;
   startDate: string;
+  originalPlannedEndDate: string;
   programmeYear: 1 | 2 | 3 | null;
   programmeWeek: number | null;
   attendancePercent: number | null;
@@ -281,8 +359,29 @@ export function getEnrolment(idValue: string): AdminLearnerEnrolment | undefined
   return snapshot.enrolments.find((e) => e.id === idValue);
 }
 
-export function createEnrolment(input: EnrolmentInput): AdminLearnerEnrolment {
+export async function createEnrolment(input: EnrolmentInput): Promise<AdminLearnerEnrolment> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const response = await fetch("/api/admin/store", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ action: "createEnrolment", input }),
+    });
+    if (!response.ok) {
+      throw new Error("Unable to create enrolment");
+    }
+    const data = (await response.json()) as { enrolment: AdminLearnerEnrolment };
+    snapshot = {
+      ...snapshot,
+      enrolments: [
+        data.enrolment,
+        ...snapshot.enrolments.filter((row) => row.id !== data.enrolment.id),
+      ],
+    };
+    emit();
+    return data.enrolment;
+  }
   const stamp = new Date().toISOString();
   const row: AdminLearnerEnrolment = {
     id: id("enr"),
@@ -305,6 +404,7 @@ export function createEnrolment(input: EnrolmentInput): AdminLearnerEnrolment {
     mentorName: input.mentorName.trim(),
     tutorName: input.tutorName.trim(),
     startDate: input.startDate,
+    originalPlannedEndDate: input.originalPlannedEndDate,
     programmeYear: input.programmeYear,
     programmeWeek: input.programmeWeek,
     attendancePercent: input.attendancePercent,
@@ -355,11 +455,29 @@ export function createEnrolment(input: EnrolmentInput): AdminLearnerEnrolment {
   return row;
 }
 
-export function updateEnrolment(
+export async function updateEnrolment(
   idValue: string,
   patch: Partial<EnrolmentInput> & { status?: EnrolmentStatus },
-): AdminLearnerEnrolment | null {
+): Promise<AdminLearnerEnrolment | null> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const response = await fetch("/api/admin/store", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ action: "updateEnrolment", id: idValue, patch }),
+    });
+    if (!response.ok) return null;
+    const data = (await response.json()) as { enrolment: AdminLearnerEnrolment };
+    snapshot = {
+      ...snapshot,
+      enrolments: snapshot.enrolments.map((row) =>
+        row.id === idValue ? data.enrolment : row,
+      ),
+    };
+    emit();
+    return data.enrolment;
+  }
   const existing = snapshot.enrolments.find((e) => e.id === idValue);
   if (!existing) return null;
   const next: AdminLearnerEnrolment = {
@@ -372,6 +490,8 @@ export function updateEnrolment(
     workplaceContact: (patch.workplaceContact ?? existing.workplaceContact).trim(),
     mentorName: (patch.mentorName ?? existing.mentorName).trim(),
     tutorName: (patch.tutorName ?? existing.tutorName).trim(),
+    originalPlannedEndDate:
+      patch.originalPlannedEndDate ?? existing.originalPlannedEndDate,
     collegeDays: (patch.collegeDays ?? existing.collegeDays).trim(),
     notes: (patch.notes ?? existing.notes).trim(),
     updatedAt: new Date().toISOString(),
@@ -657,11 +777,14 @@ export function findIntakeCohort(
 }
 
 /** Assign or remove a learner from a cohort (pins them to that version). */
-export function setEnrolmentCohort(
+export async function setEnrolmentCohort(
   enrolmentId: string,
   cohortId: string | null,
-): AdminLearnerEnrolment | null {
+): Promise<AdminLearnerEnrolment | null> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    return updateEnrolment(enrolmentId, { cohortId });
+  }
   const existing = snapshot.enrolments.find((e) => e.id === enrolmentId);
   if (!existing) return null;
   if (cohortId) {

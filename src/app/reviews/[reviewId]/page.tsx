@@ -1,5 +1,6 @@
 import { getStandalonePorts } from "@/adapters/standalone";
 import { ReviewRecordScreen } from "@/features/progress-mentor/screens/ReviewRecordScreen";
+import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { redirect } from "next/navigation";
 
@@ -11,7 +12,7 @@ type Props = {
 export default async function ReviewRecordPage({ params, searchParams }: Props) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
-  if (!session) redirect("/staff/dashboard");
+  if (!session) redirect(getUnauthenticatedRedirect("/reviews"));
   const { reviewId } = await params;
   assertRouteAccess(session, `/reviews/${reviewId}`);
   const sp = await searchParams;
