@@ -121,6 +121,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/management/shared-drive", label: "Shared Drive", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
           { href: "/management/system", label: "System Actions", permission: PERMISSIONS.RECORDS_PROXY_WRITE },
           { href: "/management/learner-data", label: "Load Learner Data", permission: PERMISSIONS.RECORDS_PROXY_WRITE },
+          { href: "/management/force-complete-tasks", label: "Force-complete tasks", permission: PERMISSIONS.RECORDS_PROXY_WRITE },
           { href: "/management/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
           { href: "/management/safeguarding", label: "Safeguarding", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
         ],

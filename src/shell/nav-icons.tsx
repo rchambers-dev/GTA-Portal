@@ -228,7 +228,9 @@ export function NavIcon({ href }: { href: string }) {
   }
   if (
     key.includes("/administration/system") ||
-    key.includes("/management/system")
+    key.includes("/management/system") ||
+    key.includes("/management/force-complete-tasks") ||
+    key.includes("/management/learner-data")
   ) {
     return (
       <svg {...common}>

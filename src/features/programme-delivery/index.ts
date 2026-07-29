@@ -4,6 +4,7 @@ export { TutorProgrammeDeliveryScreen } from "./screens/TutorProgrammeDeliverySc
 export { TutorTaskReviewScreen } from "./screens/TutorTaskReviewScreen";
 export { ManagementLearnerRplScreen } from "./screens/ManagementLearnerRplScreen";
 export { ManagementLearnerBragScreen } from "./screens/ManagementLearnerBragScreen";
+export { ManagementForceCompleteTasksScreen } from "./screens/ManagementForceCompleteTasksScreen";
 export { ManagementTaskViewScreen } from "./screens/ManagementTaskViewScreen";
 export { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "./domain/autocare-blocks";
 export { AUTOCARE_PRACTICAL_TASKS } from "./domain/autocare-tasks";

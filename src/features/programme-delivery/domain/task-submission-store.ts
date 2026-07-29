@@ -262,4 +262,78 @@ export function listAwaitingTrainer(
   });
 }
 
+/**
+ * Map admin enrolment learnerId → task store key.
+ * Alex demo pack is stored under DEMO_LEARNER_ID.
+ */
+export function resolveTaskStoreLearnerId(
+  adminLearnerId: string | null | undefined,
+): string {
+  if (!adminLearnerId || adminLearnerId === "lrn-alex-morgan") {
+    return DEMO_LEARNER_ID;
+  }
+  return adminLearnerId;
+}
+
+export type ForceCompleteOptions = {
+  /** ISO date (YYYY-MM-DD) used as trainer sign-off / BRAG completedAt. */
+  completedAtIso?: string;
+  actorName?: string;
+  note?: string;
+};
+
+function forceCompleteStamp(completedAtIso?: string): string {
+  if (completedAtIso && /^\d{4}-\d{2}-\d{2}$/.test(completedAtIso)) {
+    return `${completedAtIso}T12:00:00.000Z`;
+  }
+  return new Date().toISOString();
+}
+
+/**
+ * Management system action: mark a task verified without the learner/tutor flow.
+ * Used to backfill progress for live / backdated intakes.
+ */
+export function forceVerifyTask(
+  taskId: string,
+  learnerId: string,
+  options: ForceCompleteOptions = {},
+): TaskSubmission {
+  const stamp = forceCompleteStamp(options.completedAtIso);
+  const actor = options.actorName?.trim() || "Management (system backfill)";
+  const note =
+    options.note?.trim() ||
+    "Force-completed via management system action (historical backfill).";
+
+  return upsertTaskSubmission(
+    taskId,
+    {
+      method: "portal_form",
+      status: "verified",
+      apprenticeSignedAt: stamp,
+      mentorSignedAt: stamp,
+      mentorSignedBy: actor,
+      trainerSignedAt: stamp,
+      trainerSignedBy: actor,
+      trainerDecision: "verified",
+      returnNote: note,
+      difficulty: "ok",
+    },
+    learnerId,
+  );
+}
+
+/** Mark every task in a block verified. Returns how many tasks were updated. */
+export function forceVerifyBlock(
+  blockTasks: PracticalTaskDef[],
+  learnerId: string,
+  options: ForceCompleteOptions = {},
+): number {
+  let count = 0;
+  for (const task of blockTasks) {
+    forceVerifyTask(task.id, learnerId, options);
+    count += 1;
+  }
+  return count;
+}
+
 export { DEMO_LEARNER_ID };

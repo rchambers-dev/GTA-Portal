@@ -30,21 +30,16 @@ import {
   type ProgressionBrag,
 } from "../domain/progression-status";
 import {
-  DEMO_LEARNER_ID,
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
+  resolveTaskStoreLearnerId,
   statusLabel,
   statusTone,
   subscribeTaskStore,
 } from "../domain/task-submission-store";
 import styles from "@/features/administration/screens/admin-pages.module.css";
 import deliveryStyles from "./programme-delivery.module.css";
-
-function taskStoreLearnerId(adminLearnerId: string | null): string {
-  if (adminLearnerId === "lrn-alex-morgan") return DEMO_LEARNER_ID;
-  return adminLearnerId ?? DEMO_LEARNER_ID;
-}
 
 type PieSlice = { key: string; label: string; count: number; color: string };
 
@@ -146,7 +141,7 @@ export function ManagementLearnerBragScreen() {
     cohort?.startDate || enrolment?.startDate || "2024-09-02";
   const deliveryEnd =
     cohort?.expectedEndDate || enrolment?.originalPlannedEndDate || null;
-  const storeLearnerId = taskStoreLearnerId(learnerId);
+  const storeLearnerId = resolveTaskStoreLearnerId(learnerId);
 
   const { trainingRows, epaBlockSummary, milestoneRows } = useMemo(() => {
     void taskSnap;

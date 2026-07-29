@@ -7,3 +7,4 @@ export { AdminProgrammesScreen } from "./screens/AdminProgrammesScreen";
 export { AdminCohortsScreen } from "./screens/AdminCohortsScreen";
 export { AdminLearnerIntakeScreen } from "./screens/AdminLearnerIntakeScreen";
 export { ManagementProxyWriteScreen } from "./screens/ManagementProxyWriteScreen";
+export { ManagementSystemActionsScreen } from "./screens/ManagementSystemActionsScreen";
