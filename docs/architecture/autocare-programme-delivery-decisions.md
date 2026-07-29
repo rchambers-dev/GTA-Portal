@@ -18,6 +18,7 @@ Gateway model aligned to MBB `mbb-gta-duplicate` (Jul 2026).
   - **Gateway 2** — after Block 10 / ~24 months
   - **EPA** — cohort delivery end / ~25 months
 - Programme still **60 tasks** (12 blocks × 5). Knowledge-test pattern left unchanged pending Jon verify.
+- **Official KSB catalogues** for ST0499 occupation packs **1.1 / 1.2 / 1.3** live in `docs/standards/st0499/` and `st0499-ksb-catalog.ts` (separate from learner RPL % steppers).
 
 ## RPL & funding
 

@@ -1,0 +1,865 @@
+{
+  "generatedFrom": "Skills England OCC0499 occupation pages + ST0499 version log (Jul 2026)",
+  "versions": [
+    {
+      "occupationCode": "OCC0499",
+      "standardCode": "ST0499",
+      "occupationVersion": "1.1",
+      "status": "retired",
+      "apprenticeshipVersions": [
+        "1.0",
+        "1.1"
+      ],
+      "fundingBandGbp": 12000,
+      "typicalDurationMonths": 30,
+      "notes": "Legacy short KSB list used through ST0499 v1.1. Source: Skills England OCC0499-v1-1.",
+      "sources": [
+        "https://skillsengland.education.gov.uk/occupations/OCC0499-v1-1",
+        "https://skillsengland.education.gov.uk/apprenticeships/st0499-v1-1"
+      ],
+      "counts": {
+        "knowledge": 11,
+        "skills": 13,
+        "behaviours": 5
+      },
+      "ksbs": [
+        {
+          "code": "B1",
+          "kind": "behaviours",
+          "statement": "Act in a manner that promotes the professional image of the automotive sector"
+        },
+        {
+          "code": "B2",
+          "kind": "behaviours",
+          "statement": "Communicate effectively with colleagues and customers on a range of topics including drawing out information to support identification of customer and vehicle needs, making clear recommendations to customers and overcoming objections/concerns."
+        },
+        {
+          "code": "B3",
+          "kind": "behaviours",
+          "statement": "Behave in accordance with company values, industry codes of conduct and demonstrate respect for customers and colleagues. Be courteous at all times and respond quickly to requests/requirements using effective communication skills to win trust and ensure an excellent experience"
+        },
+        {
+          "code": "B4",
+          "kind": "behaviours",
+          "statement": "Work as an effective team member taking responsibility for their own actions, being honest and accountable when issues arise and things don\u2019t go as planned"
+        },
+        {
+          "code": "B5",
+          "kind": "behaviours",
+          "statement": "Commit to learning to improve your own performance and that of the business. Work in an organised way to ensure work is carried out in an effective and efficient manner."
+        },
+        {
+          "code": "K1",
+          "kind": "knowledge",
+          "statement": "Tyre legislation and technical information including EU Tyre labelling, Tyre Pressure Monitoring systems, sidewall markings, homologated fitments relating to cars, car derived vans and light goods vehicles."
+        },
+        {
+          "code": "K2",
+          "kind": "knowledge",
+          "statement": "Fundamentals of specific vehicle systems including steering & suspension, braking systems, battery & charging systems, exhaust systems and Air-Conditioning systems"
+        },
+        {
+          "code": "K3",
+          "kind": "knowledge",
+          "statement": "Vehicle 4-wheel geometry principles"
+        },
+        {
+          "code": "K4",
+          "kind": "knowledge",
+          "statement": "Basic consumer legislation relevant to the occupation"
+        },
+        {
+          "code": "K5",
+          "kind": "knowledge",
+          "statement": "Appropriate Health & Safety legislation and requirements for the workplace"
+        },
+        {
+          "code": "K6",
+          "kind": "knowledge",
+          "statement": "Hybrid/Electric Vehicle system and safe working procedures"
+        },
+        {
+          "code": "K7",
+          "kind": "knowledge",
+          "statement": "Data protection requirements to protect customer and payment information"
+        },
+        {
+          "code": "K8",
+          "kind": "knowledge",
+          "statement": "General sales principles including, identifying customer & vehicle needs, presenting solutions, closing the sale and dealing with buying resistance"
+        },
+        {
+          "code": "K9",
+          "kind": "knowledge",
+          "statement": "How the business works and how you contribute to the overall results, demonstrating commercial awareness"
+        },
+        {
+          "code": "K10",
+          "kind": "knowledge",
+          "statement": "How to carry out vehicle safety inspections and routine maintenance using manufacturers specifications or approved schedules, using vehicle specific data and meeting legal requirements"
+        },
+        {
+          "code": "K11",
+          "kind": "knowledge",
+          "statement": "The importance of following work place procedures and the consequences of not doing so."
+        },
+        {
+          "code": "S1",
+          "kind": "skills",
+          "statement": "Contribute to maintaining a healthy and safe workplace, including the maintenance of key equipment and carrying out general housekeeping"
+        },
+        {
+          "code": "S2",
+          "kind": "skills",
+          "statement": "Carry out stock procedures including dealing with routine stock deliveries, placing stock into storage, carrying out stock rotation duties and ordering parts for customers following company procedures"
+        },
+        {
+          "code": "S3",
+          "kind": "skills",
+          "statement": "Carry out vehicle safety inspections and routine maintenance in line with manufactures specifications or approved schedules, company procedures and complete approved documentation."
+        },
+        {
+          "code": "S4",
+          "kind": "skills",
+          "statement": "Make recommendations to customers based on the results of inspections, ensuring that sales recommendations are accurate and fully costed, are ethical and in the best interests of the customer at all times, using language that is transparent and avoids jargon."
+        },
+        {
+          "code": "S5",
+          "kind": "skills",
+          "statement": "Carry out replacement/repair and balancing of a range of light vehicle tyres, including ultra-low profile, directional, asymmetric and run-flat tyres fitted to a range of wheel sizes and types"
+        },
+        {
+          "code": "S6",
+          "kind": "skills",
+          "statement": "Carry out the replacement of components on a specific range of vehicle systems including Steering & Suspension, Braking systems, Battery & Charging systems, exhaust systems and Air-Conditioning systems"
+        },
+        {
+          "code": "S7",
+          "kind": "skills",
+          "statement": "Carry out 4-wheel Geometry operations including adjustments on a range of vehicles with different suspension and steering systems"
+        },
+        {
+          "code": "S8",
+          "kind": "skills",
+          "statement": "Use a range of specialist tools & equipment, mechanical & electrical measuring tools and diagnostic equipment to support fault identification and repair."
+        },
+        {
+          "code": "S9",
+          "kind": "skills",
+          "statement": "Identify & procure correct parts to meet specific customer requirements"
+        },
+        {
+          "code": "S10",
+          "kind": "skills",
+          "statement": "Access vehicle technical data to inform inspections and make judgements on wear and serviceability."
+        },
+        {
+          "code": "S11",
+          "kind": "skills",
+          "statement": "Deal with and resolve low-level customer complaints"
+        },
+        {
+          "code": "S12",
+          "kind": "skills",
+          "statement": "Communicate effectively with customers, suppliers and colleagues"
+        },
+        {
+          "code": "S13",
+          "kind": "skills",
+          "statement": "Use specific company IT systems within the workplace, including Point-of-sale systems and hand-held devices."
+        }
+      ]
+    },
+    {
+      "occupationCode": "OCC0499",
+      "standardCode": "ST0499",
+      "occupationVersion": "1.2",
+      "status": "retired",
+      "apprenticeshipVersions": [
+        "1.2"
+      ],
+      "fundingBandGbp": 13000,
+      "typicalDurationMonths": 30,
+      "notes": "Expanded KSB catalogue introduced with ST0499 v1.2 (Jan 2025). Includes duplicate tyre skills S9 and S10.",
+      "sources": [
+        "https://www.instituteforapprenticeships.org/qualifications/finder/OCC0499-v1-2",
+        "https://skillsengland.education.gov.uk/apprenticeships/st0499-v1-2"
+      ],
+      "counts": {
+        "knowledge": 34,
+        "skills": 26,
+        "behaviours": 5
+      },
+      "ksbs": [
+        {
+          "code": "B1",
+          "kind": "behaviours",
+          "statement": "Put health and safety first."
+        },
+        {
+          "code": "B2",
+          "kind": "behaviours",
+          "statement": "Consider the impact on the environment when using resources and carrying out work."
+        },
+        {
+          "code": "B3",
+          "kind": "behaviours",
+          "statement": "Respond and adapt to changing work demands."
+        },
+        {
+          "code": "B4",
+          "kind": "behaviours",
+          "statement": "Seek learning and development opportunities, continual professional development."
+        },
+        {
+          "code": "B5",
+          "kind": "behaviours",
+          "statement": "Support an inclusive workplace, for example, being respectful of different views."
+        },
+        {
+          "code": "K1",
+          "kind": "knowledge",
+          "statement": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels."
+        },
+        {
+          "code": "K2",
+          "kind": "knowledge",
+          "statement": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability."
+        },
+        {
+          "code": "K3",
+          "kind": "knowledge",
+          "statement": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER)."
+        },
+        {
+          "code": "K4",
+          "kind": "knowledge",
+          "statement": "Environment and sustainability guidance relevant to the occupation and autocare technician's role and responsibilities. Recycling, reuse, and safe disposal of waste."
+        },
+        {
+          "code": "K5",
+          "kind": "knowledge",
+          "statement": "Tools and equipment used in automotive industry. Purpose and operation."
+        },
+        {
+          "code": "K6",
+          "kind": "knowledge",
+          "statement": "Maintenance and storage methods for tools and equipment, including calibration checks."
+        },
+        {
+          "code": "K7",
+          "kind": "knowledge",
+          "statement": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement."
+        },
+        {
+          "code": "K8",
+          "kind": "knowledge",
+          "statement": "Vehicle service records, owner's manuals, and warranties. Purpose and use."
+        },
+        {
+          "code": "K9",
+          "kind": "knowledge",
+          "statement": "Tyres: legislation, replacement, repair, and technical information including EU tyre labelling, tyre pressure monitoring systems (TPMS), sidewall markings, homologated fitments relating to cars, car derived vans and light goods vehicles."
+        },
+        {
+          "code": "K10",
+          "kind": "knowledge",
+          "statement": "Steering systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Mechanical, hydraulic and electric power assisted steering."
+        },
+        {
+          "code": "K11",
+          "kind": "knowledge",
+          "statement": "Suspension systems: purpose, function, and location of systems and components for inspection, removal and replacement. Macpherson strut, double wishbone, ball joints, suspension arms, spring types, including leaf and coil, dampers and shock absorbers, air or hydraulic suspension, subframes."
+        },
+        {
+          "code": "K12",
+          "kind": "knowledge",
+          "statement": "Braking systems: purpose, function, and location of systems and components for inspection, removal and replacement: brake discs, brake pads, brake shoes, brake drum, hydraulic components, anti-lock braking systems, electronic stability programmes, brake pedal simulator, brake pipe and hoses, wheel bearings."
+        },
+        {
+          "code": "K13",
+          "kind": "knowledge",
+          "statement": "Emission control systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Catalytic converters, evaporative control systems, exhaust gas recirculation (EGR), diesel particulate filter (DPF), petrol particulate filter (PPF), selective catalyst reduction (SCR)."
+        },
+        {
+          "code": "K14",
+          "kind": "knowledge",
+          "statement": "Vehicle heating, ventilation, and air conditioning systems (HVAC): purpose, function and location of systems including climate control systems for inspection, maintenance, and replacement: refrigerants, coolants, blower motors, valves, heat exchangers, pipes and hoses."
+        },
+        {
+          "code": "K15",
+          "kind": "knowledge",
+          "statement": "Low voltage batteries: purpose, function, and location of low voltage batteries, starting and charging systems: auxiliary battery, starter motor, alternator, e-machine."
+        },
+        {
+          "code": "K16",
+          "kind": "knowledge",
+          "statement": "Maintenance and replacement of low voltage batteries, starting and charging systems."
+        },
+        {
+          "code": "K17",
+          "kind": "knowledge",
+          "statement": "Awareness of advanced driver-assistance systems (ADAS) and impact of repair work: static and dynamic calibration methods, calibration equipment."
+        },
+        {
+          "code": "K18",
+          "kind": "knowledge",
+          "statement": "Advanced driver-assistance systems (ADAS) levels of autonomy: passive and active advanced driver assistance systems."
+        },
+        {
+          "code": "K19",
+          "kind": "knowledge",
+          "statement": "Four-wheel geometry principles including wheel alignment, Ackermann principle, alignment principles, toe, camber, thrust angle, adjustment types and methods."
+        },
+        {
+          "code": "K20",
+          "kind": "knowledge",
+          "statement": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters."
+        },
+        {
+          "code": "K21",
+          "kind": "knowledge",
+          "statement": "Awareness of electrified vehicle technologies and principles of operation: condition monitoring of high voltage batteries and onboard chargers."
+        },
+        {
+          "code": "K22",
+          "kind": "knowledge",
+          "statement": "Awareness of hydrogen powered vehicle technologies and principles of operation: storage and condition monitoring of fuel cells."
+        },
+        {
+          "code": "K23",
+          "kind": "knowledge",
+          "statement": "Safe working procedures for electrified vehicles. High voltage systems, safe isolation."
+        },
+        {
+          "code": "K24",
+          "kind": "knowledge",
+          "statement": "Principles of customer care: pre and post vehicle customer service, identifying customer and vehicle needs, how to handle challenging conversations."
+        },
+        {
+          "code": "K25",
+          "kind": "knowledge",
+          "statement": "Business operation considerations: efficiency, customer satisfaction, competitiveness, minimising risks to operation, and ethical issues."
+        },
+        {
+          "code": "K26",
+          "kind": "knowledge",
+          "statement": "Vehicle parts costings and procurement: customer, organisation and vehicle needs."
+        },
+        {
+          "code": "K27",
+          "kind": "knowledge",
+          "statement": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes."
+        },
+        {
+          "code": "K28",
+          "kind": "knowledge",
+          "statement": "Principles of customer sales and financial compliance: Financial conduct authority (FCA), payment card industry (PCI) requirements."
+        },
+        {
+          "code": "K29",
+          "kind": "knowledge",
+          "statement": "Principles of sales processes."
+        },
+        {
+          "code": "K30",
+          "kind": "knowledge",
+          "statement": "Team working principles."
+        },
+        {
+          "code": "K31",
+          "kind": "knowledge",
+          "statement": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work."
+        },
+        {
+          "code": "K32",
+          "kind": "knowledge",
+          "statement": "Verbal communication techniques. Giving and receiving information. Matching style to audience."
+        },
+        {
+          "code": "K33",
+          "kind": "knowledge",
+          "statement": "Written communication techniques electronic and paper. Autocare industry terminology."
+        },
+        {
+          "code": "K34",
+          "kind": "knowledge",
+          "statement": "Information and digital technology: email, collaboration packages, databases, equipment digital interfaces, management information systems, word processing, work sharing platforms, point of sale, GDPR, cyber security."
+        },
+        {
+          "code": "S1",
+          "kind": "skills",
+          "statement": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance."
+        },
+        {
+          "code": "S2",
+          "kind": "skills",
+          "statement": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards."
+        },
+        {
+          "code": "S3",
+          "kind": "skills",
+          "statement": "Maintain and restore the work area during and on completion of the activity."
+        },
+        {
+          "code": "S4",
+          "kind": "skills",
+          "statement": "Store, maintain, including calibration checks, and return tools and equipment to storage."
+        },
+        {
+          "code": "S5",
+          "kind": "skills",
+          "statement": "Access vehicle technical data to inform inspections and make judgements on wear and serviceability."
+        },
+        {
+          "code": "S6",
+          "kind": "skills",
+          "statement": "Comply with environmental and sustainability procedures, regulations, standards, and guidance. Segregate resources for reuse, recycling, and disposal."
+        },
+        {
+          "code": "S7",
+          "kind": "skills",
+          "statement": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle."
+        },
+        {
+          "code": "S8",
+          "kind": "skills",
+          "statement": "Select and use tools and equipment, mechanical and electrical measuring tools, and diagnostic equipment."
+        },
+        {
+          "code": "S9",
+          "kind": "skills",
+          "statement": "Remove and replace vehicle tyre and balance wheel assemblies on car, car derived van or light goods vehicle. For example, ultra-low profile, directional, asymmetric, run-flat tyres."
+        },
+        {
+          "code": "S10",
+          "kind": "skills",
+          "statement": "Remove, repair and replace vehicle tyre and balance wheel assemblies on car, car derived van or light goods vehicle. For example, ultra-low profile, directional, asymmetric, run-flat tyres."
+        },
+        {
+          "code": "S11",
+          "kind": "skills",
+          "statement": "Inspect, remove, and replace of parts or components in cars, car derived vans, or light goods vehicles for the following: steering systems and suspension systems, braking systems, emission systems, air conditioning systems, battery and charging systems, fluid and filtration systems."
+        },
+        {
+          "code": "S12",
+          "kind": "skills",
+          "statement": "Apply state-of-health condition monitoring tests to high voltage batteries and chargers for electrified cars, car derived vans, or light goods vehicles."
+        },
+        {
+          "code": "S13",
+          "kind": "skills",
+          "statement": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles."
+        },
+        {
+          "code": "S14",
+          "kind": "skills",
+          "statement": "Apply safe working practices and procedures to isolate electrified vehicles for maintenance."
+        },
+        {
+          "code": "S15",
+          "kind": "skills",
+          "statement": "Record vehicle service maintenance, parts replacement, or repair."
+        },
+        {
+          "code": "S16",
+          "kind": "skills",
+          "statement": "Apply customer service principles and organisational customer care practices. For example, identifying customer and vehicle needs, resolve low level customer complaints, make recommendations to customers based on results of inspection, maintenance, or repair of vehicles, customer payment transactions and organisational sales processes."
+        },
+        {
+          "code": "S17",
+          "kind": "skills",
+          "statement": "Provide quotation of cost and order automotive parts, products, and consumables applicable to the vehicle."
+        },
+        {
+          "code": "S18",
+          "kind": "skills",
+          "statement": "Apply procedures for stock and parts storage: ordering, checking and stock rotation."
+        },
+        {
+          "code": "S19",
+          "kind": "skills",
+          "statement": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing."
+        },
+        {
+          "code": "S20",
+          "kind": "skills",
+          "statement": "Apply team working principles."
+        },
+        {
+          "code": "S21",
+          "kind": "skills",
+          "statement": "Comply with equity, diversity, and inclusion guidance."
+        },
+        {
+          "code": "S22",
+          "kind": "skills",
+          "statement": "Communicate with others verbally, for example customers, suppliers, and colleagues."
+        },
+        {
+          "code": "S23",
+          "kind": "skills",
+          "statement": "Communicate in writing, for example with internal and external customers, colleagues, and managers."
+        },
+        {
+          "code": "S24",
+          "kind": "skills",
+          "statement": "Use information and digital technology systems. Comply with GDPR and cyber security."
+        },
+        {
+          "code": "S25",
+          "kind": "skills",
+          "statement": "Complete and record learning and development activities."
+        },
+        {
+          "code": "S26",
+          "kind": "skills",
+          "statement": "Apply procedures to check and replace fluids, and filtration parts."
+        }
+      ]
+    },
+    {
+      "occupationCode": "OCC0499",
+      "standardCode": "ST0499",
+      "occupationVersion": "1.3",
+      "status": "approved",
+      "apprenticeshipVersions": [
+        "1.3"
+      ],
+      "fundingBandGbp": 13000,
+      "typicalDurationMonths": 30,
+      "notes": "Current. Removed duplicate S9 (tyre remove/replace without repair); renumbered subsequent skills. EPA Practical Activity 1 became vehicle health check.",
+      "sources": [
+        "https://skillsengland.education.gov.uk/occupations/OCC0499",
+        "https://skillsengland.education.gov.uk/apprenticeships/st0499-v1-3"
+      ],
+      "counts": {
+        "knowledge": 34,
+        "skills": 25,
+        "behaviours": 5
+      },
+      "ksbs": [
+        {
+          "code": "B1",
+          "kind": "behaviours",
+          "statement": "Put health and safety first."
+        },
+        {
+          "code": "B2",
+          "kind": "behaviours",
+          "statement": "Consider the impact on the environment when using resources and carrying out work."
+        },
+        {
+          "code": "B3",
+          "kind": "behaviours",
+          "statement": "Respond and adapt to changing work demands."
+        },
+        {
+          "code": "B4",
+          "kind": "behaviours",
+          "statement": "Seek learning and development opportunities, continual professional development."
+        },
+        {
+          "code": "B5",
+          "kind": "behaviours",
+          "statement": "Support an inclusive workplace, for example, being respectful of different views."
+        },
+        {
+          "code": "K1",
+          "kind": "knowledge",
+          "statement": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels."
+        },
+        {
+          "code": "K2",
+          "kind": "knowledge",
+          "statement": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability."
+        },
+        {
+          "code": "K3",
+          "kind": "knowledge",
+          "statement": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER)."
+        },
+        {
+          "code": "K4",
+          "kind": "knowledge",
+          "statement": "Environment and sustainability guidance relevant to the occupation and autocare technician's role and responsibilities. Recycling, reuse, and safe disposal of waste."
+        },
+        {
+          "code": "K5",
+          "kind": "knowledge",
+          "statement": "Tools and equipment used in automotive industry. Purpose and operation."
+        },
+        {
+          "code": "K6",
+          "kind": "knowledge",
+          "statement": "Maintenance and storage methods for tools and equipment, including calibration checks."
+        },
+        {
+          "code": "K7",
+          "kind": "knowledge",
+          "statement": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement."
+        },
+        {
+          "code": "K8",
+          "kind": "knowledge",
+          "statement": "Vehicle service records, owner's manuals, and warranties. Purpose and use."
+        },
+        {
+          "code": "K9",
+          "kind": "knowledge",
+          "statement": "Tyres: legislation, replacement, repair, and technical information including EU tyre labelling, tyre pressure monitoring systems (TPMS), sidewall markings, homologated fitments relating to cars, car derived vans and light goods vehicles."
+        },
+        {
+          "code": "K10",
+          "kind": "knowledge",
+          "statement": "Steering systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Mechanical, hydraulic and electric power assisted steering."
+        },
+        {
+          "code": "K11",
+          "kind": "knowledge",
+          "statement": "Suspension systems: purpose, function, and location of systems and components for inspection, removal and replacement. Macpherson strut, double wishbone, ball joints, suspension arms, spring types, including leaf and coil, dampers and shock absorbers, air or hydraulic suspension, subframes."
+        },
+        {
+          "code": "K12",
+          "kind": "knowledge",
+          "statement": "Braking systems: purpose, function, and location of systems and components for inspection, removal and replacement: brake discs, brake pads, brake shoes, brake drum, hydraulic components, anti-lock braking systems, electronic stability programmes, brake pedal simulator, brake pipe and hoses, wheel bearings."
+        },
+        {
+          "code": "K13",
+          "kind": "knowledge",
+          "statement": "Emission control systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Catalytic converters, evaporative control systems, exhaust gas recirculation (EGR), diesel particulate filter (DPF), petrol particulate filter (PPF), selective catalyst reduction (SCR)."
+        },
+        {
+          "code": "K14",
+          "kind": "knowledge",
+          "statement": "Vehicle heating, ventilation, and air conditioning systems (HVAC): purpose, function and location of systems including climate control systems for inspection, maintenance, and replacement: refrigerants, coolants, blower motors, valves, heat exchangers, pipes and hoses."
+        },
+        {
+          "code": "K15",
+          "kind": "knowledge",
+          "statement": "Low voltage batteries: purpose, function, and location of low voltage batteries, starting and charging systems: auxiliary battery, starter motor, alternator, e-machine."
+        },
+        {
+          "code": "K16",
+          "kind": "knowledge",
+          "statement": "Maintenance and replacement of low voltage batteries, starting and charging systems."
+        },
+        {
+          "code": "K17",
+          "kind": "knowledge",
+          "statement": "Awareness of advanced driver-assistance systems (ADAS) and impact of repair work: static and dynamic calibration methods, calibration equipment."
+        },
+        {
+          "code": "K18",
+          "kind": "knowledge",
+          "statement": "Advanced driver-assistance systems (ADAS) levels of autonomy: passive and active advanced driver assistance systems."
+        },
+        {
+          "code": "K19",
+          "kind": "knowledge",
+          "statement": "Four-wheel geometry principles including wheel alignment, Ackermann principle, alignment principles, toe, camber, thrust angle, adjustment types and methods."
+        },
+        {
+          "code": "K20",
+          "kind": "knowledge",
+          "statement": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters."
+        },
+        {
+          "code": "K21",
+          "kind": "knowledge",
+          "statement": "Awareness of electrified vehicle technologies and principles of operation: condition monitoring of high voltage batteries and onboard chargers."
+        },
+        {
+          "code": "K22",
+          "kind": "knowledge",
+          "statement": "Awareness of hydrogen powered vehicle technologies and principles of operation: storage and condition monitoring of fuel cells."
+        },
+        {
+          "code": "K23",
+          "kind": "knowledge",
+          "statement": "Safe working procedures for electrified vehicles. High voltage systems, safe isolation."
+        },
+        {
+          "code": "K24",
+          "kind": "knowledge",
+          "statement": "Principles of customer care: pre and post vehicle customer service, identifying customer and vehicle needs, how to handle challenging conversations."
+        },
+        {
+          "code": "K25",
+          "kind": "knowledge",
+          "statement": "Business operation considerations: efficiency, customer satisfaction, competitiveness, minimising risks to operation, and ethical issues."
+        },
+        {
+          "code": "K26",
+          "kind": "knowledge",
+          "statement": "Vehicle parts costings and procurement: customer, organisation and vehicle needs."
+        },
+        {
+          "code": "K27",
+          "kind": "knowledge",
+          "statement": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes."
+        },
+        {
+          "code": "K28",
+          "kind": "knowledge",
+          "statement": "Principles of customer sales and financial compliance: Financial conduct authority (FCA), payment card industry (PCI) requirements."
+        },
+        {
+          "code": "K29",
+          "kind": "knowledge",
+          "statement": "Principles of sales processes."
+        },
+        {
+          "code": "K30",
+          "kind": "knowledge",
+          "statement": "Team working principles."
+        },
+        {
+          "code": "K31",
+          "kind": "knowledge",
+          "statement": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work."
+        },
+        {
+          "code": "K32",
+          "kind": "knowledge",
+          "statement": "Verbal communication techniques. Giving and receiving information. Matching style to audience."
+        },
+        {
+          "code": "K33",
+          "kind": "knowledge",
+          "statement": "Written communication techniques electronic and paper. Autocare industry terminology."
+        },
+        {
+          "code": "K34",
+          "kind": "knowledge",
+          "statement": "Information and digital technology: email, collaboration packages, databases, equipment digital interfaces, management information systems, word processing, work sharing platforms, point of sale, GDPR, cyber security."
+        },
+        {
+          "code": "S1",
+          "kind": "skills",
+          "statement": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance."
+        },
+        {
+          "code": "S2",
+          "kind": "skills",
+          "statement": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards."
+        },
+        {
+          "code": "S3",
+          "kind": "skills",
+          "statement": "Maintain and restore the work area during and on completion of the activity."
+        },
+        {
+          "code": "S4",
+          "kind": "skills",
+          "statement": "Store, maintain, including calibration checks, and return tools and equipment to storage."
+        },
+        {
+          "code": "S5",
+          "kind": "skills",
+          "statement": "Access vehicle technical data to inform inspections and make judgements on wear and serviceability."
+        },
+        {
+          "code": "S6",
+          "kind": "skills",
+          "statement": "Comply with environmental and sustainability procedures, regulations, standards, and guidance. Segregate resources for reuse, recycling, and disposal."
+        },
+        {
+          "code": "S7",
+          "kind": "skills",
+          "statement": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle."
+        },
+        {
+          "code": "S8",
+          "kind": "skills",
+          "statement": "Select and use tools and equipment, mechanical and electrical measuring tools, and diagnostic equipment."
+        },
+        {
+          "code": "S9",
+          "kind": "skills",
+          "statement": "Remove, repair and replace vehicle tyre and balance wheel assemblies on car, car derived van or light goods vehicle. For example, ultra-low profile, directional, asymmetric, run-flat tyres."
+        },
+        {
+          "code": "S10",
+          "kind": "skills",
+          "statement": "Inspect, remove, and replace of parts or components in cars, car derived vans, or light goods vehicles for the following: steering systems and suspension systems, braking systems, emission systems, air conditioning systems, battery and charging systems, fluid and filtration systems."
+        },
+        {
+          "code": "S11",
+          "kind": "skills",
+          "statement": "Apply state-of-health condition monitoring tests to high voltage batteries and chargers for electrified cars, car derived vans, or light goods vehicles."
+        },
+        {
+          "code": "S12",
+          "kind": "skills",
+          "statement": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles."
+        },
+        {
+          "code": "S13",
+          "kind": "skills",
+          "statement": "Apply safe working practices and procedures to isolate electrified vehicles for maintenance."
+        },
+        {
+          "code": "S14",
+          "kind": "skills",
+          "statement": "Record vehicle service maintenance, parts replacement, or repair."
+        },
+        {
+          "code": "S15",
+          "kind": "skills",
+          "statement": "Apply customer service principles and organisational customer care practices. For example, identifying customer and vehicle needs, resolve low level customer complaints, make recommendations to customers based on results of inspection, maintenance, or repair of vehicles, customer payment transactions and organisational sales processes."
+        },
+        {
+          "code": "S16",
+          "kind": "skills",
+          "statement": "Provide quotation of cost and order automotive parts, products, and consumables applicable to the vehicle."
+        },
+        {
+          "code": "S17",
+          "kind": "skills",
+          "statement": "Apply procedures for stock and parts storage: ordering, checking and stock rotation."
+        },
+        {
+          "code": "S18",
+          "kind": "skills",
+          "statement": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing."
+        },
+        {
+          "code": "S19",
+          "kind": "skills",
+          "statement": "Apply team working principles."
+        },
+        {
+          "code": "S20",
+          "kind": "skills",
+          "statement": "Comply with equity, diversity, and inclusion guidance."
+        },
+        {
+          "code": "S21",
+          "kind": "skills",
+          "statement": "Communicate with others verbally, for example customers, suppliers, and colleagues."
+        },
+        {
+          "code": "S22",
+          "kind": "skills",
+          "statement": "Communicate in writing, for example with internal and external customers, colleagues, and managers."
+        },
+        {
+          "code": "S23",
+          "kind": "skills",
+          "statement": "Use information and digital technology systems. Comply with GDPR and cyber security."
+        },
+        {
+          "code": "S24",
+          "kind": "skills",
+          "statement": "Complete and record learning and development activities."
+        },
+        {
+          "code": "S25",
+          "kind": "skills",
+          "statement": "Apply procedures to check and replace fluids, and filtration parts."
+        }
+      ]
+    }
+  ]
+}

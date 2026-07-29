@@ -445,7 +445,7 @@ export function createSeedSnapshot(): AdminStoreSnapshot {
       startDate: "2024-09-02",
       originalPlannedEndDate: "2027-03-02",
       programmeYear: 2,
-      programmeWeek: 10,
+      programmeWeek: 99,
       attendancePercent: 88,
       actualProgressPercent: 55,
       collegeDays: "Mon, Tue",
