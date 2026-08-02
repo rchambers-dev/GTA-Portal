@@ -47,3 +47,7 @@ next-env.d.ts
 .env*
 .vercel
 .cursor/
+
+# Local scratch / temp portal — never commit if present under this tree
+/GTA Temp Portal/
+/GTA Temp Portal/**

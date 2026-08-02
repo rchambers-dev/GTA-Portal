@@ -118,7 +118,7 @@ function learnerMetaLine(
 }
 
 /**
- * Programme Records — view-only for Administration.
+ * Apprenticeships — view-only for Administration.
  * Click a programme card to list pupils on that programme.
  * Programme setup / version edits stay with Management (Jon).
  */
@@ -141,7 +141,7 @@ export function AdminProgrammesScreen() {
   return (
     <LearnerPageShell
       eyebrow="Administration"
-      title="Programme Records"
+      title="Apprenticeships"
       description="View apprenticeship standards and who is enrolled. Programme setup is managed by Management — this page is read-only."
     >
       <div className={styles.stack}>

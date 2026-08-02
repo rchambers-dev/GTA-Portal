@@ -24,7 +24,6 @@ import {
   TutorTaskReviewScreen,
   ManagementLearnerRplScreen,
   ManagementLearnerBragScreen,
-  ManagementForceCompleteTasksScreen,
   ManagementTaskViewScreen,
 } from "@/features/programme-delivery";
 import {
@@ -35,8 +34,6 @@ import {
   AdminLearnerIntakeScreen,
   AdminProgrammesScreen,
   AdminUsersScreen,
-  ManagementProxyWriteScreen,
-  ManagementSystemActionsScreen,
 } from "@/features/administration";
 import { SharedDriveScreen } from "@/features/shared-drive";
 import { getStandalonePorts } from "@/adapters/standalone";
@@ -311,12 +308,6 @@ export async function renderWorkspacePage(
         return <ManagementLearnerBragScreen />;
       case "shared-drive":
         return <SharedDriveScreen audience="management" />;
-      case "system":
-        return <ManagementSystemActionsScreen />;
-      case "learner-data":
-        return <ManagementProxyWriteScreen />;
-      case "force-complete-tasks":
-        return <ManagementForceCompleteTasksScreen />;
       case "messages":
         return (
           <LearnerMessagesScreen

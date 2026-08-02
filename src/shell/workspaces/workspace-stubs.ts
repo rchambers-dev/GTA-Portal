@@ -258,7 +258,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       description: "Shared employer records — same surface as Administration.",
     },
     "programmes-records": {
-      title: "Programme Records",
+      title: "Apprenticeships",
       description: "Shared programme records — same surface as Administration.",
     },
     cohorts: {
@@ -301,11 +301,6 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Shared Drive",
       description:
         "Tenant Shared Drive — same shared page template used across environments.",
-    },
-    system: {
-      title: "System Actions",
-      description:
-        "Reserved for override actions. Scope to be agreed with leadership — left blank until then.",
     },
     messages: {
       title: "Messages",
@@ -374,7 +369,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       description: "Employer account records.",
     },
     programmes: {
-      title: "Programme Records",
+      title: "Apprenticeships",
       description: "Apprenticeship standards and programme reference data.",
     },
     cohorts: {
@@ -410,16 +405,6 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Safeguarding",
       description:
         "Shared safeguarding contacts and welfare routes for administration staff.",
-    },
-    system: {
-      title: "System Actions",
-      description:
-        "Proxy write actions for management — load learner progress on behalf of pupils.",
-    },
-    "learner-data": {
-      title: "Load Learner Data",
-      description:
-        "Enter actual progress against planned dates without requiring learner form flows.",
     },
   },
   safeguarding: {
