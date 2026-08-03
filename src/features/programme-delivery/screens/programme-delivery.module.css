@@ -336,13 +336,14 @@
 
 .wrenchIcon {
   display: block;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.15rem;
+  height: 1.15rem;
   opacity: 0;
-  transform: scale(0.75) rotate(-12deg);
+  transform: scale(0.8);
   transition:
     opacity 0.15s ease,
     transform 0.15s ease;
+  overflow: visible;
 }
 
 .wrenchCheck:focus-visible .wrenchCheckBox {
@@ -375,6 +376,30 @@
 .choiceStack {
   display: grid;
   gap: 0.45rem;
+}
+
+.difficultySplit {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.9fr) minmax(12rem, 1.4fr);
+  gap: 1rem 1.25rem;
+  align-items: stretch;
+}
+
+.difficultyWhy {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+
+.difficultyWhy .textarea {
+  min-height: 7.5rem;
+  resize: vertical;
+}
+
+@media (max-width: 640px) {
+  .difficultySplit {
+    grid-template-columns: 1fr;
+  }
 }
 
 .radioOption {

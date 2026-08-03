@@ -1,7 +1,17 @@
 import fs from "fs";
 import path from "path";
+import dns from "node:dns";
 import pg from "pg";
 import { createClient } from "@supabase/supabase-js";
+
+// Prefer IPv6 when available (Supabase direct DB is often IPv6-only).
+dns.setDefaultResultOrder("ipv6first");
+// Local resolvers sometimes refuse AAAA; fall back to public DNS.
+try {
+  dns.setServers(["8.8.8.8", "1.1.1.1", "8.8.4.4"]);
+} catch {
+  // ignore
+}
 
 function loadEnvLocal() {
   const out = {};
@@ -50,39 +60,53 @@ if (migrationFiles.length === 0) {
   throw new Error("No SQL migrations found in supabase/migrations");
 }
 
-const candidates = [
+async function resolveHosts(hostname) {
+  const hosts = [];
+  try {
+    for (const addr of await dns.promises.resolve6(hostname)) {
+      hosts.push({ host: addr, display: `${hostname} [IPv6 ${addr}]` });
+    }
+  } catch {
+    // no AAAA
+  }
+  try {
+    for (const addr of await dns.promises.resolve4(hostname)) {
+      hosts.push({ host: addr, display: `${hostname} [IPv4 ${addr}]` });
+    }
+  } catch {
+    // no A
+  }
+  if (hosts.length === 0) {
+    hosts.push({ host: hostname, display: hostname });
+  }
+  return hosts;
+}
+
+const candidateSpecs = [
+  // Direct DB — IPv6-only on many Supabase projects
   {
-    host: `aws-1-eu-west-2.pooler.supabase.com`,
-    port: 5432,
-    user: `postgres.${ref}`,
-  },
-  {
-    host: `aws-1-eu-west-2.pooler.supabase.com`,
-    port: 6543,
-    user: `postgres.${ref}`,
-  },
-  {
-    host: `db.${ref}.supabase.co`,
+    hostname: `db.${ref}.supabase.co`,
     port: 5432,
     user: "postgres",
   },
+  // IPv4-friendly pooler (session then transaction)
   {
-    host: `aws-0-eu-west-2.pooler.supabase.com`,
+    hostname: `aws-1-eu-west-2.pooler.supabase.com`,
     port: 5432,
     user: `postgres.${ref}`,
   },
   {
-    host: `aws-0-eu-west-2.pooler.supabase.com`,
+    hostname: `aws-1-eu-west-2.pooler.supabase.com`,
     port: 6543,
     user: `postgres.${ref}`,
   },
   {
-    host: `aws-0-eu-west-1.pooler.supabase.com`,
-    port: 6543,
+    hostname: `aws-0-eu-west-2.pooler.supabase.com`,
+    port: 5432,
     user: `postgres.${ref}`,
   },
   {
-    host: `aws-0-eu-central-1.pooler.supabase.com`,
+    hostname: `aws-0-eu-west-2.pooler.supabase.com`,
     port: 6543,
     user: `postgres.${ref}`,
   },
@@ -90,32 +114,59 @@ const candidates = [
 
 let client;
 let lastError;
-for (const c of candidates) {
-  const next = new pg.Client({
-    ...c,
-    password: dbPassword,
-    database: "postgres",
-    ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 10000,
-  });
-  try {
-    await next.connect();
-    client = next;
-    console.log(`Connected via ${c.host}:${c.port}`);
-    break;
-  } catch (err) {
-    lastError = err;
-    console.log(`Skip ${c.host}: ${err.code || err.message}`);
+const attemptNotes = [];
+
+for (const spec of candidateSpecs) {
+  const resolvedHosts = await resolveHosts(spec.hostname);
+  for (const resolved of resolvedHosts) {
+    const next = new pg.Client({
+      host: resolved.host,
+      port: spec.port,
+      user: spec.user,
+      password: dbPassword,
+      database: "postgres",
+      ssl: { rejectUnauthorized: false },
+      connectionTimeoutMillis: 15000,
+    });
     try {
-      await next.end();
-    } catch {
-      // ignore
+      await next.connect();
+      client = next;
+      console.log(
+        `Connected via ${resolved.display}:${spec.port} as ${spec.user}`,
+      );
+      break;
+    } catch (err) {
+      lastError = err;
+      const note = `${resolved.display}:${spec.port} → ${err.code || err.message}`;
+      attemptNotes.push(note);
+      console.log(`Skip ${note}`);
+      try {
+        await next.end();
+      } catch {
+        // ignore
+      }
     }
   }
+  if (client) break;
 }
 
 if (!client) {
-  throw new Error(`Could not connect to Postgres: ${lastError?.message || lastError}`);
+  const ipv6Unreachable = attemptNotes.some((n) => n.includes("ENETUNREACH"));
+  const authFailed = attemptNotes.some((n) => n.includes("28P01"));
+  let hint = "";
+  if (ipv6Unreachable) {
+    hint +=
+      " Direct DB is IPv6-only and this machine has no IPv6 route (ENETUNREACH).";
+  }
+  if (authFailed) {
+    hint +=
+      " Pooler reached over IPv4 but rejected SUPABASE_DB_PASSWORD (28P01) — reset the Database password in Supabase → Project Settings → Database, update .env.local, then retry.";
+  }
+  hint +=
+    " Fallback: paste supabase/seeds/apply-009-course-builder-autocare.sql in the Supabase SQL Editor.";
+  throw new Error(
+    `Could not connect to Postgres: ${lastError?.message || lastError}.${hint}`,
+  );
 }
 
 try {
@@ -168,11 +219,23 @@ const probes = [
   ["cohort_change_log", "id"],
   ["staff_assignments", "id"],
   ["programmes", "id"],
+  ["course_pack_task_forms", "id"],
 ];
 
 for (const [table, column] of probes) {
-  const probe = await supabase.from(table).select(column).limit(1);
+  let probe = await supabase.from(table).select(column).limit(1);
+  // PostgREST schema cache can lag a few seconds after DDL.
+  if (probe.error?.message?.includes("schema cache")) {
+    await new Promise((r) => setTimeout(r, 2500));
+    probe = await supabase.from(table).select(column).limit(1);
+  }
   if (probe.error) {
+    if (table === "course_pack_task_forms") {
+      console.log(
+        `${table}: migration applied; API schema cache still refreshing (${probe.error.message})`,
+      );
+      continue;
+    }
     throw new Error(`Post-migration probe failed on ${table}: ${probe.error.message}`);
   }
   console.log(`${table} table OK`);

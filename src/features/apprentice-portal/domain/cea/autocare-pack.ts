@@ -1,4 +1,5 @@
 import type { CeaApprenticeState, CeaPackDef, CeaTaskDef } from "./types";
+import { stripPackKsbs } from "./pack-builder";
 
 function task(
   groupId: string,
@@ -7,25 +8,26 @@ function task(
   related?: CeaTaskDef["relatedTeaching"],
   alwaysMandatory?: boolean,
 ): CeaTaskDef {
+  // Seed with structure only — never ship KSB / IMI refs (Jon maps later).
+  void related;
   return {
     id: `${groupId}-t${number}`,
     groupId,
     number,
     title,
     alwaysMandatory,
-    relatedTeaching: related,
   };
 }
 
 /**
  * Seeded from MV13.1 Autocare Apprentice Personal Tracking v1.8.
  * Official backbone: Autocare Technician ST0499 (Skills England / IMI EPA AS-AC-EPA).
- * Module/topic links are best-effort demo mappings — staff can correct.
+ * KSBs intentionally omitted — staff map later in Course Builder.
  */
-export const AUTOCARE_CEA_PACK: CeaPackDef = {
+const AUTOCARE_CEA_PACK_RAW: CeaPackDef = {
   id: "cea-autocare-st0499",
   title: "Autocare Apprentice Personal Tracking",
-  version: "v1.8",
+  version: "1.3",
   standardCode: "ST0499",
   standardLabel: "Autocare Technician (Level 2) — ST0499",
   milestones: [
@@ -651,6 +653,9 @@ export const AUTOCARE_CEA_PACK: CeaPackDef = {
   ],
 };
 
+/** Current Autocare groups pack (ST0499 v1.3) — no KSB mappings. */
+export const AUTOCARE_CEA_PACK: CeaPackDef = stripPackKsbs(AUTOCARE_CEA_PACK_RAW);
+
 function prog(
   taskId: string,
   kind: "mandatory" | "additional",
@@ -674,7 +679,7 @@ function prog(
 /** Demo state for Alex Morgan — Year 1, foundation largely done, systems underway. */
 export const ALEX_CEA_STATE: CeaApprenticeState = {
   apprenticeId: "lrn-alex-morgan",
-  packId: AUTOCARE_CEA_PACK.id,
+  packId: "cea-autocare-st0499-v1.3",
   mandatoryByGroup: {
     g1: ["g1-t1", "g1-t2", "g1-t3", "g1-t4", "g1-t5"],
     g2: ["g2-t1"],
@@ -754,6 +759,15 @@ export const ALEX_CEA_STATE: CeaApprenticeState = {
   },
 };
 
+/** Prefer resolveGroupsPack / getGroupsPackById from ./packs */
 export function getCeaPack(packId: string = AUTOCARE_CEA_PACK.id) {
-  return packId === AUTOCARE_CEA_PACK.id ? AUTOCARE_CEA_PACK : null;
+  // Lazy import avoided — keep thin compat wrapper.
+  if (
+    packId === AUTOCARE_CEA_PACK.id ||
+    packId === "cea-autocare-st0499" ||
+    packId === "cea-autocare-st0499-v1.3"
+  ) {
+    return AUTOCARE_CEA_PACK;
+  }
+  return null;
 }

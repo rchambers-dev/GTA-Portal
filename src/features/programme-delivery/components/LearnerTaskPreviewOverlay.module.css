@@ -1,0 +1,64 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--color-navy-900, #0f172a) 55%, transparent);
+}
+
+.chrome {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-navy-900, #0f172a);
+  color: white;
+  border-bottom: 2px solid color-mix(in srgb, white 18%, transparent);
+}
+
+.chromeLabel {
+  margin: 0;
+  flex: 1 1 16rem;
+  font-size: 0.9rem;
+  font-weight: 550;
+  line-height: 1.4;
+  color: color-mix(in srgb, white 92%, transparent);
+}
+
+.backBtn {
+  appearance: none;
+  border: 2px solid color-mix(in srgb, white 45%, transparent);
+  background: white;
+  color: var(--color-navy-900, #0f172a);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+}
+
+.backBtn:hover {
+  background: color-mix(in srgb, white 90%, #cbd5e1);
+}
+
+.scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 1rem 1rem 2rem;
+}
+
+.portalFrame {
+  max-width: 52rem;
+  margin: 0 auto;
+  background: var(--bg-page, #f8fafc);
+  border-radius: var(--radius-lg);
+  border: 2px solid color-mix(in srgb, white 40%, #94a3b8);
+  box-shadow: 0 12px 40px color-mix(in srgb, #0f172a 35%, transparent);
+  padding: 1rem 1.25rem 1.5rem;
+}

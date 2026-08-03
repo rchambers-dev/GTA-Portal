@@ -25,6 +25,7 @@ import {
   ManagementApprenticeRplScreen,
   ManagementApprenticeBragScreen,
   ManagementTaskViewScreen,
+  CourseBuilderScreen,
 } from "@/features/programme-delivery";
 import {
   AdministrationDashboardScreen,
@@ -298,6 +299,8 @@ export async function renderWorkspacePage(
         return <AdminEmployersScreen />;
       case "programmes-records":
         return <AdminProgrammesScreen />;
+      case "course-builder":
+        return <CourseBuilderScreen />;
       case "cohorts":
         return <AdminCohortsScreen />;
       case "intake":
@@ -337,6 +340,10 @@ export async function renderWorkspacePage(
 
   if (workspace === "quality" && segment === "shared-drive") {
     return <SharedDriveScreen audience="quality" />;
+  }
+
+  if (workspace === "curriculum" && segment === "course-builder") {
+    return <CourseBuilderScreen />;
   }
 
   const stub = resolveWorkspaceStub(workspace, slug);

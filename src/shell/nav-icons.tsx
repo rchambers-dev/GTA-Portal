@@ -133,6 +133,19 @@ export function NavIcon({ href }: { href: string }) {
     );
   }
   if (
+    key.includes("/management/course-builder") ||
+    key.includes("/curriculum/course-builder")
+  ) {
+    return (
+      <svg {...common}>
+        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        <path d="M14 17.5h7M17.5 14v7" />
+      </svg>
+    );
+  }
+  if (
     key.includes("/administration/programmes") ||
     key.includes("/management/programmes-records")
   ) {

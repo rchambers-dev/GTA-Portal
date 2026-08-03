@@ -8,13 +8,13 @@ import {
 } from "../components/ApprenticePageShell";
 import {
   ALEX_CEA_STATE,
-  AUTOCARE_CEA_PACK,
   expectedSignOffRole,
   groupAdditionalSignedOffCount,
   groupMandatoryComplete,
   packOverview,
   ceaStatusLabel,
   ceaStatusTone,
+  resolveGroupsPack,
   type CeaGroupDef,
   type CeaApprenticeState,
   type CeaTaskDef,
@@ -408,20 +408,40 @@ function FlowHeading({ children }: { children: string }) {
 }
 
 export function ApprenticeCeaScreen() {
-  const pack = AUTOCARE_CEA_PACK;
-  const [state, setState] = useState<CeaApprenticeState>(ALEX_CEA_STATE);
-  const overview = useMemo(() => packOverview(pack, state), [pack, state]);
+  const pack = resolveGroupsPack("ST0499", "1.3");
+  const [state, setState] = useState<CeaApprenticeState>(() => ({
+    ...ALEX_CEA_STATE,
+    packId: pack?.id ?? ALEX_CEA_STATE.packId,
+  }));
+  const overview = useMemo(
+    () => (pack ? packOverview(pack, state) : null),
+    [pack, state],
+  );
 
-  const preCourseEquality = pack.supportItems.filter(
+  if (!pack || !overview) {
+    return (
+      <ApprenticePageShell
+        eyebrow="My learning"
+        title="CEA tasks"
+        description="No groups pack is available for this programme version."
+      >
+        <p>Contact your tutor if this looks wrong.</p>
+      </ApprenticePageShell>
+    );
+  }
+
+  const activePack = pack;
+
+  const preCourseEquality = activePack.supportItems.filter(
     (i) => i.section === "Equality and Diversity",
   );
-  const preCourseFunctional = pack.supportItems.filter(
+  const preCourseFunctional = activePack.supportItems.filter(
     (i) => i.section === "Functional Skills",
   );
-  const preCourseBoltOns = pack.supportItems.filter(
+  const preCourseBoltOns = activePack.supportItems.filter(
     (i) => i.section === "Bolt-on Courses",
   );
-  const evidenceYear1 = pack.supportItems.filter(
+  const evidenceYear1 = activePack.supportItems.filter(
     (i) =>
       i.section === "Evidence Collection" &&
       (i.title.includes("Tyres") ||
@@ -429,14 +449,18 @@ export function ApprenticeCeaScreen() {
         i.title.includes("Steering")),
   );
 
-  const groupsBeforeGateway1 = pack.groups
+  const groupsBeforeGateway1 = activePack.groups
     .filter((g) => g.number <= 7)
     .sort((a, b) => a.number - b.number);
-  const groupsAfterGateway1 = pack.groups
+  const groupsAfterGateway1 = activePack.groups
     .filter((g) => g.number >= 8)
     .sort((a, b) => a.number - b.number);
-  const gateway1 = pack.gatewayItems.filter((g) => g.milestoneId === "ms-gateway1");
-  const gateway2 = pack.gatewayItems.filter((g) => g.milestoneId === "ms-gateway2");
+  const gateway1 = activePack.gatewayItems.filter(
+    (g) => g.milestoneId === "ms-gateway1",
+  );
+  const gateway2 = activePack.gatewayItems.filter(
+    (g) => g.milestoneId === "ms-gateway2",
+  );
 
   function saveNotes(taskId: string, notes: string) {
     setState((prev) => {
@@ -445,7 +469,9 @@ export function ApprenticeCeaScreen() {
         emptyProgress(
           taskId,
           (prev.mandatoryByGroup[
-            pack.groups.find((g) => g.tasks.some((t) => t.id === taskId))?.id ?? ""
+            activePack.groups.find((g) =>
+              g.tasks.some((t) => t.id === taskId),
+            )?.id ?? ""
           ] ?? []
           ).includes(taskId)
             ? "mandatory"

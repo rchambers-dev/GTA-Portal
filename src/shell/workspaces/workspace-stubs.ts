@@ -171,6 +171,11 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       title: "Curriculum Overview",
       description: "Programme-scoped curriculum management entry point.",
     },
+    "course-builder": {
+      title: "Course Builder",
+      description:
+        "Author groups and GTA 10+2 block packs per Skills England version.",
+    },
     programme: {
       title: "Programme Editor",
       description: "Draft programme structure — published versions are never overwritten.",

@@ -111,6 +111,7 @@ export const STAFF_MENTOR_NAV: NavItem[] = MENTOR_NAV_SECTIONS.flatMap(
 
 export const CURRICULUM_NAV: NavItem[] = [
   { href: "/curriculum/overview", label: "Curriculum Overview", permission: PERMISSIONS.CURRICULUM_MANAGEMENT_VIEW },
+  { href: "/curriculum/course-builder", label: "Course Builder", permission: PERMISSIONS.CURRICULUM_EDIT },
   { href: "/curriculum/programme", label: "Programme Editor", permission: PERMISSIONS.CURRICULUM_EDIT },
   { href: "/curriculum/modules", label: "Module Editor", permission: PERMISSIONS.CURRICULUM_EDIT },
   { href: "/curriculum/resources", label: "Resource Editor", permission: PERMISSIONS.CURRICULUM_RESOURCES_MANAGE },

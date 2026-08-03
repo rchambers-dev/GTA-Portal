@@ -374,18 +374,6 @@ export function AdminEmployersScreen() {
                   />
                 </label>
                 <label className={styles.field}>
-                  <span>Company number</span>
-                  <input
-                    value={form.companyNumber}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        companyNumber: e.target.value,
-                      }))
-                    }
-                  />
-                </label>
-                <label className={styles.field}>
                   <span>Status</span>
                   <select
                     value={form.status}
@@ -804,13 +792,6 @@ export function AdminEmployersScreen() {
                           placeholder="If different from trading name"
                           onCommit={(next) =>
                             void updateEmployer(row.id, { legalName: next })
-                          }
-                        />
-                        <EmployerInlineField
-                          label="Company number"
-                          value={row.companyNumber}
-                          onCommit={(next) =>
-                            void updateEmployer(row.id, { companyNumber: next })
                           }
                         />
                         <EmployerInlineField

@@ -78,7 +78,7 @@ export const difficultySection: TaskSectionDef = {
       type: "difficulty_feedback",
       label: "How easy or hard was this learning?",
       required: true,
-      hint: "Helps tutors adapt the course for next year",
+      hint: "Helps tutors adapt the course for next year — use Why? to explain",
       options: [
         "1 — Too easy",
         "2 — Easy",
@@ -86,11 +86,6 @@ export const difficultySection: TaskSectionDef = {
         "4 — Hard",
         "5 — Too hard",
       ],
-    },
-    {
-      key: "difficultyComment",
-      type: "textarea",
-      label: "Anything that would make this clearer next time? (optional)",
     },
   ],
 };

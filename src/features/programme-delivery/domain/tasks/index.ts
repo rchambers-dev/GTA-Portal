@@ -1,4 +1,8 @@
 import type { LessonPlanDef, PracticalTaskDef } from "../task-schema";
+import {
+  getCourseBuilderPracticalTask,
+  listAllCourseBuilderPracticalTasks,
+} from "../course-builder-store";
 import { BLOCK_01_TASKS } from "./block-01";
 import { BLOCK_02_TASKS } from "./block-02";
 import { BLOCK_03_TASKS } from "./block-03";
@@ -76,11 +80,31 @@ export const AUTOCARE_LESSON_PLANS: LessonPlanDef[] = [
 ];
 
 export function tasksForBlock(blockId: number): PracticalTaskDef[] {
-  return AUTOCARE_PRACTICAL_TASKS.filter((t) => t.blockId === blockId);
+  const seeded = AUTOCARE_PRACTICAL_TASKS.filter((t) => t.blockId === blockId);
+  const authored = listAllCourseBuilderPracticalTasks().filter(
+    (t) => t.blockId === blockId,
+  );
+  const byId = new Map<string, PracticalTaskDef>();
+  for (const t of seeded) byId.set(t.id, t);
+  for (const t of authored) byId.set(t.id, t);
+  return [...byId.values()].sort((a, b) => a.taskNumber - b.taskNumber);
+}
+
+/** Tasks authored in Course Builder for a GTA block pack only. */
+export function courseBuilderTasksForBlock(
+  packId: string,
+  blockId: number,
+): PracticalTaskDef[] {
+  return listAllCourseBuilderPracticalTasks()
+    .filter((t) => t.blockId === blockId && t.id.includes(packId))
+    .sort((a, b) => a.taskNumber - b.taskNumber);
 }
 
 export function taskById(id: string): PracticalTaskDef | undefined {
-  return AUTOCARE_PRACTICAL_TASKS.find((t) => t.id === id);
+  return (
+    getCourseBuilderPracticalTask(id) ??
+    AUTOCARE_PRACTICAL_TASKS.find((t) => t.id === id)
+  );
 }
 
 export function lessonPlansForBlock(blockId: number): LessonPlanDef[] {

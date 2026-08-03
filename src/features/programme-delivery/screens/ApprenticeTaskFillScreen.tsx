@@ -7,13 +7,6 @@ import {
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { taskById } from "../domain/autocare-tasks";
-import type { TaskFieldDef } from "../domain/task-schema";
-import {
-  parseActionRows,
-  parseJsonList,
-  parsePartsRows,
-  parseRatingRows,
-} from "../domain/task-schema";
 import {
   getTaskServerSnapshot,
   getTaskSnapshot,
@@ -24,465 +17,19 @@ import {
   upsertTaskSubmission,
   type TaskSubmissionStatus,
 } from "../domain/task-submission-store";
+import {
+  isApprenticeEditableField,
+  TaskFieldInput,
+} from "@/features/programme-delivery/components/TaskFieldInput";
+import {
+  parseDifficultyFeedback,
+  serializeDifficultyFeedback,
+} from "@/features/programme-delivery/domain/task-schema";
 import styles from "./programme-delivery.module.css";
 
 type Props = { taskId: string };
 
 type SaveState = "idle" | "saving" | "saved";
-
-function fieldRole(field: TaskFieldDef): "apprentice" | "mentor" | "trainer" | "assessor" {
-  return field.filledBy ?? field.signOffRole ?? "apprentice";
-}
-
-function isApprenticeEditableField(field: TaskFieldDef): boolean {
-  return fieldRole(field) === "apprentice";
-}
-
-function staffRoleHint(field: TaskFieldDef): string {
-  const role = fieldRole(field);
-  if (role === "mentor") return "Your workplace mentor completes this after review.";
-  if (role === "assessor") return "Your assessor completes this after review.";
-  return "Your trainer / assessor completes this after review.";
-}
-
-function WrenchCheckbox({
-  checked,
-  disabled,
-  onChange,
-  label,
-}: {
-  checked: boolean;
-  disabled?: boolean;
-  onChange: (next: boolean) => void;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      className={`${styles.wrenchCheck}${disabled ? ` ${styles.wrenchCheckDisabled}` : ""}${checked ? ` ${styles.wrenchCheckOn}` : ""}`}
-      disabled={disabled}
-      aria-pressed={checked}
-      onClick={() => {
-        if (disabled) return;
-        onChange(!checked);
-      }}
-    >
-      <span className={styles.wrenchCheckBox} aria-hidden>
-        <svg
-          className={styles.wrenchIcon}
-          viewBox="0 0 24 24"
-          width="20"
-          height="20"
-          fill="currentColor"
-          aria-hidden
-        >
-          <path d="M22.7 19.3 13.6 10.2a5.5 5.5 0 0 0-6.9-6.9L9.5 6.1 6.1 9.5 3.3 6.7a5.5 5.5 0 0 0 6.9 6.9l9.1 9.1a1 1 0 0 0 1.4 0l2-2a1 1 0 0 0 0-1.4zM7.4 3.9a3.5 3.5 0 0 1 4.2 4.2L9.5 6.1 7.4 3.9zm1.5 7.2a3.5 3.5 0 0 1-4.2-4.2l2.1 2.1 2.1 2.1z" />
-        </svg>
-      </span>
-      <span>{label}</span>
-    </button>
-  );
-}
-
-function FieldInput({
-  field,
-  value,
-  onChange,
-  disabled,
-  staffLocked,
-}: {
-  field: TaskFieldDef;
-  value: string;
-  onChange: (next: string) => void;
-  disabled?: boolean;
-  staffLocked?: boolean;
-}) {
-  const locked = Boolean(disabled || staffLocked);
-  const wrapClass = `${styles.field}${staffLocked ? ` ${styles.fieldStaffOnly}` : ""}`;
-
-  if (field.type === "heading" || field.type === "description") {
-    return <p className={styles.purposeBody}>{field.label}</p>;
-  }
-
-  if (field.type === "sign_off") {
-    return (
-      <div className={wrapClass}>
-        <span className={styles.fieldLabel}>{field.label}</span>
-        <p className={staffLocked ? styles.fieldStaffNote : styles.fieldHint}>
-          {staffLocked
-            ? staffRoleHint(field)
-            : `Role: ${field.signOffRole ?? "signer"} — confirm below when ready.`}
-        </p>
-        <WrenchCheckbox
-          checked={value === "signed"}
-          disabled={locked}
-          onChange={(next) => onChange(next ? "signed" : "")}
-          label="I confirm / sign"
-        />
-      </div>
-    );
-  }
-
-  if (field.type === "checkbox_group") {
-    const selected = parseJsonList(value);
-    return (
-      <div className={wrapClass}>
-        <span className={styles.fieldLabel}>{field.label}</span>
-        {staffLocked ? (
-          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
-        ) : field.hint ? (
-          <p className={styles.fieldHint}>{field.hint}</p>
-        ) : null}
-        <div className={styles.choiceStack}>
-          {(field.options ?? []).map((opt) => {
-            const checked = selected.includes(opt);
-            return (
-              <WrenchCheckbox
-                key={opt}
-                checked={checked}
-                disabled={locked}
-                label={opt}
-                onChange={(next) => {
-                  const set = new Set(selected);
-                  if (next) set.add(opt);
-                  else set.delete(opt);
-                  onChange(JSON.stringify([...set]));
-                }}
-              />
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-
-  if (field.type === "radio_group" || field.type === "difficulty_feedback") {
-    return (
-      <div className={wrapClass}>
-        <span className={styles.fieldLabel}>{field.label}</span>
-        {staffLocked ? (
-          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
-        ) : field.hint ? (
-          <p className={styles.fieldHint}>{field.hint}</p>
-        ) : null}
-        <div className={styles.choiceStack} role="radiogroup" aria-label={field.label}>
-          {(field.options ?? []).map((opt) => (
-            <label key={opt} className={styles.radioOption}>
-              <input
-                type="radio"
-                name={field.key}
-                value={opt}
-                checked={value === opt}
-                disabled={locked}
-                onChange={() => onChange(opt)}
-              />
-              <span>{opt}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (field.type === "rating_rows") {
-    const rows = parseRatingRows(value, field.rowCount ?? 6);
-    return (
-      <div className={wrapClass}>
-        <span className={styles.fieldLabel}>{field.label}</span>
-        {staffLocked ? (
-          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
-        ) : field.hint ? (
-          <p className={styles.fieldHint}>{field.hint}</p>
-        ) : null}
-        <div className={styles.tableScroll}>
-          <table className={styles.dataTable}>
-            <thead>
-              <tr>
-                <th>Knowledge / skill / behaviour</th>
-                <th>Before (1–5)</th>
-                <th>Now (1–5)</th>
-                <th>Evidence or example</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, i) => (
-                <tr key={i}>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.area}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], area: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      type="number"
-                      min={1}
-                      max={5}
-                      value={row.before}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], before: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      type="number"
-                      min={1}
-                      max={5}
-                      value={row.now}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], now: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.evidence}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], evidence: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
-
-  if (field.type === "action_rows") {
-    const rows = parseActionRows(value, field.rowCount ?? 3);
-    return (
-      <div className={wrapClass}>
-        <span className={styles.fieldLabel}>{field.label}</span>
-        {staffLocked ? (
-          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
-        ) : field.hint ? (
-          <p className={styles.fieldHint}>{field.hint}</p>
-        ) : null}
-        <div className={styles.tableScroll}>
-          <table className={styles.dataTable}>
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Agreed action / development objective</th>
-                <th>Support or opportunity needed</th>
-                <th>Owner / review date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, i) => (
-                <tr key={i}>
-                  <td>{i + 1}</td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.action}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], action: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.support}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], support: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.ownerReview}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], ownerReview: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
-
-  if (field.type === "parts_rows") {
-    const rows = parsePartsRows(value, field.rowCount ?? 4);
-    return (
-      <div className={wrapClass}>
-        <span className={styles.fieldLabel}>{field.label}</span>
-        {staffLocked ? (
-          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
-        ) : field.hint ? (
-          <p className={styles.fieldHint}>{field.hint}</p>
-        ) : null}
-        <div className={styles.tableScroll}>
-          <table className={styles.dataTable}>
-            <thead>
-              <tr>
-                <th>Qty</th>
-                <th>Part / material description</th>
-                <th>Part no.</th>
-                <th>Supplier / notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, i) => (
-                <tr key={i}>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.qty}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], qty: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.description}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], description: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.partNo}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], partNo: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      className={styles.input}
-                      value={row.supplier}
-                      disabled={locked}
-                      readOnly={staffLocked}
-                      onChange={(e) => {
-                        const next = [...rows];
-                        next[i] = { ...next[i], supplier: e.target.value };
-                        onChange(JSON.stringify(next));
-                      }}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
-
-  if (field.type === "textarea" || field.type === "knowledge_question") {
-    return (
-      <div className={wrapClass}>
-        <label className={styles.fieldLabel} htmlFor={field.key}>
-          {field.label}
-        </label>
-        {staffLocked ? (
-          <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
-        ) : field.hint ? (
-          <p className={styles.fieldHint}>{field.hint}</p>
-        ) : null}
-        <textarea
-          id={field.key}
-          className={styles.textarea}
-          value={value}
-          disabled={locked}
-          readOnly={staffLocked}
-          placeholder={staffLocked ? "Waiting for staff…" : undefined}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div className={wrapClass}>
-      <label className={styles.fieldLabel} htmlFor={field.key}>
-        {field.label}
-      </label>
-      {staffLocked ? (
-        <p className={styles.fieldStaffNote}>{staffRoleHint(field)}</p>
-      ) : field.hint ? (
-        <p className={styles.fieldHint}>{field.hint}</p>
-      ) : null}
-      <input
-        id={field.key}
-        className={styles.input}
-        type={
-          field.type === "number"
-            ? "number"
-            : field.type === "date"
-              ? "date"
-              : "text"
-        }
-        value={value}
-        disabled={locked}
-        readOnly={staffLocked}
-        placeholder={staffLocked ? "Waiting for staff…" : undefined}
-        onChange={(e) => onChange(e.target.value)}
-      />
-    </div>
-  );
-}
 
 function isEditableStatus(status: TaskSubmissionStatus): boolean {
   return (
@@ -491,6 +38,14 @@ function isEditableStatus(status: TaskSubmissionStatus): boolean {
     status === "returned" ||
     status === "awaiting_mentor"
   );
+}
+
+function difficultyMeta(fields: Record<string, string>) {
+  const parsed = parseDifficultyFeedback(fields.difficulty);
+  return {
+    difficulty: parsed.rating || null,
+    difficultyComment: parsed.why || fields.difficultyComment || "",
+  };
 }
 
 /**
@@ -551,8 +106,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
         status: nextStatus,
         fields,
         uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
-        difficulty: fields.difficulty || null,
-        difficultyComment: fields.difficultyComment || "",
+        ...difficultyMeta(fields),
       });
       setSaveState("saved");
       setDirty(false);
@@ -575,8 +129,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
             : getTaskSubmission(taskId).status,
         fields,
         uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
-        difficulty: fields.difficulty || null,
-        difficultyComment: fields.difficultyComment || "",
+        ...difficultyMeta(fields),
       });
     }
     window.addEventListener("beforeunload", flush);
@@ -615,7 +168,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
 
   function submitForSignOff() {
     if (method === "portal_form") {
-      if (!fields.difficulty) {
+      if (!parseDifficultyFeedback(fields.difficulty).rating) {
         setMessage(
           "Please rate how easy or hard this task was before submitting.",
         );
@@ -640,8 +193,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
       method,
       fields,
       uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
-      difficulty: fields.difficulty || null,
-      difficultyComment: fields.difficultyComment || "",
+      ...difficultyMeta(fields),
       apprenticeSignedAt: apprenticeSigned
         ? new Date().toISOString()
         : submission.apprenticeSignedAt,
@@ -781,24 +333,58 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
                 ))}
               </ul>
             ) : null}
-            <div className={styles.field}>
-              <label className={styles.fieldLabel} htmlFor="diff-upload">
-                How easy or hard was this learning?
-              </label>
-              <select
-                id="diff-upload"
-                className={styles.select}
-                disabled={locked}
-                value={fields.difficulty ?? ""}
-                onChange={(e) => setField("difficulty", e.target.value)}
-              >
-                <option value="">Choose…</option>
-                <option value="1 — Too easy">1 — Too easy</option>
-                <option value="2 — Easy">2 — Easy</option>
-                <option value="3 — About right">3 — About right</option>
-                <option value="4 — Hard">4 — Hard</option>
-                <option value="5 — Too hard">5 — Too hard</option>
-              </select>
+            <div className={styles.difficultySplit}>
+              <div className={styles.field}>
+                <label className={styles.fieldLabel} htmlFor="diff-upload">
+                  How easy or hard was this learning?
+                </label>
+                <select
+                  id="diff-upload"
+                  className={styles.select}
+                  disabled={locked}
+                  value={parseDifficultyFeedback(fields.difficulty).rating}
+                  onChange={(e) => {
+                    const prev = parseDifficultyFeedback(fields.difficulty);
+                    setField(
+                      "difficulty",
+                      serializeDifficultyFeedback({
+                        rating: e.target.value,
+                        why: prev.why,
+                      }),
+                    );
+                  }}
+                >
+                  <option value="">Choose…</option>
+                  <option value="1 — Too easy">1 — Too easy</option>
+                  <option value="2 — Easy">2 — Easy</option>
+                  <option value="3 — About right">3 — About right</option>
+                  <option value="4 — Hard">4 — Hard</option>
+                  <option value="5 — Too hard">5 — Too hard</option>
+                </select>
+              </div>
+              <div className={styles.difficultyWhy}>
+                <label className={styles.fieldLabel} htmlFor="diff-upload-why">
+                  Why?
+                </label>
+                <textarea
+                  id="diff-upload-why"
+                  className={styles.textarea}
+                  disabled={locked}
+                  rows={4}
+                  placeholder="Briefly say why you chose that rating"
+                  value={parseDifficultyFeedback(fields.difficulty).why}
+                  onChange={(e) => {
+                    const prev = parseDifficultyFeedback(fields.difficulty);
+                    setField(
+                      "difficulty",
+                      serializeDifficultyFeedback({
+                        rating: prev.rating,
+                        why: e.target.value,
+                      }),
+                    );
+                  }}
+                />
+              </div>
             </div>
           </section>
         ) : (
@@ -807,7 +393,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
               <section key={section.id} className={styles.sectionCard}>
                 <h2 className={styles.sectionTitle}>{section.title}</h2>
                 {section.fields.map((field) => (
-                  <FieldInput
+                  <TaskFieldInput
                     key={field.key}
                     field={field}
                     value={fields[field.key] ?? ""}

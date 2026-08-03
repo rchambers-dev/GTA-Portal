@@ -29,14 +29,15 @@ import {
   formatCohortTeachers,
 } from "../domain/cohort-teachers";
 import {
-  AUTOCARE_COHORT_PRODUCTS,
-  autocareProductById,
+  defaultProductForStandard,
   deliverySpineLabel,
-  findAutocareProduct,
+  findProduct,
   formatCohortProductLabel,
-  isAutocareStandard,
+  isCourseStandard,
   normalizeDeliverySpine,
-  resolveAutocareProductId,
+  productById,
+  productsForStandard,
+  resolveProductId,
   type DeliverySpine,
 } from "../domain/cohort-products";
 import { plannedDatesFromStart } from "../domain/programme-duration";
@@ -69,15 +70,14 @@ const SEARCH_MODES: Array<{
 ];
 
 function emptyForm(programme?: AdminProgrammeRecord): FormState {
+  const defaultProduct = defaultProductForStandard(programme?.standardCode);
   return {
     name: "",
     programmeId: programme?.id ?? "",
     programmeName: programme?.name ?? "",
     standardCode: programme?.standardCode ?? "",
-    standardVersion: isAutocareStandard(programme?.standardCode ?? "")
-      ? "1.3"
-      : "1.0",
-    deliverySpine: "groups",
+    standardVersion: defaultProduct?.standardVersion ?? "1.0",
+    deliverySpine: defaultProduct?.deliverySpine ?? "groups",
     enrolmentOpensDate: "",
     startDate: "",
     expectedEndDate: "",
@@ -651,7 +651,7 @@ export function AdminCohortsScreen() {
   function onProgrammeChange(programmeId: string) {
     const match = programmes.find((p) => p.id === programmeId);
     const nextCode = match?.standardCode ?? "";
-    const autocare = isAutocareStandard(nextCode);
+    const defaultProduct = defaultProductForStandard(nextCode);
     setForm((prev) =>
       withAutoCohortFields(
         prev,
@@ -659,12 +659,10 @@ export function AdminCohortsScreen() {
           programmeId,
           programmeName: match?.name ?? prev.programmeName,
           standardCode: nextCode,
-          ...(autocare
+          ...(defaultProduct
             ? {
-                standardVersion: prev.standardVersion || "1.3",
-                deliverySpine: normalizeDeliverySpine(
-                  prev.deliverySpine ?? "groups",
-                ),
+                standardVersion: defaultProduct.standardVersion,
+                deliverySpine: defaultProduct.deliverySpine,
               }
             : {}),
         },
@@ -780,24 +778,27 @@ export function AdminCohortsScreen() {
                     onChange={onProgrammeChange}
                   />
                 </label>
-                {isAutocareStandard(form.standardCode) ? (
+                {isCourseStandard(form.standardCode) ? (
                   <label className={styles.field}>
                     <span>
                       Cohort product{" "}
                       <em className={styles.fieldRequired}>required</em>
                     </span>
                     <Select
-                      value={resolveAutocareProductId(
+                      value={resolveProductId(
+                        form.standardCode,
                         form.standardVersion,
                         form.deliverySpine,
                       )}
                       placeholder="Select version + spine…"
-                      options={AUTOCARE_COHORT_PRODUCTS.map((product) => ({
+                      options={productsForStandard(form.standardCode, {
+                        includeFinishers: true,
+                      }).map((product) => ({
                         value: product.id,
                         label: product.label,
                       }))}
                       onChange={(productId) => {
-                        const product = autocareProductById(productId);
+                        const product = productById(productId);
                         if (!product) return;
                         setForm((prev) =>
                           withAutoCohortName(
@@ -812,7 +813,8 @@ export function AdminCohortsScreen() {
                       }}
                     />
                     {(() => {
-                      const product = findAutocareProduct(
+                      const product = findProduct(
+                        form.standardCode,
                         form.standardVersion,
                         form.deliverySpine,
                       );
@@ -1384,25 +1386,26 @@ export function AdminCohortsScreen() {
                           }
                           wide
                         />
-                        {isAutocareStandard(row.standardCode) ? (
+                        {isCourseStandard(row.standardCode) ? (
                           <label className={styles.detailField}>
                             <span className={styles.detailFieldLabel}>
                               Cohort product
                             </span>
                             <Select
-                              value={resolveAutocareProductId(
+                              value={resolveProductId(
+                                row.standardCode,
                                 row.standardVersion,
                                 row.deliverySpine,
                               )}
                               disabled={isLocked || isCohortStarted(row)}
-                              options={AUTOCARE_COHORT_PRODUCTS.map(
-                                (product) => ({
-                                  value: product.id,
-                                  label: product.label,
-                                }),
-                              )}
+                              options={productsForStandard(row.standardCode, {
+                                includeFinishers: true,
+                              }).map((product) => ({
+                                value: product.id,
+                                label: product.label,
+                              }))}
                               onChange={(productId) => {
-                                const product = autocareProductById(productId);
+                                const product = productById(productId);
                                 if (!product) return;
                                 void patchCohort(row.id, {
                                   standardVersion: product.standardVersion,
@@ -1411,7 +1414,8 @@ export function AdminCohortsScreen() {
                               }}
                             />
                             {(() => {
-                              const product = findAutocareProduct(
+                              const product = findProduct(
+                                row.standardCode,
                                 row.standardVersion,
                                 row.deliverySpine,
                               );

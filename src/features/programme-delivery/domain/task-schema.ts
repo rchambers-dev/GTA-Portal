@@ -131,6 +131,43 @@ export function parseJsonList(raw: string | undefined): string[] {
   }
 }
 
+/** Rating + optional “why” note for difficulty_feedback. Legacy plain strings = rating only. */
+export type DifficultyFeedbackValue = {
+  rating: string;
+  why: string;
+};
+
+export function parseDifficultyFeedback(
+  raw: string | undefined,
+): DifficultyFeedbackValue {
+  if (!raw) return { rating: "", why: "" };
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      !Array.isArray(parsed) &&
+      ("rating" in parsed || "why" in parsed)
+    ) {
+      const obj = parsed as { rating?: unknown; why?: unknown };
+      return {
+        rating: typeof obj.rating === "string" ? obj.rating : "",
+        why: typeof obj.why === "string" ? obj.why : "",
+      };
+    }
+  } catch {
+    /* plain legacy rating string */
+  }
+  return { rating: raw, why: "" };
+}
+
+export function serializeDifficultyFeedback(
+  value: DifficultyFeedbackValue,
+): string {
+  if (!value.rating && !value.why) return "";
+  return JSON.stringify({ rating: value.rating, why: value.why });
+}
+
 export function parseRatingRows(
   raw: string | undefined,
   rowCount: number,
