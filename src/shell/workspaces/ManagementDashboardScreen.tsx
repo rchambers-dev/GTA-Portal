@@ -194,40 +194,38 @@ export function ManagementDashboardScreen() {
           <h2 className={apprenticeStyles.dashSectionTitle} data-accent="amber">
             Staff attention
           </h2>
-          <p className={apprenticeStyles.meta}>
-            {staffAwaitingEnable.length === 0
-              ? "No staff environments waiting to be enabled"
-              : `${staffAwaitingEnable.length} staff account${staffAwaitingEnable.length === 1 ? "" : "s"} awaiting enable`}
-          </p>
-          {staffAwaitingEnable.length === 0 ? (
-            <p className={styles.empty}>Staff enable queue is clear.</p>
-          ) : (
-            <ul className={apprenticeStyles.list}>
-              {staffAwaitingEnable.slice(0, 6).map((row) => (
-                <li key={row.id}>
-                  <Link
-                    href="/management/staff"
-                    className={apprenticeStyles.rowLink}
-                    data-tone="amber"
-                  >
-                    <div className={apprenticeStyles.rowMain}>
-                      <strong>{row.displayName}</strong>
-                      <span>
-                        {row.role}
-                        {row.email ? ` · ${row.email}` : ""}
-                      </span>
-                    </div>
-                    <div className={apprenticeStyles.rowEnd}>
-                      <ApprenticeStatusChip tone="amber">
-                        Awaiting enable
-                      </ApprenticeStatusChip>
-                      <span className={apprenticeStyles.linkish}>Open →</span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul className={apprenticeStyles.list}>
+            <li>
+              <Link
+                href="/management/staff"
+                className={apprenticeStyles.rowLink}
+                data-tone={staffAwaitingEnable.length > 0 ? "amber" : "green"}
+              >
+                <div className={apprenticeStyles.rowMain}>
+                  <strong>
+                    {staffAwaitingEnable.length === 0
+                      ? "Staff enable queue is clear"
+                      : `${staffAwaitingEnable.length} staff account${staffAwaitingEnable.length === 1 ? "" : "s"} awaiting enable`}
+                  </strong>
+                  <span>
+                    {staffAwaitingEnable.length === 0
+                      ? "Open Staff to review active and disabled environments"
+                      : "Open Staff to enable portal environments"}
+                  </span>
+                </div>
+                <div className={apprenticeStyles.rowEnd}>
+                  {staffAwaitingEnable.length > 0 ? (
+                    <ApprenticeStatusChip tone="amber">
+                      Awaiting enable
+                    </ApprenticeStatusChip>
+                  ) : (
+                    <ApprenticeStatusChip tone="green">Clear</ApprenticeStatusChip>
+                  )}
+                  <span className={apprenticeStyles.linkish}>Open →</span>
+                </div>
+              </Link>
+            </li>
+          </ul>
         </section>
 
         <section className={apprenticeStyles.section}>
