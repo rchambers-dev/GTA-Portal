@@ -209,7 +209,7 @@ export function ManagementApprenticeBragScreen() {
 
   useEffect(() => {
     if (!onGroups || !ceaApprenticeId || !ceaPackId) return;
-    void ensureCeaStateLoaded(ceaApprenticeId, ceaPackId);
+    void ensureCeaStateLoaded(ceaApprenticeId, ceaPackId, { force: true });
   }, [onGroups, ceaApprenticeId, ceaPackId]);
 
   const groupsBoard = useMemo(() => {

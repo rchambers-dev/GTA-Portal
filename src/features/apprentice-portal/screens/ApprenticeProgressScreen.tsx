@@ -74,7 +74,9 @@ export function ApprenticeProgressScreen() {
 
   useEffect(() => {
     if (!onGroups || !profile.apprenticeId || !groupsPack?.id) return;
-    void ensureCeaStateLoaded(profile.apprenticeId, groupsPack.id);
+    void ensureCeaStateLoaded(profile.apprenticeId, groupsPack.id, {
+      force: true,
+    });
   }, [onGroups, profile.apprenticeId, groupsPack?.id]);
 
   const groupsBoard = useMemo(() => {

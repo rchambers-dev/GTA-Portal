@@ -87,6 +87,7 @@ function ensureBlankEntry(
 export async function ensureCeaStateLoaded(
   apprenticeId: string,
   packId: string,
+  opts?: { force?: boolean },
 ): Promise<CeaApprenticeState> {
   if (!apprenticeId || !packId) {
     throw new Error("apprenticeId and packId are required");
@@ -94,10 +95,13 @@ export async function ensureCeaStateLoaded(
 
   const key = cacheKey(apprenticeId, packId);
   const entry = ensureBlankEntry(apprenticeId, packId);
+  if (opts?.force) {
+    entry.loaded = false;
+  }
   if (entry.loaded && !entry.loading) return entry.state;
 
   const pending = inflight.get(key);
-  if (pending) {
+  if (pending && !opts?.force) {
     await pending;
     return cache.get(key)?.state ?? entry.state;
   }
@@ -110,6 +114,7 @@ export async function ensureCeaStateLoaded(
     try {
       const res = await fetch(
         `/api/apprentice/cea-state?apprenticeId=${encodeURIComponent(apprenticeId)}&packId=${encodeURIComponent(packId)}`,
+        { cache: "no-store" },
       );
       const json = (await res.json().catch(() => ({}))) as {
         state?: CeaApprenticeState;

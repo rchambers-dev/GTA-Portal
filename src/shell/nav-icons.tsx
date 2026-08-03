@@ -272,7 +272,8 @@ export function NavIcon({ href }: { href: string }) {
   if (
     key.includes("/apprentice/college-tasks") ||
     key.includes("/apprentice/tracking") ||
-    key.includes("/staff/programme-delivery")
+    key.includes("/staff/programme-delivery") ||
+    key.includes("/staff/cea-sign-offs")
   ) {
     return (
       <svg {...common}>

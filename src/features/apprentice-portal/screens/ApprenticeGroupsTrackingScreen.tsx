@@ -426,7 +426,7 @@ export function ApprenticeGroupsTrackingScreen() {
 
   useEffect(() => {
     if (!packId || !apprenticeId) return;
-    void ensureCeaStateLoaded(apprenticeId, packId);
+    void ensureCeaStateLoaded(apprenticeId, packId, { force: true });
   }, [packId, apprenticeId]);
 
   const cached = apprenticeId && packId

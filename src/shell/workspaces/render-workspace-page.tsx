@@ -24,6 +24,7 @@ import {
   ApprenticeTaskFillScreen,
   TutorProgrammeDeliveryScreen,
   TutorTaskReviewScreen,
+  TutorCeaSignOffScreen,
   ManagementApprenticeRplScreen,
   ManagementApprenticeBragScreen,
   ManagementTaskViewScreen,
@@ -58,7 +59,7 @@ const STAFF_SHARED_REDIRECTS: Record<string, string> = {
   "employer-contacts": "/employers?from=staff",
   // Old module catalogue — Autocare delivery is blocks + tasks now
   modules: "/staff/programme-delivery",
-  "module-sign-offs": "/staff/programme-delivery",
+  "module-sign-offs": "/staff/cea-sign-offs",
   assessments: "/staff/programme-delivery",
   resources: "/staff/programme-delivery",
   "curriculum-feedback": "/staff/programme-delivery",
@@ -220,6 +221,10 @@ export async function renderWorkspacePage(
 
   if (workspace === "staff" && segment === "otj-approvals") {
     return <TutorOtjApprovalsScreen />;
+  }
+
+  if (workspace === "staff" && segment === "cea-sign-offs") {
+    return <TutorCeaSignOffScreen />;
   }
 
   if (workspace === "staff" && segment === "programme-delivery") {

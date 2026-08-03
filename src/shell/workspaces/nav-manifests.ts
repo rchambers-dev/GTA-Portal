@@ -11,6 +11,11 @@ export const STAFF_BASE_NAV: NavItem[] = [
     permission: PERMISSIONS.MODULES_DELIVER,
   },
   {
+    href: "/staff/cea-sign-offs",
+    label: "Tracking sign-off",
+    permission: PERMISSIONS.MODULES_DELIVER,
+  },
+  {
     href: "/staff/otj-approvals",
     label: "OTJ hours",
     permission: PERMISSIONS.MODULES_DELIVER,

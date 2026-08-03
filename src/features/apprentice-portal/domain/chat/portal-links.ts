@@ -48,12 +48,12 @@ export function listShareablePortalLinks(): ChatPortalLinkOption[] {
     {
       id: "tutor-signoffs",
       type: "portal_link",
-      href: "/staff/module-sign-offs",
-      title: "Tutor module sign-off queue",
-      detail: "Outcomes waiting for tutor confirm",
+      href: "/staff/cea-sign-offs",
+      title: "Personal tracking sign-off",
+      detail: "CEA tasks waiting for tutor confirm",
       actionLabel: "Open queue",
       area: "Approvals",
-      keywords: ["sign-off", "tutor", "queue", "module"],
+      keywords: ["sign-off", "tutor", "queue", "cea", "tracking"],
       audience: ["tutor", "mentor"],
     },
     {

@@ -2,6 +2,7 @@ export { ApprenticeProgrammeTasksScreen } from "./screens/ApprenticeProgrammeTas
 export { ApprenticeTaskFillScreen } from "./screens/ApprenticeTaskFillScreen";
 export { TutorProgrammeDeliveryScreen } from "./screens/TutorProgrammeDeliveryScreen";
 export { TutorTaskReviewScreen } from "./screens/TutorTaskReviewScreen";
+export { TutorCeaSignOffScreen } from "./screens/TutorCeaSignOffScreen";
 export { ManagementApprenticeRplScreen } from "./screens/ManagementApprenticeRplScreen";
 export { ManagementApprenticeBragScreen } from "./screens/ManagementApprenticeBragScreen";
 export { ManagementTaskViewScreen } from "./screens/ManagementTaskViewScreen";
