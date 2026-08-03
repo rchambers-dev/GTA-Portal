@@ -507,37 +507,13 @@ export async function handleStaffAction(
   }
 
   if (body.action === "revealApprenticePassword") {
-    const adminEmail =
-      body.adminEmail?.trim().toLowerCase() ||
-      session?.account.email?.trim().toLowerCase() ||
-      "";
-    const adminPassword = body.adminPassword;
-    if (!adminEmail || !adminPassword) {
+    // Staff are already authenticated via requireAdminAccess on the route.
+    // Do NOT re-run signInWithPassword here — Auth has hCaptcha enabled, and this
+    // endpoint has no captcha token, so every reveal looked like a wrong password.
+    const adminEmail = session?.account.email?.trim().toLowerCase() || "";
+    if (!adminEmail) {
       return NextResponse.json(
-        { error: "Re-enter your staff password to view this login." },
-        { status: 400 },
-      );
-    }
-
-    const { createClient } = await import("@supabase/supabase-js");
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
-    if (!url || !anonKey) {
-      return NextResponse.json(
-        { error: "Supabase is not configured." },
-        { status: 500 },
-      );
-    }
-    const verifyClient = createClient(url, anonKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
-    const { error: verifyError } = await verifyClient.auth.signInWithPassword({
-      email: adminEmail,
-      password: adminPassword,
-    });
-    if (verifyError) {
-      return NextResponse.json(
-        { error: "Staff password incorrect." },
+        { error: "Sign in again as staff, then reveal the apprentice password." },
         { status: 401 },
       );
     }

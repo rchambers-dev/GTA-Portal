@@ -43,7 +43,6 @@ export function ApprenticeEnvironmentPanel({
 }: Props) {
   const store = useAdminStore();
   const { session } = useDemoSession();
-  const [adminPassword, setAdminPassword] = useState("");
   const [revealedPassword, setRevealedPassword] = useState<string | null>(null);
   const [justEnabledPassword, setJustEnabledPassword] = useState<string | null>(
     null,
@@ -123,7 +122,6 @@ export function ApprenticeEnvironmentPanel({
         session.account.name,
       );
       setRevealedPassword(null);
-      setAdminPassword("");
       if (next === "active" && result.temporaryPassword) {
         setJustEnabledPassword(result.temporaryPassword);
         setSuccess(
@@ -133,7 +131,7 @@ export function ApprenticeEnvironmentPanel({
         setJustEnabledPassword(null);
         setSuccess(
           next === "active"
-            ? `Enabled ${user.displayName}. Re-enter your staff password below if you need to view their login password.`
+            ? `Enabled ${user.displayName}. Use Reveal password below to view their login.`
             : `Disabled ${user.displayName}.`,
         );
       }
@@ -146,23 +144,14 @@ export function ApprenticeEnvironmentPanel({
     }
   }
 
-  async function onRevealPassword(event: React.FormEvent) {
-    event.preventDefault();
+  async function onRevealPassword() {
     if (!portalUser) return;
-    if (!adminPassword.trim()) {
-      setError("Enter your staff password to reveal the login.");
-      return;
-    }
     try {
       setBusy(true);
       setError(null);
-      const result = await revealApprenticePassword(
-        portalUser.id,
-        adminPassword.trim(),
-      );
+      const result = await revealApprenticePassword(portalUser.id, "");
       setRevealedPassword(result.password);
       setJustEnabledPassword(null);
-      setAdminPassword("");
       setSuccess(
         `Password visible for ${result.displayName || portalUser.displayName}.`,
       );
@@ -250,8 +239,8 @@ export function ApprenticeEnvironmentPanel({
           <div className={styles.passwordVault}>
             <h3 className={styles.passwordVaultTitle}>Environment password</h3>
             <p className={styles.envHint}>
-              Re-enter your staff password to view the apprentice login. Use
-              this to test their environment or share the password with them.
+              Reveal the apprentice login password while you are signed in as
+              staff. Use it to test their environment or share it with them.
             </p>
 
             {justEnabledPassword || revealedPassword ? (
@@ -278,24 +267,14 @@ export function ApprenticeEnvironmentPanel({
                 </Button>
               </div>
             ) : (
-              <form
-                className={styles.passwordRevealForm}
-                onSubmit={(e) => void onRevealPassword(e)}
+              <Button
+                type="button"
+                size="sm"
+                disabled={busy}
+                onClick={() => void onRevealPassword()}
               >
-                <label className={styles.passwordField}>
-                  <span>Your staff password</span>
-                  <input
-                    type="password"
-                    autoComplete="current-password"
-                    value={adminPassword}
-                    onChange={(e) => setAdminPassword(e.target.value)}
-                    placeholder="Re-enter to reveal…"
-                  />
-                </label>
-                <Button type="submit" size="sm" disabled={busy}>
-                  {busy ? "Checking…" : "Reveal password"}
-                </Button>
-              </form>
+                {busy ? "Loading…" : "Reveal password"}
+              </Button>
             )}
           </div>
 
