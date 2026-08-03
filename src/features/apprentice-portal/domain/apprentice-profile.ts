@@ -21,6 +21,8 @@ export type ApprenticePortalProfile = {
   collegeDays: string;
   /** Cohort / programme start (ISO) — apprentice calendar weeks map from this, not RPL. */
   programmeStartDate: string;
+  /** Skills England standard code, e.g. ST0499 */
+  standardCode?: string | null;
   /** Cohort Skills England version, e.g. 1.2 */
   standardVersion?: string | null;
   /** Cohort delivery spine — groups (CEA) or blocks (programme tasks). */
@@ -51,6 +53,7 @@ export const BLANK_APPRENTICE_PROFILE: ApprenticePortalProfile = {
   openActionCount: 0,
   collegeDays: "",
   programmeStartDate: "",
+  standardCode: null,
   standardVersion: null,
   deliverySpine: "groups",
   cohortName: null,

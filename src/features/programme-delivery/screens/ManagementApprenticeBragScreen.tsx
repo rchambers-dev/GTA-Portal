@@ -6,8 +6,13 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
+import {
+  createBlankCeaState,
+  resolveGroupsPack,
+} from "@/features/apprentice-portal/domain/cea";
 import { formatDisplayDate } from "@/features/apprentice-lifecycle/domain/programme-week";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
+import { normalizeDeliverySpine } from "@/features/administration/domain/cohort-products";
 import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "../domain/autocare-blocks";
 import {
   AUTOCARE_GATEWAYS,
@@ -16,6 +21,7 @@ import {
 } from "../domain/gateways";
 import { tasksForBlock } from "../domain/autocare-tasks";
 import { taskKindLabel } from "../domain/task-schema";
+import { buildGroupsBragBoard } from "../domain/groups-progression";
 import {
   blockCohortWindowDates,
   bragLabel,
@@ -105,9 +111,34 @@ function BragPieCard({
   );
 }
 
+function bragCountSlices(rows: Array<{ brag: ProgressionBrag | null }>): {
+  slices: PieSlice[];
+  total: number;
+} {
+  const bragCounts = { blue: 0, green: 0, amber: 0, red: 0, notDue: 0 };
+  for (const row of rows) {
+    if (row.brag === "blue") bragCounts.blue += 1;
+    else if (row.brag === "green") bragCounts.green += 1;
+    else if (row.brag === "amber") bragCounts.amber += 1;
+    else if (row.brag === "red") bragCounts.red += 1;
+    else bragCounts.notDue += 1;
+  }
+  return {
+    total: rows.length,
+    slices: [
+      { key: "blue", label: "Blue — early", count: bragCounts.blue, color: "#3b82f6" },
+      { key: "green", label: "Green — on track", count: bragCounts.green, color: "#22c55e" },
+      { key: "amber", label: "Amber — at risk", count: bragCounts.amber, color: "#f59e0b" },
+      { key: "red", label: "Red — overdue", count: bragCounts.red, color: "#ef4444" },
+      { key: "notDue", label: "Not due yet", count: bragCounts.notDue, color: "#94a3b8" },
+    ],
+  };
+}
+
 /**
- * Management progression BRAG — training blocks use Blue/Green/Amber/Red.
- * Gateway / EPA use Green (complete) / Amber (on track) / Red (behind).
+ * Management progression BRAG — spine-aware.
+ * Blocks: week windows (Autocare). Groups: month brackets from MV trackers.
+ * Same Blue/Green/Amber/Red + gateway RAG, different engines.
  */
 export function ManagementApprenticeBragScreen() {
   const taskSnap = useSyncExternalStore(
@@ -118,6 +149,7 @@ export function ManagementApprenticeBragScreen() {
   const admin = useAdminStore();
   const [apprenticeId, setApprenticeId] = useState<string>("");
   const [openBlockId, setOpenBlockId] = useState<number | null>(null);
+  const [openGroupId, setOpenGroupId] = useState<string | null>(null);
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search).get("apprentice");
@@ -133,18 +165,71 @@ export function ManagementApprenticeBragScreen() {
     [admin.enrolments],
   );
 
+  useEffect(() => {
+    if (!apprenticeId && enrolments[0]) {
+      setApprenticeId(enrolments[0].apprenticeId ?? enrolments[0].id);
+    }
+  }, [apprenticeId, enrolments]);
+
   const enrolment = enrolments.find((e) => e.apprenticeId === apprenticeId) ?? null;
   const cohort = enrolment?.cohortId
     ? admin.cohorts.find((c) => c.id === enrolment.cohortId)
     : null;
+  const spine = normalizeDeliverySpine(
+    cohort?.deliverySpine ?? "blocks",
+  );
+  const onGroups = spine === "groups";
+  const programmeStartDate =
+    enrolment?.startDate || cohort?.startDate || "2024-09-02";
   const cohortStartDate =
     cohort?.startDate || enrolment?.startDate || "2024-09-02";
   const deliveryEnd =
     cohort?.expectedEndDate || enrolment?.originalPlannedEndDate || null;
   const storeApprenticeId = resolveTaskStoreApprenticeId(apprenticeId);
 
+  const groupsPack = useMemo(() => {
+    if (!onGroups || !enrolment) return null;
+    return resolveGroupsPack(
+      enrolment.standardCode,
+      cohort?.standardVersion ?? "1.0",
+    );
+  }, [onGroups, enrolment, cohort?.standardVersion]);
+
+  const groupsBoard = useMemo(() => {
+    if (!groupsPack || !enrolment) return null;
+    const state = createBlankCeaState(
+      enrolment.apprenticeId ?? enrolment.id,
+      groupsPack,
+    );
+    return buildGroupsBragBoard({
+      pack: groupsPack,
+      state,
+      programmeStartIso: programmeStartDate,
+    });
+  }, [groupsPack, enrolment, programmeStartDate]);
+
   const { trainingRows, epaBlockSummary, milestoneRows } = useMemo(() => {
     void taskSnap;
+    if (onGroups) {
+      return {
+        trainingRows: [] as Array<{
+          block: (typeof AUTOCARE_BLOCKS)[number];
+          summary: ReturnType<typeof summariseBlockCompletion>;
+          window: { startIso: string; endIso: string } | null;
+          brag: ProgressionBrag | null;
+        }>,
+        epaBlockSummary: null as ReturnType<
+          typeof summariseBlockCompletion
+        > | null,
+        milestoneRows: [] as Array<{
+          gw: (typeof AUTOCARE_GATEWAYS)[number];
+          dueIso: string | null;
+          milestone: ReturnType<typeof calculateMilestoneStatus>;
+          complete: boolean;
+        }>,
+      };
+    }
+
     const training = [];
     let epaSummary = null as ReturnType<typeof summariseBlockCompletion> | null;
 
@@ -191,17 +276,96 @@ export function ManagementApprenticeBragScreen() {
       epaBlockSummary: epaSummary,
       milestoneRows: milestones,
     };
-  }, [cohortStartDate, deliveryEnd, storeApprenticeId, taskSnap]);
+  }, [
+    cohortStartDate,
+    deliveryEnd,
+    onGroups,
+    storeApprenticeId,
+    taskSnap,
+  ]);
 
-  const overall = rollUpProgressionBrag(
-    trainingRows.map((row) => ({
-      brag: row.brag,
-      windowEndIso: row.window?.endIso ?? null,
-      complete: row.summary.complete,
-    })),
-  );
+  const overall = onGroups
+    ? groupsBoard?.overall ?? null
+    : rollUpProgressionBrag(
+        trainingRows.map((row) => ({
+          brag: row.brag,
+          windowEndIso: row.window?.endIso ?? null,
+          complete: row.summary.complete,
+        })),
+      );
 
   const charts = useMemo(() => {
+    if (onGroups && groupsBoard) {
+      const brag = bragCountSlices(groupsBoard.trainingRows);
+      const milestoneCounts = {
+        complete: 0,
+        onTrack: 0,
+        behind: 0,
+        notDue: 0,
+      };
+      for (const row of groupsBoard.milestoneRows) {
+        if (row.status === "complete") milestoneCounts.complete += 1;
+        else if (row.status === "on_track") milestoneCounts.onTrack += 1;
+        else if (row.status === "behind") milestoneCounts.behind += 1;
+        else milestoneCounts.notDue += 1;
+      }
+      let mandatorySigned = 0;
+      let mandatoryTotal = 0;
+      for (const row of groupsBoard.trainingRows) {
+        mandatorySigned += row.summary.mandatorySigned;
+        mandatoryTotal += row.summary.mandatoryRequired;
+      }
+      return {
+        trainingBragSlices: brag.slices,
+        taskSlices: [
+          {
+            key: "signed",
+            label: "Mandatory signed off",
+            count: mandatorySigned,
+            color: "#22c55e",
+          },
+          {
+            key: "remaining",
+            label: "Mandatory remaining",
+            count: Math.max(0, mandatoryTotal - mandatorySigned),
+            color: "#94a3b8",
+          },
+        ],
+        milestoneSlices: [
+          {
+            key: "complete",
+            label: "Complete",
+            count: milestoneCounts.complete,
+            color: "#22c55e",
+          },
+          {
+            key: "onTrack",
+            label: "On track",
+            count: milestoneCounts.onTrack,
+            color: "#f59e0b",
+          },
+          {
+            key: "behind",
+            label: "Behind",
+            count: milestoneCounts.behind,
+            color: "#ef4444",
+          },
+          {
+            key: "notDue",
+            label: "Date TBC",
+            count: milestoneCounts.notDue,
+            color: "#94a3b8",
+          },
+        ],
+        trainingBlockTotal: brag.total,
+        taskTotal: mandatoryTotal,
+        verified: mandatorySigned,
+        milestoneTotal: groupsBoard.milestoneRows.length,
+        unitLabel: "groups",
+        progress: groupsBoard.progress,
+      };
+    }
+
     const bragCounts = {
       blue: 0,
       green: 0,
@@ -257,87 +421,103 @@ export function ManagementApprenticeBragScreen() {
       else milestoneCounts.notDue += 1;
     }
 
-    const trainingBragSlices: PieSlice[] = [
-      { key: "blue", label: "Blue — early", count: bragCounts.blue, color: "#3b82f6" },
-      { key: "green", label: "Green — on track", count: bragCounts.green, color: "#22c55e" },
-      { key: "amber", label: "Amber — at risk", count: bragCounts.amber, color: "#f59e0b" },
-      { key: "red", label: "Red — overdue", count: bragCounts.red, color: "#ef4444" },
-      { key: "notDue", label: "Not due yet", count: bragCounts.notDue, color: "#94a3b8" },
-    ];
-
-    const taskSlices: PieSlice[] = [
-      { key: "verified", label: "Verified", count: verified, color: "#22c55e" },
-      { key: "inFlight", label: "In progress", count: inFlight, color: "#f59e0b" },
-      {
-        key: "overdue",
-        label: "Overdue — not started",
-        count: notStartedOverdue,
-        color: "#ef4444",
-      },
-      {
-        key: "notDue",
-        label: "Not started (not due)",
-        count: notStartedPending,
-        color: "#64748b",
-      },
-    ];
-
-    const milestoneSlices: PieSlice[] = [
-      {
-        key: "complete",
-        label: "Complete",
-        count: milestoneCounts.complete,
-        color: "#22c55e",
-      },
-      {
-        key: "onTrack",
-        label: "On track",
-        count: milestoneCounts.onTrack,
-        color: "#f59e0b",
-      },
-      {
-        key: "behind",
-        label: "Behind",
-        count: milestoneCounts.behind,
-        color: "#ef4444",
-      },
-      {
-        key: "notDue",
-        label: "Date TBC",
-        count: milestoneCounts.notDue,
-        color: "#94a3b8",
-      },
-    ];
-
     return {
-      trainingBragSlices,
-      taskSlices,
-      milestoneSlices,
+      trainingBragSlices: [
+        { key: "blue", label: "Blue — early", count: bragCounts.blue, color: "#3b82f6" },
+        { key: "green", label: "Green — on track", count: bragCounts.green, color: "#22c55e" },
+        { key: "amber", label: "Amber — at risk", count: bragCounts.amber, color: "#f59e0b" },
+        { key: "red", label: "Red — overdue", count: bragCounts.red, color: "#ef4444" },
+        { key: "notDue", label: "Not due yet", count: bragCounts.notDue, color: "#94a3b8" },
+      ],
+      taskSlices: [
+        { key: "verified", label: "Verified", count: verified, color: "#22c55e" },
+        { key: "inFlight", label: "In progress", count: inFlight, color: "#f59e0b" },
+        {
+          key: "overdue",
+          label: "Overdue — not started",
+          count: notStartedOverdue,
+          color: "#ef4444",
+        },
+        {
+          key: "notDue",
+          label: "Not started (not due)",
+          count: notStartedPending,
+          color: "#64748b",
+        },
+      ],
+      milestoneSlices: [
+        {
+          key: "complete",
+          label: "Complete",
+          count: milestoneCounts.complete,
+          color: "#22c55e",
+        },
+        {
+          key: "onTrack",
+          label: "On track",
+          count: milestoneCounts.onTrack,
+          color: "#f59e0b",
+        },
+        {
+          key: "behind",
+          label: "Behind",
+          count: milestoneCounts.behind,
+          color: "#ef4444",
+        },
+        {
+          key: "notDue",
+          label: "Date TBC",
+          count: milestoneCounts.notDue,
+          color: "#94a3b8",
+        },
+      ],
       trainingBlockTotal: trainingRows.length,
       taskTotal,
       verified,
       milestoneTotal: milestoneRows.length,
+      unitLabel: "blocks",
+      progress: null as null | {
+        actualPercent: number;
+        plannedPercent: number;
+        behindPlan: boolean;
+        gapPercent: number;
+      },
     };
-  }, [epaBlockSummary, milestoneRows, trainingRows]);
+  }, [
+    epaBlockSummary,
+    groupsBoard,
+    milestoneRows,
+    onGroups,
+    trainingRows,
+  ]);
+
+  const standardLabel = onGroups
+    ? groupsPack
+      ? `${groupsPack.standardLabel}`
+      : enrolment?.programmeName ?? "Groups programme"
+    : `${AUTOCARE_STANDARD.label} · ${AUTOCARE_STANDARD.code} ${AUTOCARE_STANDARD.version}`;
 
   return (
     <ApprenticePageShell
       title="Apprentice progression BRAG"
-      description="Training blocks use Blue / Green / Amber / Red against cohort dates. Gateway 1, Gateway 2 and EPA use Green / Amber / Red (RAG) so they stay clear of training-block Blue."
+      description={
+        onGroups
+          ? "Groups use Blue / Green / Amber / Red against personal-tracking month brackets. Gateways and EPA use Green / Amber / Red (RAG)."
+          : "Training blocks use Blue / Green / Amber / Red against cohort dates. Gateway 1, Gateway 2 and EPA use Green / Amber / Red (RAG)."
+      }
       eyebrow="Management"
     >
       <div className={styles.root}>
         <div className={deliveryStyles.purpose}>
           <p className={deliveryStyles.purposeLead}>
-            <strong>
-              {AUTOCARE_STANDARD.label} · {AUTOCARE_STANDARD.code}{" "}
-              {AUTOCARE_STANDARD.version}
-            </strong>
+            <strong>{standardLabel}</strong>
+            {" · "}
+            {onGroups ? "Groups spine" : "Blocks spine"}
           </p>
           <p className={deliveryStyles.purposeBody}>
-            Overall BRAG is the worst <em>training</em> block that is due or
-            complete. Pies at the top summarise the same numbers so you can
-            screenshot and check the split quickly.
+            {onGroups
+              ? "Overall BRAG is the worst personal-tracking group that is due or complete. Dates and course % come from the MV tracker sheet for this standard."
+              : "Overall BRAG is the worst training block that is due or complete. Pies at the top summarise the same numbers so you can screenshot and check the split quickly."}
           </p>
         </div>
 
@@ -349,6 +529,7 @@ export function ManagementApprenticeBragScreen() {
               onChange={(e) => {
                 setApprenticeId(e.target.value);
                 setOpenBlockId(null);
+                setOpenGroupId(null);
                 const url = new URL(window.location.href);
                 url.searchParams.set("apprentice", e.target.value);
                 window.history.replaceState({}, "", url.toString());
@@ -386,9 +567,19 @@ export function ManagementApprenticeBragScreen() {
                   </ApprenticeStatusChip>
                 ) : (
                   <ApprenticeStatusChip tone="neutral" size="lg">
-                    No due training blocks yet
+                    {onGroups
+                      ? "No due groups yet"
+                      : "No due training blocks yet"}
                   </ApprenticeStatusChip>
                 )}
+                {charts.progress ? (
+                  <ApprenticeStatusChip
+                    tone={charts.progress.behindPlan ? "amber" : "green"}
+                  >
+                    Actual {charts.progress.actualPercent}% · Planned{" "}
+                    {charts.progress.plannedPercent}%
+                  </ApprenticeStatusChip>
+                ) : null}
               </div>
               <p className={styles.muted}>
                 {enrolment.displayName}
@@ -396,7 +587,7 @@ export function ManagementApprenticeBragScreen() {
                 {cohort?.name ?? "No cohort"}
                 {" · start "}
                 {formatDisplayDate(
-                  new Date(`${cohortStartDate}T12:00:00.000Z`),
+                  new Date(`${programmeStartDate}T12:00:00.000Z`),
                 )}
                 {deliveryEnd
                   ? ` · delivery end ${formatDisplayDate(new Date(`${deliveryEnd}T12:00:00.000Z`))}`
@@ -404,226 +595,390 @@ export function ManagementApprenticeBragScreen() {
               </p>
             </div>
 
+            {onGroups && !groupsPack ? (
+              <p className={styles.muted}>
+                No groups pack is registered for {enrolment.standardCode}{" "}
+                {cohort?.standardVersion ?? ""}.
+              </p>
+            ) : null}
+
             <div className={deliveryStyles.pieGrid}>
               <BragPieCard
-                title="Training BRAG mix"
+                title={onGroups ? "Groups BRAG mix" : "Training BRAG mix"}
                 centerValue={`${charts.trainingBlockTotal}`}
-                centerLabel="blocks"
+                centerLabel={charts.unitLabel}
                 slices={charts.trainingBragSlices}
-                ariaLabel={`Training BRAG mix across ${charts.trainingBlockTotal} blocks`}
+                ariaLabel={`BRAG mix across ${charts.trainingBlockTotal} ${charts.unitLabel}`}
               />
               <BragPieCard
-                title="All tasks (60)"
+                title={onGroups ? "Mandatory tasks" : "All tasks (60)"}
                 centerValue={`${charts.verified}/${charts.taskTotal}`}
-                centerLabel="verified"
+                centerLabel={onGroups ? "signed off" : "verified"}
                 slices={charts.taskSlices}
-                ariaLabel={`Task status: ${charts.verified} verified of ${charts.taskTotal}`}
+                ariaLabel={`Task status: ${charts.verified} of ${charts.taskTotal}`}
               />
               <BragPieCard
-                title="Gateway 1 · 2 · EPA"
+                title="Gateways & EPA"
                 centerValue={`${charts.milestoneTotal}`}
                 centerLabel="milestones"
                 slices={charts.milestoneSlices}
-                ariaLabel={`Gateway and EPA milestone status across ${charts.milestoneTotal} items`}
+                ariaLabel={`Gateway and EPA status across ${charts.milestoneTotal} items`}
               />
             </div>
 
-            <h2 className={styles.panelTitle}>Training blocks</h2>
-            <p className={styles.muted}>
-              Select a block to expand its tasks, then open a task to review
-              the quality of work submitted.
-            </p>
-            {trainingRows.map(({ block, summary, window, brag }) => {
-              const open = openBlockId === block.id;
-              const tasks = tasksForBlock(block.id);
-              return (
-                <article
-                  key={block.id}
-                  className={deliveryStyles.bragRow}
-                  data-brag={brag ?? undefined}
-                >
-                  <button
-                    type="button"
-                    className={deliveryStyles.fundingBlockHead}
-                    onClick={() => setOpenBlockId(open ? null : block.id)}
-                    aria-expanded={open}
-                    style={{
-                      width: "100%",
-                      textAlign: "left",
-                      cursor: "pointer",
-                      border: "none",
-                      background: "transparent",
-                      padding: 0,
-                      font: "inherit",
-                      color: "inherit",
-                    }}
-                  >
-                    <div>
-                      <h3 className={styles.panelTitle}>
-                        Block {block.id} · {block.name}
-                      </h3>
-                      <p className={styles.muted}>
-                        {window
-                          ? `${formatDisplayDate(new Date(`${window.startIso}T12:00:00.000Z`))} – ${formatDisplayDate(new Date(`${window.endIso}T12:00:00.000Z`))}`
-                          : "No cohort week window"}
-                        {" · "}
-                        {summary.verified}/{summary.total} tasks verified
-                        {summary.complete ? " · block complete" : ""}
-                      </p>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: "0.5rem",
-                        alignItems: "center",
-                      }}
+            {onGroups && groupsBoard ? (
+              <>
+                <h2 className={styles.panelTitle}>Personal tracking groups</h2>
+                <p className={styles.muted}>
+                  Each group is dated against its tracker month bracket. Complete
+                  before the phase end to stay on track; past the end with open
+                  mandatory work is behind.
+                </p>
+                {groupsBoard.trainingRows.map((row) => {
+                  const open = openGroupId === row.group.id;
+                  return (
+                    <article
+                      key={row.group.id}
+                      className={deliveryStyles.bragRow}
+                      data-brag={row.brag ?? undefined}
                     >
-                      {brag ? (
-                        <ApprenticeStatusChip tone={brag as ProgressionBrag}>
-                          {bragShortLabel(brag)}
-                        </ApprenticeStatusChip>
-                      ) : (
-                        <ApprenticeStatusChip tone="neutral">
-                          Not due yet
-                        </ApprenticeStatusChip>
-                      )}
-                      <span className={styles.muted} aria-hidden>
-                        {open ? "▴" : "▾"}
-                      </span>
-                    </div>
-                  </button>
-                  <p className={deliveryStyles.fundingMeta}>
-                    {brag
-                      ? bragLabel(brag)
-                      : "Window has not started — not rated Green until the block is active"}
-                    {summary.completedAt
-                      ? ` · completed ${formatDisplayDate(new Date(summary.completedAt))}`
-                      : ""}
-                  </p>
-                  {open ? (
-                    <ul className={deliveryStyles.taskList}>
-                      {tasks.map((task) => {
-                        const sub = getTaskSubmission(task.id, storeApprenticeId);
-                        const canOpen =
-                          sub.status !== "not_started" ||
-                          Object.keys(sub.fields).length > 0;
-                        const href = `/management/apprentice-brag/task/${task.id}?apprentice=${encodeURIComponent(apprenticeId)}`;
-                        const notStartedTone =
-                          brag === "red" ? "red" : "neutral";
-                        const notStartedRag =
-                          brag === "red" ? "red" : "neutral";
-                        return (
-                          <li key={task.id}>
-                            {canOpen ? (
-                              <Link
-                                href={href}
-                                className={deliveryStyles.taskRow}
-                                data-rag={
-                                  sub.status === "verified"
-                                    ? "green"
-                                    : sub.status === "not_started"
-                                      ? notStartedRag
-                                      : "amber"
-                                }
-                              >
+                      <button
+                        type="button"
+                        className={deliveryStyles.fundingBlockHead}
+                        onClick={() =>
+                          setOpenGroupId(open ? null : row.group.id)
+                        }
+                        aria-expanded={open}
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                          cursor: "pointer",
+                          border: "none",
+                          background: "transparent",
+                          padding: 0,
+                          font: "inherit",
+                          color: "inherit",
+                        }}
+                      >
+                        <div>
+                          <h3 className={styles.panelTitle}>
+                            Group {row.group.number} · {row.group.title}
+                          </h3>
+                          <p className={styles.muted}>
+                            {row.milestone.phaseLabel}
+                            {row.window
+                              ? ` · ${formatDisplayDate(new Date(`${row.window.startIso}T12:00:00.000Z`))} – ${formatDisplayDate(new Date(`${row.window.endIso}T12:00:00.000Z`))}`
+                              : ""}
+                            {" · "}
+                            {row.summary.mandatorySigned}/
+                            {row.summary.mandatoryRequired} mandatory
+                            {row.courseWeightPercent > 0
+                              ? ` · ${row.courseWeightPercent}% course`
+                              : ""}
+                          </p>
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: "0.5rem",
+                            alignItems: "center",
+                          }}
+                        >
+                          {row.brag ? (
+                            <ApprenticeStatusChip tone={row.brag}>
+                              {bragShortLabel(row.brag)}
+                            </ApprenticeStatusChip>
+                          ) : (
+                            <ApprenticeStatusChip tone="neutral">
+                              Not due yet
+                            </ApprenticeStatusChip>
+                          )}
+                          <span className={styles.muted} aria-hidden>
+                            {open ? "▴" : "▾"}
+                          </span>
+                        </div>
+                      </button>
+                      <p className={deliveryStyles.fundingMeta}>
+                        {row.brag
+                          ? bragLabel(row.brag)
+                          : "Phase has not started — not rated until the month bracket opens"}
+                      </p>
+                      {open ? (
+                        <ul className={deliveryStyles.taskList}>
+                          {row.group.tasks.map((task) => (
+                            <li key={task.id}>
+                              <div className={deliveryStyles.taskRow}>
                                 <div className={deliveryStyles.taskMain}>
                                   <strong>
-                                    Task {task.taskNumber}: {task.title}
+                                    Task {task.number}: {task.title}
                                   </strong>
-                                  <span>
-                                    {taskKindLabel(task.kind)}
-                                    {sub.difficulty
-                                      ? ` · ${sub.difficulty}`
-                                      : ""}
-                                  </span>
+                                  <span>Personal tracking task</span>
                                 </div>
-                                <div className={deliveryStyles.taskEnd}>
-                                  <ApprenticeStatusChip
-                                    tone={
-                                      sub.status === "not_started"
-                                        ? notStartedTone
-                                        : statusTone(sub.status)
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </article>
+                  );
+                })}
+
+                <h2 className={styles.panelTitle}>Gateway &amp; EPA milestones</h2>
+                <p className={styles.muted}>
+                  Dated from the tracker month bracket for this standard. Green =
+                  complete, amber = on track, red = behind.
+                </p>
+                {groupsBoard.milestoneRows.map((row) => {
+                  const tone = milestoneChipTone(row.status);
+                  return (
+                    <article
+                      key={row.milestone.id}
+                      className={deliveryStyles.milestoneRow}
+                      data-milestone={row.status}
+                    >
+                      <div className={deliveryStyles.fundingBlockHead}>
+                        <div>
+                          <h3 className={styles.panelTitle}>
+                            {row.milestone.title}
+                          </h3>
+                          <p className={styles.muted}>
+                            Due{" "}
+                            {row.window?.endIso
+                              ? formatDisplayDate(
+                                  new Date(
+                                    `${row.window.endIso}T12:00:00.000Z`,
+                                  ),
+                                )
+                              : "TBC"}
+                            {" · "}
+                            {row.milestone.phaseLabel}
+                            {row.courseWeightPercent > 0
+                              ? ` · ${row.courseWeightPercent}% course`
+                              : ""}
+                          </p>
+                        </div>
+                        <ApprenticeStatusChip tone={tone}>
+                          {milestoneShortLabel(row.status)}
+                        </ApprenticeStatusChip>
+                      </div>
+                      <p className={deliveryStyles.fundingMeta}>
+                        {row.milestone.description}
+                        {" · "}
+                        {milestoneLabel(row.milestone.title, row.status)}
+                      </p>
+                    </article>
+                  );
+                })}
+              </>
+            ) : null}
+
+            {!onGroups ? (
+              <>
+                <h2 className={styles.panelTitle}>Training blocks</h2>
+                <p className={styles.muted}>
+                  Select a block to expand its tasks, then open a task to review
+                  the quality of work submitted.
+                </p>
+                {trainingRows.map(({ block, summary, window, brag }) => {
+                  const open = openBlockId === block.id;
+                  const tasks = tasksForBlock(block.id);
+                  return (
+                    <article
+                      key={block.id}
+                      className={deliveryStyles.bragRow}
+                      data-brag={brag ?? undefined}
+                    >
+                      <button
+                        type="button"
+                        className={deliveryStyles.fundingBlockHead}
+                        onClick={() => setOpenBlockId(open ? null : block.id)}
+                        aria-expanded={open}
+                        style={{
+                          width: "100%",
+                          textAlign: "left",
+                          cursor: "pointer",
+                          border: "none",
+                          background: "transparent",
+                          padding: 0,
+                          font: "inherit",
+                          color: "inherit",
+                        }}
+                      >
+                        <div>
+                          <h3 className={styles.panelTitle}>
+                            Block {block.id} · {block.name}
+                          </h3>
+                          <p className={styles.muted}>
+                            {window
+                              ? `${formatDisplayDate(new Date(`${window.startIso}T12:00:00.000Z`))} – ${formatDisplayDate(new Date(`${window.endIso}T12:00:00.000Z`))}`
+                              : "No cohort week window"}
+                            {" · "}
+                            {summary.verified}/{summary.total} tasks verified
+                            {summary.complete ? " · block complete" : ""}
+                          </p>
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: "0.5rem",
+                            alignItems: "center",
+                          }}
+                        >
+                          {brag ? (
+                            <ApprenticeStatusChip tone={brag as ProgressionBrag}>
+                              {bragShortLabel(brag)}
+                            </ApprenticeStatusChip>
+                          ) : (
+                            <ApprenticeStatusChip tone="neutral">
+                              Not due yet
+                            </ApprenticeStatusChip>
+                          )}
+                          <span className={styles.muted} aria-hidden>
+                            {open ? "▴" : "▾"}
+                          </span>
+                        </div>
+                      </button>
+                      <p className={deliveryStyles.fundingMeta}>
+                        {brag
+                          ? bragLabel(brag)
+                          : "Window has not started — not rated Green until the block is active"}
+                        {summary.completedAt
+                          ? ` · completed ${formatDisplayDate(new Date(summary.completedAt))}`
+                          : ""}
+                      </p>
+                      {open ? (
+                        <ul className={deliveryStyles.taskList}>
+                          {tasks.map((task) => {
+                            const sub = getTaskSubmission(
+                              task.id,
+                              storeApprenticeId,
+                            );
+                            const canOpen =
+                              sub.status !== "not_started" ||
+                              Object.keys(sub.fields).length > 0;
+                            const href = `/management/apprentice-brag/task/${task.id}?apprentice=${encodeURIComponent(apprenticeId)}`;
+                            const notStartedTone =
+                              brag === "red" ? "red" : "neutral";
+                            const notStartedRag =
+                              brag === "red" ? "red" : "neutral";
+                            return (
+                              <li key={task.id}>
+                                {canOpen ? (
+                                  <Link
+                                    href={href}
+                                    className={deliveryStyles.taskRow}
+                                    data-rag={
+                                      sub.status === "verified"
+                                        ? "green"
+                                        : sub.status === "not_started"
+                                          ? notStartedRag
+                                          : "amber"
                                     }
                                   >
-                                    {sub.status === "not_started" &&
-                                    brag === "red"
-                                      ? "Overdue"
-                                      : statusLabel(sub.status)}
-                                  </ApprenticeStatusChip>
-                                  <span className={deliveryStyles.linkish}>
-                                    View work →
-                                  </span>
-                                </div>
-                              </Link>
-                            ) : (
-                              <div
-                                className={deliveryStyles.taskRow}
-                                data-rag={notStartedRag}
-                              >
-                                <div className={deliveryStyles.taskMain}>
-                                  <strong>
-                                    Task {task.taskNumber}: {task.title}
-                                  </strong>
-                                  <span>
-                                    {taskKindLabel(task.kind)} · no submission
-                                    yet
-                                  </span>
-                                </div>
-                                <ApprenticeStatusChip tone={notStartedTone}>
-                                  {brag === "red" ? "Overdue" : "Not started"}
-                                </ApprenticeStatusChip>
-                              </div>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : null}
-                </article>
-              );
-            })}
+                                    <div className={deliveryStyles.taskMain}>
+                                      <strong>
+                                        Task {task.taskNumber}: {task.title}
+                                      </strong>
+                                      <span>
+                                        {taskKindLabel(task.kind)}
+                                        {sub.difficulty
+                                          ? ` · ${sub.difficulty}`
+                                          : ""}
+                                      </span>
+                                    </div>
+                                    <div className={deliveryStyles.taskEnd}>
+                                      <ApprenticeStatusChip
+                                        tone={
+                                          sub.status === "not_started"
+                                            ? notStartedTone
+                                            : statusTone(sub.status)
+                                        }
+                                      >
+                                        {sub.status === "not_started" &&
+                                        brag === "red"
+                                          ? "Overdue"
+                                          : statusLabel(sub.status)}
+                                      </ApprenticeStatusChip>
+                                      <span className={deliveryStyles.linkish}>
+                                        View work →
+                                      </span>
+                                    </div>
+                                  </Link>
+                                ) : (
+                                  <div
+                                    className={deliveryStyles.taskRow}
+                                    data-rag={notStartedRag}
+                                  >
+                                    <div className={deliveryStyles.taskMain}>
+                                      <strong>
+                                        Task {task.taskNumber}: {task.title}
+                                      </strong>
+                                      <span>
+                                        {taskKindLabel(task.kind)} · no
+                                        submission yet
+                                      </span>
+                                    </div>
+                                    <ApprenticeStatusChip tone={notStartedTone}>
+                                      {brag === "red"
+                                        ? "Overdue"
+                                        : "Not started"}
+                                    </ApprenticeStatusChip>
+                                  </div>
+                                )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : null}
+                    </article>
+                  );
+                })}
 
-            <h2 className={styles.panelTitle}>Gateway &amp; EPA milestones</h2>
-            <p className={styles.muted}>
-              Separate from training blocks (MBB model). Gateway 1 after Block 5
-              (~12 months), Gateway 2 after Block 10 (~24 months), EPA at cohort
-              delivery end. Green = complete, amber = on track, red = behind.
-            </p>
-            {milestoneRows.map(({ gw, dueIso, milestone }) => {
-              const tone = milestoneChipTone(milestone);
-              return (
-                <article
-                  key={gw.id}
-                  className={deliveryStyles.milestoneRow}
-                  data-milestone={milestone}
-                >
-                  <div className={deliveryStyles.fundingBlockHead}>
-                    <div>
-                      <h3 className={styles.panelTitle}>{gw.name}</h3>
-                      <p className={styles.muted}>
-                        Due{" "}
-                        {dueIso
-                          ? formatDisplayDate(
-                              new Date(`${dueIso}T12:00:00.000Z`),
-                            )
-                          : "TBC"}
+                <h2 className={styles.panelTitle}>Gateway &amp; EPA milestones</h2>
+                <p className={styles.muted}>
+                  Separate from training blocks (MBB model). Gateway 1 after Block
+                  5 (~12 months), Gateway 2 after Block 10 (~24 months), EPA at
+                  cohort delivery end. Green = complete, amber = on track, red =
+                  behind.
+                </p>
+                {milestoneRows.map(({ gw, dueIso, milestone }) => {
+                  const tone = milestoneChipTone(milestone);
+                  return (
+                    <article
+                      key={gw.id}
+                      className={deliveryStyles.milestoneRow}
+                      data-milestone={milestone}
+                    >
+                      <div className={deliveryStyles.fundingBlockHead}>
+                        <div>
+                          <h3 className={styles.panelTitle}>{gw.name}</h3>
+                          <p className={styles.muted}>
+                            Due{" "}
+                            {dueIso
+                              ? formatDisplayDate(
+                                  new Date(`${dueIso}T12:00:00.000Z`),
+                                )
+                              : "TBC"}
+                            {" · "}
+                            {gatewayMilestoneAnchorLabel(gw)}
+                          </p>
+                        </div>
+                        <ApprenticeStatusChip tone={tone}>
+                          {milestoneShortLabel(milestone)}
+                        </ApprenticeStatusChip>
+                      </div>
+                      <p className={deliveryStyles.fundingMeta}>
+                        {gw.description}
                         {" · "}
-                        {gatewayMilestoneAnchorLabel(gw)}
+                        {milestoneLabel(gw.name, milestone)}
                       </p>
-                    </div>
-                    <ApprenticeStatusChip tone={tone}>
-                      {milestoneShortLabel(milestone)}
-                    </ApprenticeStatusChip>
-                  </div>
-                  <p className={deliveryStyles.fundingMeta}>
-                    {gw.description}
-                    {" · "}
-                    {milestoneLabel(gw.name, milestone)}
-                  </p>
-                </article>
-              );
-            })}
+                    </article>
+                  );
+                })}
+              </>
+            ) : null}
           </div>
         ) : (
           <p className={styles.muted}>No enrolment selected.</p>

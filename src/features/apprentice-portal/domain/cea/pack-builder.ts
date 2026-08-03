@@ -30,7 +30,8 @@ export function ceaGroup(input: {
   title: string;
   mandatoryRequired: number;
   milestoneWeightPercent: number;
-  yearLabel: "Year 1" | "Year 2";
+  courseWeightPercent?: number;
+  yearLabel: "Year 1" | "Year 2" | "Year 3";
   phaseLabel: string;
   knowledgeTestNote?: string;
   tasks: CeaTaskDef[];

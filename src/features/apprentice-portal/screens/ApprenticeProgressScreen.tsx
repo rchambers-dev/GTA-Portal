@@ -8,6 +8,10 @@ import {
 } from "../components/ApprenticePageShell";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
+  createBlankCeaState,
+  resolveGroupsPack,
+} from "../domain/cea";
+import {
   AUTOCARE_BLOCKS,
   AUTOCARE_STANDARD,
 } from "@/features/programme-delivery/domain/autocare-blocks";
@@ -26,14 +30,19 @@ import {
 import {
   apprenticeBlockRag,
   apprenticeBlockRagLabel,
+  bragShortLabel,
   isApprenticeBlockUnlocked,
+  milestoneChipTone,
+  milestoneShortLabel,
   summariseBlockCompletion,
 } from "@/features/programme-delivery/domain/progression-status";
+import { buildGroupsBragBoard } from "@/features/programme-delivery/domain/groups-progression";
+import { formatDisplayDate } from "@/features/apprentice-lifecycle/domain/programme-week";
 import styles from "./apprentice-pages.module.css";
 
 /**
  * Progress against the apprentice's delivery spine:
- * - groups → personal tracking overview
+ * - groups → MV tracker month brackets + course %
  * - blocks → programme weeks and college block tasks
  */
 export function ApprenticeProgressScreen() {
@@ -45,6 +54,24 @@ export function ApprenticeProgressScreen() {
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
+
+  const groupsPack = useMemo(() => {
+    if (!onGroups) return null;
+    return resolveGroupsPack(
+      profile.standardCode ?? "ST0499",
+      profile.standardVersion ?? "1.2",
+    );
+  }, [onGroups, profile.standardCode, profile.standardVersion]);
+
+  const groupsBoard = useMemo(() => {
+    if (!groupsPack || !profile.programmeStartDate) return null;
+    const state = createBlankCeaState(apprenticeId, groupsPack);
+    return buildGroupsBragBoard({
+      pack: groupsPack,
+      state,
+      programmeStartIso: profile.programmeStartDate,
+    });
+  }, [apprenticeId, groupsPack, profile.programmeStartDate]);
 
   const taskedBlocks = useMemo(
     () => AUTOCARE_BLOCKS.filter((b) => tasksForBlock(b.id).length > 0),
@@ -67,29 +94,41 @@ export function ApprenticeProgressScreen() {
     total: AUTOCARE_PRACTICAL_TASKS.length,
   };
 
-  const behindPlan =
-    profile.actualProgressPercent < profile.plannedProgressPercent;
-  const gap = Math.max(
-    0,
-    profile.plannedProgressPercent - profile.actualProgressPercent,
-  );
+  const actualPercent = onGroups
+    ? (groupsBoard?.progress.actualPercent ?? profile.actualProgressPercent)
+    : profile.actualProgressPercent;
+  const plannedPercent = onGroups
+    ? (groupsBoard?.progress.plannedPercent ?? profile.plannedProgressPercent)
+    : profile.plannedProgressPercent;
+  const behindPlan = actualPercent < plannedPercent;
+  const gap = Math.max(0, plannedPercent - actualPercent);
+
+  const groupsComplete =
+    groupsBoard?.trainingRows.filter((r) => r.summary.complete).length ?? 0;
+  const groupsTotal = groupsBoard?.trainingRows.length ?? 0;
 
   return (
     <ApprenticePageShell
       title="Progress"
       description={
         onGroups
-          ? `Planned versus actual on ${profile.programmeName} — tracked through personal tracking groups.`
+          ? `Planned versus actual on ${profile.programmeName} — tracked through personal tracking month brackets.`
           : `Planned versus actual on ${AUTOCARE_STANDARD.label} — tracked by programme weeks and college block tasks.`
       }
     >
       <div className={styles.stack}>
         <div className={styles.grid}>
           <div className={styles.glance} data-tone="navy">
-            <p className={styles.glanceLabel}>Programme week</p>
-            <p className={styles.glanceValue}>{profile.programmeWeek}</p>
+            <p className={styles.glanceLabel}>
+              {onGroups ? "Programme month plan" : "Programme week"}
+            </p>
+            <p className={styles.glanceValue}>
+              {onGroups ? `${plannedPercent}%` : profile.programmeWeek}
+            </p>
             <p className={styles.glanceHint}>
-              of {AUTOCARE_STANDARD.deliveryWeeks} delivery weeks
+              {onGroups
+                ? "Expected from tracker brackets so far"
+                : `of ${AUTOCARE_STANDARD.deliveryWeeks} delivery weeks`}
             </p>
           </div>
           <div
@@ -97,9 +136,7 @@ export function ApprenticeProgressScreen() {
             data-tone={behindPlan ? "amber" : "green"}
           >
             <p className={styles.glanceLabel}>Actual</p>
-            <p className={styles.glanceValue}>
-              {profile.actualProgressPercent}%
-            </p>
+            <p className={styles.glanceValue}>{actualPercent}%</p>
             <p className={styles.glanceHint}>
               {behindPlan
                 ? `${gap}% behind plan — focus on tracking and OTJ`
@@ -108,16 +145,16 @@ export function ApprenticeProgressScreen() {
           </div>
           <div className={styles.glance} data-tone="blue">
             <p className={styles.glanceLabel}>
-              {onGroups ? "Personal tracking" : "College tasks"}
+              {onGroups ? "Groups complete" : "College tasks"}
             </p>
             <p className={styles.glanceValue}>
               {onGroups
-                ? `${profile.actualProgressPercent}%`
+                ? `${groupsComplete}/${groupsTotal}`
                 : `${taskStats.verified}/${taskStats.total}`}
             </p>
             <p className={styles.glanceHint}>
               {onGroups
-                ? "Open tracking for group and task detail"
+                ? "Mandatory quota met on personal tracking"
                 : `${taskStats.inFlight} in flight · ${taskStats.notStarted} not started`}
             </p>
           </div>
@@ -131,40 +168,136 @@ export function ApprenticeProgressScreen() {
             <div className={styles.progressBar} aria-hidden>
               <div
                 className={styles.progressFillPlanned}
-                style={{ width: `${profile.plannedProgressPercent}%` }}
+                style={{ width: `${plannedPercent}%` }}
               />
               <div
                 className={styles.progressFill}
                 data-tone={behindPlan ? "amber" : "green"}
-                style={{ width: `${profile.actualProgressPercent}%` }}
+                style={{ width: `${actualPercent}%` }}
               />
             </div>
             <div className={styles.progressLegend}>
               <span data-tone="navy">
-                <i aria-hidden /> Planned {profile.plannedProgressPercent}%
+                <i aria-hidden /> Planned {plannedPercent}%
               </span>
               <span data-tone={behindPlan ? "amber" : "green"}>
-                <i aria-hidden /> Actual {profile.actualProgressPercent}%
+                <i aria-hidden /> Actual {actualPercent}%
               </span>
             </div>
           </div>
         </section>
 
         {onGroups ? (
-          <section className={styles.section}>
-            <h2 className={styles.dashSectionTitle} data-accent="amber">
-              Personal tracking
-            </h2>
-            <p className={styles.meta}>
-              You are on the groups delivery spine. Group completion, workplace
-              tasks and gateways live in personal tracking.
-            </p>
-            <p>
-              <Link href="/apprentice/tracking" className={styles.linkish}>
-                Open personal tracking →
-              </Link>
-            </p>
-          </section>
+          <>
+            <section className={styles.section}>
+              <h2 className={styles.dashSectionTitle} data-accent="amber">
+                Tracker phases
+              </h2>
+              <p className={styles.meta}>
+                Month brackets from your personal tracking sheet. Complete each
+                group&apos;s mandatory work before the phase end to stay on
+                track.
+              </p>
+              {!groupsBoard ? (
+                <p className={styles.meta}>
+                  Groups pack not available for this programme yet.
+                </p>
+              ) : (
+                <ul className={styles.list}>
+                  {groupsBoard.trainingRows.map((row) => {
+                    const tone = row.brag ?? "neutral";
+                    return (
+                      <li key={row.group.id}>
+                        <div className={styles.rowLink} data-tone={tone === "blue" ? "navy" : tone === "neutral" ? "navy" : tone}>
+                          <div className={styles.rowMain}>
+                            <strong>
+                              Group {row.group.number} · {row.group.title}
+                            </strong>
+                            <span>
+                              {row.milestone.phaseLabel}
+                              {row.window
+                                ? ` · due ${formatDisplayDate(new Date(`${row.window.endIso}T12:00:00.000Z`))}`
+                                : ""}
+                              {row.courseWeightPercent > 0
+                                ? ` · ${row.courseWeightPercent}%`
+                                : ""}
+                              {` · ${row.summary.mandatorySigned}/${row.summary.mandatoryRequired} mandatory`}
+                            </span>
+                          </div>
+                          <div className={styles.rowEnd}>
+                            <ApprenticeStatusChip
+                              tone={
+                                row.brag === "blue"
+                                  ? "blue"
+                                  : row.brag === "green"
+                                    ? "green"
+                                    : row.brag === "amber"
+                                      ? "amber"
+                                      : row.brag === "red"
+                                        ? "red"
+                                        : "neutral"
+                              }
+                            >
+                              {row.brag
+                                ? bragShortLabel(row.brag)
+                                : "Not due yet"}
+                            </ApprenticeStatusChip>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
+
+            {groupsBoard && groupsBoard.milestoneRows.length > 0 ? (
+              <section className={styles.section}>
+                <h2 className={styles.dashSectionTitle} data-accent="navy">
+                  Gateways &amp; EPA
+                </h2>
+                <ul className={styles.list}>
+                  {groupsBoard.milestoneRows.map((row) => (
+                    <li key={row.milestone.id}>
+                      <div className={styles.rowLink}>
+                        <div className={styles.rowMain}>
+                          <strong>{row.milestone.title}</strong>
+                          <span>
+                            {row.milestone.phaseLabel}
+                            {row.window?.endIso
+                              ? ` · due ${formatDisplayDate(new Date(`${row.window.endIso}T12:00:00.000Z`))}`
+                              : ""}
+                          </span>
+                        </div>
+                        <div className={styles.rowEnd}>
+                          <ApprenticeStatusChip
+                            tone={milestoneChipTone(row.status)}
+                          >
+                            {milestoneShortLabel(row.status)}
+                          </ApprenticeStatusChip>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            <section className={styles.section}>
+              <h2 className={styles.dashSectionTitle} data-accent="green">
+                Personal tracking
+              </h2>
+              <p className={styles.meta}>
+                Open personal tracking for group tasks, workplace evidence and
+                gateway reflections.
+              </p>
+              <p>
+                <Link href="/apprentice/tracking" className={styles.linkish}>
+                  Open personal tracking →
+                </Link>
+              </p>
+            </section>
+          </>
         ) : (
           <>
             {(() => {

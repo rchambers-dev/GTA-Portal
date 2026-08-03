@@ -46,11 +46,19 @@ export type CeaGroupDef = {
   mandatoryRequired: number;
   /** Contribution toward parent milestone when mandatory quota is met (0–100 of that milestone). */
   milestoneWeightPercent: number;
-  yearLabel: "Year 1" | "Year 2";
+  /**
+   * Overall course progress % from the MV personal-tracking sheet (when published).
+   * Used by the groups BRAG / planned-vs-actual engine — not renormalised within a milestone.
+   */
+  courseWeightPercent?: number;
+  yearLabel: "Year 1" | "Year 2" | "Year 3";
   phaseLabel: string;
   knowledgeTestNote?: string;
   tasks: CeaTaskDef[];
 };
+
+/** Milestone kind on the groups spine (separate from Autocare block/gateway weeks). */
+export type CeaMilestoneKind = "groups_phase" | "gateway" | "epa";
 
 export type CeaMilestoneDef = {
   id: string;
@@ -58,6 +66,15 @@ export type CeaMilestoneDef = {
   description: string;
   sortOrder: number;
   phaseLabel: string;
+  /**
+   * Inclusive programme-month bracket from the tracker sheet (e.g. 0–6, 7–12).
+   * `monthStart` 0 = programme start. End dating is calendar months from start.
+   */
+  monthStart: number | null;
+  monthEnd: number | null;
+  kind: CeaMilestoneKind;
+  /** Course % for gateway / EPA rows when the sheet publishes one (e.g. GW1 10%). */
+  courseWeightPercent?: number;
 };
 
 export type CeaGatewayItem = {

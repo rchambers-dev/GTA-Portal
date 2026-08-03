@@ -139,6 +139,7 @@ export async function GET() {
     openActionCount: 0,
     collegeDays: enrolment?.college_days?.trim() || "TBC",
     programmeStartDate: startDate,
+    standardCode: enrolment?.standard_code?.trim() || null,
     standardVersion: delivery.standardVersion,
     deliverySpine: delivery.deliverySpine,
     cohortName: delivery.cohortName,

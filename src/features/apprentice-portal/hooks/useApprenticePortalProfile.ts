@@ -35,6 +35,7 @@ const EMPTY_LIVE_PROFILE: ApprenticePortalProfile = {
   collegeDays: "TBC",
   programmeStartDate: "",
   deliverySpine: "groups",
+  standardCode: null,
   standardVersion: null,
   cohortName: null,
 };

@@ -411,7 +411,7 @@ function FlowHeading({ children }: { children: string }) {
 export function ApprenticeGroupsTrackingScreen() {
   const { profile, loading } = useApprenticePortalProfile();
   const pack = resolveGroupsPack(
-    "ST0499",
+    profile.standardCode ?? "ST0499",
     profile.standardVersion ?? "1.2",
   );
   const [state, setState] = useState<CeaApprenticeState | null>(null);
@@ -469,11 +469,16 @@ export function ApprenticeGroupsTrackingScreen() {
         i.title.includes("Steering")),
   );
 
+  const gateway1Sort =
+    activePack.milestones.find((m) => m.id === "ms-gateway1")?.sortOrder ?? 99;
+  const milestoneOrder = new Map(
+    activePack.milestones.map((m) => [m.id, m.sortOrder]),
+  );
   const groupsBeforeGateway1 = activePack.groups
-    .filter((g) => g.number <= 7)
+    .filter((g) => (milestoneOrder.get(g.milestoneId) ?? 0) < gateway1Sort)
     .sort((a, b) => a.number - b.number);
   const groupsAfterGateway1 = activePack.groups
-    .filter((g) => g.number >= 8)
+    .filter((g) => (milestoneOrder.get(g.milestoneId) ?? 0) > gateway1Sort)
     .sort((a, b) => a.number - b.number);
   const gateway1 = activePack.gatewayItems.filter(
     (g) => g.milestoneId === "ms-gateway1",

@@ -37,6 +37,9 @@ const AUTOCARE_CEA_PACK_RAW: CeaPackDef = {
       description: "Year 1 · 0–6 months — foundation skills and EV/hybrid awareness.",
       sortOrder: 1,
       phaseLabel: "0–6 months",
+      monthStart: 0,
+      monthEnd: 6,
+      kind: "groups_phase",
     },
     {
       id: "ms-year1-systems",
@@ -45,6 +48,9 @@ const AUTOCARE_CEA_PACK_RAW: CeaPackDef = {
         "Year 1 · 7–12 months — tyres, brakes, steering, cooling, starting & charging.",
       sortOrder: 2,
       phaseLabel: "7–12 months",
+      monthStart: 7,
+      monthEnd: 12,
+      kind: "groups_phase",
     },
     {
       id: "ms-gateway1",
@@ -52,6 +58,9 @@ const AUTOCARE_CEA_PACK_RAW: CeaPackDef = {
       description: "Gateway assessments and e-logbook review before Year 2.",
       sortOrder: 3,
       phaseLabel: "Gateway 1",
+      monthStart: 12,
+      monthEnd: 12,
+      kind: "gateway",
     },
     {
       id: "ms-year2-systems",
@@ -60,6 +69,9 @@ const AUTOCARE_CEA_PACK_RAW: CeaPackDef = {
         "Year 2 · 13–21 months — customer, stock, advanced systems, inspection.",
       sortOrder: 4,
       phaseLabel: "13–21 months",
+      monthStart: 13,
+      monthEnd: 21,
+      kind: "groups_phase",
     },
     {
       id: "ms-gateway2",
@@ -67,6 +79,9 @@ const AUTOCARE_CEA_PACK_RAW: CeaPackDef = {
       description: "Final gateway assessments and e-logbook review before EPA.",
       sortOrder: 5,
       phaseLabel: "Gateway 2",
+      monthStart: 21,
+      monthEnd: 21,
+      kind: "gateway",
     },
     {
       id: "ms-epa",
@@ -74,6 +89,9 @@ const AUTOCARE_CEA_PACK_RAW: CeaPackDef = {
       description: "21–24 months — End-point assessment (IMI AS-AC-EPA).",
       sortOrder: 6,
       phaseLabel: "21–24 months",
+      monthStart: 21,
+      monthEnd: 24,
+      kind: "epa",
     },
   ],
   groups: [
