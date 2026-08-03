@@ -320,6 +320,10 @@ export async function handleStaffAction(
         userId = existing.id;
       }
 
+      if (!userId) {
+        return NextResponse.json({ error: message }, { status: 409 });
+      }
+
       const { error: pwError } = await supabase.auth.admin.updateUserById(
         userId,
         { password, email_confirm: true },
