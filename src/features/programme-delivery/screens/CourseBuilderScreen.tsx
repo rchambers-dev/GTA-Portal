@@ -10,7 +10,6 @@ import {
   COURSE_STANDARD_CODES,
   CURRENT_STANDARD_VERSION,
   LEGACY_STANDARD_VERSION,
-  primaryProductsForStandard,
   standardLabel,
   type StandardCode,
 } from "@/features/administration/domain/cohort-products";
@@ -92,7 +91,6 @@ export function CourseBuilderScreen() {
     title: string;
   } | null>(null);
 
-  const products = primaryProductsForStandard(standardCode);
   const versionOptions = useMemo(() => {
     const versions = [
       LEGACY_STANDARD_VERSION[standardCode],
@@ -275,26 +273,6 @@ export function CourseBuilderScreen() {
             current groups).
           </p>
         )}
-
-        <div className={styles.stack}>
-          {products.map((p) => (
-            <div key={p.id} className={styles.panel}>
-              <ApprenticeStatusChip
-                tone={
-                  p.deliverySpine === "blocks"
-                    ? "blue"
-                    : p.standardVersion ===
-                        CURRENT_STANDARD_VERSION[standardCode]
-                      ? "green"
-                      : "amber"
-                }
-              >
-                {p.label}
-              </ApprenticeStatusChip>
-              <p className={styles.muted}>{p.summary}</p>
-            </div>
-          ))}
-        </div>
 
         {spine === "groups" && groupsPack ? (
           <section className={styles.stack}>
