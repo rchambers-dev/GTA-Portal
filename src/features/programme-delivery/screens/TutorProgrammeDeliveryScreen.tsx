@@ -98,7 +98,7 @@ export function TutorProgrammeDeliveryScreen() {
                   <article key={task.id} className={styles.queueCard}>
                     <div>
                       <p className={styles.blockMeta}>
-                        Alex Morgan · Block {task.blockId} · {task.evidenceRef}
+                        Apprentice · Block {task.blockId} · {task.evidenceRef}
                       </p>
                       <h3 className={styles.blockTitle}>{task.title}</h3>
                       <p className={styles.blockMeta}>

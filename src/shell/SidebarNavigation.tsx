@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useDemoSession } from "./demo/DemoSessionProvider";
+import { usePortalSession } from "./demo/PortalSessionProvider";
 import { NavIcon } from "./nav-icons";
 import { resolveNavigation } from "./workspaces/resolve-navigation";
 import { workspaceLabel } from "./workspaces/workspace-stubs";
@@ -44,13 +44,12 @@ function PremiumCogIcon() {
 }
 
 /**
- * TEMPORARY standalone navigation.
- * Replace with portal navigation on integration.
+ * Portal navigation for the signed-in workspace.
  * Collapsed icon rail by default; expands fully on hover / keyboard focus.
  */
 export function SidebarNavigation() {
   const pathname = usePathname();
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const navigation = resolveNavigation(session);
   const workspace = session.account.workspace;
 
@@ -118,8 +117,7 @@ export function SidebarNavigation() {
         </nav>
 
         <div className={styles.footer}>
-          <p className={styles.shellNote}>Standalone shell · design preview</p>
-          <p className={styles.version}>v0.1.0-shell</p>
+          <p className={styles.version}>GTA Portal</p>
         </div>
       </aside>
     </div>

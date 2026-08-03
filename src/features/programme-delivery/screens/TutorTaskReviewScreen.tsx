@@ -6,7 +6,7 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import { taskById } from "../domain/autocare-tasks";
 import {
   getTaskServerSnapshot,
@@ -22,11 +22,11 @@ import styles from "./programme-delivery.module.css";
 type Props = { taskId: string };
 
 /**
- * Tutor reviews a submission — mentor step can be simulated; trainer verifies.
+ * Tutor reviews a submission — mentor then trainer verify.
  * Task 5 reflection: trainer “Progress verified” unlocks the next block.
  */
 export function TutorTaskReviewScreen({ taskId }: Props) {
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const task = taskById(taskId);
   useSyncExternalStore(
     subscribeTaskStore,
@@ -55,7 +55,7 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
       status: "awaiting_trainer",
       fields: { ...sub.fields, mentorSign: "signed" },
     });
-    setMessage("Mentor sign-off recorded (demo). Waiting for trainer verify.");
+    setMessage("Mentor sign-off recorded. Waiting for trainer verify.");
   }
 
   function verifyAsTrainer() {
@@ -99,7 +99,7 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
     <ApprenticePageShell
       eyebrow="Tutor"
       title={task.title}
-      description={`${task.evidenceRef} · Block ${task.blockId} · Alex Morgan`}
+      description={`${task.evidenceRef} · Block ${task.blockId}`}
     >
       <div className={styles.root}>
         <Link href="/staff/programme-delivery" className={styles.back}>
@@ -156,13 +156,12 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
         <section className={styles.sectionCard}>
           <h2 className={styles.sectionTitle}>Sign-off actions</h2>
           <p className={styles.fieldHint}>
-            Reflection gate: apprentice → mentor → trainer verifies. Demo
-            buttons simulate mentor (employer portal) and trainer verify.
+            Reflection gate: apprentice → mentor → trainer verifies.
           </p>
           <div className={styles.actions}>
             {sub.status === "awaiting_mentor" ? (
               <button type="button" className={styles.secondaryBtn} onClick={signAsMentor}>
-                Simulate mentor sign-off
+                Record mentor sign-off
               </button>
             ) : null}
             {sub.status === "awaiting_trainer" ? (

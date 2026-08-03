@@ -72,7 +72,7 @@ export function TutorOtjApprovalsScreen() {
         <p className={styles.lead}>
           Step 3 of 3: you are the last person who can agree the entry is correct.
           Only employer-agreed entries appear here — you cannot confirm before the
-          employer. (Demo stub — actions stay on this page.)
+          employer.
         </p>
       </header>
 

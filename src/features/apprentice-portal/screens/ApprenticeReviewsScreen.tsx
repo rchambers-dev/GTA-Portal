@@ -1,13 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
 import {
-  ALEX_PROFILE,
   ALEX_REVIEW_DETAILS,
   type ApprenticeReviewDetail,
 } from "../domain/mock-apprentice";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./apprentice-pages.module.css";
 
 function formatDate(iso: string): string {
@@ -47,19 +49,21 @@ function ctaLabel(review: ApprenticeReviewDetail): string {
 }
 
 export function ApprenticeReviewsScreen() {
-  const upcoming = ALEX_REVIEW_DETAILS.filter((r) => r.status === "upcoming");
-  const past = ALEX_REVIEW_DETAILS.filter((r) => r.status !== "upcoming");
+  const { profile, live } = useApprenticePortalProfile();
+  const reviews = live ? [] : ALEX_REVIEW_DETAILS;
+  const upcoming = reviews.filter((r) => r.status === "upcoming");
+  const past = reviews.filter((r) => r.status !== "upcoming");
 
   return (
     <ApprenticePageShell
       title="Reviews"
-      description={`Progress reviews with ${ALEX_PROFILE.mentorName}. Open a review to read what was said, the outcome, and which statistics were used.`}
+      description={`Progress reviews with ${profile.mentorName}. Open a review to read what was said, the outcome, and which statistics were used.`}
     >
       <div className={styles.stack}>
         <p className={styles.note}>
-          Apprentices can open completed reviews — not only staff. Figures link
-          through to Progress, Attendance, OTJ, and My Learning as those areas
-          grow.
+          {live
+            ? "Reviews from your mentor will appear here once they are recorded against your apprenticeship."
+            : "Apprentices can open completed reviews — not only staff. Figures link through to Progress, Attendance, OTJ, and My Learning as those areas grow."}
         </p>
 
         {upcoming.length > 0 ? (

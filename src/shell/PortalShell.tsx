@@ -13,7 +13,7 @@ import {
   CHAT_SELF_EMPLOYER,
   CHAT_SELF_APPRENTICE,
 } from "@/features/apprentice-portal/domain/chat/store";
-import { DemoSessionProvider } from "./demo/DemoSessionProvider";
+import { PortalSessionProvider } from "./demo/PortalSessionProvider";
 import { PortalMain } from "./PortalMain";
 import { SidebarNavigation } from "./SidebarNavigation";
 import styles from "./PortalShell.module.css";
@@ -25,9 +25,7 @@ function isMessagesRoute(pathname: string | null): boolean {
 }
 
 /**
- * TEMPORARY standalone chrome.
- * On portal integration, discard this shell and mount feature screens
- * inside the main portal layout.
+ * Portal chrome for the signed-in account workspace.
  */
 export function PortalShell({
   session,
@@ -63,7 +61,7 @@ export function PortalShell({
   );
 
   return (
-    <DemoSessionProvider initialSession={session}>
+    <PortalSessionProvider initialSession={session}>
       {withSharedChat ? (
         <ApprenticeChatProvider selfContactId={chatSelfId}>
           <PortalShareProvider>{body}</PortalShareProvider>
@@ -71,6 +69,6 @@ export function PortalShell({
       ) : (
         body
       )}
-    </DemoSessionProvider>
+    </PortalSessionProvider>
   );
 }

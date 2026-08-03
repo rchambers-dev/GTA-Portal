@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { DevAccountSwitcher } from "./demo/DevAccountSwitcher";
-import { useDemoSession } from "./demo/DemoSessionProvider";
+import { usePortalSession } from "./demo/PortalSessionProvider";
 import { NavIcon } from "./nav-icons";
 import {
   categoryLabel,
@@ -14,11 +14,10 @@ import { resolveNavigation } from "./workspaces/resolve-navigation";
 import styles from "./GlobalHeader.module.css";
 
 /**
- * TEMPORARY standalone header.
- * Replace with portal header on integration.
+ * Portal header for the signed-in workspace.
  */
 export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const router = useRouter();
   const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);

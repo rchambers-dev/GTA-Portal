@@ -71,10 +71,7 @@ export function PlrReportPanel() {
           <p className={styles.otjHealthHint}>
             Auto-retrieves via LRS Get Apprentice Learning Events when ULN, given
             name and family name are ready from AF1.1. Adapter mode:{" "}
-            <strong>{port.mode}</strong>
-            {port.mode === "mock"
-              ? " (demo data until GTA LRB SOAP credentials are live)."
-              : "."}
+            <strong>{port.mode}</strong>.
           </p>
         </div>
         <div className={styles.otjHealthSide}>
@@ -141,8 +138,7 @@ export function PlrReportPanel() {
           {state.status === "missing_identity" ? (
             <p className={styles.glanceHint}>
               Add first name, surname and a 10-digit ULN on the enrolment form
-              (or use demo apprentice Alex Morgan so Find ULN can resolve
-              automatically).
+              so Find ULN can resolve automatically.
             </p>
           ) : null}
         </div>

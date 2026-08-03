@@ -26,6 +26,8 @@ export type PortalAccount = {
   departmentScope?: string[];
   programmeScope?: string[];
   moduleScope?: string[];
+  /** Linked apprentices.id when this login is an apprentice portal account. */
+  linkedApprenticeId?: string | null;
 };
 
 export type DemoAccount = PortalAccount;

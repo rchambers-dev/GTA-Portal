@@ -9,6 +9,7 @@ import apprenticeStyles from "@/features/apprentice-portal/screens/apprentice-pa
 import { awaitingEnrolment } from "../domain/intake-pack";
 import { resetAdminStore } from "../domain/store";
 import { useAdminStore } from "../hooks/useAdminStore";
+import { isDemoModeEnabled } from "@/lib/env/portal";
 import styles from "./admin-pages.module.css";
 
 function formatDate(value: string): string {
@@ -24,6 +25,7 @@ function formatDate(value: string): string {
 
 export function AdministrationDashboardScreen() {
   const store = useAdminStore();
+  const showLocalSeedReset = isDemoModeEnabled();
 
   const enrolledApprenticeIds = store.enrolments.map((e) => e.apprenticeId);
   const intakeQueue = store.apprentices.filter(
@@ -66,21 +68,23 @@ export function AdministrationDashboardScreen() {
           >
             Enrolments
           </Link>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
-            onClick={() => {
-              if (
-                window.confirm(
-                  "Reset administration demo data to the seeded records?",
-                )
-              ) {
-                resetAdminStore();
-              }
-            }}
-          >
-            Reset demo data
-          </button>
+          {showLocalSeedReset ? (
+            <button
+              type="button"
+              className={styles.secondaryBtn}
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Reset local administration records to the starter seed?",
+                  )
+                ) {
+                  resetAdminStore();
+                }
+              }}
+            >
+              Reset local seed data
+            </button>
+          ) : null}
         </div>
       }
     >

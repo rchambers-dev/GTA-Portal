@@ -8,6 +8,10 @@ import {
   type ChatThread,
 } from "./types";
 
+function isLivePortalClient(): boolean {
+  return process.env.NEXT_PUBLIC_DEMO_MODE !== "true";
+}
+
 const APPRENTICE_ID = ALEX_PROFILE.apprenticeId;
 
 /** Signed-in chat identity — shared Messages page switches this per workspace. */
@@ -96,6 +100,31 @@ export const CHAT_CONTACTS: ChatContact[] = [
   },
 ];
 
+/** Replace demo contact labels with the signed-in apprentice's live people. */
+export function syncChatContactsFromProfile(profile: {
+  displayName: string;
+  initials: string;
+  mentorName: string;
+  tutorName: string;
+  employerContact: string;
+  employerName: string;
+}): void {
+  const apprentice = CHAT_CONTACTS.find((c) => c.contactId === CHAT_SELF_APPRENTICE);
+  if (apprentice) {
+    apprentice.name = profile.displayName;
+    apprentice.initials = profile.initials;
+  }
+  const mentor = CHAT_CONTACTS.find((c) => c.contactId === ALEX_PROFILE.mentorId);
+  if (mentor) mentor.name = profile.mentorName;
+  const tutor = CHAT_CONTACTS.find((c) => c.contactId === ALEX_PROFILE.tutorId);
+  if (tutor) tutor.name = profile.tutorName;
+  const employer = CHAT_CONTACTS.find((c) => c.contactId === CHAT_SELF_EMPLOYER);
+  if (employer) {
+    employer.name = profile.employerContact;
+    employer.organisation = profile.employerName;
+  }
+}
+
 function msg(
   threadId: string,
   id: string,
@@ -107,7 +136,7 @@ function msg(
   return { messageId: id, threadId, senderId, senderName, body, sentAt };
 }
 
-let THREADS: ChatThread[] = [
+const DEMO_THREADS: ChatThread[] = [
   {
     threadId: "thread-mentor",
     apprenticeId: APPRENTICE_ID,
@@ -292,6 +321,8 @@ let THREADS: ChatThread[] = [
     ],
   },
 ];
+
+let THREADS: ChatThread[] = isLivePortalClient() ? [] : DEMO_THREADS;
 
 export function contactsForApprentice(): ChatContact[] {
   return contactsForViewer(CHAT_SELF_APPRENTICE);

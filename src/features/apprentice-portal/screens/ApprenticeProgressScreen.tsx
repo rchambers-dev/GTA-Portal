@@ -6,7 +6,7 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
-import { ALEX_PROFILE } from "../domain/mock-apprentice";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
   AUTOCARE_BLOCKS,
   AUTOCARE_STANDARD,
@@ -19,15 +19,14 @@ import {
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
-  isBlockReflectionVerified,
   statusLabel,
   statusTone,
   subscribeTaskStore,
-  DEMO_APPRENTICE_ID,
 } from "@/features/programme-delivery/domain/task-submission-store";
 import {
   apprenticeBlockRag,
   apprenticeBlockRagLabel,
+  isApprenticeBlockUnlocked,
   summariseBlockCompletion,
 } from "@/features/programme-delivery/domain/progression-status";
 import styles from "./apprentice-pages.module.css";
@@ -36,7 +35,8 @@ import styles from "./apprentice-pages.module.css";
  * Progress against Autocare blocks (weeks) — not the old module catalogue.
  */
 export function ApprenticeProgressScreen() {
-  const profile = ALEX_PROFILE;
+  const { profile } = useApprenticePortalProfile();
+  const apprenticeId = profile.apprenticeId || "live-apprentice";
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
@@ -52,7 +52,7 @@ export function ApprenticeProgressScreen() {
   let inFlight = 0;
   let notStarted = 0;
   for (const task of AUTOCARE_PRACTICAL_TASKS) {
-    const status = getTaskSubmission(task.id).status;
+    const status = getTaskSubmission(task.id, apprenticeId).status;
     if (status === "verified") verified += 1;
     else if (status === "not_started") notStarted += 1;
     else inFlight += 1;
@@ -159,7 +159,7 @@ export function ApprenticeProgressScreen() {
             </p>
             <ul className={styles.list}>
               {liveTasks.map((task) => {
-                const sub = getTaskSubmission(task.id);
+                const sub = getTaskSubmission(task.id, apprenticeId);
                 return (
                   <li key={task.id}>
                     <Link
@@ -195,20 +195,20 @@ export function ApprenticeProgressScreen() {
           </h2>
           <p className={styles.meta}>
             All 12 blocks (60 tasks). Green = complete, amber = in progress, red
-            = needs completing. Locked blocks stay grey until the previous Task 5
-            reflection is verified.
+            = needs completing. Blocks already reached stay open together for
+            catch-up — being behind does not re-lock later blocks.
           </p>
           <ul className={styles.list}>
             {taskedBlocks.map((block) => {
               const tasks = tasksForBlock(block.id);
-              const priorOk =
-                block.id === 1 ||
-                isBlockReflectionVerified(
-                  block.id - 1,
-                  tasksForBlock(block.id - 1),
-                );
-              const locked = !priorOk;
-              const summary = summariseBlockCompletion(tasks, DEMO_APPRENTICE_ID);
+              const locked = !isApprenticeBlockUnlocked({
+                blockId: block.id,
+                weekStart: block.weekStart,
+                programmeWeek: profile.programmeWeek,
+                priorBlockTasks: tasksForBlock(block.id - 1),
+                apprenticeId,
+              });
+              const summary = summariseBlockCompletion(tasks, apprenticeId);
               const rag = apprenticeBlockRag(summary, locked);
               const current =
                 block.weekStart != null &&

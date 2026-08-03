@@ -6,9 +6,9 @@ import {
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
 import { Shareable } from "../components/portal-share/Shareable";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
   ALEX_OTJ_ENTRIES,
-  ALEX_PROFILE,
   OTJ_CATCH_UP_HOURS_HINT,
   OTJ_TRAINING_TYPES,
   buildOtjDashboardStats,
@@ -158,9 +158,13 @@ function toDateInputValue(iso?: string): string {
 
 function OtjLogEntry({
   entry,
+  employerContact,
+  tutorName,
   initialOpen = false,
 }: {
   entry: ApprenticeOtjEntry;
+  employerContact: string;
+  tutorName: string;
   initialOpen?: boolean;
 }) {
   const [open, setOpen] = useState(initialOpen);
@@ -258,7 +262,7 @@ function OtjLogEntry({
                   ? `${entry.employerName} agreed · ${formatModuleDate(entry.employerDecidedAt)}`
                   : entry.employerStatus === "returned"
                     ? "Returned — needs your update"
-                    : `Waiting for ${ALEX_PROFILE.employerContact}`}
+                    : `Waiting for ${employerContact}`}
               </p>
               {entry.employerNote ? (
                 <p className={styles.meta}>{entry.employerNote}</p>
@@ -274,7 +278,7 @@ function OtjLogEntry({
                     : entry.tutorStatus === "not_ready" ||
                         entry.employerStatus !== "agreed"
                       ? "Locked — teacher can only agree after the employer"
-                      : `Waiting for ${ALEX_PROFILE.tutorName}`}
+                      : `Waiting for ${tutorName}`}
               </p>
               {entry.tutorNote ? (
                 <p className={styles.meta}>{entry.tutorNote}</p>
@@ -312,9 +316,12 @@ function readOtjQueryId(): string | null {
 }
 
 export function ApprenticeOtjHoursScreen() {
+  const { profile, live } = useApprenticePortalProfile();
   const initialOtjId = readOtjQueryId();
   const [focusOtjId] = useState<string | null>(initialOtjId);
-  const [otjEntries, setOtjEntries] = useState(ALEX_OTJ_ENTRIES);
+  const [otjEntries, setOtjEntries] = useState<ApprenticeOtjEntry[]>(() =>
+    live ? [] : ALEX_OTJ_ENTRIES,
+  );
   const [activityDate, setActivityDate] = useState(toDateInputValue());
   const [activityDateEnd, setActivityDateEnd] = useState("");
   const [isCatchUp, setIsCatchUp] = useState(false);
@@ -343,8 +350,8 @@ export function ApprenticeOtjHoursScreen() {
   }, [focusOtjId]);
 
   const dashboard = useMemo(
-    () => buildOtjDashboardStats(otjEntries, ALEX_PROFILE.programmeWeek),
-    [otjEntries],
+    () => buildOtjDashboardStats(otjEntries, profile.programmeWeek),
+    [otjEntries, profile.programmeWeek],
   );
 
   const loggingHealth = useMemo(
@@ -459,8 +466,8 @@ export function ApprenticeOtjHoursScreen() {
     setShowLog(true);
     setFormNote(
       treatAsCatchUp
-        ? `Submitted catch-up entry ${next.entryNumber} (${formatOtjDuration(next.durationMinutes)} · ${formatOtjActivityPeriod(next)}) — next: ${ALEX_PROFILE.employerContact} must agree, then ${ALEX_PROFILE.tutorName} gives final teacher agree.`
-        : `Submitted entry ${next.entryNumber} (${formatOtjDuration(next.durationMinutes)}) — next: ${ALEX_PROFILE.employerContact} must agree, then ${ALEX_PROFILE.tutorName} gives final teacher agree.`,
+        ? `Submitted catch-up entry ${next.entryNumber} (${formatOtjDuration(next.durationMinutes)} · ${formatOtjActivityPeriod(next)}) — next: ${profile.employerContact} must agree, then ${profile.tutorName} gives final teacher agree.`
+        : `Submitted entry ${next.entryNumber} (${formatOtjDuration(next.durationMinutes)}) — next: ${profile.employerContact} must agree, then ${profile.tutorName} gives final teacher agree.`,
     );
   }
 
@@ -532,7 +539,7 @@ export function ApprenticeOtjHoursScreen() {
               </div>
               <p className={styles.meta}>
                 Expected ~{dashboard.expectedHours}h by week{" "}
-                {ALEX_PROFILE.programmeWeek}
+                {profile.programmeWeek}
               </p>
             </div>
           </div>
@@ -569,8 +576,8 @@ export function ApprenticeOtjHoursScreen() {
               <h3 className={styles.sectionTitle}>Log new OTJ entry</h3>
               <p className={styles.meta}>
                 Complete each field as on the training log. Order is fixed: you
-                submit → {ALEX_PROFILE.employerContact} agrees it is true →{" "}
-                {ALEX_PROFILE.tutorName} gives the final teacher agree.
+                submit → {profile.employerContact} agrees it is true →{" "}
+                {profile.tutorName} gives the final teacher agree.
               </p>
 
               <label className={styles.otjConfirm}>
@@ -831,6 +838,8 @@ export function ApprenticeOtjHoursScreen() {
                       <OtjLogEntry
                         key={entry.id}
                         entry={entry}
+                        employerContact={profile.employerContact}
+                        tutorName={profile.tutorName}
                         initialOpen={focusOtjId === entry.id}
                       />
                     ))}

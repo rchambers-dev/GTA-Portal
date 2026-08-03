@@ -21,6 +21,10 @@ import { getAlsLlddDocumentsStatus } from "./als-lldd-form";
 import { getPlrDocumentsStatus } from "./plr-store";
 import { getRpleDocumentsStatus } from "./rple-form";
 
+function isLivePortalClient(): boolean {
+  return process.env.NEXT_PUBLIC_DEMO_MODE !== "true";
+}
+
 export type DocumentsAudience = Adm14PortalRole;
 
 export type DocumentsPortalStatus =
@@ -199,7 +203,8 @@ function resolveStatus(
     if (als === "not_applicable") return "not_applicable";
     return "not_started";
   }
-  if (ALEX_DEMO_STATUS[item.reference]) {
+  // Demo overlay is Alex-only; live mode uses wired form stores or defaults.
+  if (!isLivePortalClient() && ALEX_DEMO_STATUS[item.reference]) {
     return ALEX_DEMO_STATUS[item.reference];
   }
   if (item.endOfProgramme) return "future";

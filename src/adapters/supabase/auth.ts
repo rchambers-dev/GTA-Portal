@@ -17,6 +17,7 @@ type ProfileRow = {
   department_scope: string[] | null;
   programme_scope: string[] | null;
   module_scope: string[] | null;
+  linked_apprentice_id: string | null;
 };
 
 function asWorkspaceId(value: string | null | undefined): WorkspaceId {
@@ -67,6 +68,7 @@ function toPortalAccount(user: User, profile: ProfileRow): PortalAccount {
     departmentScope: profile.department_scope ?? undefined,
     programmeScope: profile.programme_scope ?? undefined,
     moduleScope: profile.module_scope ?? undefined,
+    linkedApprenticeId: profile.linked_apprentice_id,
   };
 }
 
@@ -93,7 +95,7 @@ export async function getSupabaseEffectiveSession(): Promise<EffectiveSession | 
   const { data: profile, error } = await supabase
     .from("profiles")
     .select(
-      "id, email, username, display_name, base_role, workspace, permissions, responsibilities, department, department_scope, programme_scope, module_scope",
+      "id, email, username, display_name, base_role, workspace, permissions, responsibilities, department, department_scope, programme_scope, module_scope, linked_apprentice_id",
     )
     .eq("id", user.id)
     .maybeSingle<ProfileRow>();

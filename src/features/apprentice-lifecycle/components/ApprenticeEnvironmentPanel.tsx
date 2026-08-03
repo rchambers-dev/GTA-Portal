@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Button } from "@/components/ui/Button";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import { workspaceForRole } from "@/features/administration/domain/account-access";
 import {
   createUser,
@@ -42,7 +42,7 @@ export function ApprenticeEnvironmentPanel({
   apprenticeEmail,
 }: Props) {
   const store = useAdminStore();
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const [revealedPassword, setRevealedPassword] = useState<string | null>(null);
   const [justEnabledPassword, setJustEnabledPassword] = useState<string | null>(
     null,

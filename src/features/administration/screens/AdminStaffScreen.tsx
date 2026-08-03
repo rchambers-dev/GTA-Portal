@@ -8,7 +8,7 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import {
   assignableRoles,
   canManagePortalAccount,
@@ -103,7 +103,7 @@ type Props = {
 /** Temp-portal staff directory: add people, create logins, set role, enable. */
 export function AdminStaffScreen({ eyebrow = "Administration" }: Props) {
   const store = useAdminStore();
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const actorRole = sessionPortalRole(session?.account);
   const actorName = session?.account?.name?.trim() || "Administrator";
   const actorEmail = session?.account?.email?.trim().toLowerCase() || "";

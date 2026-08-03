@@ -10,7 +10,6 @@ import { Shareable } from "../components/portal-share/Shareable";
 import {
   ALEX_ATTENDANCE_BREAKDOWN,
   ALEX_ATTENDANCE_DAYS,
-  ALEX_PROFILE,
   summariseAlexAttendance,
   summariseMissedLearning,
   type ApprenticeAttendanceBreakdownItem,
@@ -18,6 +17,7 @@ import {
   type ApprenticeAttendanceStatus,
   type ApprenticeMissedLearningItem,
 } from "../domain/mock-apprentice";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
   getEmployerAttendanceBundle,
   getEmployerCaseload,
@@ -101,14 +101,22 @@ function buildConicGradient(
     : "var(--color-grey-100)";
 }
 
-function apprenticeAttendanceView(): AttendanceView {
+function apprenticeAttendanceView(
+  profile: {
+    apprenticeId: string;
+    displayName: string;
+    collegeDays: string;
+    attendancePercent: number;
+  },
+  live: boolean,
+): AttendanceView {
   return {
-    apprenticeId: ALEX_PROFILE.apprenticeId,
-    displayName: ALEX_PROFILE.displayName,
-    collegeDays: ALEX_PROFILE.collegeDays,
-    attendancePercent: ALEX_PROFILE.attendancePercent,
-    days: ALEX_ATTENDANCE_DAYS,
-    breakdown: ALEX_ATTENDANCE_BREAKDOWN,
+    apprenticeId: profile.apprenticeId,
+    displayName: profile.displayName,
+    collegeDays: profile.collegeDays,
+    attendancePercent: profile.attendancePercent,
+    days: live ? [] : ALEX_ATTENDANCE_DAYS,
+    breakdown: live ? [] : ALEX_ATTENDANCE_BREAKDOWN,
   };
 }
 
@@ -117,33 +125,34 @@ export function ApprenticeAttendanceScreen({
 }: {
   audience?: AttendanceAudience;
 } = {}) {
+  const { profile, live } = useApprenticePortalProfile();
   const isEmployer = audience === "employer";
   const caseload = useMemo(
     () => (isEmployer ? getEmployerCaseload() : []),
     [isEmployer],
   );
   const [selectedApprenticeId, setSelectedApprenticeId] = useState(
-    () => caseload[0]?.apprenticeId ?? ALEX_PROFILE.apprenticeId,
+    () => caseload[0]?.apprenticeId ?? profile.apprenticeId,
   );
 
   if (
     isEmployer &&
     !caseload.some((a) => a.apprenticeId === selectedApprenticeId)
   ) {
-    const fallbackId = caseload[0]?.apprenticeId ?? ALEX_PROFILE.apprenticeId;
+    const fallbackId = caseload[0]?.apprenticeId ?? profile.apprenticeId;
     if (selectedApprenticeId !== fallbackId) {
       setSelectedApprenticeId(fallbackId);
     }
   }
 
   const view = useMemo((): AttendanceView => {
-    if (!isEmployer) return apprenticeAttendanceView();
+    if (!isEmployer) return apprenticeAttendanceView(profile, live);
     return (
       getEmployerAttendanceBundle(selectedApprenticeId) ??
       getEmployerAttendanceBundle(caseload[0]?.apprenticeId ?? "") ??
-      apprenticeAttendanceView()
+      apprenticeAttendanceView(profile, live)
     );
-  }, [caseload, isEmployer, selectedApprenticeId]);
+  }, [caseload, isEmployer, live, profile, selectedApprenticeId]);
 
   const attendanceHref = isEmployer
     ? "/employer/attendance"

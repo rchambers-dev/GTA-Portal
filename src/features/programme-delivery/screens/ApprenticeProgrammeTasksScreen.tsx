@@ -6,7 +6,7 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { ALEX_PROFILE } from "@/features/apprentice-portal/domain/mock-apprentice";
+import { useApprenticePortalProfile } from "@/features/apprentice-portal/hooks/useApprenticePortalProfile";
 import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "../domain/autocare-blocks";
 import { tasksForBlock } from "../domain/autocare-tasks";
 import { formatCohortBlockWindow } from "../domain/rpl-funding-calc";
@@ -15,15 +15,14 @@ import {
   apprenticeBlockRagLabel,
   apprenticeTaskRag,
   apprenticeTaskRagLabel,
+  isApprenticeBlockUnlocked,
   summariseBlockCompletion,
 } from "../domain/progression-status";
 import { taskKindLabel } from "../domain/task-schema";
 import {
-  DEMO_APPRENTICE_ID,
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
-  isBlockReflectionVerified,
   subscribeTaskStore,
 } from "../domain/task-submission-store";
 import styles from "./programme-delivery.module.css";
@@ -34,8 +33,11 @@ import styles from "./programme-delivery.module.css";
  *
  * Dates: programme weeks + cohort calendar from cohort start.
  * RAG: green complete · amber in progress · red needs completing (no Blue).
+ * Past/current week blocks unlock for catch-up; future blocks stay locked.
  */
 export function ApprenticeProgrammeTasksScreen() {
+  const { profile, loading, error } = useApprenticePortalProfile();
+  const apprenticeId = profile.apprenticeId || "live-apprentice";
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
@@ -47,26 +49,44 @@ export function ApprenticeProgrammeTasksScreen() {
     [],
   );
 
+  if (loading) {
+    return (
+      <ApprenticePageShell
+        title="College tasks"
+        description="Loading your programme…"
+      >
+        <p className={styles.purposeBody}>Loading college tasks…</p>
+      </ApprenticePageShell>
+    );
+  }
+
   return (
     <ApprenticePageShell
       title="College tasks"
       description="Practical tasks and block reflections for your Autocare programme. Complete these in the portal where you can — or upload the PDFs if you could not get on that college day."
     >
       <div className={styles.root}>
+        {error ? (
+          <p className={styles.purposeBody} role="alert">
+            {error}
+          </p>
+        ) : null}
         <div className={styles.purpose}>
           <p className={styles.purposeLead}>
             <strong>
               {AUTOCARE_STANDARD.label} · {AUTOCARE_STANDARD.code}{" "}
               {AUTOCARE_STANDARD.version}
             </strong>
+            {" · Week "}
+            {profile.programmeWeek}
             {" · "}
-            {ALEX_PROFILE.collegeDays}
+            {profile.collegeDays}
           </p>
           <p className={styles.purposeBody}>
             Preferred: fill each task in the portal. Fallback: upload every PDF
-            required for that college day (each maps to its own task). Block
-            reflection must be verified by your trainer before the next block
-            unlocks.
+            required for that college day (each maps to its own task). Blocks you
+            have already reached stay open together so catch-up can stack — being
+            behind on an earlier block does not lock later ones.
           </p>
           <ul className={styles.ragLegend} aria-label="Status colours">
             <li>
@@ -85,18 +105,18 @@ export function ApprenticeProgrammeTasksScreen() {
           {taskedBlocks.map((block) => {
             const tasks = tasksForBlock(block.id);
             const cohortWindow = formatCohortBlockWindow(
-              ALEX_PROFILE.programmeStartDate,
+              profile.programmeStartDate,
               block.weekStart,
               block.weekEnd,
             );
-            const priorOk =
-              block.id === 1 ||
-              isBlockReflectionVerified(
-                block.id - 1,
-                tasksForBlock(block.id - 1),
-              );
-            const locked = !priorOk;
-            const summary = summariseBlockCompletion(tasks, DEMO_APPRENTICE_ID);
+            const locked = !isApprenticeBlockUnlocked({
+              blockId: block.id,
+              weekStart: block.weekStart,
+              programmeWeek: profile.programmeWeek,
+              priorBlockTasks: tasksForBlock(block.id - 1),
+              apprenticeId,
+            });
+            const summary = summariseBlockCompletion(tasks, apprenticeId);
             const blockRag = apprenticeBlockRag(summary, locked);
 
             return (
@@ -129,7 +149,7 @@ export function ApprenticeProgrammeTasksScreen() {
                 </div>
                 <ul className={styles.taskList}>
                   {tasks.map((task) => {
-                    const sub = getTaskSubmission(task.id);
+                    const sub = getTaskSubmission(task.id, apprenticeId);
                     const taskRag = apprenticeTaskRag(sub.status, locked);
                     const href = locked
                       ? "#"

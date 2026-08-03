@@ -27,7 +27,7 @@ import {
 } from "../domain/als-lldd-form";
 import { getPlrSnapshot, subscribePlrStore } from "../domain/plr-store";
 import { getRpleSnapshot, subscribeRpleStore } from "../domain/rple-form";
-import { ALEX_PROFILE } from "../domain/mock-apprentice";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
   ADM14_FORM_CODE,
   ADM14_FORM_TITLE,
@@ -276,6 +276,7 @@ export function DocumentsItemScreen({
   sectionKey: string;
   reference: string;
 }) {
+  const { profile } = useApprenticePortalProfile();
   useDocumentsFormsRefresh();
   const meta = audienceMeta(audience);
   const item = resolveDocumentsItem(audience, sectionKey, reference);
@@ -357,10 +358,10 @@ export function DocumentsItemScreen({
         ) : item.reference === "4.1" ? (
           <TrainingPlanAgreementPanel
             audience={audience === "employer" ? "employer" : "apprentice"}
-            apprenticeName={ALEX_PROFILE.displayName}
-            employerName={ALEX_PROFILE.employerName}
-            employerContact={ALEX_PROFILE.employerContact}
-            mentorName={ALEX_PROFILE.mentorName}
+            apprenticeName={profile.displayName}
+            employerName={profile.employerName}
+            employerContact={profile.employerContact}
+            mentorName={profile.mentorName}
           />
         ) : (
           <section className={styles.section}>

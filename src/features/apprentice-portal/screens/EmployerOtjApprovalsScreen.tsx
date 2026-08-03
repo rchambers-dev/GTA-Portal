@@ -68,7 +68,7 @@ export function EmployerOtjApprovalsScreen() {
         <p className={styles.lead}>
           Step 2 of 3: confirm {ALEX_PROFILE.displayName}&apos;s entry is true.
           After you agree, their teacher can give the final agree. Teachers cannot
-          confirm before you. (Demo stub — actions stay on this page.)
+          confirm before you.
         </p>
       </header>
 

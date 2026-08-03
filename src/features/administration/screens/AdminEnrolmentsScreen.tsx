@@ -6,7 +6,7 @@ import {
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { calculateProgrammeWeek } from "@/features/apprentice-lifecycle/domain/programme-week";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import {
   createEnrolment,
   findIntakeCohort,
@@ -310,7 +310,7 @@ function EnrolmentInlineField({
 
 export function AdminEnrolmentsScreen() {
   const store = useAdminStore();
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const [query, setQuery] = useState("");
   const [searchMode, setSearchMode] = useState<EnrolmentSearchMode>("name");
   const [expandedId, setExpandedId] = useState<string | null>(null);

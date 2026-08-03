@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ApprenticePageShell,
@@ -5,11 +7,11 @@ import {
 } from "../components/ApprenticePageShell";
 import { StepBackButton } from "../components/StepBackButton";
 import {
-  ALEX_PROFILE,
   getAlexReview,
   type ApprenticeReviewAction,
   type ApprenticeReviewDetail,
 } from "../domain/mock-apprentice";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./apprentice-pages.module.css";
 
 function formatDate(iso: string): string {
@@ -74,7 +76,8 @@ function NoteBlock({ title, body }: { title: string; body: string }) {
 }
 
 export function ApprenticeReviewDetailScreen({ reviewId }: { reviewId: string }) {
-  const review = getAlexReview(reviewId);
+  const { profile, live } = useApprenticePortalProfile();
+  const review = live ? null : getAlexReview(reviewId);
 
   if (!review) {
     return (
@@ -232,7 +235,7 @@ export function ApprenticeReviewDetailScreen({ reviewId }: { reviewId: string })
         </section>
 
         <p className={styles.meta}>
-          Signed-in as {ALEX_PROFILE.displayName}. Review records are visible to
+          Signed-in as {profile.displayName}. Review records are visible to
           you so you can see what was agreed — not only staff.
         </p>
       </div>

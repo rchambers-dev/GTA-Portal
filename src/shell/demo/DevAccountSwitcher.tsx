@@ -4,18 +4,18 @@ import { useTransition } from "react";
 import type { DemoAccount } from "@/lib/portal/types";
 import { formatRoleLabel } from "@/adapters/fictional/demo-accounts";
 import { logoutAction } from "@/app/logout/actions";
-import { useDemoSession } from "./DemoSessionProvider";
+import { usePortalSession } from "./PortalSessionProvider";
 import styles from "./DevAccountSwitcher.module.css";
 
 /**
- * Signed-in profile chip — demo account switcher removed.
+ * Signed-in profile chip for the active portal environment.
  */
 export function DevAccountSwitcher({
   currentAccount,
 }: {
   currentAccount: DemoAccount;
 }) {
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const [isPending, startTransition] = useTransition();
 
   return (

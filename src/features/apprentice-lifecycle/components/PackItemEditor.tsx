@@ -12,7 +12,7 @@ import {
 import { getPackItem, upsertPackItem } from "../domain/pack-store";
 import { evidenceStatusLabel, evidenceStatusTone } from "../lib/status";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import styles from "./PackItemEditor.module.css";
 
 type Props = {
@@ -54,7 +54,7 @@ function recordFromRow(
 }
 
 export function PackItemEditor({ apprenticeId, row, onClose, onSaved }: Props) {
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const editorName = session.account.name;
   const schema = schemaForReference(row.reference);
   const endOfProgramme = row.status === "future_requirement" ||

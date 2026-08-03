@@ -51,7 +51,7 @@ export function EmployerSupportScreen() {
         <h2 className={styles.sectionTitle}>Your open cases (employer view)</h2>
         <div className={styles.caseRow}>
           <div>
-            <p className={styles.caseTitle}>Progress clarification — Alex Morgan</p>
+            <p className={styles.caseTitle}>Progress clarification</p>
             <p className={styles.caseMeta}>Submitted 12 Jul 2026 · Awaiting GTA response</p>
           </div>
           <span className={styles.status}>With GTA</span>

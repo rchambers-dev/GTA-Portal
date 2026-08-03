@@ -4,6 +4,7 @@ import {
   calculateMilestoneStatus,
   apprenticeBlockRag,
   apprenticeTaskRag,
+  isApprenticeBlockUnlocked,
   rollUpProgressionBrag,
 } from "./progression-status";
 import { AUTOCARE_GATEWAYS, gatewayMilestoneDueIso } from "./gateways";
@@ -15,6 +16,57 @@ describe("apprentice RAG", () => {
     expect(apprenticeTaskRag("verified", false)).toBe("green");
     expect(apprenticeTaskRag("in_progress", false)).toBe("amber");
     expect(apprenticeTaskRag("not_started", true)).toBe("neutral");
+  });
+
+  it("unlocks the current calendar block and all earlier ones for stacking", () => {
+    expect(
+      isApprenticeBlockUnlocked({
+        blockId: 9,
+        weekStart: 81,
+        programmeWeek: 83,
+        priorBlockTasks: [],
+        apprenticeId: "live-apprentice",
+      }),
+    ).toBe(true);
+    expect(
+      isApprenticeBlockUnlocked({
+        blockId: 3,
+        weekStart: 21,
+        programmeWeek: 83,
+        priorBlockTasks: [],
+        apprenticeId: "live-apprentice",
+      }),
+    ).toBe(true);
+    expect(
+      isApprenticeBlockUnlocked({
+        blockId: 10,
+        weekStart: 95,
+        programmeWeek: 83,
+        priorBlockTasks: [],
+        apprenticeId: "live-apprentice",
+      }),
+    ).toBe(false);
+  });
+
+  it("unlocks past calendar blocks for catch-up without prior reflection", () => {
+    expect(
+      isApprenticeBlockUnlocked({
+        blockId: 3,
+        weekStart: 21,
+        programmeWeek: 56,
+        priorBlockTasks: [],
+        apprenticeId: "live-apprentice",
+      }),
+    ).toBe(true);
+    expect(
+      isApprenticeBlockUnlocked({
+        blockId: 8,
+        weekStart: 71,
+        programmeWeek: 56,
+        priorBlockTasks: [],
+        apprenticeId: "live-apprentice",
+      }),
+    ).toBe(false);
   });
 
   it("colours blocks from completion summary", () => {

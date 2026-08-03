@@ -6,7 +6,7 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import {
   createCohort,
   updateCohort,
@@ -349,7 +349,7 @@ function CohortInlineField({
 
 export function AdminCohortsScreen() {
   const store = useAdminStore();
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const actorName =
     session?.account?.name?.trim() ||
     session?.account?.email?.trim() ||

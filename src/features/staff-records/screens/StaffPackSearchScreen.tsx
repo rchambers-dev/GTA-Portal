@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { canManagePortalAccount, sessionPortalRole } from "@/features/administration/domain/account-access";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import {
   buildStaffDocRows,
   isStaffDocGap,
@@ -30,7 +30,7 @@ function formatWorkspace(workspace: string): string {
 export function StaffPackSearchScreen({ fromContext = "management" }: Props) {
   const [search, setSearch] = useState("");
   const admin = useAdminStore();
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const actorRole = sessionPortalRole(session.account);
   const query = search.trim().toLowerCase();
 

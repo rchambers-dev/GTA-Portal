@@ -22,6 +22,7 @@ import {
   aiRefineCvBullet,
   aiSuggestCvSkills,
   aiTailorCvToJob,
+  setCvAiProfile,
 } from "../domain/cv/ai";
 import {
   buildCvFromPortal,
@@ -50,6 +51,7 @@ import {
   type CvReferencePerson,
 } from "../domain/cv/validation";
 import { ALEX_PROFILE } from "../domain/mock-apprentice";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./apprentice-pages.module.css";
 
 type AiBusyKey =
@@ -224,8 +226,11 @@ function sortEducation(items: CvEducation[]): CvEducation[] {
   });
 }
 
-function buildDefaultState(): CvState {
-  return buildCvFromPortal();
+function buildDefaultState(
+  profile = ALEX_PROFILE,
+  live = false,
+): CvState {
+  return buildCvFromPortal(profile, live ? [] : undefined) as CvState;
 }
 
 type GtaCvFile = {
@@ -396,7 +401,8 @@ function CharCount({ value, max }: { value: string; max: number }) {
 }
 
 export function ApprenticeCvBuilderScreen() {
-  const [cv, setCv] = useState<CvState>(buildDefaultState);
+  const { profile, live, loading } = useApprenticePortalProfile();
+  const [cv, setCv] = useState<CvState>(() => buildDefaultState());
   const [skillDraft, setSkillDraft] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [hydrated, setHydrated] = useState(false);
@@ -515,6 +521,19 @@ export function ApprenticeCvBuilderScreen() {
       setHydrated(true);
     });
   }, []);
+
+  useEffect(() => {
+    setCvAiProfile(profile);
+  }, [profile]);
+
+  useEffect(() => {
+    if (!live || loading || !hydrated || !profile.apprenticeId) return;
+    // Drop Alex demo CV seed once the live apprentice profile is known.
+    setCv((prev) => {
+      if (prev.fullName !== ALEX_PROFILE.displayName) return prev;
+      return buildDefaultState(profile, true);
+    });
+  }, [hydrated, live, loading, profile]);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -750,7 +769,7 @@ export function ApprenticeCvBuilderScreen() {
       "Reset to portal facts only? This clears your written summary, skills, bullets, and other manual extras.",
     );
     if (!confirmed) return;
-    const fresh = buildDefaultState();
+    const fresh = buildDefaultState(profile, live);
     setCv(fresh);
     setJobDescription("");
     setAiMessage(null);
@@ -2285,7 +2304,7 @@ export function ApprenticeCvBuilderScreen() {
 
             <footer className={styles.cvSheetFoot}>
               <span className={styles.cvSheetFootBrand}>GTA Apprenticeship</span>
-              <span>{ALEX_PROFILE.programmeName}</span>
+              <span>{profile.programmeName}</span>
             </footer>
           </div>
         </div>

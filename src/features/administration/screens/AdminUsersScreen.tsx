@@ -6,7 +6,7 @@ import { Select } from "@/components/ui/Select";
 import { TextInput } from "@/components/ui/TextInput";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import apprenticeStyles from "@/features/apprentice-portal/screens/apprentice-pages.module.css";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import {
   assignableRoles,
   canManagePortalAccount,
@@ -155,7 +155,7 @@ export function AdminUsersScreen({
   eyebrow = "Administration",
 }: AdminUsersScreenProps) {
   const store = useAdminStore();
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const actorRole = sessionPortalRole(session.account);
   const searchInputId = useId();
   const copy = COPY[scope];

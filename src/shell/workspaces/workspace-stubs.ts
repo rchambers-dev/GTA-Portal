@@ -347,7 +347,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     audit: {
       title: "Audit History",
-      description: "Demo audit log of responsibility changes.",
+      description: "Audit log of responsibility changes.",
     },
   },
   administration: {

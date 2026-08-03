@@ -3,13 +3,13 @@
 import { useMemo, useState } from "react";
 import { DEMO_ACCOUNTS } from "@/adapters/fictional/demo-accounts";
 import { isAssignmentActive } from "@/lib/permissions/effective-permissions";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import styles from "./ManagementRolesScreen.module.css";
 
 const TARGET_PROGRAMME = "Accident Repair Technician";
 
 export function ManagementRolesScreen() {
-  const { session, assignments, grantTemporaryCurriculumEditor, revokeAssignment } = useDemoSession();
+  const { session, assignments, grantTemporaryCurriculumEditor, revokeAssignment } = usePortalSession();
   const [expiryDays, setExpiryDays] = useState("7");
 
   const daniel = DEMO_ACCOUNTS.find((a) => a.id === "daniel-turner");

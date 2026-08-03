@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -22,8 +23,10 @@ import {
   editMessage as editInStore,
   deleteMessage as deleteInStore,
   setChatSelfContactId,
+  syncChatContactsFromProfile,
   unreadTotal,
 } from "../domain/chat/store";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import type {
   ChatContact,
   ChatMessage,
@@ -78,6 +81,7 @@ export function ApprenticeChatProvider({
   /** Signed-in chat identity — apprentice or employer contact id. */
   selfContactId?: string;
 }) {
+  const { profile, live, loading } = useApprenticePortalProfile();
   const [version, setVersion] = useState(0);
   const [pendingShare, setPendingShare] =
     useState<ChatPortalLinkAttachment | null>(null);
@@ -89,6 +93,21 @@ export function ApprenticeChatProvider({
     setChatSelfContactId(selfContactId);
     setVersion((v) => v + 1);
   }
+
+  useEffect(() => {
+    if (!live || loading || !profile.displayName) return;
+    syncChatContactsFromProfile(profile);
+    setVersion((v) => v + 1);
+  }, [
+    live,
+    loading,
+    profile.displayName,
+    profile.initials,
+    profile.mentorName,
+    profile.tutorName,
+    profile.employerContact,
+    profile.employerName,
+  ]);
 
   const refresh = useCallback(() => {
     setVersion((v) => v + 1);

@@ -1,5 +1,6 @@
 import type { WorkspaceId } from "@/lib/portal/types";
 import { ALEX_LEARNING, ALEX_PROFILE } from "@/features/apprentice-portal/domain/mock-apprentice";
+import { isDemoModeEnabled } from "@/lib/env/portal";
 
 export type PortalNotificationCategory =
   | "action"
@@ -182,6 +183,8 @@ function staffNotifications(workspace: string): PortalNotification[] {
 export function getPortalNotifications(
   workspace: WorkspaceId | string,
 ): PortalNotification[] {
+  // Live portal: no seeded notification feed — only real items later.
+  if (!isDemoModeEnabled()) return [];
   if (workspace === "apprentice") return apprenticeNotifications();
   return staffNotifications(String(workspace));
 }

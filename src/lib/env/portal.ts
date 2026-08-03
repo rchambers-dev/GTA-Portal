@@ -1,7 +1,6 @@
 export function isDemoModeEnabled(): boolean {
-  if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") return true;
-  if (process.env.NEXT_PUBLIC_DEMO_MODE === "false") return false;
-  return process.env.NODE_ENV !== "production";
+  // Explicit opt-in only. Production and local live both stay off demo/fiction.
+  return process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 }
 
 export function getDataAdapterMode(): "fiction" | "supabase" {
@@ -9,7 +8,7 @@ export function getDataAdapterMode(): "fiction" | "supabase" {
 }
 
 export function useSupabaseMode(): boolean {
-  return !isDemoModeEnabled() && getDataAdapterMode() === "supabase";
+  return getDataAdapterMode() === "supabase" && !isDemoModeEnabled();
 }
 
 export function getPortalBaseUrl(): string {

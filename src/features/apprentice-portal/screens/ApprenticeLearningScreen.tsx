@@ -6,14 +6,17 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
   ALEX_LEARNING,
-  ALEX_PROFILE,
   learningKindLabel,
   type LearningPlanItem,
   type LearningPlanItemKind,
 } from "../domain/mock-apprentice";
-import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "@/features/programme-delivery/domain/autocare-blocks";
+import {
+  AUTOCARE_BLOCKS,
+  AUTOCARE_STANDARD,
+} from "@/features/programme-delivery/domain/autocare-blocks";
 import { tasksForBlock } from "@/features/programme-delivery/domain/autocare-tasks";
 import { taskKindLabel } from "@/features/programme-delivery/domain/task-schema";
 import {
@@ -58,11 +61,9 @@ function PlanItem({ item }: { item: LearningPlanItem }) {
   );
 }
 
-/**
- * My Learning — focus plan for Autocare blocks / college tasks / OTJ.
- * Lesson plans are tutor-only; apprentices work practicals + reflections.
- */
 export function ApprenticeLearningScreen() {
+  const { profile, live } = useApprenticePortalProfile();
+  const apprenticeId = profile.apprenticeId || "live-apprentice";
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
@@ -75,57 +76,42 @@ export function ApprenticeLearningScreen() {
         b.kind === "training" &&
         b.weekStart != null &&
         b.weekEnd != null &&
-        ALEX_PROFILE.programmeWeek >= b.weekStart &&
-        ALEX_PROFILE.programmeWeek <= b.weekEnd,
+        profile.programmeWeek >= b.weekStart &&
+        profile.programmeWeek <= b.weekEnd,
     ) ?? AUTOCARE_BLOCKS[0];
 
   const blockTasks = tasksForBlock(currentBlock.id);
+  const learningPlan: LearningPlanItem[] = live
+    ? []
+    : [...ALEX_LEARNING.thisWeek, ...ALEX_LEARNING.lookingAhead];
 
   return (
     <ApprenticePageShell
       title="My Learning"
-      description="Your Autocare plan this week — college practicals, block reflections, and OTJ. Lesson plans stay with your tutor."
+      description={`${profile.programmeName} · Week ${profile.programmeWeek}. College practicals, block reflections, and OTJ.`}
     >
       <div className={styles.stack}>
         <div className={styles.purposeBox}>
           <p className={styles.purposeLead}>
             <strong>
-              Week {ALEX_PROFILE.programmeWeek}
+              {AUTOCARE_STANDARD.label} · {AUTOCARE_STANDARD.code}
             </strong>
             {" · "}
-            {AUTOCARE_STANDARD.label} · {AUTOCARE_STANDARD.code}{" "}
-            {AUTOCARE_STANDARD.version}
-            {" · "}
-            College {ALEX_PROFILE.collegeDays}
+            Week {profile.programmeWeek}
           </p>
-          <p className={styles.purposeBody}>{ALEX_LEARNING.notes}</p>
-          <p className={styles.purposeHint}>
-            Preferred: complete tasks in the portal. If you could not get on at
-            college, upload every PDF needed for that day — each to its own
-            task.
+          <p className={styles.purposeBody}>
+            College {profile.collegeDays}. Current block: {currentBlock.name}.
           </p>
         </div>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            Current block · Block {currentBlock.id}
-          </h2>
-          <p className={styles.meta}>
-            {currentBlock.name}
-            {currentBlock.weekStart != null
-              ? ` · Weeks ${currentBlock.weekStart}–${currentBlock.weekEnd}`
-              : ""}
-            {" · "}
-            {currentBlock.plannedOtjHours} hrs planned OTJ
-          </p>
+          <h2 className={styles.sectionTitle}>This block · college tasks</h2>
           {blockTasks.length === 0 ? (
-            <p className={styles.empty}>
-              Practical tasks for this block are not in the portal yet.
-            </p>
+            <p className={styles.note}>No college tasks mapped to this block yet.</p>
           ) : (
             <ul className={styles.list}>
               {blockTasks.map((task) => {
-                const sub = getTaskSubmission(task.id);
+                const submission = getTaskSubmission(task.id, apprenticeId);
                 return (
                   <li key={task.id}>
                     <Link
@@ -134,67 +120,36 @@ export function ApprenticeLearningScreen() {
                     >
                       <div className={styles.rowMain}>
                         <strong>{task.title}</strong>
-                        <span>
-                          {task.evidenceRef} · {taskKindLabel(task.kind)} · ~
-                          {task.estimatedMinutes} min
+                        <span className={styles.meta}>
+                          {taskKindLabel(task.kind)}
                         </span>
                       </div>
-                      <div className={styles.rowEnd}>
-                        <ApprenticeStatusChip tone={statusTone(sub.status)}>
-                          {statusLabel(sub.status)}
-                        </ApprenticeStatusChip>
-                        <span className={styles.linkish}>Open →</span>
-                      </div>
+                      <ApprenticeStatusChip tone={statusTone(submission.status)}>
+                        {statusLabel(submission.status)}
+                      </ApprenticeStatusChip>
                     </Link>
                   </li>
                 );
               })}
             </ul>
           )}
-          <p className={styles.meta} style={{ marginTop: "0.75rem" }}>
-            <Link className={styles.linkish} href="/apprentice/college-tasks">
-              All blocks and college tasks →
-            </Link>
-          </p>
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Do this week</h2>
-          <p className={styles.meta}>
-            Concrete priorities for this focus period.
-          </p>
-          <ul className={styles.list}>
-            {ALEX_LEARNING.thisWeek.map((item) => (
-              <PlanItem key={item.id} item={item} />
-            ))}
-          </ul>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Looking ahead</h2>
-          <ul className={styles.list}>
-            {ALEX_LEARNING.lookingAhead.map((item) => (
-              <PlanItem key={item.id} item={item} />
-            ))}
-          </ul>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Related</h2>
-          <div className={styles.shortcuts}>
-            <Link className={styles.shortcut} href="/apprentice/college-tasks">
-              College tasks
-            </Link>
-            <Link className={styles.shortcut} href="/apprentice/otj">
-              OTJ hours
-            </Link>
-            <Link className={styles.shortcut} href="/apprentice/reviews">
-              Reviews
-            </Link>
-            <Link className={styles.shortcut} href="/apprentice/progress">
-              Progress
-            </Link>
-          </div>
+          <h2 className={styles.sectionTitle}>Focus plan</h2>
+          {learningPlan.length === 0 ? (
+            <p className={styles.note}>
+              {live
+                ? "Your live focus plan will build here as tasks, OTJ, and reviews are logged."
+                : "No focus items."}
+            </p>
+          ) : (
+            <ul className={styles.list}>
+              {learningPlan.map((item) => (
+                <PlanItem key={item.id} item={item} />
+              ))}
+            </ul>
+          )}
         </section>
       </div>
     </ApprenticePageShell>

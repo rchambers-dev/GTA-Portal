@@ -1,6 +1,9 @@
 import type { PortalAiContextBag } from "@/lib/ai";
 import { requestPortalAi } from "@/lib/ai";
-import { ALEX_PROFILE } from "../mock-apprentice";
+import {
+  ALEX_PROFILE,
+  type ApprenticePortalProfile,
+} from "../mock-apprentice";
 import { getCvModulesPublic } from "./seed-from-portal";
 
 export type CvDraftForAi = {
@@ -35,20 +38,27 @@ export type CvDraftForAi = {
   references: string;
 };
 
+let aiProfile: ApprenticePortalProfile = ALEX_PROFILE;
+
+/** Keep CV AI context aligned with the signed-in apprentice. */
+export function setCvAiProfile(profile: ApprenticePortalProfile): void {
+  aiProfile = profile;
+}
+
 function publicProfile() {
   return {
-    displayName: ALEX_PROFILE.displayName,
-    initials: ALEX_PROFILE.initials,
-    employerName: ALEX_PROFILE.employerName,
+    displayName: aiProfile.displayName,
+    initials: aiProfile.initials,
+    employerName: aiProfile.employerName,
   };
 }
 
 function publicProgramme() {
   return {
-    programmeName: ALEX_PROFILE.programmeName,
-    programmeYear: ALEX_PROFILE.programmeYear,
-    programmeWeek: ALEX_PROFILE.programmeWeek,
-    collegeDays: ALEX_PROFILE.collegeDays,
+    programmeName: aiProfile.programmeName,
+    programmeYear: aiProfile.programmeYear,
+    programmeWeek: aiProfile.programmeWeek,
+    collegeDays: aiProfile.collegeDays,
   };
 }
 

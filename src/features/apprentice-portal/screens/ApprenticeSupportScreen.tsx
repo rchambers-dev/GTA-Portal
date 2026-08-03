@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ApprenticePageShell } from "../components/ApprenticePageShell";
 import { useApprenticeChat } from "../components/ApprenticeChatProvider";
-import { ALEX_PROFILE } from "../domain/mock-apprentice";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./ApprenticeSupportScreen.module.css";
 
 /* ---------------- Icons ---------------- */
@@ -219,6 +219,7 @@ export function ApprenticeSupportScreen({
   /** Shared Support / Safeguarding page — copy and message routes by workspace. */
   audience?: SupportAudience;
 } = {}) {
+  const { profile } = useApprenticePortalProfile();
   const { ensureThreadWithContact } = useApprenticeChat();
   const copy = AUDIENCE_COPY[audience];
   const isEmployer = audience === "employer";
@@ -309,7 +310,7 @@ export function ApprenticeSupportScreen({
                 className={styles.helpCard}
                 data-tone="navy"
                 href={messagesHref}
-                onClick={openChat(ALEX_PROFILE.mentorId)}
+                onClick={openChat(profile.mentorId)}
               >
                 <span className={styles.iconChip}>
                   <MentorIcon />
@@ -318,8 +319,8 @@ export function ApprenticeSupportScreen({
                   <strong>Progress mentor</strong>
                   <span>
                     {isEmployer
-                      ? `${ALEX_PROFILE.mentorName} — progress, reviews, and workplace arrangements for your apprentices.`
-                      : `${ALEX_PROFILE.mentorName} — day-to-day pastoral and progress questions.`}
+                      ? `${profile.mentorName} — progress, reviews, and workplace arrangements for your apprentices.`
+                      : `${profile.mentorName} — day-to-day pastoral and progress questions.`}
                   </span>
                 </span>
                 <span className={styles.helpCardCta}>
@@ -354,7 +355,7 @@ export function ApprenticeSupportScreen({
                 className={styles.helpCard}
                 data-tone="green"
                 href={messagesHref}
-                onClick={openChat(ALEX_PROFILE.tutorId)}
+                onClick={openChat(profile.tutorId)}
               >
                 <span className={styles.iconChip}>
                   <TutorIcon />
@@ -362,7 +363,7 @@ export function ApprenticeSupportScreen({
                 <span className={styles.helpCardBody}>
                   <strong>Tutor</strong>
                   <span>
-                    {ALEX_PROFILE.tutorName} — academic and workshop questions.
+                    {profile.tutorName} — academic and workshop questions.
                   </span>
                 </span>
                 <span className={styles.helpCardCta}>

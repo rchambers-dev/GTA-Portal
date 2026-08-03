@@ -16,7 +16,10 @@ import type { ProgrammeBlockDef } from "./autocare-blocks";
 import { AUTOCARE_BLOCKS } from "./autocare-blocks";
 import type { PracticalTaskDef } from "./task-schema";
 import type { TaskSubmissionStatus } from "./task-submission-store";
-import { getTaskSubmission } from "./task-submission-store";
+import {
+  getTaskSubmission,
+  isBlockReflectionVerified,
+} from "./task-submission-store";
 import { startOfUtcDay } from "@/features/apprentice-lifecycle/domain/programme-week";
 
 export type ApprenticeRag = "red" | "amber" | "green" | "neutral";
@@ -76,6 +79,50 @@ export function summariseBlockCompletion(
     complete,
     completedAt: complete ? completedAt : null,
   };
+}
+
+/**
+ * Furthest Autocare block the apprentice's programme calendar has reached.
+ * Incomplete earlier work does not reduce this — catch-up can stack.
+ */
+export function furthestReachedBlockId(
+  programmeWeek: number,
+  blocks: ProgrammeBlockDef[] = AUTOCARE_BLOCKS,
+): number {
+  let reached = 1;
+  if (!Number.isFinite(programmeWeek) || programmeWeek < 1) return reached;
+  for (const block of blocks) {
+    if (block.weekStart == null) continue;
+    if (programmeWeek >= block.weekStart) {
+      reached = Math.max(reached, block.id);
+    }
+  }
+  return reached;
+}
+
+/**
+ * Whether an apprentice can open a college block.
+ * Everything up to the current calendar block stays open so catch-up can stack
+ * (being behind on Block 2 does not re-lock Block 9).
+ * Future blocks stay locked until their week begins (or prior reflection verified).
+ */
+export function isApprenticeBlockUnlocked(input: {
+  blockId: number;
+  weekStart: number | null;
+  programmeWeek: number;
+  priorBlockTasks: PracticalTaskDef[];
+  apprenticeId: string;
+}): boolean {
+  if (input.blockId <= 1) return true;
+
+  const reached = furthestReachedBlockId(input.programmeWeek);
+  if (input.blockId <= reached) return true;
+
+  return isBlockReflectionVerified(
+    input.blockId - 1,
+    input.priorBlockTasks,
+    input.apprenticeId,
+  );
 }
 
 /**

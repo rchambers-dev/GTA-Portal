@@ -1,10 +1,10 @@
 "use client";
 
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import styles from "./ManagementAuditScreen.module.css";
 
 export function ManagementAuditScreen() {
-  const { auditLog } = useDemoSession();
+  const { auditLog } = usePortalSession();
 
   return (
     <div className={styles.root}>

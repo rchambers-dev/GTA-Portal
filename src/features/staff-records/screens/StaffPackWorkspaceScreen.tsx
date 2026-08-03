@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
-import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
+import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
 import {
   STAFF_EMPLOYMENT_FORM_CODE,
   STAFF_EMPLOYMENT_FORM_TITLE,
@@ -86,7 +86,7 @@ export function StaffPackWorkspaceScreen({
   fromContext = "management",
 }: Props) {
   const store = useAdminStore();
-  const { session } = useDemoSession();
+  const { session } = usePortalSession();
   const staff = store.users.find((u) => u.id === staffId) ?? null;
 
   const packVersion = useSyncExternalStore(
