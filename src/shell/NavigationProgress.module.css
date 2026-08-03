@@ -1,0 +1,40 @@
+.track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  height: 3px;
+  pointer-events: none;
+  background: transparent;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  width: 40%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--color-red-500),
+    var(--color-navy-600)
+  );
+  animation: nav-progress 0.9s ease-in-out infinite;
+}
+
+@keyframes nav-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    width: 100%;
+    opacity: 0.7;
+    animation: none;
+  }
+}

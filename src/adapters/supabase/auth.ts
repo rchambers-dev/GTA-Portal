@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { User } from "@supabase/supabase-js";
 import type { SessionUser } from "@/features/apprentice-lifecycle/types";
 import type { EffectiveSession, PortalAccount, WorkspaceId } from "@/lib/portal/types";
@@ -85,41 +86,44 @@ function toSessionUser(account: PortalAccount): SessionUser {
   };
 }
 
-export async function getSupabaseEffectiveSession(): Promise<EffectiveSession | null> {
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+/** Deduped per RSC request — layout + page share one auth round-trip. */
+export const getSupabaseEffectiveSession = cache(
+  async (): Promise<EffectiveSession | null> => {
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user?.id) return null;
+    if (!user?.id) return null;
 
-  const { data: profile, error } = await supabase
-    .from("profiles")
-    .select(
-      "id, email, username, display_name, base_role, workspace, permissions, responsibilities, department, department_scope, programme_scope, module_scope, linked_apprentice_id",
-    )
-    .eq("id", user.id)
-    .maybeSingle<ProfileRow>();
+    const { data: profile, error } = await supabase
+      .from("profiles")
+      .select(
+        "id, email, username, display_name, base_role, workspace, permissions, responsibilities, department, department_scope, programme_scope, module_scope, linked_apprentice_id",
+      )
+      .eq("id", user.id)
+      .maybeSingle<ProfileRow>();
 
-  if (error || !profile) return null;
+    if (error || !profile) return null;
 
-  const account = toPortalAccount(user, profile);
-  if (account.workspace === "apprentice" && account.linkedApprenticeId) {
-    const delivery = await resolveApprenticeDeliveryContext(
-      account.linkedApprenticeId,
-    );
-    account.deliverySpine = delivery.deliverySpine;
-  } else if (account.workspace === "apprentice") {
-    account.deliverySpine = "groups";
-  }
+    const account = toPortalAccount(user, profile);
+    if (account.workspace === "apprentice" && account.linkedApprenticeId) {
+      const delivery = await resolveApprenticeDeliveryContext(
+        account.linkedApprenticeId,
+      );
+      account.deliverySpine = delivery.deliverySpine;
+    } else if (account.workspace === "apprentice") {
+      account.deliverySpine = "groups";
+    }
 
-  return {
-    account,
-    permissions: profile.permissions ?? [],
-    activeTemporaryAssignments: [],
-    temporaryAccessLabels: [],
-  };
-}
+    return {
+      account,
+      permissions: profile.permissions ?? [],
+      activeTemporaryAssignments: [],
+      temporaryAccessLabels: [],
+    };
+  },
+);
 
 export const supabaseAuthAdapter = {
   async getSessionUser(): Promise<SessionUser | null> {

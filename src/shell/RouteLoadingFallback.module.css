@@ -1,0 +1,55 @@
+.root {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 56rem;
+  padding-top: var(--space-2);
+}
+
+.blockWide,
+.block,
+.card {
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    90deg,
+    var(--color-grey-100) 0%,
+    var(--color-grey-50) 45%,
+    var(--color-grey-100) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+.blockWide {
+  height: 1.75rem;
+  width: min(18rem, 55%);
+}
+
+.block {
+  height: 1rem;
+  width: min(28rem, 75%);
+  opacity: 0.85;
+}
+
+.card {
+  height: 7.5rem;
+  width: 100%;
+  opacity: 0.9;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blockWide,
+  .block,
+  .card {
+    animation: none;
+    background: var(--color-grey-100);
+  }
+}

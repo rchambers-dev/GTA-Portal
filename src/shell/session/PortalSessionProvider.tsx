@@ -33,6 +33,19 @@ const PortalSessionContext = createContext<PortalSessionContextValue | null>(
   null,
 );
 
+function sessionIdentity(session: EffectiveSession): string {
+  const { account, permissions, temporaryAccessLabels } = session;
+  return [
+    account.id,
+    account.workspace,
+    account.baseRole,
+    account.deliverySpine ?? "",
+    account.linkedApprenticeId ?? "",
+    permissions.join(","),
+    temporaryAccessLabels.join(","),
+  ].join("|");
+}
+
 /**
  * Holds the signed-in portal session for client screens.
  * Always the authenticated person's server session (live Supabase).
@@ -45,6 +58,16 @@ export function PortalSessionProvider({
   children: ReactNode;
 }) {
   const router = useRouter();
+  const [session, setSession] = useState(initialSession);
+  const [sessionKey, setSessionKey] = useState(() =>
+    sessionIdentity(initialSession),
+  );
+  const nextKey = sessionIdentity(initialSession);
+  if (nextKey !== sessionKey) {
+    setSessionKey(nextKey);
+    setSession(initialSession);
+  }
+
   const [assignments, setAssignments] = useState<TemporaryAssignment[]>([]);
   const [auditLog, setAuditLog] = useState<PortalAuditEvent[]>([]);
 
@@ -126,7 +149,7 @@ export function PortalSessionProvider({
 
   const value = useMemo(
     () => ({
-      session: initialSession,
+      session,
       assignments,
       auditLog,
       grantTemporaryCurriculumEditor,
@@ -136,8 +159,8 @@ export function PortalSessionProvider({
       assignments,
       auditLog,
       grantTemporaryCurriculumEditor,
-      initialSession,
       revokeAssignment,
+      session,
     ],
   );
 
@@ -155,5 +178,3 @@ export function usePortalSession(): PortalSessionContextValue {
   }
   return ctx;
 }
-
-

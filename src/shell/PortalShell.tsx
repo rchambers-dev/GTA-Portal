@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import type { EffectiveSession } from "@/lib/portal/types";
 import {
@@ -13,6 +13,7 @@ import {
   CHAT_SELF_EMPLOYER,
   CHAT_SELF_APPRENTICE,
 } from "@/features/apprentice-portal/domain/chat/store";
+import { NavigationProgress } from "./NavigationProgress";
 import { PortalSessionProvider } from "./session/PortalSessionProvider";
 import { PortalMain } from "./PortalMain";
 import { SidebarNavigation } from "./SidebarNavigation";
@@ -54,6 +55,9 @@ export function PortalShell({
       className={styles.shell}
       data-portal-root={isApprentice ? "" : undefined}
     >
+      <Suspense fallback={null}>
+        <NavigationProgress />
+      </Suspense>
       <SidebarNavigation />
       <PortalMain withDock={isApprentice && !onMessagesPage}>{children}</PortalMain>
       {isApprentice && !onMessagesPage ? <ApprenticeChatDock /> : null}

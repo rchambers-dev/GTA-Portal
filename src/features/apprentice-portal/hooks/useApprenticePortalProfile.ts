@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import {
   type ApprenticePortalProfile,
 } from "@/features/apprentice-portal/domain/apprentice-profile";
@@ -39,6 +39,20 @@ const EMPTY_LIVE_PROFILE: ApprenticePortalProfile = {
   cohortName: null,
 };
 
+const EMPTY_STATE: State = {
+  profile: EMPTY_LIVE_PROFILE,
+  loading: true,
+  error: null,
+};
+
+let shared: State = EMPTY_STATE;
+let inflight: Promise<void> | null = null;
+const listeners = new Set<() => void>();
+
+function emit() {
+  for (const listener of listeners) listener();
+}
+
 function withElapsedProgrammeWeek(
   profile: ApprenticePortalProfile,
 ): ApprenticePortalProfile {
@@ -49,58 +63,89 @@ function withElapsedProgrammeWeek(
   return { ...profile, programmeWeek: elapsed };
 }
 
-/**
- * Live apprentice identity for portal screens.
- * Loads from the DB via /api/apprentice/me for the signed-in environment.
- */
-export function useApprenticePortalProfile(): State {
-  const [state, setState] = useState<State>({
-    profile: EMPTY_LIVE_PROFILE,
-    loading: true,
-    error: null,
-  });
+function needsLoad(): boolean {
+  if (inflight) return false;
+  if (shared.profile.apprenticeId) return false;
+  if (shared.error) return false;
+  return true;
+}
 
-  useEffect(() => {
-    let cancelled = false;
-    setState((prev) => ({ ...prev, loading: true, error: null }));
+function loadProfile(): Promise<void> {
+  if (!needsLoad()) return inflight ?? Promise.resolve();
 
-    void fetch("/api/apprentice/me")
-      .then(async (res) => {
-        const body = (await res.json().catch(() => ({}))) as {
-          profile?: ApprenticePortalProfile;
-          error?: string;
-        };
-        if (cancelled) return;
-        if (!res.ok || !body.profile) {
-          setState({
-            profile: EMPTY_LIVE_PROFILE,
-            loading: false,
-            error: body.error || "Unable to load apprentice profile.",
-          });
-          return;
-        }
-        setState({
-          profile: withElapsedProgrammeWeek(body.profile),
-          loading: false,
-          error: null,
-        });
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        setState({
+  shared = { profile: shared.profile, loading: true, error: null };
+  emit();
+
+  inflight = fetch("/api/apprentice/me")
+    .then(async (res) => {
+      const body = (await res.json().catch(() => ({}))) as {
+        profile?: ApprenticePortalProfile;
+        error?: string;
+      };
+      if (!res.ok || !body.profile) {
+        shared = {
           profile: EMPTY_LIVE_PROFILE,
           loading: false,
-          error:
-            err instanceof Error
-              ? err.message
-              : "Unable to load apprentice profile.",
-        });
-      });
+          error: body.error || "Unable to load apprentice profile.",
+        };
+        return;
+      }
+      shared = {
+        profile: withElapsedProgrammeWeek(body.profile),
+        loading: false,
+        error: null,
+      };
+    })
+    .catch((err) => {
+      shared = {
+        profile: EMPTY_LIVE_PROFILE,
+        loading: false,
+        error:
+          err instanceof Error
+            ? err.message
+            : "Unable to load apprentice profile.",
+      };
+    })
+    .finally(() => {
+      inflight = null;
+      emit();
+    });
 
-    return () => {
-      cancelled = true;
-    };
+  return inflight;
+}
+
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+function getSnapshot(): State {
+  return shared;
+}
+
+function getServerSnapshot(): State {
+  return EMPTY_STATE;
+}
+
+/**
+ * Live apprentice identity for portal screens.
+ * Shared across shell + screens so page switches do not re-hit /api/apprentice/me.
+ */
+export function useApprenticePortalProfile(): State {
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  useEffect(() => {
+    void loadProfile();
   }, []);
 
   return state;
+}
+
+/** Test helper — clear module cache between tests. */
+export function __resetApprenticePortalProfileCacheForTests(): void {
+  shared = EMPTY_STATE;
+  inflight = null;
+  emit();
 }
