@@ -118,11 +118,6 @@ const WORKSPACE_STUBS: Record<
     },
   },
   management: {
-    dashboard: {
-      title: "Management Dashboard",
-      description:
-        "Management overview — staffing, roles, programme setup, and ops.",
-    },
     "staff-intake": {
       title: "Staff Intake",
       description:

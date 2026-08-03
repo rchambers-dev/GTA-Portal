@@ -46,6 +46,7 @@ import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
 import { EmployerDashboardScreen } from "./EmployerDashboardScreen";
+import { ManagementDashboardScreen } from "./ManagementDashboardScreen";
 import { resolveWorkspaceStub } from "./workspace-stubs";
 
 /** Workspace-local stubs that duplicate shared operational queues. */
@@ -310,6 +311,8 @@ export async function renderWorkspacePage(
 
   if (workspace === "management") {
     switch (segment) {
+      case "dashboard":
+        return <ManagementDashboardScreen />;
       case "accounts":
         return <AdminUsersScreen scope="apprentice" eyebrow="Management" />;
       case "staff-accounts":
