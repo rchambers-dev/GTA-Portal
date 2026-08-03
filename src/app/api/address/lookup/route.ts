@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { maskUkPostcode } from "@/features/learner-portal/domain/cv/validation";
+import { maskUkPostcode } from "@/features/apprentice-portal/domain/cv/validation";
 
 export const runtime = "nodejs";
 
@@ -221,7 +221,7 @@ async function lookupNominatimStrict(
   const res = await fetch(url.toString(), {
     headers: {
       Accept: "application/json",
-      "User-Agent": "GTA-Portal-CV-Builder/1.0 (learner address lookup)",
+      "User-Agent": "GTA-Portal-CV-Builder/1.0 (apprentice address lookup)",
     },
     cache: "no-store",
   });

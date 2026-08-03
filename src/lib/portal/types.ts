@@ -1,10 +1,10 @@
 /**
  * Portal-wide session and workspace types.
- * Used by shell/adapters — not coupled to learner-lifecycle feature UI.
+ * Used by shell/adapters — not coupled to apprentice-lifecycle feature UI.
  */
 
 export type WorkspaceId =
-  | "learner"
+  | "apprentice"
   | "employer"
   | "staff"
   | "quality"

@@ -12,8 +12,8 @@ export type EvidencePack = {
   packId: string;
   kind: "otj_tracker";
   title: string;
-  learnerId: string;
-  learnerName: string;
+  apprenticeId: string;
+  apprenticeName: string;
   actionId: string;
   plannedTotalHours: number;
   loggedTotalHours: number;
@@ -27,8 +27,8 @@ const OTJ_PACKS: EvidencePack[] = [
     packId: "otj-isla-mentoring",
     kind: "otj_tracker",
     title: "OTJ tracker — workplace mentoring",
-    learnerId: "lrn-isla-bennett",
-    learnerName: "Isla Bennett",
+    apprenticeId: "lrn-isla-bennett",
+    apprenticeName: "Isla Bennett",
     actionId: "act-isla-employer-otj",
     plannedTotalHours: 4,
     loggedTotalHours: 4,
@@ -78,8 +78,8 @@ const OTJ_PACKS: EvidencePack[] = [
     packId: "otj-oscar-weekly",
     kind: "otj_tracker",
     title: "OTJ tracker — weekly logging",
-    learnerId: "lrn-oscar-hayes",
-    learnerName: "Oscar Hayes",
+    apprenticeId: "lrn-oscar-hayes",
+    apprenticeName: "Oscar Hayes",
     actionId: "act-oscar-otj",
     plannedTotalHours: 24,
     loggedTotalHours: 18,
@@ -129,8 +129,8 @@ const OTJ_PACKS: EvidencePack[] = [
     packId: "otj-harvey-mentoring",
     kind: "otj_tracker",
     title: "OTJ tracker — mentoring hours",
-    learnerId: "lrn-harvey-cole",
-    learnerName: "Harvey Cole",
+    apprenticeId: "lrn-harvey-cole",
+    apprenticeName: "Harvey Cole",
     actionId: "act-riverside-commitment",
     plannedTotalHours: 4,
     loggedTotalHours: 0,

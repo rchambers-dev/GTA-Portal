@@ -8,15 +8,15 @@ import {
   isOtjCatchUpEntry,
   otjHours,
   summariseOtjHours,
-  type LearnerAttendanceBreakdownItem,
-  type LearnerAttendanceDay,
-  type LearnerOtjEntry,
-  type LearnerReviewSummary,
-} from "@/features/learner-portal/domain/mock-learner";
+  type ApprenticeAttendanceBreakdownItem,
+  type ApprenticeAttendanceDay,
+  type ApprenticeOtjEntry,
+  type ApprenticeReviewSummary,
+} from "@/features/apprentice-portal/domain/mock-apprentice";
 
 /** A single apprentice as seen from the employer workspace. */
 export type EmployerApprentice = {
-  learnerId: string;
+  apprenticeId: string;
   displayName: string;
   initials: string;
   programmeName: string;
@@ -36,12 +36,12 @@ export type EmployerApprentice = {
 
 /** Attendance bundle shown on the shared Attendance page for one apprentice. */
 export type EmployerAttendanceBundle = {
-  learnerId: string;
+  apprenticeId: string;
   displayName: string;
   collegeDays: string;
   attendancePercent: number;
-  days: LearnerAttendanceDay[];
-  breakdown: LearnerAttendanceBreakdownItem[];
+  days: ApprenticeAttendanceDay[];
+  breakdown: ApprenticeAttendanceBreakdownItem[];
 };
 
 /** The employer signed into the workspace (workplace contact for the account). */
@@ -51,8 +51,8 @@ export const EMPLOYER_VIEWER = {
 } as const;
 
 function remapMissedHrefsForEmployer(
-  days: LearnerAttendanceDay[],
-): LearnerAttendanceDay[] {
+  days: ApprenticeAttendanceDay[],
+): ApprenticeAttendanceDay[] {
   return days.map((day) => ({
     ...day,
     missedItems: day.missedItems?.map((item) => ({
@@ -63,10 +63,10 @@ function remapMissedHrefsForEmployer(
 }
 
 /**
- * Second apprentice — lighter demo attendance so the student switcher has
+ * Second apprentice — lighter demo attendance so the apprentice switcher has
  * something distinct to show.
  */
-const JORDAN_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
+const JORDAN_ATTENDANCE_DAYS: ApprenticeAttendanceDay[] = [
   {
     date: "2026-07-14",
     dayName: "Tuesday",
@@ -121,7 +121,7 @@ const JORDAN_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
     dayName: "Tuesday",
     session: "Workshop AM",
     status: "college_closed",
-    note: "Staff development day — college closed to learners.",
+    note: "Staff development day — college closed to apprentices.",
   },
   {
     date: "2026-06-22",
@@ -152,7 +152,7 @@ const JORDAN_ATTENDANCE_DAYS: LearnerAttendanceDay[] = [
   },
 ];
 
-const JORDAN_ATTENDANCE_BREAKDOWN: LearnerAttendanceBreakdownItem[] = [
+const JORDAN_ATTENDANCE_BREAKDOWN: ApprenticeAttendanceBreakdownItem[] = [
   {
     status: "attended",
     label: "Attended",
@@ -200,7 +200,7 @@ const JORDAN_ATTENDANCE_BREAKDOWN: LearnerAttendanceBreakdownItem[] = [
 function buildAlexApprentice(): EmployerApprentice {
   const otjSummary = summariseOtjHours(ALEX_OTJ_ENTRIES);
   return {
-    learnerId: ALEX_PROFILE.learnerId,
+    apprenticeId: ALEX_PROFILE.apprenticeId,
     displayName: ALEX_PROFILE.displayName,
     initials: ALEX_PROFILE.initials,
     programmeName: ALEX_PROFILE.programmeName,
@@ -221,7 +221,7 @@ function buildAlexApprentice(): EmployerApprentice {
  * Second apprentice — lightweight demo record so the caseload feels real.
  */
 const JORDAN_APPRENTICE: EmployerApprentice = {
-  learnerId: "lrn-jordan-blake",
+  apprenticeId: "lrn-jordan-blake",
   displayName: "Jordan Blake",
   initials: "JB",
   programmeName: "Autocare Technician L2 · ST0499",
@@ -242,11 +242,11 @@ export function getEmployerCaseload(): EmployerApprentice[] {
 }
 
 export function getEmployerAttendanceBundle(
-  learnerId: string,
+  apprenticeId: string,
 ): EmployerAttendanceBundle | null {
-  if (learnerId === ALEX_PROFILE.learnerId) {
+  if (apprenticeId === ALEX_PROFILE.apprenticeId) {
     return {
-      learnerId: ALEX_PROFILE.learnerId,
+      apprenticeId: ALEX_PROFILE.apprenticeId,
       displayName: ALEX_PROFILE.displayName,
       collegeDays: ALEX_PROFILE.collegeDays,
       attendancePercent: ALEX_PROFILE.attendancePercent,
@@ -254,9 +254,9 @@ export function getEmployerAttendanceBundle(
       breakdown: ALEX_ATTENDANCE_BREAKDOWN,
     };
   }
-  if (learnerId === JORDAN_APPRENTICE.learnerId) {
+  if (apprenticeId === JORDAN_APPRENTICE.apprenticeId) {
     return {
-      learnerId: JORDAN_APPRENTICE.learnerId,
+      apprenticeId: JORDAN_APPRENTICE.apprenticeId,
       displayName: JORDAN_APPRENTICE.displayName,
       collegeDays: JORDAN_APPRENTICE.collegeDays,
       attendancePercent: JORDAN_APPRENTICE.attendancePercent,
@@ -268,7 +268,7 @@ export function getEmployerAttendanceBundle(
 }
 
 /** OTJ entries across the caseload that still need employer agreement. */
-export function getEmployerPendingOtj(): LearnerOtjEntry[] {
+export function getEmployerPendingOtj(): ApprenticeOtjEntry[] {
   return ALEX_OTJ_ENTRIES.filter(canEmployerActOnOtj);
 }
 
@@ -286,11 +286,11 @@ export function getEmployerPendingOtjTotals() {
 
 /** Reviews the employer is invited to across the caseload. */
 export function getEmployerUpcomingReviews(): Array<
-  LearnerReviewSummary & { learnerName: string }
+  ApprenticeReviewSummary & { apprenticeName: string }
 > {
   return ALEX_REVIEWS.filter((r) => r.status === "upcoming").map((r) => ({
     ...r,
-    learnerName: ALEX_PROFILE.displayName,
+    apprenticeName: ALEX_PROFILE.displayName,
   }));
 }
 
@@ -298,7 +298,7 @@ export function getEmployerUpcomingReviews(): Array<
 export type EmployerCase = {
   id: string;
   title: string;
-  learnerName: string;
+  apprenticeName: string;
   submittedAt: string;
   status: string;
 };
@@ -307,7 +307,7 @@ export const EMPLOYER_OPEN_CASES: EmployerCase[] = [
   {
     id: "case-progress-alex",
     title: "Progress clarification",
-    learnerName: ALEX_PROFILE.displayName,
+    apprenticeName: ALEX_PROFILE.displayName,
     submittedAt: "2026-07-12",
     status: "With GTA",
   },

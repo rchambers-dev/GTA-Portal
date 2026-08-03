@@ -1,34 +1,34 @@
 /**
- * Evidence pack model for the learner intake funnel.
+ * Evidence pack model for the Apprentice Intake funnel.
  *
  * Reuses the canonical ADM14.0 checklist (the same sections shown on the
- * shared Learners pack page). Each learner carries a per-item status map;
+ * shared Apprentices pack page). Each apprentice carries a per-item status map;
  * items not yet touched default to "missing" (or "future" for end-of-
- * programme items), so the pack fills up over the learner's lifecycle
+ * programme items), so the pack fills up over the apprentice's lifecycle
  * rather than being keyed all at once on day one.
  */
 
 import {
   ADM14_REQUIREMENTS,
   type Adm14RequirementDefinition,
-} from "@/features/learner-lifecycle/domain/adm14-checklist";
-import type { AdminLearnerRecord, AdminPackItemStatus } from "./types";
+} from "@/features/apprentice-lifecycle/domain/adm14-checklist";
+import type { AdminApprenticeRecord, AdminPackItemStatus } from "./types";
 
 export type { Adm14RequirementDefinition };
 
 /**
- * PROVISIONAL — items that must be in place before a learner can be moved
+ * PROVISIONAL — items that must be in place before an apprentice can be moved
  * onto a programme.
  *
  * GTA admin team are highlighting the definitive per-section list (expected
  * Monday). Until then Intake only gates on personal details (name / DOB /
  * email). Keep this array as the single place to drop Monday's list into —
- * enrolment / Learners pack gating can then use it without a redesign.
+ * enrolment / Apprentices pack gating can then use it without a redesign.
  */
 export const PRE_START_REQUIRED_REFERENCES: string[] = [
   "1.1", // ILR
-  "1.2", // Learner Enrolment Form
-  "1.3", // Learner Interview Form
+  "1.2", // Apprentice Enrolment Form
+  "1.3", // Apprentice Interview Form
   "1.4", // Initial Assessment – BKSB Report
   "1.5", // Initial Assessment – KSB Testing Record
   "1.6", // Initial Assessment – PLR Report
@@ -77,10 +77,10 @@ export function isPreStartRequired(reference: string): boolean {
 
 /** Effective status for an item, applying defaults for untouched entries. */
 export function packItemStatus(
-  learner: AdminLearnerRecord,
+  apprentice: AdminApprenticeRecord,
   item: Adm14RequirementDefinition,
 ): AdminPackItemStatus | "future" {
-  const stored = learner.pack[item.reference];
+  const stored = apprentice.pack[item.reference];
   if (stored) return stored;
   return item.endOfProgramme ? "future" : "missing";
 }
@@ -103,13 +103,13 @@ export type PackSectionProgress = {
 };
 
 export function packSectionProgress(
-  learner: AdminLearnerRecord,
+  apprentice: AdminApprenticeRecord,
 ): PackSectionProgress[] {
   return PACK_SECTIONS.map((section) => {
     let satisfied = 0;
     let requiredOutstanding = 0;
     for (const item of section.items) {
-      const status = packItemStatus(learner, item);
+      const status = packItemStatus(apprentice, item);
       const done = packItemSatisfied(status);
       if (done) satisfied += 1;
       if (!done && isPreStartRequired(item.reference)) requiredOutstanding += 1;
@@ -129,8 +129,8 @@ export type PackTotals = {
   requiredOutstanding: number;
 };
 
-export function packTotals(learner: AdminLearnerRecord): PackTotals {
-  return packSectionProgress(learner).reduce<PackTotals>(
+export function packTotals(apprentice: AdminApprenticeRecord): PackTotals {
+  return packSectionProgress(apprentice).reduce<PackTotals>(
     (totals, entry) => ({
       satisfied: totals.satisfied + entry.satisfied,
       total: totals.total + entry.total,
@@ -142,57 +142,57 @@ export function packTotals(learner: AdminLearnerRecord): PackTotals {
 }
 
 /** Identity fields intake can't finish without. */
-export function missingPersonalFields(learner: AdminLearnerRecord): string[] {
+export function missingPersonalFields(apprentice: AdminApprenticeRecord): string[] {
   const missing: string[] = [];
-  if (!learner.displayName.trim()) missing.push("full name");
-  if (!learner.dateOfBirth) missing.push("date of birth");
-  if (!learner.email.trim()) missing.push("email");
-  if (!learner.uln.trim()) missing.push("ULN");
-  if (!learner.addressLine1.trim() || !learner.postcode.trim()) {
+  if (!apprentice.displayName.trim()) missing.push("full name");
+  if (!apprentice.dateOfBirth) missing.push("date of birth");
+  if (!apprentice.email.trim()) missing.push("email");
+  if (!apprentice.uln.trim()) missing.push("ULN");
+  if (!apprentice.addressLine1.trim() || !apprentice.postcode.trim()) {
     missing.push("address");
   }
-  if (!learner.emergencyContactName.trim()) missing.push("emergency contact");
+  if (!apprentice.emergencyContactName.trim()) missing.push("emergency contact");
   return missing;
 }
 
 /**
  * Everything still stopping intake from being signed off.
- * Progressive pack documents are chased on Learners — not here.
+ * Progressive pack documents are chased on Apprentices — not here.
  */
 export function intakeCompletionBlockers(
-  learner: AdminLearnerRecord,
+  apprentice: AdminApprenticeRecord,
 ): string[] {
-  return missingPersonalFields(learner).filter((field) =>
+  return missingPersonalFields(apprentice).filter((field) =>
     ["full name", "date of birth", "email"].includes(field),
   );
 }
 
 /**
- * Everything still blocking this learner from being moved onto a programme.
+ * Everything still blocking this apprentice from being moved onto a programme.
  * Intake sign-off covers the document detail, so this stays coarse.
  */
-export function enrolmentBlockers(learner: AdminLearnerRecord): string[] {
+export function enrolmentBlockers(apprentice: AdminApprenticeRecord): string[] {
   const blockers: string[] = [];
-  if (learner.intakeStatus !== "ready") {
+  if (apprentice.intakeStatus !== "ready") {
     blockers.push("intake still in progress");
   }
-  if (!learner.dateOfBirth) blockers.push("date of birth");
-  if (!learner.email) blockers.push("email");
+  if (!apprentice.dateOfBirth) blockers.push("date of birth");
+  if (!apprentice.email) blockers.push("email");
   return blockers;
 }
 
-/** Ready learners who haven't been put on a programme yet. */
+/** Ready apprentices who haven't been put on a programme yet. */
 export function awaitingEnrolment(
-  learners: AdminLearnerRecord[],
-  enrolledLearnerIds: Array<string | null>,
-): AdminLearnerRecord[] {
-  return learners.filter(
-    (learner) =>
-      learner.intakeStatus === "ready" &&
-      !enrolledLearnerIds.includes(learner.id),
+  apprentices: AdminApprenticeRecord[],
+  enrolledApprenticeIds: Array<string | null>,
+): AdminApprenticeRecord[] {
+  return apprentices.filter(
+    (apprentice) =>
+      apprentice.intakeStatus === "ready" &&
+      !enrolledApprenticeIds.includes(apprentice.id),
   );
 }
 
-export function isReadyToStart(learner: AdminLearnerRecord): boolean {
-  return enrolmentBlockers(learner).length === 0;
+export function isReadyToStart(apprentice: AdminApprenticeRecord): boolean {
+  return enrolmentBlockers(apprentice).length === 0;
 }

@@ -1,10 +1,21 @@
 import { createSeedSnapshot } from "./seed";
+import { assertJobTitlesAssignable } from "./staff-job-titles";
 import { isDemoModeEnabled } from "@/lib/env/portal";
+import {
+  createCohortOps,
+  DEFAULT_TEACHING_GROUP_CAPACITY,
+  type CohortInput,
+  type TeachingGroupInput,
+} from "./cohort-ops";
+import {
+  COHORT_LOCKED_MESSAGE,
+  COHORT_VERSION_FROZEN_MESSAGE,
+  isCohortStarted,
+} from "./cohort-lifecycle";
 import type {
-  AdminCohortRecord,
   AdminEmployerRecord,
-  AdminLearnerEnrolment,
-  AdminLearnerRecord,
+  AdminApprenticeEnrolment,
+  AdminApprenticeRecord,
   AdminPackItemStatus,
   AdminPortalUser,
   AdminProgrammeRecord,
@@ -13,7 +24,14 @@ import type {
   EnrolmentStatus,
 } from "./types";
 
-const STORAGE_KEY = "gta-portal.administration.v1";
+export {
+  DEFAULT_TEACHING_GROUP_CAPACITY,
+  type CohortInput,
+  type TeachingGroupInput,
+};
+export { isCohortStarted, COHORT_LOCKED_MESSAGE, COHORT_VERSION_FROZEN_MESSAGE };
+
+const STORAGE_KEY = "gta-portal.administration.v5";
 
 function isLiveAdminStoreEnabled(): boolean {
   return typeof window !== "undefined" && !isDemoModeEnabled();
@@ -29,8 +47,27 @@ function loadSnapshot(): AdminStoreSnapshot {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return createSeedSnapshot();
     const parsed = JSON.parse(raw) as AdminStoreSnapshot;
-    if (parsed?.version !== 15) return createSeedSnapshot();
-    return parsed;
+    if (parsed?.version !== 19) return createSeedSnapshot();
+    return {
+      ...parsed,
+      teachingGroups: parsed.teachingGroups ?? [],
+      cohortChangeLogs: parsed.cohortChangeLogs ?? [],
+      enrolments: (parsed.enrolments ?? []).map((row) => ({
+        ...row,
+        teachingGroupId: row.teachingGroupId ?? null,
+      })),
+      cohorts: (parsed.cohorts ?? []).map((row) => ({
+        ...row,
+        deliverySpine: row.deliverySpine ?? "blocks",
+        teacherNames:
+          row.teacherNames?.length > 0
+            ? row.teacherNames
+            : row.tutorName
+              ? row.tutorName.split(/\s*\|\s*/).map((n) => n.trim()).filter(Boolean)
+              : [],
+        locked: row.locked ?? true,
+      })),
+    };
   } catch {
     return createSeedSnapshot();
   }
@@ -67,13 +104,25 @@ async function fetchLiveAdminSlice(): Promise<void> {
   });
   if (!response.ok) return;
   const data = (await response.json()) as {
-    learners: AdminLearnerRecord[];
-    enrolments: AdminLearnerEnrolment[];
+    apprentices: AdminApprenticeRecord[];
+    enrolments: AdminApprenticeEnrolment[];
+    employers?: AdminEmployerRecord[];
+    programmes?: AdminProgrammeRecord[];
+    cohorts?: AdminStoreSnapshot["cohorts"];
+    teachingGroups?: AdminStoreSnapshot["teachingGroups"];
+    cohortChangeLogs?: AdminStoreSnapshot["cohortChangeLogs"];
+    users?: AdminPortalUser[];
   };
   snapshot = {
     ...snapshot,
-    learners: data.learners,
+    apprentices: data.apprentices,
     enrolments: data.enrolments,
+    employers: data.employers ?? snapshot.employers,
+    programmes: data.programmes ?? snapshot.programmes,
+    cohorts: data.cohorts ?? snapshot.cohorts,
+    teachingGroups: data.teachingGroups ?? snapshot.teachingGroups,
+    cohortChangeLogs: data.cohortChangeLogs ?? snapshot.cohortChangeLogs,
+    users: data.users ?? snapshot.users,
   };
 }
 
@@ -105,6 +154,15 @@ function id(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
+/** Assigned after updateEnrolment — used by cohort ops + enrolment placement. */
+let cohortOps: ReturnType<typeof createCohortOps>;
+
+function requireCohortUnlocked(cohortId: string): void {
+  const cohort = snapshot.cohorts.find((c) => c.id === cohortId);
+  if (!cohort) throw new Error("Cohort not found");
+  if (cohort.locked !== false) throw new Error(COHORT_LOCKED_MESSAGE);
+}
+
 export function subscribeAdminStore(listener: () => void): () => void {
   listeners.add(listener);
   scheduleHydrateFromStorage();
@@ -126,9 +184,9 @@ export function resetAdminStore(): void {
   emit();
 }
 
-export type LearnerInput = {
+export type ApprenticeInput = {
   displayName: string;
-  learnerReference: string;
+  apprenticeReference: string;
   email: string;
   phone: string;
   dateOfBirth: string;
@@ -141,55 +199,55 @@ export type LearnerInput = {
   emergencyContactPhone: string;
   emergencyContactRelationship: string;
   supportNotes: string;
-  intakeStatus: AdminLearnerRecord["intakeStatus"];
+  intakeStatus: AdminApprenticeRecord["intakeStatus"];
   notes: string;
 };
 
 /** e.g. GTA-2026-04831 */
-function generateLearnerReference(): string {
+function generateApprenticeReference(): string {
   const year = new Date().getFullYear();
   const serial = String(Math.floor(Math.random() * 90000) + 10000);
   return `GTA-${year}-0${serial.slice(0, 4)}`;
 }
 
-export function listLearners(): AdminLearnerRecord[] {
+export function listApprentices(): AdminApprenticeRecord[] {
   ensureHydrated();
-  return [...snapshot.learners].sort((a, b) =>
+  return [...snapshot.apprentices].sort((a, b) =>
     a.displayName.localeCompare(b.displayName),
   );
 }
 
-export function getLearner(idValue: string): AdminLearnerRecord | undefined {
+export function getApprentice(idValue: string): AdminApprenticeRecord | undefined {
   ensureHydrated();
-  return snapshot.learners.find((l) => l.id === idValue);
+  return snapshot.apprentices.find((l) => l.id === idValue);
 }
 
-export async function createLearner(input: LearnerInput): Promise<AdminLearnerRecord> {
+export async function createApprentice(input: ApprenticeInput): Promise<AdminApprenticeRecord> {
   ensureHydrated();
   if (isLiveAdminStoreEnabled()) {
     const response = await fetch("/api/admin/store", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ action: "createLearner", input }),
+      body: JSON.stringify({ action: "createApprentice", input }),
     });
     if (!response.ok) {
-      throw new Error("Unable to create learner");
+      throw new Error("Unable to create apprentice");
     }
-    const data = (await response.json()) as { learner: AdminLearnerRecord };
+    const data = (await response.json()) as { apprentice: AdminApprenticeRecord };
     snapshot = {
       ...snapshot,
-      learners: [data.learner, ...snapshot.learners.filter((row) => row.id !== data.learner.id)],
+      apprentices: [data.apprentice, ...snapshot.apprentices.filter((row) => row.id !== data.apprentice.id)],
     };
     emit();
-    return data.learner;
+    return data.apprentice;
   }
   const stamp = new Date().toISOString();
-  const row: AdminLearnerRecord = {
+  const row: AdminApprenticeRecord = {
     id: id("lrn"),
     displayName: input.displayName.trim(),
-    learnerReference:
-      input.learnerReference.trim() || generateLearnerReference(),
+    apprenticeReference:
+      input.apprenticeReference.trim() || generateApprenticeReference(),
     email: input.email.trim(),
     phone: input.phone.trim(),
     dateOfBirth: input.dateOfBirth,
@@ -210,53 +268,53 @@ export async function createLearner(input: LearnerInput): Promise<AdminLearnerRe
   };
   snapshot = {
     ...snapshot,
-    learners: [row, ...snapshot.learners],
+    apprentices: [row, ...snapshot.apprentices],
   };
   emit();
   return row;
 }
 
-export async function updateLearner(
+export async function updateApprentice(
   idValue: string,
-  patch: Partial<LearnerInput>,
-): Promise<AdminLearnerRecord | null> {
+  patch: Partial<ApprenticeInput>,
+): Promise<AdminApprenticeRecord | null> {
   ensureHydrated();
   if (isLiveAdminStoreEnabled()) {
     const response = await fetch("/api/admin/store", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ action: "updateLearner", id: idValue, patch }),
+      body: JSON.stringify({ action: "updateApprentice", id: idValue, patch }),
     });
     if (!response.ok) return null;
-    const data = (await response.json()) as { learner: AdminLearnerRecord };
+    const data = (await response.json()) as { apprentice: AdminApprenticeRecord };
     snapshot = {
       ...snapshot,
-      learners: snapshot.learners.map((row) => (row.id === idValue ? data.learner : row)),
+      apprentices: snapshot.apprentices.map((row) => (row.id === idValue ? data.apprentice : row)),
       enrolments: snapshot.enrolments.map((e) =>
-        e.learnerId === idValue
+        e.apprenticeId === idValue
           ? {
               ...e,
-              displayName: data.learner.displayName,
-              email: data.learner.email,
-              phone: data.learner.phone,
-              dateOfBirth: data.learner.dateOfBirth,
-              uln: data.learner.uln,
+              displayName: data.apprentice.displayName,
+              email: data.apprentice.email,
+              phone: data.apprentice.phone,
+              dateOfBirth: data.apprentice.dateOfBirth,
+              uln: data.apprentice.uln,
             }
           : e,
       ),
     };
     emit();
-    return data.learner;
+    return data.apprentice;
   }
-  const existing = snapshot.learners.find((l) => l.id === idValue);
+  const existing = snapshot.apprentices.find((l) => l.id === idValue);
   if (!existing) return null;
-  const next: AdminLearnerRecord = {
+  const next: AdminApprenticeRecord = {
     ...existing,
     ...patch,
     displayName: (patch.displayName ?? existing.displayName).trim(),
-    learnerReference: (
-      patch.learnerReference ?? existing.learnerReference
+    apprenticeReference: (
+      patch.apprenticeReference ?? existing.apprenticeReference
     ).trim(),
     email: (patch.email ?? existing.email).trim(),
     phone: (patch.phone ?? existing.phone).trim(),
@@ -281,10 +339,10 @@ export async function updateLearner(
   };
   snapshot = {
     ...snapshot,
-    learners: snapshot.learners.map((l) => (l.id === idValue ? next : l)),
+    apprentices: snapshot.apprentices.map((l) => (l.id === idValue ? next : l)),
     // Keep enrolment snapshots of personal details in step with the record.
     enrolments: snapshot.enrolments.map((e) =>
-      e.learnerId === idValue
+      e.apprenticeId === idValue
         ? {
             ...e,
             displayName: next.displayName,
@@ -300,22 +358,22 @@ export async function updateLearner(
   return next;
 }
 
-export function setLearnerPackItem(
-  learnerId: string,
+export function setApprenticePackItem(
+  apprenticeId: string,
   reference: string,
   status: AdminPackItemStatus,
 ): void {
   ensureHydrated();
-  const existing = snapshot.learners.find((l) => l.id === learnerId);
+  const existing = snapshot.apprentices.find((l) => l.id === apprenticeId);
   if (!existing) return;
-  const next: AdminLearnerRecord = {
+  const next: AdminApprenticeRecord = {
     ...existing,
     pack: { ...existing.pack, [reference]: status },
     updatedAt: new Date().toISOString(),
   };
   snapshot = {
     ...snapshot,
-    learners: snapshot.learners.map((l) => (l.id === learnerId ? next : l)),
+    apprentices: snapshot.apprentices.map((l) => (l.id === apprenticeId ? next : l)),
   };
   emit();
 }
@@ -323,7 +381,7 @@ export function setLearnerPackItem(
 export type EnrolmentInput = {
   kind: EnrolmentKind;
   status?: EnrolmentStatus;
-  learnerId: string | null;
+  apprenticeId: string | null;
   displayName: string;
   email: string;
   phone: string;
@@ -332,6 +390,9 @@ export type EnrolmentInput = {
   programmeName: string;
   standardCode: string;
   cohortId: string | null;
+  teachingGroupId?: string | null;
+  /** When true, allow placing into a full teaching group. */
+  allowOverCapacity?: boolean;
   employerId: string;
   employerName: string;
   workplaceContact: string;
@@ -347,19 +408,19 @@ export type EnrolmentInput = {
   notes: string;
 };
 
-export function listEnrolments(): AdminLearnerEnrolment[] {
+export function listEnrolments(): AdminApprenticeEnrolment[] {
   ensureHydrated();
   return [...snapshot.enrolments].sort((a, b) =>
     b.updatedAt.localeCompare(a.updatedAt),
   );
 }
 
-export function getEnrolment(idValue: string): AdminLearnerEnrolment | undefined {
+export function getEnrolment(idValue: string): AdminApprenticeEnrolment | undefined {
   ensureHydrated();
   return snapshot.enrolments.find((e) => e.id === idValue);
 }
 
-export async function createEnrolment(input: EnrolmentInput): Promise<AdminLearnerEnrolment> {
+export async function createEnrolment(input: EnrolmentInput): Promise<AdminApprenticeEnrolment> {
   ensureHydrated();
   if (isLiveAdminStoreEnabled()) {
     const response = await fetch("/api/admin/store", {
@@ -371,7 +432,7 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminLearn
     if (!response.ok) {
       throw new Error("Unable to create enrolment");
     }
-    const data = (await response.json()) as { enrolment: AdminLearnerEnrolment };
+    const data = (await response.json()) as { enrolment: AdminApprenticeEnrolment };
     snapshot = {
       ...snapshot,
       enrolments: [
@@ -382,14 +443,33 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminLearn
     emit();
     return data.enrolment;
   }
+  let teachingGroupId = input.teachingGroupId ?? null;
+  let tutorName = input.tutorName.trim();
+  let collegeDays = input.collegeDays.trim();
+  let cohortId = input.cohortId;
+  if (teachingGroupId) {
+    const applied = cohortOps.applyTeachingGroupToEnrolmentPatch(
+      teachingGroupId,
+      Boolean(input.allowOverCapacity),
+      "",
+    );
+    if ("error" in applied) {
+      throw new Error(applied.error);
+    }
+    teachingGroupId = applied.patch.teachingGroupId ?? teachingGroupId;
+    tutorName = (applied.patch.tutorName ?? tutorName).trim();
+    collegeDays = (applied.patch.collegeDays ?? collegeDays).trim();
+    cohortId = applied.patch.cohortId ?? cohortId;
+  }
+
   const stamp = new Date().toISOString();
-  const row: AdminLearnerEnrolment = {
+  const row: AdminApprenticeEnrolment = {
     id: id("enr"),
     kind: input.kind,
     status:
       input.status ??
       (input.kind === "new_starter" ? "pending_start" : "active"),
-    learnerId: input.learnerId,
+    apprenticeId: input.apprenticeId,
     displayName: input.displayName.trim(),
     email: input.email.trim(),
     phone: input.phone.trim(),
@@ -397,29 +477,30 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminLearn
     uln: input.uln.trim(),
     programmeName: input.programmeName,
     standardCode: input.standardCode,
-    cohortId: input.cohortId,
+    cohortId,
+    teachingGroupId,
     employerId: input.employerId,
     employerName: input.employerName,
     workplaceContact: input.workplaceContact.trim(),
     mentorName: input.mentorName.trim(),
-    tutorName: input.tutorName.trim(),
+    tutorName,
     startDate: input.startDate,
     originalPlannedEndDate: input.originalPlannedEndDate,
     programmeYear: input.programmeYear,
     programmeWeek: input.programmeWeek,
     attendancePercent: input.attendancePercent,
     actualProgressPercent: input.actualProgressPercent,
-    collegeDays: input.collegeDays.trim(),
+    collegeDays,
     notes: input.notes.trim(),
     createdAt: stamp,
     updatedAt: stamp,
   };
 
-  /** Enrolment queues Account Setup — staff enable the learner environment. */
+  /** Enrolment queues Account Setup — staff enable the apprentice environment. */
   const emailKey = row.email.toLowerCase();
   const alreadyHasPortal = snapshot.users.some(
     (u) =>
-      u.linkedLearnerId === row.learnerId ||
+      u.linkedApprenticeId === row.apprenticeId ||
       u.linkedEnrolmentId === row.id ||
       (u.email.trim().toLowerCase() === emailKey && emailKey.length > 0),
   );
@@ -429,10 +510,11 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminLearn
         id: id("user"),
         displayName: row.displayName,
         email: row.email,
-        role: "Learner",
-        workspace: "learner",
+        role: "Apprentice",
+        workspace: "apprentice",
+        jobTitles: [],
         linkedEnrolmentId: row.id,
-        linkedLearnerId: row.learnerId,
+        linkedApprenticeId: row.apprenticeId,
         linkedEmployerId: row.employerId,
         programmeStartDate: row.startDate || null,
         status: "invited",
@@ -458,7 +540,7 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminLearn
 export async function updateEnrolment(
   idValue: string,
   patch: Partial<EnrolmentInput> & { status?: EnrolmentStatus },
-): Promise<AdminLearnerEnrolment | null> {
+): Promise<AdminApprenticeEnrolment | null> {
   ensureHydrated();
   if (isLiveAdminStoreEnabled()) {
     const response = await fetch("/api/admin/store", {
@@ -468,7 +550,7 @@ export async function updateEnrolment(
       body: JSON.stringify({ action: "updateEnrolment", id: idValue, patch }),
     });
     if (!response.ok) return null;
-    const data = (await response.json()) as { enrolment: AdminLearnerEnrolment };
+    const data = (await response.json()) as { enrolment: AdminApprenticeEnrolment };
     snapshot = {
       ...snapshot,
       enrolments: snapshot.enrolments.map((row) =>
@@ -480,22 +562,60 @@ export async function updateEnrolment(
   }
   const existing = snapshot.enrolments.find((e) => e.id === idValue);
   if (!existing) return null;
-  const next: AdminLearnerEnrolment = {
+
+  let derived: Partial<AdminApprenticeEnrolment> = {};
+  if (patch.teachingGroupId !== undefined) {
+    if (patch.teachingGroupId) {
+      const group = snapshot.teachingGroups.find(
+        (g) => g.id === patch.teachingGroupId,
+      );
+      if (group) requireCohortUnlocked(group.cohortId);
+    } else if (existing.cohortId) {
+      requireCohortUnlocked(existing.cohortId);
+    }
+    const applied = cohortOps.applyTeachingGroupToEnrolmentPatch(
+      patch.teachingGroupId,
+      Boolean(patch.allowOverCapacity),
+      idValue,
+    );
+    if ("error" in applied) {
+      throw new Error(applied.error);
+    }
+    derived = applied.patch;
+  }
+
+  const next: AdminApprenticeEnrolment = {
     ...existing,
     ...patch,
+    ...derived,
     displayName: (patch.displayName ?? existing.displayName).trim(),
     email: (patch.email ?? existing.email).trim(),
     phone: (patch.phone ?? existing.phone).trim(),
     uln: (patch.uln ?? existing.uln).trim(),
     workplaceContact: (patch.workplaceContact ?? existing.workplaceContact).trim(),
     mentorName: (patch.mentorName ?? existing.mentorName).trim(),
-    tutorName: (patch.tutorName ?? existing.tutorName).trim(),
+    tutorName: (derived.tutorName ?? patch.tutorName ?? existing.tutorName).trim(),
     originalPlannedEndDate:
       patch.originalPlannedEndDate ?? existing.originalPlannedEndDate,
-    collegeDays: (patch.collegeDays ?? existing.collegeDays).trim(),
+    collegeDays: (
+      derived.collegeDays ??
+      patch.collegeDays ??
+      existing.collegeDays
+    ).trim(),
+    teachingGroupId:
+      derived.teachingGroupId !== undefined
+        ? derived.teachingGroupId
+        : (patch.teachingGroupId ?? existing.teachingGroupId),
+    cohortId:
+      derived.cohortId !== undefined
+        ? derived.cohortId
+        : (patch.cohortId ?? existing.cohortId),
     notes: (patch.notes ?? existing.notes).trim(),
     updatedAt: new Date().toISOString(),
   };
+  // EnrolmentInput extras must not persist on the row.
+  delete (next as AdminApprenticeEnrolment & { allowOverCapacity?: boolean })
+    .allowOverCapacity;
   snapshot = {
     ...snapshot,
     enrolments: snapshot.enrolments.map((e) => (e.id === idValue ? next : e)),
@@ -526,8 +646,25 @@ export function listEmployers(): AdminEmployerRecord[] {
   return [...snapshot.employers].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function createEmployer(input: EmployerInput): AdminEmployerRecord {
+export async function createEmployer(
+  input: EmployerInput,
+): Promise<AdminEmployerRecord> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{ employer: AdminEmployerRecord }>(
+      { action: "createEmployer", input },
+      "Unable to create employer",
+    );
+    snapshot = {
+      ...snapshot,
+      employers: [
+        data.employer,
+        ...snapshot.employers.filter((row) => row.id !== data.employer.id),
+      ],
+    };
+    emit();
+    return data.employer;
+  }
   const stamp = new Date().toISOString();
   const row: AdminEmployerRecord = {
     id: id("emp"),
@@ -556,11 +693,25 @@ export function createEmployer(input: EmployerInput): AdminEmployerRecord {
   return row;
 }
 
-export function updateEmployer(
+export async function updateEmployer(
   idValue: string,
   patch: Partial<EmployerInput>,
-): AdminEmployerRecord | null {
+): Promise<AdminEmployerRecord | null> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{ employer: AdminEmployerRecord }>(
+      { action: "updateEmployer", id: idValue, patch },
+      "Unable to update employer",
+    );
+    snapshot = {
+      ...snapshot,
+      employers: snapshot.employers.map((e) =>
+        e.id === idValue ? data.employer : e,
+      ),
+    };
+    emit();
+    return data.employer;
+  }
   const existing = snapshot.employers.find((e) => e.id === idValue);
   if (!existing) return null;
   const next: AdminEmployerRecord = {
@@ -609,8 +760,25 @@ export function listProgrammes(): AdminProgrammeRecord[] {
   );
 }
 
-export function createProgramme(input: ProgrammeInput): AdminProgrammeRecord {
+export async function createProgramme(
+  input: ProgrammeInput,
+): Promise<AdminProgrammeRecord> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{ programme: AdminProgrammeRecord }>(
+      { action: "createProgramme", input },
+      "Unable to create programme",
+    );
+    snapshot = {
+      ...snapshot,
+      programmes: [
+        data.programme,
+        ...snapshot.programmes.filter((row) => row.id !== data.programme.id),
+      ],
+    };
+    emit();
+    return data.programme;
+  }
   const stamp = new Date().toISOString();
   const row: AdminProgrammeRecord = {
     id: id("prog"),
@@ -637,11 +805,25 @@ export function createProgramme(input: ProgrammeInput): AdminProgrammeRecord {
   return row;
 }
 
-export function updateProgramme(
+export async function updateProgramme(
   idValue: string,
   patch: Partial<ProgrammeInput>,
-): AdminProgrammeRecord | null {
+): Promise<AdminProgrammeRecord | null> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{ programme: AdminProgrammeRecord }>(
+      { action: "updateProgramme", id: idValue, patch },
+      "Unable to update programme",
+    );
+    snapshot = {
+      ...snapshot,
+      programmes: snapshot.programmes.map((p) =>
+        p.id === idValue ? data.programme : p,
+      ),
+    };
+    emit();
+    return data.programme;
+  }
   const existing = snapshot.programmes.find((p) => p.id === idValue);
   if (!existing) return null;
   const next: AdminProgrammeRecord = {
@@ -669,141 +851,224 @@ export function updateProgramme(
   return next;
 }
 
-export type CohortInput = {
-  name: string;
-  programmeId: string;
-  programmeName: string;
-  standardCode: string;
-  standardVersion: string;
-  enrolmentOpensDate: string;
-  startDate: string;
-  expectedEndDate: string;
-  teachingGroup: string;
-  collegeDays: string;
-  tutorName: string;
-  status: AdminCohortRecord["status"];
-  notes: string;
-};
+cohortOps = createCohortOps({
+  getSnapshot: () => ({
+    cohorts: snapshot.cohorts,
+    teachingGroups: snapshot.teachingGroups,
+    cohortChangeLogs: snapshot.cohortChangeLogs,
+    enrolments: snapshot.enrolments,
+  }),
+  setSnapshot: (next) => {
+    snapshot = { ...snapshot, ...next };
+  },
+  emit,
+  ensureHydrated,
+  id,
+  updateEnrolment,
+});
 
-export function listCohorts(): AdminCohortRecord[] {
-  ensureHydrated();
-  return [...snapshot.cohorts].sort((a, b) =>
-    b.startDate.localeCompare(a.startDate),
-  );
+export const listCohorts = cohortOps.listCohorts;
+export const listCohortChangeLogs = cohortOps.listCohortChangeLogs;
+export const findIntakeCohort = cohortOps.findIntakeCohort;
+export const listTeachingGroups = cohortOps.listTeachingGroups;
+
+async function liveAdminPost<T>(
+  body: Record<string, unknown>,
+  fallbackError: string,
+): Promise<T> {
+  const response = await fetch("/api/admin/store", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) {
+    const data = (await response.json().catch(() => null)) as {
+      error?: string;
+    } | null;
+    throw new Error(data?.error ?? fallbackError);
+  }
+  return (await response.json()) as T;
 }
 
-export function createCohort(input: CohortInput): AdminCohortRecord {
-  ensureHydrated();
-  const stamp = new Date().toISOString();
-  const row: AdminCohortRecord = {
-    id: id("cohort"),
-    name: input.name.trim(),
-    programmeId: input.programmeId,
-    programmeName: input.programmeName.trim(),
-    standardCode: input.standardCode.trim().toUpperCase(),
-    standardVersion: input.standardVersion.trim().replace(/^v/i, ""),
-    enrolmentOpensDate: input.enrolmentOpensDate,
-    startDate: input.startDate,
-    expectedEndDate: input.expectedEndDate,
-    teachingGroup: input.teachingGroup.trim(),
-    collegeDays: input.collegeDays.trim(),
-    tutorName: input.tutorName.trim(),
-    status: input.status,
-    notes: input.notes.trim(),
-    createdAt: stamp,
-    updatedAt: stamp,
-  };
-  snapshot = {
-    ...snapshot,
-    cohorts: [row, ...snapshot.cohorts],
-  };
-  emit();
-  return row;
+export async function createCohort(
+  input: CohortInput,
+): Promise<AdminStoreSnapshot["cohorts"][number]> {
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{
+      cohort: AdminStoreSnapshot["cohorts"][number];
+    }>({ action: "createCohort", input }, "Unable to create cohort");
+    snapshot = {
+      ...snapshot,
+      cohorts: [
+        data.cohort,
+        ...snapshot.cohorts.filter((row) => row.id !== data.cohort.id),
+      ],
+    };
+    emit();
+    return data.cohort;
+  }
+  return cohortOps.createCohort(input);
 }
 
-export function updateCohort(
+export async function updateCohort(
   idValue: string,
   patch: Partial<CohortInput>,
-): AdminCohortRecord | null {
-  ensureHydrated();
-  const existing = snapshot.cohorts.find((c) => c.id === idValue);
-  if (!existing) return null;
-  const next: AdminCohortRecord = {
-    ...existing,
-    ...patch,
-    name: (patch.name ?? existing.name).trim(),
-    programmeName: (patch.programmeName ?? existing.programmeName).trim(),
-    standardCode: (patch.standardCode ?? existing.standardCode)
-      .trim()
-      .toUpperCase(),
-    standardVersion: (patch.standardVersion ?? existing.standardVersion)
-      .trim()
-      .replace(/^v/i, ""),
-    teachingGroup: (patch.teachingGroup ?? existing.teachingGroup).trim(),
-    collegeDays: (patch.collegeDays ?? existing.collegeDays).trim(),
-    tutorName: (patch.tutorName ?? existing.tutorName).trim(),
-    notes: (patch.notes ?? existing.notes).trim(),
-    updatedAt: new Date().toISOString(),
-  };
-  snapshot = {
-    ...snapshot,
-    cohorts: snapshot.cohorts.map((c) => (c.id === idValue ? next : c)),
-  };
-  emit();
-  return next;
+): Promise<AdminStoreSnapshot["cohorts"][number] | null> {
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{
+      cohort: AdminStoreSnapshot["cohorts"][number];
+    }>(
+      { action: "updateCohort", id: idValue, patch },
+      "Unable to update cohort — it may be locked.",
+    );
+    snapshot = {
+      ...snapshot,
+      cohorts: snapshot.cohorts.map((row) =>
+        row.id === idValue ? data.cohort : row,
+      ),
+    };
+    emit();
+    return data.cohort;
+  }
+  return cohortOps.updateCohort(idValue, patch);
 }
 
-/**
- * Find the cohort a new pupil should auto-flow into for a given standard.
- * Only planned (not-yet-active) cohorts accept auto-flow, and only once their
- * enrolment window has opened. Once a cohort is active, learners must be placed
- * manually for accuracy. Returns the soonest-starting eligible cohort.
- */
-export function findIntakeCohort(
-  standardCode: string,
-  onDate: string = new Date().toISOString().slice(0, 10),
-): AdminCohortRecord | null {
-  ensureHydrated();
-  const code = standardCode.trim().toUpperCase();
-  const eligible = snapshot.cohorts
-    .filter(
-      (c) =>
-        c.standardCode.toUpperCase() === code &&
-        c.status === "planned" &&
-        (!c.enrolmentOpensDate || c.enrolmentOpensDate <= onDate),
-    )
-    .sort((a, b) => a.startDate.localeCompare(b.startDate));
-  return eligible[0] ?? null;
+export async function lockCohortWithSessionLog(
+  cohortId: string,
+  sessionEdits: string[],
+  actorName = "",
+): Promise<{
+  cohort: AdminStoreSnapshot["cohorts"][number];
+  entry: AdminStoreSnapshot["cohortChangeLogs"][number];
+} | null> {
+  if (isLiveAdminStoreEnabled()) {
+    const details = sessionEdits.map((line) => line.trim()).filter(Boolean);
+    const resolvedActor = actorName.trim() || "Administrator";
+    const summary = details.length
+      ? `${resolvedActor} saved ${details.length} change${details.length === 1 ? "" : "s"}`
+      : `${resolvedActor} locked with no structural changes`;
+    const data = await liveAdminPost<{
+      cohort: AdminStoreSnapshot["cohorts"][number];
+      entry: AdminStoreSnapshot["cohortChangeLogs"][number];
+    }>(
+      {
+        action: "lockCohortSession",
+        id: cohortId,
+        summary,
+        details,
+        actorName: resolvedActor,
+      },
+      "Unable to lock cohort",
+    );
+    snapshot = {
+      ...snapshot,
+      cohorts: snapshot.cohorts.map((row) =>
+        row.id === cohortId ? data.cohort : row,
+      ),
+      cohortChangeLogs: [
+        data.entry,
+        ...(snapshot.cohortChangeLogs ?? []).filter(
+          (row) => row.id !== data.entry.id,
+        ),
+      ],
+    };
+    emit();
+    return data;
+  }
+  return cohortOps.lockCohortWithSessionLog(cohortId, sessionEdits, actorName);
 }
 
-/** Assign or remove a learner from a cohort (pins them to that version). */
 export async function setEnrolmentCohort(
   enrolmentId: string,
   cohortId: string | null,
-): Promise<AdminLearnerEnrolment | null> {
-  ensureHydrated();
+): Promise<AdminApprenticeEnrolment | null> {
+  return cohortOps.setEnrolmentCohort(enrolmentId, cohortId);
+}
+
+export async function assignEnrolmentToTeachingGroup(
+  enrolmentId: string,
+  teachingGroupId: string | null,
+  opts?: { allowOverCapacity?: boolean },
+): Promise<AdminApprenticeEnrolment | null> {
+  return cohortOps.assignEnrolmentToTeachingGroup(
+    enrolmentId,
+    teachingGroupId,
+    opts,
+  );
+}
+
+export async function createTeachingGroup(
+  input: TeachingGroupInput,
+): Promise<AdminStoreSnapshot["teachingGroups"][number]> {
   if (isLiveAdminStoreEnabled()) {
-    return updateEnrolment(enrolmentId, { cohortId });
+    const data = await liveAdminPost<{
+      teachingGroup: AdminStoreSnapshot["teachingGroups"][number];
+    }>(
+      { action: "createTeachingGroup", input },
+      "Unable to create teaching group",
+    );
+    snapshot = {
+      ...snapshot,
+      teachingGroups: [
+        data.teachingGroup,
+        ...snapshot.teachingGroups.filter(
+          (g) => g.id !== data.teachingGroup.id,
+        ),
+      ],
+    };
+    emit();
+    return data.teachingGroup;
   }
-  const existing = snapshot.enrolments.find((e) => e.id === enrolmentId);
-  if (!existing) return null;
-  if (cohortId) {
-    const cohort = snapshot.cohorts.find((c) => c.id === cohortId);
-    if (!cohort) return null;
+  return cohortOps.createTeachingGroup(input);
+}
+
+export async function updateTeachingGroup(
+  idValue: string,
+  patch: Partial<TeachingGroupInput>,
+): Promise<AdminStoreSnapshot["teachingGroups"][number] | null> {
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{
+      teachingGroup: AdminStoreSnapshot["teachingGroups"][number];
+    }>(
+      { action: "updateTeachingGroup", id: idValue, patch },
+      "Unable to update teaching group",
+    );
+    snapshot = {
+      ...snapshot,
+      teachingGroups: snapshot.teachingGroups.map((g) =>
+        g.id === idValue ? data.teachingGroup : g,
+      ),
+      enrolments: snapshot.enrolments.map((e) => {
+        if (e.teachingGroupId !== idValue) return e;
+        return {
+          ...e,
+          tutorName: data.teachingGroup.tutorName,
+          collegeDays: data.teachingGroup.collegeDays,
+          updatedAt: new Date().toISOString(),
+        };
+      }),
+    };
+    emit();
+    return data.teachingGroup;
   }
-  const next: AdminLearnerEnrolment = {
-    ...existing,
-    cohortId,
-    updatedAt: new Date().toISOString(),
-  };
-  snapshot = {
-    ...snapshot,
-    enrolments: snapshot.enrolments.map((e) =>
-      e.id === enrolmentId ? next : e,
-    ),
-  };
-  emit();
-  return next;
+  return cohortOps.updateTeachingGroup(idValue, patch);
+}
+
+export async function deleteTeachingGroup(idValue: string): Promise<void> {
+  if (isLiveAdminStoreEnabled()) {
+    await liveAdminPost<{ ok: boolean }>(
+      { action: "deleteTeachingGroup", id: idValue },
+      "Unable to delete teaching group",
+    );
+    snapshot = {
+      ...snapshot,
+      teachingGroups: snapshot.teachingGroups.filter((g) => g.id !== idValue),
+    };
+    emit();
+    return;
+  }
+  return cohortOps.deleteTeachingGroup(idValue);
 }
 
 export type UserInput = {
@@ -811,8 +1076,9 @@ export type UserInput = {
   email: string;
   role: AdminPortalUser["role"];
   workspace: string;
+  jobTitles?: string[];
   linkedEnrolmentId: string | null;
-  linkedLearnerId: string | null;
+  linkedApprenticeId: string | null;
   linkedEmployerId: string | null;
   programmeStartDate: string | null;
   status: AdminPortalUser["status"];
@@ -829,8 +1095,25 @@ export function listUsers(): AdminPortalUser[] {
   );
 }
 
-export function createUser(input: UserInput): AdminPortalUser {
+export async function createUser(
+  input: UserInput,
+): Promise<AdminPortalUser> {
   ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{
+      user: AdminPortalUser;
+      temporaryPassword?: string;
+    }>({ action: "createStaff", input }, "Unable to create staff member");
+    snapshot = {
+      ...snapshot,
+      users: [
+        data.user,
+        ...snapshot.users.filter((row) => row.id !== data.user.id),
+      ],
+    };
+    emit();
+    return data.user;
+  }
   const stamp = new Date().toISOString();
   const row: AdminPortalUser = {
     id: id("user"),
@@ -838,8 +1121,9 @@ export function createUser(input: UserInput): AdminPortalUser {
     email: input.email.trim(),
     role: input.role,
     workspace: input.workspace,
+    jobTitles: (input.jobTitles ?? []).map((t) => t.trim()).filter(Boolean),
     linkedEnrolmentId: input.linkedEnrolmentId,
-    linkedLearnerId: input.linkedLearnerId,
+    linkedApprenticeId: input.linkedApprenticeId,
     linkedEmployerId: input.linkedEmployerId,
     programmeStartDate: input.programmeStartDate,
     status: input.status,
@@ -870,6 +1154,9 @@ export function updateUser(
     ...patch,
     displayName: (patch.displayName ?? existing.displayName).trim(),
     email: (patch.email ?? existing.email).trim(),
+    jobTitles: (patch.jobTitles ?? existing.jobTitles ?? []).map((t) =>
+      t.trim(),
+    ),
     updatedAt: new Date().toISOString(),
   };
   snapshot = {
@@ -878,6 +1165,36 @@ export function updateUser(
   };
   emit();
   return next;
+}
+
+export async function updateStaffProfile(
+  idValue: string,
+  patch: {
+    role?: AdminPortalUser["role"];
+    workspace?: string;
+    jobTitles?: string[];
+  },
+): Promise<AdminPortalUser | null> {
+  ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    if (patch.jobTitles) {
+      assertJobTitlesAssignable(idValue, patch.jobTitles, snapshot.users);
+    }
+    const data = await liveAdminPost<{ user: AdminPortalUser }>(
+      { action: "updateStaffProfile", id: idValue, patch },
+      "Unable to update staff profile",
+    );
+    snapshot = {
+      ...snapshot,
+      users: snapshot.users.map((u) => (u.id === idValue ? data.user : u)),
+    };
+    emit();
+    return data.user;
+  }
+  if (patch.jobTitles) {
+    assertJobTitlesAssignable(idValue, patch.jobTitles, snapshot.users);
+  }
+  return updateUser(idValue, patch);
 }
 
 /** Staff turn on the portal environment after enrolment / invite. */
@@ -893,32 +1210,99 @@ export function enablePortalEnvironment(
 }
 
 /** Change environment state, stamping who enabled or disabled it. */
-export function setPortalEnvironment(
+export async function setPortalEnvironment(
   idValue: string,
   status: AdminPortalUser["status"],
   actorName: string,
-): AdminPortalUser | null {
+): Promise<{ user: AdminPortalUser; temporaryPassword?: string }> {
+  ensureHydrated();
+  if (isLiveAdminStoreEnabled()) {
+    const data = await liveAdminPost<{
+      user: AdminPortalUser;
+      temporaryPassword?: string;
+    }>(
+      {
+        action: "setPortalEnvironment",
+        id: idValue,
+        status,
+        actorName,
+      },
+      "Unable to update portal environment",
+    );
+    snapshot = {
+      ...snapshot,
+      users: snapshot.users.map((u) => (u.id === idValue ? data.user : u)),
+    };
+    emit();
+    return {
+      user: data.user,
+      temporaryPassword: data.temporaryPassword,
+    };
+  }
   const stamp = new Date().toISOString();
   if (status === "active") {
-    return updateUser(idValue, {
+    const user = updateUser(idValue, {
       status,
       enabledBy: actorName,
       enabledAt: stamp,
     });
+    if (!user) throw new Error("Unable to update portal environment");
+    if (user.role === "Apprentice" || user.workspace === "apprentice") {
+      const { generateTempPassword } = await import("./temp-password");
+      return { user, temporaryPassword: generateTempPassword() };
+    }
+    return { user };
   }
   if (status === "disabled") {
-    return updateUser(idValue, {
+    const user = updateUser(idValue, {
       status,
       disabledBy: actorName,
       disabledAt: stamp,
     });
+    if (!user) throw new Error("Unable to update portal environment");
+    return { user };
   }
-  return updateUser(idValue, { status });
+  const user = updateUser(idValue, { status });
+  if (!user) throw new Error("Unable to update portal environment");
+  return { user };
+}
+
+export async function revealApprenticePassword(
+  portalUserId: string,
+  adminPassword: string,
+): Promise<{ password: string; email: string; displayName: string }> {
+  ensureHydrated();
+  if (!isLiveAdminStoreEnabled()) {
+    const { generateTempPassword } = await import("./temp-password");
+    const user = snapshot.users.find((u) => u.id === portalUserId);
+    return {
+      password: generateTempPassword(),
+      email: user?.email ?? "demo@example.gta.local",
+      displayName: user?.displayName ?? "Demo apprentice",
+    };
+  }
+  const data = await liveAdminPost<{
+    password: string;
+    email?: string;
+    displayName?: string;
+  }>(
+    {
+      action: "revealApprenticePassword",
+      id: portalUserId,
+      adminPassword,
+    },
+    "Unable to reveal password",
+  );
+  return {
+    password: data.password,
+    email: data.email ?? "",
+    displayName: data.displayName ?? "",
+  };
 }
 
 export function getAdminStats() {
   ensureHydrated();
-  const activeLearners = snapshot.enrolments.filter(
+  const activeApprentices = snapshot.enrolments.filter(
     (e) => e.status === "active",
   ).length;
   const pendingStart = snapshot.enrolments.filter(
@@ -933,7 +1317,7 @@ export function getAdminStats() {
   const portalUsers = snapshot.users.filter((u) => u.status !== "disabled")
     .length;
   return {
-    activeLearners,
+    activeApprentices,
     pendingStart,
     activeEmployers,
     activeProgrammes,

@@ -3,21 +3,21 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { MENTOR_LEARNERS } from "../data/mentor-caseload";
+import { MENTOR_APPRENTICES } from "../data/mentor-caseload";
 import {
   MentorPageShell,
   StatusChip,
 } from "../components/MentorWorkQueue";
 import {
-  buildProgressLearnerViews,
-  learnerOpenHref,
+  buildProgressApprenticeViews,
+  apprenticeOpenHref,
   nextActionHref,
   priorityBandLabel,
   priorityBandTone,
   sortByOperationalPriority,
   type PriorityBand,
   type PriorityReason,
-  type ProgressLearnerView,
+  type ProgressApprenticeView,
 } from "../lib/priority-score";
 import styles from "./ProgressMonitoringScreen.module.css";
 
@@ -64,7 +64,7 @@ function hrefWith(
     : "/workspaces/progress-mentor/progress-monitoring";
 }
 
-function reviewLabel(status: ProgressLearnerView["reviewStatus"]): string {
+function reviewLabel(status: ProgressApprenticeView["reviewStatus"]): string {
   switch (status) {
     case "ready":
       return "Ready";
@@ -82,7 +82,7 @@ function reviewLabel(status: ProgressLearnerView["reviewStatus"]): string {
 }
 
 function reviewTone(
-  status: ProgressLearnerView["reviewStatus"],
+  status: ProgressApprenticeView["reviewStatus"],
 ): "green" | "amber" | "red" | "orange" | "blue" | "neutral" {
   switch (status) {
     case "ready":
@@ -116,7 +116,7 @@ function varianceDirectionTone(
  */
 function attendanceDirectionTone(
   percent: number | null,
-  trend: ProgressLearnerView["attendanceTrend"],
+  trend: ProgressApprenticeView["attendanceTrend"],
 ): "green" | "amber" | "red" | "neutral" {
   if (percent == null) return "neutral";
   if (percent < 70) return "red";
@@ -161,9 +161,9 @@ function interventionTone(
   return "neutral";
 }
 
-function interventionLabel(row: ProgressLearnerView): string {
-  if (!row.learner.interventionType) return "None";
-  const type = row.learner.interventionType
+function interventionLabel(row: ProgressApprenticeView): string {
+  if (!row.apprentice.interventionType) return "None";
+  const type = row.apprentice.interventionType
     .replace(" recovery", "")
     .replace(" improvement", "")
     .replace("Programme-overdue", "Overdue");
@@ -198,25 +198,25 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
   };
 
   const allViews = useMemo(
-    () => buildProgressLearnerViews(MENTOR_LEARNERS),
+    () => buildProgressApprenticeViews(MENTOR_APPRENTICES),
     [],
   );
 
   const summary = useMemo(() => {
-    const active = allViews.filter((r) => r.learner.status !== "completed");
+    const active = allViews.filter((r) => r.apprentice.status !== "completed");
     return {
       critical: active.filter((r) => r.priorityBand === "critical").length,
       high: active.filter((r) => r.priorityBand === "high").length,
-      overdue: active.filter((r) => r.learner.programmeOverdue).length,
+      overdue: active.filter((r) => r.apprentice.programmeOverdue).length,
       behind: active.filter((r) => r.variance < -5).length,
       reviewsOverdue: active.filter((r) => r.reviewStatus === "overdue").length,
       missingEvidence: active.filter(
-        (r) => r.learner.missingMandatoryEvidence > 0,
+        (r) => r.apprentice.missingMandatoryEvidence > 0,
       ).length,
       attendanceRisk: active.filter(
         (r) =>
-          r.learner.attendancePercent != null &&
-          r.learner.attendancePercent < 85,
+          r.apprentice.attendancePercent != null &&
+          r.apprentice.attendancePercent < 85,
       ).length,
     };
   }, [allViews]);
@@ -227,9 +227,9 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
     // Saved views / lifecycle deep-links
     if (filters.status === "active" || activeView !== "completed") {
       if (activeView === "completed") {
-        list = list.filter((r) => r.learner.status === "completed");
+        list = list.filter((r) => r.apprentice.status === "completed");
       } else {
-        list = list.filter((r) => r.learner.status !== "completed");
+        list = list.filter((r) => r.apprentice.status !== "completed");
       }
     }
 
@@ -247,7 +247,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
       filters.programmeStatus === "overdue" ||
       activeView === "overdue"
     ) {
-      list = list.filter((r) => r.learner.programmeOverdue);
+      list = list.filter((r) => r.apprentice.programmeOverdue);
     }
     if (filters.card === "behind" || activeView === "behind") {
       list = list.filter((r) => r.variance < -5);
@@ -267,61 +267,61 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
       filters.evidence === "missing-mandatory" ||
       activeView === "evidence"
     ) {
-      list = list.filter((r) => r.learner.missingMandatoryEvidence > 0);
+      list = list.filter((r) => r.apprentice.missingMandatoryEvidence > 0);
     }
     if (filters.card === "attendance" || activeView === "attendance") {
       list = list.filter(
         (r) =>
-          r.learner.attendancePercent != null &&
-          r.learner.attendancePercent < 85,
+          r.apprentice.attendancePercent != null &&
+          r.apprentice.attendancePercent < 85,
       );
     }
     if (activeView === "epa") {
-      list = list.filter((r) => r.learner.epaApproaching);
+      list = list.filter((r) => r.apprentice.epaApproaching);
     }
     if (activeView === "concerns") {
-      list = list.filter((r) => r.learner.employerConcernStatus !== "none");
+      list = list.filter((r) => r.apprentice.employerConcernStatus !== "none");
     }
     if (activeView === "no-intervention") {
       list = list.filter(
         (r) =>
-          !r.learner.interventionId &&
-          (r.variance <= -5 || r.learner.programmeOverdue),
+          !r.apprentice.interventionId &&
+          (r.variance <= -5 || r.apprentice.programmeOverdue),
       );
     }
 
     if (filters.year) {
       list = list.filter(
-        (r) => String(r.learner.programmeYear) === filters.year,
+        (r) => String(r.apprentice.programmeYear) === filters.year,
       );
     }
     if (filters.risk) {
-      list = list.filter((r) => r.learner.riskStatus === filters.risk);
+      list = list.filter((r) => r.apprentice.riskStatus === filters.risk);
     }
     if (filters.band) {
       list = list.filter((r) => r.priorityBand === filters.band);
     }
     if (filters.programme) {
-      list = list.filter((r) => r.learner.programmeId === filters.programme);
+      list = list.filter((r) => r.apprentice.programmeId === filters.programme);
     }
     if (filters.employer) {
-      list = list.filter((r) => r.learner.employerId === filters.employer);
+      list = list.filter((r) => r.apprentice.employerId === filters.employer);
     }
     if (filters.tutor) {
-      list = list.filter((r) => r.learner.tutorName === filters.tutor);
+      list = list.filter((r) => r.apprentice.tutorName === filters.tutor);
     }
     if (filters.activeOnly === "1") {
-      list = list.filter((r) => r.learner.status === "active");
+      list = list.filter((r) => r.apprentice.status === "active");
     }
 
     const q = search.trim().toLowerCase();
     if (q) {
       list = list.filter(
         (r) =>
-          r.learner.displayName.toLowerCase().includes(q) ||
-          r.learner.employerName.toLowerCase().includes(q) ||
-          r.learner.programmeName.toLowerCase().includes(q) ||
-          r.learner.tutorName.toLowerCase().includes(q),
+          r.apprentice.displayName.toLowerCase().includes(q) ||
+          r.apprentice.employerName.toLowerCase().includes(q) ||
+          r.apprentice.programmeName.toLowerCase().includes(q) ||
+          r.apprentice.tutorName.toLowerCase().includes(q),
       );
     }
 
@@ -332,16 +332,16 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
     } else if (sortKey === "attendance") {
       list = [...list].sort(
         (a, b) =>
-          (a.learner.attendancePercent ?? 999) -
-          (b.learner.attendancePercent ?? 999),
+          (a.apprentice.attendancePercent ?? 999) -
+          (b.apprentice.attendancePercent ?? 999),
       );
     } else if (sortKey === "name") {
       list = [...list].sort((a, b) =>
-        a.learner.displayName.localeCompare(b.learner.displayName),
+        a.apprentice.displayName.localeCompare(b.apprentice.displayName),
       );
     } else if (sortKey === "review") {
       list = [...list].sort((a, b) => {
-        const rank = (s: ProgressLearnerView["reviewStatus"]) =>
+        const rank = (s: ProgressApprenticeView["reviewStatus"]) =>
           s === "overdue"
             ? 0
             : s === "preparation"
@@ -362,7 +362,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
     return sortByOperationalPriority(
       allViews.filter(
         (r) =>
-          r.learner.status !== "completed" &&
+          r.apprentice.status !== "completed" &&
           (r.priorityBand === "critical" || r.priorityBand === "high"),
       ),
     ).slice(0, 8);
@@ -372,7 +372,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
     () =>
       Array.from(
         new Map(
-          MENTOR_LEARNERS.map((l) => [l.programmeId, l.programmeName]),
+          MENTOR_APPRENTICES.map((l) => [l.programmeId, l.programmeName]),
         ).entries(),
       ),
     [],
@@ -381,21 +381,21 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
     () =>
       Array.from(
         new Map(
-          MENTOR_LEARNERS.map((l) => [l.employerId, l.employerName]),
+          MENTOR_APPRENTICES.map((l) => [l.employerId, l.employerName]),
         ).entries(),
       ),
     [],
   );
   const tutors = useMemo(
     () =>
-      Array.from(new Set(MENTOR_LEARNERS.map((l) => l.tutorName))).sort(),
+      Array.from(new Set(MENTOR_APPRENTICES.map((l) => l.tutorName))).sort(),
     [],
   );
 
   const cardFilters = [
     {
       id: "critical",
-      label: "Critical learners",
+      label: "Critical apprentices",
       value: summary.critical,
       tone: "red" as const,
       href: hrefWith(filters, { card: "critical", view: null }),
@@ -471,10 +471,10 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
         <div className={styles.queueHeader}>
           <div>
             <h2 className={styles.sectionTitle}>
-              Learners requiring immediate attention
+              Apprentices requiring immediate attention
             </h2>
             <p className={styles.sectionCopy}>
-              Top priority learners by operational score — worst first.
+              Top priority apprentices by operational score — worst first.
             </p>
           </div>
           <Link
@@ -487,16 +487,16 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
         <div className={styles.queueGrid}>
           {attentionQueue.map((row) => (
             <article
-              key={row.learner.learnerId}
+              key={row.apprentice.apprenticeId}
               className={`${styles.queueCard} ${styles[`band_${row.priorityBand}`]}`}
             >
               <header className={styles.queueCardHeader}>
                 <div className={styles.queueIdentity}>
-                  <h3>{row.learner.displayName}</h3>
+                  <h3>{row.apprentice.displayName}</h3>
                   <p className={styles.queueMeta}>
                     {row.programmeShort}
                     <span aria-hidden>·</span>
-                    {row.learner.employerName}
+                    {row.apprentice.employerName}
                   </p>
                 </div>
                 <div className={styles.scoreBadge}>
@@ -546,10 +546,10 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
                 </p>
                 <div className={styles.queueActions}>
                   <Link
-                    href={learnerOpenHref(row)}
+                    href={apprenticeOpenHref(row)}
                     className={styles.primaryAction}
                   >
-                    Open learner
+                    Open apprentice
                   </Link>
                   <Link
                     href={nextActionHref(row)}
@@ -559,13 +559,13 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
                   </Link>
                   <Link
                     href={
-                      row.learner.employerConcernStatus !== "none"
-                        ? `/employer-concerns?from=progress-monitoring&learner=${row.learner.learnerId}`
-                        : `/learners/${row.learner.learnerId}?tab=employer&from=progress-monitoring`
+                      row.apprentice.employerConcernStatus !== "none"
+                        ? `/employer-concerns?from=progress-monitoring&apprentice=${row.apprentice.apprenticeId}`
+                        : `/apprentices/${row.apprentice.apprenticeId}?tab=employer&from=progress-monitoring`
                     }
                     className={styles.secondaryAction}
                   >
-                    {row.learner.employerConcernStatus !== "none"
+                    {row.apprentice.employerConcernStatus !== "none"
                       ? "Concern"
                       : "Employer"}
                   </Link>
@@ -601,7 +601,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
         <input
           className={styles.search}
           type="search"
-          placeholder="Search learner, employer, programme…"
+          placeholder="Search apprentice, employer, programme…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -746,7 +746,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
 
       {rows.length === 0 ? (
         <p className={styles.empty} role="status">
-          No learners match this filter.
+          No apprentices match this filter.
         </p>
       ) : (
         <div className={styles.tableWrap}>
@@ -754,7 +754,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
             <thead>
               <tr>
                 <th scope="col">Priority</th>
-                <th scope="col">Learner</th>
+                <th scope="col">Apprentice</th>
                 <th scope="col">Risk</th>
                 <th scope="col">Planned</th>
                 <th scope="col">Actual</th>
@@ -767,19 +767,19 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
             </thead>
             <tbody>
               {rows.map((row) => {
-                const l = row.learner;
+                const l = row.apprentice;
                 return (
-                  <tr key={l.learnerId}>
+                  <tr key={l.apprenticeId}>
                     <td>
                       <StatusChip tone={priorityBandTone(row.priorityBand)}>
                         {priorityBandLabel(row.priorityBand)} {row.priorityScore}
                       </StatusChip>
                     </td>
                     <td>
-                      <div className={styles.learnerCell}>
+                      <div className={styles.apprenticeCell}>
                         <Link
-                          className={styles.learnerLink}
-                          href={learnerOpenHref(row)}
+                          className={styles.apprenticeLink}
+                          href={apprenticeOpenHref(row)}
                         >
                           {l.displayName}
                         </Link>
@@ -791,7 +791,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
                         </span>
                         {l.employerConcernStatus !== "none" ? (
                           <Link
-                            href={`/employer-concerns?from=progress-monitoring&learner=${l.learnerId}`}
+                            href={`/employer-concerns?from=progress-monitoring&apprentice=${l.apprenticeId}`}
                             className={styles.concernIcon}
                             title={`Employer concern: ${l.employerConcernStatus}`}
                           >
@@ -873,7 +873,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
                     </td>
                     <td>
                       <Link
-                        href={`/learners/${l.learnerId}?tab=attendance&from=progress-monitoring`}
+                        href={`/apprentices/${l.apprenticeId}?tab=attendance&from=progress-monitoring`}
                         className={`${styles.directionCell} ${styles.attendanceLink} ${directionToneClass(
                           attendanceDirectionTone(
                             l.attendancePercent,
@@ -905,7 +905,7 @@ export function ProgressMonitoringScreen({ filters, permissions = [] }: Props) {
                           href={
                             row.reviewId
                               ? `/reviews/${row.reviewId}?from=progress-monitoring`
-                              : `/learners/${l.learnerId}?tab=reviews&from=progress-monitoring`
+                              : `/apprentices/${l.apprenticeId}?tab=reviews&from=progress-monitoring`
                           }
                         >
                           <StatusChip tone={reviewTone(row.reviewStatus)}>

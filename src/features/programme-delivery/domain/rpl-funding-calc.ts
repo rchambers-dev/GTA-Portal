@@ -2,7 +2,7 @@
  * Funding / RPL calculator for Autocare blocks (management only).
  *
  * GTA does not fast-track delivery. These figures adjust planned OTJ hours and
- * a funding-compliant expected finish for Jon — learners keep cohort weeks.
+ * a funding-compliant expected finish for Jon — apprentices keep cohort weeks.
  *
  * Formula (matches live MBB Autocare weights):
  *   aplFactor = (0.30×K + 0.50×S + 0.20×B) / 100
@@ -18,7 +18,7 @@ import {
 import {
   formatDisplayDate,
   startOfUtcDay,
-} from "@/features/learner-lifecycle/domain/programme-week";
+} from "@/features/apprentice-lifecycle/domain/programme-week";
 
 export const RPL_WEIGHT_K = 0.3;
 export const RPL_WEIGHT_S = 0.5;
@@ -58,7 +58,7 @@ export type BlockFundingRow = {
   fundingEndDate: string | null;
 };
 
-export type LearnerFundingPlan = {
+export type ApprenticeFundingPlan = {
   cohortStartDate: string;
   deliveryExpectedEndDate: string | null;
   plannedOtjHours: number;
@@ -148,12 +148,12 @@ export function formatCohortBlockWindow(
  * Build per-block funding calendar from cohort start using adjusted OTJ sessions.
  * Blocks with 0 OTJ (gateway/EPA) keep null funding dates — delivery still cohort-based.
  */
-export function buildLearnerFundingPlan(args: {
+export function buildApprenticeFundingPlan(args: {
   cohortStartDate: string;
   deliveryExpectedEndDate?: string | null;
   rplByBlock: Record<number, BlockRplInput>;
   blocks?: ProgrammeBlockDef[];
-}): LearnerFundingPlan {
+}): ApprenticeFundingPlan {
   const blocks = args.blocks ?? AUTOCARE_BLOCKS;
   const rows: BlockFundingRow[] = [];
   let sessionCursor = 0;

@@ -3,12 +3,12 @@
 ## How to run
 
 ```bash
-cd "Learner Life Cycle"
+cd "Apprentice Life Cycle"
 npm install
 npm run dev
 ```
 
-Primary mentor URL: `/learners/lifecycle`  
+Primary mentor URL: `/apprentices/lifecycle`  
 Use the profile **Demo account switcher** (development only) to change persona.
 
 ## What you should see
@@ -19,16 +19,16 @@ Use the profile **Demo account switcher** (development only) to change persona.
 - Footer note: “Standalone shell · design preview”
 
 ### 2. Learning & Progress Mentor — Lifecycle Board
-Switch to **Reiss Chambers**. Sidebar: Learner Lifecycle, Progress Monitoring, then shared operational queues.
+Switch to **Reiss Chambers**. Sidebar: Apprentice Lifecycle, Progress Monitoring, then shared operational queues.
 
 - Six summary metric cards (selectable via URL `?metric=`)
 - Year 1 / 2 / 3 tabs
 - Kanban columns for Pre-start + programme weeks
 - Pinned **Overdue** column
-- Learner cards link to the **shared** learner record: `/learners/[id]?from=lifecycle`
+- Apprentice cards link to the **shared** learner record: `/apprentices/[id]?from=lifecycle`
 
 ### 3. Shared learner record (all authorised roles)
-Example: `/learners/lrn-liam-anderson?from=lifecycle`
+Example: `/apprentices/lrn-liam-anderson?from=lifecycle`
 - Same page structure for tutor, mentor, quality, management, administration
 - Tabs via `?tab=` (Overview, Programme Progress, Reviews, Actions, Attendance, Evidence, …)
 - Evidence Pack content remains on the Evidence tab
@@ -47,9 +47,9 @@ Persona dashboards (`/staff/dashboard`, `/quality/dashboard`, …) and unimpleme
 | Check | Status |
 |-------|--------|
 | Feature screens do not import `src/shell` | Yes |
-| Data via `LearnerLifecycleDataPort` | Yes |
+| Data via `ApprenticeLifecycleDataPort` | Yes |
 | Auth via demo / AuthPort | Yes |
-| One learner page for all roles | Yes (`/learners/[id]`) |
+| One learner page for all roles | Yes (`/apprentices/[id]`) |
 | URL preserves board view | Yes (`year`, `metric`, …) |
 | Null intake fields not faked as green | Yes |
 | Main Website untouched | Yes |

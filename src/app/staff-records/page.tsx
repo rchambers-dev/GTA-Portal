@@ -1,15 +1,15 @@
 import { StaffPackSearchScreen } from "@/features/staff-records";
-import { requireLearnerWorkspaceAccess } from "@/shell/guards/learner-routes";
+import { requireApprenticeWorkspaceAccess } from "@/shell/guards/apprentice-routes";
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 /**
- * Search entry for staff employment files — parallel to /learners.
+ * Search entry for staff employment files — parallel to /apprentices.
  */
 export default async function StaffRecordsIndexPage({ searchParams }: Props) {
-  await requireLearnerWorkspaceAccess("/staff-records");
+  await requireApprenticeWorkspaceAccess("/staff-records");
   const params = await searchParams;
   const fromRaw = params.from;
   const from =

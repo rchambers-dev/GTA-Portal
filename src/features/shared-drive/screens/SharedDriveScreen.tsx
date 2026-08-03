@@ -1,6 +1,6 @@
 "use client";
 
-import { LearnerPageShell } from "@/features/learner-portal/components/LearnerPageShell";
+import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./SharedDriveScreen.module.css";
 
 export type SharedDriveAudience =
@@ -44,7 +44,7 @@ export function SharedDriveScreen({
   const copy = AUDIENCE_COPY[audience];
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow={copy.eyebrow}
       title="Shared Drive"
       description={copy.description}
@@ -82,13 +82,13 @@ export function SharedDriveScreen({
               </p>
               <ul className={styles.embedList}>
                 <li>No separate document login</li>
-                <li>Learner pack files stay on Learners</li>
+                <li>apprentice pack files stay on Apprentices</li>
                 <li>Org templates and policies live here</li>
               </ul>
             </div>
           </div>
         </section>
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

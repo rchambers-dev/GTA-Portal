@@ -8,7 +8,7 @@ Do **not** create separate copies of the same page for different roles.
 
 | Record | Canonical route |
 |--------|-----------------|
-| Learner | `/learners/[learnerId]` |
+| Apprentice | `/apprentices/[apprenticeId]` |
 | Employer | `/employers/[employerId]` |
 | Programme | `/programmes/[programmeId]` |
 | Module | `/modules/[moduleId]` |
@@ -24,17 +24,17 @@ Shared **queues** (lists) use the plural root without an id, e.g. `/reviews`, `/
 
 Forbidden patterns:
 
-- `/progress-mentor/learners/[id]`
-- `/tutor/learners/[id]`
-- `/management/learners/[id]`
-- `/quality/learners/[id]`
+- `/progress-mentor/apprentices/[id]`
+- `/tutor/apprentices/[id]`
+- `/management/apprentices/[id]`
+- `/quality/apprentices/[id]`
 
 ## Workspace-specific pages (allowed to differ)
 
 These answer different operational questions and may stay unique:
 
-- Learning & Progress Mentor Lifecycle Board (`/learners/lifecycle`)
-- Tutor / Quality / Management / Administration / Employer / Learner dashboards
+- Learning & Progress Mentor Lifecycle Board (`/apprentices/lifecycle`)
+- Tutor / Quality / Management / Administration / Employer / Apprentice dashboards
 - Curriculum Management editors (`/curriculum/*`)
 - Demo tools (`/management/roles`, `/employer/support`)
 - Safeguarding workspace surfaces (until a shared case model exists)
@@ -58,9 +58,9 @@ Preserve workflow context in the query string:
 
 | Example | Meaning |
 |---------|---------|
-| `/learners/lrn-123?from=lifecycle` | Opened from Lifecycle Board — return link to board |
-| `/learners/lrn-123?tab=reviews&from=reviews` | Open Reviews tab |
-| `/learners/lrn-123?tab=employer&case=case-42` | Deep-link employer section with concern context |
+| `/apprentices/lrn-123?from=lifecycle` | Opened from Lifecycle Board — return link to board |
+| `/apprentices/lrn-123?tab=reviews&from=reviews` | Open Reviews tab |
+| `/apprentices/lrn-123?tab=employer&case=case-42` | Deep-link employer section with concern context |
 
 Do not create a duplicate learner page just to open a different tab.
 
@@ -85,7 +85,7 @@ Only create a separate page when it serves a genuinely different operational pur
 | Concern | Location |
 |---------|----------|
 | Route mounts | `src/app/…` |
-| Shared record screens / context helpers | `src/features/shared-records/` (+ learner screens in `src/features/learner-lifecycle/`) |
+| Shared record screens / context helpers | `src/features/shared-records/` (+ learner screens in `src/features/apprentice-lifecycle/`) |
 | Workspace dashboards & demo chrome | `src/shell/workspaces/` |
 | Capability strings & route guards | `src/lib/permissions/` |
 

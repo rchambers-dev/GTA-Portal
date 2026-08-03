@@ -104,7 +104,7 @@ Drop **Wix** as the public hoster. Keep one GTA brand domain, with separate apps
 | App | Vercel project | Supabase project | Purpose |
 |-----|----------------|------------------|---------|
 | Public website | `gta-website` | `GTA-Website` | Exhibition cars, trade stands, events, announcements |
-| Apprenticeship portal | `gta-portal` | `GTA-Portal` | Logins, learners, tasks, OTJ, evidence |
+| Apprenticeship portal | `gta-portal` | `GTA-Portal` | Logins, apprentices, tasks, OTJ, evidence |
 
 Same organisation domain; **not** the same hostname for both apps.
 

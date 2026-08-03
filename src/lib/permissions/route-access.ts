@@ -14,8 +14,8 @@ export const ROUTE_RULES: RouteRule[] = [
   { pattern: /^\/administration/, permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
   { pattern: /^\/management/, permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
   { pattern: /^\/quality/, permission: PERMISSIONS.QUALITY_WORKSPACE_VIEW },
-  // Must not match `/learners…` — use end or slash after `learner`
-  { pattern: /^\/learner(\/|$)/, permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
+  // Must not match `/apprentices…` — staff pack search
+  { pattern: /^\/apprentice(\/|$)/, permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
   // Must not match `/employer-concerns…`
   { pattern: /^\/employer(\/|$)/, permission: PERMISSIONS.EMPLOYER_WORKSPACE_VIEW },
   { pattern: /^\/employer-concerns/, permission: PERMISSIONS.EMPLOYER_CONCERNS_MANAGE },
@@ -23,13 +23,13 @@ export const ROUTE_RULES: RouteRule[] = [
   // Must sit above `/staff` — employment files are management/admin, not tutor workspace
   { pattern: /^\/staff-records/, permission: PERMISSIONS.ADMIN_USERS_MANAGE },
   { pattern: /^\/staff/, permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
-  { pattern: /^\/workspaces\/progress-mentor/, permission: PERMISSIONS.LEARNER_CASELOAD_VIEW },
-  { pattern: /^\/learners\/lifecycle/, permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
-  { pattern: /^\/learners\//, permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW },
-  { pattern: /^\/learners$/, permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW },
+  { pattern: /^\/workspaces\/progress-mentor/, permission: PERMISSIONS.APPRENTICE_CASELOAD_VIEW },
+  { pattern: /^\/apprentices\/lifecycle/, permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
+  { pattern: /^\/apprentices\//, permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
+  { pattern: /^\/apprentices$/, permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
   { pattern: /^\/dashboard$/, permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
   { pattern: /^\/reviews/, permission: PERMISSIONS.REVIEWS_MANAGE },
-  { pattern: /^\/evidence/, permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW },
+  { pattern: /^\/evidence/, permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
   { pattern: /^\/employers/, permission: PERMISSIONS.EMPLOYER_CONTACTS_VIEW },
   { pattern: /^\/interventions/, permission: PERMISSIONS.INTERVENTIONS_MANAGE },
   { pattern: /^\/actions/, permission: PERMISSIONS.ACTIONS_MANAGE },

@@ -60,7 +60,7 @@ export function NavIcon({ href }: { href: string }) {
     );
   }
   if (
-    key.includes("/learner/documents") ||
+    key.includes("/apprentice/documents") ||
     key.includes("/employer/documents") ||
     key.includes("/training-plan") ||
     key.includes("/commitments")
@@ -118,7 +118,7 @@ export function NavIcon({ href }: { href: string }) {
     );
   }
 
-  // Administration / Management shared learner-ops surfaces
+  // Administration / Management shared apprentice-ops surfaces
   if (
     key.includes("/administration/employers") ||
     key.includes("/management/employers")
@@ -173,9 +173,9 @@ export function NavIcon({ href }: { href: string }) {
   if (
     key.includes("/administration/enrolments") ||
     key.includes("/management/enrolments") ||
-    key.includes("/management/learner-funding") ||
+    key.includes("/management/apprentice-funding") ||
     key.includes("/management/ksb-rpl") ||
-    key.includes("/management/learner-brag") ||
+    key.includes("/management/apprentice-brag") ||
     key.includes("/management/progression-brag")
   ) {
     return (
@@ -252,7 +252,7 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/learner/college-tasks") || key.includes("/staff/programme-delivery")) {
+  if (key.includes("/apprentice/college-tasks") || key.includes("/staff/programme-delivery")) {
     return (
       <svg {...common}>
         <path d="M8 4h8a2 2 0 0 1 2 2v14l-6-3-6 3V6a2 2 0 0 1 2-2z" />
@@ -260,7 +260,7 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key === "/learners" || key.startsWith("/learners?")) {
+  if (key === "/apprentices" || key.startsWith("/apprentices?")) {
     return (
       <svg {...common}>
         <circle cx="11" cy="11" r="6.5" />

@@ -4,7 +4,7 @@
 
 - Year 1 / 2 / 3 navigation (weeks 1–52, 53–104, 105–156)
 - 156 weekly positions + Pre-start + workflow states + pinned Overdue
-- Multiple learners per week
+- Multiple apprentices per week
 - Windowed or virtualised rendering
 - Exact programme-overdue duration
 - Filters and view state in the URL
@@ -57,7 +57,7 @@ Restoring URL restores board position after opening a learner.
 
 - Dashboard shell visible ≤ 2s on typical office connection
 - Board interactions ≤ 200ms after data loaded
-- Seed target for stress later: hundreds of learners across 156 weeks
+- Seed target for stress later: hundreds of apprentices across 156 weeks
 
 ## Stage 2 shell behaviour
 

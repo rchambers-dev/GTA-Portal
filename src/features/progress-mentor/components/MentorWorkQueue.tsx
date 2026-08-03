@@ -26,7 +26,7 @@ export function MentorPageShell({
           <p className={styles.description}>{description}</p>
         </div>
         {fromLifecycle ? (
-          <Link href="/learners/lifecycle" className={styles.backLink}>
+          <Link href="/apprentices/lifecycle" className={styles.backLink}>
             ← Back to Lifecycle Board
           </Link>
         ) : null}

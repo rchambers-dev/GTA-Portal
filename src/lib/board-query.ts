@@ -1,7 +1,7 @@
-import type { BoardQuery, MetricKey } from "@/features/learner-lifecycle/types";
+import type { BoardQuery, MetricKey } from "@/features/apprentice-lifecycle/types";
 
 const METRIC_KEYS: MetricKey[] = [
-  "active_learners",
+  "active_apprentices",
   "priority_intervention",
   "reviews_due",
   "programme_overdue",

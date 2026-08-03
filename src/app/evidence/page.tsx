@@ -4,6 +4,6 @@ export default async function EvidenceQueuePage() {
   return renderSharedQueuePage(
     "/evidence",
     "Evidence",
-    "Shared evidence queue — opens the canonical evidence record or learner Evidence tab.",
+    "Shared evidence queue — opens the canonical evidence record or apprentice Evidence tab.",
   );
 }

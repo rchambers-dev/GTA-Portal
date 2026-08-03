@@ -4,8 +4,8 @@ import { Fragment, useId, useMemo, useState } from "react";
 import { FormField } from "@/components/ui/FormField";
 import { Select } from "@/components/ui/Select";
 import { TextInput } from "@/components/ui/TextInput";
-import { LearnerPageShell } from "@/features/learner-portal/components/LearnerPageShell";
-import learnerStyles from "@/features/learner-portal/screens/learner-pages.module.css";
+import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
+import apprenticeStyles from "@/features/apprentice-portal/screens/apprentice-pages.module.css";
 import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
 import {
   assignableRoles,
@@ -20,7 +20,7 @@ import type { AdminPortalRole, AdminPortalUser } from "../domain/types";
 import { useAdminStore } from "../hooks/useAdminStore";
 import styles from "./admin-pages.module.css";
 
-export type AccountSetupScope = "learner" | "staff";
+export type AccountSetupScope = "apprentice" | "staff";
 
 type FormState = {
   status: AdminPortalUser["status"];
@@ -53,7 +53,7 @@ function formatWorkspace(workspace: string): string {
 }
 
 function isStaffAccount(row: AdminPortalUser): boolean {
-  return row.role !== "Learner" && row.role !== "Employer";
+  return row.role !== "Apprentice" && row.role !== "Employer";
 }
 
 function linkLabel(
@@ -66,8 +66,8 @@ function linkLabel(
   return enrolment?.displayName || employer?.name || "";
 }
 
-/** Tutor / mentor names from the learner's enrolment. */
-function staffForLearner(
+/** Tutor / mentor names from the apprentice's enrolment. */
+function staffForApprentice(
   row: AdminPortalUser,
   enrolments: EnrolmentStaff[],
 ): { tutorName: string; mentorName: string } | null {
@@ -84,7 +84,7 @@ function matchesTeacher(
   query: string,
   enrolments: EnrolmentStaff[],
 ): boolean {
-  const staff = staffForLearner(row, enrolments);
+  const staff = staffForApprentice(row, enrolments);
   if (!staff) return false;
   const q = query.toLowerCase();
   return (
@@ -104,27 +104,27 @@ function accountRowTone(
 }
 
 const COPY = {
-  learner: {
-    title: "Learner Account Setup",
+  apprentice: {
+    title: "Apprentice Account Setup",
     description:
-      "Learner environments only — they arrive here after enrolment. Enable or disable each learner’s portal. Staff accounts are managed on Management.",
-    personSingular: "learner",
-    personPlural: "learners",
-    personColumn: "Learner",
+      "Apprentice environments only — they arrive here after enrolment. Enable or disable each apprentice’s portal. Staff accounts are managed on Management.",
+    personSingular: "apprentice",
+    personPlural: "apprentices",
+    personColumn: "Apprentice",
     linksColumn: "Links",
-    remitLabel: "Learners",
-    remitHint: "Learner accounts in your remit",
-    allTab: "All learners",
-    searchLabel: "Search learners",
-    searchAria: "Search learners by",
+    remitLabel: "Apprentices",
+    remitHint: "Apprentice accounts in your remit",
+    allTab: "All apprentices",
+    searchLabel: "Search apprentices",
+    searchAria: "Search apprentices by",
     envHint:
-      "Turn this learner’s portal on or off. Identity and links stay with enrolment.",
-    empty: "No learners match this view.",
+      "Turn this apprentice’s portal on or off. Identity and links stay with enrolment.",
+    empty: "No apprentices match this view.",
   },
   staff: {
     title: "Staff Account Setup",
     description:
-      "Staff environments only — enable or disable each staff member’s portal. Learners are managed on Learner Account Setup.",
+      "Staff environments only — enable or disable each staff member’s portal. Apprentices are managed on Apprentice Account Setup.",
     personSingular: "staff member",
     personPlural: "staff",
     personColumn: "Staff",
@@ -147,11 +147,11 @@ type AdminUsersScreenProps = {
 };
 
 /**
- * Shared Account Setup — identical UI for learners and staff; only the
+ * Shared Account Setup — identical UI for apprentices and staff; only the
  * filtered remit and copy differ.
  */
 export function AdminUsersScreen({
-  scope = "learner",
+  scope = "apprentice",
   eyebrow = "Administration",
 }: AdminUsersScreenProps) {
   const store = useAdminStore();
@@ -180,12 +180,12 @@ export function AdminUsersScreen({
             {
               id: "name" as const,
               label: "Name",
-              placeholder: "Search by learner name…",
+              placeholder: "Search by apprentice name…",
             },
             {
               id: "teacher" as const,
               label: "Teacher",
-              placeholder: "Tutor or mentor name — shows their learners…",
+              placeholder: "Tutor or mentor name — shows their apprentices…",
             },
           ] as const),
     [isStaff],
@@ -213,7 +213,7 @@ export function AdminUsersScreen({
     searchModes.find((mode) => mode.id === searchMode) ?? searchModes[0];
 
   const staffRoleOptions = useMemo(
-    () => assignableRoles(actorRole).filter((role) => role !== "Learner"),
+    () => assignableRoles(actorRole).filter((role) => role !== "Apprentice"),
     [actorRole],
   );
 
@@ -222,7 +222,7 @@ export function AdminUsersScreen({
       store.users.filter((row) => {
         const inScope = isStaff
           ? isStaffAccount(row)
-          : row.role === "Learner";
+          : row.role === "Apprentice";
         return inScope && canManagePortalAccount(actorRole, row.role);
       }),
     [actorRole, isStaff, store.users],
@@ -297,7 +297,7 @@ export function AdminUsersScreen({
   function openEdit(idValue: string) {
     const row = store.users.find((u) => u.id === idValue);
     if (!row) return;
-    if (isStaff ? !isStaffAccount(row) : row.role !== "Learner") return;
+    if (isStaff ? !isStaffAccount(row) : row.role !== "Apprentice") return;
     if (!canManagePortalAccount(actorRole, row.role)) {
       setError("You can only manage accounts below your own role.");
       return;
@@ -318,7 +318,7 @@ export function AdminUsersScreen({
     setError(null);
   }
 
-  function submit(event: React.FormEvent) {
+  async function submit(event: React.FormEvent) {
     event.preventDefault();
     if (!editingUser || !form) return;
     setError(null);
@@ -326,37 +326,53 @@ export function AdminUsersScreen({
       setError("You can only manage accounts below your own role.");
       return;
     }
-    setPortalEnvironment(editingUser.id, form.status, session.account.name);
-    setSuccess(
-      form.status === "active"
-        ? `Enabled portal environment for ${editingUser.displayName}.`
-        : form.status === "disabled"
-          ? `Disabled portal environment for ${editingUser.displayName}.`
-          : `Updated environment for ${editingUser.displayName}.`,
-    );
-    closeEdit();
+    try {
+      await setPortalEnvironment(
+        editingUser.id,
+        form.status,
+        session.account.name,
+      );
+      setSuccess(
+        form.status === "active"
+          ? `Enabled portal environment for ${editingUser.displayName}.`
+          : form.status === "disabled"
+            ? `Disabled portal environment for ${editingUser.displayName}.`
+            : `Updated environment for ${editingUser.displayName}.`,
+      );
+      closeEdit();
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Unable to update environment.",
+      );
+    }
   }
 
   /** Quick toggle from the status pill — stamps who enabled / disabled. */
-  function toggleEnvironmentFromPill(
+  async function toggleEnvironmentFromPill(
     event: React.MouseEvent,
     row: AdminPortalUser,
   ) {
     event.stopPropagation();
-    if (isStaff ? !isStaffAccount(row) : row.role !== "Learner") return;
+    if (isStaff ? !isStaffAccount(row) : row.role !== "Apprentice") return;
     if (!canManagePortalAccount(actorRole, row.role)) return;
     const nextStatus: AdminPortalUser["status"] =
       row.status === "active" ? "disabled" : "active";
-    setPortalEnvironment(row.id, nextStatus, session.account.name);
-    if (editingId === row.id) {
-      setForm({ status: nextStatus });
+    try {
+      await setPortalEnvironment(row.id, nextStatus, session.account.name);
+      if (editingId === row.id) {
+        setForm({ status: nextStatus });
+      }
+      setSuccess(
+        nextStatus === "active"
+          ? `Enabled portal environment for ${row.displayName}.`
+          : `Disabled portal environment for ${row.displayName}.`,
+      );
+      setError(null);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Unable to update environment.",
+      );
     }
-    setSuccess(
-      nextStatus === "active"
-        ? `Enabled portal environment for ${row.displayName}.`
-        : `Disabled portal environment for ${row.displayName}.`,
-    );
-    setError(null);
   }
 
   function startCreateStaff() {
@@ -368,7 +384,7 @@ export function AdminUsersScreen({
     setSuccess(null);
   }
 
-  function createStaffMember() {
+  async function createStaffMember() {
     if (!createForm.displayName.trim()) {
       setError("A name is needed to add a staff member.");
       return;
@@ -386,29 +402,34 @@ export function AdminUsersScreen({
       setError("An account with that email already exists.");
       return;
     }
-    createUser({
-      displayName: createForm.displayName,
-      email: createForm.email,
-      role: createForm.role,
-      workspace: workspaceForRole(createForm.role),
-      linkedEnrolmentId: null,
-      linkedLearnerId: null,
-      linkedEmployerId: null,
-      programmeStartDate: null,
-      status: "invited",
-    });
-    setSuccess(
-      `${createForm.displayName.trim()} added as ${createForm.role} — enable their environment below.`,
-    );
-    setError(null);
-    setCreating(false);
-    setCreateForm(emptyStaffCreateForm());
-    setTab("awaiting_enable");
+    try {
+      await createUser({
+        displayName: createForm.displayName,
+        email: createForm.email,
+        role: createForm.role,
+        workspace: workspaceForRole(createForm.role),
+        jobTitles: [],
+        linkedEnrolmentId: null,
+        linkedApprenticeId: null,
+        linkedEmployerId: null,
+        programmeStartDate: null,
+        status: "invited",
+      });
+      setSuccess(
+        `${createForm.displayName.trim()} added as ${createForm.role} — enable their environment below.`,
+      );
+      setError(null);
+      setCreating(false);
+      setCreateForm(emptyStaffCreateForm());
+      setTab("awaiting_enable");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to add staff.");
+    }
   }
 
   if (creating && isStaff) {
     return (
-      <LearnerPageShell
+      <ApprenticePageShell
         eyebrow={`${eyebrow} · Staff Account Setup`}
         title="Add a staff member"
         description="Capture who they are and the role they hold. Their workspace is set automatically from the role — enable their environment once created."
@@ -494,12 +515,12 @@ export function AdminUsersScreen({
             </div>
           </section>
         </div>
-      </LearnerPageShell>
+      </ApprenticePageShell>
     );
   }
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow={eyebrow}
       title={copy.title}
       description={copy.description}
@@ -516,10 +537,10 @@ export function AdminUsersScreen({
       }
     >
       <div className={styles.stack}>
-        <div className={learnerStyles.grid}>
+        <div className={apprenticeStyles.grid}>
           <button
             type="button"
-            className={learnerStyles.glanceLink}
+            className={apprenticeStyles.glanceLink}
             data-tone="navy"
             onClick={() => {
               setTab("all");
@@ -528,47 +549,47 @@ export function AdminUsersScreen({
               setSearchMode("name");
             }}
           >
-            <p className={learnerStyles.glanceLabel}>{copy.remitLabel}</p>
-            <p className={learnerStyles.glanceValue}>
+            <p className={apprenticeStyles.glanceLabel}>{copy.remitLabel}</p>
+            <p className={apprenticeStyles.glanceValue}>
               {manageableUsers.length}
             </p>
-            <p className={learnerStyles.glanceHint}>{copy.remitHint}</p>
+            <p className={apprenticeStyles.glanceHint}>{copy.remitHint}</p>
           </button>
           <button
             type="button"
-            className={learnerStyles.glanceLink}
+            className={apprenticeStyles.glanceLink}
             data-tone="amber"
             onClick={() => setTab("awaiting_enable")}
           >
-            <p className={learnerStyles.glanceLabel}>Awaiting enable</p>
-            <p className={learnerStyles.glanceValue}>{awaitingEnableCount}</p>
-            <p className={learnerStyles.glanceHint}>
+            <p className={apprenticeStyles.glanceLabel}>Awaiting enable</p>
+            <p className={apprenticeStyles.glanceValue}>{awaitingEnableCount}</p>
+            <p className={apprenticeStyles.glanceHint}>
               Ready for environment setup
             </p>
           </button>
           {isStaff ? (
             <button
               type="button"
-              className={learnerStyles.glanceLink}
+              className={apprenticeStyles.glanceLink}
               data-tone="red"
               onClick={() => setTab("disabled")}
             >
-              <p className={learnerStyles.glanceLabel}>Disabled</p>
-              <p className={learnerStyles.glanceValue}>{disabledCount}</p>
-              <p className={learnerStyles.glanceHint}>
+              <p className={apprenticeStyles.glanceLabel}>Disabled</p>
+              <p className={apprenticeStyles.glanceValue}>{disabledCount}</p>
+              <p className={apprenticeStyles.glanceHint}>
                 Environments turned off
               </p>
             </button>
           ) : (
             <button
               type="button"
-              className={learnerStyles.glanceLink}
+              className={apprenticeStyles.glanceLink}
               data-tone="green"
               onClick={() => setTab("new_starters")}
             >
-              <p className={learnerStyles.glanceLabel}>New starters</p>
-              <p className={learnerStyles.glanceValue}>{newStarterCount}</p>
-              <p className={learnerStyles.glanceHint}>
+              <p className={apprenticeStyles.glanceLabel}>New starters</p>
+              <p className={apprenticeStyles.glanceValue}>{newStarterCount}</p>
+              <p className={apprenticeStyles.glanceHint}>
                 First 14 days — badge on the row
               </p>
             </button>
@@ -741,7 +762,7 @@ export function AdminUsersScreen({
                     : linkLabel(row, store.enrolments, store.employers) || "—";
                   const teachers = isStaff
                     ? null
-                    : staffForLearner(row, store.enrolments);
+                    : staffForApprentice(row, store.enrolments);
                   const daysLeft = isStaff
                     ? null
                     : newStarterDaysRemaining(row.programmeStartDate);
@@ -954,6 +975,6 @@ export function AdminUsersScreen({
           </table>
         </div>
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

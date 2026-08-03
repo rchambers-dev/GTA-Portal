@@ -38,7 +38,7 @@ export function EmployerConcernsScreen({ filters }: Props) {
     <MentorPageShell
       eyebrow="Progress Mentor · Employers"
       title="Employer Concerns"
-      description="GTA-first case management. Learners do not automatically see the employer’s raw concern. Opens the shared concern case."
+      description="GTA-first case management. Apprentices do not automatically see the employer’s raw concern. Opens the shared concern case."
       fromLifecycle={filters.from === "lifecycle"}
     >
       <ViewTabs
@@ -51,7 +51,7 @@ export function EmployerConcernsScreen({ filters }: Props) {
         columns={[
           "Case ref",
           "Employer",
-          "Learner",
+          "Apprentice",
           "Programme",
           "Type",
           "Priority",
@@ -76,7 +76,7 @@ export function EmployerConcernsScreen({ filters }: Props) {
               </Link>
             </td>
             <td>{c.employerName}</td>
-            <td>{c.learnerName}</td>
+            <td>{c.apprenticeName}</td>
             <td>{c.programmeName}</td>
             <td>{c.concernType}</td>
             <td>

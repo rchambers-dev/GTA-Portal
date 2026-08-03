@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { StaffPackWorkspaceScreen } from "@/features/staff-records";
-import { requireLearnerWorkspaceAccess } from "@/shell/guards/learner-routes";
+import { requireApprenticeWorkspaceAccess } from "@/shell/guards/apprentice-routes";
 
 type Props = {
   params: Promise<{ staffId: string }>;
@@ -8,10 +8,10 @@ type Props = {
 };
 
 /**
- * Individual staff employment file — parallel to /learners/[learnerId].
+ * Individual staff employment file — parallel to /apprentices/[apprenticeId].
  */
 export default async function StaffRecordPage({ params, searchParams }: Props) {
-  await requireLearnerWorkspaceAccess("/staff-records");
+  await requireApprenticeWorkspaceAccess("/staff-records");
   const { staffId } = await params;
   if (!staffId?.trim()) notFound();
 

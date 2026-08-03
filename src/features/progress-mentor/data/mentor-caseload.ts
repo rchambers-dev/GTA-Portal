@@ -1,13 +1,13 @@
 /**
  * Linked Progress Mentor caseload mock data.
- * Same learner/employer/programme IDs are reused across all mentor workspace pages.
+ * Same apprentice/employer/programme IDs are reused across all mentor workspace pages.
  */
 
 export const MENTOR_ID = "reiss-chambers";
 export const MENTOR_NAME = "Reiss Chambers";
 
-export type MentorLearnerRow = {
-  learnerId: string;
+export type MentorApprenticeRow = {
+  apprenticeId: string;
   displayName: string;
   initials: string;
   employerId: string;
@@ -36,8 +36,8 @@ export type MentorLearnerRow = {
 
 export type MentorReviewRow = {
   reviewId: string;
-  learnerId: string;
-  learnerName: string;
+  apprenticeId: string;
+  apprenticeName: string;
   employerName: string;
   programmeName: string;
   reviewDate: string;
@@ -65,8 +65,8 @@ export type MentorReviewRow = {
 export type MentorActionRow = {
   actionId: string;
   title: string;
-  learnerId: string;
-  learnerName: string;
+  apprenticeId: string;
+  apprenticeName: string;
   employerId: string;
   employerName: string;
   owner: string;
@@ -106,8 +106,8 @@ export type MentorConcernRow = {
   caseReference: string;
   employerId: string;
   employerName: string;
-  learnerId: string;
-  learnerName: string;
+  apprenticeId: string;
+  apprenticeName: string;
   programmeName: string;
   concernType: string;
   priority: "normal" | "urgent";
@@ -132,8 +132,8 @@ export type MentorConcernRow = {
 
 export type MentorInterventionRow = {
   interventionId: string;
-  learnerId: string;
-  learnerName: string;
+  apprenticeId: string;
+  apprenticeName: string;
   type: string;
   reason: string;
   desiredOutcome: string;
@@ -259,9 +259,9 @@ export const MENTOR_EMPLOYERS: MentorEmployerRow[] = [
   },
 ];
 
-export const MENTOR_LEARNERS: MentorLearnerRow[] = [
+export const MENTOR_APPRENTICES: MentorApprenticeRow[] = [
   {
-    learnerId: "lrn-james-wilson",
+    apprenticeId: "lrn-james-wilson",
     displayName: "James Wilson",
     initials: "JW",
     employerId: "emp-northline",
@@ -288,7 +288,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-ava-brooks",
+    apprenticeId: "lrn-ava-brooks",
     displayName: "Ava Brooks",
     initials: "AB",
     employerId: "emp-riverside",
@@ -315,7 +315,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-liam-anderson",
+    apprenticeId: "lrn-liam-anderson",
     displayName: "Liam Anderson",
     initials: "LA",
     employerId: "emp-donvalley",
@@ -342,7 +342,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-mia-chen",
+    apprenticeId: "lrn-mia-chen",
     displayName: "Mia Chen",
     initials: "MC",
     employerId: "emp-ashfield",
@@ -369,7 +369,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-noah-reid",
+    apprenticeId: "lrn-noah-reid",
     displayName: "Noah Reid",
     initials: "NR",
     employerId: "emp-peak",
@@ -396,7 +396,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-sofia-martinez",
+    apprenticeId: "lrn-sofia-martinez",
     displayName: "Sofia Martinez",
     initials: "SM",
     employerId: "emp-northline",
@@ -423,7 +423,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "pre_start",
   },
   {
-    learnerId: "lrn-ethan-clarke",
+    apprenticeId: "lrn-ethan-clarke",
     displayName: "Ethan Clarke",
     initials: "EC",
     employerId: "emp-hexthorpe",
@@ -450,7 +450,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-isla-bennett",
+    apprenticeId: "lrn-isla-bennett",
     displayName: "Isla Bennett",
     initials: "IB",
     employerId: "emp-donvalley",
@@ -477,7 +477,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-oscar-hayes",
+    apprenticeId: "lrn-oscar-hayes",
     displayName: "Oscar Hayes",
     initials: "OH",
     employerId: "emp-peak",
@@ -504,7 +504,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-amelia-frost",
+    apprenticeId: "lrn-amelia-frost",
     displayName: "Amelia Frost",
     initials: "AF",
     employerId: "emp-ashfield",
@@ -531,7 +531,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-harvey-cole",
+    apprenticeId: "lrn-harvey-cole",
     displayName: "Harvey Cole",
     initials: "HC",
     employerId: "emp-riverside",
@@ -558,7 +558,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-freya-ward",
+    apprenticeId: "lrn-freya-ward",
     displayName: "Freya Ward",
     initials: "FW",
     employerId: "emp-donvalley",
@@ -585,7 +585,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-leo-griffin",
+    apprenticeId: "lrn-leo-griffin",
     displayName: "Leo Griffin",
     initials: "LG",
     employerId: "emp-northline",
@@ -612,7 +612,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-chloe-nash",
+    apprenticeId: "lrn-chloe-nash",
     displayName: "Chloe Nash",
     initials: "CN",
     employerId: "emp-hexthorpe",
@@ -639,7 +639,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-dylan-moore",
+    apprenticeId: "lrn-dylan-moore",
     displayName: "Dylan Moore",
     initials: "DM",
     employerId: "emp-peak",
@@ -666,7 +666,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-ellie-scott",
+    apprenticeId: "lrn-ellie-scott",
     displayName: "Ellie Scott",
     initials: "ES",
     employerId: "emp-ashfield",
@@ -693,7 +693,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-finley-brooks",
+    apprenticeId: "lrn-finley-brooks",
     displayName: "Finley Brooks",
     initials: "FB",
     employerId: "emp-riverside",
@@ -720,7 +720,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-grace-powell",
+    apprenticeId: "lrn-grace-powell",
     displayName: "Grace Powell",
     initials: "GP",
     employerId: "emp-donvalley",
@@ -747,7 +747,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-harry-kent",
+    apprenticeId: "lrn-harry-kent",
     displayName: "Harry Kent",
     initials: "HK",
     employerId: "emp-northline",
@@ -774,7 +774,7 @@ export const MENTOR_LEARNERS: MentorLearnerRow[] = [
     status: "active",
   },
   {
-    learnerId: "lrn-ivy-marshall",
+    apprenticeId: "lrn-ivy-marshall",
     displayName: "Ivy Marshall",
     initials: "IM",
     employerId: "emp-hexthorpe",

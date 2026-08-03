@@ -174,7 +174,7 @@ export function ReviewRecordScreen({ reviewId, from }: Props) {
 
   const agreedActions = actionsForReview(review.reviewId);
   const lastCycle = lastCycleActionsForReview({
-    learnerId: review.learnerId,
+    apprenticeId: review.apprenticeId,
     reviewId: review.reviewId,
     reviewDate: review.reviewDate,
     actions: ACTION_RECORDS,
@@ -241,7 +241,7 @@ export function ReviewRecordScreen({ reviewId, from }: Props) {
       <header className={styles.header}>
         <div>
           <p className={styles.eyebrow}>Formal review record</p>
-          <h1>{review.learnerName}</h1>
+          <h1>{review.apprenticeName}</h1>
           <p className={styles.sub}>
             {review.programmeName} · Year {snap.programmeYear}
             {snap.programmeWeek != null ? ` · Week ${snap.programmeWeek}` : ""} ·{" "}
@@ -550,7 +550,7 @@ export function ReviewRecordScreen({ reviewId, from }: Props) {
         <article className={styles.snapshotHero}>
           <h2>Captured position at review creation</h2>
           <p>
-            Snapshot used for this review. Live learner data may change later —
+            Snapshot used for this review. Live apprentice data may change later —
             it does not overwrite this record.
           </p>
           <div className={styles.metricGrid}>
@@ -601,7 +601,7 @@ export function ReviewRecordScreen({ reviewId, from }: Props) {
               </h2>
               <p className={styles.hint}>
                 Showing Years 1–{snap.programmeYear} only. Later-year modules stay
-                hidden until the learner reaches that year.
+                hidden until the apprentice reaches that year.
               </p>
             </div>
             <div className={styles.moduleSummary}>
@@ -874,7 +874,7 @@ export function ReviewRecordScreen({ reviewId, from }: Props) {
           {lastCycle.length === 0 ? (
             <div className={styles.actionEmpty}>
               <p>
-                No earlier Action Centre records for {review.learnerName} before
+                No earlier Action Centre records for {review.apprenticeName} before
                 this review date. After you agree actions here, they will appear
                 in this block at the <strong>next</strong> review.
               </p>
@@ -1006,7 +1006,7 @@ export function ReviewRecordScreen({ reviewId, from }: Props) {
                     created in the Action Centre before sign-off.
                   </p>
                   <p>
-                    Typical actions for {review.learnerName} might cover
+                    Typical actions for {review.apprenticeName} might cover
                     workplace practice, OTJ logging, evidence gaps, or employer
                     mentoring commitments with a clear owner, due date and
                     success measure.

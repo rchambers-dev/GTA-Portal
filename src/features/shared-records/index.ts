@@ -1,10 +1,10 @@
 export { RecordStubScreen } from "./screens/RecordStubScreen";
 export {
-  LEARNER_TABS,
-  parseLearnerTab,
+  APPRENTICE_TABS,
+  parseApprenticeTab,
   parseFromContext,
   getReturnLink,
-  learnerRecordHref,
+  apprenticeRecordHref,
   childPathToTab,
-  type LearnerTab,
+  type ApprenticeTab,
 } from "./lib/record-context";

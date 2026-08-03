@@ -27,21 +27,21 @@ function filterSections(
 export function resolveNavigation(session: EffectiveSession): NavSection[] {
   const { workspace } = session.account;
 
-  if (workspace === "learner") {
+  if (workspace === "apprentice") {
     return filterSections(session, [
       {
         items: [
-          { href: "/learner/dashboard", label: "Dashboard", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
-          { href: "/learner/learning", label: "My Learning", permission: PERMISSIONS.LEARNER_MODULES_VIEW },
-          { href: "/learner/college-tasks", label: "College tasks", permission: PERMISSIONS.LEARNER_MODULES_VIEW },
-          { href: "/learner/progress", label: "Progress", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
-          { href: "/learner/otj", label: "OTJ hours", permission: PERMISSIONS.LEARNER_OTJ_VIEW },
-          { href: "/learner/documents", label: "Documents", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
-          { href: "/learner/attendance", label: "Attendance", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
-          { href: "/learner/reviews", label: "Reviews", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
-          { href: "/learner/cv", label: "CV builder", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
-          { href: "/learner/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
-          { href: "/learner/support", label: "Support", permission: PERMISSIONS.LEARNER_WORKSPACE_OWN },
+          { href: "/apprentice/dashboard", label: "Dashboard", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
+          { href: "/apprentice/learning", label: "My Learning", permission: PERMISSIONS.APPRENTICE_MODULES_VIEW },
+          { href: "/apprentice/college-tasks", label: "College tasks", permission: PERMISSIONS.APPRENTICE_MODULES_VIEW },
+          { href: "/apprentice/progress", label: "Progress", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
+          { href: "/apprentice/otj", label: "OTJ hours", permission: PERMISSIONS.APPRENTICE_OTJ_VIEW },
+          { href: "/apprentice/documents", label: "Documents", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
+          { href: "/apprentice/attendance", label: "Attendance", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
+          { href: "/apprentice/reviews", label: "Reviews", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
+          { href: "/apprentice/cv", label: "CV builder", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
+          { href: "/apprentice/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
+          { href: "/apprentice/support", label: "Support", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
         ],
       },
     ]);
@@ -95,13 +95,14 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/quality/feedback-trends", label: "Curriculum Feedback Trends", permission: PERMISSIONS.CURRICULUM_FEEDBACK_MANAGE },
           { href: "/quality/history", label: "Version & Change History", permission: PERMISSIONS.CURRICULUM_HISTORY_VIEW },
           { href: "/quality/shared-drive", label: "Shared Drive", permission: PERMISSIONS.QUALITY_WORKSPACE_VIEW },
-          { href: "/learners/lifecycle", label: "Learner Lifecycle", permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
+          { href: "/apprentices/lifecycle", label: "Apprentice Lifecycle", permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
         ],
       },
     ]);
   }
 
   if (workspace === "management") {
+    // Order follows Temp Portal management spine; extras slotted into the journey.
     return filterSections(session, [
       {
         items: [
@@ -109,15 +110,13 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/management/employers", label: "Employer Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/programmes-records", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/cohorts", label: "Cohorts & Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/intake", label: "Learner Intake", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/staff-intake", label: "Staff Intake", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
-          { href: "/management/enrolments", label: "Learner Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/learner-funding", label: "Learner funding (RPL / KSB)", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
-          { href: "/management/learner-brag", label: "Learner progression BRAG", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
-          { href: "/learners?from=management", label: "Learners", permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW },
-          { href: "/staff-records?from=management", label: "Staff", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
-          { href: "/management/accounts", label: "Learner Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
-          { href: "/management/staff-accounts", label: "Staff Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
+          { href: "/management/intake", label: "Apprentice Intake", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/management/enrolments", label: "Apprentice Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/apprentices?from=management", label: "Apprentices", permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
+          { href: "/management/apprentice-funding", label: "Apprentice funding (RPL / KSB)", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
+          { href: "/management/apprentice-brag", label: "Apprentice progression BRAG", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
+          { href: "/management/staff", label: "Staff", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
+          { href: "/staff-records?from=management", label: "Staff Records", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/management/shared-drive", label: "Shared Drive", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
           { href: "/management/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
           { href: "/management/safeguarding", label: "Safeguarding", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
@@ -127,17 +126,20 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
   }
 
   if (workspace === "administration") {
+    // Order follows Temp Portal administration spine; extras slotted alongside.
     return filterSections(session, [
       {
         items: [
           { href: "/administration/dashboard", label: "Administration Dashboard", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
-          { href: "/administration/employers", label: "Employer Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/programmes", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/cohorts", label: "Cohorts & Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/intake", label: "Learner Intake", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/enrolments", label: "Learner Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/learners?from=administration", label: "Learners", permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW },
-          { href: "/administration/accounts", label: "Learner Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
+          { href: "/administration/employers", label: "Employer Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/apprentices?from=administration", label: "Apprentices", permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
+          { href: "/administration/programmes", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/administration/intake", label: "Apprentice Intake", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/administration/enrolments", label: "Apprentice Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/administration/staff", label: "Staff", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
+          { href: "/staff-records?from=administration", label: "Staff Records", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
+          { href: "/administration/accounts", label: "Apprentice Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/administration/shared-drive", label: "Shared Drive", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
           { href: "/administration/safeguarding", label: "Safeguarding", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },

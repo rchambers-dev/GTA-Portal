@@ -39,7 +39,7 @@ import type {
   ReviewsTabId,
 } from "../domain/reviews/types";
 import { MENTOR_BASE } from "../lib/metric-links";
-import { MENTOR_ID, MENTOR_LEARNERS, MENTOR_NAME } from "../data/mentor-caseload";
+import { MENTOR_ID, MENTOR_APPRENTICES, MENTOR_NAME } from "../data/mentor-caseload";
 import styles from "./ReviewsQueueScreen.module.css";
 
 type Props = {
@@ -202,9 +202,9 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
     return REVIEW_REQUIREMENTS.find((r) => r.requirementId === selectedId) ?? null;
   }, [selectedId, tick]);
 
-  const selectedLearner = useMemo(() => {
+  const selectedApprentice = useMemo(() => {
     if (!selected) return null;
-    return MENTOR_LEARNERS.find((l) => l.learnerId === selected.learnerId) ?? null;
+    return MENTOR_APPRENTICES.find((l) => l.apprenticeId === selected.apprenticeId) ?? null;
   }, [selected]);
 
   const counts = useMemo(() => {
@@ -247,7 +247,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
       !r.formalReviewId &&
       r.queueTab !== "upcoming" &&
       r.queueTab !== "ready_to_create" &&
-      matchSearch(r.learnerName, r.employerName, r.programmeName) &&
+      matchSearch(r.apprenticeName, r.employerName, r.programmeName) &&
       (!filters.due ||
         filters.due !== "this-week" ||
         (() => {
@@ -260,14 +260,14 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
     (r) =>
       !r.formalReviewId &&
       r.queueTab === "ready_to_create" &&
-      matchSearch(r.learnerName, r.employerName, r.programmeName),
+      matchSearch(r.apprenticeName, r.employerName, r.programmeName),
   );
 
   const upcoming = REVIEW_REQUIREMENTS.filter(
     (r) =>
       !r.formalReviewId &&
       r.queueTab === "upcoming" &&
-      matchSearch(r.learnerName, r.employerName, r.programmeName),
+      matchSearch(r.apprenticeName, r.employerName, r.programmeName),
   );
 
   function refresh() {
@@ -391,7 +391,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
         <div className={styles.toolbarRow}>
           <input
             className={styles.search}
-            placeholder="Search learner, employer, programme"
+            placeholder="Search apprentice, employer, programme"
             defaultValue={filters.q ?? ""}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -427,7 +427,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
     >
       <p className={styles.policyStrip}>
         <strong>How it works:</strong> requirement appears → prepare checklist →
-        create formal review when ready. Select a learner for the full checklist.
+        create formal review when ready. Select an apprentice for the full checklist.
       </p>
 
       <ViewTabs
@@ -457,7 +457,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                 </span>
                 <span>
                   {(tab === "needs_creating" ? needsCreating : readyToCreate).length}{" "}
-                  learners
+                  apprentices
                 </span>
               </div>
               {(tab === "needs_creating" ? needsCreating : readyToCreate).length ===
@@ -477,7 +477,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                         className={styles.queueCheck}
                         checked={bulkSelected.includes(r.requirementId)}
                         onChange={() => toggleBulk(r.requirementId)}
-                        aria-label={`Select ${r.learnerName}`}
+                        aria-label={`Select ${r.apprenticeName}`}
                       />
                       <button
                         type="button"
@@ -485,7 +485,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                         onClick={() => setSelectedId(r.requirementId)}
                       >
                         <div className={styles.queueTitleRow}>
-                          <strong>{r.learnerName}</strong>
+                          <strong>{r.apprenticeName}</strong>
                           <StatusChip tone={readinessTone(r.readinessStatus)}>
                             {readinessStatusLabel(r.readinessStatus)}
                           </StatusChip>
@@ -521,13 +521,13 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                 <span>{openReviews().length}</span>
               </div>
               {openReviews().filter((r) =>
-                matchSearch(r.learnerName, r.employerName, r.programmeName),
+                matchSearch(r.apprenticeName, r.employerName, r.programmeName),
               ).length === 0 ? (
                 <p className={styles.queueEmpty}>No open reviews.</p>
               ) : (
                 openReviews()
                   .filter((r) =>
-                    matchSearch(r.learnerName, r.employerName, r.programmeName),
+                    matchSearch(r.apprenticeName, r.employerName, r.programmeName),
                   )
                   .map((r) => (
                     <article key={r.reviewId} className={styles.queueRow}>
@@ -537,7 +537,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                             className={styles.queueNameLink}
                             href={`/reviews/${r.reviewId}?from=mentor-reviews`}
                           >
-                            {r.learnerName}
+                            {r.apprenticeName}
                           </Link>
                           <StatusChip tone="blue">{stageLabel(r.stage)}</StatusChip>
                         </div>
@@ -586,7 +586,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                           className={styles.queueNameLink}
                           href={`/reviews/${r.reviewId}?from=mentor-reviews`}
                         >
-                          {r.learnerName}
+                          {r.apprenticeName}
                         </Link>
                         <StatusChip
                           tone={
@@ -645,9 +645,9 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                       <div className={styles.queueTitleRow}>
                         <Link
                           className={styles.queueNameLink}
-                          href={`/learners/${r.learnerId}?from=mentor-reviews`}
+                          href={`/apprentices/${r.apprenticeId}?from=mentor-reviews`}
                         >
-                          {r.learnerName}
+                          {r.apprenticeName}
                         </Link>
                         <StatusChip tone="neutral">{r.reviewCycle}</StatusChip>
                       </div>
@@ -666,9 +666,9 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                     <div className={styles.queueAside}>
                       <Link
                         className={styles.secondaryBtn}
-                        href={`/learners/${r.learnerId}?tab=reviews&from=mentor-reviews`}
+                        href={`/apprentices/${r.apprenticeId}?tab=reviews&from=mentor-reviews`}
                       >
-                        View learner
+                        View apprentice
                       </Link>
                     </div>
                   </article>
@@ -698,7 +698,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                         onClick={() => setSelectedId(item.row.requirementId)}
                       >
                         <div className={styles.queueTitleRow}>
-                          <strong>{item.row.learnerName}</strong>
+                          <strong>{item.row.apprenticeName}</strong>
                           <StatusChip tone="red">
                             {Math.abs(daysUntil(item.row.plannedReviewDate))}d
                             overdue
@@ -730,7 +730,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                             className={styles.queueNameLink}
                             href={`/reviews/${item.row.reviewId}?from=mentor-reviews`}
                           >
-                            {item.row.learnerName}
+                            {item.row.apprenticeName}
                           </Link>
                           <StatusChip tone="red">
                             {item.row.daysOverdue != null
@@ -780,7 +780,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                           className={styles.queueNameLink}
                           href={`/reviews/${r.reviewId}?from=mentor-reviews`}
                         >
-                          {r.learnerName}
+                          {r.apprenticeName}
                         </Link>
                         <StatusChip tone="green">Completed</StatusChip>
                       </div>
@@ -816,7 +816,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
             <header className={styles.panelHeader}>
               <div>
                 <p className={styles.panelEyebrow}>Preparation</p>
-                <h2>{selected.learnerName}</h2>
+                <h2>{selected.apprenticeName}</h2>
                 <p className={styles.panelMeta}>
                   {selected.programmeName} · {selected.employerName}
                 </p>
@@ -856,24 +856,24 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
               <div>
                 <span>Planned</span>
                 <strong>
-                  {selectedLearner?.plannedProgressPercent != null
-                    ? `${selectedLearner.plannedProgressPercent}%`
+                  {selectedApprentice?.plannedProgressPercent != null
+                    ? `${selectedApprentice.plannedProgressPercent}%`
                     : "—"}
                 </strong>
               </div>
               <div>
                 <span>Actual</span>
                 <strong>
-                  {selectedLearner?.actualProgressPercent != null
-                    ? `${selectedLearner.actualProgressPercent}%`
+                  {selectedApprentice?.actualProgressPercent != null
+                    ? `${selectedApprentice.actualProgressPercent}%`
                     : "—"}
                 </strong>
               </div>
               <div>
                 <span>Attendance</span>
                 <strong>
-                  {selectedLearner?.attendancePercent != null
-                    ? `${selectedLearner.attendancePercent}%`
+                  {selectedApprentice?.attendancePercent != null
+                    ? `${selectedApprentice.attendancePercent}%`
                     : "—"}
                 </strong>
               </div>
@@ -962,7 +962,7 @@ export function ReviewsQueueScreen({ filters, permissions = [] }: Props) {
                     <h3>Actions from last cycle</h3>
                     {(() => {
                       const prior = lastCycleActionsForReview({
-                        learnerId: selected.learnerId,
+                        apprenticeId: selected.apprenticeId,
                         reviewId:
                           selected.formalReviewId ??
                           `prep-${selected.requirementId}`,

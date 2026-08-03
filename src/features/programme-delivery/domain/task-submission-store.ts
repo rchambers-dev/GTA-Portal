@@ -5,7 +5,6 @@
  */
 
 import type { PracticalTaskDef } from "./task-schema";
-import { buildAlexHalfwayTaskSeed } from "./alex-halfway-task-seed";
 
 export type SubmissionMethod = "portal_form" | "pdf_upload";
 
@@ -20,7 +19,7 @@ export type TaskSubmissionStatus =
 
 export type TaskSubmission = {
   taskId: string;
-  learnerId: string;
+  apprenticeId: string;
   method: SubmissionMethod | null;
   status: TaskSubmissionStatus;
   /** Portal form answers keyed by field key. */
@@ -43,14 +42,12 @@ type Snapshot = {
   version: 2;
   /** Bump to re-apply Alex mid-course demo task pack. */
   demoSeed?: string;
-  byLearner: Record<string, Record<string, TaskSubmission>>;
+  byApprentice: Record<string, Record<string, TaskSubmission>>;
 };
 
-const STORAGE_KEY = "gta-portal.programme-tasks.v2";
-const DEMO_LEARNER_ID = "alex-morgan";
-const ALEX_DEMO_SEED = "alex-halfway-v2";
-
-const EMPTY_SNAPSHOT: Snapshot = { version: 2, byLearner: {} };
+const STORAGE_KEY = "gta-portal.programme-tasks.v3";
+const DEMO_APPRENTICE_ID = "alex-morgan";
+const EMPTY_SNAPSHOT: Snapshot = { version: 2, byApprentice: {} };
 let snapshot: Snapshot = EMPTY_SNAPSHOT;
 let hydrated = false;
 let hydrateScheduled = false;
@@ -71,7 +68,7 @@ function loadSnapshot(): Snapshot {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return withAlexDemoSeed(EMPTY_SNAPSHOT);
     const parsed = JSON.parse(raw) as Snapshot;
-    if (parsed?.version !== 2 || !parsed.byLearner) {
+    if (parsed?.version !== 2 || !parsed.byApprentice) {
       return withAlexDemoSeed(EMPTY_SNAPSHOT);
     }
     return withAlexDemoSeed(parsed);
@@ -81,17 +78,9 @@ function loadSnapshot(): Snapshot {
   return withAlexDemoSeed(EMPTY_SNAPSHOT);
 }
 
-/** Apply / refresh Alex mid-course demo progress when seed tag is missing. */
 function withAlexDemoSeed(base: Snapshot): Snapshot {
-  if (base.demoSeed === ALEX_DEMO_SEED) return base;
-  return {
-    version: 2,
-    demoSeed: ALEX_DEMO_SEED,
-    byLearner: {
-      ...base.byLearner,
-      [DEMO_LEARNER_ID]: buildAlexHalfwayTaskSeed(),
-    },
-  };
+  // No fictional apprentice task packs — import live progress instead.
+  return base;
 }
 
 function ensureHydrated() {
@@ -122,10 +111,10 @@ function emit() {
   for (const listener of listeners) listener();
 }
 
-function emptySubmission(taskId: string, learnerId: string): TaskSubmission {
+function emptySubmission(taskId: string, apprenticeId: string): TaskSubmission {
   return {
     taskId,
-    learnerId,
+    apprenticeId,
     method: null,
     status: "not_started",
     fields: {},
@@ -160,23 +149,23 @@ export function getTaskServerSnapshot(): Snapshot {
 
 export function getTaskSubmission(
   taskId: string,
-  learnerId: string = DEMO_LEARNER_ID,
+  apprenticeId: string = DEMO_APPRENTICE_ID,
 ): TaskSubmission {
   return (
-    snapshot.byLearner[learnerId]?.[taskId] ??
-    emptySubmission(taskId, learnerId)
+    snapshot.byApprentice[apprenticeId]?.[taskId] ??
+    emptySubmission(taskId, apprenticeId)
   );
 }
 
 export function upsertTaskSubmission(
   taskId: string,
   patch: Partial<TaskSubmission>,
-  learnerId: string = DEMO_LEARNER_ID,
+  apprenticeId: string = DEMO_APPRENTICE_ID,
 ): TaskSubmission {
   ensureHydrated();
   const existing =
-    snapshot.byLearner[learnerId]?.[taskId] ??
-    emptySubmission(taskId, learnerId);
+    snapshot.byApprentice[apprenticeId]?.[taskId] ??
+    emptySubmission(taskId, apprenticeId);
   const next: TaskSubmission = {
     ...existing,
     ...patch,
@@ -186,10 +175,10 @@ export function upsertTaskSubmission(
   };
   snapshot = {
     ...snapshot,
-    byLearner: {
-      ...snapshot.byLearner,
-      [learnerId]: {
-        ...(snapshot.byLearner[learnerId] ?? {}),
+    byApprentice: {
+      ...snapshot.byApprentice,
+      [apprenticeId]: {
+        ...(snapshot.byApprentice[apprenticeId] ?? {}),
         [taskId]: next,
       },
     },
@@ -243,36 +232,36 @@ export function statusTone(
 export function isBlockReflectionVerified(
   blockId: number,
   tasks: PracticalTaskDef[],
-  learnerId: string = DEMO_LEARNER_ID,
+  apprenticeId: string = DEMO_APPRENTICE_ID,
 ): boolean {
   const reflection = tasks.find(
     (t) => t.blockId === blockId && t.kind === "reflection",
   );
   if (!reflection) return false;
-  return getTaskSubmission(reflection.id, learnerId).status === "verified";
+  return getTaskSubmission(reflection.id, apprenticeId).status === "verified";
 }
 
 export function listAwaitingTrainer(
   tasks: PracticalTaskDef[],
-  learnerId: string = DEMO_LEARNER_ID,
+  apprenticeId: string = DEMO_APPRENTICE_ID,
 ): PracticalTaskDef[] {
   return tasks.filter((t) => {
-    const s = getTaskSubmission(t.id, learnerId).status;
+    const s = getTaskSubmission(t.id, apprenticeId).status;
     return s === "awaiting_trainer" || s === "awaiting_mentor";
   });
 }
 
 /**
- * Map admin enrolment learnerId → task store key.
- * Alex demo pack is stored under DEMO_LEARNER_ID.
+ * Map admin enrolment apprenticeId → task store key.
+ * Alex demo pack is stored under DEMO_APPRENTICE_ID.
  */
-export function resolveTaskStoreLearnerId(
-  adminLearnerId: string | null | undefined,
+export function resolveTaskStoreApprenticeId(
+  adminApprenticeId: string | null | undefined,
 ): string {
-  if (!adminLearnerId || adminLearnerId === "lrn-alex-morgan") {
-    return DEMO_LEARNER_ID;
+  if (!adminApprenticeId || adminApprenticeId === "lrn-alex-morgan") {
+    return DEMO_APPRENTICE_ID;
   }
-  return adminLearnerId;
+  return adminApprenticeId;
 }
 
 export type ForceCompleteOptions = {
@@ -290,12 +279,12 @@ function forceCompleteStamp(completedAtIso?: string): string {
 }
 
 /**
- * Management system action: mark a task verified without the learner/tutor flow.
+ * Management system action: mark a task verified without the apprentice/tutor flow.
  * Used to backfill progress for live / backdated intakes.
  */
 export function forceVerifyTask(
   taskId: string,
-  learnerId: string,
+  apprenticeId: string,
   options: ForceCompleteOptions = {},
 ): TaskSubmission {
   const stamp = forceCompleteStamp(options.completedAtIso);
@@ -318,22 +307,22 @@ export function forceVerifyTask(
       returnNote: note,
       difficulty: "ok",
     },
-    learnerId,
+    apprenticeId,
   );
 }
 
 /** Mark every task in a block verified. Returns how many tasks were updated. */
 export function forceVerifyBlock(
   blockTasks: PracticalTaskDef[],
-  learnerId: string,
+  apprenticeId: string,
   options: ForceCompleteOptions = {},
 ): number {
   let count = 0;
   for (const task of blockTasks) {
-    forceVerifyTask(task.id, learnerId, options);
+    forceVerifyTask(task.id, apprenticeId, options);
     count += 1;
   }
   return count;
 }
 
-export { DEMO_LEARNER_ID };
+export { DEMO_APPRENTICE_ID };

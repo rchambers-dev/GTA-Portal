@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 import {
-  LearnerPageShell,
-  LearnerStatusChip,
-} from "@/features/learner-portal/components/LearnerPageShell";
+  ApprenticePageShell,
+  ApprenticeStatusChip,
+} from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
 import { taskById } from "../domain/autocare-tasks";
 import {
@@ -40,11 +40,11 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
 
   if (!task) {
     return (
-      <LearnerPageShell eyebrow="Tutor" title="Task not found" description="">
+      <ApprenticePageShell eyebrow="Tutor" title="Task not found" description="">
         <Link href="/staff/programme-delivery" className={styles.back}>
           ← Back to programme delivery
         </Link>
-      </LearnerPageShell>
+      </ApprenticePageShell>
     );
   }
 
@@ -96,7 +96,7 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
   );
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Tutor"
       title={task.title}
       description={`${task.evidenceRef} · Block ${task.blockId} · Alex Morgan`}
@@ -108,9 +108,9 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
 
         <div className={styles.purpose}>
           <p className={styles.purposeLead}>
-            <LearnerStatusChip tone={statusTone(sub.status)}>
+            <ApprenticeStatusChip tone={statusTone(sub.status)}>
               {statusLabel(sub.status)}
-            </LearnerStatusChip>{" "}
+            </ApprenticeStatusChip>{" "}
             Method: {sub.method ?? "—"}
             {sub.difficulty ? ` · Difficulty: ${sub.difficulty}` : ""}
           </p>
@@ -190,6 +190,6 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
           {message ? <p className={styles.purposeBody}>{message}</p> : null}
         </section>
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

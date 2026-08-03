@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useState, useSyncExternalStore } from "react";
 import {
-  LearnerPageShell,
-  LearnerStatusChip,
-} from "@/features/learner-portal/components/LearnerPageShell";
+  ApprenticePageShell,
+  ApprenticeStatusChip,
+} from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "../domain/autocare-blocks";
 import {
   AUTOCARE_PRACTICAL_TASKS,
@@ -44,7 +44,7 @@ export function TutorProgrammeDeliveryScreen() {
   );
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Tutor"
       title="Programme delivery"
       description="Lesson plans and college practical tasks for Autocare. Review apprentice submissions, verify Task 5 reflections to unlock the next block, and use curriculum review status while leads check transcribed content."
@@ -110,9 +110,9 @@ export function TutorProgrammeDeliveryScreen() {
                       </p>
                     </div>
                     <div className={styles.taskEnd}>
-                      <LearnerStatusChip tone={statusTone(sub.status)}>
+                      <ApprenticeStatusChip tone={statusTone(sub.status)}>
                         {statusLabel(sub.status)}
-                      </LearnerStatusChip>
+                      </ApprenticeStatusChip>
                       <Link
                         className={styles.linkish}
                         href={`/staff/programme-delivery/${task.id}`}
@@ -190,9 +190,9 @@ export function TutorProgrammeDeliveryScreen() {
                                 </span>
                               </div>
                               <div className={styles.taskEnd}>
-                                <LearnerStatusChip tone={statusTone(sub.status)}>
+                                <ApprenticeStatusChip tone={statusTone(sub.status)}>
                                   {statusLabel(sub.status)}
-                                </LearnerStatusChip>
+                                </ApprenticeStatusChip>
                                 <span className={styles.linkish}>Open →</span>
                               </div>
                             </Link>
@@ -211,6 +211,6 @@ export function TutorProgrammeDeliveryScreen() {
           </div>
         )}
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

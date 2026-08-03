@@ -5,10 +5,10 @@ Gateway model aligned to MBB `mbb-gta-duplicate` (Jul 2026).
 
 ## Standard & OTJ
 
-- New starts lock **newest** ST0499 version (**v1.3**). Existing learners stay on the version they started.
+- New starts lock **newest** ST0499 version (**v1.3**). Existing apprentices stay on the version they started.
 - Published minimum OTJ **605 hrs**; portal planned OTJ can be higher (Autocare **611.50**). **No maximum.**
 - Headroom (**6.5 hrs**) is fixed on the programme master; revise only when standard version changes.
-- Primary calendar measure for **learners**: **programme weeks** from the **cohort start date** (no fast-track).
+- Primary calendar measure for **apprentices**: **programme weeks** from the **cohort start date** (no fast-track).
 - Blocks **1–10**: AutoCare L2 training spine (lesson index + practical Task 3/4 PDFs).
 - Block **10** remains the heavy end (EPA mock + capstone; weeks 95–113).
 - Block **11**: **Pre-EPA consolidation** (lighter readiness tasks; **0 planned OTJ**) — not a gateway container.
@@ -46,7 +46,7 @@ Gateway model aligned to MBB `mbb-gta-duplicate` (Jul 2026).
 
 ## Navigation (wired)
 
-- **Learner:** My Learning + College tasks (no Modules / CEA catalogue in nav). Old `/learner/modules` and `/learner/cea` redirect to college tasks.
+- **Apprentice:** My Learning + College tasks (no Modules / CEA catalogue in nav). Old `/learner/modules` and `/learner/cea` redirect to college tasks.
 - **Tutor:** Programme delivery is the hub (lesson plans + tasks + sign-off). Old Modules / module sign-offs / assessments / resources stubs redirect here.
 - **Weeks** are the primary progress measure.
 - **Management BRAG:** training blocks Blue/Green/Amber/Red; Gateway 1 / Gateway 2 / EPA use Green/Amber/Red (RAG).

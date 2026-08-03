@@ -12,7 +12,7 @@ const ACTIONS = [
     id: "raise-concern",
     title: "Raise a Concern",
     description:
-      "Raise a concern about apprentice welfare or workplace issues. GTA handles this first — the learner is not contacted directly.",
+      "Raise a concern about apprentice welfare or workplace issues. GTA handles this first — the apprentice is not contacted directly.",
   },
   {
     id: "request-support",
@@ -21,7 +21,7 @@ const ACTIONS = [
   },
   {
     id: "clarify-progress",
-    title: "Clarify Learner Progress",
+    title: "Clarify Apprentice Progress",
     description: "Request clarification on progress summaries visible to employers.",
   },
 ] as const;

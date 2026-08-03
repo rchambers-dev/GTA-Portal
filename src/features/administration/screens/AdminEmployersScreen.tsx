@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  LearnerPageShell,
-  LearnerStatusChip,
-} from "@/features/learner-portal/components/LearnerPageShell";
+  ApprenticePageShell,
+  ApprenticeStatusChip,
+} from "@/features/apprentice-portal/components/ApprenticePageShell";
 import {
   createEmployer,
   updateEmployer,
   type EmployerInput,
 } from "../domain/store";
-import type { AdminEmployerRecord, AdminLearnerEnrolment } from "../domain/types";
+import type { AdminEmployerRecord, AdminApprenticeEnrolment } from "../domain/types";
 import { useAdminStore } from "../hooks/useAdminStore";
 import styles from "./admin-pages.module.css";
 
@@ -42,10 +42,10 @@ function formatAddress(row: AdminEmployerRecord): string {
     .join(", ");
 }
 
-function learnersForEmployer(
-  enrolments: AdminLearnerEnrolment[],
+function apprenticesForEmployer(
+  enrolments: AdminApprenticeEnrolment[],
   employerId: string,
-): AdminLearnerEnrolment[] {
+): AdminApprenticeEnrolment[] {
   return enrolments
     .filter((e) => e.employerId === employerId)
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
@@ -56,19 +56,19 @@ type GarageSearchMode =
   | "postcode"
   | "contact"
   | "area"
-  | "student";
+  | "apprentice";
 
 const SEARCH_MODES: Array<{ id: GarageSearchMode; label: string; placeholder: string }> = [
   { id: "name", label: "Name", placeholder: "Search by garage or legal name…" },
   { id: "postcode", label: "Postcode", placeholder: "Search by postcode…" },
   { id: "contact", label: "Contact", placeholder: "Search by contact name, email or phone…" },
   { id: "area", label: "Area", placeholder: "Search by town, street or area…" },
-  { id: "student", label: "Student", placeholder: "Search by apprentice name or email…" },
+  { id: "apprentice", label: "Apprentice", placeholder: "Search by apprentice name or email…" },
 ];
 
 function garageMatchesQuery(
   row: AdminEmployerRecord,
-  linked: AdminLearnerEnrolment[],
+  linked: AdminApprenticeEnrolment[],
   query: string,
   mode: GarageSearchMode,
 ): boolean {
@@ -94,7 +94,7 @@ function garageMatchesQuery(
         return [row.town, row.addressLine1, row.addressLine2]
           .join(" ")
           .toLowerCase();
-      case "student":
+      case "apprentice":
         return linked
           .map((l) => `${l.displayName} ${l.email}`)
           .join(" ")
@@ -110,7 +110,7 @@ function garageMatchesQuery(
   return q.split(/\s+/).every((token) => haystack.includes(token));
 }
 
-function statusTone(status: AdminLearnerEnrolment["status"]) {
+function statusTone(status: AdminApprenticeEnrolment["status"]) {
   switch (status) {
     case "active":
       return "green" as const;
@@ -185,7 +185,7 @@ export function AdminEmployersScreen() {
   const [searchMode, setSearchMode] = useState<GarageSearchMode>("name");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [apprenticeMenuId, setApprenticeMenuId] = useState<string | null>(null);
-  const [selectedLearnerId, setSelectedLearnerId] = useState<string | null>(
+  const [selectedApprenticeId, setSelectedApprenticeId] = useState<string | null>(
     null,
   );
   const [showForm, setShowForm] = useState(false);
@@ -224,7 +224,7 @@ export function AdminEmployersScreen() {
     return rows.filter((row) =>
       garageMatchesQuery(
         row,
-        learnersForEmployer(store.enrolments, row.id),
+        apprenticesForEmployer(store.enrolments, row.id),
         query,
         searchMode,
       ),
@@ -293,26 +293,30 @@ export function AdminEmployersScreen() {
     };
   }
 
-  function submit(event: React.FormEvent) {
+  async function submit(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
     const input = buildInput();
     if (!input) return;
-    if (editingId) {
-      updateEmployer(editingId, input);
-      setSuccess(`Updated ${input.name}.`);
-      setExpandedId(editingId);
-    } else {
-      const created = createEmployer(input);
-      setSuccess(`Added garage ${input.name}.`);
-      setExpandedId(created.id);
+    try {
+      if (editingId) {
+        await updateEmployer(editingId, input);
+        setSuccess(`Updated ${input.name}.`);
+        setExpandedId(editingId);
+      } else {
+        const created = await createEmployer(input);
+        setSuccess(`Added garage ${input.name}.`);
+        setExpandedId(created.id);
+      }
+      setShowForm(false);
+      setEditingId(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to save garage.");
     }
-    setShowForm(false);
-    setEditingId(null);
   }
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Administration"
       title="Employer Records"
       description="Garage and workplace details, plus which apprentices are linked to each one."
@@ -338,7 +342,7 @@ export function AdminEmployersScreen() {
               </div>
               <p className={styles.formGroupMeta}>
                 Capture the workplace details used for visits, contacts and
-                enrolments. Apprentices are linked through Learner Enrolments —
+                enrolments. Apprentices are linked through Apprentice Enrolments —
                 not by programme list here.
               </p>
 
@@ -620,9 +624,9 @@ export function AdminEmployersScreen() {
         ) : (
           <div className={styles.employerList}>
             {filtered.map((row) => {
-              const linked = learnersForEmployer(store.enrolments, row.id);
+              const linked = apprenticesForEmployer(store.enrolments, row.id);
               const open = expandedId === row.id;
-              const selectedHere = linked.find((l) => l.id === selectedLearnerId);
+              const selectedHere = linked.find((l) => l.id === selectedApprenticeId);
               const tone =
                 row.status !== "active"
                   ? "neutral"
@@ -684,7 +688,7 @@ export function AdminEmployersScreen() {
                         onClick={() => {
                           const nextStatus =
                             row.status === "active" ? "inactive" : "active";
-                          updateEmployer(row.id, { status: nextStatus });
+                          void updateEmployer(row.id, { status: nextStatus });
                           setSuccess(`${row.name} is now ${nextStatus}.`);
                         }}
                       >
@@ -737,38 +741,38 @@ export function AdminEmployersScreen() {
                               role="listbox"
                               aria-label={`Apprentices at ${row.name}`}
                             >
-                              {linked.map((learner) => (
+                              {linked.map((apprentice) => (
                                 <li
-                                  key={learner.id}
+                                  key={apprentice.id}
                                   role="option"
                                   aria-selected={
-                                    selectedLearnerId === learner.id
+                                    selectedApprenticeId === apprentice.id
                                   }
                                 >
                                   <button
                                     type="button"
                                     className={styles.employerApprenticeOption}
                                     data-selected={
-                                      selectedLearnerId === learner.id
+                                      selectedApprenticeId === apprentice.id
                                         ? "true"
                                         : "false"
                                     }
                                     onClick={() => {
-                                      setSelectedLearnerId(learner.id);
+                                      setSelectedApprenticeId(apprentice.id);
                                       setExpandedId(row.id);
                                       setApprenticeMenuId(null);
                                       setSuccess(
-                                        `Selected ${learner.displayName} at ${row.name}.`,
+                                        `Selected ${apprentice.displayName} at ${row.name}.`,
                                       );
                                     }}
                                   >
-                                    <strong>{learner.displayName}</strong>
+                                    <strong>{apprentice.displayName}</strong>
                                     <span>
-                                      {learner.kind === "new_starter"
+                                      {apprentice.kind === "new_starter"
                                         ? "New starter"
                                         : "Currently studying"}
                                       {" · "}
-                                      {learner.programmeName}
+                                      {apprentice.programmeName}
                                     </span>
                                   </button>
                                 </li>
@@ -791,7 +795,7 @@ export function AdminEmployersScreen() {
                           label="Trading name"
                           value={row.name}
                           onCommit={(next) =>
-                            updateEmployer(row.id, { name: next })
+                            void updateEmployer(row.id, { name: next })
                           }
                         />
                         <EmployerInlineField
@@ -799,14 +803,14 @@ export function AdminEmployersScreen() {
                           value={row.legalName}
                           placeholder="If different from trading name"
                           onCommit={(next) =>
-                            updateEmployer(row.id, { legalName: next })
+                            void updateEmployer(row.id, { legalName: next })
                           }
                         />
                         <EmployerInlineField
                           label="Company number"
                           value={row.companyNumber}
                           onCommit={(next) =>
-                            updateEmployer(row.id, { companyNumber: next })
+                            void updateEmployer(row.id, { companyNumber: next })
                           }
                         />
                         <EmployerInlineField
@@ -815,49 +819,49 @@ export function AdminEmployersScreen() {
                           type="url"
                           placeholder="https://"
                           onCommit={(next) =>
-                            updateEmployer(row.id, { website: next })
+                            void updateEmployer(row.id, { website: next })
                           }
                         />
                         <EmployerInlineField
                           label="Address line 1"
                           value={row.addressLine1}
                           onCommit={(next) =>
-                            updateEmployer(row.id, { addressLine1: next })
+                            void updateEmployer(row.id, { addressLine1: next })
                           }
                         />
                         <EmployerInlineField
                           label="Address line 2"
                           value={row.addressLine2}
                           onCommit={(next) =>
-                            updateEmployer(row.id, { addressLine2: next })
+                            void updateEmployer(row.id, { addressLine2: next })
                           }
                         />
                         <EmployerInlineField
                           label="Town / city"
                           value={row.town}
                           onCommit={(next) =>
-                            updateEmployer(row.id, { town: next })
+                            void updateEmployer(row.id, { town: next })
                           }
                         />
                         <EmployerInlineField
                           label="Postcode"
                           value={row.postcode}
                           onCommit={(next) =>
-                            updateEmployer(row.id, { postcode: next })
+                            void updateEmployer(row.id, { postcode: next })
                           }
                         />
                         <EmployerInlineField
                           label="Main contact"
                           value={row.mainContact}
                           onCommit={(next) =>
-                            updateEmployer(row.id, { mainContact: next })
+                            void updateEmployer(row.id, { mainContact: next })
                           }
                         />
                         <EmployerInlineField
                           label="Contact role"
                           value={row.contactRole}
                           onCommit={(next) =>
-                            updateEmployer(row.id, { contactRole: next })
+                            void updateEmployer(row.id, { contactRole: next })
                           }
                         />
                         <EmployerInlineField
@@ -865,7 +869,7 @@ export function AdminEmployersScreen() {
                           value={row.contactEmail}
                           type="email"
                           onCommit={(next) =>
-                            updateEmployer(row.id, { contactEmail: next })
+                            void updateEmployer(row.id, { contactEmail: next })
                           }
                         />
                         <EmployerInlineField
@@ -873,7 +877,7 @@ export function AdminEmployersScreen() {
                           value={row.contactPhone}
                           type="tel"
                           onCommit={(next) =>
-                            updateEmployer(row.id, { contactPhone: next })
+                            void updateEmployer(row.id, { contactPhone: next })
                           }
                         />
                         <EmployerInlineField
@@ -883,13 +887,13 @@ export function AdminEmployersScreen() {
                           multiline
                           placeholder="Visit notes, access details, anything useful…"
                           onCommit={(next) =>
-                            updateEmployer(row.id, { notes: next })
+                            void updateEmployer(row.id, { notes: next })
                           }
                         />
                       </div>
 
-                      <div className={styles.linkedLearners}>
-                        <div className={styles.linkedLearnersHead}>
+                      <div className={styles.linkedApprentices}>
+                        <div className={styles.linkedApprenticesHead}>
                           <h3>Linked apprentices</h3>
                           <Link
                             href="/administration/enrolments"
@@ -901,48 +905,48 @@ export function AdminEmployersScreen() {
                         {linked.length === 0 ? (
                           <p className={styles.empty}>
                             No apprentices linked to this garage yet. Add them
-                            under Learner Enrolments and choose this employer.
+                            under Apprentice Enrolments and choose this employer.
                           </p>
                         ) : (
-                          <ul className={styles.linkedLearnerList}>
-                            {linked.map((learner) => (
+                          <ul className={styles.linkedApprenticeList}>
+                            {linked.map((apprentice) => (
                               <li
-                                key={learner.id}
+                                key={apprentice.id}
                                 data-selected={
-                                  selectedLearnerId === learner.id
+                                  selectedApprenticeId === apprentice.id
                                     ? "true"
                                     : "false"
                                 }
                               >
                                 <button
                                   type="button"
-                                  className={styles.linkedLearnerSelect}
+                                  className={styles.linkedApprenticeSelect}
                                   onClick={() => {
-                                    setSelectedLearnerId(learner.id);
+                                    setSelectedApprenticeId(apprentice.id);
                                     setSuccess(
-                                      `Selected ${learner.displayName} at ${row.name}.`,
+                                      `Selected ${apprentice.displayName} at ${row.name}.`,
                                     );
                                   }}
                                 >
-                                  <div className={styles.linkedLearnerMain}>
-                                    <strong>{learner.displayName}</strong>
+                                  <div className={styles.linkedApprenticeMain}>
+                                    <strong>{apprentice.displayName}</strong>
                                     <span>
-                                      {learner.kind === "new_starter"
+                                      {apprentice.kind === "new_starter"
                                         ? "New starter"
                                         : "Currently studying"}
-                                      {learner.kind === "currently_studying" &&
-                                      learner.programmeYear != null
-                                        ? ` · Y${learner.programmeYear} · W${learner.programmeWeek}`
-                                        : ` · starts ${learner.startDate}`}
+                                      {apprentice.kind === "currently_studying" &&
+                                      apprentice.programmeYear != null
+                                        ? ` · Y${apprentice.programmeYear} · W${apprentice.programmeWeek}`
+                                        : ` · starts ${apprentice.startDate}`}
                                       {" · "}
-                                      {learner.programmeName}
+                                      {apprentice.programmeName}
                                     </span>
                                   </div>
-                                  <LearnerStatusChip
-                                    tone={statusTone(learner.status)}
+                                  <ApprenticeStatusChip
+                                    tone={statusTone(apprentice.status)}
                                   >
-                                    {learner.status.replace("_", " ")}
-                                  </LearnerStatusChip>
+                                    {apprentice.status.replace("_", " ")}
+                                  </ApprenticeStatusChip>
                                 </button>
                               </li>
                             ))}
@@ -967,6 +971,6 @@ export function AdminEmployersScreen() {
           </div>
         )}
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

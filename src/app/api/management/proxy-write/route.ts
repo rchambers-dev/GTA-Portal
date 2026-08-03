@@ -4,27 +4,27 @@ import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import {
   calculateProgressFraming,
   formatProgressVariance,
-} from "@/features/learner-lifecycle/domain/progress-framing";
+} from "@/features/apprentice-lifecycle/domain/progress-framing";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 
-type LearnerRow = {
+type ApprenticeRow = {
   id: string;
   display_name: string;
-  learner_reference: string;
+  apprentice_reference: string;
   email: string;
 };
 
 type ProgrammeRow = {
   id: string;
-  learner_id: string | null;
+  apprentice_id: string | null;
   programme_name: string;
   start_date: string;
   original_planned_end_date: string;
   status: string;
   actual_progress_percent: number | null;
   notes: string | null;
-  learners: LearnerRow | LearnerRow[] | null;
+  apprentices: ApprenticeRow | ApprenticeRow[] | null;
 };
 
 function firstJoined<T>(value: T | T[] | null): T | null {
@@ -49,9 +49,9 @@ export async function GET() {
 
   const supabase = createSupabaseAdminClient();
   const { data, error } = await supabase
-    .from("learner_programmes")
+    .from("apprentice_programmes")
     .select(
-      "id, learner_id, programme_name, start_date, original_planned_end_date, status, actual_progress_percent, notes, learners(id, display_name, learner_reference, email)",
+      "id, apprentice_id, programme_name, start_date, original_planned_end_date, status, actual_progress_percent, notes, apprentices(id, display_name, apprentice_reference, email)",
     )
     .order("updated_at", { ascending: false });
 
@@ -60,7 +60,7 @@ export async function GET() {
   }
 
   const rows = ((data ?? []) as ProgrammeRow[]).map((row) => {
-    const learner = firstJoined(row.learners);
+    const apprentice = firstJoined(row.apprentices);
     const framing = calculateProgressFraming({
       startDate: row.start_date,
       originalPlannedEndDate: row.original_planned_end_date,
@@ -68,10 +68,10 @@ export async function GET() {
     });
     return {
       enrolmentId: row.id,
-      learnerId: row.learner_id,
-      displayName: learner?.display_name ?? "Unknown learner",
-      learnerReference: learner?.learner_reference ?? "",
-      email: learner?.email ?? "",
+      apprenticeId: row.apprentice_id,
+      displayName: apprentice?.display_name ?? "Unknown apprentice",
+      apprenticeReference: apprentice?.apprentice_reference ?? "",
+      email: apprentice?.email ?? "",
       programmeName: row.programme_name,
       startDate: row.start_date,
       originalPlannedEndDate: row.original_planned_end_date,
@@ -109,17 +109,17 @@ export async function POST(request: Request) {
   if (body.notes != null) update.notes = body.notes.trim();
 
   const { data, error } = await supabase
-    .from("learner_programmes")
+    .from("apprentice_programmes")
     .update(update)
     .eq("id", body.enrolmentId)
     .select(
-      "id, learner_id, programme_name, start_date, original_planned_end_date, status, actual_progress_percent, notes, learners(id, display_name, learner_reference, email)",
+      "id, apprentice_id, programme_name, start_date, original_planned_end_date, status, actual_progress_percent, notes, apprentices(id, display_name, apprentice_reference, email)",
     )
     .single();
 
   if (error || !data) {
     return NextResponse.json(
-      { error: error?.message ?? "Unable to update learner programme" },
+      { error: error?.message ?? "Unable to update apprentice programme" },
       { status: 500 },
     );
   }
@@ -127,8 +127,8 @@ export async function POST(request: Request) {
   const row = data as ProgrammeRow;
   await supabase.from("proxy_write_audit").insert({
     actor_profile_id: session.account.id,
-    learner_id: row.learner_id,
-    action: "learner_programme.proxy_progress_write",
+    apprentice_id: row.apprentice_id,
+    action: "apprentice_programme.proxy_progress_write",
     summary:
       body.summary?.trim() ||
       `Proxy-updated actual progress to ${body.actualProgressPercent ?? "null"}%`,
@@ -139,7 +139,7 @@ export async function POST(request: Request) {
     },
   });
 
-  const learner = firstJoined(row.learners);
+  const apprentice = firstJoined(row.apprentices);
   const framing = calculateProgressFraming({
     startDate: row.start_date,
     originalPlannedEndDate: row.original_planned_end_date,
@@ -149,10 +149,10 @@ export async function POST(request: Request) {
   return NextResponse.json({
     row: {
       enrolmentId: row.id,
-      learnerId: row.learner_id,
-      displayName: learner?.display_name ?? "Unknown learner",
-      learnerReference: learner?.learner_reference ?? "",
-      email: learner?.email ?? "",
+      apprenticeId: row.apprentice_id,
+      displayName: apprentice?.display_name ?? "Unknown apprentice",
+      apprenticeReference: apprentice?.apprentice_reference ?? "",
+      email: apprentice?.email ?? "",
       programmeName: row.programme_name,
       startDate: row.start_date,
       originalPlannedEndDate: row.original_planned_end_date,

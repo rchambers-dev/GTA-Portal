@@ -8,7 +8,7 @@ Bring back (or note down):
 
 1. **Current / most recent Autocare L2 cohort** — official start month/date, expected end if known  
 2. **Skills England / standard version** that intake started on (`1.2` vs `1.3`)  
-3. **Learner list** — names, employers, ULNs if available, start dates  
+3. **Apprentice list** — names, employers, ULNs if available, start dates  
 4. **How far each learner has got** — which blocks/tasks already done (for BRAG context)  
 5. **Enrolment open / quarterly start months** (for later auto-cohort rules)  
 6. Ask Jon about **Skills England API key** application when ready (not blocking tomorrow)
@@ -22,15 +22,15 @@ Bring back (or note down):
 - Set **standard version** correctly for that group
 - Do **not** rely on auto-create yet — this first cohort is manual bootstrap
 
-### 2. Add / enrol the learners
+### 2. Add / enrol the apprentices
 
-- Management → **Learner Intake** / **Learner Enrolments** as needed
+- Management → **Apprentice Intake** / **Apprentice Enrolments** as needed
 - Pin each learner to **that cohort**
-- Check **Apprenticeships** — card click opens learners; newest start dates first; line shows employer · cohort · version · started/starts
+- Check **Apprenticeships** — card click opens apprentices; newest start dates first; line shows employer · cohort · version · started/starts
 
 ### 3. Confirm BRAG once real task evidence exists
 
-- Open **Learner progression BRAG** after college task completions are in the system
+- Open **Apprentice progression BRAG** after college task completions are in the system
 - A backdated cohort with no task evidence will look mostly **Red** on past windows until verified work is recorded through normal tutor/learner flows
 
 ### 4. Spot-check (don’t deep-build automation yet)
@@ -61,13 +61,13 @@ Bring back (or note down):
 | Standard version | Pinned on **cohort**; live groups don’t jump mid-course |
 | Teaching materials | Curriculum lead amends in setup month; publish for the **new** cohort only |
 | RPL page | Become a **queue** of outstanding assessments; Jon reviews calculated % later |
-| BiL / pause | Learner record — **not** Apprenticeships |
+| BiL / pause | Apprentice record — **not** Apprenticeships |
 
 ## Useful routes
 
 | Screen | Path |
 |--------|------|
-| Progression BRAG | `/management/learner-brag` |
+| Progression BRAG | `/management/apprentice-brag` |
 | Cohorts | `/management/cohorts` |
 | Enrolments | `/management/enrolments` |
 | Apprenticeships | `/management/programmes-records` |

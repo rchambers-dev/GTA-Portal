@@ -433,14 +433,14 @@
   background: rgb(0 0 0 / 0.02);
 }
 
-.learnerCell {
+.apprenticeCell {
   display: flex;
   align-items: center;
   gap: 0.45rem;
   min-width: 12rem;
 }
 
-.learnerLink {
+.apprenticeLink {
   font-weight: 700;
   color: var(--action-primary);
 }

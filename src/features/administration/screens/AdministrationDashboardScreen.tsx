@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import {
-  LearnerPageShell,
-  LearnerStatusChip,
-} from "@/features/learner-portal/components/LearnerPageShell";
-import learnerStyles from "@/features/learner-portal/screens/learner-pages.module.css";
+  ApprenticePageShell,
+  ApprenticeStatusChip,
+} from "@/features/apprentice-portal/components/ApprenticePageShell";
+import apprenticeStyles from "@/features/apprentice-portal/screens/apprentice-pages.module.css";
 import { awaitingEnrolment } from "../domain/intake-pack";
 import { resetAdminStore } from "../domain/store";
 import { useAdminStore } from "../hooks/useAdminStore";
@@ -25,13 +25,13 @@ function formatDate(value: string): string {
 export function AdministrationDashboardScreen() {
   const store = useAdminStore();
 
-  const enrolledLearnerIds = store.enrolments.map((e) => e.learnerId);
-  const intakeQueue = store.learners.filter(
+  const enrolledApprenticeIds = store.enrolments.map((e) => e.apprenticeId);
+  const intakeQueue = store.apprentices.filter(
     (l) => l.intakeStatus === "in_progress",
   );
-  const readyToEnrol = awaitingEnrolment(store.learners, enrolledLearnerIds);
+  const readyToEnrol = awaitingEnrolment(store.apprentices, enrolledApprenticeIds);
   const awaitingEnable = store.users.filter(
-    (u) => u.role === "Learner" && u.status === "invited",
+    (u) => u.role === "Apprentice" && u.status === "invited",
   );
   const pendingStart = store.enrolments.filter(
     (e) => e.status === "pending_start" || e.status === "draft",
@@ -51,14 +51,14 @@ export function AdministrationDashboardScreen() {
     pendingStart.length;
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Administration"
       title="Administration Dashboard"
-      description="Learner path only: intake → enrol on a programme → enable their portal. Transfers cover college-day / group and employer moves. Staff accounts sit on Management."
+      description="Apprentice path only: intake → enrol on a programme → enable their portal. Transfers cover college-day / group and employer moves. Staff accounts sit on Management."
       actions={
         <div className={styles.toolbarActions}>
           <Link href="/administration/intake" className={styles.primaryBtn}>
-            Start new learner
+            Start new apprentice
           </Link>
           <Link
             href="/administration/enrolments"
@@ -84,120 +84,120 @@ export function AdministrationDashboardScreen() {
         </div>
       }
     >
-      <div className={`${learnerStyles.stack} ${learnerStyles.dashRoot}`}>
-        <div className={learnerStyles.grid}>
+      <div className={`${apprenticeStyles.stack} ${apprenticeStyles.dashRoot}`}>
+        <div className={apprenticeStyles.grid}>
           <Link
             href="/administration/intake"
-            className={learnerStyles.glanceLink}
+            className={apprenticeStyles.glanceLink}
             data-tone="amber"
           >
-            <p className={learnerStyles.glanceLabel}>Intake in progress</p>
-            <p className={learnerStyles.glanceValue}>{intakeQueue.length}</p>
-            <p className={learnerStyles.glanceHint}>
+            <p className={apprenticeStyles.glanceLabel}>Intake in progress</p>
+            <p className={apprenticeStyles.glanceValue}>{intakeQueue.length}</p>
+            <p className={apprenticeStyles.glanceHint}>
               Personal details still open
             </p>
           </Link>
           <Link
             href="/administration/enrolments"
-            className={learnerStyles.glanceLink}
+            className={apprenticeStyles.glanceLink}
             data-tone="navy"
           >
-            <p className={learnerStyles.glanceLabel}>Ready to enrol</p>
-            <p className={learnerStyles.glanceValue}>{readyToEnrol.length}</p>
-            <p className={learnerStyles.glanceHint}>
+            <p className={apprenticeStyles.glanceLabel}>Ready to enrol</p>
+            <p className={apprenticeStyles.glanceValue}>{readyToEnrol.length}</p>
+            <p className={apprenticeStyles.glanceHint}>
               Marked ready — put on a programme
             </p>
           </Link>
           <Link
             href="/administration/accounts"
-            className={learnerStyles.glanceLink}
+            className={apprenticeStyles.glanceLink}
             data-tone="red"
           >
-            <p className={learnerStyles.glanceLabel}>Awaiting enable</p>
-            <p className={learnerStyles.glanceValue}>{awaitingEnable.length}</p>
-            <p className={learnerStyles.glanceHint}>
-              Learner environments to turn on
+            <p className={apprenticeStyles.glanceLabel}>Awaiting enable</p>
+            <p className={apprenticeStyles.glanceValue}>{awaitingEnable.length}</p>
+            <p className={apprenticeStyles.glanceHint}>
+              Apprentice environments to turn on
             </p>
           </Link>
-          <div className={learnerStyles.glance} data-tone="green">
-            <p className={learnerStyles.glanceLabel}>Learners online</p>
-            <p className={learnerStyles.glanceValue}>—</p>
-            <p className={learnerStyles.glanceHint}>
+          <div className={apprenticeStyles.glance} data-tone="green">
+            <p className={apprenticeStyles.glanceLabel}>Apprentices online</p>
+            <p className={apprenticeStyles.glanceValue}>—</p>
+            <p className={apprenticeStyles.glanceHint}>
               Live presence connects with portal sessions
             </p>
           </div>
         </div>
 
-        <section className={learnerStyles.section}>
-          <h2 className={learnerStyles.dashSectionTitle} data-accent="navy">
+        <section className={apprenticeStyles.section}>
+          <h2 className={apprenticeStyles.dashSectionTitle} data-accent="navy">
             Shortcuts
           </h2>
-          <div className={learnerStyles.shortcuts}>
+          <div className={apprenticeStyles.shortcuts}>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/intake"
               data-tone="amber"
             >
-              Learner Intake
+              Apprentice Intake
             </Link>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/enrolments"
               data-tone="navy"
             >
-              Learner Enrolments
+              Apprentice Enrolments
             </Link>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/accounts"
               data-tone="red"
             >
-              Learner Account Setup
+              Apprentice Account Setup
             </Link>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/cohorts"
               data-tone="navy"
             >
               Cohorts &amp; Groups
             </Link>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/employers"
               data-tone="green"
             >
               Employer records
             </Link>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/programmes"
               data-tone="navy"
             >
               Programme records
             </Link>
             <Link
-              className={learnerStyles.shortcut}
-              href="/learners?from=administration"
+              className={apprenticeStyles.shortcut}
+              href="/apprentices?from=administration"
               data-tone="navy"
             >
-              Learners
+              Apprentices
             </Link>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/shared-drive"
               data-tone="green"
             >
               Shared Drive
             </Link>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/messages"
               data-tone="amber"
             >
               Messages
             </Link>
             <Link
-              className={learnerStyles.shortcut}
+              className={apprenticeStyles.shortcut}
               href="/administration/safeguarding"
               data-tone="red"
             >
@@ -206,11 +206,11 @@ export function AdministrationDashboardScreen() {
           </div>
         </section>
 
-        <section className={learnerStyles.section}>
-          <h2 className={learnerStyles.dashSectionTitle} data-accent="amber">
+        <section className={apprenticeStyles.section}>
+          <h2 className={apprenticeStyles.dashSectionTitle} data-accent="amber">
             Needs attention
           </h2>
-          <p className={learnerStyles.meta}>
+          <p className={apprenticeStyles.meta}>
             {attentionCount === 0
               ? "Nothing waiting right now"
               : `${attentionCount} item${attentionCount === 1 ? "" : "s"} across intake, enrolment, and account setup`}
@@ -219,29 +219,29 @@ export function AdministrationDashboardScreen() {
           {attentionCount === 0 ? (
             <p className={styles.empty}>Queues are clear.</p>
           ) : (
-            <ul className={learnerStyles.list}>
+            <ul className={apprenticeStyles.list}>
               {intakeQueue.slice(0, 4).map((row) => (
                 <li key={`intake-${row.id}`}>
                   <Link
                     href="/administration/intake"
-                    className={learnerStyles.rowLink}
+                    className={apprenticeStyles.rowLink}
                     data-tone="amber"
                   >
-                    <div className={learnerStyles.rowMain}>
+                    <div className={apprenticeStyles.rowMain}>
                       <strong>{row.displayName}</strong>
                       <span>
                         Intake draft
-                        {row.learnerReference
-                          ? ` · ${row.learnerReference}`
+                        {row.apprenticeReference
+                          ? ` · ${row.apprenticeReference}`
                           : ""}
                         {row.town ? ` · ${row.town}` : ""}
                       </span>
                     </div>
-                    <div className={learnerStyles.rowEnd}>
-                      <LearnerStatusChip tone="amber">
+                    <div className={apprenticeStyles.rowEnd}>
+                      <ApprenticeStatusChip tone="amber">
                         In progress
-                      </LearnerStatusChip>
-                      <span className={learnerStyles.linkish}>Continue →</span>
+                      </ApprenticeStatusChip>
+                      <span className={apprenticeStyles.linkish}>Continue →</span>
                     </div>
                   </Link>
                 </li>
@@ -251,23 +251,23 @@ export function AdministrationDashboardScreen() {
                 <li key={`ready-${row.id}`}>
                   <Link
                     href="/administration/enrolments"
-                    className={learnerStyles.rowLink}
+                    className={apprenticeStyles.rowLink}
                     data-tone="navy"
                   >
-                    <div className={learnerStyles.rowMain}>
+                    <div className={apprenticeStyles.rowMain}>
                       <strong>{row.displayName}</strong>
                       <span>
                         Ready for enrolment
-                        {row.learnerReference
-                          ? ` · ${row.learnerReference}`
+                        {row.apprenticeReference
+                          ? ` · ${row.apprenticeReference}`
                           : ""}
                       </span>
                     </div>
-                    <div className={learnerStyles.rowEnd}>
-                      <LearnerStatusChip tone="navy">
+                    <div className={apprenticeStyles.rowEnd}>
+                      <ApprenticeStatusChip tone="navy">
                         Ready to enrol
-                      </LearnerStatusChip>
-                      <span className={learnerStyles.linkish}>Enrol →</span>
+                      </ApprenticeStatusChip>
+                      <span className={apprenticeStyles.linkish}>Enrol →</span>
                     </div>
                   </Link>
                 </li>
@@ -277,18 +277,18 @@ export function AdministrationDashboardScreen() {
                 <li key={`enable-${row.id}`}>
                   <Link
                     href="/administration/accounts"
-                    className={learnerStyles.rowLink}
+                    className={apprenticeStyles.rowLink}
                     data-tone="red"
                   >
-                    <div className={learnerStyles.rowMain}>
+                    <div className={apprenticeStyles.rowMain}>
                       <strong>{row.displayName}</strong>
-                      <span>Learner environment awaiting enable</span>
+                      <span>Apprentice environment awaiting enable</span>
                     </div>
-                    <div className={learnerStyles.rowEnd}>
-                      <LearnerStatusChip tone="amber">
+                    <div className={apprenticeStyles.rowEnd}>
+                      <ApprenticeStatusChip tone="amber">
                         Awaiting enable
-                      </LearnerStatusChip>
-                      <span className={learnerStyles.linkish}>Enable →</span>
+                      </ApprenticeStatusChip>
+                      <span className={apprenticeStyles.linkish}>Enable →</span>
                     </div>
                   </Link>
                 </li>
@@ -298,21 +298,21 @@ export function AdministrationDashboardScreen() {
                 <li key={`pending-${row.id}`}>
                   <Link
                     href="/administration/enrolments"
-                    className={learnerStyles.rowLink}
+                    className={apprenticeStyles.rowLink}
                     data-tone="amber"
                   >
-                    <div className={learnerStyles.rowMain}>
+                    <div className={apprenticeStyles.rowMain}>
                       <strong>{row.displayName}</strong>
                       <span>
                         {row.programmeName} · {row.employerName} · starts{" "}
                         {formatDate(row.startDate)}
                       </span>
                     </div>
-                    <div className={learnerStyles.rowEnd}>
-                      <LearnerStatusChip tone="amber">
+                    <div className={apprenticeStyles.rowEnd}>
+                      <ApprenticeStatusChip tone="amber">
                         Pending start
-                      </LearnerStatusChip>
-                      <span className={learnerStyles.linkish}>Open →</span>
+                      </ApprenticeStatusChip>
+                      <span className={apprenticeStyles.linkish}>Open →</span>
                     </div>
                   </Link>
                 </li>
@@ -321,26 +321,26 @@ export function AdministrationDashboardScreen() {
           )}
         </section>
 
-        <section className={learnerStyles.section}>
-          <h2 className={learnerStyles.dashSectionTitle} data-accent="navy">
+        <section className={apprenticeStyles.section}>
+          <h2 className={apprenticeStyles.dashSectionTitle} data-accent="navy">
             Recent enrolments
           </h2>
-          <p className={learnerStyles.meta}>
+          <p className={apprenticeStyles.meta}>
             Latest new starters and currently studying placements — open an
             enrolment to transfer group or employer
           </p>
           {recentEnrolments.length === 0 ? (
             <p className={styles.empty}>No enrolments yet.</p>
           ) : (
-            <ul className={learnerStyles.list}>
+            <ul className={apprenticeStyles.list}>
               {recentEnrolments.map((row) => (
                 <li key={row.id}>
                   <Link
                     href="/administration/enrolments"
-                    className={learnerStyles.rowLink}
+                    className={apprenticeStyles.rowLink}
                     data-tone="navy"
                   >
-                    <div className={learnerStyles.rowMain}>
+                    <div className={apprenticeStyles.rowMain}>
                       <strong>{row.displayName}</strong>
                       <span>
                         {row.kind === "new_starter"
@@ -350,8 +350,8 @@ export function AdministrationDashboardScreen() {
                         {row.collegeDays ? ` · ${row.collegeDays}` : ""}
                       </span>
                     </div>
-                    <div className={learnerStyles.rowEnd}>
-                      <LearnerStatusChip
+                    <div className={apprenticeStyles.rowEnd}>
+                      <ApprenticeStatusChip
                         tone={
                           row.status === "active"
                             ? "green"
@@ -361,8 +361,8 @@ export function AdministrationDashboardScreen() {
                         }
                       >
                         {row.status.replace("_", " ")}
-                      </LearnerStatusChip>
-                      <span className={learnerStyles.linkish}>Open →</span>
+                      </ApprenticeStatusChip>
+                      <span className={apprenticeStyles.linkish}>Open →</span>
                     </div>
                   </Link>
                 </li>
@@ -372,14 +372,14 @@ export function AdministrationDashboardScreen() {
         </section>
 
         {recentTransfers.length > 0 ? (
-          <section className={learnerStyles.section}>
-            <h2 className={learnerStyles.dashSectionTitle} data-accent="green">
+          <section className={apprenticeStyles.section}>
+            <h2 className={apprenticeStyles.dashSectionTitle} data-accent="green">
               Recent transfers
             </h2>
-            <p className={learnerStyles.meta}>
+            <p className={apprenticeStyles.meta}>
               Group / college-day or employer moves recorded on enrolments
             </p>
-            <ul className={learnerStyles.list}>
+            <ul className={apprenticeStyles.list}>
               {recentTransfers.map((row) => {
                 const lastLine =
                   row.notes
@@ -391,18 +391,18 @@ export function AdministrationDashboardScreen() {
                   <li key={`xfer-${row.id}`}>
                     <Link
                       href="/administration/enrolments"
-                      className={learnerStyles.rowLink}
+                      className={apprenticeStyles.rowLink}
                       data-tone="green"
                     >
-                      <div className={learnerStyles.rowMain}>
+                      <div className={apprenticeStyles.rowMain}>
                         <strong>{row.displayName}</strong>
                         <span>{lastLine}</span>
                       </div>
-                      <div className={learnerStyles.rowEnd}>
-                        <LearnerStatusChip tone="green">
+                      <div className={apprenticeStyles.rowEnd}>
+                        <ApprenticeStatusChip tone="green">
                           Transferred
-                        </LearnerStatusChip>
-                        <span className={learnerStyles.linkish}>Open →</span>
+                        </ApprenticeStatusChip>
+                        <span className={apprenticeStyles.linkish}>Open →</span>
                       </div>
                     </Link>
                   </li>
@@ -412,6 +412,6 @@ export function AdministrationDashboardScreen() {
           </section>
         ) : null}
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

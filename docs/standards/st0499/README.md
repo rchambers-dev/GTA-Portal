@@ -14,7 +14,7 @@ Machine-readable catalogue: `st0499-ksb-catalog.json` (also imported by the port
 | Layer | What it is | Where |
 |--------|------------|--------|
 | **Official KSBs** (this doc) | K1/S1/B1… statements on the occupational standard | Programme / standard version |
-| **Learner RPL K/S/B %** | How much of a *block* the learner already holds for funding | Management → Learner funding |
+| **Apprentice RPL K/S/B %** | How much of a *block* the learner already holds for funding | Management → Apprentice funding |
 
 If Skills England changes KSBs, ship a **new standard version** — do not “fix” it by turning learner RPL steppers up.
 
@@ -44,7 +44,7 @@ Complete rewrite of the KSB catalogue (not a small renumber):
 - Skills grow **13 → 26** (structured inspection / isolation / stock / sales process skills)
 - Behaviours stay at **5**, but wording changes to the modern short form (health & safety first, environment, adaptability, CPD, inclusion)
 
-Portal impact: learners still on **v1.0/v1.1** must keep the **legacy** KSB list; new starts use **v1.3**.
+Portal impact: apprentices still on **v1.0/v1.1** must keep the **legacy** KSB list; new starts use **v1.3**.
 
 ### v1.2 → v1.3 (Skills England published change)
 Official note: *“Removed S9 from the KSBs due to duplication with S10.”*

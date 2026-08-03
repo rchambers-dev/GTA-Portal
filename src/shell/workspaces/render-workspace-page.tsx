@@ -1,29 +1,29 @@
 import { redirect } from "next/navigation";
-import { FeatureStubScreen } from "@/features/learner-lifecycle";
+import { FeatureStubScreen } from "@/features/apprentice-lifecycle";
 import {
-  LearnerAttendanceScreen,
+  ApprenticeAttendanceScreen,
   DocumentsHubScreen,
   DocumentsItemScreen,
   DocumentsSectionScreen,
-  LearnerCvBuilderScreen,
-  LearnerDashboardScreen,
-  LearnerOtjHoursScreen,
-  LearnerLearningScreen,
-  LearnerMessagesScreen,
-  LearnerProgressScreen,
-  LearnerReviewDetailScreen,
-  LearnerReviewsScreen,
-  LearnerSupportScreen,
+  ApprenticeCvBuilderScreen,
+  ApprenticeDashboardScreen,
+  ApprenticeOtjHoursScreen,
+  ApprenticeLearningScreen,
+  ApprenticeMessagesScreen,
+  ApprenticeProgressScreen,
+  ApprenticeReviewDetailScreen,
+  ApprenticeReviewsScreen,
+  ApprenticeSupportScreen,
   EmployerOtjApprovalsScreen,
   TutorOtjApprovalsScreen,
-} from "@/features/learner-portal";
+} from "@/features/apprentice-portal";
 import {
-  LearnerProgrammeTasksScreen,
-  LearnerTaskFillScreen,
+  ApprenticeProgrammeTasksScreen,
+  ApprenticeTaskFillScreen,
   TutorProgrammeDeliveryScreen,
   TutorTaskReviewScreen,
-  ManagementLearnerRplScreen,
-  ManagementLearnerBragScreen,
+  ManagementApprenticeRplScreen,
+  ManagementApprenticeBragScreen,
   ManagementTaskViewScreen,
 } from "@/features/programme-delivery";
 import {
@@ -31,9 +31,10 @@ import {
   AdminEnrolmentsScreen,
   AdminEmployersScreen,
   AdminCohortsScreen,
-  AdminLearnerIntakeScreen,
+  AdminApprenticeIntakeScreen,
   AdminProgrammesScreen,
   AdminUsersScreen,
+  AdminStaffScreen,
 } from "@/features/administration";
 import { SharedDriveScreen } from "@/features/shared-drive";
 import { getStandalonePorts } from "@/adapters/standalone";
@@ -60,7 +61,7 @@ const STAFF_SHARED_REDIRECTS: Record<string, string> = {
 };
 
 function renderDocumentsPage(
-  audience: "learner" | "employer",
+  audience: "apprentice" | "employer",
   segment: string,
 ) {
   const itemMatch = /^documents\/([^/]+)\/([^/]+)$/.exec(segment);
@@ -91,60 +92,60 @@ function renderDocumentsPage(
   return null;
 }
 
-function renderLearnerPage(segment: string) {
+function renderApprenticePage(segment: string) {
   const moduleMatch = /^modules\/([^/]+)(?:\/([^/]+))?$/.exec(segment);
   if (moduleMatch) {
     // Old MV module catalogue — superseded by Autocare college tasks (blocks)
-    redirect("/learner/college-tasks");
+    redirect("/apprentice/college-tasks");
   }
 
   const reviewMatch = /^reviews\/([^/]+)$/.exec(segment);
   if (reviewMatch) {
-    return <LearnerReviewDetailScreen reviewId={reviewMatch[1]} />;
+    return <ApprenticeReviewDetailScreen reviewId={reviewMatch[1]} />;
   }
 
   const collegeTaskMatch = /^college-tasks\/([^/]+)$/.exec(segment);
   if (collegeTaskMatch) {
-    return <LearnerTaskFillScreen taskId={collegeTaskMatch[1]} />;
+    return <ApprenticeTaskFillScreen taskId={collegeTaskMatch[1]} />;
   }
 
-  const documentsPage = renderDocumentsPage("learner", segment);
+  const documentsPage = renderDocumentsPage("apprentice", segment);
   if (documentsPage) return documentsPage;
 
   switch (segment) {
     case "dashboard":
-      return <LearnerDashboardScreen />;
+      return <ApprenticeDashboardScreen />;
     case "learning":
-      return <LearnerLearningScreen />;
+      return <ApprenticeLearningScreen />;
     case "college-tasks":
-      return <LearnerProgrammeTasksScreen />;
+      return <ApprenticeProgrammeTasksScreen />;
     case "modules":
-      redirect("/learner/college-tasks");
+      redirect("/apprentice/college-tasks");
     case "cea":
       // Old CEA personal-tracking UI — college delivery is block tasks now
-      redirect("/learner/college-tasks");
+      redirect("/apprentice/college-tasks");
     case "otj":
-      return <LearnerOtjHoursScreen />;
+      return <ApprenticeOtjHoursScreen />;
     case "training-plan":
       // Legacy path — Documents hub replaces the single training-plan page.
-      redirect("/learner/documents");
+      redirect("/apprentice/documents");
     case "assignments":
-      redirect("/learner/college-tasks");
+      redirect("/apprentice/college-tasks");
     case "evidence":
-      // Legacy path — OTJ hours used to live under /learner/evidence.
-      redirect("/learner/otj");
+      // Legacy path — OTJ hours used to live under /apprentice/evidence.
+      redirect("/apprentice/otj");
     case "progress":
-      return <LearnerProgressScreen />;
+      return <ApprenticeProgressScreen />;
     case "reviews":
-      return <LearnerReviewsScreen />;
+      return <ApprenticeReviewsScreen />;
     case "attendance":
-      return <LearnerAttendanceScreen />;
+      return <ApprenticeAttendanceScreen />;
     case "support":
-      return <LearnerSupportScreen />;
+      return <ApprenticeSupportScreen />;
     case "cv":
-      return <LearnerCvBuilderScreen />;
+      return <ApprenticeCvBuilderScreen />;
     case "messages":
-      return <LearnerMessagesScreen />;
+      return <ApprenticeMessagesScreen />;
     default:
       return null;
   }
@@ -163,13 +164,13 @@ export async function renderWorkspacePage(
   const pathname = `/${workspace}/${segment}`;
   assertRouteAccess(session, pathname);
 
-  // Learning & Progress Mentor dashboard is the Learner Lifecycle board.
+  // Learning & Progress Mentor dashboard is the Apprentice Lifecycle board.
   if (
     workspace === "staff" &&
     (segment === "dashboard" || !slug?.length) &&
     isMentorStaffSession(session)
   ) {
-    redirect("/learners/lifecycle");
+    redirect("/apprentices/lifecycle");
   }
 
   // Soft-redirect legacy staff stubs that duplicate mentor workspace pages
@@ -190,8 +191,8 @@ export async function renderWorkspacePage(
     if (target) redirect(target);
   }
 
-  if (workspace === "learner") {
-    const page = renderLearnerPage(segment);
+  if (workspace === "apprentice") {
+    const page = renderApprenticePage(segment);
     if (page) return page;
   }
 
@@ -217,7 +218,7 @@ export async function renderWorkspacePage(
 
   if (workspace === "employer" && segment === "messages") {
     return (
-      <LearnerMessagesScreen
+      <ApprenticeMessagesScreen
         eyebrow="Employer workspace"
         description="Message your apprentice, GTA mentor, and others in your employer scope."
       />
@@ -225,11 +226,11 @@ export async function renderWorkspacePage(
   }
 
   if (workspace === "employer" && segment === "support") {
-    return <LearnerSupportScreen audience="employer" />;
+    return <ApprenticeSupportScreen audience="employer" />;
   }
 
   if (workspace === "employer" && segment === "attendance") {
-    return <LearnerAttendanceScreen audience="employer" />;
+    return <ApprenticeAttendanceScreen audience="employer" />;
   }
 
   if (workspace === "employer" && segment === "otj") {
@@ -251,12 +252,12 @@ export async function renderWorkspacePage(
       case "dashboard":
         return <AdministrationDashboardScreen />;
       case "users":
-        redirect("/learners?from=administration");
+        redirect("/apprentices?from=administration");
       case "enrolments":
         return <AdminEnrolmentsScreen />;
       case "accounts":
         return (
-          <AdminUsersScreen scope="learner" eyebrow="Administration" />
+          <AdminUsersScreen scope="apprentice" eyebrow="Administration" />
         );
       case "employers":
         return <AdminEmployersScreen />;
@@ -265,20 +266,22 @@ export async function renderWorkspacePage(
       case "cohorts":
         return <AdminCohortsScreen />;
       case "intake":
-        return <AdminLearnerIntakeScreen />;
+        return <AdminApprenticeIntakeScreen />;
+      case "staff":
+        return <AdminStaffScreen eyebrow="Administration" />;
       case "shared-drive":
         return <SharedDriveScreen audience="administration" />;
       case "documents":
         redirect("/administration/shared-drive");
       case "messages":
         return (
-          <LearnerMessagesScreen
+          <ApprenticeMessagesScreen
             eyebrow="Administration"
-            description="Message learners, employers, and GTA colleagues from the administration workspace."
+            description="Message apprentices, employers, and GTA colleagues from the administration workspace."
           />
         );
       case "safeguarding":
-        return <LearnerSupportScreen audience="administration" />;
+        return <ApprenticeSupportScreen audience="administration" />;
       default:
         break;
     }
@@ -287,9 +290,10 @@ export async function renderWorkspacePage(
   if (workspace === "management") {
     switch (segment) {
       case "accounts":
-        return <AdminUsersScreen scope="learner" eyebrow="Management" />;
+        return <AdminUsersScreen scope="apprentice" eyebrow="Management" />;
       case "staff-accounts":
-        return <AdminUsersScreen scope="staff" eyebrow="Management" />;
+      case "staff":
+        return <AdminStaffScreen eyebrow="Management" />;
       case "employers":
         return <AdminEmployersScreen />;
       case "programmes-records":
@@ -297,28 +301,28 @@ export async function renderWorkspacePage(
       case "cohorts":
         return <AdminCohortsScreen />;
       case "intake":
-        return <AdminLearnerIntakeScreen />;
+        return <AdminApprenticeIntakeScreen />;
       case "enrolments":
         return <AdminEnrolmentsScreen />;
-      case "learner-funding":
+      case "apprentice-funding":
       case "ksb-rpl":
-        return <ManagementLearnerRplScreen />;
-      case "learner-brag":
+        return <ManagementApprenticeRplScreen />;
+      case "apprentice-brag":
       case "progression-brag":
-        return <ManagementLearnerBragScreen />;
+        return <ManagementApprenticeBragScreen />;
       case "shared-drive":
         return <SharedDriveScreen audience="management" />;
       case "messages":
         return (
-          <LearnerMessagesScreen
+          <ApprenticeMessagesScreen
             eyebrow="Management"
-            description="Message learners, employers, and GTA colleagues from the management workspace."
+            description="Message apprentices, employers, and GTA colleagues from the management workspace."
           />
         );
       case "safeguarding":
-        return <LearnerSupportScreen audience="management" />;
+        return <ApprenticeSupportScreen audience="management" />;
       default: {
-        const bragTaskMatch = /^learner-brag\/task\/([^/]+)$/.exec(segment);
+        const bragTaskMatch = /^apprentice-brag\/task\/([^/]+)$/.exec(segment);
         if (bragTaskMatch) {
           return <ManagementTaskViewScreen taskId={bragTaskMatch[1]} />;
         }

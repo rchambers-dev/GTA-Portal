@@ -22,7 +22,8 @@ export default async function LoginPage({
 
   const params = await searchParams;
   const nextParam = Array.isArray(params.next) ? params.next[0] : params.next;
-  const next = typeof nextParam === "string" && nextParam.startsWith("/") ? nextParam : "/";
+  const next =
+    typeof nextParam === "string" && nextParam.startsWith("/") ? nextParam : "/";
 
   return (
     <main className={styles.page}>
@@ -30,14 +31,13 @@ export default async function LoginPage({
         <p className={styles.eyebrow}>GTA Portal</p>
         <h1 className={styles.title}>Sign in</h1>
         <p className={styles.copy}>
-          Use the seeded bootstrap account first, then expand management and admin
-          users once live auth is verified.
+          Sign in with your GTA staff account (
+          <strong>@doncastergta.co.uk</strong>).
         </p>
-        <div className={styles.hint}>
-          <p>Username: <strong>SuperAdmin</strong></p>
-          <p>Email login: <strong>superadmin@gta-portal.local</strong></p>
-        </div>
-        <LoginForm defaultEmail="superadmin@gta-portal.local" next={next} />
+        <LoginForm
+          defaultEmail="reisschambers@doncastergta.co.uk"
+          next={next}
+        />
       </section>
     </main>
   );

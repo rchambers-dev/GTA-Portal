@@ -3,7 +3,7 @@
  * Sourced from Skills England occupation pages (Jul 2026 snapshot).
  *
  * These are the **standard** Knowledge / Skills / Behaviours statements.
- * They are not the same as learner RPL K/S/B % steppers on funding screens.
+ * They are not the same as apprentice RPL K/S/B % steppers on funding screens.
  */
 
 import catalogJson from "./st0499-ksb-catalog.json";

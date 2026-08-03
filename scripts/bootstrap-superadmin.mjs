@@ -3,9 +3,9 @@ import { createClient } from "@supabase/supabase-js";
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
 const password = process.env.BOOTSTRAP_SUPERADMIN_PASSWORD?.trim();
-const email =
+const   email =
   process.env.BOOTSTRAP_SUPERADMIN_EMAIL?.trim().toLowerCase() ||
-  "superadmin@gta-portal.local";
+  "reisschambers@doncastergta.co.uk";
 
 if (!url) {
   throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL");
@@ -33,7 +33,7 @@ const permissions = [
   "admin.records.manage",
   "records.proxy.write",
   "lifecycle.kanban.view",
-  "learner.workspace.view",
+  "apprentice.workspace.view",
   "messages.view",
 ];
 
@@ -54,30 +54,30 @@ const authUser =
       password,
       email_confirm: true,
       user_metadata: {
-        display_name: "SuperAdmin",
-        username: "SuperAdmin",
+        display_name: "Reiss Chambers",
+        username: "reisschambers",
       },
     })
   ).data.user;
 
 if (!authUser?.id) {
-  throw new Error("Unable to create or load SuperAdmin auth user");
+  throw new Error("Unable to create or load management auth user");
 }
 
 const { error: profileError } = await supabase.from("profiles").upsert(
   {
     id: authUser.id,
     email,
-    username: "SuperAdmin",
-    display_name: "SuperAdmin",
-    base_role: "Owner",
+    username: "reisschambers",
+    display_name: "Reiss Chambers",
+    base_role: "Management",
     workspace: "management",
     permissions,
-    responsibilities: ["Platform bootstrap"],
+    responsibilities: [],
   },
   { onConflict: "id" },
 );
 
 if (profileError) throw profileError;
 
-console.log(`SuperAdmin ready: ${email}`);
+console.log(`Management login ready: ${email}`);

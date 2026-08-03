@@ -8,14 +8,14 @@ export type EnrolmentStatus =
   | "withdrawn";
 
 /**
- * A person on the learner intake funnel. Personal details are captured once
+ * A person on the Apprentice Intake funnel. Personal details are captured once
  * here; enrolments link to this record instead of re-keying the data.
  */
-export type AdminLearnerRecord = {
+export type AdminApprenticeRecord = {
   id: string;
   displayName: string;
-  /** GTA learner reference, e.g. GTA-2026-01021. Generated if left blank. */
-  learnerReference: string;
+  /** GTAn apprentice reference, e.g. GTA-2026-01021. Generated if left blank. */
+  apprenticeReference: string;
   email: string;
   phone: string;
   dateOfBirth: string;
@@ -32,13 +32,13 @@ export type AdminLearnerRecord = {
   /**
    * Draft vs finished personal intake.
    * Admins can save mid-way and come back — evidence pack amendments
-   * still happen on the Learners page after they're on the system.
+   * still happen on the Apprentices page after they're on the system.
    */
   intakeStatus: "in_progress" | "ready";
   /**
    * Evidence pack state, keyed by ADM14 reference (e.g. "1.2").
    * Items not present default to missing (or future for end-of-programme
-   * items) — the pack fills in over the learner's lifecycle.
+   * items) — the pack fills in over the apprentice's lifecycle.
    */
   pack: Record<string, AdminPackItemStatus>;
   notes: string;
@@ -53,12 +53,12 @@ export type AdminPackItemStatus =
   | "checked"
   | "not_applicable";
 
-export type AdminLearnerEnrolment = {
+export type AdminApprenticeEnrolment = {
   id: string;
   kind: EnrolmentKind;
   status: EnrolmentStatus;
-  /** Link to the intake learner record this enrolment belongs to. */
-  learnerId: string | null;
+  /** Link to the intake apprentice record this enrolment belongs to. */
+  apprenticeId: string | null;
   displayName: string;
   email: string;
   phone: string;
@@ -66,8 +66,10 @@ export type AdminLearnerEnrolment = {
   uln: string;
   programmeName: string;
   standardCode: string;
-  /** Cohort this learner belongs to — pins programme version for their journey. */
+  /** Cohort this apprentice belongs to — pins programme version for their journey. */
   cohortId: string | null;
+  /** Teaching group within the cohort — inherits tutor + college days. */
+  teachingGroupId: string | null;
   employerId: string;
   employerName: string;
   workplaceContact: string;
@@ -132,13 +134,12 @@ export type AdminProgrammeRecord = {
 };
 
 /**
- * An intake / teaching group delivering one version of a programme.
- * Multiple cohorts of the same standard can run at once (e.g. v1.2 and v1.3)
- * while older starts finish what they started.
+ * An intake delivering one version of a programme (not day-specific).
+ * Teaching groups under tutors sit on the cohort.
  */
 export type AdminCohortRecord = {
   id: string;
-  /** e.g. Autocare L2 · Sept 2024 */
+  /** e.g. Autocare L2 (ST0499) · v1.0 · Jan 2026–Jul 2028 */
   name: string;
   programmeId: string;
   programmeName: string;
@@ -146,7 +147,12 @@ export type AdminCohortRecord = {
   /** Skills England version this cohort delivers, e.g. 1.2 */
   standardVersion: string;
   /**
-   * Date the intake opens for enrolment (ISO date). New pupils auto-flow into a
+   * Delivery UI spine for this intake: groups (CEA / Temp) or blocks (Main).
+   * Same standardVersion can run on either spine for different cohorts.
+   */
+  deliverySpine: "groups" | "blocks";
+  /**
+   * Date the intake opens for enrolment (ISO date). New apprentices auto-flow into a
    * planned cohort from this date until it goes active.
    */
   enrolmentOpensDate: string;
@@ -154,19 +160,62 @@ export type AdminCohortRecord = {
   startDate: string;
   /** Expected end / gateway date (ISO date), optional. */
   expectedEndDate: string;
-  /** Teaching group label, e.g. Mon–Tue Group A */
+  /**
+   * @deprecated Prefer teaching groups. Kept for legacy rows / migration.
+   */
   teachingGroup: string;
+  /**
+   * @deprecated Prefer teaching groups. Kept for legacy rows / migration.
+   */
   collegeDays: string;
+  /**
+   * Teachers who may own groups on this intake.
+   */
+  teacherNames: string[];
+  /**
+   * Joined teacher list for storage (`Name | Name`). Prefer teacherNames.
+   */
   tutorName: string;
   /** Intake lifecycle — not a pause control. */
   status: "planned" | "active" | "completed";
+  notes: string;
+  /**
+   * When true, cohort details, teachers, groups, and placements cannot change.
+   * Unlock only to make corrections, then Save & lock (or leave to auto-lock).
+   */
+  locked: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+/** One Save & lock / leave-lock session summary for a cohort. */
+export type AdminCohortChangeLogEntry = {
+  id: string;
+  cohortId: string;
+  createdAt: string;
+  summary: string;
+  /** Human-readable bullets from the editing session. */
+  details: string[];
+  actorName: string;
+};
+
+/** One tutor's class within a cohort (college days + capacity). */
+export type AdminTeachingGroupRecord = {
+  id: string;
+  cohortId: string;
+  /** Group owner — all apprentices in this group share this tutor. */
+  tutorName: string;
+  name: string;
+  collegeDays: string;
+  /** Soft max apprentices; admins may override when assigning. */
+  capacity: number;
   notes: string;
   createdAt: string;
   updatedAt: string;
 };
 
 export type AdminPortalRole =
-  | "Learner"
+  | "Apprentice"
   | "Employer"
   | "Tutor"
   | "Learning and Progress Mentor"
@@ -181,10 +230,12 @@ export type AdminPortalUser = {
   email: string;
   role: AdminPortalRole;
   workspace: string;
+  /** Org-chart job titles — separate from portal role (Tutor / Admin / Management). */
+  jobTitles: string[];
   linkedEnrolmentId: string | null;
-  linkedLearnerId: string | null;
+  linkedApprenticeId: string | null;
   linkedEmployerId: string | null;
-  /** When the linked learner's programme start began — drives new-starter badge. */
+  /** When the linked apprentice's programme start began — drives new-starter badge. */
   programmeStartDate: string | null;
   status: "active" | "invited" | "disabled";
   /** Name of the staff member who last enabled the portal environment. */
@@ -198,11 +249,13 @@ export type AdminPortalUser = {
 };
 
 export type AdminStoreSnapshot = {
-  version: 15;
-  learners: AdminLearnerRecord[];
-  enrolments: AdminLearnerEnrolment[];
+  version: 19;
+  apprentices: AdminApprenticeRecord[];
+  enrolments: AdminApprenticeEnrolment[];
   employers: AdminEmployerRecord[];
   programmes: AdminProgrammeRecord[];
   cohorts: AdminCohortRecord[];
+  teachingGroups: AdminTeachingGroupRecord[];
+  cohortChangeLogs: AdminCohortChangeLogEntry[];
   users: AdminPortalUser[];
 };

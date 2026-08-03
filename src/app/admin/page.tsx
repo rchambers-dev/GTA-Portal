@@ -1,4 +1,4 @@
-import { FeatureStubScreen } from "@/features/learner-lifecycle";
+import { FeatureStubScreen } from "@/features/apprentice-lifecycle";
 
 export default function Page() {
   return (

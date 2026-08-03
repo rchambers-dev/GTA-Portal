@@ -1,4 +1,4 @@
-import { MENTOR_EMPLOYERS, MENTOR_NAME, type MentorLearnerRow } from "../../data/mentor-caseload";
+import { MENTOR_EMPLOYERS, MENTOR_NAME, type MentorApprenticeRow } from "../../data/mentor-caseload";
 import type { SignOffParty, SignOffState } from "./types";
 
 function initials(name: string): string {
@@ -13,7 +13,7 @@ function initials(name: string): string {
  * Build realistic three-party sign-off rows for a formal review.
  */
 export function buildSignOffState(input: {
-  learner: MentorLearnerRow;
+  apprentice: MentorApprenticeRow;
   tutorName: string;
   reviewDate: string;
   stage:
@@ -30,9 +30,9 @@ export function buildSignOffState(input: {
   existing?: Partial<SignOffState>;
 }): SignOffState {
   const employer =
-    MENTOR_EMPLOYERS.find((e) => e.employerId === input.learner.employerId) ??
+    MENTOR_EMPLOYERS.find((e) => e.employerId === input.apprentice.employerId) ??
     null;
-  const employerContact = employer?.mainContact ?? `${input.learner.employerName} contact`;
+  const employerContact = employer?.mainContact ?? `${input.apprentice.employerName} contact`;
   const completed = input.stage === "completed";
   const awaiting = input.stage === "awaiting_sign_off";
 
@@ -56,16 +56,16 @@ export function buildSignOffState(input: {
   const parties: SignOffParty[] = [
     {
       role: "apprentice",
-      printedName: input.learner.displayName,
+      printedName: input.apprentice.displayName,
       organisation: null,
       signed: aSigned,
       signedAt: aSigned ? offset(input.reviewDate, completed ? 0 : -1) : null,
-      signatureMark: aSigned ? initials(input.learner.displayName) : null,
+      signatureMark: aSigned ? initials(input.apprentice.displayName) : null,
     },
     {
       role: "employer",
       printedName: employerContact,
-      organisation: input.learner.employerName,
+      organisation: input.apprentice.employerName,
       signed: eSigned,
       signedAt: eSigned ? offset(input.reviewDate, completed ? 1 : 0) : null,
       signatureMark: eSigned ? initials(employerContact) : null,

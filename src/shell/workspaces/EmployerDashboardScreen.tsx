@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import {
-  LearnerPageShell,
-  LearnerStatusChip,
-} from "@/features/learner-portal/components/LearnerPageShell";
+  ApprenticePageShell,
+  ApprenticeStatusChip,
+} from "@/features/apprentice-portal/components/ApprenticePageShell";
 import {
   formatOtjDuration,
   isOtjCatchUpEntry,
   otjHours,
-} from "@/features/learner-portal/domain/mock-learner";
-import learnerStyles from "@/features/learner-portal/screens/learner-pages.module.css";
+} from "@/features/apprentice-portal/domain/mock-apprentice";
+import apprenticeStyles from "@/features/apprentice-portal/screens/apprentice-pages.module.css";
 import {
   EMPLOYER_OPEN_CASES,
   EMPLOYER_VIEWER,
@@ -20,7 +20,7 @@ import {
   getEmployerUpcomingReviews,
 } from "./employer-dashboard-data";
 
-const styles = learnerStyles;
+const styles = apprenticeStyles;
 
 function formatDate(iso: string): string {
   return new Date(iso.includes("T") ? iso : `${iso}T12:00:00`).toLocaleDateString(
@@ -40,7 +40,7 @@ export function EmployerDashboardScreen() {
   )[0];
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Employer workspace"
       title="Employer Dashboard"
       description={`${EMPLOYER_VIEWER.employerName} · ${caseload.length} apprentices with GTA. Agree off-the-job hours, join reviews, and raise concerns.`}
@@ -80,7 +80,7 @@ export function EmployerDashboardScreen() {
               {nextReview ? formatDate(nextReview.reviewDate) : "—"}
             </p>
             <p className={styles.glanceHint}>
-              {nextReview ? nextReview.learnerName : "Nothing scheduled"}
+              {nextReview ? nextReview.apprenticeName : "Nothing scheduled"}
             </p>
           </Link>
           <Link
@@ -175,13 +175,13 @@ export function EmployerDashboardScreen() {
                       </span>
                     </div>
                     <div className={styles.rowEnd}>
-                      <LearnerStatusChip
+                      <ApprenticeStatusChip
                         tone={isOtjCatchUpEntry(entry) ? "red" : "amber"}
                       >
                         {isOtjCatchUpEntry(entry)
                           ? `Catch-up · ${otjHours(entry)}h`
                           : "Agree or return"}
-                      </LearnerStatusChip>
+                      </ApprenticeStatusChip>
                       <span className={styles.linkish}>Open →</span>
                     </div>
                   </Link>
@@ -200,7 +200,7 @@ export function EmployerDashboardScreen() {
             {caseload.map((a) => {
               const behind = a.actualProgressPercent < a.plannedProgressPercent;
               return (
-                <li key={a.learnerId}>
+                <li key={a.apprenticeId}>
                   <Link
                     href="/employer/attendance"
                     className={styles.rowLink}
@@ -218,9 +218,9 @@ export function EmployerDashboardScreen() {
                       </span>
                     </div>
                     <div className={styles.rowEnd}>
-                      <LearnerStatusChip tone={behind ? "amber" : "green"}>
+                      <ApprenticeStatusChip tone={behind ? "amber" : "green"}>
                         {behind ? "Behind plan" : "On track"}
-                      </LearnerStatusChip>
+                      </ApprenticeStatusChip>
                       <span className={styles.linkish}>View attendance →</span>
                     </div>
                   </Link>
@@ -249,12 +249,12 @@ export function EmployerDashboardScreen() {
                   >
                     <div className={styles.rowMain}>
                       <strong>
-                        {r.type} · {r.learnerName}
+                        {r.type} · {r.apprenticeName}
                       </strong>
                       <span>{formatDate(r.reviewDate)}</span>
                     </div>
                     <div className={styles.rowEnd}>
-                      <LearnerStatusChip tone="green">Upcoming</LearnerStatusChip>
+                      <ApprenticeStatusChip tone="green">Upcoming</ApprenticeStatusChip>
                       <span className={styles.linkish}>Open →</span>
                     </div>
                   </Link>
@@ -264,6 +264,6 @@ export function EmployerDashboardScreen() {
           </section>
         ) : null}
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

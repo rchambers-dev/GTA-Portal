@@ -1,8 +1,8 @@
 import {
   MENTOR_ID,
-  MENTOR_LEARNERS,
+  MENTOR_APPRENTICES,
   MENTOR_NAME,
-  type MentorLearnerRow,
+  type MentorApprenticeRow,
 } from "../../data/mentor-caseload";
 import {
   canCreateReview,
@@ -13,7 +13,7 @@ import {
 } from "./readiness";
 import {
   buildAttendanceDetail,
-  buildModuleProgressForLearner,
+  buildModuleProgressForApprentice,
 } from "./programme-modules";
 import {
   buildContributionText,
@@ -36,21 +36,21 @@ import type {
   ReviewSnapshot,
 } from "./types";
 
-function learner(id: string): MentorLearnerRow {
-  const row = MENTOR_LEARNERS.find((l) => l.learnerId === id);
-  if (!row) throw new Error(`Unknown learner ${id}`);
+function apprentice(id: string): MentorApprenticeRow {
+  const row = MENTOR_APPRENTICES.find((l) => l.apprenticeId === id);
+  if (!row) throw new Error(`Unknown apprentice ${id}`);
   return row;
 }
 
 type PartialStates = Partial<Record<ChecklistItemKey, ChecklistItemState>>;
 
 function buildChecklist(
-  l: MentorLearnerRow,
+  l: MentorApprenticeRow,
   states: PartialStates,
   isFirstReview: boolean,
 ): ChecklistItem[] {
   const defaults: Record<ChecklistItemKey, ChecklistItemState> = {
-    learner_identity: "complete",
+    apprentice_identity: "complete",
     employer_contact: "complete",
     review_date_scheduled: "complete",
     assigned_mentor: "complete",
@@ -138,7 +138,7 @@ function finaliseRequirement(
 function req(
   partial: {
     requirementId: string;
-    learnerId: string;
+    apprenticeId: string;
     plannedReviewDate: string;
     reviewType?: string;
     reviewCycle?: string;
@@ -151,13 +151,13 @@ function req(
     queueTab?: ReviewRequirement["queueTab"];
   },
 ): ReviewRequirement {
-  const l = learner(partial.learnerId);
+  const l = apprentice(partial.apprenticeId);
   const isFirst = partial.isFirstReview ?? !l.lastReviewDate;
   const checklist = buildChecklist(l, partial.states ?? {}, isFirst);
   return finaliseRequirement({
     requirementId: partial.requirementId,
-    learnerId: l.learnerId,
-    learnerName: l.displayName,
+    apprenticeId: l.apprenticeId,
+    apprenticeName: l.displayName,
     employerId: l.employerId,
     employerName: l.employerName,
     programmeId: l.programmeId,
@@ -168,7 +168,7 @@ function req(
     plannedReviewDate: partial.plannedReviewDate,
     reviewCycle: partial.reviewCycle ?? REVIEW_CYCLE_LABEL,
     reviewType: partial.reviewType ?? "Progress review",
-    previousReviewId: partial.previousReviewId ?? (isFirst ? null : `hist-${l.learnerId}`),
+    previousReviewId: partial.previousReviewId ?? (isFirst ? null : `hist-${l.apprenticeId}`),
     lastReviewDate: l.lastReviewDate,
     preparationOpenedAt: partial.preparationOpenedAt ?? null,
     formalReviewId: partial.formalReviewId ?? null,
@@ -185,7 +185,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   // Needs creating / prep (not ready)
   req({
     requirementId: "req-ava",
-    learnerId: "lrn-ava-brooks",
+    apprenticeId: "lrn-ava-brooks",
     plannedReviewDate: "2026-07-12",
     preparationOpenedAt: readyByDate("2026-07-12"),
     states: {
@@ -200,7 +200,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-liam",
-    learnerId: "lrn-liam-anderson",
+    apprenticeId: "lrn-liam-anderson",
     plannedReviewDate: "2026-07-20",
     preparationOpenedAt: readyByDate("2026-07-20"),
     states: {
@@ -214,7 +214,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-ethan",
-    learnerId: "lrn-ethan-clarke",
+    apprenticeId: "lrn-ethan-clarke",
     plannedReviewDate: "2026-07-16",
     reviewType: "Gateway review",
     preparationOpenedAt: readyByDate("2026-07-16"),
@@ -229,7 +229,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-harvey",
-    learnerId: "lrn-harvey-cole",
+    apprenticeId: "lrn-harvey-cole",
     plannedReviewDate: "2026-07-15",
     preparationOpenedAt: null,
     states: {
@@ -245,7 +245,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-dylan",
-    learnerId: "lrn-dylan-moore",
+    apprenticeId: "lrn-dylan-moore",
     plannedReviewDate: "2026-07-14",
     reviewType: "EPA readiness",
     preparationOpenedAt: readyByDate("2026-07-14"),
@@ -257,7 +257,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-sofia",
-    learnerId: "lrn-sofia-martinez",
+    apprenticeId: "lrn-sofia-martinez",
     plannedReviewDate: "2026-07-18",
     preparationOpenedAt: readyByDate("2026-07-18"),
     states: {
@@ -269,7 +269,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-amelia",
-    learnerId: "lrn-amelia-frost",
+    apprenticeId: "lrn-amelia-frost",
     plannedReviewDate: "2026-07-22",
     preparationOpenedAt: readyByDate("2026-07-22"),
     states: {
@@ -282,13 +282,13 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   // Ready to create (5)
   req({
     requirementId: "req-james",
-    learnerId: "lrn-james-wilson",
+    apprenticeId: "lrn-james-wilson",
     plannedReviewDate: "2026-07-25",
     preparationOpenedAt: readyByDate("2026-07-25"),
   }),
   req({
     requirementId: "req-finley",
-    learnerId: "lrn-finley-brooks",
+    apprenticeId: "lrn-finley-brooks",
     plannedReviewDate: "2026-07-13",
     preparationOpenedAt: readyByDate("2026-07-13"),
     states: {
@@ -298,13 +298,13 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-ellie",
-    learnerId: "lrn-ellie-scott",
+    apprenticeId: "lrn-ellie-scott",
     plannedReviewDate: "2026-07-24",
     preparationOpenedAt: readyByDate("2026-07-24"),
   }),
   req({
     requirementId: "req-grace",
-    learnerId: "lrn-grace-powell",
+    apprenticeId: "lrn-grace-powell",
     plannedReviewDate: "2026-07-23",
     preparationOpenedAt: readyByDate("2026-07-23"),
     states: {
@@ -313,7 +313,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-leo",
-    learnerId: "lrn-leo-griffin",
+    apprenticeId: "lrn-leo-griffin",
     plannedReviewDate: "2026-07-21",
     preparationOpenedAt: readyByDate("2026-07-21"),
   }),
@@ -321,7 +321,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   // Upcoming (preparation not open / not urgent)
   req({
     requirementId: "req-oscar",
-    learnerId: "lrn-oscar-hayes",
+    apprenticeId: "lrn-oscar-hayes",
     plannedReviewDate: "2026-08-05",
     preparationOpenedAt: null,
     queueTab: "upcoming",
@@ -337,7 +337,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-freya",
-    learnerId: "lrn-freya-ward",
+    apprenticeId: "lrn-freya-ward",
     plannedReviewDate: "2026-08-12",
     preparationOpenedAt: null,
     queueTab: "upcoming",
@@ -349,7 +349,7 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-chloe",
-    learnerId: "lrn-chloe-nash",
+    apprenticeId: "lrn-chloe-nash",
     plannedReviewDate: "2026-08-18",
     preparationOpenedAt: null,
     queueTab: "upcoming",
@@ -363,46 +363,46 @@ export const REVIEW_REQUIREMENTS: ReviewRequirement[] = [
   }),
   req({
     requirementId: "req-harry",
-    learnerId: "lrn-harry-kent",
+    apprenticeId: "lrn-harry-kent",
     plannedReviewDate: "2026-08-20",
     preparationOpenedAt: null,
     queueTab: "upcoming",
   }),
   req({
     requirementId: "req-ivy",
-    learnerId: "lrn-ivy-marshall",
+    apprenticeId: "lrn-ivy-marshall",
     plannedReviewDate: "2026-08-25",
     preparationOpenedAt: null,
     queueTab: "upcoming",
   }),
   req({
     requirementId: "req-noah-next",
-    learnerId: "lrn-noah-reid",
+    apprenticeId: "lrn-noah-reid",
     plannedReviewDate: "2026-08-08",
     preparationOpenedAt: null,
     queueTab: "upcoming",
   }),
   req({
     requirementId: "req-isla-next",
-    learnerId: "lrn-isla-bennett",
+    apprenticeId: "lrn-isla-bennett",
     plannedReviewDate: "2026-08-15",
     preparationOpenedAt: null,
     queueTab: "upcoming",
   }),
   req({
     requirementId: "req-mia-next",
-    learnerId: "lrn-mia-chen",
+    apprenticeId: "lrn-mia-chen",
     plannedReviewDate: "2026-08-10",
     preparationOpenedAt: null,
     queueTab: "upcoming",
   }),
 ];
 
-function snapshotFromLearner(
-  l: MentorLearnerRow,
+function snapshotFromApprentice(
+  l: MentorApprenticeRow,
   requirement: ReviewRequirement,
 ): ReviewSnapshot {
-  const moduleProgress = buildModuleProgressForLearner({
+  const moduleProgress = buildModuleProgressForApprentice({
     programmeId: l.programmeId,
     programmeYear: l.programmeYear,
     actualProgressPercent: l.actualProgressPercent,
@@ -480,18 +480,18 @@ function formal(
     signOff?: Partial<FormalReview["signOff"]>;
   },
 ): FormalReview {
-  const l = learner(partial.learnerId);
+  const l = apprentice(partial.apprenticeId);
   const requirement =
     REVIEW_REQUIREMENTS.find((r) => r.requirementId === partial.requirementId) ??
     req({
       requirementId: partial.requirementId,
-      learnerId: partial.learnerId,
+      apprenticeId: partial.apprenticeId,
       plannedReviewDate: partial.reviewDate,
       formalReviewId: partial.reviewId,
     });
   const narrative = buildReviewNarrative(l, requirement);
   const signOff = buildSignOffState({
-    learner: l,
+    apprentice: l,
     tutorName: partial.tutorName ?? l.tutorName,
     reviewDate: partial.reviewDate,
     stage: partial.stage,
@@ -500,7 +500,7 @@ function formal(
   return {
     ...partial,
     tutorName: partial.tutorName ?? l.tutorName,
-    snapshot: partial.snapshot ?? snapshotFromLearner(l, requirement),
+    snapshot: partial.snapshot ?? snapshotFromApprentice(l, requirement),
     liveProgress: {
       plannedProgressPercent: l.plannedProgressPercent,
       actualProgressPercent: Math.min(100, l.actualProgressPercent + 1),
@@ -522,8 +522,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-mia-open",
     requirementId: "req-mia-open",
-    learnerId: "lrn-mia-chen",
-    learnerName: "Mia Chen",
+    apprenticeId: "lrn-mia-chen",
+    apprenticeName: "Mia Chen",
     employerId: "emp-ashfield",
     employerName: "Ashfield Logistics",
     programmeName: "Business Admin L3",
@@ -567,8 +567,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-noah-open",
     requirementId: "req-noah-open",
-    learnerId: "lrn-noah-reid",
-    learnerName: "Noah Reid",
+    apprenticeId: "lrn-noah-reid",
+    apprenticeName: "Noah Reid",
     employerId: "emp-peak",
     employerName: "Peak Power Solutions",
     programmeName: "Electrical Install L3",
@@ -612,8 +612,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-isla-amend",
     requirementId: "req-isla-amend",
-    learnerId: "lrn-isla-bennett",
-    learnerName: "Isla Bennett",
+    apprenticeId: "lrn-isla-bennett",
+    apprenticeName: "Isla Bennett",
     employerId: "emp-donvalley",
     employerName: "Don Valley Bodyworks",
     programmeName: "Panel Technician L3",
@@ -650,8 +650,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-freya-open",
     requirementId: "req-freya-open",
-    learnerId: "lrn-freya-ward",
-    learnerName: "Freya Ward",
+    apprenticeId: "lrn-freya-ward",
+    apprenticeName: "Freya Ward",
     employerId: "emp-ashfield",
     employerName: "Ashfield Logistics",
     programmeName: "Business Admin L3",
@@ -688,8 +688,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-leo-paused",
     requirementId: "req-leo-paused",
-    learnerId: "lrn-leo-griffin",
-    learnerName: "Leo Griffin",
+    apprenticeId: "lrn-leo-griffin",
+    apprenticeName: "Leo Griffin",
     employerId: "emp-northline",
     employerName: "Northline Services Ltd",
     programmeName: "Plumbing Eng. L3",
@@ -726,8 +726,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-harry-await-app",
     requirementId: "req-harry-await",
-    learnerId: "lrn-harry-kent",
-    learnerName: "Harry Kent",
+    apprenticeId: "lrn-harry-kent",
+    apprenticeName: "Harry Kent",
     employerId: "emp-northline",
     employerName: "Northline Services Ltd",
     programmeName: "Plumbing Eng. L3",
@@ -766,8 +766,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-sign-james",
     requirementId: "req-sign-james",
-    learnerId: "lrn-james-wilson",
-    learnerName: "James Wilson",
+    apprenticeId: "lrn-james-wilson",
+    apprenticeName: "James Wilson",
     employerId: "emp-northline",
     employerName: "Northline Services Ltd",
     programmeName: "Plumbing Eng. L3",
@@ -804,8 +804,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-sign-ellie",
     requirementId: "req-sign-ellie",
-    learnerId: "lrn-ellie-scott",
-    learnerName: "Ellie Scott",
+    apprenticeId: "lrn-ellie-scott",
+    apprenticeName: "Ellie Scott",
     employerId: "emp-peak",
     employerName: "Peak Power Solutions",
     programmeName: "Electrical Install L3",
@@ -842,8 +842,8 @@ export let FORMAL_REVIEWS: FormalReview[] = [
   formal({
     reviewId: "rev-sign-grace",
     requirementId: "req-sign-grace",
-    learnerId: "lrn-grace-powell",
-    learnerName: "Grace Powell",
+    apprenticeId: "lrn-grace-powell",
+    apprenticeName: "Grace Powell",
     employerId: "emp-donvalley",
     employerName: "Don Valley Bodyworks",
     programmeName: "Panel Technician L3",
@@ -892,20 +892,20 @@ export let FORMAL_REVIEWS: FormalReview[] = [
     "lrn-finley-brooks",
     "lrn-grace-powell",
     "lrn-harry-kent",
-  ].map((learnerId, index) => {
-    const l = learner(learnerId);
+  ].map((apprenticeId, index) => {
+    const l = apprentice(apprenticeId);
     return formal({
       reviewId: `rev-complete-${index + 1}`,
       requirementId: `req-complete-${index + 1}`,
-      learnerId: l.learnerId,
-      learnerName: l.displayName,
+      apprenticeId: l.apprenticeId,
+      apprenticeName: l.displayName,
       employerId: l.employerId,
       employerName: l.employerName,
       programmeName: l.programmeName,
       mentorName: MENTOR_NAME,
       reviewDate: `2026-0${Math.max(1, 6 - Math.floor(index / 4))}-${String(28 - index).padStart(2, "0")}`,
       reviewType: "Progress review",
-      previousReviewId: index === 0 ? null : `hist-${learnerId}`,
+      previousReviewId: index === 0 ? null : `hist-${apprenticeId}`,
       stage: "completed",
       progressPercent: 100,
       lastEditedAt: "2026-06-28T12:00:00Z",
@@ -922,7 +922,7 @@ export let FORMAL_REVIEWS: FormalReview[] = [
       participants: [l.displayName, MENTOR_NAME, l.employerName],
       progressJudgement: index % 3 === 0 ? "Behind — recovering" : "On track",
       actionsCreated:
-        learnerId === "lrn-isla-bennett" ? 3 : 1 + (index % 3),
+        apprenticeId === "lrn-isla-bennett" ? 3 : 1 + (index % 3),
       nextReviewDate: l.nextReviewDate,
       completedBy: MENTOR_NAME,
       completedAt: `2026-06-${String(20 + (index % 8)).padStart(2, "0")}`,
@@ -959,8 +959,8 @@ export function getFormalReview(id: string): FormalReview | undefined {
     return formal({
       reviewId: id,
       requirementId,
-      learnerId: requirement.learnerId,
-      learnerName: requirement.learnerName,
+      apprenticeId: requirement.apprenticeId,
+      apprenticeName: requirement.apprenticeName,
       employerId: requirement.employerId,
       employerName: requirement.employerName,
       programmeName: requirement.programmeName,
@@ -981,7 +981,7 @@ export function getFormalReview(id: string): FormalReview | undefined {
         amendmentRequested: false,
         reminderSent: false,
       },
-      participants: [requirement.learnerName, MENTOR_NAME, requirement.employerName],
+      participants: [requirement.apprenticeName, MENTOR_NAME, requirement.employerName],
       progressJudgement: null,
       actionsCreated: 0,
       nextReviewDate: null,
@@ -1026,4 +1026,4 @@ export function addFormalReview(review: FormalReview): void {
   FORMAL_REVIEWS = [review, ...FORMAL_REVIEWS];
 }
 
-export { snapshotFromLearner };
+export { snapshotFromApprentice };

@@ -2,24 +2,24 @@ import { describe, expect, it } from "vitest";
 import {
   calculateBlockProgressionBrag,
   calculateMilestoneStatus,
-  learnerBlockRag,
-  learnerTaskRag,
+  apprenticeBlockRag,
+  apprenticeTaskRag,
   rollUpProgressionBrag,
 } from "./progression-status";
 import { AUTOCARE_GATEWAYS, gatewayMilestoneDueIso } from "./gateways";
 import { cohortDateForProgrammeWeek } from "./rpl-funding-calc";
 
-describe("learner RAG", () => {
+describe("apprentice RAG", () => {
   it("marks unlocked not-started tasks red", () => {
-    expect(learnerTaskRag("not_started", false)).toBe("red");
-    expect(learnerTaskRag("verified", false)).toBe("green");
-    expect(learnerTaskRag("in_progress", false)).toBe("amber");
-    expect(learnerTaskRag("not_started", true)).toBe("neutral");
+    expect(apprenticeTaskRag("not_started", false)).toBe("red");
+    expect(apprenticeTaskRag("verified", false)).toBe("green");
+    expect(apprenticeTaskRag("in_progress", false)).toBe("amber");
+    expect(apprenticeTaskRag("not_started", true)).toBe("neutral");
   });
 
   it("colours blocks from completion summary", () => {
     expect(
-      learnerBlockRag(
+      apprenticeBlockRag(
         {
           total: 5,
           verified: 5,
@@ -32,7 +32,7 @@ describe("learner RAG", () => {
       ),
     ).toBe("green");
     expect(
-      learnerBlockRag(
+      apprenticeBlockRag(
         {
           total: 5,
           verified: 2,
@@ -45,7 +45,7 @@ describe("learner RAG", () => {
       ),
     ).toBe("amber");
     expect(
-      learnerBlockRag(
+      apprenticeBlockRag(
         {
           total: 5,
           verified: 0,

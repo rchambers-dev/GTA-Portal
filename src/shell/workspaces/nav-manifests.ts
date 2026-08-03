@@ -3,7 +3,7 @@ import { PERMISSIONS } from "@/lib/permissions/capabilities";
 
 export const STAFF_BASE_NAV: NavItem[] = [
   { href: "/staff/dashboard", label: "Dashboard", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
-  { href: "/learners/lifecycle", label: "My Learners", permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
+  { href: "/apprentices/lifecycle", label: "My Apprentices", permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
   { href: "/staff/schedule", label: "Teaching Schedule", permission: PERMISSIONS.SCHEDULE_VIEW },
   {
     href: "/staff/programme-delivery",
@@ -26,19 +26,19 @@ export const MENTOR_NAV_SECTIONS: NavSection[] = [
     title: "Overview",
     items: [
       {
-        href: "/learners/lifecycle",
+        href: "/apprentices/lifecycle",
         label: "Lifecycle Board",
         permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW,
       },
     ],
   },
   {
-    title: "Learners",
+    title: "Apprentices",
     items: [
       {
-        href: "/learners",
-        label: "Learners",
-        permission: PERMISSIONS.LEARNER_CASELOAD_VIEW,
+        href: "/apprentices",
+        label: "Apprentices",
+        permission: PERMISSIONS.APPRENTICE_CASELOAD_VIEW,
       },
       {
         href: "/workspaces/progress-mentor/progress-monitoring",

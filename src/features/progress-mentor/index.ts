@@ -10,12 +10,12 @@ export { MentorMessagesScreen } from "./screens/MentorMessagesScreen";
 export { TrainingPlanReviewsScreen } from "./screens/TrainingPlanReviewsScreen";
 export {
   metricHref,
-  learnerStatusHref,
+  apprenticeStatusHref,
   MENTOR_BASE,
   mentorPath,
 } from "./lib/metric-links";
 export {
-  buildProgressLearnerViews,
+  buildProgressApprenticeViews,
   calculatePriorityScore,
   sortByOperationalPriority,
 } from "./lib/priority-score";

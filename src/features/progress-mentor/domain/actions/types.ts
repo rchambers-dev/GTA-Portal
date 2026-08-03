@@ -62,8 +62,8 @@ export type ActionRecord = {
   actionId: string;
   title: string;
   description: string;
-  learnerId: string | null;
-  learnerName: string | null;
+  apprenticeId: string | null;
+  apprenticeName: string | null;
   employerId: string | null;
   employerName: string | null;
   owner: string;

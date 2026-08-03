@@ -31,7 +31,7 @@ export type TaskFieldDef = {
   rowCount?: number;
   /** For sign_off — who must complete this box */
   signOffRole?: "apprentice" | "mentor" | "trainer" | "assessor";
-  /** Who fills this field (defaults to apprentice). Staff-only on learner form. */
+  /** Who fills this field (defaults to apprentice). Staff-only on apprentice form. */
   filledBy?: "apprentice" | "mentor" | "trainer" | "assessor";
 };
 

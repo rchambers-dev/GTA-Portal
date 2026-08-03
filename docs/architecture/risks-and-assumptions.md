@@ -24,7 +24,7 @@
 | R5 | Premature Prisma schema blocks intake fields | Medium | Nullable intake fields; framework versioning |
 | R6 | Double portal UX if Website `/portal` evolves separately | Medium | Integration plan after Stage 8 approval |
 | R7 | Evidence MIME/storage security gaps before prod | High | Storage port + validation before real uploads |
-| R8 | Performance with hundreds of learners | Medium | Virtualisation from Stage 4; load windowed data |
+| R8 | Performance with hundreds of apprentices | Medium | Virtualisation from Stage 4; load windowed data |
 
 ## Non-goals (Stage 2)
 

@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import type { SessionUser } from "@/features/learner-lifecycle/types";
+import type { SessionUser } from "@/features/apprentice-lifecycle/types";
 import type { EffectiveSession } from "@/lib/portal/types";
 import { buildEffectiveSession, hasPermission } from "@/lib/permissions/effective-permissions";
 import {

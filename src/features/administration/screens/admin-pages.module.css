@@ -644,7 +644,7 @@
   grid-column: 1 / -1;
 }
 
-.linkedLearnerNote {
+.linkedApprenticeNote {
   margin: 0 0 0.75rem;
   padding: 0.55rem 0.75rem;
   border: 1px solid color-mix(in srgb, var(--color-navy-700) 16%, var(--border-subtle));
@@ -1215,6 +1215,152 @@
   color: var(--color-navy-800, #1e3a5f);
 }
 
+.cohortLockPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2.15rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 750;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.cohortLockPill[data-locked="true"] {
+  border-color: color-mix(in srgb, var(--color-navy-700) 30%, transparent);
+  background: color-mix(in srgb, var(--color-navy-700) 12%, white);
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+.cohortLockPill[data-locked="false"] {
+  border-color: color-mix(in srgb, #b45309 35%, transparent);
+  background: color-mix(in srgb, #b45309 14%, white);
+  color: #92400e;
+}
+
+.dayPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-height: 2.65rem;
+  align-items: center;
+}
+
+.dayPickerOption {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.45rem;
+  padding: 0.45rem 0.55rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: var(--color-white, white);
+  color: var(--color-navy-800, #1e3a5f);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color var(--duration-fast, 120ms) ease,
+    background-color var(--duration-fast, 120ms) ease,
+    color var(--duration-fast, 120ms) ease,
+    box-shadow var(--duration-fast, 120ms) ease;
+}
+
+.dayPickerOption input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dayPickerOption:hover {
+  border-color: color-mix(in srgb, var(--color-navy-700) 38%, var(--border-subtle));
+}
+
+.dayPickerOption:has(input:focus-visible) {
+  border-color: var(--color-navy-700);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-navy-700) 16%, transparent);
+}
+
+.dayPickerOption[data-selected="true"] {
+  border-color: var(--color-navy-700);
+  background: var(--color-navy-700);
+  color: white;
+}
+
+.dayPickerOption[data-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.capacityEdit {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.capacityEditField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.capacityEditField span {
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+.capacityEditInput {
+  box-sizing: border-box;
+  width: 5rem;
+  min-width: 5rem;
+  height: var(--btn-height, 2.5rem);
+  min-height: var(--btn-height, 2.5rem);
+  padding: 0 0.5rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  border-radius: var(--radius-md);
+  background: var(--color-white, #fff);
+  color: var(--color-navy-900, #0f172a);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+  outline: none;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.capacityEditInput::-webkit-outer-spin-button,
+.capacityEditInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.capacityEditInput:focus,
+.capacityEditInput:focus-visible {
+  border-color: var(--color-navy-700);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-navy-700) 16%, transparent);
+}
+
 .enrolmentStatusPill {
   display: inline-flex;
   align-items: center;
@@ -1686,7 +1832,7 @@ button.employerApprenticePill {
   outline-offset: 1px;
 }
 
-.learnerModalBackdrop {
+.apprenticeModalBackdrop {
   position: fixed;
   inset: 0;
   z-index: 60;
@@ -1698,7 +1844,7 @@ button.employerApprenticePill {
   cursor: default;
 }
 
-.learnerModal {
+.apprenticeModal {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -1714,27 +1860,27 @@ button.employerApprenticePill {
   text-align: left;
 }
 
-.learnerModalHead {
+.apprenticeModalHead {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
 }
 
-.learnerModalTitle {
+.apprenticeModalTitle {
   margin: 0;
   font-family: var(--font-display);
   font-size: 1.05rem;
   color: var(--color-navy-800, #1e3a5f);
 }
 
-.learnerModalMeta {
+.apprenticeModalMeta {
   margin: 0.15rem 0 0;
   font-size: 0.82rem;
   color: var(--text-secondary);
 }
 
-.learnerModalClose {
+.apprenticeModalClose {
   flex-shrink: 0;
   width: 2rem;
   height: 2rem;
@@ -1751,12 +1897,12 @@ button.employerApprenticePill {
   transition: background 120ms ease, color 120ms ease;
 }
 
-.learnerModalClose:hover {
+.apprenticeModalClose:hover {
   background: color-mix(in srgb, var(--color-navy-700) 8%, white);
   color: var(--color-navy-800, #1e3a5f);
 }
 
-.learnerModalSearch {
+.apprenticeModalSearch {
   width: 100%;
   padding: 0.6rem 0.85rem;
   border: 1px solid var(--border-subtle);
@@ -1765,12 +1911,12 @@ button.employerApprenticePill {
   font-size: 0.9rem;
 }
 
-.learnerModalSearch:focus {
+.apprenticeModalSearch:focus {
   outline: 2px solid var(--action-primary);
   outline-offset: 1px;
 }
 
-.learnerModalList {
+.apprenticeModalList {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1778,7 +1924,7 @@ button.employerApprenticePill {
   flex: 1;
 }
 
-.learnerModalList li + li {
+.apprenticeModalList li + li {
   margin-top: 0.2rem;
   padding-top: 0.2rem;
   border-top: 1px solid color-mix(in srgb, var(--color-navy-700) 10%, var(--border-subtle));
@@ -1925,7 +2071,51 @@ textarea.detailFieldInput {
   }
 }
 
-.linkedLearners {
+.placementFromCohort {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--color-navy-700) 4%, white);
+}
+
+.placementFromCohortTitle {
+  margin: 0 0 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.placementFromCohortGrid {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem 1.25rem;
+}
+
+.placementFromCohortGrid dt {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 650;
+  color: var(--text-secondary);
+}
+
+.placementFromCohortGrid dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 650;
+  color: var(--color-navy-800, #1e3a5f);
+}
+
+@media (max-width: 640px) {
+  .placementFromCohortGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.linkedApprentices {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -1936,7 +2126,7 @@ textarea.detailFieldInput {
   background: color-mix(in srgb, var(--color-navy-700) 12%, white);
 }
 
-.linkedLearnersHead {
+.linkedApprenticesHead {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1944,14 +2134,14 @@ textarea.detailFieldInput {
   gap: var(--space-2);
 }
 
-.linkedLearnersHead h3 {
+.linkedApprenticesHead h3 {
   margin: 0;
   font-family: var(--font-display);
   font-size: 1rem;
   color: var(--color-navy-800, #1e3a5f);
 }
 
-.linkedLearnerList {
+.linkedApprenticeList {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1960,7 +2150,7 @@ textarea.detailFieldInput {
   gap: var(--space-2);
 }
 
-.linkedLearnerList li {
+.linkedApprenticeList li {
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   border-left: 3px solid var(--color-green-600, #16a34a);
@@ -1968,13 +2158,13 @@ textarea.detailFieldInput {
   overflow: hidden;
 }
 
-.linkedLearnerList li[data-selected="true"] {
+.linkedApprenticeList li[data-selected="true"] {
   border-color: color-mix(in srgb, var(--color-navy-700) 35%, var(--border-subtle));
   border-left-color: var(--color-navy-700);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-navy-700) 12%, transparent);
 }
 
-.linkedLearnerSelect {
+.linkedApprenticeSelect {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1988,12 +2178,12 @@ textarea.detailFieldInput {
   color: inherit;
 }
 
-.linkedLearnerSelect:hover {
+.linkedApprenticeSelect:hover {
   background: color-mix(in srgb, var(--color-navy-50) 70%, transparent);
 }
 
-/* Read-only learner rows (programme / cohort lists) — space clear of the accent bar */
-.linkedLearnerRow {
+/* Read-only apprentice rows (programme / cohort lists) — space clear of the accent bar */
+.linkedApprenticeRow {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -2003,7 +2193,7 @@ textarea.detailFieldInput {
   box-sizing: border-box;
 }
 
-.linkedLearnerMain {
+.linkedApprenticeMain {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -2011,11 +2201,106 @@ textarea.detailFieldInput {
   flex: 1;
 }
 
-.linkedLearnerMain strong {
+.linkedApprenticeMain strong {
   font-weight: 650;
 }
 
-.linkedLearnerMain span {
+.linkedApprenticeMain span {
   font-size: 0.82rem;
   color: var(--text-secondary);
+}
+
+.staffExpandRow td {
+  background: color-mix(in srgb, var(--color-navy-700) 4%, white);
+  padding: 0.85rem 1rem 1.1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.jobTitleDetails {
+  margin: 0;
+}
+
+.jobTitleSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 650;
+  color: var(--color-navy-800, #1e3a5f);
+  list-style: none;
+}
+
+.jobTitleSummary::-webkit-details-marker {
+  display: none;
+}
+
+.jobTitleSummary span {
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: var(--text-secondary);
+}
+
+.jobTitlePicker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 0.55rem;
+}
+
+.jobTitleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.jobTitleSectionLabel {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.jobTitleSectionOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.jobTitleOption {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.45rem 0.65rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  background: var(--color-white, white);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+  user-select: none;
+}
+
+.jobTitleOption input {
+  margin: 0;
+}
+
+.jobTitleOption em {
+  font-style: normal;
+  font-weight: 550;
+  color: var(--text-secondary);
+}
+
+.jobTitleOption[data-checked="true"] {
+  border-color: var(--color-navy-700);
+  background: color-mix(in srgb, var(--color-navy-700) 8%, white);
+}
+
+.jobTitleOption[data-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
 }

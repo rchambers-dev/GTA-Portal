@@ -1,5 +1,5 @@
 import type { WorkspaceId } from "@/lib/portal/types";
-import { ALEX_LEARNING, ALEX_PROFILE } from "@/features/learner-portal/domain/mock-learner";
+import { ALEX_LEARNING, ALEX_PROFILE } from "@/features/apprentice-portal/domain/mock-apprentice";
 
 export type PortalNotificationCategory =
   | "action"
@@ -59,7 +59,7 @@ function mapLearningKind(
   }
 }
 
-function learnerNotifications(): PortalNotification[] {
+function apprenticeNotifications(): PortalNotification[] {
   const fromLearning: PortalNotification[] = [
     ...ALEX_LEARNING.thisWeek,
     ...ALEX_LEARNING.lookingAhead,
@@ -79,7 +79,7 @@ function learnerNotifications(): PortalNotification[] {
       id: "msg-mentor",
       title: `New message from ${ALEX_PROFILE.mentorName}`,
       detail: "Checking you’re set for college Monday — reply when OTJ is logged.",
-      href: "/learner/messages",
+      href: "/apprentice/messages",
       hrefLabel: "Open messages",
       category: "message",
       when: "Today",
@@ -89,7 +89,7 @@ function learnerNotifications(): PortalNotification[] {
       id: "msg-group",
       title: "College catch-up group",
       detail: "Daniel asked you to bring the inspection sheet on Tuesday.",
-      href: "/learner/messages",
+      href: "/apprentice/messages",
       hrefLabel: "Open group chat",
       category: "message",
       when: "Today",
@@ -98,7 +98,7 @@ function learnerNotifications(): PortalNotification[] {
       id: "rev-upcoming",
       title: "Progress review on 8 Aug",
       detail: `Prepare evidence and actions with ${ALEX_PROFILE.mentorName}.`,
-      href: "/learner/reviews/rev-alex-upcoming",
+      href: "/apprentice/reviews/rev-alex-upcoming",
       hrefLabel: "Open review prep",
       category: "review",
       when: "Upcoming",
@@ -108,7 +108,7 @@ function learnerNotifications(): PortalNotification[] {
       id: "att-catchup",
       title: "Missed learning to catch up",
       detail: "Review modules and CEA tasks linked to recent absences.",
-      href: "/learner/attendance",
+      href: "/apprentice/attendance",
       hrefLabel: "Open attendance",
       category: "attendance",
       when: "This week",
@@ -117,7 +117,7 @@ function learnerNotifications(): PortalNotification[] {
       id: "cv-nudge",
       title: "Keep your CV draft moving",
       detail: "Save an editable copy when you’re happy with this week’s updates.",
-      href: "/learner/cv",
+      href: "/apprentice/cv",
       hrefLabel: "Open CV builder",
       category: "general",
       when: "This week",
@@ -131,7 +131,7 @@ function staffNotifications(workspace: string): PortalNotification[] {
   return [
     {
       id: "staff-1",
-      title: "Learner OTJ awaiting agreement",
+      title: "Apprentice OTJ awaiting agreement",
       detail: "Alex Morgan — catch-up OTJ block needs employer follow-up.",
       href: "/workspaces/progress-mentor/actions",
       hrefLabel: "Open actions",
@@ -171,7 +171,7 @@ function staffNotifications(workspace: string): PortalNotification[] {
       id: "staff-5",
       title: `${workspace} queue update`,
       detail: "Open items need a decision before end of week.",
-      href: "/learners/lifecycle",
+      href: "/apprentices/lifecycle",
       hrefLabel: "Open lifecycle",
       category: "general",
       when: "This week",
@@ -182,6 +182,6 @@ function staffNotifications(workspace: string): PortalNotification[] {
 export function getPortalNotifications(
   workspace: WorkspaceId | string,
 ): PortalNotification[] {
-  if (workspace === "learner") return learnerNotifications();
+  if (workspace === "apprentice") return apprenticeNotifications();
   return staffNotifications(String(workspace));
 }

@@ -77,7 +77,7 @@ function buildBoundarySystemPrompt(input: {
     `3. You may only perform these actions: ${input.allowedActions.join(", ") || "(none)"}.`,
     `4. You must NEVER use, infer, request, or invent data from: ${input.denied.join(", ")}.`,
     "5. If asked for information outside your allowed scopes, refuse briefly and say it is outside your access.",
-    "6. Do not claim access to other learners, staff case notes, safeguarding records, or credentials.",
+    "6. Do not claim access to other apprentices, staff case notes, safeguarding records, or credentials.",
     "7. Do not auto-send messages, change permissions, or persist data — only return suggested text.",
     "8. Stay factual: do not invent employers, grades, hours, or qualifications the user did not provide.",
   ];

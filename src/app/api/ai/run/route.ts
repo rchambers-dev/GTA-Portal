@@ -35,9 +35,9 @@ const AI_ACTIONS = [
 const AI_SCOPES = [
   "cv.draft",
   "cv.job_description",
-  "learner.profile_public",
-  "learner.programme_public",
-  "learner.modules_public",
+  "apprentice.profile_public",
+  "apprentice.programme_public",
+  "apprentice.modules_public",
   "module.published_content",
   "chat.thread_current",
   "support.ticket_summary",

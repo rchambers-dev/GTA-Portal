@@ -1,11 +1,11 @@
-import { MENTOR_ID, MENTOR_LEARNERS, MENTOR_NAME } from "../../data/mentor-caseload";
+import { MENTOR_ID, MENTOR_APPRENTICES, MENTOR_NAME } from "../../data/mentor-caseload";
 import { canCreateReview } from "./readiness";
 import { buildReviewNarrative } from "./review-content";
 import { buildSignOffState } from "./sign-off";
 import {
   addFormalReview,
   getRequirement,
-  snapshotFromLearner,
+  snapshotFromApprentice,
   updateRequirement,
 } from "./mock-store";
 import type { FormalReview, SoftOverride } from "./types";
@@ -16,7 +16,7 @@ export type CreateReviewResult =
 
 /**
  * Create a formal review from a ready requirement.
- * Snapshots preparation evidence; does not mutate live learner progress.
+ * Snapshots preparation evidence; does not mutate live apprentice progress.
  */
 export function createFormalReviewFromRequirement(
   requirementId: string,
@@ -63,9 +63,9 @@ export function createFormalReviewFromRequirement(
     };
   }
 
-  const learner = MENTOR_LEARNERS.find((l) => l.learnerId === requirement.learnerId);
-  if (!learner) {
-    return { ok: false, error: "Learner not found.", blocking: [] };
+  const apprentice = MENTOR_APPRENTICES.find((l) => l.apprenticeId === requirement.apprenticeId);
+  if (!apprentice) {
+    return { ok: false, error: "Apprentice not found.", blocking: [] };
   }
 
   const reviewId = `rev-created-${requirement.requirementId}`;
@@ -82,18 +82,18 @@ export function createFormalReviewFromRequirement(
     ],
   };
 
-  const narrative = buildReviewNarrative(learner, updatedRequirement);
+  const narrative = buildReviewNarrative(apprentice, updatedRequirement);
 
   const review: FormalReview = {
     reviewId,
     requirementId: requirement.requirementId,
-    learnerId: requirement.learnerId,
-    learnerName: requirement.learnerName,
+    apprenticeId: requirement.apprenticeId,
+    apprenticeName: requirement.apprenticeName,
     employerId: requirement.employerId,
     employerName: requirement.employerName,
     programmeName: requirement.programmeName,
     mentorName: requirement.mentorName,
-    tutorName: learner.tutorName,
+    tutorName: apprentice.tutorName,
     reviewDate: requirement.plannedReviewDate,
     reviewType: requirement.reviewType,
     previousReviewId: requirement.previousReviewId,
@@ -103,22 +103,22 @@ export function createFormalReviewFromRequirement(
     lastEditedBy: MENTOR_NAME,
     missingSections: ["Discussion", "Actions", "Judgement", "Sign-off"],
     signOff: buildSignOffState({
-      learner,
-      tutorName: learner.tutorName,
+      apprentice,
+      tutorName: apprentice.tutorName,
       reviewDate: requirement.plannedReviewDate,
       stage: "created",
     }),
-    snapshot: snapshotFromLearner(learner, updatedRequirement),
+    snapshot: snapshotFromApprentice(apprentice, updatedRequirement),
     liveProgress: {
-      plannedProgressPercent: learner.plannedProgressPercent,
-      actualProgressPercent: learner.actualProgressPercent,
-      attendancePercent: learner.attendancePercent,
+      plannedProgressPercent: apprentice.plannedProgressPercent,
+      actualProgressPercent: apprentice.actualProgressPercent,
+      attendancePercent: apprentice.attendancePercent,
     },
     participants: [
-      requirement.learnerName,
+      requirement.apprenticeName,
       MENTOR_NAME,
       requirement.employerName,
-      learner.tutorName,
+      apprentice.tutorName,
     ],
     progressJudgement: null,
     discussionNotes: narrative.discussionNotes,

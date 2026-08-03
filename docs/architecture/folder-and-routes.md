@@ -3,7 +3,7 @@
 ## Top level
 
 ```text
-Learner Life Cycle/
+Apprentice Life Cycle/
 ├── docs/                          # Architecture documentation (permanent)
 ├── prisma/                        # Schema from Stage 3 (not required for Stage 2 shell)
 ├── public/
@@ -41,7 +41,7 @@ Forbidden:
 | Kind | Purpose | Examples |
 |------|---------|----------|
 | **Workspace** | Priorities and operational questions for a persona | Dashboards, Lifecycle Board, curriculum editors |
-| **Shared record** | One canonical page per business object | `/learners/[id]`, `/reviews/[id]`, `/employer-concerns/[id]` |
+| **Shared record** | One canonical page per business object | `/apprentices/[id]`, `/reviews/[id]`, `/employer-concerns/[id]` |
 | **Shared queue** | List/filter entry that opens shared records | `/reviews`, `/interventions`, `/employers` |
 
 See [`shared-pages.md`](shared-pages.md).
@@ -50,8 +50,8 @@ See [`shared-pages.md`](shared-pages.md).
 
 | URL | Kind | Notes |
 |-----|------|-------|
-| `/learners/[learnerId]` | Record | Canonical learner — `?tab=` / `?from=` for context |
-| `/learners/lifecycle` | Workspace | Mentor Lifecycle Board (links into shared learner) |
+| `/apprentices/[apprenticeId]` | Record | Canonical learner — `?tab=` / `?from=` for context |
+| `/apprentices/lifecycle` | Workspace | Mentor Lifecycle Board (links into shared learner) |
 | `/employers` / `/employers/[employerId]` | Queue / record | |
 | `/programmes` / `/programmes/[programmeId]` | Queue / record | |
 | `/modules` / `/modules/[moduleId]` | Queue / record | Delivery-filtered for tutors |
@@ -63,7 +63,7 @@ See [`shared-pages.md`](shared-pages.md).
 | `/support-plans` / `/support-plans/[supportPlanId]` | Queue / record | |
 | `/curriculum-feedback` / `/curriculum-feedback/[feedbackId]` | Queue / record | |
 
-Child paths under `/learners/[id]/evidence|reviews|…` redirect to `?tab=` on the canonical learner URL.
+Child paths under `/apprentices/[id]/evidence|reviews|…` redirect to `?tab=` on the canonical learner URL.
 
 ## Workspace route mounts (remain unique)
 
@@ -88,6 +88,6 @@ Preserve in query string where practical:
 - `year` — 1 | 2 | 3
 - `from` / `span` — week window (span may be fixed to full year)
 - `metric` — selected summary card
-- Learner deep links: `from=lifecycle`, `tab=reviews|evidence|…`
+- Apprentice deep links: `from=lifecycle`, `tab=reviews|evidence|…`
 
-Example: `/learners/lifecycle?year=1` → card → `/learners/lrn-123?from=lifecycle`
+Example: `/apprentices/lifecycle?year=1` → card → `/apprentices/lrn-123?from=lifecycle`

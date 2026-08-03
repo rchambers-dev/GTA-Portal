@@ -7,7 +7,7 @@ Stage 2 does **not** require a live database. This is the target relational mode
 - Separate facts, statements, evidence, judgements, and decisions at the data layer where practical.
 - Original planned end date is immutable; revisions live in `DateChangeHistory`.
 - Evidence content is versioned; prior versions are never overwritten.
-- Learner is linked to a `RequirementFramework` version (no silent retroactive requirement changes).
+- Apprentice is linked to a `RequirementFramework` version (no silent retroactive requirement changes).
 - Soft-delete / archive for regulated learner records; audit events are append-only.
 
 ## Core ERD (logical)
@@ -17,7 +17,7 @@ User ──< UserRole >── Role ──< RolePermission >── Permission
 User ──? Location
 
 Employer ──< LearnerProgramme >── Programme ──< ProgrammeVersion
-Learner ──< LearnerProgramme
+Apprentice ──< LearnerProgramme
 User (staff) ──< StaffAssignment >── LearnerProgramme  (tutor | mentor)
 
 RequirementFramework ──< RequirementSection ──< EvidenceRequirement
@@ -47,7 +47,7 @@ LearnerProgramme ──< Discrepancy
 | Location | Optional site filter |
 | Employer | Employer org |
 | Programme, ProgrammeVersion | Programme catalogue |
-| Learner | Master identity |
+| Apprentice | Master identity |
 | LearnerProgramme | Enrolment + dates + status |
 | StaffAssignment | Tutor/mentor links |
 | RequirementFramework, RequirementSection, EvidenceRequirement | Configurable pack 1.1–8.1 |
@@ -87,4 +87,4 @@ LearnerProgramme ──< Discrepancy
 
 ## Intake readiness
 
-Learner and LearnerProgramme fields that intake will populate later must allow null / “Awaiting intake” display. UI must never treat null as a positive RAG status.
+Apprentice and LearnerProgramme fields that intake will populate later must allow null / “Awaiting intake” display. UI must never treat null as a positive RAG status.

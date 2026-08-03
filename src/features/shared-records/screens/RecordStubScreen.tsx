@@ -1,4 +1,4 @@
-import { FeatureStubScreen } from "@/features/learner-lifecycle";
+import { FeatureStubScreen } from "@/features/apprentice-lifecycle";
 
 /** Thin shared record / queue shell — one mount per business object. */
 export function RecordStubScreen({

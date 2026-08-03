@@ -8,38 +8,38 @@ export const AI_FEATURES: Record<AiFeatureKey, AiFeatureMeta> = {
   "cv.improve_summary": {
     key: "cv.improve_summary",
     label: "Improve CV summary",
-    area: "learner",
-    description: "Rewrite a learner CV professional summary for clarity and impact.",
+    area: "apprentice",
+    description: "Rewrite an apprentice CV professional summary for clarity and impact.",
   },
   "cv.improve_bullets": {
     key: "cv.improve_bullets",
     label: "Improve CV bullets",
-    area: "learner",
-    description: "Polish experience bullet points while keeping the learner's meaning.",
+    area: "apprentice",
+    description: "Polish experience bullet points while keeping the apprentice's meaning.",
   },
   "cv.suggest_experience_bullets": {
     key: "cv.suggest_experience_bullets",
     label: "Suggest bullets from modules",
-    area: "learner",
+    area: "apprentice",
     description:
       "Draft experience bullet points from completed and in-progress portal modules.",
   },
   "cv.suggest_skills": {
     key: "cv.suggest_skills",
     label: "Suggest CV skills",
-    area: "learner",
+    area: "apprentice",
     description: "Suggest skills from programme and workplace context.",
   },
   "cv.tailor_to_job": {
     key: "cv.tailor_to_job",
     label: "Tailor CV to job",
-    area: "learner",
+    area: "apprentice",
     description: "Rewrite CV sections to better match a pasted job description.",
   },
   "cv.improve_education": {
     key: "cv.improve_education",
     label: "Improve CV education detail",
-    area: "learner",
+    area: "apprentice",
     description:
       "Rewrite education detail using programme progress and completed module titles.",
   },
@@ -58,7 +58,7 @@ export const AI_FEATURES: Record<AiFeatureKey, AiFeatureMeta> = {
   "learning.explain": {
     key: "learning.explain",
     label: "Explain learning topic",
-    area: "learner",
+    area: "apprentice",
     description: "Explain a module or topic in simpler language.",
   },
 };

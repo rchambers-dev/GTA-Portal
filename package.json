@@ -9,7 +9,9 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
-    "bootstrap:superadmin": "node scripts/bootstrap-superadmin.mjs"
+    "bootstrap:superadmin": "node scripts/bootstrap-superadmin.mjs",
+    "bootstrap:org-staff": "node scripts/bootstrap-org-staff.mjs",
+    "db:migrate": "node scripts/run-migration.mjs"
   },
   "dependencies": {
     "@giphy/js-fetch-api": "^5.8.0",
@@ -32,6 +34,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.2.10",
+    "pg": "^8.22.0",
     "typescript": "^6.0.3",
     "vitest": "^3.2.7"
   }

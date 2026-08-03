@@ -12,15 +12,15 @@ Enforcement must be **server-side** via the auth/RBAC adapter. UI hiding is not 
 | `tutor` | Tutor |
 | `reviewer` | Reviewer / quality assurer |
 | `employer` | Employer representative |
-| `learner` | Learner |
+| `learner` | Apprentice |
 | `support` | Support staff |
 | `auditor` | Read-only auditor / inspector |
 
 ## Capability matrix
 
-Legend: **F** = full · **A** = assigned/linked learners only · **R** = read · **W** = write · **—** = none · **S** = sensitive fields restricted
+Legend: **F** = full · **A** = assigned/linked apprentices only · **R** = read · **W** = write · **—** = none · **S** = sensitive fields restricted
 
-| Capability | Admin | Sr Mgr | Mentor | Tutor | Reviewer | Employer | Learner | Support | Auditor |
+| Capability | Admin | Sr Mgr | Mentor | Tutor | Reviewer | Employer | Apprentice | Support | Auditor |
 |------------|-------|--------|--------|-------|----------|----------|---------|---------|---------|
 | View lifecycle Kanban | F | F | A | A | F | A | — | A | F |
 | View learner workspace | F | F | A | A | F | A* | Own | A* | F |
@@ -58,17 +58,17 @@ Stage 2 placeholder session: demo auth adapter with nine accounts. Navigation an
 
 ### Staff workspace (implemented in shell demo)
 
-- **Base staff nav:** dashboard, my learners (lifecycle board), schedule, modules (shared `/modules`), assessments, reviews (shared `/reviews`), resources, curriculum feedback, messages
+- **Base staff nav:** dashboard, my apprentices (lifecycle board), schedule, modules (shared `/modules`), assessments, reviews (shared `/reviews`), resources, curriculum feedback, messages
 - **Curriculum Management section** (additional): when user holds the curriculum editor permission pack (`curriculum.management.view`, `curriculum.edit`, …) — Sarah Patel has this scoped to **Accident Repair Technician**; Daniel Turner does not until Management grants temporary access
 - **Mentor nav variant:** Lifecycle Board + progress monitoring; operational lists open **shared queues** (`/reviews`, `/interventions`, `/actions`, `/employers`, `/employer-concerns`, `/support-plans`) — not `/staff/…` copies
 
 ### Shared record access
 
-All authorised roles open the same canonical paths (e.g. `/learners/[id]`). Tutor / mentor / quality / management / administration differ by permission, field visibility, and actions — not by separate page copies. See `docs/architecture/shared-pages.md`.
+All authorised roles open the same canonical paths (e.g. `/apprentices/[id]`). Tutor / mentor / quality / management / administration differ by permission, field visibility, and actions — not by separate page copies. See `docs/architecture/shared-pages.md`.
 
 ### Employer workspace
 
-- Employer Support & Concerns: Ask GTA, Raise a Concern, Request Support, Clarify Learner Progress
+- Employer Support & Concerns: Ask GTA, Raise a Concern, Request Support, Clarify Apprentice Progress
 - GTA staff manage cases; employers never see internal safeguarding or case notes
 
 ### Temporary responsibilities (demo)

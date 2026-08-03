@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useSyncExternalStore } from "react";
 import {
-  LearnerPageShell,
-  LearnerStatusChip,
-} from "@/features/learner-portal/components/LearnerPageShell";
+  ApprenticePageShell,
+  ApprenticeStatusChip,
+} from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
 import { taskById, tasksForBlock } from "../domain/autocare-tasks";
 import { taskKindLabel } from "../domain/task-schema";
 import {
-  DEMO_LEARNER_ID,
+  DEMO_APPRENTICE_ID,
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
@@ -23,11 +23,11 @@ import styles from "./programme-delivery.module.css";
 
 type Props = { taskId: string };
 
-function storeLearnerId(adminLearnerId: string | null): string {
-  if (!adminLearnerId || adminLearnerId === "lrn-alex-morgan") {
-    return DEMO_LEARNER_ID;
+function storeApprenticeId(adminApprenticeId: string | null): string {
+  if (!adminApprenticeId || adminApprenticeId === "lrn-alex-morgan") {
+    return DEMO_APPRENTICE_ID;
   }
-  return adminLearnerId;
+  return adminApprenticeId;
 }
 
 function fieldLabel(key: string): string {
@@ -38,16 +38,16 @@ function fieldLabel(key: string): string {
 }
 
 /**
- * Management read-only view of a learner's submitted college task work.
+ * Management read-only view of an apprentice's submitted college task work.
  */
 export function ManagementTaskViewScreen({ taskId }: Props) {
   const searchParams = useSearchParams();
-  const adminLearnerId = searchParams.get("learner");
-  const learnerKey = storeLearnerId(adminLearnerId);
+  const adminApprenticeId = searchParams.get("apprentice");
+  const apprenticeKey = storeApprenticeId(adminApprenticeId);
   const admin = useAdminStore();
   const enrolment =
-    admin.enrolments.find((e) => e.learnerId === adminLearnerId) ??
-    admin.enrolments.find((e) => e.learnerId === "lrn-alex-morgan") ??
+    admin.enrolments.find((e) => e.apprenticeId === adminApprenticeId) ??
+    admin.enrolments.find((e) => e.apprenticeId === "lrn-alex-morgan") ??
     null;
 
   const task = taskById(taskId);
@@ -56,15 +56,15 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
-  const sub = getTaskSubmission(taskId, learnerKey);
+  const sub = getTaskSubmission(taskId, apprenticeKey);
 
-  const backHref = adminLearnerId
-    ? `/management/learner-brag?learner=${encodeURIComponent(adminLearnerId)}`
-    : "/management/learner-brag";
+  const backHref = adminApprenticeId
+    ? `/management/apprentice-brag?apprentice=${encodeURIComponent(adminApprenticeId)}`
+    : "/management/apprentice-brag";
 
   if (!task) {
     return (
-      <LearnerPageShell
+      <ApprenticePageShell
         eyebrow="Management"
         title="Task not found"
         description=""
@@ -72,7 +72,7 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
         <Link href={backHref} className={styles.back}>
           ← Back to progression BRAG
         </Link>
-      </LearnerPageShell>
+      </ApprenticePageShell>
     );
   }
 
@@ -80,10 +80,10 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
     ([, v]) => v && v.trim() && v !== "signed",
   );
   const blockTasks = tasksForBlock(task.blockId);
-  const displayName = enrolment?.displayName ?? "Learner";
+  const displayName = enrolment?.displayName ?? "Apprentice";
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Management"
       title={task.title}
       description={`${displayName} · Block ${task.blockId} · Task ${task.taskNumber} · ${taskKindLabel(task.kind)}`}
@@ -95,9 +95,9 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
 
         <div className={styles.purpose}>
           <p className={styles.purposeLead}>
-            <LearnerStatusChip tone={statusTone(sub.status)}>
+            <ApprenticeStatusChip tone={statusTone(sub.status)}>
               {statusLabel(sub.status)}
-            </LearnerStatusChip>
+            </ApprenticeStatusChip>
             {" · "}
             {task.evidenceRef}
             {sub.difficulty ? ` · Difficulty: ${sub.difficulty}` : ""}
@@ -186,10 +186,10 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
           </h2>
           <ul className={styles.taskList}>
             {blockTasks.map((t) => {
-              const s = getTaskSubmission(t.id, learnerKey);
-              const href = `/management/learner-brag/task/${t.id}${
-                adminLearnerId
-                  ? `?learner=${encodeURIComponent(adminLearnerId)}`
+              const s = getTaskSubmission(t.id, apprenticeKey);
+              const href = `/management/apprentice-brag/task/${t.id}${
+                adminApprenticeId
+                  ? `?apprentice=${encodeURIComponent(adminApprenticeId)}`
                   : ""
               }`;
               return (
@@ -211,9 +211,9 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
                       </strong>
                       <span>{taskKindLabel(t.kind)}</span>
                     </div>
-                    <LearnerStatusChip tone={statusTone(s.status)}>
+                    <ApprenticeStatusChip tone={statusTone(s.status)}>
                       {statusLabel(s.status)}
-                    </LearnerStatusChip>
+                    </ApprenticeStatusChip>
                   </Link>
                 </li>
               );
@@ -221,6 +221,6 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
           </ul>
         </section>
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

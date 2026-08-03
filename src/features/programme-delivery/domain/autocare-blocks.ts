@@ -8,7 +8,7 @@
 
 export const AUTOCARE_STANDARD = {
   code: "ST0499",
-  /** Newest version for new starts — do not put new learners on older versions. */
+  /** Newest version for new starts — do not put new apprentices on older versions. */
   version: "v1.3",
   label: "Autocare Technician (Level 2)",
   fundingBandGbp: 13000,

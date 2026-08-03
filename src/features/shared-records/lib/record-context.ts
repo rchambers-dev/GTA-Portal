@@ -16,7 +16,7 @@ export type RecordFromContext =
   | "employer-concerns"
   | string;
 
-export const LEARNER_TABS = [
+export const APPRENTICE_TABS = [
   "overview",
   "progress",
   "reviews",
@@ -30,18 +30,18 @@ export const LEARNER_TABS = [
   "timeline",
 ] as const;
 
-export type LearnerTab = (typeof LEARNER_TABS)[number];
+export type ApprenticeTab = (typeof APPRENTICE_TABS)[number];
 
 const FROM_RETURN: Record<string, { href: string; label: string }> = {
-  lifecycle: { href: "/learners/lifecycle", label: "Back to lifecycle board" },
-  mentor: { href: "/learners/lifecycle", label: "Back to lifecycle board" },
-  "mentor-learners": {
-    href: "/learners",
-    label: "Back to learners",
+  lifecycle: { href: "/apprentices/lifecycle", label: "Back to lifecycle board" },
+  mentor: { href: "/apprentices/lifecycle", label: "Back to lifecycle board" },
+  "mentor-apprentices": {
+    href: "/apprentices",
+    label: "Back to apprentices",
   },
-  learners: {
-    href: "/learners",
-    label: "Back to learners",
+  apprentices: {
+    href: "/apprentices",
+    label: "Back to apprentices",
   },
   "progress-monitoring": {
     href: "/workspaces/progress-mentor/progress-monitoring",
@@ -88,12 +88,12 @@ const FROM_RETURN: Record<string, { href: string; label: string }> = {
   },
 };
 
-export function parseLearnerTab(
+export function parseApprenticeTab(
   value: string | string[] | undefined,
-): LearnerTab {
+): ApprenticeTab {
   const raw = Array.isArray(value) ? value[0] : value;
-  if (raw && (LEARNER_TABS as readonly string[]).includes(raw)) {
-    return raw as LearnerTab;
+  if (raw && (APPRENTICE_TABS as readonly string[]).includes(raw)) {
+    return raw as ApprenticeTab;
   }
   return "evidence";
 }
@@ -110,29 +110,29 @@ export function getReturnLink(from: string | null): {
   label: string;
 } {
   if (!from) {
-    return { href: "/learners", label: "Back to learners" };
+    return { href: "/apprentices", label: "Back to apprentices" };
   }
   return (
     FROM_RETURN[from] ?? {
-      href: "/learners",
+      href: "/apprentices",
       label: "Back to previous view",
     }
   );
 }
 
-export function learnerRecordHref(
-  learnerId: string,
-  opts?: { tab?: LearnerTab; from?: string },
+export function apprenticeRecordHref(
+  apprenticeId: string,
+  opts?: { tab?: ApprenticeTab; from?: string },
 ): string {
   const params = new URLSearchParams();
   if (opts?.tab) params.set("tab", opts.tab);
   if (opts?.from) params.set("from", opts.from);
   const qs = params.toString();
-  return qs ? `/learners/${learnerId}?${qs}` : `/learners/${learnerId}`;
+  return qs ? `/apprentices/${apprenticeId}?${qs}` : `/apprentices/${apprenticeId}`;
 }
 
-export function childPathToTab(segment: string): LearnerTab | null {
-  const map: Record<string, LearnerTab> = {
+export function childPathToTab(segment: string): ApprenticeTab | null {
+  const map: Record<string, ApprenticeTab> = {
     evidence: "evidence",
     reviews: "reviews",
     interventions: "interventions",

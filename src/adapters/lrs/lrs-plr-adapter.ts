@@ -1,14 +1,14 @@
 import type {
   LrsFindUlnResult,
   LrsGetPlrResult,
-  LrsLearnerIdentity,
+  LrsApprenticeIdentity,
   LrsPlrPort,
   PlrLearningRecord,
-} from "@/features/learner-portal/ports/lrs-plr";
+} from "@/features/apprentice-portal/ports/lrs-plr";
 
 const DEMO_ULN = "1234567890";
 
-function alexPlr(identity: LrsLearnerIdentity): PlrLearningRecord {
+function alexPlr(identity: LrsApprenticeIdentity): PlrLearningRecord {
   const now = new Date().toISOString();
   return {
     uln: identity.uln || DEMO_ULN,
@@ -21,7 +21,7 @@ function alexPlr(identity: LrsLearnerIdentity): PlrLearningRecord {
     vendorId: "GTA-MOCK-VENDOR",
     notes: [
       "Mock LRS response for standalone demo.",
-      "Replace with SOAP Get Learner Learning Events once LRB client certificate is issued.",
+      "Replace with SOAP Get Apprentice Learning Events once LRB client certificate is issued.",
     ],
     qualifications: [
       {
@@ -117,8 +117,8 @@ function alexPlr(identity: LrsLearnerIdentity): PlrLearningRecord {
 }
 
 /**
- * Standalone mock of LRS Find ULN + Get Learner Learning Events.
- * Matches demo learner Alex Morgan (ULN 1234567890).
+ * Standalone mock of LRS Find ULN + Get Apprentice Learning Events.
+ * Matches demo apprentice Alex Morgan (ULN 1234567890).
  */
 export const mockLrsPlrAdapter: LrsPlrPort = {
   mode: "mock",
@@ -138,11 +138,11 @@ export const mockLrsPlrAdapter: LrsPlrPort = {
     return {
       status: "not_found",
       message:
-        "No ULN found in the mock LRS for this identity. Enter the ULN manually or use the demo learner Alex Morgan.",
+        "No ULN found in the mock LRS for this identity. Enter the ULN manually or use the demo apprentice Alex Morgan.",
     };
   },
 
-  async getLearnerLearningEvents(identity): Promise<LrsGetPlrResult> {
+  async getApprenticeLearningEvents(identity): Promise<LrsGetPlrResult> {
     await new Promise((r) => setTimeout(r, 350));
 
     const given = identity.givenName.trim();
@@ -166,7 +166,7 @@ export const mockLrsPlrAdapter: LrsPlrPort = {
       return {
         status: "not_verified",
         message:
-          "Mock LRS could not verify this learner. Demo data is available for Alex Morgan / ULN 1234567890.",
+          "Mock LRS could not verify this apprentice. Demo data is available for Alex Morgan / ULN 1234567890.",
       };
     }
 
@@ -177,7 +177,7 @@ export const mockLrsPlrAdapter: LrsPlrPort = {
 /**
  * Placeholder for production SOAP LRS adapter.
  * Requires LRB registration, client certificate, organisation credentials, vendor ID,
- * and DfE compatibility testing before live Get Learner Learning Events calls.
+ * and DfE compatibility testing before live Get Apprentice Learning Events calls.
  */
 export const soapLrsPlrAdapterStub: LrsPlrPort = {
   mode: "soap",
@@ -190,7 +190,7 @@ export const soapLrsPlrAdapterStub: LrsPlrPort = {
     };
   },
 
-  async getLearnerLearningEvents(): Promise<LrsGetPlrResult> {
+  async getApprenticeLearningEvents(): Promise<LrsGetPlrResult> {
     return {
       status: "not_configured",
       message:

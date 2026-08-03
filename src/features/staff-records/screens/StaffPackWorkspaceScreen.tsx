@@ -78,7 +78,7 @@ function groupBySection(rows: StaffDocRow[]) {
 }
 
 /**
- * Staff employment file — parallel to the learner ADM14 pack.
+ * Staff employment file — parallel to the apprentice ADM14 pack.
  * Checklist is assumed until the real form is confirmed.
  */
 export function StaffPackWorkspaceScreen({

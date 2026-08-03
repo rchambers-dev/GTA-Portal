@@ -1,6 +1,6 @@
 /**
  * Review requirement ≠ formal review ≠ action.
- * Requirements represent that a learner is due a review; formal reviews are created only when ready.
+ * Requirements represent that an apprentice is due a review; formal reviews are created only when ready.
  */
 
 export type ReadinessStatus =
@@ -23,7 +23,7 @@ export type ChecklistItemState =
   | "overridden";
 
 export type ChecklistItemKey =
-  | "learner_identity"
+  | "apprentice_identity"
   | "employer_contact"
   | "review_date_scheduled"
   | "assigned_mentor"
@@ -68,8 +68,8 @@ export type SoftOverride = {
 
 export type ReviewRequirement = {
   requirementId: string;
-  learnerId: string;
-  learnerName: string;
+  apprenticeId: string;
+  apprenticeName: string;
   employerId: string;
   employerName: string;
   programmeId: string;
@@ -208,8 +208,8 @@ export type ReviewAuditEntry = {
 export type FormalReview = {
   reviewId: string;
   requirementId: string;
-  learnerId: string;
-  learnerName: string;
+  apprenticeId: string;
+  apprenticeName: string;
   employerId: string;
   employerName: string;
   programmeName: string;

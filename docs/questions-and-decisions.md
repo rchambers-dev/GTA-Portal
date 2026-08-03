@@ -6,7 +6,7 @@ Unresolved questions must not be silently decided in code. Record decisions here
 
 | ID | Decision | Date | Notes |
 |----|----------|------|-------|
-| D1 | Build Learner Lifecycle as a **standalone modular app** in this folder for design approval | 2026-07-16 | Not a permanently separate product |
+| D1 | Build Apprentice Lifecycle as a **standalone modular app** in this folder for design approval | 2026-07-16 | Not a permanently separate product |
 | D2 | After UX approval, **integrate into the main GTA portal** as a page/section | 2026-07-16 | Connect real auth, roles, learner data afterwards |
 | D3 | Separate temporary shell from permanent feature; replaceable adapters for auth/data | 2026-07-16 | See architecture README |
 | D4 | Do **not** modify the existing Website/portal during Stages 1–2 | 2026-07-16 | |
@@ -18,7 +18,7 @@ Unresolved questions must not be silently decided in code. Record decisions here
 | D10 | Board columns are **elapsed programme weeks from each learner’s start date**; viewing label shows today’s date; column headers do not show a shared calendar date (misleading across start dates) | 2026-07-16 | Placement via `calculateProgrammeWeek`; BiL still open (Q17) |
 | D11 | **One Staff Workspace** for all teaching staff; navigation grows by permissions | 2026-07-17 | Curriculum Management is a sidebar section, not a separate dashboard |
 | D12 | Curriculum Lead owns content; Management creates programmes; tutors deliver **published** curriculum only | 2026-07-17 | Version workflow documented in decision log |
-| D13 | Employer concerns go to **GTA first**, not directly to learners | 2026-07-17 | Employer Support & Concerns mock in shell |
+| D13 | Employer concerns go to **GTA first**, not directly to apprentices | 2026-07-17 | Employer Support & Concerns mock in shell |
 | D14 | Demo account switcher enabled only in development or `NEXT_PUBLIC_DEMO_MODE=true` | 2026-07-17 | Production uses normal auth adapter path |
 | D15 | **One business object, one canonical page** — workspaces link into shared record routes | 2026-07-17 | See `docs/architecture/shared-pages.md`; no role-prefixed duplicate learner pages |
 
@@ -37,10 +37,10 @@ Unresolved questions must not be silently decided in code. Record decisions here
 | Q9 | What is PEDS in GTA’s process? | Soft | |
 | Q10 | What is the confirmed meaning of the second T in SMARTTO? | Soft | |
 | Q11 | Which information is currently stored in the existing portal? | Soft | Portal is stub today |
-| Q12 | Is there an existing learner identifier that must remain canonical? | Medium | Use opaque `learnerId` until confirmed |
+| Q12 | Is there an existing learner identifier that must remain canonical? | Medium | Use opaque `apprenticeId` until confirmed |
 | Q13 | Which records have statutory or contractual retention periods? | Soft | Soft-delete/archive until known |
 | Q14 | Which health-and-safety inspection schedule applies? | Soft | Recurring collection model ready |
-| Q15 | Which evidence files may employers or learners view? | Medium | Restrict until confirmed |
+| Q15 | Which evidence files may employers or apprentices view? | Medium | Restrict until confirmed |
 | Q16 | What constitutes Gateway-ready for each programme? | Soft | Status enum only in Phase 1 |
 | Q17 | How should a break in learning affect programme-week calculations? | Medium | Flag Unknown when BiL present until rule set |
 | Q18 | How should changed employers affect employer commitments? | Soft | |

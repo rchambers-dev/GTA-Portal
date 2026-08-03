@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getStandalonePorts } from "@/adapters/standalone";
-import { LearnerSupportScreen } from "@/features/learner-portal";
+import { ApprenticeSupportScreen } from "@/features/apprentice-portal";
 import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 
@@ -10,5 +10,5 @@ export default async function EmployerSupportPage() {
   if (!session) redirect(getUnauthenticatedRedirect("/employer/support"));
 
   assertRouteAccess(session, "/employer/support");
-  return <LearnerSupportScreen audience="employer" />;
+  return <ApprenticeSupportScreen audience="employer" />;
 }

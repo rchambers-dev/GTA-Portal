@@ -2,7 +2,7 @@ export const MENTOR_BASE = "/workspaces/progress-mentor";
 
 export function mentorPath(
   page:
-    | "learners"
+    | "apprentices"
     | "progress-monitoring"
     | "reviews"
     | "actions"
@@ -28,7 +28,7 @@ export function metricHref(
   year: 1 | 2 | 3,
 ): string {
   switch (key) {
-    case "active_learners":
+    case "active_apprentices":
       return mentorPath("progress-monitoring", {
         status: "active",
         caseload: "me",
@@ -72,15 +72,15 @@ export function metricHref(
         from: "lifecycle",
       });
     default:
-      return "/learners/lifecycle";
+      return "/apprentices/lifecycle";
   }
 }
 
-export function learnerStatusHref(
-  learnerId: string,
+export function apprenticeStatusHref(
+  apprenticeId: string,
   overallStatus: string,
 ): string {
-  const base = `/learners/${learnerId}?from=lifecycle`;
+  const base = `/apprentices/${apprenticeId}?from=lifecycle`;
   switch (overallStatus) {
     case "on_track":
       return `${base}&tab=progress`;

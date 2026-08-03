@@ -5,7 +5,7 @@
 export const PERMISSIONS = {
   // Staff workspace
   STAFF_WORKSPACE_VIEW: "staff.workspace.view",
-  LEARNERS_ASSIGNED_VIEW: "learners.assigned.view",
+  APPRENTICES_ASSIGNED_VIEW: "apprentices.assigned.view",
   SCHEDULE_VIEW: "schedule.view",
   CURRICULUM_PUBLISHED_VIEW: "curriculum.published.view",
   MODULES_DELIVER: "modules.deliver",
@@ -29,7 +29,7 @@ export const PERMISSIONS = {
   CURRICULUM_PUBLISH: "curriculum.publish",
 
   // Mentor / progress
-  LEARNER_CASELOAD_VIEW: "learner.caseload.view",
+  APPRENTICE_CASELOAD_VIEW: "apprentice.caseload.view",
   PROGRESS_MONITOR: "progress.monitor",
   EMPLOYER_CONTACTS_VIEW: "employer.contacts.view",
   EMPLOYER_CONCERNS_MANAGE: "employer.concerns.manage",
@@ -40,12 +40,12 @@ export const PERMISSIONS = {
 
   // Lifecycle board (shared operational)
   LIFECYCLE_KANBAN_VIEW: "lifecycle.kanban.view",
-  LEARNER_WORKSPACE_VIEW: "learner.workspace.view",
+  APPRENTICE_WORKSPACE_VIEW: "apprentice.workspace.view",
 
-  // Learner
-  LEARNER_WORKSPACE_OWN: "learner.workspace.own",
-  LEARNER_MODULES_VIEW: "learner.modules.view",
-  LEARNER_OTJ_VIEW: "learner.otj.view",
+  // Apprentice portal (own workspace)
+  APPRENTICE_WORKSPACE_OWN: "apprentice.workspace.own",
+  APPRENTICE_MODULES_VIEW: "apprentice.modules.view",
+  APPRENTICE_OTJ_VIEW: "apprentice.otj.view",
 
   /** Shared portal AI — CV, chat assist, learning explain, etc. */
   AI_USE: "ai.use",
@@ -99,7 +99,7 @@ export const CURRICULUM_EDITOR_PACK: Permission[] = [
 
 export const STANDARD_TUTOR_PACK: Permission[] = [
   PERMISSIONS.STAFF_WORKSPACE_VIEW,
-  PERMISSIONS.LEARNERS_ASSIGNED_VIEW,
+  PERMISSIONS.APPRENTICES_ASSIGNED_VIEW,
   PERMISSIONS.SCHEDULE_VIEW,
   PERMISSIONS.CURRICULUM_PUBLISHED_VIEW,
   PERMISSIONS.MODULES_DELIVER,
@@ -109,6 +109,6 @@ export const STANDARD_TUTOR_PACK: Permission[] = [
   PERMISSIONS.CURRICULUM_FEEDBACK_SUBMIT,
   PERMISSIONS.MESSAGES_VIEW,
   PERMISSIONS.LIFECYCLE_KANBAN_VIEW,
-  PERMISSIONS.LEARNER_WORKSPACE_VIEW,
+  PERMISSIONS.APPRENTICE_WORKSPACE_VIEW,
   PERMISSIONS.AI_USE,
 ];

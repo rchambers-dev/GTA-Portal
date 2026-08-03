@@ -1,18 +1,18 @@
 import type { NavSection } from "@/lib/portal/types";
 
 const WORKSPACE_STUBS: Record<string, Record<string, { title: string; description: string }>> = {
-  learner: {
+  apprentice: {
     dashboard: {
-      title: "Learner Dashboard",
-      description: "Personalised learner overview — modules, progress, and upcoming reviews.",
+      title: "Apprentice Dashboard",
+      description: "Personalised apprentice overview — modules, progress, and upcoming reviews.",
     },
     learning: {
       title: "My Learning",
-      description: "Active learning plan and this week’s focus items for the signed-in learner.",
+      description: "Active learning plan and this week’s focus items for the signed-in apprentice.",
     },
     modules: {
       title: "Modules",
-      description: "Published curriculum modules available to this learner.",
+      description: "Published curriculum modules available to this apprentice.",
     },
     cea: {
       title: "CEA tasks",
@@ -37,7 +37,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     support: {
       title: "Support",
-      description: "Support requests and welfare contacts — learner-safe view only.",
+      description: "Support requests and welfare contacts — apprentice-safe view only.",
     },
     cv: {
       title: "CV builder",
@@ -87,7 +87,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     support: {
       title: "Support & Concerns",
-      description: "GTA-first support and concern workflows — cases are handled by GTA before learner contact.",
+      description: "GTA-first support and concern workflows — cases are handled by GTA before apprentice contact.",
     },
   },
   staff: {
@@ -106,11 +106,11 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     "module-sign-offs": {
       title: "Module sign-offs",
       description:
-        "Tutor queue of outcomes to cover, sign off, or ask learners to do again.",
+        "Tutor queue of outcomes to cover, sign off, or ask apprentices to do again.",
     },
     "otj-approvals": {
       title: "OTJ hours",
-      description: "Confirm employer-agreed off-the-job hours for your learners.",
+      description: "Confirm employer-agreed off-the-job hours for your apprentices.",
     },
     assessments: {
       title: "Assessments & Marking",
@@ -118,7 +118,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     reviews: {
       title: "Reviews",
-      description: "Learner review scheduling and records.",
+      description: "Apprentice review scheduling and records.",
     },
     resources: {
       title: "Teaching Resources",
@@ -155,7 +155,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     },
     "support-plans": {
       title: "Support Plans",
-      description: "Individual learner support planning.",
+      description: "Individual apprentice support planning.",
     },
     attendance: {
       title: "Attendance Concerns",
@@ -251,7 +251,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     dashboard: {
       title: "Management Dashboard",
       description:
-        "Management overview — includes Administration learner ops plus management-owned staffing, roles, and programme setup.",
+        "Management overview — includes Administration apprentice ops plus management-owned staffing, roles, and programme setup.",
     },
     employers: {
       title: "Employer Records",
@@ -266,8 +266,8 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       description: "Shared cohorts and teaching groups — same surface as Administration.",
     },
     intake: {
-      title: "Learner Intake",
-      description: "Shared learner intake — same surface as Administration.",
+      title: "Apprentice Intake",
+      description: "Shared Apprentice Intake — same surface as Administration.",
     },
     "staff-intake": {
       title: "Staff Intake",
@@ -277,25 +277,25 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     "staff-accounts": {
       title: "Staff Account Setup",
       description:
-        "Enable or disable staff portal environments — same surface as Learner Account Setup.",
+        "Enable or disable staff portal environments — same surface as Apprentice Account Setup.",
     },
     enrolments: {
-      title: "Learner Enrolments",
-      description: "Shared learner enrolments — same surface as Administration.",
+      title: "Apprentice Enrolments",
+      description: "Shared Apprentice Enrolments — same surface as Administration.",
     },
-    "learner-funding": {
-      title: "Learner funding (RPL / KSB)",
+    "apprentice-funding": {
+      title: "Apprentice funding (RPL / KSB)",
       description:
-        "Per-learner Knowledge / Skills / Behaviours RPL adjustments for funding and compliance. Does not fast-track classroom delivery.",
+        "Per-apprentice Knowledge / Skills / Behaviours RPL adjustments for funding and compliance. Does not fast-track classroom delivery.",
     },
-    "learner-brag": {
-      title: "Learner progression BRAG",
+    "apprentice-brag": {
+      title: "Apprentice progression BRAG",
       description:
-        "Pick a learner to see overall and per-block progression BRAG (Blue / Green / Amber / Red) against cohort dates.",
+        "Pick an apprentice to see overall and per-block progression BRAG (Blue / Green / Amber / Red) against cohort dates.",
     },
     accounts: {
-      title: "Learner Account Setup",
-      description: "Enable or disable learner portal environments.",
+      title: "Apprentice Account Setup",
+      description: "Enable or disable apprentice portal environments.",
     },
     "shared-drive": {
       title: "Shared Drive",
@@ -305,7 +305,7 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     messages: {
       title: "Messages",
       description:
-        "Shared messaging — contact learners, employers, and GTA colleagues.",
+        "Shared messaging — contact apprentices, employers, and GTA colleagues.",
     },
     safeguarding: {
       title: "Safeguarding",
@@ -351,18 +351,18 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
       description: "Records and account administration overview.",
     },
     users: {
-      title: "Learners",
-      description: "Shared learner file pack search — same Learners page used across workspaces.",
+      title: "Apprentices",
+      description: "Shared apprentice file pack search — same Apprentices page used across workspaces.",
     },
     intake: {
-      title: "Learner Intake",
+      title: "Apprentice Intake",
       description:
-        "Personal details only — get learners onto the system. Staff onboarding sits on Management. Pack documents live on Learners.",
+        "Personal details only — get apprentices onto the system. Staff onboarding sits on Management. Pack documents live on Apprentices.",
     },
     enrolments: {
-      title: "Learner Enrolments",
+      title: "Apprentice Enrolments",
       description:
-        "Enrol learners already on the system onto programmes — employer, cohort and position.",
+        "Enrol apprentices already on the system onto programmes — employer, cohort and position.",
     },
     employers: {
       title: "Employer Records",
@@ -385,21 +385,21 @@ const WORKSPACE_STUBS: Record<string, Record<string, { title: string; descriptio
     "shared-drive": {
       title: "Shared Drive",
       description:
-        "Tenant Shared Drive — org files via Microsoft sign-in. Learner packs stay on Learners.",
+        "Tenant Shared Drive — org files via Microsoft sign-in. apprentice packs stay on Apprentices.",
     },
     "data-quality": {
       title: "Data Quality",
       description: "Data quality checks and remediation queues.",
     },
     accounts: {
-      title: "Learner Account Setup",
+      title: "Apprentice Account Setup",
       description:
-        "Enable or disable learner portal environments. Staff environments are managed on Management.",
+        "Enable or disable apprentice portal environments. Staff environments are managed on Management.",
     },
     messages: {
       title: "Messages",
       description:
-        "Shared messaging — contact learners, employers, and GTA colleagues.",
+        "Shared messaging — contact apprentices, employers, and GTA colleagues.",
     },
     safeguarding: {
       title: "Safeguarding",

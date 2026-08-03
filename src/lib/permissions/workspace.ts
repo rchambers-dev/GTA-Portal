@@ -5,7 +5,7 @@ import { PERMISSIONS } from "./capabilities";
 /** Learning & Progress Mentor nav: caseload + progress without teaching delivery. */
 export function isMentorStaffSession(session: EffectiveSession): boolean {
   return (
-    hasPermission(session, PERMISSIONS.LEARNER_CASELOAD_VIEW) &&
+    hasPermission(session, PERMISSIONS.APPRENTICE_CASELOAD_VIEW) &&
     hasPermission(session, PERMISSIONS.PROGRESS_MONITOR) &&
     !hasPermission(session, PERMISSIONS.MODULES_DELIVER)
   );
@@ -16,12 +16,12 @@ export function getDefaultWorkspaceRoute(
   session?: EffectiveSession,
 ): string {
   if (workspace === "staff" && session && isMentorStaffSession(session)) {
-    return "/learners/lifecycle";
+    return "/apprentices/lifecycle";
   }
 
   switch (workspace) {
-    case "learner":
-      return "/learner/dashboard";
+    case "apprentice":
+      return "/apprentice/dashboard";
     case "employer":
       return "/employer/dashboard";
     case "staff":

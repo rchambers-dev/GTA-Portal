@@ -84,7 +84,7 @@ export function SidebarNavigation() {
                   const active =
                     pathname === itemPath ||
                     (itemPath !== "/staff/dashboard" &&
-                      itemPath !== "/learner/dashboard" &&
+                      itemPath !== "/apprentice/dashboard" &&
                       itemPath !== "/" &&
                       pathname.startsWith(itemPath));
                   return (

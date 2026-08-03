@@ -1,6 +1,6 @@
 /**
  * Programme module catalogues by year.
- * Formal reviews show modules up to the learner's current programme year only
+ * Formal reviews show modules up to the apprentice's current programme year only
  * (Year 2 shows Years 1–2; Year 3 modules stay hidden until Year 3).
  */
 
@@ -139,7 +139,7 @@ export const PROGRAMME_MODULES: Record<string, ProgrammeModuleDefinition[]> = {
 
 /**
  * Modules visible in a review: all modules for years 1..currentYear inclusive.
- * Year 3 content is not shown until the learner is in Year 3.
+ * Year 3 content is not shown until the apprentice is in Year 3.
  */
 export function modulesUpToYear(
   programmeId: string,
@@ -153,7 +153,7 @@ export function modulesUpToYear(
  * Derive completed / in-progress / remaining from actual progress against the
  * year-scoped module list. Progress is mapped evenly across visible modules.
  */
-export function buildModuleProgressForLearner(input: {
+export function buildModuleProgressForApprentice(input: {
   programmeId: string;
   programmeYear: ProgrammeYear;
   actualProgressPercent: number;
@@ -209,7 +209,7 @@ export function buildModuleProgressForLearner(input: {
           : null,
       evidenceNote:
         status === "completed"
-          ? "Evidence checked in learner pack"
+          ? "Evidence checked in apprentice pack"
           : status === "in_progress"
             ? "In progress — tutor observation outstanding"
             : null,

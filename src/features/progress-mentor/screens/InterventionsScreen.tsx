@@ -50,7 +50,7 @@ export function InterventionsScreen({ filters }: Props) {
     <MentorPageShell
       eyebrow="Progress Mentor · Support"
       title="Interventions"
-      description="Coordinated responses to recognised risk. Support plans live on the learner record and within interventions — not as a separate sidebar page."
+      description="Coordinated responses to recognised risk. Support plans live on the apprentice record and within interventions — not as a separate sidebar page."
       fromLifecycle={fromLifecycle}
     >
       <ViewTabs
@@ -65,7 +65,7 @@ export function InterventionsScreen({ filters }: Props) {
       />
       <MentorTable
         columns={[
-          "Learner",
+          "Apprentice",
           "Type",
           "Reason",
           "Desired outcome",
@@ -86,7 +86,7 @@ export function InterventionsScreen({ filters }: Props) {
                 className={queueStyles.rowLink}
                 href={`/interventions/${i.interventionId}?from=mentor-interventions`}
               >
-                {i.learnerName}
+                {i.apprenticeName}
               </Link>
             </td>
             <td>{i.type}</td>

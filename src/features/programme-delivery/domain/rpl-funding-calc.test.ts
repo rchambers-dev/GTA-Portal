@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   adjustBlockOtj,
   aplFactorFromKsb,
-  buildLearnerFundingPlan,
+  buildApprenticeFundingPlan,
   clampRplPct,
   sessionsForHours,
 } from "./rpl-funding-calc";
@@ -42,7 +42,7 @@ describe("rpl-funding-calc", () => {
   });
 
   it("builds a funding plan from cohort start without changing delivery end", () => {
-    const plan = buildLearnerFundingPlan({
+    const plan = buildApprenticeFundingPlan({
       cohortStartDate: "2024-09-02",
       deliveryExpectedEndDate: "2027-03-02",
       rplByBlock: {

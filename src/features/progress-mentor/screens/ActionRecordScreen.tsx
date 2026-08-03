@@ -82,7 +82,7 @@ export function ActionRecordScreen({ actionId, from }: Props) {
       mentorName: MENTOR_NAME,
       note:
         signOffNote.trim() ||
-        "Checked OTJ tracker entries against the success measure while with the learner / employer.",
+        "Checked OTJ tracker entries against the success measure while with the apprentice / employer.",
       impact:
         impactNote.trim() ||
         (pack
@@ -225,7 +225,7 @@ export function ActionRecordScreen({ actionId, from }: Props) {
       <section className={styles.signOffPanel} aria-label="Mentor sign-off">
         <h2>Mentor sign-off</h2>
         <p className={styles.hint}>
-          You set these targets with the learner. Completion is your
+          You set these targets with the apprentice. Completion is your
           confirmation against the evidence above — not just an employer claim.
         </p>
 
@@ -328,14 +328,14 @@ export function ActionRecordScreen({ actionId, from }: Props) {
               </dd>
             </div>
             <div>
-              <dt>Learner</dt>
+              <dt>Apprentice</dt>
               <dd>
-                {action.learnerId ? (
+                {action.apprenticeId ? (
                   <Link
                     className={styles.inlineLink}
-                    href={`/learners/${action.learnerId}?from=action-centre`}
+                    href={`/apprentices/${action.apprenticeId}?from=action-centre`}
                   >
-                    {action.learnerName}
+                    {action.apprenticeName}
                   </Link>
                 ) : (
                   "—"

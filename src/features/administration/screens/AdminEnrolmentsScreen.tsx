@@ -2,10 +2,10 @@
 
 import { useMemo, useState } from "react";
 import {
-  LearnerPageShell,
-  LearnerStatusChip,
-} from "@/features/learner-portal/components/LearnerPageShell";
-import { calculateProgrammeWeek } from "@/features/learner-lifecycle/domain/programme-week";
+  ApprenticePageShell,
+  ApprenticeStatusChip,
+} from "@/features/apprentice-portal/components/ApprenticePageShell";
+import { calculateProgrammeWeek } from "@/features/apprentice-lifecycle/domain/programme-week";
 import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
 import {
   createEnrolment,
@@ -17,7 +17,7 @@ import { awaitingEnrolment, enrolmentBlockers } from "../domain/intake-pack";
 import type {
   AdminCohortRecord,
   AdminEmployerRecord,
-  AdminLearnerEnrolment,
+  AdminApprenticeEnrolment,
   AdminProgrammeRecord,
   EnrolmentKind,
   EnrolmentStatus,
@@ -33,7 +33,7 @@ type TransferDraft = {
 
 type FormState = {
   kind: EnrolmentKind;
-  learnerId: string;
+  apprenticeId: string;
   programmeName: string;
   standardCode: string;
   cohortId: string | null;
@@ -64,7 +64,7 @@ const SEARCH_MODES: Array<{
   label: string;
   placeholder: string;
 }> = [
-  { id: "name", label: "Name", placeholder: "Search by learner name or email…" },
+  { id: "name", label: "Name", placeholder: "Search by apprentice name or email…" },
   {
     id: "programme",
     label: "Programme",
@@ -85,7 +85,7 @@ function emptyForm(
 ): FormState {
   return {
     kind,
-    learnerId: "",
+    apprenticeId: "",
     programmeName: programme?.name ?? "",
     standardCode: programme?.standardCode ?? "",
     cohortId: null,
@@ -240,7 +240,7 @@ function formatDate(value: string): string {
   });
 }
 
-function positionLabel(row: AdminLearnerEnrolment): string {
+function positionLabel(row: AdminApprenticeEnrolment): string {
   if (row.kind === "currently_studying") {
     return `Y${row.programmeYear ?? "—"} · W${row.programmeWeek ?? "—"}`;
   }
@@ -329,37 +329,37 @@ export function AdminEnrolmentsScreen() {
   const employers = store.employers.filter((e) => e.status === "active");
   const programmes = store.programmes.filter((p) => p.status === "active");
   const defaultProgramme = programmes[0];
-  const learners = useMemo(
+  const apprentices = useMemo(
     () =>
-      [...store.learners].sort((a, b) =>
+      [...store.apprentices].sort((a, b) =>
         a.displayName.localeCompare(b.displayName),
       ),
-    [store.learners],
+    [store.apprentices],
   );
 
-  const selectedLearner = form.learnerId
-    ? (store.learners.find((l) => l.id === form.learnerId) ?? null)
+  const selectedApprentice = form.apprenticeId
+    ? (store.apprentices.find((l) => l.id === form.apprenticeId) ?? null)
     : null;
 
   // Completed intakes not yet on a programme — the queue this page works from.
-  const awaitingLearners = useMemo(
+  const awaitingApprentices = useMemo(
     () =>
       awaitingEnrolment(
-        store.learners,
-        store.enrolments.map((e) => e.learnerId),
+        store.apprentices,
+        store.enrolments.map((e) => e.apprenticeId),
       ).sort((a, b) => a.displayName.localeCompare(b.displayName)),
-    [store.enrolments, store.learners],
+    [store.enrolments, store.apprentices],
   );
 
-  const learnerHint = (() => {
-    if (!selectedLearner) {
-      return "Pick from learners already on the system — personal details come from Learner Intake, so there's nothing to re-key here.";
+  const apprenticeHint = (() => {
+    if (!selectedApprentice) {
+      return "Pick from apprentices already on the system — personal details come from Apprentice Intake, so there's nothing to re-key here.";
     }
     const existing = store.enrolments.filter(
-      (e) => e.learnerId === selectedLearner.id && e.id !== editingId,
+      (e) => e.apprenticeId === selectedApprentice.id && e.id !== editingId,
     );
-    const blockers = enrolmentBlockers(selectedLearner);
-    const parts = [selectedLearner.learnerReference];
+    const blockers = enrolmentBlockers(selectedApprentice);
+    const parts = [selectedApprentice.apprenticeReference];
     if (blockers.length > 0) {
       parts.push(
         `not ready to start — ${blockers.length} item${blockers.length === 1 ? "" : "s"} still needed from intake`,
@@ -395,14 +395,14 @@ export function AdminEnrolmentsScreen() {
       if (selectedCohort.status === "completed") {
         return `This cohort has completed — verify before assigning.`;
       }
-      return `Auto-flowed into the planned intake (v${selectedCohort.standardVersion}). Learner finishes on this version.`;
+      return `Auto-flowed into the planned intake (v${selectedCohort.standardVersion}). Apprentice finishes on this version.`;
     }
     if (form.kind === "new_starter") {
       return cohortsForProgramme.some((c) => c.status === "planned")
         ? "Select a planned cohort, or leave unset to assign later."
         : "No planned intake open for this programme yet — assign a cohort later.";
     }
-    return "Place studying learners in their current cohort manually for accuracy.";
+    return "Place studying apprentices in their current cohort manually for accuracy.";
   })();
 
   const filtered = useMemo(() => {
@@ -457,7 +457,7 @@ export function AdminEnrolmentsScreen() {
   function setKind(kind: EnrolmentKind) {
     setForm((prev) => ({
       ...emptyForm(kind, defaultProgramme),
-      learnerId: prev.learnerId,
+      apprenticeId: prev.apprenticeId,
       cohortId: autoCohortId(kind, defaultProgramme?.standardCode),
       employerId: prev.employerId || employers[0]?.id || "",
       workplaceContact:
@@ -468,7 +468,7 @@ export function AdminEnrolmentsScreen() {
     }));
   }
 
-  function openCreate(kind: EnrolmentKind, learnerId = "") {
+  function openCreate(kind: EnrolmentKind, apprenticeId = "") {
     setEditingId(null);
     setTransferringId(null);
     setError(null);
@@ -479,7 +479,7 @@ export function AdminEnrolmentsScreen() {
       : null;
     let next = {
       ...emptyForm(kind, defaultProgramme),
-      learnerId,
+      apprenticeId,
     };
     next = applyEmployerFields(next, employer);
     if (autoCohort) next = applyCohortFields(next, autoCohort, programmes);
@@ -487,14 +487,14 @@ export function AdminEnrolmentsScreen() {
     setShowForm(true);
   }
 
-  function openEdit(row: AdminLearnerEnrolment) {
+  function openEdit(row: AdminApprenticeEnrolment) {
     setEditingId(row.id);
     setTransferringId(null);
     setError(null);
     setSuccess(null);
     setForm({
       kind: row.kind,
-      learnerId: row.learnerId ?? "",
+      apprenticeId: row.apprenticeId ?? "",
       programmeName: row.programmeName,
       standardCode: row.standardCode,
       cohortId: row.cohortId,
@@ -545,18 +545,18 @@ export function AdminEnrolmentsScreen() {
   }
 
   function buildInput(): EnrolmentInput | null {
-    const learner = store.learners.find((l) => l.id === form.learnerId);
-    if (!learner) {
+    const apprentice = store.apprentices.find((l) => l.id === form.apprenticeId);
+    if (!apprentice) {
       setError(
-        "Select a learner. If they aren't on the system yet, add them in Learner Intake first.",
+        "Select an apprentice. If they aren't on the system yet, add them in Apprentice Intake first.",
       );
       return null;
     }
     if (!editingId) {
-      const blockers = enrolmentBlockers(learner);
+      const blockers = enrolmentBlockers(apprentice);
       if (blockers.length > 0) {
         setError(
-          `${learner.displayName} can't be moved onto a programme yet — still needed: ${blockers.join(", ")}.`,
+          `${apprentice.displayName} can't be moved onto a programme yet — still needed: ${blockers.join(", ")}.`,
         );
         return null;
       }
@@ -592,12 +592,12 @@ export function AdminEnrolmentsScreen() {
         form.startDate,
         existing?.status,
       ),
-      learnerId: learner.id,
-      displayName: learner.displayName,
-      email: learner.email,
-      phone: learner.phone,
-      dateOfBirth: learner.dateOfBirth,
-      uln: learner.uln,
+      apprenticeId: apprentice.id,
+      displayName: apprentice.displayName,
+      email: apprentice.email,
+      phone: apprentice.phone,
+      dateOfBirth: apprentice.dateOfBirth,
+      uln: apprentice.uln,
       programmeName: form.programmeName,
       standardCode: form.standardCode,
       cohortId: form.cohortId,
@@ -636,7 +636,7 @@ export function AdminEnrolmentsScreen() {
       setSuccess(
         input.kind === "new_starter"
           ? `Added new starter ${input.displayName}.`
-          : `Registered currently studying learner ${input.displayName}.`,
+          : `Registered currently studying apprentice ${input.displayName}.`,
       );
       setExpandedId(created.id);
     }
@@ -652,7 +652,7 @@ export function AdminEnrolmentsScreen() {
     if (next) setSuccess(`Updated ${next.displayName}.`);
   }
 
-  function openTransfer(row: AdminLearnerEnrolment) {
+  function openTransfer(row: AdminApprenticeEnrolment) {
     setShowForm(false);
     setEditingId(null);
     setError(null);
@@ -676,7 +676,7 @@ export function AdminEnrolmentsScreen() {
    * Pre-framed transfer: college day/group (cohort) and/or employer.
    * Formal rules (approvals, version pinning, progress reset) still TBC with Jon.
    */
-  async function applyTransfer(row: AdminLearnerEnrolment) {
+  async function applyTransfer(row: AdminApprenticeEnrolment) {
     const nextCohort = transferDraft.cohortId
       ? store.cohorts.find((c) => c.id === transferDraft.cohortId) ?? null
       : null;
@@ -757,10 +757,10 @@ export function AdminEnrolmentsScreen() {
   }
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Administration"
-      title="Learner Enrolments"
-      description="Enrol learners who are already on the system onto a programme — employer, cohort and progress position. Transfer covers college-day / group moves and employer changes. Personal details are captured once in Learner Intake."
+      title="Apprentice Enrolments"
+      description="Enrol apprentices who are already on the system onto a programme — employer, cohort and progress position. Transfer covers college-day / group moves and employer changes. Personal details are captured once in Apprentice Intake."
       actions={
         <div className={styles.toolbarActions}>
           <button
@@ -783,29 +783,29 @@ export function AdminEnrolmentsScreen() {
       <div className={styles.stack}>
         {success ? <p className={styles.success}>{success}</p> : null}
 
-        {awaitingLearners.length > 0 && !showForm ? (
+        {awaitingApprentices.length > 0 && !showForm ? (
           <div className={styles.awaitingPanel}>
             <div className={styles.awaitingMain}>
               <strong className={styles.awaitingCount}>
-                {awaitingLearners.length} learner
-                {awaitingLearners.length === 1 ? "" : "s"} waiting for enrolment
+                {awaitingApprentices.length} apprentice
+                {awaitingApprentices.length === 1 ? "" : "s"} waiting for enrolment
               </strong>
               <span className={styles.awaitingNames}>
-                {awaitingLearners
+                {awaitingApprentices
                   .slice(0, 4)
                   .map((l) => l.displayName)
                   .join(", ")}
-                {awaitingLearners.length > 4
-                  ? ` and ${awaitingLearners.length - 4} more`
+                {awaitingApprentices.length > 4
+                  ? ` and ${awaitingApprentices.length - 4} more`
                   : ""}
               </span>
             </div>
             <button
               type="button"
               className={styles.primaryBtn}
-              onClick={() => openCreate("new_starter", awaitingLearners[0].id)}
+              onClick={() => openCreate("new_starter", awaitingApprentices[0].id)}
             >
-              Enrol {awaitingLearners[0].displayName.split(" ")[0]}
+              Enrol {awaitingApprentices[0].displayName.split(" ")[0]}
             </button>
           </div>
         ) : null}
@@ -826,7 +826,7 @@ export function AdminEnrolmentsScreen() {
                 </span>
               </div>
               <p className={styles.formGroupMeta}>
-                Place the learner on a programme, cohort and employer. Start
+                Place the apprentice on a programme, cohort and employer. Start
                 date, tutor, college days, mentor and progress position fill
                 from those records — attendance and progress come from register
                 and tracking when those exist.
@@ -862,41 +862,41 @@ export function AdminEnrolmentsScreen() {
               <div className={styles.formGrid}>
                 <label className={`${styles.field} ${styles.fieldWide}`}>
                   <span>
-                    Learner <em className={styles.fieldRequired}>required</em>
+                    Apprentice <em className={styles.fieldRequired}>required</em>
                   </span>
                   <select
-                    value={form.learnerId}
+                    value={form.apprenticeId}
                     onChange={(e) =>
                       setForm((prev) => ({
                         ...prev,
-                        learnerId: e.target.value,
+                        apprenticeId: e.target.value,
                       }))
                     }
                     required
                   >
-                    <option value="">Select learner…</option>
-                    {learners.map((learner) => (
-                      <option key={learner.id} value={learner.id}>
-                        {learner.displayName} · {learner.learnerReference}
+                    <option value="">Select apprentice…</option>
+                    {apprentices.map((apprentice) => (
+                      <option key={apprentice.id} value={apprentice.id}>
+                        {apprentice.displayName} · {apprentice.apprenticeReference}
                       </option>
                     ))}
                   </select>
-                  <span className={styles.fieldHint}>{learnerHint}</span>
+                  <span className={styles.fieldHint}>{apprenticeHint}</span>
                 </label>
-                {selectedLearner ? (
+                {selectedApprentice ? (
                   <>
                     <label className={styles.field}>
                       <span>Email</span>
-                      <input value={selectedLearner.email} readOnly />
+                      <input value={selectedApprentice.email} readOnly />
                     </label>
                     <label className={styles.field}>
                       <span>Date of birth</span>
-                      <input value={selectedLearner.dateOfBirth} readOnly />
+                      <input value={selectedApprentice.dateOfBirth} readOnly />
                     </label>
                     <label className={styles.field}>
                       <span>ULN</span>
                       <input
-                        value={selectedLearner.uln || "Not recorded yet"}
+                        value={selectedApprentice.uln || "Not recorded yet"}
                         readOnly
                       />
                     </label>
@@ -1186,14 +1186,14 @@ export function AdminEnrolmentsScreen() {
                       onKeyDown={(event) => event.stopPropagation()}
                     >
                       {(() => {
-                        const learner = row.learnerId
-                          ? store.learners.find((l) => l.id === row.learnerId)
+                        const apprentice = row.apprenticeId
+                          ? store.apprentices.find((l) => l.id === row.apprenticeId)
                           : null;
                         return (
-                          <p className={styles.linkedLearnerNote}>
-                            {learner
-                              ? `Linked to learner record ${learner.learnerReference} · ${learner.email || "no email"} · DOB ${learner.dateOfBirth || "not recorded"} · ULN ${learner.uln || "not recorded"}. Amend personal details and pack documents on the Learners page.`
-                              : "Not linked to a learner record yet — re-save this enrolment and pick the learner."}
+                          <p className={styles.linkedApprenticeNote}>
+                            {apprentice
+                              ? `Linked to apprentice record ${apprentice.apprenticeReference} · ${apprentice.email || "no email"} · DOB ${apprentice.dateOfBirth || "not recorded"} · ULN ${apprentice.uln || "not recorded"}. Amend personal details and pack documents on the Apprentices page.`
+                              : "Not linked to an apprentice record yet — re-save this enrolment and pick the apprentice."}
                           </p>
                         );
                       })()}
@@ -1366,9 +1366,9 @@ export function AdminEnrolmentsScreen() {
                       </div>
 
                       <div className={styles.formActions}>
-                        <LearnerStatusChip tone={statusTone(row.status)}>
+                        <ApprenticeStatusChip tone={statusTone(row.status)}>
                           {kindLabel(row.kind)}
-                        </LearnerStatusChip>
+                        </ApprenticeStatusChip>
                         <button
                           type="button"
                           className={styles.secondaryBtn}
@@ -1537,6 +1537,6 @@ export function AdminEnrolmentsScreen() {
           </div>
         )}
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

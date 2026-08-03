@@ -20,8 +20,8 @@ function linkedHref(type: string | null, id: string | null): string | null {
       return `/actions/${id}`;
     case "review":
       return `/reviews/${id}`;
-    case "learner":
-      return `/learners/${id}`;
+    case "apprentice":
+      return `/apprentices/${id}`;
     case "employer":
       return `/employers/${id}`;
     default:
@@ -34,7 +34,7 @@ export function MentorMessagesScreen() {
     <MentorPageShell
       eyebrow="Progress Mentor · Communication"
       title="Messages"
-      description="Conversations linked to learners, employers, reviews, actions, interventions and concern cases. Important outcomes must still be recorded on the official record."
+      description="Conversations linked to apprentices, employers, reviews, actions, interventions and concern cases. Important outcomes must still be recorded on the official record."
     >
       <MentorTable
         columns={[

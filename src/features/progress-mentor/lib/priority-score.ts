@@ -1,4 +1,4 @@
-import type { MentorLearnerRow, MentorReviewRow } from "../data/mentor-caseload";
+import type { MentorApprenticeRow, MentorReviewRow } from "../data/mentor-caseload";
 import {
   MENTOR_ACTIONS,
   MENTOR_INTERVENTIONS,
@@ -9,8 +9,8 @@ import { PERMISSIONS } from "@/lib/permissions/capabilities";
 
 const FROM_PM = "from=progress-monitoring";
 
-function learnerTabHref(learnerId: string, tab: string): string {
-  return `/learners/${learnerId}?tab=${tab}&${FROM_PM}`;
+function apprenticeTabHref(apprenticeId: string, tab: string): string {
+  return `/apprentices/${apprenticeId}?tab=${tab}&${FROM_PM}`;
 }
 
 export type PriorityBand =
@@ -53,8 +53,8 @@ export type ReviewColumnStatus =
   | "completed"
   | "none";
 
-export type ProgressLearnerView = {
-  learner: MentorLearnerRow;
+export type ProgressApprenticeView = {
+  apprentice: MentorApprenticeRow;
   variance: number;
   priorityScore: number;
   priorityBand: PriorityBand;
@@ -133,8 +133,8 @@ function programmeShortName(name: string): string {
     .trim();
 }
 
-function reviewForLearner(learnerId: string): MentorReviewRow | undefined {
-  const reviews = MENTOR_REVIEWS.filter((r) => r.learnerId === learnerId);
+function reviewForApprentice(apprenticeId: string): MentorReviewRow | undefined {
+  const reviews = MENTOR_REVIEWS.filter((r) => r.apprenticeId === apprenticeId);
   if (reviews.length === 0) return undefined;
   const overdue = reviews.find((r) => r.view === "overdue");
   if (overdue) return overdue;
@@ -157,39 +157,39 @@ function mapReviewStatus(view: MentorReviewRow["view"] | undefined): ReviewColum
   return "preparation";
 }
 
-function attendanceTrendFor(learner: MentorLearnerRow): AttendanceTrend {
-  if (learner.attendancePercent == null) return "unknown";
-  if (learner.attendancePercent < 85) return "falling";
-  if (learner.attendancePercent >= 95) return "stable";
-  if (learner.riskStatus === "slightly_behind") return "falling";
+function attendanceTrendFor(apprentice: MentorApprenticeRow): AttendanceTrend {
+  if (apprentice.attendancePercent == null) return "unknown";
+  if (apprentice.attendancePercent < 85) return "falling";
+  if (apprentice.attendancePercent >= 95) return "stable";
+  if (apprentice.riskStatus === "slightly_behind") return "falling";
   return "rising";
 }
 
 function nextActionFor(input: {
-  learner: MentorLearnerRow;
+  apprentice: MentorApprenticeRow;
   variance: number;
   reviewStatus: ReviewColumnStatus;
   interventionStatus: string | null;
   employerActionsOverdue: number;
 }): { key: NextActionKey; label: string } {
-  const { learner, variance, reviewStatus, interventionStatus, employerActionsOverdue } =
+  const { apprentice, variance, reviewStatus, interventionStatus, employerActionsOverdue } =
     input;
 
-  if (learner.programmeOverdue) {
+  if (apprentice.programmeOverdue) {
     return { key: "recover_programme", label: "Recover programme" };
   }
-  if (learner.employerConcernStatus === "urgent") {
+  if (apprentice.employerConcernStatus === "urgent") {
     return { key: "contact_employer", label: "Contact employer" };
   }
   if (reviewStatus === "overdue") {
     return { key: "prepare_review", label: "Prepare review" };
   }
-  if (learner.missingMandatoryEvidence > 0) {
+  if (apprentice.missingMandatoryEvidence > 0) {
     return { key: "request_evidence", label: "Request evidence" };
   }
   if (
-    learner.attendancePercent != null &&
-    learner.attendancePercent < 85
+    apprentice.attendancePercent != null &&
+    apprentice.attendancePercent < 85
   ) {
     return { key: "attendance_follow_up", label: "Attendance follow-up" };
   }
@@ -201,20 +201,20 @@ function nextActionFor(input: {
   }
   if (
     variance <= -10 &&
-    !learner.interventionId
+    !apprentice.interventionId
   ) {
     return { key: "create_intervention", label: "Create intervention" };
   }
   if (reviewStatus === "preparation" || reviewStatus === "ready") {
     return { key: "prepare_review", label: "Prepare review" };
   }
-  if (employerActionsOverdue > 0 || learner.employerConcernStatus === "open") {
+  if (employerActionsOverdue > 0 || apprentice.employerConcernStatus === "open") {
     return { key: "contact_employer", label: "Contact employer" };
   }
-  if (learner.epaApproaching) {
+  if (apprentice.epaApproaching) {
     return { key: "epa_readiness", label: "EPA readiness" };
   }
-  if (learner.riskStatus === "on_track" && variance >= -2) {
+  if (apprentice.riskStatus === "on_track" && variance >= -2) {
     return { key: "no_action", label: "No action required" };
   }
   return { key: "monitor", label: "Monitor" };
@@ -224,22 +224,22 @@ function nextActionFor(input: {
  * Weighted operational priority score (0–100).
  * Higher = needs attention first.
  */
-export function calculatePriorityScore(learner: MentorLearnerRow): {
+export function calculatePriorityScore(apprentice: MentorApprenticeRow): {
   score: number;
   reasons: PriorityReason[];
 } {
   let score = 0;
   const reasons: PriorityReason[] = [];
-  const v = variance(learner.plannedProgressPercent, learner.actualProgressPercent);
-  const id = learner.learnerId;
+  const v = variance(apprentice.plannedProgressPercent, apprentice.actualProgressPercent);
+  const id = apprentice.apprenticeId;
 
-  if (learner.programmeOverdue) {
+  if (apprentice.programmeOverdue) {
     score += 25;
     reasons.push({
       label: "Programme overdue",
       tone: "critical",
       permission: PERMISSIONS.INTERVENTIONS_MANAGE,
-      href: learnerTabHref(id, "interventions"),
+      href: apprenticeTabHref(id, "interventions"),
     });
   }
 
@@ -250,46 +250,46 @@ export function calculatePriorityScore(learner: MentorLearnerRow): {
       label: `${Math.abs(v)}% behind planned progress`,
       tone: v <= -10 ? "critical" : "warning",
       permission: PERMISSIONS.INTERVENTIONS_MANAGE,
-      href: learnerTabHref(id, "progress"),
+      href: apprenticeTabHref(id, "progress"),
     });
   } else if (v > 3) {
     reasons.push({ label: `${v}% ahead of plan`, tone: "positive" });
   }
 
-  if (learner.attendancePercent != null) {
-    if (learner.attendancePercent < 70) {
+  if (apprentice.attendancePercent != null) {
+    if (apprentice.attendancePercent < 70) {
       score += 15;
       reasons.push({
-        label: `Attendance ${learner.attendancePercent}%`,
+        label: `Attendance ${apprentice.attendancePercent}%`,
         tone: "critical",
         permission: PERMISSIONS.ATTENDANCE_CONCERNS_VIEW,
-        href: learnerTabHref(id, "attendance"),
+        href: apprenticeTabHref(id, "attendance"),
       });
-    } else if (learner.attendancePercent < 85) {
+    } else if (apprentice.attendancePercent < 85) {
       score += 10;
       reasons.push({
-        label: `Attendance ${learner.attendancePercent}%`,
+        label: `Attendance ${apprentice.attendancePercent}%`,
         tone: "warning",
         permission: PERMISSIONS.ATTENDANCE_CONCERNS_VIEW,
-        href: learnerTabHref(id, "attendance"),
+        href: apprenticeTabHref(id, "attendance"),
       });
-    } else if (learner.attendancePercent < 90) {
+    } else if (apprentice.attendancePercent < 90) {
       score += 4;
     }
   }
 
-  if (learner.missingMandatoryEvidence > 0) {
-    score += clamp(learner.missingMandatoryEvidence * 5, 0, 15);
+  if (apprentice.missingMandatoryEvidence > 0) {
+    score += clamp(apprentice.missingMandatoryEvidence * 5, 0, 15);
     reasons.push({
-      label: `Mandatory evidence gaps: ${learner.missingMandatoryEvidence}`,
-      tone: learner.missingMandatoryEvidence >= 3 ? "critical" : "warning",
-      permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW,
-      href: learnerTabHref(id, "evidence"),
+      label: `Mandatory evidence gaps: ${apprentice.missingMandatoryEvidence}`,
+      tone: apprentice.missingMandatoryEvidence >= 3 ? "critical" : "warning",
+      permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW,
+      href: apprenticeTabHref(id, "evidence"),
     });
   }
 
   const intervention = MENTOR_INTERVENTIONS.find(
-    (i) => i.learnerId === learner.learnerId && i.status !== "completed",
+    (i) => i.apprenticeId === apprentice.apprenticeId && i.status !== "completed",
   );
   if (intervention) {
     const href = `/interventions/${intervention.interventionId}?${FROM_PM}`;
@@ -318,17 +318,17 @@ export function calculatePriorityScore(learner: MentorLearnerRow): {
         href,
       });
     }
-  } else if (v <= -10 || learner.programmeOverdue) {
+  } else if (v <= -10 || apprentice.programmeOverdue) {
     score += 8;
     reasons.push({
       label: "No intervention recorded",
       tone: "critical",
       permission: PERMISSIONS.INTERVENTIONS_MANAGE,
-      href: learnerTabHref(id, "interventions"),
+      href: apprenticeTabHref(id, "interventions"),
     });
   }
 
-  const review = reviewForLearner(learner.learnerId);
+  const review = reviewForApprentice(apprentice.apprenticeId);
   if (review?.view === "overdue") {
     score += 12;
     reasons.push({
@@ -347,45 +347,45 @@ export function calculatePriorityScore(learner: MentorLearnerRow): {
     });
   }
 
-  if (learner.employerConcernStatus === "urgent") {
+  if (apprentice.employerConcernStatus === "urgent") {
     score += 15;
     reasons.push({
       label: "Urgent employer concern",
       tone: "critical",
       permission: PERMISSIONS.EMPLOYER_CONCERNS_MANAGE,
-      href: `/employer-concerns?${FROM_PM}&learner=${id}`,
+      href: `/employer-concerns?${FROM_PM}&apprentice=${id}`,
     });
-  } else if (learner.employerConcernStatus === "open") {
+  } else if (apprentice.employerConcernStatus === "open") {
     score += 10;
     reasons.push({
       label: "Open employer concern",
       tone: "warning",
       permission: PERMISSIONS.EMPLOYER_CONCERNS_MANAGE,
-      href: `/employer-concerns?${FROM_PM}&learner=${id}`,
+      href: `/employer-concerns?${FROM_PM}&apprentice=${id}`,
     });
-  } else if (learner.employerConcernStatus === "monitoring") {
+  } else if (apprentice.employerConcernStatus === "monitoring") {
     score += 5;
     reasons.push({
       label: "Employer concern monitoring",
       tone: "info",
       permission: PERMISSIONS.EMPLOYER_CONCERNS_MANAGE,
-      href: `/employer-concerns?${FROM_PM}&learner=${id}`,
+      href: `/employer-concerns?${FROM_PM}&apprentice=${id}`,
     });
   }
 
-  if (learner.epaApproaching) {
+  if (apprentice.epaApproaching) {
     score += 8;
     reasons.push({
       label: "EPA approaching",
       tone: "info",
-      permission: PERMISSIONS.LEARNER_WORKSPACE_VIEW,
-      href: learnerTabHref(id, "epa"),
+      permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW,
+      href: apprenticeTabHref(id, "epa"),
     });
   }
 
   const employerOverdue = MENTOR_ACTIONS.filter(
     (a) =>
-      a.learnerId === learner.learnerId &&
+      a.apprenticeId === apprentice.apprenticeId &&
       a.ownerType === "employer" &&
       a.status === "overdue",
   ).length;
@@ -395,11 +395,11 @@ export function calculatePriorityScore(learner: MentorLearnerRow): {
       label: `Employer actions overdue: ${employerOverdue}`,
       tone: "warning",
       permission: PERMISSIONS.ACTIONS_MANAGE,
-      href: `/actions?${FROM_PM}&learner=${id}`,
+      href: `/actions?${FROM_PM}&apprentice=${id}`,
     });
   }
 
-  if (learner.status === "pre_start") {
+  if (apprentice.status === "pre_start") {
     score = Math.max(score - 15, 5);
   }
 
@@ -409,29 +409,29 @@ export function calculatePriorityScore(learner: MentorLearnerRow): {
   };
 }
 
-export function buildProgressLearnerViews(
-  learners: MentorLearnerRow[],
-): ProgressLearnerView[] {
-  return learners.map((learner) => {
+export function buildProgressApprenticeViews(
+  apprentices: MentorApprenticeRow[],
+): ProgressApprenticeView[] {
+  return apprentices.map((apprentice) => {
     const v = variance(
-      learner.plannedProgressPercent,
-      learner.actualProgressPercent,
+      apprentice.plannedProgressPercent,
+      apprentice.actualProgressPercent,
     );
-    const { score, reasons } = calculatePriorityScore(learner);
+    const { score, reasons } = calculatePriorityScore(apprentice);
     const band = scoreToBand(score);
-    const review = reviewForLearner(learner.learnerId);
+    const review = reviewForApprentice(apprentice.apprenticeId);
     const reviewStatus = mapReviewStatus(review?.view);
     const intervention = MENTOR_INTERVENTIONS.find(
-      (i) => i.learnerId === learner.learnerId && i.status !== "completed",
+      (i) => i.apprenticeId === apprentice.apprenticeId && i.status !== "completed",
     );
     const employerActionsOverdue = MENTOR_ACTIONS.filter(
       (a) =>
-        a.learnerId === learner.learnerId &&
+        a.apprenticeId === apprentice.apprenticeId &&
         a.ownerType === "employer" &&
         a.status === "overdue",
     ).length;
     const action = nextActionFor({
-      learner,
+      apprentice,
       variance: v,
       reviewStatus,
       interventionStatus: intervention?.status ?? null,
@@ -439,7 +439,7 @@ export function buildProgressLearnerViews(
     });
 
     return {
-      learner,
+      apprentice,
       variance: v,
       priorityScore: score,
       priorityBand: band,
@@ -449,21 +449,21 @@ export function buildProgressLearnerViews(
       reviewStatus,
       reviewId: review?.reviewId ?? null,
       interventionStatus: intervention?.status ?? null,
-      interventionId: intervention?.interventionId ?? learner.interventionId,
+      interventionId: intervention?.interventionId ?? apprentice.interventionId,
       employerActionsOverdue,
       concernCaseId:
-        learner.employerConcernStatus !== "none"
-          ? `concern-${learner.learnerId}`
+        apprentice.employerConcernStatus !== "none"
+          ? `concern-${apprentice.apprenticeId}`
           : null,
-      attendanceTrend: attendanceTrendFor(learner),
-      programmeShort: programmeShortName(learner.programmeName),
+      attendanceTrend: attendanceTrendFor(apprentice),
+      programmeShort: programmeShortName(apprentice.programmeName),
     };
   });
 }
 
 export function sortByOperationalPriority(
-  rows: ProgressLearnerView[],
-): ProgressLearnerView[] {
+  rows: ProgressApprenticeView[],
+): ProgressApprenticeView[] {
   return [...rows].sort((a, b) => {
     const bandDiff = BAND_ORDER[a.priorityBand] - BAND_ORDER[b.priorityBand];
     if (bandDiff !== 0) return bandDiff;
@@ -472,49 +472,49 @@ export function sortByOperationalPriority(
 }
 
 export function nextActionHref(
-  row: ProgressLearnerView,
+  row: ProgressApprenticeView,
 ): string {
-  const id = row.learner.learnerId;
+  const id = row.apprentice.apprenticeId;
   const from = "from=progress-monitoring";
   switch (row.nextAction) {
     case "prepare_review":
       return row.reviewId
         ? `/reviews/${row.reviewId}?${from}`
-        : `/learners/${id}?tab=reviews&${from}`;
+        : `/apprentices/${id}?tab=reviews&${from}`;
     case "review_intervention":
     case "create_intervention":
     case "recover_programme":
       return row.interventionId
         ? `/interventions/${row.interventionId}?${from}`
-        : `/learners/${id}?tab=interventions&${from}`;
+        : `/apprentices/${id}?tab=interventions&${from}`;
     case "contact_employer":
       return row.concernCaseId
         ? `/employer-concerns/${row.concernCaseId}?${from}`
-        : `/learners/${id}?tab=employer&${from}`;
+        : `/apprentices/${id}?tab=employer&${from}`;
     case "request_evidence":
-      return `/learners/${id}?tab=evidence&${from}`;
+      return `/apprentices/${id}?tab=evidence&${from}`;
     case "attendance_follow_up":
-      return `/learners/${id}?tab=attendance&${from}`;
+      return `/apprentices/${id}?tab=attendance&${from}`;
     case "epa_readiness":
-      return `/learners/${id}?tab=epa&${from}`;
+      return `/apprentices/${id}?tab=epa&${from}`;
     default:
-      return `/learners/${id}?tab=progress&${from}`;
+      return `/apprentices/${id}?tab=progress&${from}`;
   }
 }
 
-export function learnerOpenHref(row: ProgressLearnerView): string {
-  const id = row.learner.learnerId;
-  if (row.learner.missingMandatoryEvidence > 0) {
-    return `/learners/${id}?tab=evidence&from=progress-monitoring`;
+export function apprenticeOpenHref(row: ProgressApprenticeView): string {
+  const id = row.apprentice.apprenticeId;
+  if (row.apprentice.missingMandatoryEvidence > 0) {
+    return `/apprentices/${id}?tab=evidence&from=progress-monitoring`;
   }
   if (
-    row.learner.attendancePercent != null &&
-    row.learner.attendancePercent < 85
+    row.apprentice.attendancePercent != null &&
+    row.apprentice.attendancePercent < 85
   ) {
-    return `/learners/${id}?tab=attendance&from=progress-monitoring`;
+    return `/apprentices/${id}?tab=attendance&from=progress-monitoring`;
   }
   if (row.reviewStatus === "overdue" || row.reviewStatus === "preparation") {
-    return `/learners/${id}?tab=reviews&from=progress-monitoring`;
+    return `/apprentices/${id}?tab=reviews&from=progress-monitoring`;
   }
-  return `/learners/${id}?from=progress-monitoring`;
+  return `/apprentices/${id}?from=progress-monitoring`;
 }

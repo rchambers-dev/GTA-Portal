@@ -1,9 +1,9 @@
-export { LearnerProgrammeTasksScreen } from "./screens/LearnerProgrammeTasksScreen";
-export { LearnerTaskFillScreen } from "./screens/LearnerTaskFillScreen";
+export { ApprenticeProgrammeTasksScreen } from "./screens/ApprenticeProgrammeTasksScreen";
+export { ApprenticeTaskFillScreen } from "./screens/ApprenticeTaskFillScreen";
 export { TutorProgrammeDeliveryScreen } from "./screens/TutorProgrammeDeliveryScreen";
 export { TutorTaskReviewScreen } from "./screens/TutorTaskReviewScreen";
-export { ManagementLearnerRplScreen } from "./screens/ManagementLearnerRplScreen";
-export { ManagementLearnerBragScreen } from "./screens/ManagementLearnerBragScreen";
+export { ManagementApprenticeRplScreen } from "./screens/ManagementApprenticeRplScreen";
+export { ManagementApprenticeBragScreen } from "./screens/ManagementApprenticeBragScreen";
 export { ManagementTaskViewScreen } from "./screens/ManagementTaskViewScreen";
 export { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "./domain/autocare-blocks";
 export { AUTOCARE_PRACTICAL_TASKS } from "./domain/autocare-tasks";

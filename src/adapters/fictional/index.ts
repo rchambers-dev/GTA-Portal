@@ -1,31 +1,32 @@
 import type {
   EvidenceRequirementRowDto,
-  LearnerCardDto,
+  ApprenticeCardDto,
   LifecycleBoardDto,
-  LearnerWorkspaceDto,
+  ApprenticeWorkspaceDto,
   BoardQuery,
   SummaryMetricDto,
   TimelineEventDto,
-  OverallLearnerStatus,
+  OverallApprenticeStatus,
   ProgrammeStatus,
   PriorityTaskSummary,
-} from "@/features/learner-lifecycle/types";
-import type { LearnerLifecycleDataPort } from "@/features/learner-lifecycle/ports";
-import { programmeWeekColumnLabel } from "@/features/learner-lifecycle/domain/programme-week-dates";
-import { buildAdm14EvidenceRows } from "@/features/learner-lifecycle/domain/adm14-evidence-rows";
+} from "@/features/apprentice-lifecycle/types";
+import type { ApprenticeLifecycleDataPort } from "@/features/apprentice-lifecycle/ports";
+import { programmeWeekColumnLabel } from "@/features/apprentice-lifecycle/domain/programme-week-dates";
+import { buildAdm14EvidenceRows } from "@/features/apprentice-lifecycle/domain/adm14-evidence-rows";
 import {
   calculateProgrammeWeek,
+  describeProgrammeTiming,
   formatDisplayDate,
   formatOverdueDuration,
   isProgrammeOverdue,
   startOfUtcDay,
-} from "@/features/learner-lifecycle/domain/programme-week";
+} from "@/features/apprentice-lifecycle/domain/programme-week";
 
 /** Fixed “today” for reproducible shell demos (UTC). Swap for `new Date()` when live. */
 const BOARD_AS_OF = startOfUtcDay(new Date(Date.UTC(2026, 6, 16, 12, 0, 0)));
 
-type LearnerSeed = {
-  learnerId: string;
+type ApprenticeSeed = {
+  apprenticeId: string;
   displayName: string;
   initials: string;
   programmeName: string;
@@ -34,7 +35,7 @@ type LearnerSeed = {
   programmeStartDate: string | null;
   originalPlannedEndDate: string | null;
   programmeStatus: ProgrammeStatus;
-  overallStatus: OverallLearnerStatus;
+  overallStatus: OverallApprenticeStatus;
   primaryPriority: PriorityTaskSummary | null;
   attendancePercent: number | null;
   nextReviewDate: string | null;
@@ -45,7 +46,7 @@ type LearnerSeed = {
   mentorName: string | null;
   tutorName: string | null;
   intakeComplete: boolean;
-  learnerReference: string | null;
+  apprenticeReference: string | null;
 };
 
 function daysBefore(asOf: Date, days: number): string {
@@ -59,12 +60,12 @@ function daysAfter(asOf: Date, days: number): string {
 }
 
 /**
- * Seed learners with real start/end dates.
+ * Seed apprentices with real start/end dates.
  * Board week is calculated from start date — not hard-coded.
  */
-const learnerSeeds: LearnerSeed[] = [
+const apprenticeSeeds: ApprenticeSeed[] = [
   {
-    learnerId: "lrn-james-wilson",
+    apprenticeId: "lrn-james-wilson",
     displayName: "James Wilson",
     initials: "JW",
     programmeName: "Plumbing Eng. L3",
@@ -88,10 +89,10 @@ const learnerSeeds: LearnerSeed[] = [
     mentorName: "Sarah Patel",
     tutorName: "Sarah Patel",
     intakeComplete: true,
-    learnerReference: "GTA-2026-01001",
+    apprenticeReference: "GTA-2026-01001",
   },
   {
-    learnerId: "lrn-ava-brooks",
+    apprenticeId: "lrn-ava-brooks",
     displayName: "Ava Brooks",
     initials: "AB",
     programmeName: "Motor Vehicle L3",
@@ -115,10 +116,10 @@ const learnerSeeds: LearnerSeed[] = [
     mentorName: "Sarah Patel",
     tutorName: "Daniel Okoye",
     intakeComplete: true,
-    learnerReference: "GTA-2026-01014",
+    apprenticeReference: "GTA-2026-01014",
   },
   {
-    learnerId: "lrn-liam-anderson",
+    apprenticeId: "lrn-liam-anderson",
     displayName: "Liam Anderson",
     initials: "LA",
     programmeName: "Panel Technician L3",
@@ -129,7 +130,7 @@ const learnerSeeds: LearnerSeed[] = [
     overallStatus: "monitoring",
     primaryPriority: {
       title: "Missing mandatory evidence",
-      ownerCategory: "learner",
+      ownerCategory: "apprentice",
       summary: "Initial Assessment – BKSB Report missing",
       dueDate: null,
     },
@@ -142,10 +143,10 @@ const learnerSeeds: LearnerSeed[] = [
     mentorName: "Ryan Chambers",
     tutorName: "Sarah Patel",
     intakeComplete: true,
-    learnerReference: "GTA-2024-01842",
+    apprenticeReference: "GTA-2024-01842",
   },
   {
-    learnerId: "lrn-mia-chen",
+    apprenticeId: "lrn-mia-chen",
     displayName: "Mia Chen",
     initials: "MC",
     programmeName: "Business Admin L3",
@@ -169,10 +170,10 @@ const learnerSeeds: LearnerSeed[] = [
     mentorName: "Sarah Patel",
     tutorName: "Priya Shah",
     intakeComplete: true,
-    learnerReference: "GTA-2025-02030",
+    apprenticeReference: "GTA-2025-02030",
   },
   {
-    learnerId: "lrn-noah-reid",
+    apprenticeId: "lrn-noah-reid",
     displayName: "Noah Reid",
     initials: "NR",
     programmeName: "Electrical Install L3",
@@ -183,7 +184,7 @@ const learnerSeeds: LearnerSeed[] = [
     overallStatus: "monitoring",
     primaryPriority: {
       title: "Attendance concern",
-      ownerCategory: "learner",
+      ownerCategory: "apprentice",
       summary: "Attendance 72% — trend declining",
       dueDate: null,
     },
@@ -196,10 +197,10 @@ const learnerSeeds: LearnerSeed[] = [
     mentorName: "Daniel Okoye",
     tutorName: "Sarah Patel",
     intakeComplete: true,
-    learnerReference: "GTA-2025-02022",
+    apprenticeReference: "GTA-2025-02022",
   },
   {
-    learnerId: "lrn-sofia-martinez",
+    apprenticeId: "lrn-sofia-martinez",
     displayName: "Sofia Martinez",
     initials: "SM",
     programmeName: "Plumbing Eng. L3",
@@ -223,10 +224,10 @@ const learnerSeeds: LearnerSeed[] = [
     mentorName: "Sarah Patel",
     tutorName: null,
     intakeComplete: false,
-    learnerReference: null,
+    apprenticeReference: null,
   },
   {
-    learnerId: "lrn-ethan-clarke",
+    apprenticeId: "lrn-ethan-clarke",
     displayName: "Ethan Clarke",
     initials: "EC",
     programmeName: "Motor Vehicle L3",
@@ -250,10 +251,10 @@ const learnerSeeds: LearnerSeed[] = [
     mentorName: "Sarah Patel",
     tutorName: "Daniel Okoye",
     intakeComplete: true,
-    learnerReference: "GTA-2024-00910",
+    apprenticeReference: "GTA-2024-00910",
   },
   {
-    learnerId: "lrn-isla-bennett",
+    apprenticeId: "lrn-isla-bennett",
     displayName: "Isla Bennett",
     initials: "IB",
     programmeName: "Panel Technician L3",
@@ -277,11 +278,11 @@ const learnerSeeds: LearnerSeed[] = [
     mentorName: "Ryan Chambers",
     tutorName: "Sarah Patel",
     intakeComplete: true,
-    learnerReference: "GTA-2026-01008",
+    apprenticeReference: "GTA-2026-01008",
   },
 ];
 
-function toLearnerCard(seed: LearnerSeed, asOf: Date): LearnerCardDto {
+function toApprenticeCard(seed: ApprenticeSeed, asOf: Date): ApprenticeCardDto {
   const start = seed.programmeStartDate
     ? startOfUtcDay(new Date(`${seed.programmeStartDate}T12:00:00.000Z`))
     : null;
@@ -300,14 +301,14 @@ function toLearnerCard(seed: LearnerSeed, asOf: Date): LearnerCardDto {
     plannedEnd != null &&
     isProgrammeOverdue(plannedEnd, asOf, seed.programmeStatus);
 
-  const resolvedStatus: OverallLearnerStatus = overdue
+  const resolvedStatus: OverallApprenticeStatus = overdue
     ? "programme_overdue"
     : programmeWeek == null && seed.programmeStatus === "pre_start"
       ? "pre_start"
       : seed.overallStatus;
 
   return {
-    learnerId: seed.learnerId,
+    apprenticeId: seed.apprenticeId,
     displayName: seed.displayName,
     initials: seed.initials,
     programmeName: seed.programmeName,
@@ -327,7 +328,7 @@ function toLearnerCard(seed: LearnerSeed, asOf: Date): LearnerCardDto {
     evidenceTotalCount: seed.evidenceTotalCount,
     programmeOverdueLabel:
       overdue && plannedEnd ? formatOverdueDuration(plannedEnd, asOf) : null,
-    /** Overdue learners stay in the pinned column, not their elapsed week column */
+    /** Overdue apprentices stay in the pinned column, not their elapsed week column */
     boardWeek: overdue ? null : programmeWeek,
     mentorName: seed.mentorName,
     tutorName: seed.tutorName,
@@ -335,37 +336,37 @@ function toLearnerCard(seed: LearnerSeed, asOf: Date): LearnerCardDto {
   };
 }
 
-function getLearners(asOf: Date = BOARD_AS_OF): LearnerCardDto[] {
-  return learnerSeeds.map((seed) => toLearnerCard(seed, asOf));
+function getApprentices(asOf: Date = BOARD_AS_OF): ApprenticeCardDto[] {
+  return apprenticeSeeds.map((seed) => toApprenticeCard(seed, asOf));
 }
 
-function getSeed(learnerId: string): LearnerSeed | undefined {
-  return learnerSeeds.find((s) => s.learnerId === learnerId);
+function getSeed(apprenticeId: string): ApprenticeSeed | undefined {
+  return apprenticeSeeds.find((s) => s.apprenticeId === apprenticeId);
 }
 
-/** Search index for the blank learner pack entry page. */
-export function listLearnerSearchHits(): Array<{
-  learnerId: string;
+/** Search index for the blank apprentice pack entry page. */
+export function listApprenticeSearchHits(): Array<{
+  apprenticeId: string;
   displayName: string;
   employerName: string | null;
   programmeName: string;
   tutorName: string | null;
-  learnerReference: string | null;
+  apprenticeReference: string | null;
 }> {
-  return learnerSeeds.map((seed) => ({
-    learnerId: seed.learnerId,
+  return apprenticeSeeds.map((seed) => ({
+    apprenticeId: seed.apprenticeId,
     displayName: seed.displayName,
     employerName: seed.employerName,
     programmeName: seed.programmeName,
     tutorName: seed.tutorName,
-    learnerReference: seed.learnerReference,
+    apprenticeReference: seed.apprenticeReference,
   }));
 }
 
 const metrics: SummaryMetricDto[] = [
   {
-    key: "active_learners",
-    label: "Active Learners",
+    key: "active_apprentices",
+    label: "Active Apprentices",
     value: 20,
     deltaLabel: "+2 this week",
     tone: "green",
@@ -405,7 +406,7 @@ const metrics: SummaryMetricDto[] = [
     trend: "flat",
     sparkline: [1, 1, 1, 1, 1, 1, 1],
     breakdown: ["Gateway evidence outstanding"],
-    actionLabel: "View learners",
+    actionLabel: "View apprentices",
   },
   {
     key: "employer_actions_overdue",
@@ -426,7 +427,7 @@ const metrics: SummaryMetricDto[] = [
     tone: "red",
     trend: "up",
     sparkline: [8, 9, 10, 11, 12, 13, 14],
-    breakdown: ["4 learners with multiple gaps"],
+    breakdown: ["4 apprentices with multiple gaps"],
     actionLabel: "Open progress monitoring",
   },
 ];
@@ -454,7 +455,7 @@ function buildTimeline(): TimelineEventDto[] {
       id: "tl-2",
       occurredAt: "2024-06-07T15:30:00Z",
       eventType: "Evidence received",
-      summary: "Enrolment form received from learner",
+      summary: "Enrolment form received from apprentice",
       actorName: "System",
     },
     {
@@ -468,34 +469,34 @@ function buildTimeline(): TimelineEventDto[] {
       id: "tl-4",
       occurredAt: "2024-06-05T11:00:00Z",
       eventType: "Action created",
-      summary: "Upload eSET test notes — assigned to learner",
+      summary: "Upload eSET test notes — assigned to apprentice",
       actorName: "S. Patel",
     },
     {
       id: "tl-5",
       occurredAt: "2024-06-02T09:00:00Z",
-      eventType: "Learner enrolled",
+      eventType: "Apprentice enrolled",
       summary: "Programme started",
       actorName: "System",
     },
   ];
 }
 
-export const fictionalDataAdapter: LearnerLifecycleDataPort = {
+export const fictionalDataAdapter: ApprenticeLifecycleDataPort = {
   async getLifecycleBoard(query: BoardQuery): Promise<LifecycleBoardDto> {
     const asOf = BOARD_AS_OF;
     const { start, end } = yearWeekBounds(query.year);
     const from = start;
     const span = end - start + 1;
     const weeks = Array.from({ length: span }, (_, i) => from + i);
-    const learners = getLearners(asOf);
+    const apprentices = getApprentices(asOf);
 
-    const learnersById = Object.fromEntries(learners.map((l) => [l.learnerId, l]));
+    const apprenticesById = Object.fromEntries(apprentices.map((l) => [l.apprenticeId, l]));
 
-    const preStartIds = learners
+    const preStartIds = apprentices
       .filter((l) => l.programmeStatus === "pre_start" || l.boardWeek == null && l.overallStatus === "pre_start")
       .filter((l) => l.overallStatus !== "programme_overdue")
-      .map((l) => l.learnerId);
+      .map((l) => l.apprenticeId);
 
     const columns = [
       {
@@ -503,23 +504,23 @@ export const fictionalDataAdapter: LearnerLifecycleDataPort = {
         weekNumber: null,
         label: "PRE-START",
         sublabel: "Start date not yet reached",
-        learnerIds: query.year === 1 ? preStartIds : [],
+        apprenticeIds: query.year === 1 ? preStartIds : [],
       },
       ...weeks.map((weekNumber) => ({
         kind: "week" as const,
         weekNumber,
         label: programmeWeekColumnLabel(weekNumber),
-        /** No shared calendar dates — week is elapsed from each learner’s start date */
+        /** No shared calendar dates — week is elapsed from each apprentice’s start date */
         sublabel: null as string | null,
-        learnerIds: learners
+        apprenticeIds: apprentices
           .filter((l) => l.boardWeek === weekNumber)
-          .map((l) => l.learnerId),
+          .map((l) => l.apprenticeId),
       })),
     ];
 
-    const overdueIds = learners
+    const overdueIds = apprentices
       .filter((l) => l.overallStatus === "programme_overdue")
-      .map((l) => l.learnerId);
+      .map((l) => l.apprenticeId);
 
     return {
       query: { ...query, fromWeek: from, span },
@@ -530,33 +531,41 @@ export const fictionalDataAdapter: LearnerLifecycleDataPort = {
         weekNumber: null,
         label: "OVERDUE",
         sublabel: "Planned end date passed",
-        learnerIds: overdueIds,
+        apprenticeIds: overdueIds,
       },
-      learnersById,
+      apprenticesById,
       viewingLabel: `Today ${formatDisplayDate(asOf)} · Year ${query.year} · Programme weeks ${from}–${end} of 156`,
     };
   },
 
-  async getLearnerWorkspace(learnerId: string): Promise<LearnerWorkspaceDto | null> {
+  async getApprenticeWorkspace(apprenticeId: string): Promise<ApprenticeWorkspaceDto | null> {
     const asOf = BOARD_AS_OF;
-    const seed = getSeed(learnerId);
-    const card = getLearners(asOf).find((l) => l.learnerId === learnerId);
+    const seed = getSeed(apprenticeId);
+    const card = getApprentices(asOf).find((l) => l.apprenticeId === apprenticeId);
     if (!seed || !card) return null;
 
     return {
       card,
-      learnerReference: seed.learnerReference,
+      apprenticeReference: seed.apprenticeReference,
       programmeStartDate: seed.programmeStartDate,
       originalPlannedEndDate: seed.originalPlannedEndDate,
-      currentWeekLabel:
-        card.programmeWeek != null ? `${card.programmeWeek} of 156` : null,
+      currentWeekLabel: (() => {
+        const timing = describeProgrammeTiming(
+          seed.programmeStartDate,
+          asOf,
+        );
+        if (!timing.hasStarted) return timing.weekLabel;
+        return timing.timeOnProgramme
+          ? `${timing.weekLabel} · ${timing.timeOnProgramme}`
+          : timing.weekLabel;
+      })(),
       progressStatus: card.intakeComplete ? "Monitoring" : null,
       attendanceStatus:
         card.attendancePercent != null ? `${card.attendancePercent}%` : null,
       complianceStatus: card.intakeComplete ? "Monitoring" : null,
       summaryNote: card.intakeComplete
         ? null
-        : "Learner summary will populate from digital intake and enrolment.",
+        : "Apprentice summary will populate from digital intake and enrolment.",
       evidenceRows: card.intakeComplete ? buildEvidenceRows() : [],
       timeline: card.intakeComplete ? buildTimeline() : [],
     };

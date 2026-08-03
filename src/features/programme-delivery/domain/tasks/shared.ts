@@ -448,7 +448,7 @@ export function makeJobCard(blockId: number): PracticalTaskDef {
             label: "Other protective equipment — please state",
           },
           {
-            key: "learnerStatements",
+            key: "apprenticeStatements",
             type: "checkbox_group",
             label: "Tick the statements that apply to you on this job",
             options: [

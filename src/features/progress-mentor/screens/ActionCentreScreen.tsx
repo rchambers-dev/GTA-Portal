@@ -164,8 +164,8 @@ function sourceHref(action: ActionRecord): string {
     case "employer_concern":
       return `/employer-concerns?from=action-centre`;
     default:
-      return action.learnerId
-        ? `/learners/${action.learnerId}?from=action-centre`
+      return action.apprenticeId
+        ? `/apprentices/${action.apprenticeId}?from=action-centre`
         : `/actions/${action.actionId}?from=action-centre`;
   }
 }
@@ -202,7 +202,7 @@ export function ActionCentreScreen({ filters }: Props) {
       list = list.filter(
         (a) =>
           a.title.toLowerCase().includes(needle) ||
-          (a.learnerName ?? "").toLowerCase().includes(needle) ||
+          (a.apprenticeName ?? "").toLowerCase().includes(needle) ||
           (a.employerName ?? "").toLowerCase().includes(needle) ||
           a.owner.toLowerCase().includes(needle) ||
           humanSourceLabel(a).toLowerCase().includes(needle),
@@ -229,7 +229,7 @@ export function ActionCentreScreen({ filters }: Props) {
       toolbar={
         <input
           className={styles.search}
-          placeholder="Search action, learner, employer, owner, source"
+          placeholder="Search action, apprentice, employer, owner, source"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => {
@@ -299,7 +299,7 @@ export function ActionCentreScreen({ filters }: Props) {
                     </StatusChip>
                   </div>
                   <p className={styles.queueMeta}>
-                    {a.learnerName ?? "No learner"} · Owner {a.owner} (
+                    {a.apprenticeName ?? "No apprentice"} · Owner {a.owner} (
                     {a.ownerType}) · Due{" "}
                     <span
                       className={

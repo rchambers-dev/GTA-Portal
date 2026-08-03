@@ -1,5 +1,5 @@
 /**
- * Portal-wide AI consent — persisted locally so learners only agree once,
+ * Portal-wide AI consent — persisted locally so apprentices only agree once,
  * and can withdraw at any time (which requires agreeing again to re-enable).
  */
 

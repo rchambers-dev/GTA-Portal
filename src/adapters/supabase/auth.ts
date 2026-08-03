@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import type { SessionUser } from "@/features/learner-lifecycle/types";
+import type { SessionUser } from "@/features/apprentice-lifecycle/types";
 import type { EffectiveSession, PortalAccount, WorkspaceId } from "@/lib/portal/types";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 import { createSupabaseServerClient } from "./client";
@@ -21,7 +21,7 @@ type ProfileRow = {
 
 function asWorkspaceId(value: string | null | undefined): WorkspaceId {
   switch (value) {
-    case "learner":
+    case "apprentice":
     case "employer":
     case "staff":
     case "quality":

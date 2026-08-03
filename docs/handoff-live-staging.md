@@ -14,8 +14,9 @@ Stage the portal for **live data**: Supabase auth + DB, management proxy-write f
 - Login / logout: `/login`, `src/app/logout/actions.ts`
 - hCaptcha wired on login (`@hcaptcha/react-hcaptcha` + `captchaToken` on `signInWithPassword`)
 - SQL bootstrap: `supabase/migrations/001_portal_bootstrap.sql`
+- Cohorts / teaching groups: `supabase/migrations/002_cohorts_and_teaching_groups.sql`
 - SuperAdmin bootstrap script: `npm run bootstrap:superadmin`
-- Migration helper (needs DB password): `node scripts/run-migration.mjs`
+- Migration helper (needs DB password): `node scripts/run-migration.mjs` (applies all pending `supabase/migrations/*.sql`)
 - `records.proxy.write` capability + management UI + API
 - Progress framing from start / planned end / actual %
 - Admin live store path when demo is off
@@ -73,8 +74,8 @@ npm run bootstrap:superadmin
 
 1. **Dev server** was running locally with live mode + real env keys.
 2. **Login captcha** was failing because sitekey was wrong (`ES_…`); fixed to real sitekey `fb20424a-d7a4-4134-aea2-8a180ff6771a` in `.env.local` + Vercel. Refresh `/login` and complete captcha.
-3. **SQL migration** may still need applying if `public.profiles` does not exist:
-   - Preferred: Supabase → SQL Editor → run `supabase/migrations/001_portal_bootstrap.sql`
+3. **SQL migrations** may still need applying if tables are missing:
+   - Preferred: Supabase → SQL Editor → run each file in `supabase/migrations/` in order (`001_…`, then `002_…`)
    - Or: set `SUPABASE_DB_PASSWORD` and run `node scripts/run-migration.mjs`
 4. **SuperAdmin bootstrap** only works after migration succeeds.
 5. Confirm Supabase captcha settings use the hCaptcha secret.
@@ -103,6 +104,6 @@ Then verify `/login` loads captcha → sign in after migration + bootstrap.
 
 - Login UI: `src/app/login/`
 - Supabase clients: `src/adapters/supabase/`
-- Migration SQL: `supabase/migrations/001_portal_bootstrap.sql`
+- Migration SQL: `supabase/migrations/` (`001_portal_bootstrap.sql`, `002_cohorts_and_teaching_groups.sql`)
 - Proxy write UI: `src/features/administration/screens/ManagementProxyWriteScreen.tsx`
 - Env docs: `.env.example`

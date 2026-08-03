@@ -6,7 +6,7 @@ import type {
 } from "./types";
 
 export const CHECKLIST_LABELS: Record<ChecklistItemKey, string> = {
-  learner_identity: "Learner identity confirmed",
+  apprentice_identity: "Apprentice identity confirmed",
   employer_contact: "Employer and workplace contact confirmed",
   review_date_scheduled: "Review date scheduled",
   assigned_mentor: "Assigned mentor confirmed",
@@ -32,7 +32,7 @@ export const CHECKLIST_LABELS: Record<ChecklistItemKey, string> = {
 };
 
 const HARD_KEYS: ChecklistItemKey[] = [
-  "learner_identity",
+  "apprentice_identity",
   "employer_contact",
   "review_date_scheduled",
   "assigned_mentor",

@@ -82,19 +82,19 @@ export function humanSourceLabel(action: ActionRecord): string {
     const review = getFormalReview(action.sourceId);
     if (review) {
       const date = formatShortDate(review.reviewDate);
-      return `${review.reviewType} · ${date} · ${review.learnerName}`;
+      return `${review.reviewType} · ${date} · ${review.apprenticeName}`;
     }
     if (
       action.sourceLabel &&
       !action.sourceLabel.startsWith("Review rev-") &&
       action.sourceLabel !== `Review ${action.sourceId}`
     ) {
-      return action.learnerName
-        ? `${action.sourceLabel} · ${action.learnerName}`
+      return action.apprenticeName
+        ? `${action.sourceLabel} · ${action.apprenticeName}`
         : action.sourceLabel;
     }
-    return action.learnerName
-      ? `Progress review · ${action.learnerName}`
+    return action.apprenticeName
+      ? `Progress review · ${action.apprenticeName}`
       : "Progress review";
   }
 
@@ -113,7 +113,7 @@ export function humanSourceLabel(action: ActionRecord): string {
   };
 
   const base = typeLabel[action.sourceType] ?? action.sourceType;
-  if (action.learnerName) return `${base} · ${action.learnerName}`;
+  if (action.apprenticeName) return `${base} · ${action.apprenticeName}`;
   return action.sourceLabel || base;
 }
 
@@ -132,13 +132,13 @@ export function formatShortDate(iso: string): string {
  * Excludes actions created in the current review.
  */
 export function lastCycleActionsForReview(input: {
-  learnerId: string;
+  apprenticeId: string;
   reviewId: string;
   reviewDate: string;
   actions: ActionRecord[];
 }): ActionCycleReview[] {
   return input.actions
-    .filter((a) => a.learnerId === input.learnerId)
+    .filter((a) => a.apprenticeId === input.apprenticeId)
     .filter((a) => a.sourceId !== input.reviewId)
     .filter((a) => {
       // Prefer actions that existed by this review date

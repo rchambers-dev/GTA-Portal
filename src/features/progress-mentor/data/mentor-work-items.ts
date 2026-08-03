@@ -1,5 +1,5 @@
 import {
-  MENTOR_LEARNERS,
+  MENTOR_APPRENTICES,
   MENTOR_NAME,
   type MentorActionRow,
   type MentorConcernRow,
@@ -21,8 +21,8 @@ export const MENTOR_ACTIONS: MentorActionRow[] = ACTION_RECORDS.map(toLegacyMent
 export const MENTOR_INTERVENTIONS: MentorInterventionRow[] = [
   {
     interventionId: "int-ava-progress",
-    learnerId: "lrn-ava-brooks",
-    learnerName: "Ava Brooks",
+    apprenticeId: "lrn-ava-brooks",
+    apprenticeName: "Ava Brooks",
     type: "Progress recovery",
     reason: "Falling behind planned progress; review overdue",
     desiredOutcome: "Back to planned trajectory within 6 weeks",
@@ -36,8 +36,8 @@ export const MENTOR_INTERVENTIONS: MentorInterventionRow[] = [
   },
   {
     interventionId: "int-liam-evidence",
-    learnerId: "lrn-liam-anderson",
-    learnerName: "Liam Anderson",
+    apprenticeId: "lrn-liam-anderson",
+    apprenticeName: "Liam Anderson",
     type: "Evidence recovery",
     reason: "Mandatory evidence gaps blocking review readiness",
     desiredOutcome: "All mandatory items received and checked",
@@ -51,8 +51,8 @@ export const MENTOR_INTERVENTIONS: MentorInterventionRow[] = [
   },
   {
     interventionId: "int-mia-employer",
-    learnerId: "lrn-mia-chen",
-    learnerName: "Mia Chen",
+    apprenticeId: "lrn-mia-chen",
+    apprenticeName: "Mia Chen",
     type: "Employer support",
     reason: "Employer opportunity blocked; employment risk raised",
     desiredOutcome: "Opportunity delivered; concern de-escalated",
@@ -66,8 +66,8 @@ export const MENTOR_INTERVENTIONS: MentorInterventionRow[] = [
   },
   {
     interventionId: "int-noah-attendance",
-    learnerId: "lrn-noah-reid",
-    learnerName: "Noah Reid",
+    apprenticeId: "lrn-noah-reid",
+    apprenticeName: "Noah Reid",
     type: "Attendance improvement",
     reason: "Attendance 72% and declining",
     desiredOutcome: "Attendance above 85%",
@@ -81,8 +81,8 @@ export const MENTOR_INTERVENTIONS: MentorInterventionRow[] = [
   },
   {
     interventionId: "int-ethan-overdue",
-    learnerId: "lrn-ethan-clarke",
-    learnerName: "Ethan Clarke",
+    apprenticeId: "lrn-ethan-clarke",
+    apprenticeName: "Ethan Clarke",
     type: "Programme-overdue recovery",
     reason: "Past planned end; gateway evidence outstanding",
     desiredOutcome: "Gateway ready within 4 weeks",
@@ -102,8 +102,8 @@ export const MENTOR_CONCERNS: MentorConcernRow[] = [
     caseReference: "EC-2026-0142",
     employerId: "emp-ashfield",
     employerName: "Ashfield Logistics",
-    learnerId: "lrn-mia-chen",
-    learnerName: "Mia Chen",
+    apprenticeId: "lrn-mia-chen",
+    apprenticeName: "Mia Chen",
     programmeName: "Business Admin L3",
     concernType: "Employment risk",
     priority: "urgent",
@@ -120,8 +120,8 @@ export const MENTOR_CONCERNS: MentorConcernRow[] = [
     caseReference: "EC-2026-0138",
     employerId: "emp-riverside",
     employerName: "Riverside Autocare",
-    learnerId: "lrn-ava-brooks",
-    learnerName: "Ava Brooks",
+    apprenticeId: "lrn-ava-brooks",
+    apprenticeName: "Ava Brooks",
     programmeName: "Motor Vehicle L3",
     concernType: "Attendance",
     priority: "normal",
@@ -138,8 +138,8 @@ export const MENTOR_CONCERNS: MentorConcernRow[] = [
     caseReference: "EC-2026-0140",
     employerId: "emp-riverside",
     employerName: "Riverside Autocare",
-    learnerId: "lrn-harvey-cole",
-    learnerName: "Harvey Cole",
+    apprenticeId: "lrn-harvey-cole",
+    apprenticeName: "Harvey Cole",
     programmeName: "Accident Repair Technician",
     concernType: "Off-the-job training",
     priority: "normal",
@@ -167,7 +167,7 @@ export const MENTOR_MESSAGES: MentorMessageRow[] = [
   },
   {
     messageId: "msg-2",
-    conversationType: "Learner",
+    conversationType: "Apprentice",
     subject: "Noah — attendance plan",
     linkedType: "intervention",
     linkedId: "int-noah-attendance",
@@ -200,8 +200,8 @@ export const MENTOR_MESSAGES: MentorMessageRow[] = [
   },
 ];
 
-export function getLearnerById(id: string) {
-  return MENTOR_LEARNERS.find((l) => l.learnerId === id);
+export function getApprenticeById(id: string) {
+  return MENTOR_APPRENTICES.find((l) => l.apprenticeId === id);
 }
 
 export function variance(planned: number, actual: number): number {

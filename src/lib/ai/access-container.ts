@@ -13,9 +13,9 @@ import type { AiFeatureKey } from "./types";
 export type AiDataScope =
   | "cv.draft"
   | "cv.job_description"
-  | "learner.profile_public"
-  | "learner.programme_public"
-  | "learner.modules_public"
+  | "apprentice.profile_public"
+  | "apprentice.programme_public"
+  | "apprentice.modules_public"
   | "module.published_content"
   | "chat.thread_current"
   | "support.ticket_summary";
@@ -41,7 +41,7 @@ export const AI_GLOBAL_DENY_SCOPES = [
   "admin.system",
   "rbac.assignments",
   "finance",
-  "other_learners",
+  "other_apprentices",
 ] as const;
 
 export type AiDeniedScope = (typeof AI_GLOBAL_DENY_SCOPES)[number];
@@ -58,7 +58,7 @@ export type AiAccessContainer = {
    * Workspaces that may invoke this feature.
    * Empty = any workspace with AI_USE (still subject to permission).
    */
-  allowedWorkspaces: readonly ("learner" | "staff" | "employer" | "quality" | "management" | "administration" | "safeguarding")[];
+  allowedWorkspaces: readonly ("apprentice" | "staff" | "employer" | "quality" | "management" | "administration" | "safeguarding")[];
   /** Max characters of user-supplied context (after packing). */
   maxContextChars: number;
   /** Whether user messages may include free-form pasted text beyond scoped fields. */
@@ -73,89 +73,89 @@ export const AI_ACCESS_CONTAINERS: Record<AiFeatureKey, AiAccessContainer> = {
   "cv.improve_summary": {
     feature: "cv.improve_summary",
     purpose:
-      "Improve the learner's own CV professional summary. Do not invent employers, grades, or qualifications.",
-    allowedScopes: ["cv.draft", "learner.profile_public", "learner.programme_public"],
+      "Improve the apprentice's own CV professional summary. Do not invent employers, grades, or qualifications.",
+    allowedScopes: ["cv.draft", "apprentice.profile_public", "apprentice.programme_public"],
     allowedActions: ["text.rewrite", "cv.apply_suggestion"],
-    allowedWorkspaces: ["learner"],
+    allowedWorkspaces: ["apprentice"],
     maxContextChars: 8_000,
     allowFreeformUserText: false,
   },
   "cv.improve_bullets": {
     feature: "cv.improve_bullets",
     purpose:
-      "Polish experience bullet points on the learner's own CV. Keep their meaning; do not fabricate achievements. Module titles may inform wording but must not invent work the learner did not do.",
+      "Polish experience bullet points on the apprentice's own CV. Keep their meaning; do not fabricate achievements. Module titles may inform wording but must not invent work the apprentice did not do.",
     allowedScopes: [
       "cv.draft",
-      "learner.profile_public",
-      "learner.modules_public",
+      "apprentice.profile_public",
+      "apprentice.modules_public",
     ],
     allowedActions: ["text.rewrite", "cv.apply_suggestion"],
-    allowedWorkspaces: ["learner"],
+    allowedWorkspaces: ["apprentice"],
     maxContextChars: 8_000,
     allowFreeformUserText: false,
   },
   "cv.suggest_experience_bullets": {
     feature: "cv.suggest_experience_bullets",
     purpose:
-      "Suggest short CV experience bullets grounded in the learner's completed and in-progress module titles. Do not invent employers, grades, or tasks beyond what modules and the draft support.",
+      "Suggest short CV experience bullets grounded in the apprentice's completed and in-progress module titles. Do not invent employers, grades, or tasks beyond what modules and the draft support.",
     allowedScopes: [
       "cv.draft",
-      "learner.profile_public",
-      "learner.programme_public",
-      "learner.modules_public",
+      "apprentice.profile_public",
+      "apprentice.programme_public",
+      "apprentice.modules_public",
     ],
     allowedActions: ["text.suggest", "cv.apply_suggestion"],
-    allowedWorkspaces: ["learner"],
+    allowedWorkspaces: ["apprentice"],
     maxContextChars: 8_000,
     allowFreeformUserText: false,
   },
   "cv.suggest_skills": {
     feature: "cv.suggest_skills",
     purpose:
-      "Suggest relevant skills from the learner's programme and CV draft only.",
-    allowedScopes: ["cv.draft", "learner.profile_public", "learner.programme_public"],
+      "Suggest relevant skills from the apprentice's programme and CV draft only.",
+    allowedScopes: ["cv.draft", "apprentice.profile_public", "apprentice.programme_public"],
     allowedActions: ["text.suggest", "cv.apply_suggestion"],
-    allowedWorkspaces: ["learner"],
+    allowedWorkspaces: ["apprentice"],
     maxContextChars: 6_000,
     allowFreeformUserText: false,
   },
   "cv.tailor_to_job": {
     feature: "cv.tailor_to_job",
     purpose:
-      "Tailor the learner's CV wording to a job description they pasted. Do not claim experience they did not provide.",
+      "Tailor the apprentice's CV wording to a job description they pasted. Do not claim experience they did not provide.",
     allowedScopes: [
       "cv.draft",
       "cv.job_description",
-      "learner.profile_public",
-      "learner.programme_public",
+      "apprentice.profile_public",
+      "apprentice.programme_public",
     ],
     allowedActions: ["text.rewrite", "cv.apply_suggestion"],
-    allowedWorkspaces: ["learner"],
+    allowedWorkspaces: ["apprentice"],
     maxContextChars: 14_000,
     allowFreeformUserText: false,
   },
   "cv.improve_education": {
     feature: "cv.improve_education",
     purpose:
-      "Rewrite education/training detail on the learner's CV using their public programme progress and completed module titles. Do not invent modules, grades, or awards.",
+      "Rewrite education/training detail on the apprentice's CV using their public programme progress and completed module titles. Do not invent modules, grades, or awards.",
     allowedScopes: [
       "cv.draft",
-      "learner.profile_public",
-      "learner.programme_public",
-      "learner.modules_public",
+      "apprentice.profile_public",
+      "apprentice.programme_public",
+      "apprentice.modules_public",
     ],
     allowedActions: ["text.rewrite", "cv.apply_suggestion"],
-    allowedWorkspaces: ["learner"],
+    allowedWorkspaces: ["apprentice"],
     maxContextChars: 10_000,
     allowFreeformUserText: false,
   },
   "chat.draft_reply": {
     feature: "chat.draft_reply",
     purpose:
-      "Draft a reply for the current chat thread only. Never invent policy decisions or access other learners' data.",
-    allowedScopes: ["chat.thread_current", "learner.profile_public"],
+      "Draft a reply for the current chat thread only. Never invent policy decisions or access other apprentices' data.",
+    allowedScopes: ["chat.thread_current", "apprentice.profile_public"],
     allowedActions: ["text.suggest"],
-    allowedWorkspaces: ["learner", "staff", "employer"],
+    allowedWorkspaces: ["apprentice", "staff", "employer"],
     maxContextChars: 10_000,
     allowFreeformUserText: true,
   },
@@ -173,9 +173,9 @@ export const AI_ACCESS_CONTAINERS: Record<AiFeatureKey, AiAccessContainer> = {
     feature: "learning.explain",
     purpose:
       "Explain published module/topic content in simpler language. Do not reveal unpublished curriculum or staff notes.",
-    allowedScopes: ["module.published_content", "learner.programme_public"],
+    allowedScopes: ["module.published_content", "apprentice.programme_public"],
     allowedActions: ["text.explain"],
-    allowedWorkspaces: ["learner"],
+    allowedWorkspaces: ["apprentice"],
     maxContextChars: 12_000,
     allowFreeformUserText: true,
   },

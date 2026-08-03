@@ -73,10 +73,10 @@ describe("effective permissions", () => {
     expect(isAssignmentActive(revoked)).toBe(false);
   });
 
-  it("does not treat /learners routes as learner-own workspace", () => {
+  it("does not treat /apprentices routes as apprentice-own workspace", () => {
     const session = buildEffectiveSession(daniel, []);
-    expect(canAccessRoute(session, "/learners/lifecycle")).toBe(true);
-    expect(canAccessRoute(session, "/learner/dashboard")).toBe(false);
+    expect(canAccessRoute(session, "/apprentices/lifecycle")).toBe(true);
+    expect(canAccessRoute(session, "/apprentice/dashboard")).toBe(false);
   });
 
   it("does not treat /employer-concerns as employer workspace", () => {

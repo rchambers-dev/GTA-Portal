@@ -20,7 +20,7 @@ export type AiFeatureMeta = {
   key: AiFeatureKey;
   label: string;
   /** Workspace / product area for usage reporting. */
-  area: "learner" | "staff" | "employer" | "shared";
+  area: "apprentice" | "staff" | "employer" | "shared";
   description: string;
 };
 

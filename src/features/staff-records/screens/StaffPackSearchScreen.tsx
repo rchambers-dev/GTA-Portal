@@ -24,7 +24,7 @@ function formatWorkspace(workspace: string): string {
 }
 
 /**
- * Search entry for staff employment files — parallel to Learners.
+ * Search entry for staff employment files — parallel to Apprentices.
  * Surfaces staff portal accounts Management can manage.
  */
 export function StaffPackSearchScreen({ fromContext = "management" }: Props) {
@@ -45,7 +45,7 @@ export function StaffPackSearchScreen({ fromContext = "management" }: Props) {
       admin.users
         .filter(
           (u) =>
-            u.role !== "Learner" &&
+            u.role !== "Apprentice" &&
             u.role !== "Employer" &&
             canManagePortalAccount(actorRole, u.role),
         )
@@ -54,13 +54,14 @@ export function StaffPackSearchScreen({ fromContext = "management" }: Props) {
   );
 
   const rows = useMemo(() => {
-    if (!query) return [];
+    if (!query) return staff;
     return staff.filter((s) => {
       return (
         s.displayName.toLowerCase().includes(query) ||
         s.role.toLowerCase().includes(query) ||
         s.workspace.toLowerCase().includes(query) ||
-        s.email.toLowerCase().includes(query)
+        s.email.toLowerCase().includes(query) ||
+        (s.jobTitles ?? []).some((t) => t.toLowerCase().includes(query))
       );
     });
   }, [query, staff]);
@@ -82,39 +83,32 @@ export function StaffPackSearchScreen({ fromContext = "management" }: Props) {
         <p className={styles.eyebrow}>Shared across workspaces</p>
         <h1 className={styles.title}>Staff</h1>
         <p className={styles.description}>
-          Search for a staff member to open their employment file — legal and
-          HR documents needed before they can be employed. Checklist is assumed
-          until the real form is confirmed.
+          Open a staff employment file — legal and HR documents needed before
+          they can be employed. Checklist is assumed until the real form is
+          confirmed.
         </p>
       </header>
 
       <div className={styles.searchPanel}>
         <label className={styles.searchLabel} htmlFor="staff-pack-search">
-          Find a staff member
+          Filter staff (optional)
         </label>
         <input
           id="staff-pack-search"
           className={styles.searchInput}
           type="search"
-          placeholder="Search by name, role, or workspace…"
+          placeholder="Filter by name, role, email, or job title…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           autoComplete="off"
-          autoFocus
         />
       </div>
 
-      {!query ? (
-        <div className={styles.blankState} role="status">
-          <p className={styles.blankTitle}>No staff member selected</p>
-          <p className={styles.blankCopy}>
-            Start typing above to find someone. Their employment file opens
-            next — track identity, vetting, contract, and induction documents.
-          </p>
-        </div>
-      ) : rows.length === 0 ? (
+      {rows.length === 0 ? (
         <p className={styles.empty} role="status">
-          No staff match “{search.trim()}”.
+          {query
+            ? `No staff match “${search.trim()}”.`
+            : "No staff accounts yet."}
         </p>
       ) : (
         <div className={styles.tableWrap}>

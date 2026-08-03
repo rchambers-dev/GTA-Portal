@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { LearnerPageShell, LearnerStatusChip } from "@/features/learner-portal/components/LearnerPageShell";
-import { formatDisplayDate } from "@/features/learner-lifecycle/domain/programme-week";
+import { ApprenticePageShell, ApprenticeStatusChip } from "@/features/apprentice-portal/components/ApprenticePageShell";
+import { formatDisplayDate } from "@/features/apprentice-lifecycle/domain/programme-week";
 import type {
   AdminCohortRecord,
-  AdminLearnerEnrolment,
+  AdminApprenticeEnrolment,
   AdminProgrammeRecord,
 } from "../domain/types";
 import { useAdminStore } from "../hooks/useAdminStore";
@@ -23,10 +23,10 @@ const SEARCH_MODES: Array<{
   { id: "level", label: "Level", placeholder: "Search by level, e.g. 2 or 3…" },
 ];
 
-function learnersForProgramme(
-  enrolments: AdminLearnerEnrolment[],
+function apprenticesForProgramme(
+  enrolments: AdminApprenticeEnrolment[],
   programme: AdminProgrammeRecord,
-): AdminLearnerEnrolment[] {
+): AdminApprenticeEnrolment[] {
   return enrolments
     .filter(
       (e) =>
@@ -82,35 +82,35 @@ function formatIsoDate(value: string | null | undefined): string | null {
  * One consistent line: employer · cohort · Skills England version · start/progress.
  * Cohort pins the standard version; pending starters show start date only (no Y/W).
  */
-function learnerMetaLine(
-  learner: AdminLearnerEnrolment,
+function apprenticeMetaLine(
+  apprentice: AdminApprenticeEnrolment,
   cohort: AdminCohortRecord | null,
 ): string {
-  const parts: string[] = [learner.employerName];
+  const parts: string[] = [apprentice.employerName];
 
   if (cohort) {
     parts.push(cohort.name);
     if (cohort.standardVersion) {
       parts.push(`v${cohort.standardVersion}`);
     }
-  } else if (learner.programmeName) {
-    parts.push(learner.programmeName);
+  } else if (apprentice.programmeName) {
+    parts.push(apprentice.programmeName);
   }
 
-  const startLabel = formatIsoDate(learner.startDate);
+  const startLabel = formatIsoDate(apprentice.startDate);
   const isPending =
-    learner.status === "pending_start" || learner.kind === "new_starter";
+    apprentice.status === "pending_start" || apprentice.kind === "new_starter";
 
   if (isPending && startLabel) {
     parts.push(`starts ${startLabel}`);
   } else {
     if (startLabel) parts.push(`started ${startLabel}`);
     if (
-      learner.kind === "currently_studying" &&
-      learner.programmeYear != null &&
-      learner.programmeWeek != null
+      apprentice.kind === "currently_studying" &&
+      apprentice.programmeYear != null &&
+      apprentice.programmeWeek != null
     ) {
-      parts.push(`Y${learner.programmeYear}`, `W${learner.programmeWeek}`);
+      parts.push(`Y${apprentice.programmeYear}`, `W${apprentice.programmeWeek}`);
     }
   }
 
@@ -119,7 +119,7 @@ function learnerMetaLine(
 
 /**
  * Apprenticeships — view-only for Administration.
- * Click a programme card to list pupils on that programme.
+ * Click a programme card to list apprentices on that programme.
  * Programme setup / version edits stay with Management (Jon).
  */
 export function AdminProgrammesScreen() {
@@ -139,7 +139,7 @@ export function AdminProgrammesScreen() {
   const activeSearch = SEARCH_MODES.find((m) => m.id === searchMode)!;
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Administration"
       title="Apprenticeships"
       description="View apprenticeship standards and who is enrolled. Programme setup is managed by Management — this page is read-only."
@@ -191,15 +191,15 @@ export function AdminProgrammesScreen() {
         ) : (
           <div className={styles.employerList}>
             {filtered.map((row) => {
-              const linked = learnersForProgramme(store.enrolments, row);
+              const linked = apprenticesForProgramme(store.enrolments, row);
               const open = openProgrammeId === row.id;
               const tone = linked.length > 0 ? "green" : "amber";
-              const learnerLabel =
+              const apprenticeLabel =
                 linked.length === 0
-                  ? "No learners enrolled"
+                  ? "No apprentices enrolled"
                   : linked.length === 1
-                    ? "1 learner"
-                    : `${linked.length} learners`;
+                    ? "1 apprentice"
+                    : `${linked.length} apprentices`;
               return (
                 <article
                   key={row.id}
@@ -209,8 +209,8 @@ export function AdminProgrammesScreen() {
                   role="button"
                   tabIndex={0}
                   aria-expanded={open}
-                  aria-controls={`programme-learners-${row.id}`}
-                  aria-label={`${open ? "Collapse" : "Expand"} ${row.name} — ${learnerLabel}`}
+                  aria-controls={`programme-apprentices-${row.id}`}
+                  aria-label={`${open ? "Collapse" : "Expand"} ${row.name} — ${apprenticeLabel}`}
                   onClick={() =>
                     setOpenProgrammeId((current) =>
                       current === row.id ? null : row.id,
@@ -238,14 +238,14 @@ export function AdminProgrammesScreen() {
                         {row.awardingBody || "Awarding body not set"}
                         {row.route ? ` · ${row.route}` : ""}
                       </span>
-                      <span>{learnerLabel}</span>
+                      <span>{apprenticeLabel}</span>
                     </div>
                   </div>
 
                   {open ? (
                     <div
                       className={styles.employerCardBody}
-                      id={`programme-learners-${row.id}`}
+                      id={`programme-apprentices-${row.id}`}
                       onClick={(event) => event.stopPropagation()}
                       onKeyDown={(event) => event.stopPropagation()}
                     >
@@ -253,45 +253,45 @@ export function AdminProgrammesScreen() {
                         <p className={styles.muted}>{row.summary}</p>
                       ) : null}
 
-                      <div className={styles.linkedLearners}>
-                        <div className={styles.linkedLearnersHead}>
-                          <h3>Learners on this programme</h3>
+                      <div className={styles.linkedApprentices}>
+                        <div className={styles.linkedApprenticesHead}>
+                          <h3>Apprentices on this programme</h3>
                           <span className={styles.searchResultCount}>
                             {linked.length}
                           </span>
                         </div>
                         {linked.length === 0 ? (
                           <p className={styles.empty}>
-                            No learners enrolled on this programme yet.
+                            No apprentices enrolled on this programme yet.
                           </p>
                         ) : (
-                          <ul className={styles.linkedLearnerList}>
-                            {linked.map((learner) => {
+                          <ul className={styles.linkedApprenticeList}>
+                            {linked.map((apprentice) => {
                               const cohort = findCohort(
                                 store.cohorts,
-                                learner.cohortId,
+                                apprentice.cohortId,
                               );
                               return (
-                                <li key={learner.id}>
-                                  <div className={styles.linkedLearnerRow}>
-                                    <div className={styles.linkedLearnerMain}>
-                                      <strong>{learner.displayName}</strong>
+                                <li key={apprentice.id}>
+                                  <div className={styles.linkedApprenticeRow}>
+                                    <div className={styles.linkedApprenticeMain}>
+                                      <strong>{apprentice.displayName}</strong>
                                       <span>
-                                        {learnerMetaLine(learner, cohort)}
+                                        {apprenticeMetaLine(apprentice, cohort)}
                                       </span>
                                     </div>
-                                    <LearnerStatusChip
+                                    <ApprenticeStatusChip
                                       tone={
-                                        learner.status === "active"
+                                        apprentice.status === "active"
                                           ? "green"
-                                          : learner.status === "pending_start" ||
-                                              learner.status === "draft"
+                                          : apprentice.status === "pending_start" ||
+                                              apprentice.status === "draft"
                                             ? "amber"
                                             : "neutral"
                                       }
                                     >
-                                      {learner.status.replace("_", " ")}
-                                    </LearnerStatusChip>
+                                      {apprentice.status.replace("_", " ")}
+                                    </ApprenticeStatusChip>
                                   </div>
                                 </li>
                               );
@@ -320,6 +320,6 @@ export function AdminProgrammesScreen() {
           </div>
         )}
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

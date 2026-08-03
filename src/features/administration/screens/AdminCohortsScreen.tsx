@@ -3,27 +3,49 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  LearnerPageShell,
-  LearnerStatusChip,
-} from "@/features/learner-portal/components/LearnerPageShell";
+  ApprenticePageShell,
+  ApprenticeStatusChip,
+} from "@/features/apprentice-portal/components/ApprenticePageShell";
+import { useDemoSession } from "@/shell/demo/DemoSessionProvider";
 import {
   createCohort,
-  setEnrolmentCohort,
   updateCohort,
+  lockCohortWithSessionLog,
+  isCohortStarted,
   type CohortInput,
 } from "../domain/store";
 import type {
   AdminCohortRecord,
-  AdminLearnerEnrolment,
+  AdminApprenticeEnrolment,
   AdminProgrammeRecord,
 } from "../domain/types";
+import { enrolmentKindLabel } from "../domain/enrolment-status";
+import { Select } from "@/components/ui/Select";
 import { useAdminStore } from "../hooks/useAdminStore";
+import { CohortTeachersPicker } from "../components/CohortTeachersPicker";
+import { CohortTeachingGroupsPanel } from "../components/CohortTeachingGroupsPanel";
+import { cohortTeacherList } from "../domain/tutor-options";
+import {
+  formatCohortTeachers,
+} from "../domain/cohort-teachers";
+import {
+  AUTOCARE_COHORT_PRODUCTS,
+  autocareProductById,
+  deliverySpineLabel,
+  findAutocareProduct,
+  formatCohortProductLabel,
+  isAutocareStandard,
+  normalizeDeliverySpine,
+  resolveAutocareProductId,
+  type DeliverySpine,
+} from "../domain/cohort-products";
+import { plannedDatesFromStart } from "../domain/programme-duration";
 import styles from "./admin-pages.module.css";
 
 type FormState = CohortInput;
 
-/** Above this many learners, the picker opens as a full container, not a dropdown. */
-const LEARNER_MODAL_THRESHOLD = 5;
+/** Above this many apprentices, the picker opens as a full container, not a dropdown. */
+const APPRENTICE_MODAL_THRESHOLD = 5;
 
 type CohortSearchMode = "name" | "programme" | "version" | "group";
 
@@ -38,7 +60,7 @@ const SEARCH_MODES: Array<{
     label: "Programme",
     placeholder: "Search by programme or standard code…",
   },
-  { id: "version", label: "Version", placeholder: "Search by version, e.g. 1.3…" },
+  { id: "version", label: "Version", placeholder: "Search by version or spine, e.g. 1.3 or groups…" },
   {
     id: "group",
     label: "Group",
@@ -52,13 +74,16 @@ function emptyForm(programme?: AdminProgrammeRecord): FormState {
     programmeId: programme?.id ?? "",
     programmeName: programme?.name ?? "",
     standardCode: programme?.standardCode ?? "",
-    standardVersion: "1.0",
+    standardVersion: isAutocareStandard(programme?.standardCode ?? "")
+      ? "1.3"
+      : "1.0",
+    deliverySpine: "groups",
     enrolmentOpensDate: "",
     startDate: "",
     expectedEndDate: "",
     teachingGroup: "",
-    collegeDays: "Mon, Tue",
-    tutorName: "",
+    collegeDays: "",
+    teacherNames: [],
     status: "planned",
     notes: "",
   };
@@ -96,19 +121,74 @@ function formatIntakeMonthYear(isoDate: string): string | null {
   return `${INTAKE_MONTHS[monthIndex]} ${year}`;
 }
 
-/** e.g. Autocare L2 · Jul 2026 · Mon–Tue Group A */
-function buildCohortName(
-  programmeName: string,
-  startDate: string,
-  teachingGroup = "",
-): string {
-  const programme = programmeShortLabel(programmeName);
-  const when = formatIntakeMonthYear(startDate);
+function formatVersionLabel(version: string): string | null {
+  const trimmed = version.trim().replace(/^v/i, "");
+  if (!trimmed) return null;
+  return `v${trimmed}`;
+}
+
+/**
+ * e.g. Autocare L2 (ST0499) · v1.3 · Groups · Dec 2025–Jun 2028
+ * (Teachers, groups and college days live under the intake — not in the name.)
+ */
+function buildCohortName(input: {
+  programmeName: string;
+  standardCode?: string;
+  standardVersion?: string;
+  deliverySpine?: DeliverySpine | string;
+  startDate: string;
+  expectedEndDate?: string;
+}): string {
+  const programme = programmeShortLabel(input.programmeName);
+  const when = formatIntakeMonthYear(input.startDate);
   if (!programme || !when) return "";
-  const parts = [programme, when];
-  const group = teachingGroup.trim();
-  if (group) parts.push(group);
+
+  const code = input.standardCode?.trim().toUpperCase() ?? "";
+  const programmePart = code ? `${programme} (${code})` : programme;
+  const parts = [programmePart];
+
+  const product = formatCohortProductLabel(
+    input.standardVersion ?? "",
+    input.deliverySpine,
+  );
+  if (product) {
+    parts.push(product);
+  } else {
+    const version = formatVersionLabel(input.standardVersion ?? "");
+    if (version) parts.push(version);
+  }
+
+  const endWhen = input.expectedEndDate
+    ? formatIntakeMonthYear(input.expectedEndDate)
+    : null;
+  parts.push(endWhen ? `${when}–${endWhen}` : when);
+
   return parts.join(" · ");
+}
+
+function autoNameFromForm(form: FormState): string {
+  return buildCohortName({
+    programmeName: form.programmeName,
+    standardCode: form.standardCode,
+    standardVersion: form.standardVersion,
+    deliverySpine: form.deliverySpine,
+    startDate: form.startDate,
+    expectedEndDate: form.expectedEndDate,
+  });
+}
+
+/** Cohort title without teacher / day / group suffixes. */
+function cohortDisplayName(row: AdminCohortRecord): string {
+  const auto = buildCohortName({
+    programmeName: row.programmeName,
+    standardCode: row.standardCode,
+    standardVersion: row.standardVersion,
+    deliverySpine: row.deliverySpine,
+    startDate: row.startDate,
+    expectedEndDate: row.expectedEndDate,
+  });
+  if (auto) return auto;
+  return row.name;
 }
 
 function withAutoCohortName(
@@ -118,19 +198,38 @@ function withAutoCohortName(
 ): FormState {
   const next = { ...prev, ...patch };
   if (nameLocked) return next;
-  const autoName = buildCohortName(
-    next.programmeName,
-    next.startDate,
-    next.teachingGroup,
-  );
+  const autoName = autoNameFromForm(next);
   if (autoName) next.name = autoName;
   return next;
 }
 
-function learnersForCohort(
-  enrolments: AdminLearnerEnrolment[],
+/** Refresh name + expected end when programme or intake start changes. */
+function withAutoCohortFields(
+  prev: FormState,
+  patch: Partial<FormState>,
+  nameLocked: boolean,
+  durationMonths: number | undefined,
+): FormState {
+  const next = { ...prev, ...patch };
+  const refreshEnd =
+    patch.startDate !== undefined || patch.programmeId !== undefined;
+  if (refreshEnd) {
+    const planned = plannedDatesFromStart(next.startDate, durationMonths);
+    if (planned.practicalEndDate) {
+      next.expectedEndDate = planned.practicalEndDate;
+    }
+  }
+  if (!nameLocked) {
+    const autoName = autoNameFromForm(next);
+    if (autoName) next.name = autoName;
+  }
+  return next;
+}
+
+function apprenticesForCohort(
+  enrolments: AdminApprenticeEnrolment[],
   cohortId: string,
-): AdminLearnerEnrolment[] {
+): AdminApprenticeEnrolment[] {
   return enrolments
     .filter((e) => e.cohortId === cohortId)
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
@@ -165,8 +264,20 @@ function cohortMatchesQuery(
         row.programmeName.toLowerCase().includes(q) ||
         row.standardCode.toLowerCase().includes(q.replace(/\s+/g, ""))
       );
-    case "version":
-      return row.standardVersion.toLowerCase().includes(q.replace(/^v/i, ""));
+    case "version": {
+      const needle = q.replace(/^v/i, "");
+      const product = formatCohortProductLabel(
+        row.standardVersion,
+        row.deliverySpine,
+      ).toLowerCase();
+      return (
+        row.standardVersion.toLowerCase().includes(needle) ||
+        product.includes(needle) ||
+        deliverySpineLabel(normalizeDeliverySpine(row.deliverySpine))
+          .toLowerCase()
+          .includes(needle)
+      );
+    }
     case "group":
       return row.teachingGroup.toLowerCase().includes(q);
   }
@@ -180,6 +291,7 @@ function CohortInlineField({
   placeholder,
   wide = false,
   multiline = false,
+  readOnly = false,
 }: {
   label: string;
   value: string;
@@ -188,6 +300,7 @@ function CohortInlineField({
   placeholder?: string;
   wide?: boolean;
   multiline?: boolean;
+  readOnly?: boolean;
 }) {
   const [draft, setDraft] = useState(value);
   const [prevValue, setPrevValue] = useState(value);
@@ -197,6 +310,7 @@ function CohortInlineField({
   }
 
   function commit() {
+    if (readOnly) return;
     if (draft.trim() !== value.trim()) onCommit(draft);
     else setDraft(value);
   }
@@ -212,6 +326,8 @@ function CohortInlineField({
           value={draft}
           placeholder={placeholder}
           rows={3}
+          readOnly={readOnly}
+          disabled={readOnly}
           onChange={(e) => setDraft(e.target.value)}
           onBlur={commit}
         />
@@ -221,6 +337,8 @@ function CohortInlineField({
           type={type}
           value={draft}
           placeholder={placeholder}
+          readOnly={readOnly}
+          disabled={readOnly}
           onChange={(e) => setDraft(e.target.value)}
           onBlur={commit}
         />
@@ -231,26 +349,178 @@ function CohortInlineField({
 
 export function AdminCohortsScreen() {
   const store = useAdminStore();
+  const { session } = useDemoSession();
+  const actorName =
+    session?.account?.name?.trim() ||
+    session?.account?.email?.trim() ||
+    "Administrator";
   const [query, setQuery] = useState("");
   const [searchMode, setSearchMode] = useState<CohortSearchMode>("name");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [sessionEdits, setSessionEdits] = useState<string[]>([]);
+  const sessionEditsRef = useRef<string[]>([]);
+  const expandedIdRef = useRef<string | null>(null);
+  const unlockedCohortIdRef = useRef<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [apprenticeMenuId, setApprenticeMenuId] = useState<string | null>(null);
   const [prevApprenticeMenuId, setPrevApprenticeMenuId] = useState<
     string | null
   >(null);
-  const [learnerFilter, setLearnerFilter] = useState("");
+  const [apprenticeFilter, setApprenticeFilter] = useState("");
   const apprenticeMenuRef = useRef<HTMLDivElement | null>(null);
-  const learnerModalRef = useRef<HTMLDivElement | null>(null);
+  const apprenticeModalRef = useRef<HTMLDivElement | null>(null);
   /** When true, programme/date changes no longer overwrite the cohort name. */
   const [nameLocked, setNameLocked] = useState(false);
   const programmes = store.programmes.filter((p) => p.status === "active");
   const [form, setForm] = useState<FormState>(() =>
     emptyForm(programmes[0]),
   );
+  const selectedProgramme = programmes.find((p) => p.id === form.programmeId);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [lockBusy, setLockBusy] = useState(false);
+
+  const actorNameRef = useRef(actorName);
+  useEffect(() => {
+    actorNameRef.current = actorName;
+  }, [actorName]);
+
+  useEffect(() => {
+    sessionEditsRef.current = sessionEdits;
+  }, [sessionEdits]);
+
+  useEffect(() => {
+    expandedIdRef.current = expandedId;
+  }, [expandedId]);
+
+  useEffect(() => {
+    function onBeforeUnload() {
+      const unlockedId = unlockedCohortIdRef.current;
+      if (!unlockedId) return;
+      unlockedCohortIdRef.current = null;
+      // Best-effort: keepalive POST so leave-lock still hits the API.
+      try {
+        const details = sessionEditsRef.current;
+        const who = actorNameRef.current;
+        const summary = details.length
+          ? `${who} saved ${details.length} change${details.length === 1 ? "" : "s"}`
+          : `${who} locked with no structural changes`;
+        void fetch("/api/admin/store", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          keepalive: true,
+          body: JSON.stringify({
+            action: "lockCohortSession",
+            id: unlockedId,
+            summary,
+            details,
+            actorName: who,
+          }),
+        });
+      } catch {
+        /* ignore */
+      }
+    }
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      const unlockedId = unlockedCohortIdRef.current;
+      unlockedCohortIdRef.current = null;
+      if (!unlockedId) return;
+      void lockCohortWithSessionLog(
+        unlockedId,
+        sessionEditsRef.current,
+        actorNameRef.current,
+      ).catch(() => {
+        /* ignore on unmount */
+      });
+    };
+  }, []);
+
+  function recordSessionEdit(message: string) {
+    setSessionEdits((prev) => {
+      const next = [...prev, message];
+      sessionEditsRef.current = next;
+      return next;
+    });
+  }
+
+  function describeCohortPatch(
+    patch: Parameters<typeof updateCohort>[1],
+  ): string | null {
+    if (patch.locked != null && Object.keys(patch).length === 1) return null;
+    if (patch.name != null) return `Name set to “${patch.name}”`;
+    if (patch.standardVersion != null || patch.deliverySpine != null) {
+      const version = patch.standardVersion ?? "(unchanged)";
+      const spine =
+        patch.deliverySpine != null
+          ? deliverySpineLabel(normalizeDeliverySpine(patch.deliverySpine))
+          : null;
+      if (patch.standardVersion != null && spine) {
+        return `Product set to ${formatCohortProductLabel(version, patch.deliverySpine)}`;
+      }
+      if (patch.standardVersion != null) {
+        return `Standard version set to v${String(version).replace(/^v/i, "")}`;
+      }
+      return `Delivery spine set to ${spine}`;
+    }
+    if (patch.teacherNames != null) {
+      return `Teachers updated (${patch.teacherNames.join(", ") || "none"})`;
+    }
+    if (patch.enrolmentOpensDate != null) {
+      return `Enrolment opens ${patch.enrolmentOpensDate || "(cleared)"}`;
+    }
+    if (patch.startDate != null) return `Start date set to ${patch.startDate}`;
+    if (patch.expectedEndDate != null) {
+      return `Expected end set to ${patch.expectedEndDate || "(cleared)"}`;
+    }
+    if (patch.status != null) return `Status set to ${patch.status}`;
+    if (patch.notes != null) return "Notes updated";
+    return "Cohort details updated";
+  }
+
+  async function flushLockSession(
+    cohortId: string,
+    opts?: { quiet?: boolean },
+  ) {
+    setLockBusy(true);
+    try {
+      const edits = [...sessionEditsRef.current];
+      await lockCohortWithSessionLog(cohortId, edits, actorName);
+      setSessionEdits([]);
+      sessionEditsRef.current = [];
+      if (unlockedCohortIdRef.current === cohortId) {
+        unlockedCohortIdRef.current = null;
+      }
+      if (!opts?.quiet) {
+        setSuccess("Cohort locked. Session changes saved to history.");
+        setError(null);
+      }
+    } catch (err) {
+      if (!opts?.quiet) {
+        setError(
+          err instanceof Error ? err.message : "Unable to lock cohort.",
+        );
+      }
+    } finally {
+      setLockBusy(false);
+    }
+  }
+
+  async function selectExpanded(nextId: string | null) {
+    const current = expandedId;
+    if (current && current !== nextId) {
+      const currentRow = store.cohorts.find((c) => c.id === current);
+      if (currentRow && currentRow.locked === false) {
+        await flushLockSession(current, { quiet: true });
+      }
+      setSessionEdits([]);
+      sessionEditsRef.current = [];
+    }
+    setExpandedId(nextId);
+  }
 
   const filtered = useMemo(() => {
     const rows = [...store.cohorts].sort((a, b) =>
@@ -265,7 +535,7 @@ export function AdminCohortsScreen() {
   if (apprenticeMenuId !== prevApprenticeMenuId) {
     setPrevApprenticeMenuId(apprenticeMenuId);
     if (!apprenticeMenuId) {
-      setLearnerFilter("");
+      setApprenticeFilter("");
     }
   }
 
@@ -275,7 +545,7 @@ export function AdminCohortsScreen() {
       const target = event.target as Node;
       const inDropdown =
         apprenticeMenuRef.current?.contains(target) ?? false;
-      const inModal = learnerModalRef.current?.contains(target) ?? false;
+      const inModal = apprenticeModalRef.current?.contains(target) ?? false;
       if (!inDropdown && !inModal) setApprenticeMenuId(null);
     }
     function onKeyDown(event: KeyboardEvent) {
@@ -289,6 +559,31 @@ export function AdminCohortsScreen() {
     };
   }, [apprenticeMenuId]);
 
+  /** One-time: drop legacy tutor names from stored cohort titles. */
+  const namesSyncedRef = useRef(false);
+  useEffect(() => {
+    if (namesSyncedRef.current || store.cohorts.length === 0) return;
+    namesSyncedRef.current = true;
+    void (async () => {
+      for (const row of store.cohorts) {
+        const clean = cohortDisplayName(row);
+        if (!clean || clean === row.name) continue;
+        try {
+          const wasLocked = row.locked !== false;
+          if (wasLocked) {
+            await updateCohort(row.id, { locked: false });
+          }
+          await updateCohort(row.id, {
+            name: clean,
+            ...(wasLocked ? { locked: true } : {}),
+          });
+        } catch {
+          // Leave display-only clean name if persist fails.
+        }
+      }
+    })();
+  }, [store.cohorts]);
+
   function openCreate() {
     setEditingId(null);
     setNameLocked(false);
@@ -299,40 +594,82 @@ export function AdminCohortsScreen() {
   }
 
   function openEdit(row: AdminCohortRecord) {
+    if (row.locked !== false) {
+      setError(
+        "This cohort is locked. Unlock it first if you need to correct a detail.",
+      );
+      void selectExpanded(row.id);
+      return;
+    }
     setEditingId(row.id);
     setNameLocked(true);
     setForm({
-      name: row.name,
+      name: cohortDisplayName(row),
       programmeId: row.programmeId,
       programmeName: row.programmeName,
       standardCode: row.standardCode,
       standardVersion: row.standardVersion,
+      deliverySpine: normalizeDeliverySpine(row.deliverySpine),
       enrolmentOpensDate: row.enrolmentOpensDate,
       startDate: row.startDate,
       expectedEndDate: row.expectedEndDate,
       teachingGroup: row.teachingGroup,
       collegeDays: row.collegeDays,
-      tutorName: row.tutorName,
+      teacherNames: cohortTeacherList(row),
       status: row.status,
       notes: row.notes,
     });
     setError(null);
     setSuccess(null);
     setShowForm(true);
-    setExpandedId(row.id);
+    void selectExpanded(row.id);
+  }
+
+  async function patchCohort(
+    cohortId: string,
+    patch: Parameters<typeof updateCohort>[1],
+  ) {
+    setError(null);
+    try {
+      await updateCohort(cohortId, patch);
+      if (patch.locked === false) {
+        unlockedCohortIdRef.current = cohortId;
+        setSessionEdits([]);
+        sessionEditsRef.current = [];
+        setSuccess("Cohort unlocked. Edit, then Save & lock when finished.");
+      } else if (patch.locked === true) {
+        unlockedCohortIdRef.current = null;
+      } else {
+        const line = describeCohortPatch(patch);
+        if (line) recordSessionEdit(line);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to update cohort.");
+    }
   }
 
   function onProgrammeChange(programmeId: string) {
     const match = programmes.find((p) => p.id === programmeId);
+    const nextCode = match?.standardCode ?? "";
+    const autocare = isAutocareStandard(nextCode);
     setForm((prev) =>
-      withAutoCohortName(
+      withAutoCohortFields(
         prev,
         {
           programmeId,
           programmeName: match?.name ?? prev.programmeName,
-          standardCode: match?.standardCode ?? prev.standardCode,
+          standardCode: nextCode,
+          ...(autocare
+            ? {
+                standardVersion: prev.standardVersion || "1.3",
+                deliverySpine: normalizeDeliverySpine(
+                  prev.deliverySpine ?? "groups",
+                ),
+              }
+            : {}),
         },
         nameLocked,
+        match?.durationMonths,
       ),
     );
   }
@@ -347,7 +684,11 @@ export function AdminCohortsScreen() {
       return null;
     }
     if (!form.standardVersion.trim()) {
-      setError("Standard version is required (e.g. 1.3).");
+      setError("Select a cohort product (version + delivery spine).");
+      return null;
+    }
+    if (!form.deliverySpine) {
+      setError("Delivery spine is required.");
       return null;
     }
     if (!form.startDate) {
@@ -358,47 +699,44 @@ export function AdminCohortsScreen() {
       ...form,
       name: form.name.trim(),
       standardVersion: form.standardVersion.trim().replace(/^v/i, ""),
+      deliverySpine: normalizeDeliverySpine(form.deliverySpine),
+      teacherNames: form.teacherNames ?? [],
+      tutorName: formatCohortTeachers(form.teacherNames ?? []),
     };
   }
 
-  function submit(event: React.FormEvent) {
+  async function submit(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
     const input = buildInput();
     if (!input) return;
-    if (editingId) {
-      updateCohort(editingId, input);
-      setSuccess(`Updated ${input.name}.`);
-      setExpandedId(editingId);
-    } else {
-      const created = createCohort(input);
-      setSuccess(`Added cohort ${input.name}.`);
-      setExpandedId(created.id);
+    try {
+      if (editingId) {
+        await updateCohort(editingId, input);
+        recordSessionEdit("Updated cohort via full edit form");
+        setSuccess(`Updated ${input.name}.`);
+        await selectExpanded(editingId);
+      } else {
+        const created = await createCohort(input);
+        setSuccess(
+          `Added cohort ${input.name}. It is locked — unlock to edit, then Save & lock.`,
+        );
+        await selectExpanded(created.id);
+      }
+      setShowForm(false);
+      setEditingId(null);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Unable to save cohort. Try again.",
+      );
     }
-    setShowForm(false);
-    setEditingId(null);
-  }
-
-  async function toggleLearner(
-    cohort: AdminCohortRecord,
-    learner: AdminLearnerEnrolment,
-  ) {
-    if (learner.cohortId === cohort.id) {
-      await setEnrolmentCohort(learner.id, null);
-      setSuccess(`${learner.displayName} removed from ${cohort.name}.`);
-      return;
-    }
-    await setEnrolmentCohort(learner.id, cohort.id);
-    setSuccess(
-      `${learner.displayName} assigned to ${cohort.name} (v${cohort.standardVersion}).`,
-    );
   }
 
   return (
-    <LearnerPageShell
+    <ApprenticePageShell
       eyebrow="Administration"
       title="Cohorts & Groups"
-      description="Organise intakes and teaching groups, and lock each cohort to the Skills England version learners finish on."
+      description="Set up intakes (programme version + dates), select tutors, then create each tutor’s teaching groups with college days and capacity. Place apprentices into a tutor’s group."
       actions={
         <button type="button" className={styles.primaryBtn} onClick={openCreate}>
           Add cohort
@@ -407,6 +745,7 @@ export function AdminCohortsScreen() {
     >
       <div className={styles.stack}>
         {success ? <p className={styles.success}>{success}</p> : null}
+        {error && !showForm ? <p className={styles.error}>{error}</p> : null}
 
         {showForm ? (
           <form className={styles.formStack} onSubmit={submit}>
@@ -420,9 +759,9 @@ export function AdminCohortsScreen() {
                 </span>
               </div>
               <p className={styles.formGroupMeta}>
-                When Skills England updates a standard, keep older cohorts on
-                the version they started. New intakes can use the latest version
-                while both run side by side.
+                Pick the Skills England pack and delivery spine together. Older
+                cohorts stay on groups; new intakes can use the same pack on
+                blocks. Both lock for the life of the intake.
               </p>
 
               <div className={styles.formGrid}>
@@ -431,36 +770,105 @@ export function AdminCohortsScreen() {
                     Programme{" "}
                     <em className={styles.fieldRequired}>required</em>
                   </span>
-                  <select
+                  <Select
                     value={form.programmeId}
-                    onChange={(e) => onProgrammeChange(e.target.value)}
-                    required
-                  >
-                    <option value="">Select programme…</option>
-                    {programmes.map((programme) => (
-                      <option key={programme.id} value={programme.id}>
-                        {programme.name} ({programme.standardCode})
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className={styles.field}>
-                  <span>
-                    Standard version{" "}
-                    <em className={styles.fieldRequired}>required</em>
-                  </span>
-                  <input
-                    value={form.standardVersion}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        standardVersion: e.target.value,
-                      }))
-                    }
-                    required
-                    placeholder="1.3"
+                    placeholder="Select programme…"
+                    options={programmes.map((programme) => ({
+                      value: programme.id,
+                      label: `${programme.name} (${programme.standardCode})`,
+                    }))}
+                    onChange={onProgrammeChange}
                   />
                 </label>
+                {isAutocareStandard(form.standardCode) ? (
+                  <label className={styles.field}>
+                    <span>
+                      Cohort product{" "}
+                      <em className={styles.fieldRequired}>required</em>
+                    </span>
+                    <Select
+                      value={resolveAutocareProductId(
+                        form.standardVersion,
+                        form.deliverySpine,
+                      )}
+                      placeholder="Select version + spine…"
+                      options={AUTOCARE_COHORT_PRODUCTS.map((product) => ({
+                        value: product.id,
+                        label: product.label,
+                      }))}
+                      onChange={(productId) => {
+                        const product = autocareProductById(productId);
+                        if (!product) return;
+                        setForm((prev) =>
+                          withAutoCohortName(
+                            prev,
+                            {
+                              standardVersion: product.standardVersion,
+                              deliverySpine: product.deliverySpine,
+                            },
+                            nameLocked,
+                          ),
+                        );
+                      }}
+                    />
+                    {(() => {
+                      const product = findAutocareProduct(
+                        form.standardVersion,
+                        form.deliverySpine,
+                      );
+                      return product ? (
+                        <span className={styles.fieldHint}>{product.summary}</span>
+                      ) : null;
+                    })()}
+                  </label>
+                ) : (
+                  <>
+                    <label className={styles.field}>
+                      <span>
+                        Standard version{" "}
+                        <em className={styles.fieldRequired}>required</em>
+                      </span>
+                      <input
+                        value={form.standardVersion}
+                        onChange={(e) =>
+                          setForm((prev) =>
+                            withAutoCohortName(
+                              prev,
+                              { standardVersion: e.target.value },
+                              nameLocked,
+                            ),
+                          )
+                        }
+                        required
+                        placeholder="1.3"
+                      />
+                    </label>
+                    <label className={styles.field}>
+                      <span>
+                        Delivery spine{" "}
+                        <em className={styles.fieldRequired}>required</em>
+                      </span>
+                      <Select
+                        value={form.deliverySpine}
+                        options={[
+                          { value: "groups", label: "Groups (CEA / Temp)" },
+                          { value: "blocks", label: "Blocks (programme / Main)" },
+                        ]}
+                        onChange={(value) =>
+                          setForm((prev) =>
+                            withAutoCohortName(
+                              prev,
+                              {
+                                deliverySpine: normalizeDeliverySpine(value),
+                              },
+                              nameLocked,
+                            ),
+                          )
+                        }
+                      />
+                    </label>
+                  </>
+                )}
                 <label className={styles.field}>
                   <span>Enrolment opens</span>
                   <input
@@ -474,7 +882,7 @@ export function AdminCohortsScreen() {
                     }
                   />
                   <span className={styles.fieldHint}>
-                    While planned, new pupils auto-flow into this cohort from
+                    While planned, new apprentices auto-flow into this cohort from
                     this date until it goes active.
                   </span>
                 </label>
@@ -486,15 +894,18 @@ export function AdminCohortsScreen() {
                   <input
                     type="date"
                     value={form.startDate}
-                    onChange={(e) =>
+                    onChange={(e) => {
                       setForm((prev) =>
-                        withAutoCohortName(
+                        withAutoCohortFields(
                           prev,
                           { startDate: e.target.value },
                           nameLocked,
+                          selectedProgramme?.durationMonths ??
+                            programmes.find((p) => p.id === prev.programmeId)
+                              ?.durationMonths,
                         ),
-                      )
-                    }
+                      );
+                    }}
                     required
                   />
                 </label>
@@ -504,28 +915,20 @@ export function AdminCohortsScreen() {
                     type="date"
                     value={form.expectedEndDate}
                     onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        expectedEndDate: e.target.value,
-                      }))
-                    }
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Teaching group</span>
-                  <input
-                    value={form.teachingGroup}
-                    onChange={(e) =>
                       setForm((prev) =>
                         withAutoCohortName(
                           prev,
-                          { teachingGroup: e.target.value },
+                          { expectedEndDate: e.target.value },
                           nameLocked,
                         ),
                       )
                     }
-                    placeholder="e.g. Mon–Tue Group A"
                   />
+                  <span className={styles.fieldHint}>
+                    {selectedProgramme?.durationMonths
+                      ? `Auto-filled as intake start + ${selectedProgramme.durationMonths} months (Skills England typical duration). Edit to override.`
+                      : "Auto-fills from Skills England duration once a programme and intake start are set."}
+                  </span>
                 </label>
                 <label className={`${styles.field} ${styles.fieldWide}`}>
                   <span>
@@ -539,54 +942,48 @@ export function AdminCohortsScreen() {
                       setForm((prev) => ({ ...prev, name: e.target.value }));
                     }}
                     required
-                    placeholder="Fills from programme and start date…"
+                    placeholder="Fills from programme, version, dates…"
                   />
                   <span className={styles.fieldHint}>
-                    Auto-filled as programme · month year
-                    {form.teachingGroup.trim() ? " · teaching group" : ""}. Edit
-                    to lock a custom name.
+                    Auto-filled as programme (code) · version · start–end.
+                    Teaching groups and college days are set after create, under
+                    each tutor.
+                  </span>
+                </label>
+                <label className={`${styles.field} ${styles.fieldWide}`}>
+                  <span>Teachers who teach this cohort</span>
+                  <CohortTeachersPicker
+                    users={store.users}
+                    selected={form.teacherNames ?? []}
+                    onChange={(teacherNames) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        teacherNames,
+                        tutorName: formatCohortTeachers(teacherNames),
+                      }))
+                    }
+                  />
+                  <span className={styles.fieldHint}>
+                    Add only tutors who will own groups on this intake. Create
+                    their day-specific groups after the cohort exists.
                   </span>
                 </label>
                 <label className={styles.field}>
-                  <span>College days</span>
-                  <input
-                    value={form.collegeDays}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        collegeDays: e.target.value,
-                      }))
-                    }
-                    placeholder="Mon, Tue"
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Tutor</span>
-                  <input
-                    value={form.tutorName}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        tutorName: e.target.value,
-                      }))
-                    }
-                  />
-                </label>
-                <label className={styles.field}>
                   <span>Intake status</span>
-                  <select
+                  <Select
                     value={form.status}
-                    onChange={(e) =>
+                    options={[
+                      { value: "planned", label: "Planned" },
+                      { value: "active", label: "Active" },
+                      { value: "completed", label: "Completed" },
+                    ]}
+                    onChange={(status) =>
                       setForm((prev) => ({
                         ...prev,
-                        status: e.target.value as FormState["status"],
+                        status: status as FormState["status"],
                       }))
                     }
-                  >
-                    <option value="planned">Planned</option>
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
-                  </select>
+                  />
                 </label>
                 <label className={`${styles.field} ${styles.fieldWide}`}>
                   <span>Notes</span>
@@ -669,8 +1066,9 @@ export function AdminCohortsScreen() {
         ) : (
           <div className={styles.employerList}>
             {filtered.map((row) => {
-              const linked = learnersForCohort(store.enrolments, row.id);
+              const linked = apprenticesForCohort(store.enrolments, row.id);
               const open = expandedId === row.id;
+              const isLocked = row.locked !== false;
               const tone =
                 row.status === "completed"
                   ? "neutral"
@@ -697,32 +1095,50 @@ export function AdminCohortsScreen() {
                   aria-expanded={open}
                   aria-label={`${open ? "Collapse" : "Expand"} details for ${row.name}`}
                   onClick={() =>
-                    setExpandedId((current) =>
-                      current === row.id ? null : row.id,
-                    )
+                    void selectExpanded(open ? null : row.id)
                   }
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      setExpandedId((current) =>
-                        current === row.id ? null : row.id,
-                      );
+                      void selectExpanded(open ? null : row.id);
                     }
                   }}
                 >
                   <div className={styles.employerCardHeader}>
                     <div className={styles.employerCardMain}>
-                      <strong className={styles.employerName}>{row.name}</strong>
+                      <strong className={styles.employerName}>
+                        {cohortDisplayName(row)}
+                      </strong>
                       <span>
-                        {row.standardCode} · v{row.standardVersion}
-                        {row.teachingGroup ? ` · ${row.teachingGroup}` : ""}
+                        {row.standardCode} ·{" "}
+                        {formatCohortProductLabel(
+                          row.standardVersion,
+                          row.deliverySpine,
+                        )}
                       </span>
                       <span>
                         Starts {formatDate(row.startDate)}
                         {row.expectedEndDate
                           ? ` · ends ${formatDate(row.expectedEndDate)}`
                           : ""}
-                        {row.tutorName ? ` · ${row.tutorName}` : ""}
+                        {(() => {
+                          const teachers = cohortTeacherList(row);
+                          const groupCount = (store.teachingGroups ?? []).filter(
+                            (g) => g.cohortId === row.id,
+                          ).length;
+                          const bits: string[] = [];
+                          if (teachers.length) {
+                            bits.push(
+                              `${teachers.length} teacher${teachers.length === 1 ? "" : "s"}`,
+                            );
+                          }
+                          if (groupCount) {
+                            bits.push(
+                              `${groupCount} group${groupCount === 1 ? "" : "s"}`,
+                            );
+                          }
+                          return bits.length ? ` · ${bits.join(" · ")}` : "";
+                        })()}
                       </span>
                     </div>
 
@@ -737,19 +1153,25 @@ export function AdminCohortsScreen() {
                       >
                         {row.status}
                       </span>
+                      <span
+                        className={styles.cohortLockPill}
+                        data-locked={isLocked ? "true" : "false"}
+                      >
+                        {isLocked ? "Locked" : "Unlocked"}
+                      </span>
                       {linked.length === 0 ? (
                         <span
                           className={styles.employerApprenticePill}
                           data-has="false"
                         >
-                          No learners
+                          No apprentices
                         </span>
                       ) : (
                         (() => {
                           const menuOpen = apprenticeMenuId === row.id;
                           const useModal =
-                            linked.length > LEARNER_MODAL_THRESHOLD;
-                          const q = learnerFilter.trim().toLowerCase();
+                            linked.length > APPRENTICE_MODAL_THRESHOLD;
+                          const q = apprenticeFilter.trim().toLowerCase();
                           const visible =
                             useModal && q
                               ? linked.filter((l) =>
@@ -783,8 +1205,8 @@ export function AdminCohortsScreen() {
                               >
                                 <span>
                                   {linked.length === 1
-                                    ? "1 learner"
-                                    : `${linked.length} learners`}
+                                    ? "1 apprentice"
+                                    : `${linked.length} apprentices`}
                                 </span>
                                 <span aria-hidden>▾</span>
                               </button>
@@ -793,11 +1215,11 @@ export function AdminCohortsScreen() {
                                 <ul
                                   className={styles.employerApprenticeDropdown}
                                   role="listbox"
-                                  aria-label={`Learners in ${row.name}`}
+                                  aria-label={`Apprentices in ${row.name}`}
                                 >
-                                  {linked.map((learner) => (
+                                  {linked.map((apprentice) => (
                                     <li
-                                      key={learner.id}
+                                      key={apprentice.id}
                                       role="option"
                                       aria-selected={false}
                                     >
@@ -811,13 +1233,14 @@ export function AdminCohortsScreen() {
                                           setApprenticeMenuId(null);
                                         }}
                                       >
-                                        <strong>{learner.displayName}</strong>
+                                        <strong>{apprentice.displayName}</strong>
                                         <span>
-                                          {learner.kind === "new_starter"
-                                            ? "New starter"
-                                            : "Currently studying"}
+                                          {enrolmentKindLabel(
+                                            apprentice.startDate,
+                                            apprentice.kind,
+                                          )}
                                           {" · "}
-                                          {learner.employerName ||
+                                          {apprentice.employerName ||
                                             "No employer"}
                                         </span>
                                       </button>
@@ -828,35 +1251,38 @@ export function AdminCohortsScreen() {
 
                               {menuOpen && useModal ? (
                                 <div
-                                  className={styles.learnerModalBackdrop}
+                                  className={styles.apprenticeModalBackdrop}
                                   role="presentation"
                                   onClick={() => setApprenticeMenuId(null)}
                                 >
                                   <div
-                                    className={styles.learnerModal}
+                                    className={styles.apprenticeModal}
                                     role="dialog"
                                     aria-modal="true"
-                                    aria-label={`Learners in ${row.name}`}
-                                    ref={learnerModalRef}
+                                    aria-label={`Apprentices in ${row.name}`}
+                                    ref={apprenticeModalRef}
                                     onClick={(event) =>
                                       event.stopPropagation()
                                     }
                                   >
-                                    <div className={styles.learnerModalHead}>
+                                    <div className={styles.apprenticeModalHead}>
                                       <div>
                                         <h3
-                                          className={styles.learnerModalTitle}
+                                          className={styles.apprenticeModalTitle}
                                         >
                                           {row.name}
                                         </h3>
-                                        <p className={styles.learnerModalMeta}>
-                                          {linked.length} learners · v
-                                          {row.standardVersion}
+                                        <p className={styles.apprenticeModalMeta}>
+                                          {linked.length} apprentices ·{" "}
+                                          {formatCohortProductLabel(
+                                            row.standardVersion,
+                                            row.deliverySpine,
+                                          )}
                                         </p>
                                       </div>
                                       <button
                                         type="button"
-                                        className={styles.learnerModalClose}
+                                        className={styles.apprenticeModalClose}
                                         aria-label="Close"
                                         onClick={() =>
                                           setApprenticeMenuId(null)
@@ -866,27 +1292,27 @@ export function AdminCohortsScreen() {
                                       </button>
                                     </div>
                                     <input
-                                      className={styles.learnerModalSearch}
+                                      className={styles.apprenticeModalSearch}
                                       type="search"
                                       autoFocus
-                                      value={learnerFilter}
+                                      value={apprenticeFilter}
                                       onChange={(e) =>
-                                        setLearnerFilter(e.target.value)
+                                        setApprenticeFilter(e.target.value)
                                       }
-                                      placeholder="Search learners…"
+                                      placeholder="Search apprentices…"
                                     />
                                     {visible.length === 0 ? (
                                       <p className={styles.empty}>
-                                        No learners match “{learnerFilter}”.
+                                        No apprentices match “{apprenticeFilter}”.
                                       </p>
                                     ) : (
                                       <ul
-                                        className={styles.learnerModalList}
+                                        className={styles.apprenticeModalList}
                                         role="listbox"
                                       >
-                                        {visible.map((learner) => (
+                                        {visible.map((apprentice) => (
                                           <li
-                                            key={learner.id}
+                                            key={apprentice.id}
                                             role="option"
                                             aria-selected={false}
                                           >
@@ -901,14 +1327,15 @@ export function AdminCohortsScreen() {
                                               }}
                                             >
                                               <strong>
-                                                {learner.displayName}
+                                                {apprentice.displayName}
                                               </strong>
                                               <span>
-                                                {learner.kind === "new_starter"
-                                                  ? "New starter"
-                                                  : "Currently studying"}
+                                                {enrolmentKindLabel(
+                                                  apprentice.startDate,
+                                                  apprentice.kind,
+                                                )}
                                                 {" · "}
-                                                {learner.employerName ||
+                                                {apprentice.employerName ||
                                                   "No employer"}
                                               </span>
                                             </button>
@@ -933,166 +1360,272 @@ export function AdminCohortsScreen() {
                       onKeyDown={(event) => event.stopPropagation()}
                     >
                       <div className={styles.employerDetailGrid}>
+                        {isLocked ? (
+                          <p className={`${styles.fieldHint} ${styles.detailFieldWide}`}>
+                            This cohort is locked. Details, teachers, groups, and
+                            placements cannot change until you unlock.
+                          </p>
+                        ) : (
+                          <p className={`${styles.fieldHint} ${styles.detailFieldWide}`}>
+                            Cohort is unlocked for edits
+                            {sessionEdits.length
+                              ? ` (${sessionEdits.length} change${sessionEdits.length === 1 ? "" : "s"} this session)`
+                              : ""}
+                            . Use Save &amp; lock when finished, or leave this
+                            cohort to auto-lock.
+                          </p>
+                        )}
                         <CohortInlineField
                           label="Cohort name"
                           value={row.name}
+                          readOnly={isLocked}
                           onCommit={(next) =>
-                            updateCohort(row.id, { name: next })
+                            void patchCohort(row.id, { name: next })
                           }
                           wide
                         />
-                        <CohortInlineField
-                          label="Standard version"
-                          value={row.standardVersion}
-                          onCommit={(next) =>
-                            updateCohort(row.id, { standardVersion: next })
-                          }
-                          placeholder="1.3"
-                        />
-                        <CohortInlineField
-                          label="Teaching group"
-                          value={row.teachingGroup}
-                          onCommit={(next) =>
-                            updateCohort(row.id, { teachingGroup: next })
-                          }
-                          placeholder="Mon–Tue Group A"
-                        />
-                        <CohortInlineField
-                          label="College days"
-                          value={row.collegeDays}
-                          onCommit={(next) =>
-                            updateCohort(row.id, { collegeDays: next })
-                          }
-                        />
-                        <CohortInlineField
-                          label="Tutor"
-                          value={row.tutorName}
-                          onCommit={(next) =>
-                            updateCohort(row.id, { tutorName: next })
-                          }
-                        />
+                        {isAutocareStandard(row.standardCode) ? (
+                          <label className={styles.detailField}>
+                            <span className={styles.detailFieldLabel}>
+                              Cohort product
+                            </span>
+                            <Select
+                              value={resolveAutocareProductId(
+                                row.standardVersion,
+                                row.deliverySpine,
+                              )}
+                              disabled={isLocked || isCohortStarted(row)}
+                              options={AUTOCARE_COHORT_PRODUCTS.map(
+                                (product) => ({
+                                  value: product.id,
+                                  label: product.label,
+                                }),
+                              )}
+                              onChange={(productId) => {
+                                const product = autocareProductById(productId);
+                                if (!product) return;
+                                void patchCohort(row.id, {
+                                  standardVersion: product.standardVersion,
+                                  deliverySpine: product.deliverySpine,
+                                });
+                              }}
+                            />
+                            {(() => {
+                              const product = findAutocareProduct(
+                                row.standardVersion,
+                                row.deliverySpine,
+                              );
+                              return product ? (
+                                <span className={styles.fieldHint}>
+                                  {product.summary}
+                                </span>
+                              ) : null;
+                            })()}
+                          </label>
+                        ) : (
+                          <>
+                            <CohortInlineField
+                              label="Standard version"
+                              value={row.standardVersion}
+                              readOnly={isLocked || isCohortStarted(row)}
+                              onCommit={(next) =>
+                                void patchCohort(row.id, {
+                                  standardVersion: next,
+                                })
+                              }
+                              placeholder="1.3"
+                            />
+                            <label className={styles.detailField}>
+                              <span className={styles.detailFieldLabel}>
+                                Delivery spine
+                              </span>
+                              <Select
+                                value={normalizeDeliverySpine(row.deliverySpine)}
+                                disabled={isLocked || isCohortStarted(row)}
+                                options={[
+                                  {
+                                    value: "groups",
+                                    label: "Groups (CEA / Temp)",
+                                  },
+                                  {
+                                    value: "blocks",
+                                    label: "Blocks (programme / Main)",
+                                  },
+                                ]}
+                                onChange={(value) =>
+                                  void patchCohort(row.id, {
+                                    deliverySpine:
+                                      normalizeDeliverySpine(value),
+                                  })
+                                }
+                              />
+                            </label>
+                          </>
+                        )}
+                        {isCohortStarted(row) ? (
+                          <span
+                            className={`${styles.fieldHint} ${styles.detailFieldWide}`}
+                          >
+                            Version and delivery spine are fixed because this
+                            cohort has started.
+                          </span>
+                        ) : null}
+                        <label
+                          className={`${styles.detailField} ${styles.detailFieldWide}`}
+                        >
+                          <span className={styles.detailFieldLabel}>
+                            Teachers who teach this cohort
+                          </span>
+                          <CohortTeachersPicker
+                            users={store.users}
+                            selected={cohortTeacherList(row)}
+                            disabled={isLocked}
+                            onChange={(teacherNames) =>
+                              void patchCohort(row.id, {
+                                teacherNames,
+                                tutorName: formatCohortTeachers(teacherNames),
+                              })
+                            }
+                          />
+                          <span className={styles.fieldHint}>
+                            Only selected teachers can own teaching groups below.
+                          </span>
+                        </label>
                         <CohortInlineField
                           label="Enrolment opens"
                           value={row.enrolmentOpensDate}
                           type="date"
+                          readOnly={isLocked}
                           onCommit={(next) =>
-                            updateCohort(row.id, { enrolmentOpensDate: next })
+                            void patchCohort(row.id, {
+                              enrolmentOpensDate: next,
+                            })
                           }
                         />
                         <CohortInlineField
                           label="Intake start"
                           value={row.startDate}
                           type="date"
+                          readOnly={isLocked}
                           onCommit={(next) =>
-                            updateCohort(row.id, { startDate: next })
+                            void patchCohort(row.id, { startDate: next })
                           }
                         />
                         <CohortInlineField
                           label="Expected end"
                           value={row.expectedEndDate}
                           type="date"
+                          readOnly={isLocked}
                           onCommit={(next) =>
-                            updateCohort(row.id, { expectedEndDate: next })
+                            void patchCohort(row.id, { expectedEndDate: next })
                           }
                         />
                         <label className={styles.detailField}>
                           <span className={styles.detailFieldLabel}>
                             Intake status
                           </span>
-                          <select
-                            className={styles.detailFieldInput}
+                          <Select
                             value={row.status}
-                            onChange={(e) =>
-                              updateCohort(row.id, {
-                                status: e.target
-                                  .value as AdminCohortRecord["status"],
+                            disabled={isLocked}
+                            options={[
+                              { value: "planned", label: "Planned" },
+                              { value: "active", label: "Active" },
+                              { value: "completed", label: "Completed" },
+                            ]}
+                            onChange={(status) =>
+                              void patchCohort(row.id, {
+                                status: status as AdminCohortRecord["status"],
                               })
                             }
-                          >
-                            <option value="planned">Planned</option>
-                            <option value="active">Active</option>
-                            <option value="completed">Completed</option>
-                          </select>
+                          />
                         </label>
                         <CohortInlineField
                           label="Notes"
                           value={row.notes}
+                          readOnly={isLocked}
                           onCommit={(next) =>
-                            updateCohort(row.id, { notes: next })
+                            void patchCohort(row.id, { notes: next })
                           }
                           wide
                           multiline
                         />
                       </div>
 
-                      <div className={styles.linkedLearners}>
-                        <div className={styles.linkedLearnersHead}>
-                          <h3>Learners on this version</h3>
-                          <Link
-                            href="/administration/enrolments"
-                            className={styles.secondaryBtn}
-                          >
-                            Manage enrolments
-                          </Link>
-                        </div>
-                        <p className={styles.formGroupMeta}>
-                          Assigning a learner here pins them to {row.standardCode}{" "}
-                          v{row.standardVersion}.
-                        </p>
-                        {candidates.length === 0 ? (
-                          <p className={styles.empty}>
-                            No enrolments on {row.standardCode} yet.
-                          </p>
-                        ) : (
-                          <ul className={styles.linkedLearnerList}>
-                            {candidates.map((learner) => {
-                              const assigned = learner.cohortId === row.id;
-                              const otherCohort =
-                                learner.cohortId && learner.cohortId !== row.id
-                                  ? store.cohorts.find(
-                                      (c) => c.id === learner.cohortId,
-                                    )
-                                  : null;
-                              return (
-                                <li key={learner.id}>
-                                  <div className={styles.linkedLearnerMain}>
-                                    <strong>{learner.displayName}</strong>
-                                    <span>
-                                      {learner.employerName || "No employer"}
-                                      {otherCohort
-                                        ? ` · currently on ${otherCohort.name}`
-                                        : ""}
-                                    </span>
-                                  </div>
-                                  <div className={styles.formActions}>
-                                    <LearnerStatusChip
-                                      tone={
-                                        learner.status === "active"
-                                          ? "green"
-                                          : learner.status === "pending_start" ||
-                                              learner.status === "draft"
-                                            ? "amber"
-                                            : "neutral"
-                                      }
-                                    >
-                                      {learner.status.replace("_", " ")}
-                                    </LearnerStatusChip>
-                                    <button
-                                      type="button"
-                                      className={styles.secondaryBtn}
-                                      onClick={() =>
-                                        void toggleLearner(row, learner)
-                                      }
-                                    >
-                                      {assigned ? "Remove" : "Assign"}
-                                    </button>
-                                  </div>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        )}
+                      <CohortTeachingGroupsPanel
+                        cohort={row}
+                        groups={store.teachingGroups ?? []}
+                        enrolments={store.enrolments}
+                        candidates={candidates}
+                        locked={isLocked}
+                        onSessionEdit={recordSessionEdit}
+                        onError={setError}
+                        onSuccess={setSuccess}
+                      />
+
+                      <div className={styles.formGroupHead}>
+                        <h3 className={styles.formGroupTitle}>Change history</h3>
+                        <span className={styles.formGroupBadge}>
+                          {
+                            (store.cohortChangeLogs ?? []).filter(
+                              (entry) => entry.cohortId === row.id,
+                            ).length
+                          }
+                        </span>
                       </div>
+                      {(store.cohortChangeLogs ?? []).filter(
+                        (entry) => entry.cohortId === row.id,
+                      ).length === 0 ? (
+                        <p className={styles.empty}>
+                          No lock sessions recorded yet.
+                        </p>
+                      ) : (
+                        <ul className={styles.linkedApprenticeList}>
+                          {(store.cohortChangeLogs ?? [])
+                            .filter((entry) => entry.cohortId === row.id)
+                            .map((entry) => (
+                              <li key={entry.id}>
+                                <div className={styles.linkedApprenticeRow}>
+                                  <div className={styles.linkedApprenticeMain}>
+                                    <strong>
+                                      {entry.actorName
+                                        ? `${entry.actorName}`
+                                        : "Unknown user"}
+                                    </strong>
+                                    <span>
+                                      {new Date(entry.createdAt).toLocaleString(
+                                        "en-GB",
+                                      )}
+                                      {entry.details.length
+                                        ? ` · ${entry.details.length} change${entry.details.length === 1 ? "" : "s"}`
+                                        : " · no structural changes"}
+                                    </span>
+                                    {entry.details.length > 0 ? (
+                                      <span
+                                        className={styles.fieldHint}
+                                        style={{
+                                          display: "flex",
+                                          flexDirection: "column",
+                                          gap: "0.2rem",
+                                        }}
+                                      >
+                                        {entry.details.map((line, index) => (
+                                          <span key={`${entry.id}-${index}`}>
+                                            · {line}
+                                          </span>
+                                        ))}
+                                      </span>
+                                    ) : (
+                                      <span className={styles.fieldHint}>
+                                        Locked the cohort without editing
+                                        details, groups, or placements.
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+                      )}
 
                       <div className={styles.formActions}>
                         <Link
@@ -1101,13 +1634,43 @@ export function AdminCohortsScreen() {
                         >
                           Programme records
                         </Link>
-                        <button
-                          type="button"
-                          className={styles.secondaryBtn}
-                          onClick={() => openEdit(row)}
-                        >
-                          Open full edit form
-                        </button>
+                        {isLocked ? (
+                          <button
+                            type="button"
+                            className={styles.secondaryBtn}
+                            disabled={lockBusy}
+                            onClick={() =>
+                              void (async () => {
+                                const clean = cohortDisplayName(row);
+                                await patchCohort(row.id, { locked: false });
+                                if (clean && clean !== row.name) {
+                                  await patchCohort(row.id, { name: clean });
+                                }
+                              })()
+                            }
+                          >
+                            Unlock for corrections
+                          </button>
+                        ) : (
+                          <>
+                            <button
+                              type="button"
+                              className={styles.secondaryBtn}
+                              disabled={lockBusy}
+                              onClick={() => openEdit(row)}
+                            >
+                              Open full edit form
+                            </button>
+                            <button
+                              type="button"
+                              className={styles.primaryBtn}
+                              disabled={lockBusy}
+                              onClick={() => void flushLockSession(row.id)}
+                            >
+                              {lockBusy ? "Saving…" : "Save & lock"}
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   ) : null}
@@ -1117,6 +1680,6 @@ export function AdminCohortsScreen() {
           </div>
         )}
       </div>
-    </LearnerPageShell>
+    </ApprenticePageShell>
   );
 }

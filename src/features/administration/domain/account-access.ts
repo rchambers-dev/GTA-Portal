@@ -1,16 +1,17 @@
 /**
- * Account Setup access: you can only manage accounts ranked lower than you.
+ * Account Setup access: you can only manage accounts ranked lower than you,
+ * except Management peers (and yourself) who can manage each other for setup.
  *
- * Owner > Management > Administrator > Quality / staff / employer / learner
+ * Owner > Management > Administrator > Quality / staff / employer / apprentice
  * - Admins cannot edit other admins (only Management+)
- * - Managers cannot edit other managers (only Owner)
+ * - Management can edit other Management (job titles / enable login)
  * - Owner can manage everyone
  */
 
 import type { AdminPortalRole } from "./types";
 
 export const PORTAL_ROLE_RANK: Record<AdminPortalRole, number> = {
-  Learner: 10,
+  Apprentice: 10,
   Employer: 20,
   Tutor: 30,
   "Learning and Progress Mentor": 35,
@@ -32,7 +33,7 @@ export function roleRank(role: string): number {
   if (normalised.includes("mentor")) return 35;
   if (normalised === "tutor") return 30;
   if (normalised === "employer") return 20;
-  if (normalised === "learner") return 10;
+  if (normalised === "apprentice" || normalised === "apprentice") return 10;
   return 0;
 }
 
@@ -41,7 +42,18 @@ export function canManagePortalAccount(
   actorRole: string,
   targetRole: AdminPortalRole | string,
 ): boolean {
-  return roleRank(actorRole) > roleRank(targetRole);
+  const actor = roleRank(actorRole);
+  const target = roleRank(targetRole);
+  if (actor > target) return true;
+  // Management peers (incl. yourself) can edit Management accounts.
+  if (
+    actor >= PORTAL_ROLE_RANK.Management &&
+    actor === target &&
+    actor === PORTAL_ROLE_RANK.Management
+  ) {
+    return true;
+  }
+  return false;
 }
 
 /** Roles an actor is allowed to assign (strictly below their own rank). */
@@ -55,8 +67,8 @@ export function assignableRoles(actorRole: string): AdminPortalRole[] {
 /** Portal workspace each role signs into — set automatically at intake. */
 export function workspaceForRole(role: AdminPortalRole): string {
   switch (role) {
-    case "Learner":
-      return "learner";
+    case "Apprentice":
+      return "apprentice";
     case "Employer":
       return "employer";
     case "Tutor":
@@ -96,8 +108,11 @@ export function newStarterDaysRemaining(
   return NEW_STARTER_DAYS - diffDays;
 }
 
-export function isNewStarter(programmeStartDate: string | null): boolean {
-  return newStarterDaysRemaining(programmeStartDate) != null;
+export function isNewStarter(
+  programmeStartDate: string | null,
+  asOf: Date = new Date(),
+): boolean {
+  return newStarterDaysRemaining(programmeStartDate, asOf) != null;
 }
 
 /** Map signed-in demo account → portal role used for Account Setup ranks. */

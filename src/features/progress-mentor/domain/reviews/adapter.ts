@@ -37,8 +37,8 @@ export function requirementToMentorReviewRow(
 
   return {
     reviewId: req.formalReviewId ?? req.requirementId,
-    learnerId: req.learnerId,
-    learnerName: req.learnerName,
+    apprenticeId: req.apprenticeId,
+    apprenticeName: req.apprenticeName,
     employerName: req.employerName,
     programmeName: req.programmeName,
     reviewDate: req.plannedReviewDate,
@@ -130,16 +130,16 @@ function signOffLabel(formal: FormalReview): string {
   return "In progress";
 }
 
-/** Active review signal per learner for priority scoring (prefer open formal, else requirement). */
+/** Active review signal per apprentice for priority scoring (prefer open formal, else requirement). */
 export function buildMentorReviewsAdapter(): MentorReviewRow[] {
-  const byLearner = new Map<string, MentorReviewRow>();
+  const byApprentice = new Map<string, MentorReviewRow>();
 
   for (const formal of FORMAL_REVIEWS) {
     if (formal.stage === "completed") continue;
-    byLearner.set(formal.learnerId, {
+    byApprentice.set(formal.apprenticeId, {
       reviewId: formal.reviewId,
-      learnerId: formal.learnerId,
-      learnerName: formal.learnerName,
+      apprenticeId: formal.apprenticeId,
+      apprenticeName: formal.apprenticeName,
       employerName: formal.employerName,
       programmeName: formal.programmeName,
       reviewDate: formal.reviewDate,
@@ -157,18 +157,18 @@ export function buildMentorReviewsAdapter(): MentorReviewRow[] {
 
   for (const req of REVIEW_REQUIREMENTS) {
     if (req.formalReviewId) continue;
-    if (byLearner.has(req.learnerId)) continue;
-    byLearner.set(req.learnerId, requirementToMentorReviewRow(req));
+    if (byApprentice.has(req.apprenticeId)) continue;
+    byApprentice.set(req.apprenticeId, requirementToMentorReviewRow(req));
   }
 
-  // Include one completed per learner history for completed view consumers
+  // Include one completed per apprentice history for completed view consumers
   for (const formal of FORMAL_REVIEWS) {
     if (formal.stage !== "completed") continue;
-    if (byLearner.has(formal.learnerId)) continue;
-    byLearner.set(formal.learnerId, {
+    if (byApprentice.has(formal.apprenticeId)) continue;
+    byApprentice.set(formal.apprenticeId, {
       reviewId: formal.reviewId,
-      learnerId: formal.learnerId,
-      learnerName: formal.learnerName,
+      apprenticeId: formal.apprenticeId,
+      apprenticeName: formal.apprenticeName,
       employerName: formal.employerName,
       programmeName: formal.programmeName,
       reviewDate: formal.reviewDate,
@@ -184,5 +184,5 @@ export function buildMentorReviewsAdapter(): MentorReviewRow[] {
     });
   }
 
-  return [...byLearner.values()];
+  return [...byApprentice.values()];
 }

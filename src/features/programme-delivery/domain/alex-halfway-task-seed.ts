@@ -76,7 +76,7 @@ function verifiedTask(
 ): TaskSubmission {
   return {
     taskId,
-    learnerId: ALEX_ID,
+    apprenticeId: ALEX_ID,
     method: "portal_form",
     status: "verified",
     fields: sampleFields(blockId, taskNumber),
@@ -97,7 +97,7 @@ function verifiedTask(
 function inProgressTask(taskId: string, updatedAtIso: string): TaskSubmission {
   return {
     taskId,
-    learnerId: ALEX_ID,
+    apprenticeId: ALEX_ID,
     method: "portal_form",
     status: "in_progress",
     fields: {

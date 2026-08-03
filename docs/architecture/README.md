@@ -1,4 +1,4 @@
-# GTA Learner Lifecycle — Architecture
+# GTA Apprentice Lifecycle — Architecture
 
 **Status:** Stage 2 shell + permission-driven demo workspaces  
 **Integration intent:** Temporary standalone shell → later embed into main GTA portal  
@@ -11,8 +11,8 @@
 | Layer | Permanence | Purpose |
 |-------|------------|---------|
 | **Standalone shell** (`src/shell`, `src/app`) | Temporary | Local navigation, layout chrome, and route mounting for development and design approval |
-| **Learner Lifecycle feature** (`src/features/learner-lifecycle`) | Permanent | Kanban, learner cards, workspace, Evidence Pack UI and domain rules |
-| **Adapters** (`src/features/learner-lifecycle/ports` + `src/adapters`) | Ports permanent; implementations replaceable | Auth, user context, and data access — swap fiction → portal real services |
+| **Apprentice Lifecycle feature** (`src/features/apprentice-lifecycle`) | Permanent | Kanban, learner cards, workspace, Evidence Pack UI and domain rules |
+| **Adapters** (`src/features/apprentice-lifecycle/ports` + `src/adapters`) | Ports permanent; implementations replaceable | Auth, user context, and data access — swap fiction → portal real services |
 
 The main GTA Website/portal must **not** be modified during Stages 1–2.
 
@@ -46,8 +46,8 @@ Full comparison to the manifesto is in `docs/architecture/decision-log.md`.
 1. Feature components must not import from `src/shell` or `src/app`.
 2. Feature code depends only on **ports** (interfaces), not Prisma/Auth.js directly.
 3. Standalone shell composes feature pages and injects adapter implementations.
-4. On portal integration: replace shell + adapters; move `src/features/learner-lifecycle` (and shared UI primitives) unchanged where possible.
-5. URL shape under the feature should stay stable (`/learners/lifecycle`, `/learners/[id]/…`) so deep links survive remounting.
+4. On portal integration: replace shell + adapters; move `src/features/apprentice-lifecycle` (and shared UI primitives) unchanged where possible.
+5. URL shape under the feature should stay stable (`/apprentices/lifecycle`, `/apprentices/[id]/…`) so deep links survive remounting.
 
 ---
 
@@ -70,9 +70,9 @@ The standalone shell includes a **permission-driven workspace demonstrator**:
 
 Workspaces provide **context, navigation and priorities**. Shared pages represent **records**. Permissions control what each user can view and change.
 
-- One business object → one canonical route (e.g. `/learners/[learnerId]` for every authorised role)
+- One business object → one canonical route (e.g. `/apprentices/[apprenticeId]` for every authorised role)
 - Workspace dashboards and the Lifecycle Board stay unique
-- Do not create role-prefixed copies (`/tutor/learners/…`, `/management/learners/…`)
+- Do not create role-prefixed copies (`/tutor/apprentices/…`, `/management/apprentices/…`)
 
 Full rules, route table, and “check before creating a page” checklist: [`docs/architecture/shared-pages.md`](shared-pages.md).
 

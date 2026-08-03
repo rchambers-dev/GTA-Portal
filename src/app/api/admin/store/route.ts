@@ -4,19 +4,51 @@ import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 import type {
-  AdminLearnerEnrolment,
-  AdminLearnerRecord,
+  AdminCohortChangeLogEntry,
+  AdminCohortRecord,
+  AdminApprenticeEnrolment,
+  AdminApprenticeRecord,
   AdminPackItemStatus,
+  AdminPortalUser,
+  AdminTeachingGroupRecord,
 } from "@/features/administration/domain/types";
 import type {
+  CohortInput,
   EnrolmentInput,
-  LearnerInput,
+  EmployerInput,
+  ApprenticeInput,
+  ProgrammeInput,
+  TeachingGroupInput,
+  UserInput,
 } from "@/features/administration/domain/store";
+import {
+  handleCohortAction,
+  isMissingSchemaError,
+  mapCohort,
+  mapCohortChangeLog,
+  mapTeachingGroup,
+  type CohortChangeLogRow,
+  type CohortRow,
+  type TeachingGroupRow,
+} from "./cohort-handlers";
+import {
+  handleStaffAction,
+  loadPortalUsers,
+} from "./staff-handlers";
+import {
+  handleCatalogueAction,
+  loadEmployers,
+  loadProgrammes,
+} from "./catalogue-handlers";
+import {
+  calculateProgrammeWeek,
+  calculateProgrammeYear,
+} from "@/features/apprentice-lifecycle/domain/programme-week";
 
-type LearnerRow = {
+type ApprenticeRow = {
   id: string;
   display_name: string;
-  learner_reference: string;
+  apprentice_reference: string;
   email: string;
   phone: string;
   date_of_birth: string | null;
@@ -29,21 +61,22 @@ type LearnerRow = {
   emergency_contact_phone: string;
   emergency_contact_relationship: string;
   support_notes: string;
-  intake_status: AdminLearnerRecord["intakeStatus"];
+  intake_status: AdminApprenticeRecord["intakeStatus"];
   pack: Record<string, AdminPackItemStatus> | null;
   notes: string;
   created_at: string;
   updated_at: string;
 };
 
-type LearnerProgrammeRow = {
+type ApprenticeProgrammeRow = {
   id: string;
-  kind: AdminLearnerEnrolment["kind"];
-  status: AdminLearnerEnrolment["status"];
-  learner_id: string | null;
+  kind: AdminApprenticeEnrolment["kind"];
+  status: AdminApprenticeEnrolment["status"];
+  apprentice_id: string | null;
   programme_name: string;
   standard_code: string;
   cohort_id: string | null;
+  teaching_group_id: string | null;
   employer_id: string;
   employer_name: string;
   workplace_contact: string;
@@ -59,7 +92,7 @@ type LearnerProgrammeRow = {
   notes: string;
   created_at: string;
   updated_at: string;
-  learners: LearnerRow | LearnerRow[] | null;
+  apprentices: ApprenticeRow | ApprenticeRow[] | null;
 };
 
 function firstJoined<T>(value: T | T[] | null): T | null {
@@ -67,11 +100,11 @@ function firstJoined<T>(value: T | T[] | null): T | null {
   return value ?? null;
 }
 
-function mapLearner(row: LearnerRow): AdminLearnerRecord {
+function mapApprentice(row: ApprenticeRow): AdminApprenticeRecord {
   return {
     id: row.id,
     displayName: row.display_name,
-    learnerReference: row.learner_reference,
+    apprenticeReference: row.apprentice_reference,
     email: row.email,
     phone: row.phone,
     dateOfBirth: row.date_of_birth ?? "",
@@ -92,21 +125,22 @@ function mapLearner(row: LearnerRow): AdminLearnerRecord {
   };
 }
 
-function mapEnrolment(row: LearnerProgrammeRow): AdminLearnerEnrolment {
-  const learner = firstJoined(row.learners);
+function mapEnrolment(row: ApprenticeProgrammeRow): AdminApprenticeEnrolment {
+  const apprentice = firstJoined(row.apprentices);
   return {
     id: row.id,
     kind: row.kind,
     status: row.status,
-    learnerId: row.learner_id,
-    displayName: learner?.display_name ?? "",
-    email: learner?.email ?? "",
-    phone: learner?.phone ?? "",
-    dateOfBirth: learner?.date_of_birth ?? "",
-    uln: learner?.uln ?? "",
+    apprenticeId: row.apprentice_id,
+    displayName: apprentice?.display_name ?? "",
+    email: apprentice?.email ?? "",
+    phone: apprentice?.phone ?? "",
+    dateOfBirth: apprentice?.date_of_birth ?? "",
+    uln: apprentice?.uln ?? "",
     programmeName: row.programme_name,
     standardCode: row.standard_code,
     cohortId: row.cohort_id,
+    teachingGroupId: row.teaching_group_id ?? null,
     employerId: row.employer_id,
     employerName: row.employer_name,
     workplaceContact: row.workplace_contact,
@@ -114,11 +148,21 @@ function mapEnrolment(row: LearnerProgrammeRow): AdminLearnerEnrolment {
     tutorName: row.tutor_name,
     startDate: row.start_date,
     originalPlannedEndDate: row.original_planned_end_date,
-    programmeYear:
-      row.programme_year === 1 || row.programme_year === 2 || row.programme_year === 3
+    programmeYear: (() => {
+      const liveWeek = row.start_date
+        ? calculateProgrammeWeek(row.start_date)
+        : null;
+      const liveYear = calculateProgrammeYear(liveWeek);
+      if (liveYear === 1 || liveYear === 2 || liveYear === 3) return liveYear;
+      return row.programme_year === 1 ||
+        row.programme_year === 2 ||
+        row.programme_year === 3
         ? row.programme_year
-        : null,
-    programmeWeek: row.programme_week,
+        : null;
+    })(),
+    programmeWeek: row.start_date
+      ? calculateProgrammeWeek(row.start_date)
+      : row.programme_week,
     attendancePercent: row.attendance_percent,
     actualProgressPercent: row.actual_progress_percent,
     collegeDays: row.college_days,
@@ -128,7 +172,7 @@ function mapEnrolment(row: LearnerProgrammeRow): AdminLearnerEnrolment {
   };
 }
 
-function generateLearnerReference(): string {
+function generateApprenticeReference(): string {
   const year = new Date().getFullYear();
   const serial = String(Math.floor(Math.random() * 90000) + 10000);
   return `GTA-${year}-0${serial.slice(0, 4)}`;
@@ -153,28 +197,113 @@ export async function GET() {
   if (session instanceof NextResponse) return session;
 
   const supabase = createSupabaseAdminClient();
-  const [{ data: learners, error: learnersError }, { data: enrolments, error: enrolmentsError }] =
-    await Promise.all([
-      supabase
-        .from("learners")
-        .select("*")
-        .order("display_name", { ascending: true }),
-      supabase
-        .from("learner_programmes")
-        .select("*, learners(*)")
-        .order("updated_at", { ascending: false }),
-    ]);
+  const [
+    { data: apprentices, error: apprenticesError },
+    { data: enrolments, error: enrolmentsError },
+    cohortsResult,
+    teachingGroupsResult,
+    changeLogsResult,
+    employersResult,
+    programmesResult,
+  ] = await Promise.all([
+    supabase.from("apprentices").select("*").order("display_name", { ascending: true }),
+    supabase
+      .from("apprentice_programmes")
+      .select("*, apprentices(*)")
+      .order("updated_at", { ascending: false }),
+    supabase.from("cohorts").select("*").order("start_date", { ascending: false }),
+    supabase
+      .from("cohort_teaching_groups")
+      .select("*")
+      .order("created_at", { ascending: true }),
+    supabase
+      .from("cohort_change_log")
+      .select("*")
+      .order("created_at", { ascending: false }),
+    loadEmployers(supabase),
+    loadProgrammes(supabase),
+  ]);
 
-  if (learnersError || enrolmentsError) {
+  const usersResult = await loadPortalUsers(supabase);
+  if (usersResult.error) {
+    return NextResponse.json({ error: usersResult.error }, { status: 500 });
+  }
+
+  if (apprenticesError || enrolmentsError) {
     return NextResponse.json(
-      { error: learnersError?.message ?? enrolmentsError?.message ?? "Unable to load admin data" },
+      {
+        error:
+          apprenticesError?.message ??
+          enrolmentsError?.message ??
+          "Unable to load admin data",
+      },
       { status: 500 },
     );
   }
 
+  if (employersResult.error) {
+    return NextResponse.json({ error: employersResult.error }, { status: 500 });
+  }
+  if (programmesResult.error) {
+    return NextResponse.json(
+      { error: programmesResult.error },
+      { status: 500 },
+    );
+  }
+
+  let cohorts: AdminCohortRecord[] = [];
+  if (cohortsResult.error) {
+    if (!isMissingSchemaError(cohortsResult.error.message)) {
+      return NextResponse.json(
+        { error: cohortsResult.error.message },
+        { status: 500 },
+      );
+    }
+  } else {
+    cohorts = (cohortsResult.data ?? []).map((row) =>
+      mapCohort(row as CohortRow),
+    );
+  }
+
+  let teachingGroups: AdminTeachingGroupRecord[] = [];
+  if (teachingGroupsResult.error) {
+    if (!isMissingSchemaError(teachingGroupsResult.error.message)) {
+      return NextResponse.json(
+        { error: teachingGroupsResult.error.message },
+        { status: 500 },
+      );
+    }
+  } else {
+    teachingGroups = (teachingGroupsResult.data ?? []).map((row) =>
+      mapTeachingGroup(row as TeachingGroupRow),
+    );
+  }
+
+  let cohortChangeLogs: AdminCohortChangeLogEntry[] = [];
+  if (changeLogsResult.error) {
+    if (!isMissingSchemaError(changeLogsResult.error.message)) {
+      return NextResponse.json(
+        { error: changeLogsResult.error.message },
+        { status: 500 },
+      );
+    }
+  } else {
+    cohortChangeLogs = (changeLogsResult.data ?? []).map((row) =>
+      mapCohortChangeLog(row as CohortChangeLogRow),
+    );
+  }
+
   return NextResponse.json({
-    learners: (learners ?? []).map((row) => mapLearner(row as LearnerRow)),
-    enrolments: (enrolments ?? []).map((row) => mapEnrolment(row as LearnerProgrammeRow)),
+    apprentices: (apprentices ?? []).map((row) => mapApprentice(row as ApprenticeRow)),
+    enrolments: (enrolments ?? []).map((row) =>
+      mapEnrolment(row as ApprenticeProgrammeRow),
+    ),
+    employers: employersResult.employers,
+    programmes: programmesResult.programmes,
+    cohorts,
+    teachingGroups,
+    cohortChangeLogs,
+    users: usersResult.users,
   });
 }
 
@@ -183,20 +312,97 @@ export async function POST(request: Request) {
   if (session instanceof NextResponse) return session;
 
   const body = (await request.json()) as
-    | { action: "createLearner"; input: LearnerInput }
-    | { action: "updateLearner"; id: string; patch: Partial<LearnerInput> }
+    | { action: "createApprentice"; input: ApprenticeInput }
+    | { action: "updateApprentice"; id: string; patch: Partial<ApprenticeInput> }
     | { action: "createEnrolment"; input: EnrolmentInput }
-    | { action: "updateEnrolment"; id: string; patch: Partial<EnrolmentInput> };
+    | { action: "updateEnrolment"; id: string; patch: Partial<EnrolmentInput> }
+    | { action: "createEmployer"; input: EmployerInput }
+    | { action: "updateEmployer"; id: string; patch: Partial<EmployerInput> }
+    | { action: "createProgramme"; input: ProgrammeInput }
+    | { action: "updateProgramme"; id: string; patch: Partial<ProgrammeInput> }
+    | { action: "createCohort"; input: CohortInput }
+    | { action: "updateCohort"; id: string; patch: Partial<CohortInput> }
+    | {
+        action: "lockCohortSession";
+        id: string;
+        summary: string;
+        details: string[];
+        actorName?: string;
+      }
+    | { action: "createTeachingGroup"; input: TeachingGroupInput }
+    | {
+        action: "updateTeachingGroup";
+        id: string;
+        patch: Partial<TeachingGroupInput>;
+      }
+    | { action: "deleteTeachingGroup"; id: string }
+    | { action: "createStaff"; input: UserInput & { password?: string } }
+    | {
+        action: "updateStaffProfile";
+        id: string;
+        patch: {
+          role?: AdminPortalUser["role"];
+          workspace?: string;
+          jobTitles?: string[];
+        };
+      }
+    | {
+        action: "setPortalEnvironment";
+        id: string;
+        status: AdminPortalUser["status"];
+        actorName: string;
+      }
+    | {
+        action: "revealApprenticePassword";
+        id: string;
+        adminPassword: string;
+      };
 
   const supabase = createSupabaseAdminClient();
 
-  if (body.action === "createLearner") {
+  const actorFallback =
+    session.account.name?.trim() ||
+    session.account.email?.trim() ||
+    "Administrator";
+
+  if (
+    body.action === "createEmployer" ||
+    body.action === "updateEmployer" ||
+    body.action === "createProgramme" ||
+    body.action === "updateProgramme"
+  ) {
+    return handleCatalogueAction(supabase, body);
+  }
+
+  if (
+    body.action === "createCohort" ||
+    body.action === "updateCohort" ||
+    body.action === "lockCohortSession" ||
+    body.action === "createTeachingGroup" ||
+    body.action === "updateTeachingGroup" ||
+    body.action === "deleteTeachingGroup"
+  ) {
+    const handled = await handleCohortAction(supabase, body, actorFallback);
+    if (handled) return handled;
+  }
+
+  if (
+    body.action === "createStaff" ||
+    body.action === "updateStaffProfile" ||
+    body.action === "setPortalEnvironment" ||
+    body.action === "revealApprenticePassword"
+  ) {
+    const handled = await handleStaffAction(supabase, body, session);
+    if (handled) return handled;
+  }
+
+  if (body.action === "createApprentice") {
     const input = body.input;
     const { data, error } = await supabase
-      .from("learners")
+      .from("apprentices")
       .insert({
         display_name: input.displayName.trim(),
-        learner_reference: input.learnerReference.trim() || generateLearnerReference(),
+        apprentice_reference: input.apprenticeReference.trim() || generateApprenticeReference(),
         email: input.email.trim(),
         phone: input.phone.trim(),
         date_of_birth: input.dateOfBirth || null,
@@ -217,17 +423,19 @@ export async function POST(request: Request) {
       .single();
 
     if (error || !data) {
-      return NextResponse.json({ error: error?.message ?? "Unable to create learner" }, { status: 500 });
+      return NextResponse.json({ error: error?.message ?? "Unable to create apprentice" }, { status: 500 });
     }
 
-    return NextResponse.json({ learner: mapLearner(data as LearnerRow) });
+    return NextResponse.json({ apprentice: mapApprentice(data as ApprenticeRow) });
   }
 
-  if (body.action === "updateLearner") {
+  if (body.action === "updateApprentice") {
     const patch = body.patch;
     const update: Record<string, unknown> = {};
     if (patch.displayName != null) update.display_name = patch.displayName.trim();
-    if (patch.learnerReference != null) update.learner_reference = patch.learnerReference.trim();
+    if (patch.apprenticeReference != null) {
+      update.apprentice_reference = patch.apprenticeReference.trim();
+    }
     if (patch.email != null) update.email = patch.email.trim();
     if (patch.phone != null) update.phone = patch.phone.trim();
     if (patch.dateOfBirth != null) update.date_of_birth = patch.dateOfBirth || null;
@@ -250,30 +458,31 @@ export async function POST(request: Request) {
     if (patch.notes != null) update.notes = patch.notes.trim();
 
     const { data, error } = await supabase
-      .from("learners")
+      .from("apprentices")
       .update(update)
       .eq("id", body.id)
       .select("*")
       .single();
 
     if (error || !data) {
-      return NextResponse.json({ error: error?.message ?? "Unable to update learner" }, { status: 500 });
+      return NextResponse.json({ error: error?.message ?? "Unable to update apprentice" }, { status: 500 });
     }
 
-    return NextResponse.json({ learner: mapLearner(data as LearnerRow) });
+    return NextResponse.json({ apprentice: mapApprentice(data as ApprenticeRow) });
   }
 
   if (body.action === "createEnrolment") {
     const input = body.input;
     const { data, error } = await supabase
-      .from("learner_programmes")
+      .from("apprentice_programmes")
       .insert({
         kind: input.kind,
         status: input.status ?? (input.kind === "new_starter" ? "pending_start" : "active"),
-        learner_id: input.learnerId,
+        apprentice_id: input.apprenticeId,
         programme_name: input.programmeName,
         standard_code: input.standardCode,
         cohort_id: input.cohortId,
+        teaching_group_id: input.teachingGroupId ?? null,
         employer_id: input.employerId,
         employer_name: input.employerName,
         workplace_contact: input.workplaceContact.trim(),
@@ -288,24 +497,31 @@ export async function POST(request: Request) {
         college_days: input.collegeDays.trim(),
         notes: input.notes.trim(),
       })
-      .select("*, learners(*)")
+      .select("*, apprentices(*)")
       .single();
 
     if (error || !data) {
       return NextResponse.json({ error: error?.message ?? "Unable to create enrolment" }, { status: 500 });
     }
 
-    return NextResponse.json({ enrolment: mapEnrolment(data as LearnerProgrammeRow) });
+    return NextResponse.json({ enrolment: mapEnrolment(data as ApprenticeProgrammeRow) });
+  }
+
+  if (body.action !== "updateEnrolment") {
+    return NextResponse.json({ error: "Unknown action" }, { status: 400 });
   }
 
   const patch = body.patch;
   const update: Record<string, unknown> = {};
   if (patch.kind != null) update.kind = patch.kind;
   if (patch.status != null) update.status = patch.status;
-  if (patch.learnerId !== undefined) update.learner_id = patch.learnerId;
+  if (patch.apprenticeId !== undefined) update.apprentice_id = patch.apprenticeId;
   if (patch.programmeName != null) update.programme_name = patch.programmeName;
   if (patch.standardCode != null) update.standard_code = patch.standardCode;
   if (patch.cohortId !== undefined) update.cohort_id = patch.cohortId;
+  if (patch.teachingGroupId !== undefined) {
+    update.teaching_group_id = patch.teachingGroupId;
+  }
   if (patch.employerId != null) update.employer_id = patch.employerId;
   if (patch.employerName != null) update.employer_name = patch.employerName;
   if (patch.workplaceContact != null) update.workplace_contact = patch.workplaceContact.trim();
@@ -325,15 +541,15 @@ export async function POST(request: Request) {
   if (patch.notes != null) update.notes = patch.notes.trim();
 
   const { data, error } = await supabase
-    .from("learner_programmes")
+    .from("apprentice_programmes")
     .update(update)
     .eq("id", body.id)
-    .select("*, learners(*)")
+    .select("*, apprentices(*)")
     .single();
 
   if (error || !data) {
     return NextResponse.json({ error: error?.message ?? "Unable to update enrolment" }, { status: 500 });
   }
 
-  return NextResponse.json({ enrolment: mapEnrolment(data as LearnerProgrammeRow) });
+  return NextResponse.json({ enrolment: mapEnrolment(data as ApprenticeProgrammeRow) });
 }

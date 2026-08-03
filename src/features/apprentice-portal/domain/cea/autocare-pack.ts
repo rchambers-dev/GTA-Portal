@@ -1,0 +1,759 @@
+import type { CeaApprenticeState, CeaPackDef, CeaTaskDef } from "./types";
+
+function task(
+  groupId: string,
+  number: number,
+  title: string,
+  related?: CeaTaskDef["relatedTeaching"],
+  alwaysMandatory?: boolean,
+): CeaTaskDef {
+  return {
+    id: `${groupId}-t${number}`,
+    groupId,
+    number,
+    title,
+    alwaysMandatory,
+    relatedTeaching: related,
+  };
+}
+
+/**
+ * Seeded from MV13.1 Autocare Apprentice Personal Tracking v1.8.
+ * Official backbone: Autocare Technician ST0499 (Skills England / IMI EPA AS-AC-EPA).
+ * Module/topic links are best-effort demo mappings — staff can correct.
+ */
+export const AUTOCARE_CEA_PACK: CeaPackDef = {
+  id: "cea-autocare-st0499",
+  title: "Autocare Apprentice Personal Tracking",
+  version: "v1.8",
+  standardCode: "ST0499",
+  standardLabel: "Autocare Technician (Level 2) — ST0499",
+  milestones: [
+    {
+      id: "ms-foundation",
+      title: "Foundation",
+      description: "Year 1 · 0–6 months — foundation skills and EV/hybrid awareness.",
+      sortOrder: 1,
+      phaseLabel: "0–6 months",
+    },
+    {
+      id: "ms-year1-systems",
+      title: "Year 1 systems",
+      description:
+        "Year 1 · 7–12 months — tyres, brakes, steering, cooling, starting & charging.",
+      sortOrder: 2,
+      phaseLabel: "7–12 months",
+    },
+    {
+      id: "ms-gateway1",
+      title: "Gateway 1",
+      description: "Gateway assessments and e-logbook review before Year 2.",
+      sortOrder: 3,
+      phaseLabel: "Gateway 1",
+    },
+    {
+      id: "ms-year2-systems",
+      title: "Year 2 systems",
+      description:
+        "Year 2 · 13–21 months — customer, stock, advanced systems, inspection.",
+      sortOrder: 4,
+      phaseLabel: "13–21 months",
+    },
+    {
+      id: "ms-gateway2",
+      title: "Gateway 2",
+      description: "Final gateway assessments and e-logbook review before EPA.",
+      sortOrder: 5,
+      phaseLabel: "Gateway 2",
+    },
+    {
+      id: "ms-epa",
+      title: "EPA",
+      description: "21–24 months — End-point assessment (IMI AS-AC-EPA).",
+      sortOrder: 6,
+      phaseLabel: "21–24 months",
+    },
+  ],
+  groups: [
+    {
+      id: "g1",
+      milestoneId: "ms-foundation",
+      number: 1,
+      title: "Foundation Skills",
+      mandatoryRequired: 5,
+      milestoneWeightPercent: 70,
+      yearLabel: "Year 1",
+      phaseLabel: "0–6 months",
+      knowledgeTestNote: "Group knowledge tests 1–3",
+      tasks: [
+        task("g1", 1, "Health and safety practices in vehicle maintenance", {
+          moduleId: "m1",
+          label: "Health & safety in the workshop",
+          imiRefs: ["ST0499:Duty6", "ST0499:B-health-safety"],
+          needsStaffConfirm: true,
+        }),
+        task("g1", 2, "Using mechanical measuring equipment", {
+          moduleId: "m2",
+          label: "Hand tools and workshop practice",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g1", 3, "Using electrical measuring equipment", {
+          moduleId: "m2",
+          label: "Hand tools and workshop practice",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g1", 4, "Using tools and equipment", {
+          moduleId: "m2",
+          label: "Hand tools and workshop practice",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g1", 5, "Fabrication task", {
+          moduleId: "m2",
+          label: "Hand tools and workshop practice",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g2",
+      milestoneId: "ms-foundation",
+      number: 2,
+      title: "Electric and Hybrid Awareness",
+      mandatoryRequired: 1,
+      milestoneWeightPercent: 30,
+      yearLabel: "Year 1",
+      phaseLabel: "0–6 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g2", 1, "Locating electric/hybrid vehicle components", {
+          moduleId: "m3",
+          label: "Vehicle systems overview",
+          imiRefs: ["ST0499:Gateway:EV-isolation-prep"],
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g3",
+      milestoneId: "ms-year1-systems",
+      number: 3,
+      title: "Wheels and Tyres",
+      mandatoryRequired: 2,
+      milestoneWeightPercent: 20,
+      yearLabel: "Year 1",
+      phaseLabel: "7–12 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g3", 1, "Remove and install tyres", {
+          label: "Tyre replacement practice",
+          imiRefs: ["ST0499:K9", "ST0499:S10", "ST0499:Duty4"],
+          needsStaffConfirm: true,
+        }),
+        task("g3", 2, "Carry out puncture repair", {
+          label: "Tyre repair",
+          imiRefs: ["ST0499:K9", "ST0499:S10"],
+          needsStaffConfirm: true,
+        }),
+        task("g3", 3, "Replace a TPMS valve", {
+          label: "TPMS",
+          imiRefs: ["ST0499:K9"],
+          needsStaffConfirm: true,
+        }),
+        task("g3", 4, "Balance all four wheels", {
+          label: "Wheel balancing",
+          imiRefs: ["ST0499:S10", "ST0499:Duty4"],
+          needsStaffConfirm: true,
+        }),
+        task("g3", 5, "Repair run-flat tyre", {
+          label: "Run-flat repair",
+          imiRefs: ["ST0499:K9", "ST0499:S10"],
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g4",
+      milestoneId: "ms-year1-systems",
+      number: 4,
+      title: "Basic Braking",
+      mandatoryRequired: 2,
+      milestoneWeightPercent: 20,
+      yearLabel: "Year 1",
+      phaseLabel: "7–12 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g4", 1, "Remove and install front brake discs and pads", {
+          moduleId: "m4",
+          label: "Routine maintenance — brakes",
+          imiRefs: ["ST0499:K12", "ST0499:Duty4"],
+          needsStaffConfirm: true,
+        }),
+        task("g4", 2, "Remove and install rear brake shoes and drums", {
+          moduleId: "m4",
+          label: "Routine maintenance — brakes",
+          imiRefs: ["ST0499:K12"],
+          needsStaffConfirm: true,
+        }),
+        task("g4", 3, "Replace hydraulic brake fluid", {
+          imiRefs: ["ST0499:K12"],
+          label: "Brake hydraulics",
+          needsStaffConfirm: true,
+        }),
+        task("g4", 4, "Remove and install rear brake discs and pads", {
+          moduleId: "m4",
+          label: "Routine maintenance — brakes",
+          imiRefs: ["ST0499:K12"],
+          needsStaffConfirm: true,
+        }),
+        task("g4", 5, "Check front brake disc run-out", {
+          imiRefs: ["ST0499:K12"],
+          label: "Brake inspection",
+          needsStaffConfirm: true,
+        }),
+        task("g4", 6, "Check rear brake drum ovality", {
+          imiRefs: ["ST0499:K12"],
+          label: "Brake inspection",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g5",
+      milestoneId: "ms-year1-systems",
+      number: 5,
+      title: "Basic Steering and Suspension",
+      mandatoryRequired: 3,
+      milestoneWeightPercent: 20,
+      yearLabel: "Year 1",
+      phaseLabel: "7–12 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g5", 1, "Carry out two-wheel alignment", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Wheel alignment",
+          needsStaffConfirm: true,
+        }),
+        task("g5", 2, "Remove and replace a steering track rod end", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Steering components",
+          needsStaffConfirm: true,
+        }),
+        task("g5", 3, "Remove and replace a front lower ball joint", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Suspension components",
+          needsStaffConfirm: true,
+        }),
+        task("g5", 4, "Remove and replace a front suspension strut", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Suspension components",
+          needsStaffConfirm: true,
+        }),
+        task("g5", 5, "Remove and replace a rear suspension damper", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Suspension components",
+          needsStaffConfirm: true,
+        }),
+        task("g5", 6, "Remove and install power steering pump", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Steering systems",
+          needsStaffConfirm: true,
+        }),
+        task("g5", 7, "Remove and install steering rack gaitor", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Steering systems",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g6",
+      milestoneId: "ms-year1-systems",
+      number: 6,
+      title: "Cooling, Lubrication, and Filters",
+      mandatoryRequired: 2,
+      milestoneWeightPercent: 20,
+      yearLabel: "Year 1",
+      phaseLabel: "7–12 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g6", 1, "Remove and install radiator", {
+          moduleId: "m3",
+          topicId: undefined,
+          label: "Cooling systems",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g6", 2, "Remove and install a water pump", {
+          label: "Cooling systems",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g6", 3, "Remove and install a thermostat", {
+          label: "Cooling systems",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g6", 4, "Replace a sump gasket", {
+          label: "Lubrication",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g6", 5, "Remove and install oil pump", {
+          label: "Lubrication",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g7",
+      milestoneId: "ms-year1-systems",
+      number: 7,
+      title: "Starting and Charging Systems",
+      mandatoryRequired: 1,
+      milestoneWeightPercent: 20,
+      yearLabel: "Year 1",
+      phaseLabel: "7–12 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g7", 1, "Remove and install starter motor", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Starting system",
+          needsStaffConfirm: true,
+        }),
+        task("g7", 2, "Remove and install alternator", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Charging system",
+          needsStaffConfirm: true,
+        }),
+        task("g7", 3, "Replace vehicle battery", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Battery & charging",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g8",
+      milestoneId: "ms-year2-systems",
+      number: 8,
+      title: "Customer Service and Sales",
+      mandatoryRequired: 1,
+      milestoneWeightPercent: 10,
+      yearLabel: "Year 2",
+      phaseLabel: "13–21 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g8", 1, "Dealing with customer needs and relationships", {
+          imiRefs: ["ST0499:Duty1"],
+          label: "Customer communication",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g9",
+      milestoneId: "ms-year2-systems",
+      number: 9,
+      title: "Stock Management",
+      mandatoryRequired: 1,
+      milestoneWeightPercent: 10,
+      yearLabel: "Year 2",
+      phaseLabel: "13–21 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g9", 1, "Sourcing parts for servicing", {
+          imiRefs: ["ST0499:Duty5"],
+          label: "Parts sourcing",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g10",
+      milestoneId: "ms-year2-systems",
+      number: 10,
+      title: "Advanced Braking",
+      mandatoryRequired: 1,
+      milestoneWeightPercent: 15,
+      yearLabel: "Year 2",
+      phaseLabel: "13–21 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g10", 1, "Remove and install an ABS wheel speed sensor", {
+          imiRefs: ["ST0499:K12"],
+          label: "ABS systems",
+          needsStaffConfirm: true,
+        }),
+        task("g10", 2, "Remove and install ABS reluctor wheel", {
+          imiRefs: ["ST0499:K12"],
+          label: "ABS systems",
+          needsStaffConfirm: true,
+        }),
+        task("g10", 3, "Check output from ABS wheel speed sensor", {
+          imiRefs: ["ST0499:K12"],
+          label: "ABS diagnostics",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g11",
+      milestoneId: "ms-year2-systems",
+      number: 11,
+      title: "Advance Steering and Suspension",
+      mandatoryRequired: 2,
+      milestoneWeightPercent: 15,
+      yearLabel: "Year 2",
+      phaseLabel: "13–21 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g11", 1, "Traction control fault", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Advanced chassis systems",
+          needsStaffConfirm: true,
+        }),
+        task("g11", 2, "Replace suspension ride height sensor", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Advanced suspension",
+          needsStaffConfirm: true,
+        }),
+        task("g11", 3, "Diagnose fault with adaptive suspension", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Advanced suspension",
+          needsStaffConfirm: true,
+        }),
+        task("g11", 4, "Diagnose excessive front tyre wear", {
+          imiRefs: ["ST0499:K9", "ST0499:Duty4"],
+          label: "Tyre wear diagnosis",
+          needsStaffConfirm: true,
+        }),
+        task("g11", 5, "Carry out 4-wheel alignment and report", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Four-wheel alignment",
+          needsStaffConfirm: true,
+        }),
+        task("g11", 6, "Diagnose ADAS fault", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "ADAS",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g12",
+      milestoneId: "ms-year2-systems",
+      number: 12,
+      title: "Exhaust and Emissions",
+      mandatoryRequired: 2,
+      milestoneWeightPercent: 15,
+      yearLabel: "Year 2",
+      phaseLabel: "13–21 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g12", 1, "Remove and install complete exhaust system", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Exhaust systems",
+          needsStaffConfirm: true,
+        }),
+        task("g12", 2, "Carry out an exhaust emissions test", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Emissions testing",
+          needsStaffConfirm: true,
+        }),
+        task("g12", 3, "Diagnose exhaust emissions fault", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Emissions diagnosis",
+          needsStaffConfirm: true,
+        }),
+        task("g12", 4, "Checking the operation of the oxygen sensor", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "Emissions sensors",
+          needsStaffConfirm: true,
+        }),
+        task("g12", 5, "Checking operation of the EGR valve", {
+          imiRefs: ["ST0499:Duty4"],
+          label: "EGR systems",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g13",
+      milestoneId: "ms-year2-systems",
+      number: 13,
+      title: "Air Conditioning",
+      mandatoryRequired: 1,
+      milestoneWeightPercent: 10,
+      yearLabel: "Year 2",
+      phaseLabel: "13–21 months",
+      knowledgeTestNote: "Group knowledge test",
+      tasks: [
+        task("g13", 1, "Remove and install air conditioning condenser", {
+          imiRefs: ["ST0499:Duty4", "ST0499:Gateway:F-Gas"],
+          label: "Air conditioning",
+          needsStaffConfirm: true,
+        }),
+        task("g13", 2, "Remove and install air conditioning expansion valve", {
+          imiRefs: ["ST0499:Duty4", "ST0499:Gateway:F-Gas"],
+          label: "Air conditioning",
+          needsStaffConfirm: true,
+        }),
+        task("g13", 3, "Remove and install air conditioning compressor", {
+          imiRefs: ["ST0499:Duty4", "ST0499:Gateway:F-Gas"],
+          label: "Air conditioning",
+          needsStaffConfirm: true,
+        }),
+      ],
+    },
+    {
+      id: "g14",
+      milestoneId: "ms-year2-systems",
+      number: 14,
+      title: "Vehicle Inspection",
+      mandatoryRequired: 2,
+      milestoneWeightPercent: 15,
+      yearLabel: "Year 2",
+      phaseLabel: "13–21 months",
+      knowledgeTestNote: "Group knowledge test · Task 5 is always mandatory",
+      tasks: [
+        task("g14", 1, "Prepare for an oil service", {
+          moduleId: "m4",
+          label: "Routine maintenance",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g14", 2, "Prepare for an interim service", {
+          moduleId: "m4",
+          label: "Routine maintenance",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g14", 3, "Prepare for a major service", {
+          moduleId: "m4",
+          label: "Routine maintenance",
+          imiRefs: ["ST0499:Duty2"],
+          needsStaffConfirm: true,
+        }),
+        task("g14", 4, "Prepare a 3-year service plan", {
+          imiRefs: ["ST0499:Duty2"],
+          label: "Service planning",
+          needsStaffConfirm: true,
+        }),
+        task(
+          "g14",
+          5,
+          "Safety inspection and quote",
+          {
+            imiRefs: ["ST0499:Duty2"],
+            label: "Vehicle safety inspection",
+            needsStaffConfirm: true,
+          },
+          true,
+        ),
+      ],
+    },
+  ],
+  gatewayItems: [
+    {
+      id: "gw1-01",
+      milestoneId: "ms-gateway1",
+      code: "GW1AC01",
+      title: "Remove and Replace Wheels and Tyres",
+      status: "not_started",
+    },
+    {
+      id: "gw1-02",
+      milestoneId: "ms-gateway1",
+      code: "GW1AC02",
+      title: "Remove and Replace Battery Charging and Starting System Components",
+      status: "not_started",
+    },
+    {
+      id: "gw1-03",
+      milestoneId: "ms-gateway1",
+      code: "GW1AC03",
+      title: "Carry Out Front Wheel Alignment",
+      status: "not_started",
+    },
+    {
+      id: "gw1-04",
+      milestoneId: "ms-gateway1",
+      code: "GW1AC04",
+      title: "Remove and Replace Brake Discs and Pads",
+      status: "not_started",
+    },
+    {
+      id: "gw1-k",
+      milestoneId: "ms-gateway1",
+      code: "AP01GW1k",
+      title: "Knowledge Assessment",
+      status: "not_started",
+    },
+    {
+      id: "gw1-log",
+      milestoneId: "ms-gateway1",
+      code: "E-Logbook",
+      title: "E-Logbook Review",
+      status: "not_started",
+    },
+    {
+      id: "gw2-01",
+      milestoneId: "ms-gateway2",
+      code: "GW2AC01",
+      title: "Carry Out a Vehicle Safety Inspection",
+      status: "not_started",
+    },
+    {
+      id: "gw2-02",
+      milestoneId: "ms-gateway2",
+      code: "GW2AC02",
+      title: "Carry Out Four-Wheel Alignment",
+      status: "not_started",
+    },
+    {
+      id: "gw2-03",
+      milestoneId: "ms-gateway2",
+      code: "GW2AC03",
+      title: "Emissions Related Fault",
+      status: "not_started",
+    },
+    {
+      id: "gw2-k",
+      milestoneId: "ms-gateway2",
+      code: "AP01GW2k",
+      title: "Knowledge Assessment",
+      status: "not_started",
+    },
+    {
+      id: "gw2-log",
+      milestoneId: "ms-gateway2",
+      code: "E-Logbook",
+      title: "E-Logbook Review (Final)",
+      status: "not_started",
+    },
+  ],
+  supportItems: [
+    { id: "eq-div", section: "Equality and Diversity", title: "Equality and Diversity Online Training", status: "complete" },
+    { id: "fs-eng", section: "Functional Skills", title: "English Level 1", status: "complete" },
+    { id: "fs-maths", section: "Functional Skills", title: "Maths Level 1", status: "not_started" },
+    { id: "bolt-first", section: "Bolt-on Courses", title: "Emergency First Aid at Work Course", status: "not_started" },
+    { id: "bolt-hs", section: "Bolt-on Courses", title: "Health & Safety Level 2 Course", status: "complete" },
+    { id: "bolt-mh", section: "Bolt-on Courses", title: "Manual Handling Course", status: "not_started" },
+    { id: "bolt-fire", section: "Bolt-on Courses", title: "Fire Safety Course", status: "not_started" },
+    { id: "ev-tyres", section: "Evidence Collection", title: "Professional Quality Job Card – Tyres", status: "not_started" },
+    { id: "ev-brakes", section: "Evidence Collection", title: "Professional Quality Job Card – Brakes", status: "not_started" },
+    { id: "ev-steer", section: "Evidence Collection", title: "Professional Quality Job Card – Steering/Suspension", status: "not_started" },
+  ],
+};
+
+function prog(
+  taskId: string,
+  kind: "mandatory" | "additional",
+  status: CeaApprenticeState["progress"][string]["status"],
+  extra?: Partial<CeaApprenticeState["progress"][string]>,
+): CeaApprenticeState["progress"][string] {
+  return {
+    taskId,
+    kind,
+    additionalEnabled: kind === "additional",
+    status,
+    apprenticeNotes: extra?.apprenticeNotes ?? "",
+    readyAt: extra?.readyAt ?? null,
+    signedOffByRole: extra?.signedOffByRole ?? null,
+    signedOffByName: extra?.signedOffByName ?? null,
+    signedOffAt: extra?.signedOffAt ?? null,
+    returnNote: extra?.returnNote ?? null,
+  };
+}
+
+/** Demo state for Alex Morgan — Year 1, foundation largely done, systems underway. */
+export const ALEX_CEA_STATE: CeaApprenticeState = {
+  apprenticeId: "lrn-alex-morgan",
+  packId: AUTOCARE_CEA_PACK.id,
+  mandatoryByGroup: {
+    g1: ["g1-t1", "g1-t2", "g1-t3", "g1-t4", "g1-t5"],
+    g2: ["g2-t1"],
+    g3: ["g3-t1", "g3-t4"],
+    g4: ["g4-t1", "g4-t4"],
+    g5: ["g5-t1", "g5-t2", "g5-t4"],
+    g6: ["g6-t1", "g6-t3"],
+    g7: ["g7-t3"],
+    g8: ["g8-t1"],
+    g9: ["g9-t1"],
+    g10: ["g10-t1"],
+    g11: ["g11-t4", "g11-t5"],
+    g12: ["g12-t1", "g12-t2"],
+    g13: ["g13-t1"],
+    g14: ["g14-t5", "g14-t1"],
+  },
+  progress: {
+    "g1-t1": prog("g1-t1", "mandatory", "signed_off", {
+      signedOffByRole: "teacher",
+      signedOffByName: "Daniel Turner",
+      signedOffAt: "2026-04-10T14:00:00Z",
+      apprenticeNotes: "PPE, COSHH, and workshop walkthrough completed in college.",
+    }),
+    "g1-t2": prog("g1-t2", "mandatory", "signed_off", {
+      signedOffByRole: "teacher",
+      signedOffByName: "Daniel Turner",
+      signedOffAt: "2026-04-18T11:00:00Z",
+    }),
+    "g1-t3": prog("g1-t3", "mandatory", "signed_off", {
+      signedOffByRole: "teacher",
+      signedOffByName: "Daniel Turner",
+      signedOffAt: "2026-04-25T11:00:00Z",
+    }),
+    "g1-t4": prog("g1-t4", "mandatory", "signed_off", {
+      signedOffByRole: "teacher",
+      signedOffByName: "Daniel Turner",
+      signedOffAt: "2026-05-02T11:00:00Z",
+    }),
+    "g1-t5": prog("g1-t5", "mandatory", "signed_off", {
+      signedOffByRole: "teacher",
+      signedOffByName: "Daniel Turner",
+      signedOffAt: "2026-05-09T11:00:00Z",
+    }),
+    "g2-t1": prog("g2-t1", "mandatory", "signed_off", {
+      signedOffByRole: "teacher",
+      signedOffByName: "Daniel Turner",
+      signedOffAt: "2026-05-20T15:00:00Z",
+      apprenticeNotes: "Located HV components on training vehicle under supervision.",
+    }),
+    "g3-t1": prog("g3-t1", "mandatory", "signed_off", {
+      signedOffByRole: "teacher",
+      signedOffByName: "Daniel Turner",
+      signedOffAt: "2026-06-12T10:00:00Z",
+    }),
+    "g3-t4": prog("g3-t4", "mandatory", "ready_to_assess", {
+      readyAt: "2026-07-18T16:00:00Z",
+      apprenticeNotes: "Balanced all four wheels in college — ready for teacher sign-off.",
+    }),
+    "g3-t2": prog("g3-t2", "additional", "ready_to_assess", {
+      readyAt: "2026-07-19T17:00:00Z",
+      apprenticeNotes: "Puncture repair completed at Riverside Autocare — ready for employer sign-off.",
+    }),
+    "g4-t1": prog("g4-t1", "mandatory", "in_progress", {
+      apprenticeNotes: "Front discs and pads practice started in workshop.",
+    }),
+    "g4-t4": prog("g4-t4", "mandatory", "not_started"),
+  },
+  milestoneReflections: {
+    "ms-foundation": {
+      text: "I completed all foundation skills in college, including measuring tools and EV/hybrid component location. I feel more confident working safely in the workshop.",
+      status: "accepted",
+    },
+    "ms-year1-systems": {
+      text: "So far I have signed off tyre removal/install and I am preparing brake disc work. I also completed a puncture repair at work as an additional task.",
+      status: "draft",
+    },
+  },
+};
+
+export function getCeaPack(packId: string = AUTOCARE_CEA_PACK.id) {
+  return packId === AUTOCARE_CEA_PACK.id ? AUTOCARE_CEA_PACK : null;
+}

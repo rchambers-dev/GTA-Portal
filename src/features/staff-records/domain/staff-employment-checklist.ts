@@ -3,7 +3,7 @@
  *
  * PLACEHOLDER — replace with the real GTA staff employment form once
  * confirmed (expected Monday). Items below are a reasonable UK training-
- * provider starter set so the Staff page can be shaped like Learners.
+ * provider starter set so the Staff page can be shaped like Apprentices.
  */
 
 export type StaffDocRequirementKind = "mandatory" | "conditional";
@@ -63,7 +63,7 @@ export const STAFF_EMPLOYMENT_REQUIREMENTS: StaffDocRequirement[] = [
     sectionTitle: "Vetting & safeguarding",
     requirementKind: "mandatory",
     title: "DBS check (enhanced where required)",
-    applicability: "All staff with learner contact",
+    applicability: "All staff with apprentice contact",
   },
   {
     reference: "2.2",

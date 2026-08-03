@@ -1,8 +1,8 @@
 /**
- * Learner completion RAG (red / amber / green) and management progression BRAG
+ * Apprentice completion RAG (red / amber / green) and management progression BRAG
  * (blue / green / amber / red) — inspired by MBB brag_methods.php, clarified.
  *
- * Learners never see Blue (no fast-track signal). Blue is management-only:
+ * Apprentices never see Blue (no fast-track signal). Blue is management-only:
  * finished the block before the cohort window ended.
  *
  * Gateway / EPA milestones use RAG (green / amber / red) — separate from
@@ -17,9 +17,9 @@ import { AUTOCARE_BLOCKS } from "./autocare-blocks";
 import type { PracticalTaskDef } from "./task-schema";
 import type { TaskSubmissionStatus } from "./task-submission-store";
 import { getTaskSubmission } from "./task-submission-store";
-import { startOfUtcDay } from "@/features/learner-lifecycle/domain/programme-week";
+import { startOfUtcDay } from "@/features/apprentice-lifecycle/domain/programme-week";
 
-export type LearnerRag = "red" | "amber" | "green" | "neutral";
+export type ApprenticeRag = "red" | "amber" | "green" | "neutral";
 export type ProgressionBrag = "blue" | "green" | "amber" | "red";
 /** Gateway / EPA only — not the training BRAG scale. */
 export type MilestoneStatus = "complete" | "on_track" | "behind" | "not_due";
@@ -46,7 +46,7 @@ const AMBER_REMAINING_FRACTION = 0.04;
 
 export function summariseBlockCompletion(
   tasks: PracticalTaskDef[],
-  learnerId: string,
+  apprenticeId: string,
 ): BlockCompletionSummary {
   let verified = 0;
   let inFlight = 0;
@@ -54,7 +54,7 @@ export function summariseBlockCompletion(
   let completedAt: string | null = null;
 
   for (const task of tasks) {
-    const sub = getTaskSubmission(task.id, learnerId);
+    const sub = getTaskSubmission(task.id, apprenticeId);
     if (sub.status === "verified") {
       verified += 1;
       const stamp = sub.trainerSignedAt ?? sub.updatedAt;
@@ -79,13 +79,13 @@ export function summariseBlockCompletion(
 }
 
 /**
- * Learner task colour: complete=green, in progress=amber, needs doing=red.
+ * Apprentice task colour: complete=green, in progress=amber, needs doing=red.
  * Locked tasks stay neutral (not a call-to-action yet).
  */
-export function learnerTaskRag(
+export function apprenticeTaskRag(
   status: TaskSubmissionStatus,
   locked: boolean,
-): LearnerRag {
+): ApprenticeRag {
   if (locked) return "neutral";
   switch (status) {
     case "verified":
@@ -103,7 +103,7 @@ export function learnerTaskRag(
   }
 }
 
-export function learnerTaskRagLabel(
+export function apprenticeTaskRagLabel(
   status: TaskSubmissionStatus,
   locked: boolean,
 ): string {
@@ -129,13 +129,13 @@ export function learnerTaskRagLabel(
 }
 
 /**
- * Learner block colour from task completion (not dates).
+ * Apprentice block colour from task completion (not dates).
  * Locked = neutral · all verified = green · any progress = amber · none = red.
  */
-export function learnerBlockRag(
+export function apprenticeBlockRag(
   summary: BlockCompletionSummary,
   locked: boolean,
-): LearnerRag {
+): ApprenticeRag {
   if (locked) return "neutral";
   if (summary.total === 0) return "neutral";
   if (summary.complete) return "green";
@@ -143,8 +143,8 @@ export function learnerBlockRag(
   return "red";
 }
 
-export function learnerBlockRagLabel(
-  rag: LearnerRag,
+export function apprenticeBlockRagLabel(
+  rag: ApprenticeRag,
   summary: BlockCompletionSummary,
 ): string {
   switch (rag) {
