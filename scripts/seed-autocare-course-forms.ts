@@ -10,7 +10,7 @@ import { createClient } from "@supabase/supabase-js";
 import {
   buildAutocareGroupsSeedFormsForPack,
   listAutocareGroupsSeedTaskIds,
-} from "../src/features/programme-delivery/domain/autocare-groups-forms.ts";
+} from "../src/features/programme-delivery/domain/autocare-groups-forms";
 
 function loadEnvLocal() {
   const out: Record<string, string> = {};

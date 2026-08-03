@@ -8,7 +8,7 @@ import path from "path";
 import {
   buildAutocareGroupsSeedFormsForPack,
   listAutocareGroupsSeedTaskIds,
-} from "../src/features/programme-delivery/domain/autocare-groups-forms.ts";
+} from "../src/features/programme-delivery/domain/autocare-groups-forms";
 
 const PACK_IDS = [
   "cea-autocare-st0499-v1.3",
