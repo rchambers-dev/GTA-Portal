@@ -221,8 +221,8 @@ export function CourseBuilderScreen() {
               onChange={(next) => {
                 const code = next as StandardCode;
                 setStandardCode(code);
+                // Blocks always use the newest Skills England version for that standard.
                 setVersion(CURRENT_STANDARD_VERSION[code]);
-                setSpine("groups");
                 resetDraftForm();
               }}
               options={COURSE_STANDARD_CODES.map((code) => ({
