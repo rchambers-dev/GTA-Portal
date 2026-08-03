@@ -263,6 +263,7 @@ export function TaskFormBuilder({
 
   function markFormComplete() {
     onChange({ ...value, status: "ready" });
+    onClose?.();
   }
 
   function markFormPending() {
@@ -380,7 +381,8 @@ export function TaskFormBuilder({
           </li>
           <li>
             When the form is finished, press <strong>Mark form ready</strong> —
-            until then it stays Pending.
+            it closes so you can open the next task. Until then it stays
+            Pending.
           </li>
         </ol>
       </div>
@@ -709,7 +711,7 @@ export function TaskFormBuilder({
         <span className={styles.statusHint}>
           {isReady
             ? "Ready for use. Any edit will move it back to Pending."
-            : "Changes save as you go. Mark ready when the form is finished."}
+            : "Changes save as you go. Mark ready to finish and close this form."}
         </span>
       </div>
     </div>

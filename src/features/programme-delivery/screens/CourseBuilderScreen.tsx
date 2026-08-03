@@ -667,6 +667,7 @@ export function CourseBuilderScreen() {
                                 });
                               }
                             }}
+                            onClose={() => resetDraftForm()}
                           />
                         </div>
                       ) : (
