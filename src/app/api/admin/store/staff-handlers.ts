@@ -41,6 +41,52 @@ export type ProfileUserRow = {
 const PROFILE_SELECT =
   "id, email, display_name, base_role, workspace, department, responsibilities, linked_apprentice_id, portal_status, enabled_by, enabled_at, disabled_by, disabled_at, created_at, updated_at";
 
+function sanitizeUsernamePart(raw: string): string {
+  return raw
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, "")
+    .replace(/^[._-]+|[._-]+$/g, "")
+    .slice(0, 40);
+}
+
+/** Prefer email local-part so "Reiss Chambers" doesn't collide with another Reiss. */
+function preferredUsername(email: string, displayName: string): string {
+  const fromEmail = sanitizeUsernamePart(email.split("@")[0] ?? "");
+  if (fromEmail.length >= 2) return fromEmail;
+  const fromName = sanitizeUsernamePart(
+    displayName.split(/\s+/).join(".") || displayName,
+  );
+  return fromName || "user";
+}
+
+async function allocateUniqueUsername(
+  supabase: SupabaseAdmin,
+  preferred: string,
+  excludeUserId?: string,
+): Promise<string> {
+  const base = (preferred || "user").slice(0, 40) || "user";
+  for (let i = 0; i < 60; i += 1) {
+    const candidate =
+      i === 0 ? base : `${base.slice(0, Math.max(1, 40 - String(i).length - 1))}-${i}`;
+    let query = supabase
+      .from("profiles")
+      .select("id")
+      .eq("username", candidate)
+      .limit(1);
+    if (excludeUserId) {
+      query = query.neq("id", excludeUserId);
+    }
+    const { data, error } = await query.maybeSingle();
+    if (error && error.code !== "PGRST116") {
+      // If lookup fails, fall through with a highly unique suffix.
+      break;
+    }
+    if (!data) return candidate;
+  }
+  return `${base.slice(0, 24)}-${Date.now().toString(36)}`;
+}
+
 function isApprenticePortalAccount(row: {
   base_role?: string | null;
   workspace?: string | null;
@@ -225,6 +271,11 @@ export async function handleStaffAction(
       );
     }
 
+    const username = await allocateUniqueUsername(
+      supabase,
+      preferredUsername(email, displayName),
+    );
+
     const { data: authData, error: authError } =
       await supabase.auth.admin.createUser({
         email,
@@ -232,26 +283,65 @@ export async function handleStaffAction(
         email_confirm: true,
         user_metadata: {
           display_name: displayName,
-          username: displayName.split(/\s+/)[0] || "Staff",
+          username,
         },
       });
 
-    if (authError || !authData.user) {
+    let userId = authData.user?.id ?? null;
+
+    if (authError || !userId) {
       const message = authError?.message ?? "Unable to create login";
       const already = /already (been )?registered|already exists/i.test(message);
-      return NextResponse.json(
-        { error: message },
-        { status: already ? 409 : 500 },
+      if (!already) {
+        return NextResponse.json({ error: message }, { status: 500 });
+      }
+
+      // Login already exists — link/update the profile instead of failing.
+      const { data: existingProfile } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("email", email)
+        .maybeSingle();
+
+      if (existingProfile?.id) {
+        userId = existingProfile.id;
+      } else {
+        const { data: listed, error: listError } =
+          await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 });
+        if (listError) {
+          return NextResponse.json({ error: listError.message }, { status: 500 });
+        }
+        const existing = (listed.users ?? []).find(
+          (u) => (u.email ?? "").trim().toLowerCase() === email,
+        );
+        if (!existing) {
+          return NextResponse.json({ error: message }, { status: 409 });
+        }
+        userId = existing.id;
+      }
+
+      const { error: pwError } = await supabase.auth.admin.updateUserById(
+        userId,
+        { password, email_confirm: true },
       );
+      if (pwError) {
+        return NextResponse.json({ error: pwError.message }, { status: 500 });
+      }
     }
+
+    const usernameForProfile = await allocateUniqueUsername(
+      supabase,
+      preferredUsername(email, displayName),
+      userId,
+    );
 
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .upsert(
         {
-          id: authData.user.id,
+          id: userId,
           email,
-          username: displayName.split(/\s+/)[0] || "Staff",
+          username: usernameForProfile,
           display_name: displayName,
           base_role: role,
           workspace,
@@ -271,7 +361,10 @@ export async function handleStaffAction(
       .single();
 
     if (profileError || !profile) {
-      await supabase.auth.admin.deleteUser(authData.user.id);
+      // Only delete a brand-new auth user we just created (not a pre-existing one).
+      if (!authError && authData.user?.id) {
+        await supabase.auth.admin.deleteUser(authData.user.id);
+      }
       const message = profileError?.message ?? "Unable to create staff profile";
       if (isMissingSchemaError(message)) {
         return NextResponse.json(
