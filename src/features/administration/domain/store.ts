@@ -117,10 +117,8 @@ export function subscribeAdminStore(listener: () => void): () => void {
 }
 
 export function getAdminSnapshot(): AdminStoreSnapshot {
-  return {
-    ...snapshot,
-    enrolments: snapshot.enrolments.map((row) => normalizeEnrolmentTiming(row)),
-  };
+  // Must return a stable reference for useSyncExternalStore — never allocate here.
+  return snapshot;
 }
 
 /** Server / hydration snapshot — blank seed until live fetch lands. */
@@ -384,15 +382,16 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminAppre
       throw new Error("Unable to create enrolment");
     }
     const data = (await response.json()) as { enrolment: AdminApprenticeEnrolment };
+    const enrolment = normalizeEnrolmentTiming(data.enrolment);
     snapshot = {
       ...snapshot,
       enrolments: [
-        data.enrolment,
-        ...snapshot.enrolments.filter((row) => row.id !== data.enrolment.id),
+        enrolment,
+        ...snapshot.enrolments.filter((row) => row.id !== enrolment.id),
       ],
     };
     emit();
-    return data.enrolment;
+    return enrolment;
   }
   let teachingGroupId = input.teachingGroupId ?? null;
   let tutorName = input.tutorName.trim();
@@ -414,7 +413,7 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminAppre
   }
 
   const stamp = new Date().toISOString();
-  const row: AdminApprenticeEnrolment = {
+  const row = normalizeEnrolmentTiming({
     id: id("enr"),
     kind: input.kind,
     status:
@@ -445,7 +444,7 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminAppre
     notes: input.notes.trim(),
     createdAt: stamp,
     updatedAt: stamp,
-  };
+  });
 
   /** Enrolment queues Account Setup — staff enable the apprentice environment. */
   const emailKey = row.email.toLowerCase();
@@ -502,14 +501,15 @@ export async function updateEnrolment(
     });
     if (!response.ok) return null;
     const data = (await response.json()) as { enrolment: AdminApprenticeEnrolment };
+    const enrolment = normalizeEnrolmentTiming(data.enrolment);
     snapshot = {
       ...snapshot,
       enrolments: snapshot.enrolments.map((row) =>
-        row.id === idValue ? data.enrolment : row,
+        row.id === idValue ? enrolment : row,
       ),
     };
     emit();
-    return data.enrolment;
+    return enrolment;
   }
   const existing = snapshot.enrolments.find((e) => e.id === idValue);
   if (!existing) return null;
@@ -567,12 +567,15 @@ export async function updateEnrolment(
   // EnrolmentInput extras must not persist on the row.
   delete (next as AdminApprenticeEnrolment & { allowOverCapacity?: boolean })
     .allowOverCapacity;
+  const normalised = normalizeEnrolmentTiming(next);
   snapshot = {
     ...snapshot,
-    enrolments: snapshot.enrolments.map((e) => (e.id === idValue ? next : e)),
+    enrolments: snapshot.enrolments.map((e) =>
+      e.id === idValue ? normalised : e,
+    ),
   };
   emit();
-  return next;
+  return normalised;
 }
 
 export type EmployerInput = {
