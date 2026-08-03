@@ -2,17 +2,14 @@
 
 import { useEffect, useState } from "react";
 import {
-  ALEX_PROFILE,
   type ApprenticePortalProfile,
-} from "@/features/apprentice-portal/domain/mock-apprentice";
+} from "@/features/apprentice-portal/domain/apprentice-profile";
 import { calculateProgrammeWeek } from "@/features/apprentice-lifecycle/domain/programme-week";
 
 type State = {
   profile: ApprenticePortalProfile;
   loading: boolean;
   error: string | null;
-  /** True when profile came from /api/apprentice/me */
-  live: boolean;
 };
 
 const EMPTY_LIVE_PROFILE: ApprenticePortalProfile = {
@@ -36,8 +33,10 @@ const EMPTY_LIVE_PROFILE: ApprenticePortalProfile = {
   lastReviewDate: null,
   openActionCount: 0,
   collegeDays: "TBC",
-  // Avoid "today" as a fake start — that skews block dates into the future.
   programmeStartDate: "",
+  deliverySpine: "groups",
+  standardVersion: null,
+  cohortName: null,
 };
 
 function withElapsedProgrammeWeek(
@@ -50,47 +49,20 @@ function withElapsedProgrammeWeek(
   return { ...profile, programmeWeek: elapsed };
 }
 
-/** Client: treat portal as live unless fiction demo is explicitly enabled. */
-export function isLivePortalClient(): boolean {
-  return process.env.NEXT_PUBLIC_DEMO_MODE !== "true";
-}
-
 /**
  * Live apprentice identity for portal screens.
  * Loads from the DB via /api/apprentice/me for the signed-in environment.
- * Fiction mode (NEXT_PUBLIC_DEMO_MODE=true) keeps the seeded Alex profile.
  */
 export function useApprenticePortalProfile(): State {
-  const liveMode = isLivePortalClient();
-  const [state, setState] = useState<State>(() =>
-    liveMode
-      ? {
-          profile: EMPTY_LIVE_PROFILE,
-          loading: true,
-          error: null,
-          live: true,
-        }
-      : {
-          profile: ALEX_PROFILE,
-          loading: false,
-          error: null,
-          live: false,
-        },
-  );
+  const [state, setState] = useState<State>({
+    profile: EMPTY_LIVE_PROFILE,
+    loading: true,
+    error: null,
+  });
 
   useEffect(() => {
-    if (!liveMode) {
-      setState({
-        profile: ALEX_PROFILE,
-        loading: false,
-        error: null,
-        live: false,
-      });
-      return;
-    }
-
     let cancelled = false;
-    setState((prev) => ({ ...prev, loading: true, error: null, live: true }));
+    setState((prev) => ({ ...prev, loading: true, error: null }));
 
     void fetch("/api/apprentice/me")
       .then(async (res) => {
@@ -104,7 +76,6 @@ export function useApprenticePortalProfile(): State {
             profile: EMPTY_LIVE_PROFILE,
             loading: false,
             error: body.error || "Unable to load apprentice profile.",
-            live: true,
           });
           return;
         }
@@ -112,7 +83,6 @@ export function useApprenticePortalProfile(): State {
           profile: withElapsedProgrammeWeek(body.profile),
           loading: false,
           error: null,
-          live: true,
         });
       })
       .catch((err) => {
@@ -124,14 +94,13 @@ export function useApprenticePortalProfile(): State {
             err instanceof Error
               ? err.message
               : "Unable to load apprentice profile.",
-          live: true,
         });
       });
 
     return () => {
       cancelled = true;
     };
-  }, [liveMode]);
+  }, []);
 
   return state;
 }

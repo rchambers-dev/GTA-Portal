@@ -7,10 +7,10 @@ import {
 } from "../components/ApprenticePageShell";
 import { StepBackButton } from "../components/StepBackButton";
 import {
-  getAlexReview,
+  getReviewDetail,
   type ApprenticeReviewAction,
   type ApprenticeReviewDetail,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./apprentice-pages.module.css";
 
@@ -76,8 +76,8 @@ function NoteBlock({ title, body }: { title: string; body: string }) {
 }
 
 export function ApprenticeReviewDetailScreen({ reviewId }: { reviewId: string }) {
-  const { profile, live } = useApprenticePortalProfile();
-  const review = live ? null : getAlexReview(reviewId);
+  const { profile } = useApprenticePortalProfile();
+  const review = getReviewDetail(reviewId);
 
   if (!review) {
     return (

@@ -40,13 +40,12 @@ export type TaskSubmission = {
 
 type Snapshot = {
   version: 2;
-  /** Bump to re-apply Alex mid-course demo task pack. */
-  demoSeed?: string;
   byApprentice: Record<string, Record<string, TaskSubmission>>;
 };
 
 const STORAGE_KEY = "gta-portal.programme-tasks.v3";
-const DEMO_APPRENTICE_ID = "alex-morgan";
+/** Prefer passing a real apprentice id; empty means no default demo target. */
+const FALLBACK_APPRENTICE_ID = "";
 const EMPTY_SNAPSHOT: Snapshot = { version: 2, byApprentice: {} };
 let snapshot: Snapshot = EMPTY_SNAPSHOT;
 let hydrated = false;
@@ -66,21 +65,20 @@ function loadSnapshot(): Snapshot {
   if (typeof window === "undefined") return EMPTY_SNAPSHOT;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return withAlexDemoSeed(EMPTY_SNAPSHOT);
+    if (!raw) return EMPTY_SNAPSHOT;
     const parsed = JSON.parse(raw) as Snapshot;
     if (parsed?.version !== 2 || !parsed.byApprentice) {
-      return withAlexDemoSeed(EMPTY_SNAPSHOT);
+      return EMPTY_SNAPSHOT;
     }
-    return withAlexDemoSeed(parsed);
+    // Drop residual demo Alex task packs from older localStorage.
+    const cleaned = { ...parsed.byApprentice };
+    delete cleaned["alex-morgan"];
+    delete cleaned["lrn-alex-morgan"];
+    return { ...parsed, byApprentice: cleaned };
   } catch {
     // ignore
   }
-  return withAlexDemoSeed(EMPTY_SNAPSHOT);
-}
-
-function withAlexDemoSeed(base: Snapshot): Snapshot {
-  // No fictional apprentice task packs — import live progress instead.
-  return base;
+  return EMPTY_SNAPSHOT;
 }
 
 function ensureHydrated() {
@@ -149,7 +147,7 @@ export function getTaskServerSnapshot(): Snapshot {
 
 export function getTaskSubmission(
   taskId: string,
-  apprenticeId: string = DEMO_APPRENTICE_ID,
+  apprenticeId: string = FALLBACK_APPRENTICE_ID,
 ): TaskSubmission {
   return (
     snapshot.byApprentice[apprenticeId]?.[taskId] ??
@@ -160,7 +158,7 @@ export function getTaskSubmission(
 export function upsertTaskSubmission(
   taskId: string,
   patch: Partial<TaskSubmission>,
-  apprenticeId: string = DEMO_APPRENTICE_ID,
+  apprenticeId: string = FALLBACK_APPRENTICE_ID,
 ): TaskSubmission {
   ensureHydrated();
   const existing =
@@ -232,7 +230,7 @@ export function statusTone(
 export function isBlockReflectionVerified(
   blockId: number,
   tasks: PracticalTaskDef[],
-  apprenticeId: string = DEMO_APPRENTICE_ID,
+  apprenticeId: string = FALLBACK_APPRENTICE_ID,
 ): boolean {
   const reflection = tasks.find(
     (t) => t.blockId === blockId && t.kind === "reflection",
@@ -243,7 +241,7 @@ export function isBlockReflectionVerified(
 
 export function listAwaitingTrainer(
   tasks: PracticalTaskDef[],
-  apprenticeId: string = DEMO_APPRENTICE_ID,
+  apprenticeId: string = FALLBACK_APPRENTICE_ID,
 ): PracticalTaskDef[] {
   return tasks.filter((t) => {
     const s = getTaskSubmission(t.id, apprenticeId).status;
@@ -251,17 +249,11 @@ export function listAwaitingTrainer(
   });
 }
 
-/**
- * Map admin enrolment apprenticeId → task store key.
- * Alex demo pack is stored under DEMO_APPRENTICE_ID.
- */
+/** Map admin enrolment apprenticeId → task store key. */
 export function resolveTaskStoreApprenticeId(
   adminApprenticeId: string | null | undefined,
 ): string {
-  if (!adminApprenticeId || adminApprenticeId === "lrn-alex-morgan") {
-    return DEMO_APPRENTICE_ID;
-  }
-  return adminApprenticeId;
+  return adminApprenticeId?.trim() || FALLBACK_APPRENTICE_ID;
 }
 
 export type ForceCompleteOptions = {
@@ -325,4 +317,6 @@ export function forceVerifyBlock(
   return count;
 }
 
-export { DEMO_APPRENTICE_ID };
+export { FALLBACK_APPRENTICE_ID };
+/** @deprecated Use explicit apprentice ids — no demo target. */
+export const DEMO_APPRENTICE_ID = FALLBACK_APPRENTICE_ID;

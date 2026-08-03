@@ -6,7 +6,12 @@ import {
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { calculateProgrammeWeek } from "@/features/apprentice-lifecycle/domain/programme-week";
-import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
+import {
+  deriveEnrolmentKind,
+  enrolmentKindLabel,
+  enrolmentPositionLabel,
+} from "../domain/enrolment-status";
+import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import {
   createEnrolment,
   findIntakeCohort,
@@ -241,14 +246,15 @@ function formatDate(value: string): string {
 }
 
 function positionLabel(row: AdminApprenticeEnrolment): string {
-  if (row.kind === "currently_studying") {
-    return `Y${row.programmeYear ?? "—"} · W${row.programmeWeek ?? "—"}`;
-  }
-  return `Starts ${formatDate(row.startDate)}`;
+  return enrolmentPositionLabel(
+    row.startDate,
+    row.programmeYear,
+    row.programmeWeek,
+  );
 }
 
-function kindLabel(kind: EnrolmentKind): string {
-  return kind === "new_starter" ? "New starter" : "Currently studying";
+function kindLabel(kind: EnrolmentKind, startDate: string): string {
+  return enrolmentKindLabel(startDate, kind);
 }
 
 function EnrolmentInlineField({
@@ -1171,7 +1177,10 @@ export function AdminEnrolmentsScreen() {
                       <span
                         className={styles.employerApprenticePill}
                         data-has={
-                          row.kind === "currently_studying" ? "true" : "false"
+                          deriveEnrolmentKind(row.startDate, row.kind) ===
+                          "currently_studying"
+                            ? "true"
+                            : "false"
                         }
                       >
                         {positionLabel(row)}
@@ -1227,6 +1236,10 @@ export function AdminEnrolmentsScreen() {
                               const programme = programmes.find(
                                 (p) => p.id === cohort.programmeId,
                               );
+                              const liveKind = deriveEnrolmentKind(
+                                cohort.startDate,
+                                row.kind,
+                              );
                               const position = derivePosition(cohort.startDate);
                               patchEnrolment(row.id, {
                                 cohortId: cohort.id,
@@ -1237,15 +1250,15 @@ export function AdminEnrolmentsScreen() {
                                 collegeDays: cohort.collegeDays,
                                 tutorName: cohort.tutorName,
                                 programmeWeek:
-                                  row.kind === "currently_studying"
+                                  liveKind === "currently_studying"
                                     ? position.programmeWeek
                                     : null,
                                 programmeYear:
-                                  row.kind === "currently_studying"
+                                  liveKind === "currently_studying"
                                     ? position.programmeYear
                                     : null,
                                 status: deriveEnrolmentStatus(
-                                  row.kind,
+                                  liveKind,
                                   cohort.startDate,
                                   row.status,
                                 ),
@@ -1310,7 +1323,8 @@ export function AdminEnrolmentsScreen() {
                         />
                         <ReadonlyDetail
                           label={
-                            row.kind === "new_starter"
+                            deriveEnrolmentKind(row.startDate, row.kind) ===
+                            "new_starter"
                               ? "Planned start"
                               : "Programme start"
                           }
@@ -1322,16 +1336,12 @@ export function AdminEnrolmentsScreen() {
                           value={row.collegeDays}
                           hint="From the cohort."
                         />
-                        {row.kind === "currently_studying" ? (
+                        {deriveEnrolmentKind(row.startDate, row.kind) ===
+                        "currently_studying" ? (
                           <>
                             <ReadonlyDetail
                               label="Programme year / week"
-                              value={
-                                row.programmeYear != null &&
-                                row.programmeWeek != null
-                                  ? `Y${row.programmeYear} · W${row.programmeWeek}`
-                                  : "—"
-                              }
+                              value={positionLabel(row)}
                               hint="Calculated from start date."
                             />
                             <ReadonlyDetail
@@ -1367,7 +1377,7 @@ export function AdminEnrolmentsScreen() {
 
                       <div className={styles.formActions}>
                         <ApprenticeStatusChip tone={statusTone(row.status)}>
-                          {kindLabel(row.kind)}
+                          {kindLabel(row.kind, row.startDate)}
                         </ApprenticeStatusChip>
                         <button
                           type="button"

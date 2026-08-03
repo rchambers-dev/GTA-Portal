@@ -1,4 +1,3 @@
-import { ALEX_PROFILE } from "../mock-apprentice";
 import {
   privacyNoteForChannel,
   privacyNoteForGroup,
@@ -8,16 +7,14 @@ import {
   type ChatThread,
 } from "./types";
 
-function isLivePortalClient(): boolean {
-  return process.env.NEXT_PUBLIC_DEMO_MODE !== "true";
-}
-
-const APPRENTICE_ID = ALEX_PROFILE.apprenticeId;
+const APPRENTICE_ID = "live-apprentice";
+const MENTOR_ID = "contact-mentor";
+const TUTOR_ID = "contact-tutor";
 
 /** Signed-in chat identity — shared Messages page switches this per workspace. */
-export const CHAT_SELF_APPRENTICE = "contact-alex";
-export const CHAT_SELF_EMPLOYER = "contact-employer-priya";
-export const CHAT_SELF_ADMIN = "contact-admin-emma";
+export const CHAT_SELF_APPRENTICE = "contact-apprentice";
+export const CHAT_SELF_EMPLOYER = "contact-employer";
+export const CHAT_SELF_ADMIN = "contact-admin";
 
 let selfContactId = CHAT_SELF_APPRENTICE;
 
@@ -35,8 +32,8 @@ function selfContact(): ChatContact {
 
 const APPRENTICE: ChatContact = {
   contactId: CHAT_SELF_APPRENTICE,
-  name: ALEX_PROFILE.displayName,
-  initials: ALEX_PROFILE.initials,
+  name: "Apprentice",
+  initials: "AP",
   role: "apprentice",
   roleLabel: "Apprentice",
   defaultChannel: "direct",
@@ -45,18 +42,18 @@ const APPRENTICE: ChatContact = {
 export const CHAT_CONTACTS: ChatContact[] = [
   APPRENTICE,
   {
-    contactId: ALEX_PROFILE.mentorId,
-    name: ALEX_PROFILE.mentorName,
-    initials: "RC",
+    contactId: MENTOR_ID,
+    name: "Progress mentor",
+    initials: "PM",
     role: "mentor",
     roleLabel: "Progress mentor",
     organisation: "GTA Doncaster",
     defaultChannel: "direct",
   },
   {
-    contactId: ALEX_PROFILE.tutorId,
-    name: ALEX_PROFILE.tutorName,
-    initials: "DT",
+    contactId: TUTOR_ID,
+    name: "Tutor",
+    initials: "TU",
     role: "tutor",
     roleLabel: "Tutor",
     organisation: "GTA Doncaster",
@@ -64,17 +61,17 @@ export const CHAT_CONTACTS: ChatContact[] = [
   },
   {
     contactId: CHAT_SELF_EMPLOYER,
-    name: ALEX_PROFILE.employerContact,
-    initials: "PS",
+    name: "Employer contact",
+    initials: "EM",
     role: "employer",
     roleLabel: "Employer contact",
-    organisation: ALEX_PROFILE.employerName,
+    organisation: "Employer",
     defaultChannel: "employer",
   },
   {
     contactId: CHAT_SELF_ADMIN,
-    name: "Emma Clarke",
-    initials: "EC",
+    name: "Administrator",
+    initials: "AD",
     role: "support",
     roleLabel: "Administrator",
     organisation: "GTA Doncaster",
@@ -114,9 +111,9 @@ export function syncChatContactsFromProfile(profile: {
     apprentice.name = profile.displayName;
     apprentice.initials = profile.initials;
   }
-  const mentor = CHAT_CONTACTS.find((c) => c.contactId === ALEX_PROFILE.mentorId);
+  const mentor = CHAT_CONTACTS.find((c) => c.contactId === MENTOR_ID);
   if (mentor) mentor.name = profile.mentorName;
-  const tutor = CHAT_CONTACTS.find((c) => c.contactId === ALEX_PROFILE.tutorId);
+  const tutor = CHAT_CONTACTS.find((c) => c.contactId === TUTOR_ID);
   if (tutor) tutor.name = profile.tutorName;
   const employer = CHAT_CONTACTS.find((c) => c.contactId === CHAT_SELF_EMPLOYER);
   if (employer) {
@@ -125,204 +122,7 @@ export function syncChatContactsFromProfile(profile: {
   }
 }
 
-function msg(
-  threadId: string,
-  id: string,
-  senderId: string,
-  senderName: string,
-  body: string,
-  sentAt: string,
-): ChatMessage {
-  return { messageId: id, threadId, senderId, senderName, body, sentAt };
-}
-
-const DEMO_THREADS: ChatThread[] = [
-  {
-    threadId: "thread-mentor",
-    apprenticeId: APPRENTICE_ID,
-    channelType: "direct",
-    title: ALEX_PROFILE.mentorName,
-    participantIds: ["contact-alex", ALEX_PROFILE.mentorId],
-    privacyNote: privacyNoteForChannel("direct"),
-    lastMessageAt: "2026-07-21T14:20:00Z",
-    unreadForApprentice: 1,
-    messages: [
-      msg(
-        "thread-mentor",
-        "m1",
-        ALEX_PROFILE.mentorId,
-        ALEX_PROFILE.mentorName,
-        "Hi Alex — just checking you’re set for college Monday. Let me know if OTJ logging with Priya is still stuck.",
-        "2026-07-20T09:10:00Z",
-      ),
-      msg(
-        "thread-mentor",
-        "m2",
-        "contact-alex",
-        ALEX_PROFILE.displayName,
-        "Morning Reiss — Priya said she’ll log last week today. Reflective account is nearly done.",
-        "2026-07-20T11:45:00Z",
-      ),
-      msg(
-        "thread-mentor",
-        "m3",
-        ALEX_PROFILE.mentorId,
-        ALEX_PROFILE.mentorName,
-        "Perfect. Drop me a message when the hours are in and we’ll tick that action off before your August review.",
-        "2026-07-21T14:20:00Z",
-      ),
-    ],
-  },
-  {
-    threadId: "thread-tutor",
-    apprenticeId: APPRENTICE_ID,
-    channelType: "direct",
-    title: ALEX_PROFILE.tutorName,
-    participantIds: ["contact-alex", ALEX_PROFILE.tutorId],
-    privacyNote: privacyNoteForChannel("direct"),
-    lastMessageAt: "2026-07-18T16:05:00Z",
-    unreadForApprentice: 0,
-    messages: [
-      msg(
-        "thread-tutor",
-        "t1",
-        ALEX_PROFILE.tutorId,
-        ALEX_PROFILE.tutorName,
-        "Alex — bring your inspection sheet Tuesday; we’ll mark the workshop assessment after lunch.",
-        "2026-07-18T16:05:00Z",
-      ),
-      msg(
-        "thread-tutor",
-        "t2",
-        "contact-alex",
-        ALEX_PROFILE.displayName,
-        "Will do — I’ve got the draft on my phone as well.",
-        "2026-07-18T16:22:00Z",
-      ),
-    ],
-  },
-  {
-    threadId: "thread-employer",
-    apprenticeId: APPRENTICE_ID,
-    channelType: "employer",
-    title: `${ALEX_PROFILE.employerContact} · ${ALEX_PROFILE.employerName}`,
-    participantIds: [
-      "contact-alex",
-      "contact-employer-priya",
-      ALEX_PROFILE.mentorId,
-    ],
-    privacyNote: privacyNoteForChannel("employer"),
-    lastMessageAt: "2026-07-19T11:05:00Z",
-    unreadForApprentice: 2,
-    messages: [
-      msg(
-        "thread-employer",
-        "e1",
-        "contact-alex",
-        ALEX_PROFILE.displayName,
-        "Hi Priya — can we diary the two mentoring slots for last week in the OTJ tracker?",
-        "2026-07-19T09:00:00Z",
-      ),
-      msg(
-        "thread-employer",
-        "e2",
-        "contact-employer-priya",
-        ALEX_PROFILE.employerContact,
-        "Yes — I’ll add them this afternoon. Sorry they slipped.",
-        "2026-07-19T10:30:00Z",
-      ),
-      {
-        messageId: "e3",
-        threadId: "thread-employer",
-        senderId: "contact-alex",
-        senderName: ALEX_PROFILE.displayName,
-        body: "Thanks Priya — here’s the catch-up OTJ block ready for you to agree or return.",
-        sentAt: "2026-07-19T11:05:00Z",
-        attachment: {
-          type: "portal_link",
-          href: "/employer/otj?otj=otj-5",
-          title: "Agree OTJ · Catch-up OTJ block — May to early July",
-          detail: "Direct link for employer to agree or return this entry",
-          actionLabel: "Agree / return",
-          area: "Approvals",
-        },
-      },
-    ],
-  },
-  {
-    threadId: "thread-support",
-    apprenticeId: APPRENTICE_ID,
-    channelType: "support",
-    title: "GTA Support",
-    participantIds: ["contact-alex", "contact-support-gta"],
-    privacyNote: privacyNoteForChannel("support"),
-    lastMessageAt: "2026-07-05T12:00:00Z",
-    unreadForApprentice: 0,
-    messages: [
-      msg(
-        "thread-support",
-        "s1",
-        "contact-alex",
-        ALEX_PROFILE.displayName,
-        "Hi — just testing how Support chat works. Nothing urgent.",
-        "2026-07-05T11:50:00Z",
-      ),
-      msg(
-        "thread-support",
-        "s2",
-        "contact-support-gta",
-        "GTA Support",
-        "Thanks Alex. This channel is private from your mentor. Message us anytime you need help.",
-        "2026-07-05T12:00:00Z",
-      ),
-    ],
-  },
-  {
-    threadId: "thread-group-college",
-    apprenticeId: APPRENTICE_ID,
-    channelType: "group",
-    title: "College catch-up",
-    participantIds: [
-      "contact-alex",
-      ALEX_PROFILE.mentorId,
-      ALEX_PROFILE.tutorId,
-    ],
-    privacyNote: privacyNoteForGroup([
-      ALEX_PROFILE.mentorName,
-      ALEX_PROFILE.tutorName,
-    ]),
-    lastMessageAt: "2026-07-22T09:40:00Z",
-    unreadForApprentice: 1,
-    messages: [
-      msg(
-        "thread-group-college",
-        "g1",
-        ALEX_PROFILE.mentorId,
-        ALEX_PROFILE.mentorName,
-        "Quick group so Daniel and I can both see workshop prep for Tuesday.",
-        "2026-07-22T09:15:00Z",
-      ),
-      msg(
-        "thread-group-college",
-        "g2",
-        ALEX_PROFILE.tutorId,
-        ALEX_PROFILE.tutorName,
-        "Thanks Reiss — Alex, bring the inspection sheet and we’ll mark after lunch.",
-        "2026-07-22T09:28:00Z",
-      ),
-      msg(
-        "thread-group-college",
-        "g3",
-        "contact-alex",
-        ALEX_PROFILE.displayName,
-        "Got it — sheet is on my phone and printed.",
-        "2026-07-22T09:40:00Z",
-      ),
-    ],
-  },
-];
-
-let THREADS: ChatThread[] = isLivePortalClient() ? [] : DEMO_THREADS;
+let THREADS: ChatThread[] = [];
 
 export function contactsForApprentice(): ChatContact[] {
   return contactsForViewer(CHAT_SELF_APPRENTICE);
@@ -492,7 +292,7 @@ export function ensureThreadWithContact(contactId: string): ChatThread {
           new Set([
             CHAT_SELF_APPRENTICE,
             CHAT_SELF_EMPLOYER,
-            ALEX_PROFILE.mentorId,
+            MENTOR_ID,
             self,
             contactId,
           ]),

@@ -6,7 +6,7 @@ import { Select } from "@/components/ui/Select";
 import { TextInput } from "@/components/ui/TextInput";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import apprenticeStyles from "@/features/apprentice-portal/screens/apprentice-pages.module.css";
-import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
+import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import {
   assignableRoles,
   canManagePortalAccount,

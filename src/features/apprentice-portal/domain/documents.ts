@@ -21,10 +21,6 @@ import { getAlsLlddDocumentsStatus } from "./als-lldd-form";
 import { getPlrDocumentsStatus } from "./plr-store";
 import { getRpleDocumentsStatus } from "./rple-form";
 
-function isLivePortalClient(): boolean {
-  return process.env.NEXT_PUBLIC_DEMO_MODE !== "true";
-}
-
 export type DocumentsAudience = Adm14PortalRole;
 
 export type DocumentsPortalStatus =
@@ -59,37 +55,6 @@ export const DOCUMENTS_WIRED_FORMS = new Set<string>([
   "1.7",
   "4.1",
 ]);
-
-/**
- * Demo status overlay for Alex Morgan — placeholder until PICS / pack store
- * drives live status. Live forms: 1.2, 1.3, 1.5, 1.6, 1.7.
- */
-const ALEX_DEMO_STATUS: Record<string, DocumentsPortalStatus> = {
-  "1.1": "complete",
-  "1.4": "complete",
-  "2.1": "complete",
-  "2.2": "complete",
-  "2.3": "not_applicable",
-  "2.4": "awaiting_signoff",
-  "3.1": "awaiting_document",
-  "4.1": "in_progress",
-  "4.2": "awaiting_document",
-  "5.1": "complete",
-  "6.1": "future",
-  "6.2": "future",
-  "6.3": "future",
-  "6.4": "future",
-  "6.5": "future",
-  "7.1": "in_progress",
-  "7.2": "in_progress",
-  "7.3": "in_progress",
-  "7.4": "in_progress",
-  "7.5": "not_applicable",
-  "7.6": "not_applicable",
-  "7.7": "not_applicable",
-  "7.8": "not_applicable",
-  "8.1": "not_started",
-};
 
 export function documentsBasePath(audience: DocumentsAudience): string {
   return audience === "employer" ? "/employer/documents" : "/apprentice/documents";
@@ -203,10 +168,7 @@ function resolveStatus(
     if (als === "not_applicable") return "not_applicable";
     return "not_started";
   }
-  // Demo overlay is Alex-only; live mode uses wired form stores or defaults.
-  if (!isLivePortalClient() && ALEX_DEMO_STATUS[item.reference]) {
-    return ALEX_DEMO_STATUS[item.reference];
-  }
+  // Live forms: 1.2, 1.3, 1.5, 1.6, 1.7 — others await document wiring or end-of-programme.
   if (item.endOfProgramme) return "future";
   if (!DOCUMENTS_WIRED_FORMS.has(item.reference)) return "awaiting_document";
   return "not_started";

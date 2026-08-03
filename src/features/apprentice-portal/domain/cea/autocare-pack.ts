@@ -656,108 +656,25 @@ const AUTOCARE_CEA_PACK_RAW: CeaPackDef = {
 /** Current Autocare groups pack (ST0499 v1.3) — no KSB mappings. */
 export const AUTOCARE_CEA_PACK: CeaPackDef = stripPackKsbs(AUTOCARE_CEA_PACK_RAW);
 
-function prog(
-  taskId: string,
-  kind: "mandatory" | "additional",
-  status: CeaApprenticeState["progress"][string]["status"],
-  extra?: Partial<CeaApprenticeState["progress"][string]>,
-): CeaApprenticeState["progress"][string] {
+/** Blank personal-tracking state for a live apprentice on a groups pack. */
+export function createBlankCeaState(
+  apprenticeId: string,
+  pack: CeaPackDef,
+): CeaApprenticeState {
+  const mandatoryByGroup: Record<string, string[]> = {};
+  for (const group of pack.groups) {
+    mandatoryByGroup[group.id] = group.tasks
+      .filter((t) => t.alwaysMandatory)
+      .map((t) => t.id);
+  }
   return {
-    taskId,
-    kind,
-    additionalEnabled: kind === "additional",
-    status,
-    apprenticeNotes: extra?.apprenticeNotes ?? "",
-    readyAt: extra?.readyAt ?? null,
-    signedOffByRole: extra?.signedOffByRole ?? null,
-    signedOffByName: extra?.signedOffByName ?? null,
-    signedOffAt: extra?.signedOffAt ?? null,
-    returnNote: extra?.returnNote ?? null,
+    apprenticeId,
+    packId: pack.id,
+    mandatoryByGroup,
+    progress: {},
+    milestoneReflections: {},
   };
 }
-
-/** Demo state for Alex Morgan — Year 1, foundation largely done, systems underway. */
-export const ALEX_CEA_STATE: CeaApprenticeState = {
-  apprenticeId: "lrn-alex-morgan",
-  packId: "cea-autocare-st0499-v1.3",
-  mandatoryByGroup: {
-    g1: ["g1-t1", "g1-t2", "g1-t3", "g1-t4", "g1-t5"],
-    g2: ["g2-t1"],
-    g3: ["g3-t1", "g3-t4"],
-    g4: ["g4-t1", "g4-t4"],
-    g5: ["g5-t1", "g5-t2", "g5-t4"],
-    g6: ["g6-t1", "g6-t3"],
-    g7: ["g7-t3"],
-    g8: ["g8-t1"],
-    g9: ["g9-t1"],
-    g10: ["g10-t1"],
-    g11: ["g11-t4", "g11-t5"],
-    g12: ["g12-t1", "g12-t2"],
-    g13: ["g13-t1"],
-    g14: ["g14-t5", "g14-t1"],
-  },
-  progress: {
-    "g1-t1": prog("g1-t1", "mandatory", "signed_off", {
-      signedOffByRole: "teacher",
-      signedOffByName: "Daniel Turner",
-      signedOffAt: "2026-04-10T14:00:00Z",
-      apprenticeNotes: "PPE, COSHH, and workshop walkthrough completed in college.",
-    }),
-    "g1-t2": prog("g1-t2", "mandatory", "signed_off", {
-      signedOffByRole: "teacher",
-      signedOffByName: "Daniel Turner",
-      signedOffAt: "2026-04-18T11:00:00Z",
-    }),
-    "g1-t3": prog("g1-t3", "mandatory", "signed_off", {
-      signedOffByRole: "teacher",
-      signedOffByName: "Daniel Turner",
-      signedOffAt: "2026-04-25T11:00:00Z",
-    }),
-    "g1-t4": prog("g1-t4", "mandatory", "signed_off", {
-      signedOffByRole: "teacher",
-      signedOffByName: "Daniel Turner",
-      signedOffAt: "2026-05-02T11:00:00Z",
-    }),
-    "g1-t5": prog("g1-t5", "mandatory", "signed_off", {
-      signedOffByRole: "teacher",
-      signedOffByName: "Daniel Turner",
-      signedOffAt: "2026-05-09T11:00:00Z",
-    }),
-    "g2-t1": prog("g2-t1", "mandatory", "signed_off", {
-      signedOffByRole: "teacher",
-      signedOffByName: "Daniel Turner",
-      signedOffAt: "2026-05-20T15:00:00Z",
-      apprenticeNotes: "Located HV components on training vehicle under supervision.",
-    }),
-    "g3-t1": prog("g3-t1", "mandatory", "signed_off", {
-      signedOffByRole: "teacher",
-      signedOffByName: "Daniel Turner",
-      signedOffAt: "2026-06-12T10:00:00Z",
-    }),
-    "g3-t4": prog("g3-t4", "mandatory", "ready_to_assess", {
-      readyAt: "2026-07-18T16:00:00Z",
-      apprenticeNotes: "Balanced all four wheels in college — ready for teacher sign-off.",
-    }),
-    "g3-t2": prog("g3-t2", "additional", "ready_to_assess", {
-      readyAt: "2026-07-19T17:00:00Z",
-      apprenticeNotes: "Puncture repair completed at Riverside Autocare — ready for employer sign-off.",
-    }),
-    "g4-t1": prog("g4-t1", "mandatory", "in_progress", {
-      apprenticeNotes: "Front discs and pads practice started in workshop.",
-    }),
-    "g4-t4": prog("g4-t4", "mandatory", "not_started"),
-  },
-  milestoneReflections: {
-    "ms-foundation": {
-      text: "I completed all foundation skills in college, including measuring tools and EV/hybrid component location. I feel more confident working safely in the workshop.",
-      status: "accepted",
-    },
-    "ms-year1-systems": {
-      text: "So far I have signed off tyre removal/install and I am preparing brake disc work. I also completed a puncture repair at work as an additional task.",
-      status: "draft",
-    },
-  },
-};
 
 /** Prefer resolveGroupsPack / getGroupsPackById from ./packs */
 export function getCeaPack(packId: string = AUTOCARE_CEA_PACK.id) {

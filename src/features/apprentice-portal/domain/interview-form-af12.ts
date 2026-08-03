@@ -362,18 +362,9 @@ export function getAf12InterviewSnapshot(): string {
   return window.localStorage.getItem(STORAGE_KEY) ?? "";
 }
 
-export function seedInterviewFormForAlex(): InterviewFormAf12State {
-  return createEmptyInterviewForm({
-    candidateName: "Alex Morgan",
-    apprenticeshipRoute: "Auto-Care Technician Level 2",
-    employerName: "Riverside Autocare",
-    interviewerName: "Reiss Chambers",
-  });
-}
-
 export function useInterviewFormAf12State(seed?: InterviewFormAf12State) {
   const [state, setState] = useState<InterviewFormAf12State>(
-    () => seed ?? seedInterviewFormForAlex(),
+    () => seed ?? createEmptyInterviewForm(),
   );
 
   useEffect(() => {

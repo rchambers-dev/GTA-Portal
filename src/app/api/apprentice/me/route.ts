@@ -5,8 +5,8 @@ import {
   calculateProgrammeWeek,
   calculateProgrammeYear,
 } from "@/features/apprentice-lifecycle/domain/programme-week";
-import type { ApprenticePortalProfile } from "@/features/apprentice-portal/domain/mock-apprentice";
-import { useSupabaseMode } from "@/lib/env/portal";
+import { resolveApprenticeDeliveryContext } from "@/features/apprentice-portal/domain/delivery-spine";
+import type { ApprenticePortalProfile } from "@/features/apprentice-portal/domain/apprentice-profile";
 
 function initialsFromName(name: string): string {
   const parts = name
@@ -25,13 +25,6 @@ function programmeLabel(name: string, standardCode: string | null): string {
 }
 
 export async function GET() {
-  if (!useSupabaseMode()) {
-    return NextResponse.json(
-      { error: "Live apprentice profile requires supabase mode." },
-      { status: 400 },
-    );
-  }
-
   const session = await getStandalonePorts().auth.getEffectiveSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -110,6 +103,8 @@ export async function GET() {
     );
   }
 
+  const delivery = await resolveApprenticeDeliveryContext(apprentice.id);
+
   const profile: ApprenticePortalProfile = {
     accountId: session.account.id,
     apprenticeId: apprentice.id,
@@ -144,6 +139,9 @@ export async function GET() {
     openActionCount: 0,
     collegeDays: enrolment?.college_days?.trim() || "TBC",
     programmeStartDate: startDate,
+    standardVersion: delivery.standardVersion,
+    deliverySpine: delivery.deliverySpine,
+    cohortName: delivery.cohortName,
   };
 
   return NextResponse.json({

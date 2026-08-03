@@ -8,15 +8,13 @@ import {
 } from "../components/ApprenticePageShell";
 import { Shareable } from "../components/portal-share/Shareable";
 import {
-  ALEX_ATTENDANCE_BREAKDOWN,
-  ALEX_ATTENDANCE_DAYS,
-  summariseAlexAttendance,
+  summariseAttendanceBreakdown,
   summariseMissedLearning,
   type ApprenticeAttendanceBreakdownItem,
   type ApprenticeAttendanceDay,
   type ApprenticeAttendanceStatus,
   type ApprenticeMissedLearningItem,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
   getEmployerAttendanceBundle,
@@ -101,22 +99,19 @@ function buildConicGradient(
     : "var(--color-grey-100)";
 }
 
-function apprenticeAttendanceView(
-  profile: {
-    apprenticeId: string;
-    displayName: string;
-    collegeDays: string;
-    attendancePercent: number;
-  },
-  live: boolean,
-): AttendanceView {
+function apprenticeAttendanceView(profile: {
+  apprenticeId: string;
+  displayName: string;
+  collegeDays: string;
+  attendancePercent: number;
+}): AttendanceView {
   return {
     apprenticeId: profile.apprenticeId,
     displayName: profile.displayName,
     collegeDays: profile.collegeDays,
     attendancePercent: profile.attendancePercent,
-    days: live ? [] : ALEX_ATTENDANCE_DAYS,
-    breakdown: live ? [] : ALEX_ATTENDANCE_BREAKDOWN,
+    days: [],
+    breakdown: [],
   };
 }
 
@@ -125,7 +120,7 @@ export function ApprenticeAttendanceScreen({
 }: {
   audience?: AttendanceAudience;
 } = {}) {
-  const { profile, live } = useApprenticePortalProfile();
+  const { profile } = useApprenticePortalProfile();
   const isEmployer = audience === "employer";
   const caseload = useMemo(
     () => (isEmployer ? getEmployerCaseload() : []),
@@ -146,13 +141,13 @@ export function ApprenticeAttendanceScreen({
   }
 
   const view = useMemo((): AttendanceView => {
-    if (!isEmployer) return apprenticeAttendanceView(profile, live);
+    if (!isEmployer) return apprenticeAttendanceView(profile);
     return (
       getEmployerAttendanceBundle(selectedApprenticeId) ??
       getEmployerAttendanceBundle(caseload[0]?.apprenticeId ?? "") ??
-      apprenticeAttendanceView(profile, live)
+      apprenticeAttendanceView(profile)
     );
-  }, [caseload, isEmployer, live, profile, selectedApprenticeId]);
+  }, [caseload, isEmployer, profile, selectedApprenticeId]);
 
   const attendanceHref = isEmployer
     ? "/employer/attendance"
@@ -160,7 +155,7 @@ export function ApprenticeAttendanceScreen({
   const showSwitcher = isEmployer && caseload.length > 1;
 
   const summary = useMemo(
-    () => summariseAlexAttendance(view.breakdown),
+    () => summariseAttendanceBreakdown(view.breakdown),
     [view.breakdown],
   );
   const mixSlices = useMemo(
@@ -239,7 +234,7 @@ export function ApprenticeAttendanceScreen({
       case "module":
         return "Module";
       case "cea":
-        return "CEA task";
+        return "Tracking task";
       case "workshop":
         return "Workshop";
     }

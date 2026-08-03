@@ -8,7 +8,6 @@ import {
 import { Shareable } from "../components/portal-share/Shareable";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
-  ALEX_OTJ_ENTRIES,
   OTJ_CATCH_UP_HOURS_HINT,
   OTJ_TRAINING_TYPES,
   buildOtjDashboardStats,
@@ -24,7 +23,7 @@ import {
   type ApprenticeOtjEntry,
   type OtjPartyStatus,
   type OtjTrainingTypeCode,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import styles from "./apprentice-pages.module.css";
 
 function partyTone(status: OtjPartyStatus) {
@@ -316,12 +315,10 @@ function readOtjQueryId(): string | null {
 }
 
 export function ApprenticeOtjHoursScreen() {
-  const { profile, live } = useApprenticePortalProfile();
+  const { profile } = useApprenticePortalProfile();
   const initialOtjId = readOtjQueryId();
   const [focusOtjId] = useState<string | null>(initialOtjId);
-  const [otjEntries, setOtjEntries] = useState<ApprenticeOtjEntry[]>(() =>
-    live ? [] : ALEX_OTJ_ENTRIES,
-  );
+  const [otjEntries, setOtjEntries] = useState<ApprenticeOtjEntry[]>([]);
   const [activityDate, setActivityDate] = useState(toDateInputValue());
   const [activityDateEnd, setActivityDateEnd] = useState("");
   const [isCatchUp, setIsCatchUp] = useState(false);

@@ -591,27 +591,9 @@ export function getAf11EnrolmentSnapshot(): string {
   return window.localStorage.getItem(STORAGE_KEY) ?? "";
 }
 
-export function seedEnrolmentFormForAlex(): EnrolmentFormAf11State {
-  const seeded = createEmptyEnrolmentForm({
-    firstName: "Alex",
-    surname: "Morgan",
-    employerName: "Riverside Autocare",
-    jobRole: "Autocare apprentice",
-    apprenticeshipProgramme: "autocare_l2",
-  });
-  return {
-    ...seeded,
-    dateOfBirth: "2007-03-14",
-    nationalInsuranceNo: "QQ123456C",
-    uln: "1234567890",
-    age: "19",
-    sex: "prefer_not",
-  };
-}
-
 export function useEnrolmentFormAf11State(seed?: EnrolmentFormAf11State) {
   const [state, setState] = useState<EnrolmentFormAf11State>(
-    () => seed ?? seedEnrolmentFormForAlex(),
+    () => seed ?? createEmptyEnrolmentForm(),
   );
   const [hydrated, setHydrated] = useState(false);
 
@@ -666,7 +648,7 @@ export function useEnrolmentFormAf11State(seed?: EnrolmentFormAf11State) {
   }, []);
 
   const resetForm = useCallback(() => {
-    const fresh = seedEnrolmentFormForAlex();
+    const fresh = createEmptyEnrolmentForm();
     setState(fresh);
     writeStored(fresh);
   }, []);

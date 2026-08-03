@@ -2,8 +2,6 @@
 
 import { useMemo, useState } from "react";
 import {
-  ALEX_OTJ_ENTRIES,
-  ALEX_PROFILE,
   canEmployerActOnOtj,
   formatModuleDate,
   formatOtjActivityPeriod,
@@ -14,18 +12,16 @@ import {
   returnOtjByEmployer,
   unlockTutorAfterEmployerAgree,
   type ApprenticeOtjEntry,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import { ApprenticeStatusChip } from "../components/ApprenticePageShell";
 import styles from "./TutorModuleSignOffScreen.module.css";
 
 /**
- * Employer dashboard stub — agree / return Apprentice OTJ hours.
+ * Employer dashboard — agree / return apprentice OTJ hours.
  * Teacher cannot act until employer agrees.
  */
 export function EmployerOtjApprovalsScreen() {
-  const [entries, setEntries] = useState(
-    ALEX_OTJ_ENTRIES.filter((e) => canEmployerActOnOtj(e)),
-  );
+  const [entries, setEntries] = useState<ApprenticeOtjEntry[]>([]);
   const [done, setDone] = useState<ApprenticeOtjEntry[]>([]);
 
   const pendingHours = useMemo(
@@ -41,7 +37,7 @@ export function EmployerOtjApprovalsScreen() {
     if (!item || !canEmployerActOnOtj(item)) return;
     setEntries((prev) => prev.filter((e) => e.id !== id));
     setDone((prev) => [
-      unlockTutorAfterEmployerAgree(item, ALEX_PROFILE.employerContact),
+      unlockTutorAfterEmployerAgree(item, "Employer contact"),
       ...prev,
     ]);
   }
@@ -53,8 +49,8 @@ export function EmployerOtjApprovalsScreen() {
     setDone((prev) => [
       returnOtjByEmployer(
         item,
-        ALEX_PROFILE.employerContact,
-        "Stub: returned for apprentice to update.",
+        "Employer contact",
+        "Returned for apprentice to update.",
       ),
       ...prev,
     ]);
@@ -66,7 +62,7 @@ export function EmployerOtjApprovalsScreen() {
         <p className={styles.eyebrow}>Employer workspace</p>
         <h1 className={styles.title}>OTJ hours to agree</h1>
         <p className={styles.lead}>
-          Step 2 of 3: confirm {ALEX_PROFILE.displayName}&apos;s entry is true.
+          Step 2 of 3: confirm the apprentice&apos;s entry is true.
           After you agree, their teacher can give the final agree. Teachers cannot
           confirm before you.
         </p>
@@ -94,7 +90,7 @@ export function EmployerOtjApprovalsScreen() {
             {entries.map((entry) => (
               <article key={entry.id} className={styles.card}>
                 <div className={styles.cardMain}>
-                  <p className={styles.apprentice}>{ALEX_PROFILE.displayName}</p>
+                  <p className={styles.apprentice}>Apprentice</p>
                   <h3 className={styles.topic}>
                     Entry {entry.entryNumber} · {entry.activityName}
                   </h3>

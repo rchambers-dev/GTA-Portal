@@ -9,11 +9,11 @@ import {
   joinCvBullets,
 } from "./validation";
 import {
-  ALEX_MODULES,
-  ALEX_PROFILE,
+  BLANK_MODULES,
+  BLANK_APPRENTICE_PROFILE,
   type ApprenticeModuleRow,
   type ApprenticePortalProfile,
-} from "../mock-apprentice";
+} from "../apprentice-profile";
 
 export type CvPortalSeed = {
   fullName: string;
@@ -88,11 +88,11 @@ function toPublicModule(row: ApprenticeModuleRow): CvModulePublic {
 
 /**
  * Module list the CV AI may reference.
- * Ready for live portal data — swap ALEX_MODULES for the signed-in apprentice's
+ * Ready for live portal data — swap BLANK_MODULES for the signed-in apprentice's
  * modules when that feed is wired; shape stays the same.
  */
 export function getCvModulesPublic(
-  modules: ApprenticeModuleRow[] = ALEX_MODULES,
+  modules: ApprenticeModuleRow[] = BLANK_MODULES,
 ): CvModulePublic[] {
   return modules
     .filter((m) => m.status === "completed" || m.status === "in_progress")
@@ -107,7 +107,7 @@ export function getCvModulesPublic(
 export function suggestExperienceBulletsFromModules(
   existingDescription: string,
   limit = 8,
-  modules: ApprenticeModuleRow[] = ALEX_MODULES,
+  modules: ApprenticeModuleRow[] = BLANK_MODULES,
 ): string[] {
   const existing = existingDescription
     .split("\n")
@@ -135,13 +135,13 @@ export function suggestExperienceBulletsFromModules(
   return suggestions;
 }
 
-function completedModuleTitles(modules: ApprenticeModuleRow[] = ALEX_MODULES): string[] {
+function completedModuleTitles(modules: ApprenticeModuleRow[] = BLANK_MODULES): string[] {
   return modules.filter((m) => m.status === "completed").map((m) => m.title);
 }
 
 function educationDetail(
   profile: ApprenticePortalProfile,
-  modules: ApprenticeModuleRow[] = ALEX_MODULES,
+  modules: ApprenticeModuleRow[] = BLANK_MODULES,
 ): string {
   const parts = [
     `Year ${profile.programmeYear}, week ${profile.programmeWeek}`,
@@ -162,8 +162,8 @@ function educationDetail(
  * Summary, skills, contact extras, and references stay blank for the apprentice.
  */
 export function buildCvFromPortal(
-  profile: ApprenticePortalProfile = ALEX_PROFILE,
-  modules: ApprenticeModuleRow[] = ALEX_MODULES,
+  profile: ApprenticePortalProfile = BLANK_APPRENTICE_PROFILE,
+  modules: ApprenticeModuleRow[] = BLANK_MODULES,
 ): CvPortalSeed {
   const moduleBullets = suggestExperienceBulletsFromModules(
     "",

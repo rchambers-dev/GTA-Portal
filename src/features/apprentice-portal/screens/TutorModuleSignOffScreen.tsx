@@ -6,7 +6,7 @@ import {
   getTutorSignOffQueue,
   type TutorSignOffItem,
   type TutorSignOffQueueStatus,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import {
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";

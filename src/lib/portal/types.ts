@@ -28,9 +28,12 @@ export type PortalAccount = {
   moduleScope?: string[];
   /** Linked apprentices.id when this login is an apprentice portal account. */
   linkedApprenticeId?: string | null;
+  /**
+   * Cohort delivery spine for the linked apprentice (groups vs blocks).
+   * Drives college nav / task UI. Defaults to groups when unknown.
+   */
+  deliverySpine?: "groups" | "blocks";
 };
-
-export type DemoAccount = PortalAccount;
 
 export type TemporaryAssignment = {
   id: string;
@@ -46,7 +49,7 @@ export type TemporaryAssignment = {
   revokedAt?: string | null;
 };
 
-export type DemoAuditEvent = {
+export type PortalAuditEvent = {
   id: string;
   occurredAt: string;
   actorId: string;

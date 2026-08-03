@@ -1,6 +1,4 @@
-import { listApprenticeSearchHits } from "@/adapters/fictional";
 import { ApprenticePackSearchScreen } from "@/features/apprentice-lifecycle";
-import { isDemoModeEnabled } from "@/lib/env/portal";
 import { requireApprenticeWorkspaceAccess } from "@/shell/guards/apprentice-routes";
 
 type Props = {
@@ -10,8 +8,7 @@ type Props = {
 /**
  * Blank search entry for the shared apprentice file pack.
  * Selecting an apprentice opens `/apprentices/[apprenticeId]`.
- * Live mode: only real intake / enrolment records (via admin store).
- * Demo mode: also includes fictional caseload seeds.
+ * Live mode: real intake / enrolment records (via admin store on the client).
  */
 export default async function ApprenticesIndexPage({ searchParams }: Props) {
   await requireApprenticeWorkspaceAccess("/apprentices");
@@ -21,7 +18,6 @@ export default async function ApprenticesIndexPage({ searchParams }: Props) {
     typeof fromRaw === "string" && fromRaw.trim()
       ? fromRaw.trim()
       : "apprentices";
-  const apprentices = isDemoModeEnabled() ? listApprenticeSearchHits() : [];
 
-  return <ApprenticePackSearchScreen apprentices={apprentices} fromContext={from} />;
+  return <ApprenticePackSearchScreen apprentices={[]} fromContext={from} />;
 }

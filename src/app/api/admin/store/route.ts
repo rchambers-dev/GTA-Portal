@@ -40,10 +40,7 @@ import {
   loadEmployers,
   loadProgrammes,
 } from "./catalogue-handlers";
-import {
-  calculateProgrammeWeek,
-  calculateProgrammeYear,
-} from "@/features/apprentice-lifecycle/domain/programme-week";
+import { normalizeEnrolmentTiming } from "@/features/administration/domain/enrolment-status";
 
 type ApprenticeRow = {
   id: string;
@@ -127,7 +124,13 @@ function mapApprentice(row: ApprenticeRow): AdminApprenticeRecord {
 
 function mapEnrolment(row: ApprenticeProgrammeRow): AdminApprenticeEnrolment {
   const apprentice = firstJoined(row.apprentices);
-  return {
+  const storedYear =
+    row.programme_year === 1 ||
+    row.programme_year === 2 ||
+    row.programme_year === 3
+      ? row.programme_year
+      : null;
+  return normalizeEnrolmentTiming({
     id: row.id,
     kind: row.kind,
     status: row.status,
@@ -148,28 +151,15 @@ function mapEnrolment(row: ApprenticeProgrammeRow): AdminApprenticeEnrolment {
     tutorName: row.tutor_name,
     startDate: row.start_date,
     originalPlannedEndDate: row.original_planned_end_date,
-    programmeYear: (() => {
-      const liveWeek = row.start_date
-        ? calculateProgrammeWeek(row.start_date)
-        : null;
-      const liveYear = calculateProgrammeYear(liveWeek);
-      if (liveYear === 1 || liveYear === 2 || liveYear === 3) return liveYear;
-      return row.programme_year === 1 ||
-        row.programme_year === 2 ||
-        row.programme_year === 3
-        ? row.programme_year
-        : null;
-    })(),
-    programmeWeek: row.start_date
-      ? calculateProgrammeWeek(row.start_date)
-      : row.programme_week,
+    programmeYear: storedYear,
+    programmeWeek: row.programme_week,
     attendancePercent: row.attendance_percent,
     actualProgressPercent: row.actual_progress_percent,
     collegeDays: row.college_days,
     notes: row.notes,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
-  };
+  });
 }
 
 function generateApprenticeReference(): string {

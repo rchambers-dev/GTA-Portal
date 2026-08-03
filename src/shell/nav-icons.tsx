@@ -43,7 +43,11 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/cea")) {
+  if (
+    key.includes("/apprentice/tracking") ||
+    key.includes("/cea") ||
+    key.includes("/personal-tracking")
+  ) {
     return (
       <svg {...common}>
         <path d="M9 11l2 2 4-4" />
@@ -265,7 +269,11 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
-  if (key.includes("/apprentice/college-tasks") || key.includes("/staff/programme-delivery")) {
+  if (
+    key.includes("/apprentice/college-tasks") ||
+    key.includes("/apprentice/tracking") ||
+    key.includes("/staff/programme-delivery")
+  ) {
     return (
       <svg {...common}>
         <path d="M8 4h8a2 2 0 0 1 2 2v14l-6-3-6 3V6a2 2 0 0 1 2-2z" />

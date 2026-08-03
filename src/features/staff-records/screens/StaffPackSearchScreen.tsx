@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { canManagePortalAccount, sessionPortalRole } from "@/features/administration/domain/account-access";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
-import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
+import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import {
   buildStaffDocRows,
   isStaffDocGap,

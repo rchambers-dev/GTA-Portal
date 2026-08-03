@@ -1,9 +1,6 @@
-import { fictionalDataAdapter } from "@/adapters/fictional";
-import { demoAuthAdapter } from "@/adapters/fictional/demo-auth";
 import { supabaseAuthAdapter } from "@/adapters/supabase/auth";
 import { supabaseApprenticeDataAdapter } from "@/adapters/supabase/apprentice-data";
 import type { AuthPort, ApprenticeLifecycleDataPort } from "@/features/apprentice-lifecycle/ports";
-import { getDataAdapterMode, isDemoModeEnabled } from "@/lib/env/portal";
 import type { EffectiveSession } from "@/lib/portal/types";
 
 export type StandaloneAuthPort = AuthPort & {
@@ -17,19 +14,11 @@ export type StandalonePorts = {
 };
 
 /**
- * TEMPORARY composition root for the standalone shell.
- * On portal integration, replace this with portal auth + data adapters.
+ * Composition root — live Supabase auth + apprentice data only.
  */
 export function getStandalonePorts(): StandalonePorts {
-  if (!isDemoModeEnabled() && getDataAdapterMode() === "supabase") {
-    return {
-      auth: supabaseAuthAdapter,
-      data: supabaseApprenticeDataAdapter,
-    };
-  }
-
   return {
-    auth: demoAuthAdapter,
-    data: fictionalDataAdapter,
+    auth: supabaseAuthAdapter,
+    data: supabaseApprenticeDataAdapter,
   };
 }

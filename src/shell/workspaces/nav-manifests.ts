@@ -104,11 +104,6 @@ export const MENTOR_NAV_SECTIONS: NavSection[] = [
   },
 ];
 
-/** @deprecated flat mentor list — use MENTOR_NAV_SECTIONS */
-export const STAFF_MENTOR_NAV: NavItem[] = MENTOR_NAV_SECTIONS.flatMap(
-  (s) => s.items,
-);
-
 export const CURRICULUM_NAV: NavItem[] = [
   { href: "/curriculum/overview", label: "Curriculum Overview", permission: PERMISSIONS.CURRICULUM_MANAGEMENT_VIEW },
   { href: "/curriculum/course-builder", label: "Course Builder", permission: PERMISSIONS.CURRICULUM_EDIT },

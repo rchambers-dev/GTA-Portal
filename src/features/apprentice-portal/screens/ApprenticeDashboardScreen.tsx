@@ -8,15 +8,13 @@ import {
 import { useApprenticeChat } from "../components/ApprenticeChatProvider";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
-  ALEX_OPEN_TARGETS,
-  ALEX_OTJ_ENTRIES,
   buildOtjLoggingHealth,
   formatModuleDate,
   isOtjCatchUpEntry,
   otjHours,
   summariseOtjHours,
   type ApprenticeOtjEntry,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import styles from "./apprentice-pages.module.css";
 
 function formatDate(iso: string): string {
@@ -32,9 +30,16 @@ const TARGET_TONES = ["amber", "red", "navy"] as const;
 
 export function ApprenticeDashboardScreen() {
   const { unread } = useApprenticeChat();
-  const { profile, loading, error, live } = useApprenticePortalProfile();
-  const otjEntries: ApprenticeOtjEntry[] = live ? [] : ALEX_OTJ_ENTRIES;
-  const openTargets = live ? [] : ALEX_OPEN_TARGETS;
+  const { profile, loading, error } = useApprenticePortalProfile();
+  const otjEntries: ApprenticeOtjEntry[] = [];
+  const openTargets: Array<{
+    id: string;
+    title: string;
+    owner: string;
+    dueDate: string;
+    href: string;
+    hrefLabel?: string;
+  }> = [];
   const otjSummary = summariseOtjHours(otjEntries);
   const loggingHealth = buildOtjLoggingHealth(otjEntries);
   const catchUpPending = otjEntries.filter(
@@ -116,9 +121,7 @@ export function ApprenticeDashboardScreen() {
             <p className={styles.glanceHint}>
               {catchUpPending.length > 0
                 ? `Includes ${catchUpHours}h catch-up block`
-                : live
-                  ? "No OTJ entries logged yet"
-                  : "Awaiting employer agree"}
+                : "No OTJ entries logged yet"}
             </p>
           </Link>
           <Link
@@ -141,9 +144,8 @@ export function ApprenticeDashboardScreen() {
           </div>
           {openTargets.length === 0 ? (
             <p className={styles.note}>
-              {live
-                ? "No open targets yet — they will appear here when mentors or tutors set actions."
-                : "Nothing open right now."}
+              No open targets yet — they will appear here when mentors or tutors
+              set actions.
             </p>
           ) : (
             <ul className={styles.list}>

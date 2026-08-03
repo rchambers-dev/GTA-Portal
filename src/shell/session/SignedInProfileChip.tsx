@@ -1,19 +1,23 @@
 "use client";
 
 import { useTransition } from "react";
-import type { DemoAccount } from "@/lib/portal/types";
-import { formatRoleLabel } from "@/adapters/fictional/demo-accounts";
+import type { PortalAccount } from "@/lib/portal/types";
 import { logoutAction } from "@/app/logout/actions";
 import { usePortalSession } from "./PortalSessionProvider";
-import styles from "./DevAccountSwitcher.module.css";
+import styles from "./SignedInProfileChip.module.css";
+
+function formatRoleLabel(account: PortalAccount): string {
+  if (account.responsibilities.length === 0) return account.baseRole;
+  return `${account.baseRole} · ${account.responsibilities.join(" · ")}`;
+}
 
 /**
- * Signed-in profile chip for the active portal environment.
+ * Signed-in profile chip (name, role, sign out).
  */
-export function DevAccountSwitcher({
+export function SignedInProfileChip({
   currentAccount,
 }: {
-  currentAccount: DemoAccount;
+  currentAccount: PortalAccount;
 }) {
   const { session } = usePortalSession();
   const [isPending, startTransition] = useTransition();

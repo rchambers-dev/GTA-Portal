@@ -13,7 +13,7 @@ export {
 } from "./types";
 export {
   AUTOCARE_CEA_PACK,
-  ALEX_CEA_STATE,
+  createBlankCeaState,
   getCeaPack,
 } from "./autocare-pack";
 export { HEAVY_CEA_PACK } from "./heavy-pack";

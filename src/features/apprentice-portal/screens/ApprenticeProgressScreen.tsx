@@ -32,11 +32,14 @@ import {
 import styles from "./apprentice-pages.module.css";
 
 /**
- * Progress against Autocare blocks (weeks) — not the old module catalogue.
+ * Progress against the apprentice's delivery spine:
+ * - groups → personal tracking overview
+ * - blocks → programme weeks and college block tasks
  */
 export function ApprenticeProgressScreen() {
   const { profile } = useApprenticePortalProfile();
   const apprenticeId = profile.apprenticeId || "live-apprentice";
+  const onGroups = profile.deliverySpine !== "blocks";
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
@@ -74,7 +77,11 @@ export function ApprenticeProgressScreen() {
   return (
     <ApprenticePageShell
       title="Progress"
-      description={`Planned versus actual on ${AUTOCARE_STANDARD.label} — tracked by programme weeks and college block tasks.`}
+      description={
+        onGroups
+          ? `Planned versus actual on ${profile.programmeName} — tracked through personal tracking groups.`
+          : `Planned versus actual on ${AUTOCARE_STANDARD.label} — tracked by programme weeks and college block tasks.`
+      }
     >
       <div className={styles.stack}>
         <div className={styles.grid}>
@@ -95,17 +102,23 @@ export function ApprenticeProgressScreen() {
             </p>
             <p className={styles.glanceHint}>
               {behindPlan
-                ? `${gap}% behind plan — focus on college tasks and OTJ`
+                ? `${gap}% behind plan — focus on tracking and OTJ`
                 : "On or ahead of plan"}
             </p>
           </div>
           <div className={styles.glance} data-tone="blue">
-            <p className={styles.glanceLabel}>College tasks</p>
+            <p className={styles.glanceLabel}>
+              {onGroups ? "Personal tracking" : "College tasks"}
+            </p>
             <p className={styles.glanceValue}>
-              {taskStats.verified}/{taskStats.total}
+              {onGroups
+                ? `${profile.actualProgressPercent}%`
+                : `${taskStats.verified}/${taskStats.total}`}
             </p>
             <p className={styles.glanceHint}>
-              {taskStats.inFlight} in flight · {taskStats.notStarted} not started
+              {onGroups
+                ? "Open tracking for group and task detail"
+                : `${taskStats.inFlight} in flight · ${taskStats.notStarted} not started`}
             </p>
           </div>
         </div>
@@ -137,128 +150,155 @@ export function ApprenticeProgressScreen() {
           </div>
         </section>
 
-        {(() => {
-          const currentBlock =
-            taskedBlocks.find(
-              (b) =>
-                b.weekStart != null &&
-                b.weekEnd != null &&
-                profile.programmeWeek >= b.weekStart &&
-                profile.programmeWeek <= b.weekEnd,
-            ) ?? taskedBlocks[0];
-          const liveTasks = tasksForBlock(currentBlock?.id ?? 1);
-          if (liveTasks.length === 0) return null;
-          return (
+        {onGroups ? (
           <section className={styles.section}>
             <h2 className={styles.dashSectionTitle} data-accent="amber">
-              Live college tasks
+              Personal tracking
             </h2>
             <p className={styles.meta}>
-              Block {currentBlock?.id} · {currentBlock?.name}. Open any task
-              below, or browse all blocks from College tasks.
+              You are on the groups delivery spine. Group completion, workplace
+              tasks and gateways live in personal tracking.
             </p>
-            <ul className={styles.list}>
-              {liveTasks.map((task) => {
-                const sub = getTaskSubmission(task.id, apprenticeId);
-                return (
-                  <li key={task.id}>
-                    <Link
-                      href={`/apprentice/college-tasks/${task.id}`}
-                      className={styles.rowLink}
-                    >
-                      <div className={styles.rowMain}>
-                        <strong>
-                          Task {task.taskNumber}: {task.title}
-                        </strong>
-                        <span>
-                          Block {task.blockId} · {task.evidenceRef}
-                        </span>
-                      </div>
-                      <div className={styles.rowEnd}>
-                        <ApprenticeStatusChip tone={statusTone(sub.status)}>
-                          {statusLabel(sub.status)}
-                        </ApprenticeStatusChip>
-                        <span className={styles.linkish}>Open →</span>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <p>
+              <Link href="/apprentice/tracking" className={styles.linkish}>
+                Open personal tracking →
+              </Link>
+            </p>
           </section>
-          );
-        })()}
-
-        <section className={styles.section}>
-          <h2 className={styles.dashSectionTitle} data-accent="navy">
-            Blocks
-          </h2>
-          <p className={styles.meta}>
-            All 12 blocks (60 tasks). Green = complete, amber = in progress, red
-            = needs completing. Blocks already reached stay open together for
-            catch-up — being behind does not re-lock later blocks.
-          </p>
-          <ul className={styles.list}>
-            {taskedBlocks.map((block) => {
-              const tasks = tasksForBlock(block.id);
-              const locked = !isApprenticeBlockUnlocked({
-                blockId: block.id,
-                weekStart: block.weekStart,
-                programmeWeek: profile.programmeWeek,
-                priorBlockTasks: tasksForBlock(block.id - 1),
-                apprenticeId,
-              });
-              const summary = summariseBlockCompletion(tasks, apprenticeId);
-              const rag = apprenticeBlockRag(summary, locked);
-              const current =
-                block.weekStart != null &&
-                block.weekEnd != null &&
-                profile.programmeWeek >= block.weekStart &&
-                profile.programmeWeek <= block.weekEnd;
-              const tone =
-                rag === "neutral" ? "navy" : rag === "green" ? "green" : rag === "amber" ? "amber" : "red";
-
+        ) : (
+          <>
+            {(() => {
+              const currentBlock =
+                taskedBlocks.find(
+                  (b) =>
+                    b.weekStart != null &&
+                    b.weekEnd != null &&
+                    profile.programmeWeek >= b.weekStart &&
+                    profile.programmeWeek <= b.weekEnd,
+                ) ?? taskedBlocks[0];
+              const liveTasks = tasksForBlock(currentBlock?.id ?? 1);
+              if (liveTasks.length === 0) return null;
               return (
-                <li key={block.id}>
-                  <Link
-                    href={locked ? "#" : "/apprentice/college-tasks"}
-                    className={`${styles.rowLink}${locked ? ` ${styles.rowLocked}` : ""}`}
-                    data-tone={tone}
-                    aria-disabled={locked}
-                    onClick={(e) => {
-                      if (locked) e.preventDefault();
-                    }}
-                  >
-                    <div className={styles.rowMain}>
-                      <strong>
-                        Block {block.id} · {block.name}
-                      </strong>
-                      <span>
-                        {block.weekStart != null && block.weekEnd != null
-                          ? `Weeks ${block.weekStart}–${block.weekEnd}`
-                          : block.kind === "epa"
-                            ? "EPA assessment"
-                            : "Pre-EPA consolidation"}
-                        {current ? " · current week" : ""}
-                        {` · ${summary.verified}/${summary.total} verified`}
-                      </span>
-                    </div>
-                    <div className={styles.rowEnd}>
-                      <ApprenticeStatusChip
-                        tone={rag === "neutral" ? "neutral" : rag}
-                      >
-                        {apprenticeBlockRagLabel(rag, summary)}
-                      </ApprenticeStatusChip>
-                      {!locked ? (
-                        <span className={styles.linkish}>Tasks →</span>
-                      ) : null}
-                    </div>
-                  </Link>
-                </li>
+                <section className={styles.section}>
+                  <h2 className={styles.dashSectionTitle} data-accent="amber">
+                    Live college tasks
+                  </h2>
+                  <p className={styles.meta}>
+                    Block {currentBlock?.id} · {currentBlock?.name}. Open any
+                    task below, or browse all blocks from Personal tracking.
+                  </p>
+                  <ul className={styles.list}>
+                    {liveTasks.map((task) => {
+                      const sub = getTaskSubmission(task.id, apprenticeId);
+                      return (
+                        <li key={task.id}>
+                          <Link
+                            href={`/apprentice/tracking/${task.id}`}
+                            className={styles.rowLink}
+                          >
+                            <div className={styles.rowMain}>
+                              <strong>
+                                Task {task.taskNumber}: {task.title}
+                              </strong>
+                              <span>
+                                Block {task.blockId} · {task.evidenceRef}
+                              </span>
+                            </div>
+                            <div className={styles.rowEnd}>
+                              <ApprenticeStatusChip
+                                tone={statusTone(sub.status)}
+                              >
+                                {statusLabel(sub.status)}
+                              </ApprenticeStatusChip>
+                              <span className={styles.linkish}>Open →</span>
+                            </div>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
               );
-            })}
-          </ul>
-        </section>
+            })()}
+
+            <section className={styles.section}>
+              <h2 className={styles.dashSectionTitle} data-accent="navy">
+                Blocks
+              </h2>
+              <p className={styles.meta}>
+                All 12 blocks (60 tasks). Green = complete, amber = in progress,
+                red = needs completing. Blocks already reached stay open together
+                for catch-up — being behind does not re-lock later blocks.
+              </p>
+              <ul className={styles.list}>
+                {taskedBlocks.map((block) => {
+                  const tasks = tasksForBlock(block.id);
+                  const locked = !isApprenticeBlockUnlocked({
+                    blockId: block.id,
+                    weekStart: block.weekStart,
+                    programmeWeek: profile.programmeWeek,
+                    priorBlockTasks: tasksForBlock(block.id - 1),
+                    apprenticeId,
+                  });
+                  const summary = summariseBlockCompletion(tasks, apprenticeId);
+                  const rag = apprenticeBlockRag(summary, locked);
+                  const current =
+                    block.weekStart != null &&
+                    block.weekEnd != null &&
+                    profile.programmeWeek >= block.weekStart &&
+                    profile.programmeWeek <= block.weekEnd;
+                  const tone =
+                    rag === "neutral"
+                      ? "navy"
+                      : rag === "green"
+                        ? "green"
+                        : rag === "amber"
+                          ? "amber"
+                          : "red";
+
+                  return (
+                    <li key={block.id}>
+                      <Link
+                        href={locked ? "#" : "/apprentice/tracking"}
+                        className={`${styles.rowLink}${locked ? ` ${styles.rowLocked}` : ""}`}
+                        data-tone={tone}
+                        aria-disabled={locked}
+                        onClick={(e) => {
+                          if (locked) e.preventDefault();
+                        }}
+                      >
+                        <div className={styles.rowMain}>
+                          <strong>
+                            Block {block.id} · {block.name}
+                          </strong>
+                          <span>
+                            {block.weekStart != null && block.weekEnd != null
+                              ? `Weeks ${block.weekStart}–${block.weekEnd}`
+                              : block.kind === "epa"
+                                ? "EPA assessment"
+                                : "Pre-EPA consolidation"}
+                            {current ? " · current week" : ""}
+                            {` · ${summary.verified}/${summary.total} verified`}
+                          </span>
+                        </div>
+                        <div className={styles.rowEnd}>
+                          <ApprenticeStatusChip
+                            tone={rag === "neutral" ? "neutral" : rag}
+                          >
+                            {apprenticeBlockRagLabel(rag, summary)}
+                          </ApprenticeStatusChip>
+                          {!locked ? (
+                            <span className={styles.linkish}>Tasks →</span>
+                          ) : null}
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          </>
+        )}
       </div>
     </ApprenticePageShell>
   );

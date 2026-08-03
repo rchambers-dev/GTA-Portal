@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
-import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
+import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import {
   STAFF_EMPLOYMENT_FORM_CODE,
   STAFF_EMPLOYMENT_FORM_TITLE,

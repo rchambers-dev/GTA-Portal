@@ -84,7 +84,7 @@ export function ManagementApprenticeRplScreen() {
     getApprenticeRplServerSnapshot,
   );
   const admin = useAdminStore();
-  const [apprenticeId, setApprenticeId] = useState<string>("lrn-alex-morgan");
+  const [apprenticeId, setApprenticeId] = useState<string>("");
 
   const enrolments = useMemo(
     () =>

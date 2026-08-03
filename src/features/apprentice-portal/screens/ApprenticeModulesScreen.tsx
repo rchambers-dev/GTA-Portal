@@ -4,13 +4,13 @@ import {
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
 import {
-  ALEX_MODULES,
-  ALEX_PROFILE,
+  BLANK_MODULES,
+  BLANK_APPRENTICE_PROFILE,
   formatModuleDate,
-  getAlexModuleDetail,
-  getAlexModulesByYear,
+  getModuleDetail,
+  getModulesByYear,
   type ApprenticeModuleRow,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import styles from "./apprentice-pages.module.css";
 
 function statusTone(status: ApprenticeModuleRow["status"]) {
@@ -36,7 +36,7 @@ function statusLabel(status: ApprenticeModuleRow["status"]) {
 }
 
 function ModuleRow({ mod }: { mod: ApprenticeModuleRow }) {
-  const detail = getAlexModuleDetail(mod.id);
+  const detail = getModuleDetail(mod.id);
   const coveredCount = detail?.covered.length ?? 0;
   const previousCount = detail?.previouslyCovered.length ?? 0;
   const upcomingCount = detail?.upcoming.length ?? 0;
@@ -103,13 +103,13 @@ function ModuleRow({ mod }: { mod: ApprenticeModuleRow }) {
 }
 
 export function ApprenticeModulesScreen() {
-  const groups = getAlexModulesByYear();
-  const releasedCount = ALEX_MODULES.filter((m) => m.released).length;
+  const groups = getModulesByYear();
+  const releasedCount = BLANK_MODULES.filter((m) => m.released).length;
 
   return (
     <ApprenticePageShell
       title="Modules"
-      description={`All ${ALEX_MODULES.length} modules on ${ALEX_PROFILE.programmeName}. ${releasedCount} released by your tutor — the rest stay visible but locked until released.`}
+      description={`All ${BLANK_MODULES.length} modules on ${BLANK_APPRENTICE_PROFILE.programmeName}. ${releasedCount} released by your tutor — the rest stay visible but locked until released.`}
     >
       <div className={styles.stack}>
         {groups.map((group) => (

@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { DevAccountSwitcher } from "./demo/DevAccountSwitcher";
-import { usePortalSession } from "./demo/PortalSessionProvider";
+import { SignedInProfileChip } from "./session/SignedInProfileChip";
+import { usePortalSession } from "./session/PortalSessionProvider";
 import { NavIcon } from "./nav-icons";
 import {
   categoryLabel,
@@ -253,7 +253,7 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
           </div>
 
           <div className={styles.user}>
-            <DevAccountSwitcher currentAccount={account} />
+            <SignedInProfileChip currentAccount={account} />
           </div>
         </div>
       </header>

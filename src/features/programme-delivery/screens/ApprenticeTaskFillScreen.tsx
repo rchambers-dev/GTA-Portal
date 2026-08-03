@@ -145,7 +145,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
   if (!task) {
     return (
       <ApprenticePageShell title="Task not found" description="">
-        <Link href="/apprentice/college-tasks" className={styles.back}>
+        <Link href="/apprentice/tracking" className={styles.back}>
           ← Back to college tasks
         </Link>
       </ApprenticePageShell>
@@ -238,7 +238,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
       }
     >
       <div className={styles.root}>
-        <Link href="/apprentice/college-tasks" className={styles.back}>
+        <Link href="/apprentice/tracking" className={styles.back}>
           ← Back to college tasks
         </Link>
 

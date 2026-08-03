@@ -1,4 +1,4 @@
-import type { DemoAccount, EffectiveSession, TemporaryAssignment } from "@/lib/portal/types";
+import type { PortalAccount, EffectiveSession, TemporaryAssignment } from "@/lib/portal/types";
 
 export function isAssignmentActive(
   assignment: TemporaryAssignment,
@@ -21,7 +21,7 @@ export function getActiveAssignments(
 }
 
 export function buildEffectivePermissions(
-  account: DemoAccount,
+  account: PortalAccount,
   assignments: TemporaryAssignment[],
   asOf: Date = new Date(),
 ): string[] {
@@ -31,7 +31,7 @@ export function buildEffectivePermissions(
 }
 
 export function buildEffectiveSession(
-  account: DemoAccount,
+  account: PortalAccount,
   assignments: TemporaryAssignment[],
   asOf: Date = new Date(),
 ): EffectiveSession {

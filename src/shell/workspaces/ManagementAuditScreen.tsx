@@ -1,6 +1,6 @@
 "use client";
 
-import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
+import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import styles from "./ManagementAuditScreen.module.css";
 
 export function ManagementAuditScreen() {
@@ -10,7 +10,7 @@ export function ManagementAuditScreen() {
     <div className={styles.root}>
       <h1 className={styles.title}>Audit History</h1>
       <p className={styles.lead}>
-        Append-only demo audit log for temporary responsibility changes (local storage).
+        Append-only audit log for temporary responsibility changes in this session.
       </p>
 
       {auditLog.length === 0 ? (

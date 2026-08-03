@@ -1,9 +1,9 @@
 import type { PortalAiContextBag } from "@/lib/ai";
 import { requestPortalAi } from "@/lib/ai";
 import {
-  ALEX_PROFILE,
+  BLANK_APPRENTICE_PROFILE,
   type ApprenticePortalProfile,
-} from "../mock-apprentice";
+} from "../apprentice-profile";
 import { getCvModulesPublic } from "./seed-from-portal";
 
 export type CvDraftForAi = {
@@ -38,7 +38,7 @@ export type CvDraftForAi = {
   references: string;
 };
 
-let aiProfile: ApprenticePortalProfile = ALEX_PROFILE;
+let aiProfile: ApprenticePortalProfile = BLANK_APPRENTICE_PROFILE;
 
 /** Keep CV AI context aligned with the signed-in apprentice. */
 export function setCvAiProfile(profile: ApprenticePortalProfile): void {

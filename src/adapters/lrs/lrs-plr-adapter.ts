@@ -1,124 +1,12 @@
 import type {
   LrsFindUlnResult,
   LrsGetPlrResult,
-  LrsApprenticeIdentity,
   LrsPlrPort,
-  PlrLearningRecord,
 } from "@/features/apprentice-portal/ports/lrs-plr";
-
-const DEMO_ULN = "1234567890";
-
-function alexPlr(identity: LrsApprenticeIdentity): PlrLearningRecord {
-  const now = new Date().toISOString();
-  return {
-    uln: identity.uln || DEMO_ULN,
-    givenName: identity.givenName,
-    familyName: identity.familyName,
-    dateOfBirth: identity.dateOfBirth ?? "2007-03-14",
-    verified: true,
-    privacyAllowsSharing: true,
-    retrievedAt: now,
-    vendorId: "GTA-MOCK-VENDOR",
-    notes: [
-      "Mock LRS response for standalone demo.",
-      "Replace with SOAP Get Apprentice Learning Events once LRB client certificate is issued.",
-    ],
-    qualifications: [
-      {
-        id: "plr-q-gcse-eng",
-        title: "GCSE English Language",
-        qualificationCode: "601/4292/3",
-        level: "Level 2",
-        grade: "4",
-        credits: null,
-        awardingOrganisation: "AQA",
-        previousProvider: "Doncaster Secondary Academy",
-        startDate: "2021-09-01",
-        endDate: "2023-06-30",
-        awardDate: "2023-08-24",
-        source: "national_pupil_database",
-      },
-      {
-        id: "plr-q-gcse-maths",
-        title: "GCSE Mathematics",
-        qualificationCode: "601/4608/4",
-        level: "Level 2",
-        grade: "5",
-        credits: null,
-        awardingOrganisation: "Pearson Edexcel",
-        previousProvider: "Doncaster Secondary Academy",
-        startDate: "2021-09-01",
-        endDate: "2023-06-30",
-        awardDate: "2023-08-24",
-        source: "national_pupil_database",
-      },
-      {
-        id: "plr-q-gcse-sci",
-        title: "GCSE Combined Science (Trilogy)",
-        qualificationCode: "601/8758/X",
-        level: "Level 2",
-        grade: "4-4",
-        credits: null,
-        awardingOrganisation: "AQA",
-        previousProvider: "Doncaster Secondary Academy",
-        startDate: "2021-09-01",
-        endDate: "2023-06-30",
-        awardDate: "2023-08-24",
-        source: "national_pupil_database",
-      },
-      {
-        id: "plr-q-fs-ict",
-        title: "Functional Skills ICT",
-        qualificationCode: "603/4260/8",
-        level: "Level 1",
-        grade: "Pass",
-        credits: null,
-        awardingOrganisation: "City & Guilds",
-        previousProvider: "Doncaster Secondary Academy",
-        startDate: "2022-09-01",
-        endDate: "2023-05-15",
-        awardDate: "2023-06-01",
-        source: "awarding_organisation",
-      },
-      {
-        id: "plr-q-intro-auto",
-        title: "Award in Introduction to the Automotive Industry",
-        qualificationCode: "601/0123/4",
-        level: "Entry Level 3",
-        grade: "Pass",
-        credits: "6",
-        awardingOrganisation: "IMI Awards",
-        previousProvider: "Local FE College Outreach",
-        startDate: "2023-09-01",
-        endDate: "2024-02-28",
-        awardDate: "2024-03-12",
-        source: "ilr",
-      },
-    ],
-    participations: [
-      {
-        id: "plr-p-school",
-        title: "Secondary education",
-        provider: "Doncaster Secondary Academy",
-        startDate: "2018-09-01",
-        endDate: "2023-06-30",
-        status: "Completed",
-      },
-      {
-        id: "plr-p-outreach",
-        title: "Automotive taster / intro award",
-        provider: "Local FE College Outreach",
-        startDate: "2023-09-01",
-        endDate: "2024-02-28",
-        status: "Completed",
-      },
-    ],
-  };
-}
 
 /**
  * Standalone mock of LRS Find ULN + Get Apprentice Learning Events.
- * Matches demo apprentice Alex Morgan (ULN 1234567890).
+ * Returns not_found until live SOAP LRS is configured.
  */
 export const mockLrsPlrAdapter: LrsPlrPort = {
   mode: "mock",
@@ -126,9 +14,6 @@ export const mockLrsPlrAdapter: LrsPlrPort = {
   async findUln(identity) {
     const given = identity.givenName.trim().toLowerCase();
     const family = identity.familyName.trim().toLowerCase();
-    if (given === "alex" && family === "morgan") {
-      return { status: "found", uln: DEMO_ULN };
-    }
     if (!given || !family) {
       return {
         status: "not_found",
@@ -138,7 +23,7 @@ export const mockLrsPlrAdapter: LrsPlrPort = {
     return {
       status: "not_found",
       message:
-        "No ULN found in the mock LRS for this identity. Enter the ULN manually or use the demo apprentice Alex Morgan.",
+        "No ULN found in the mock LRS for this identity. Enter the ULN manually.",
     };
   },
 
@@ -157,20 +42,11 @@ export const mockLrsPlrAdapter: LrsPlrPort = {
       };
     }
 
-    const isAlex =
-      given.toLowerCase() === "alex" &&
-      family.toLowerCase() === "morgan" &&
-      uln === DEMO_ULN;
-
-    if (!isAlex) {
-      return {
-        status: "not_verified",
-        message:
-          "Mock LRS could not verify this apprentice. Demo data is available for Alex Morgan / ULN 1234567890.",
-      };
-    }
-
-    return { status: "ok", record: alexPlr({ ...identity, uln }) };
+    return {
+      status: "not_verified",
+      message:
+        "Mock LRS has no PLR for this identity. Live LRS SOAP integration is required for real lookups.",
+    };
   },
 };
 

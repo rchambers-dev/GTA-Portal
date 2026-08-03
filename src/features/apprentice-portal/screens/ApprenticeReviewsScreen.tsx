@@ -6,9 +6,8 @@ import {
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
 import {
-  ALEX_REVIEW_DETAILS,
   type ApprenticeReviewDetail,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./apprentice-pages.module.css";
 
@@ -49,8 +48,8 @@ function ctaLabel(review: ApprenticeReviewDetail): string {
 }
 
 export function ApprenticeReviewsScreen() {
-  const { profile, live } = useApprenticePortalProfile();
-  const reviews = live ? [] : ALEX_REVIEW_DETAILS;
+  const { profile } = useApprenticePortalProfile();
+  const reviews: ApprenticeReviewDetail[] = [];
   const upcoming = reviews.filter((r) => r.status === "upcoming");
   const past = reviews.filter((r) => r.status !== "upcoming");
 
@@ -61,9 +60,8 @@ export function ApprenticeReviewsScreen() {
     >
       <div className={styles.stack}>
         <p className={styles.note}>
-          {live
-            ? "Reviews from your mentor will appear here once they are recorded against your apprenticeship."
-            : "Apprentices can open completed reviews — not only staff. Figures link through to Progress, Attendance, OTJ, and My Learning as those areas grow."}
+          Reviews from your mentor will appear here once they are recorded
+          against your apprenticeship.
         </p>
 
         {upcoming.length > 0 ? (

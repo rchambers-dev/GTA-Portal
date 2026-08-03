@@ -6,7 +6,7 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
+import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import { taskById } from "../domain/autocare-tasks";
 import {
   getTaskServerSnapshot,

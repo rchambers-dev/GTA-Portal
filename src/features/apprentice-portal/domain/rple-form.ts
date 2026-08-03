@@ -221,7 +221,7 @@ export function buildPrefillFromPriorDocuments(
   const apprenticeName =
     [enrolment?.firstName, enrolment?.surname].filter(Boolean).join(" ") ||
     interview?.candidateName ||
-    "Alex Morgan";
+    "";
 
   return {
     programmeKey,
@@ -229,7 +229,7 @@ export function buildPrefillFromPriorDocuments(
     apprenticeName,
     dateOfBirth: enrolment?.dateOfBirth ?? "",
     employerName:
-      enrolment?.employerName || interview?.employerName || "Riverside Autocare",
+      enrolment?.employerName || interview?.employerName || "",
     employerAddress:
       enrolment?.employerAddress || interview?.employerAddress || "",
     employerType: "",

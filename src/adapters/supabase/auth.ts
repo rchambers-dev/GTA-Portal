@@ -2,6 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import type { SessionUser } from "@/features/apprentice-lifecycle/types";
 import type { EffectiveSession, PortalAccount, WorkspaceId } from "@/lib/portal/types";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
+import { resolveApprenticeDeliveryContext } from "@/features/apprentice-portal/domain/delivery-spine";
 import { createSupabaseServerClient } from "./client";
 
 type ProfileRow = {
@@ -102,8 +103,18 @@ export async function getSupabaseEffectiveSession(): Promise<EffectiveSession | 
 
   if (error || !profile) return null;
 
+  const account = toPortalAccount(user, profile);
+  if (account.workspace === "apprentice" && account.linkedApprenticeId) {
+    const delivery = await resolveApprenticeDeliveryContext(
+      account.linkedApprenticeId,
+    );
+    account.deliverySpine = delivery.deliverySpine;
+  } else if (account.workspace === "apprentice") {
+    account.deliverySpine = "groups";
+  }
+
   return {
-    account: toPortalAccount(user, profile),
+    account,
     permissions: profile.permissions ?? [],
     activeTemporaryAssignments: [],
     temporaryAccessLabels: [],

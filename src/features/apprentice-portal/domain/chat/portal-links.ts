@@ -1,10 +1,3 @@
-import {
-  ALEX_OTJ_ENTRIES,
-  ALEX_PROFILE,
-  canEmployerActOnOtj,
-  canTutorActOnOtj,
-  otjPipelineLabel,
-} from "../mock-apprentice";
 import type { ChatPortalLinkAttachment } from "./types";
 
 export type ChatPortalLinkOption = ChatPortalLinkAttachment & {
@@ -18,61 +11,39 @@ export type ChatPortalLinkOption = ChatPortalLinkAttachment & {
  * approve, deny, or complete something without hunting for it.
  */
 export function listShareablePortalLinks(): ChatPortalLinkOption[] {
-  const links: ChatPortalLinkOption[] = [
+  return [
     {
       id: "otj-home",
       type: "portal_link",
       href: "/apprentice/otj",
       title: "My OTJ hours",
-      detail: "Alex’s off-the-job log and approval pipeline",
+      detail: "Off-the-job log and approval pipeline",
       actionLabel: "Open OTJ",
       area: "OTJ",
       keywords: ["otj", "hours", "log"],
       audience: ["anyone"],
     },
     {
-      id: "cea-home",
+      id: "tracking-home",
       type: "portal_link",
-      href: "/apprentice/cea",
-      title: "CEA tasks",
-      detail: "CEA competence tasks waiting for workplace / teacher sign-off",
-      actionLabel: "Open CEA",
-      area: "CEA",
-      keywords: ["cea", "task", "tyre"],
+      href: "/apprentice/tracking",
+      title: "Personal tracking",
+      detail: "Programme tracking — groups or college blocks by cohort spine",
+      actionLabel: "Open tracking",
+      area: "Tracking",
+      keywords: ["tracking", "cea", "task", "groups", "blocks"],
       audience: ["anyone"],
     },
     {
-      id: "cea-tyres",
+      id: "tracking-tyres",
       type: "portal_link",
-      href: "/apprentice/cea?task=g3-t1",
-      title: "CEA · Remove and install tyres",
+      href: "/apprentice/tracking?task=g3-t1",
+      title: "Tracking · Remove and install tyres",
       detail: "Group 3 task — ready for employer / teacher sign-off",
       actionLabel: "Open task",
-      area: "CEA",
-      keywords: ["cea", "tyre", "g3", "sign-off"],
+      area: "Tracking",
+      keywords: ["tracking", "cea", "tyre", "g3", "sign-off"],
       audience: ["mentor", "tutor", "employer", "anyone"],
-    },
-    {
-      id: "module-m3",
-      type: "portal_link",
-      href: "/apprentice/modules/m3",
-      title: "Module MV-103 · Vehicle systems",
-      detail: "Current module coverage and outcomes",
-      actionLabel: "Open module",
-      area: "Modules",
-      keywords: ["module", "mv-103", "systems"],
-      audience: ["anyone"],
-    },
-    {
-      id: "topic-m3-c2",
-      type: "portal_link",
-      href: "/apprentice/modules/m3/m3-c2",
-      title: "Topic · Cooling and lubrication",
-      detail: "In progress — needs tutor observation / sign-off",
-      actionLabel: "Open topic",
-      area: "Modules",
-      keywords: ["cooling", "sign-off", "topic", "tutor"],
-      audience: ["tutor", "mentor", "anyone"],
     },
     {
       id: "tutor-signoffs",
@@ -90,7 +61,7 @@ export function listShareablePortalLinks(): ChatPortalLinkOption[] {
       type: "portal_link",
       href: "/employer/otj",
       title: "Employer OTJ to agree",
-      detail: `Hours waiting for ${ALEX_PROFILE.employerContact} to confirm`,
+      detail: "Hours waiting for employer confirmation",
       actionLabel: "Open approvals",
       area: "Approvals",
       keywords: ["employer", "otj", "agree", "approve"],
@@ -112,7 +83,7 @@ export function listShareablePortalLinks(): ChatPortalLinkOption[] {
       type: "portal_link",
       href: "/apprentice/attendance",
       title: "Attendance & catch-up",
-      detail: "Missed modules / tasks from days Alex was away",
+      detail: "Missed modules / tasks from days away",
       actionLabel: "Open attendance",
       area: "Attendance",
       keywords: ["attendance", "absent", "missed", "catch-up"],
@@ -141,67 +112,6 @@ export function listShareablePortalLinks(): ChatPortalLinkOption[] {
       audience: ["anyone"],
     },
   ];
-
-  for (const entry of ALEX_OTJ_ENTRIES) {
-    const needsEmployer = canEmployerActOnOtj(entry);
-    const needsTutor = canTutorActOnOtj(entry);
-    const actionAudience: ChatPortalLinkOption["audience"] = needsEmployer
-      ? ["employer", "mentor", "anyone"]
-      : needsTutor
-        ? ["tutor", "mentor", "anyone"]
-        : ["anyone"];
-
-    links.push({
-      id: `otj-entry-${entry.id}`,
-      type: "portal_link",
-      href: `/apprentice/otj?otj=${entry.id}`,
-      title: `OTJ · ${entry.activityName}`,
-      detail: `${otjPipelineLabel(entry)} · Entry ${entry.entryNumber}`,
-      actionLabel: needsEmployer
-        ? "Review for employer"
-        : needsTutor
-          ? "Review for teacher"
-          : "Open entry",
-      area: "OTJ",
-      keywords: [
-        "otj",
-        entry.activityName.toLowerCase(),
-        entry.id,
-        otjPipelineLabel(entry).toLowerCase(),
-      ],
-      audience: actionAudience,
-    });
-
-    if (needsEmployer) {
-      links.push({
-        id: `otj-employer-${entry.id}`,
-        type: "portal_link",
-        href: `/employer/otj?otj=${entry.id}`,
-        title: `Agree OTJ · ${entry.activityName}`,
-        detail: "Direct link for employer to agree or return this entry",
-        actionLabel: "Agree / return",
-        area: "Approvals",
-        keywords: ["agree", "employer", "otj", entry.id],
-        audience: ["employer", "mentor"],
-      });
-    }
-
-    if (needsTutor) {
-      links.push({
-        id: `otj-tutor-${entry.id}`,
-        type: "portal_link",
-        href: `/staff/otj-approvals?otj=${entry.id}`,
-        title: `Final agree OTJ · ${entry.activityName}`,
-        detail: "Direct link for teacher final confirmation",
-        actionLabel: "Final agree",
-        area: "Approvals",
-        keywords: ["tutor", "teacher", "final", "otj", entry.id],
-        audience: ["tutor", "mentor"],
-      });
-    }
-  }
-
-  return links;
 }
 
 export function searchShareablePortalLinks(query: string): ChatPortalLinkOption[] {

@@ -5,6 +5,7 @@ import {
   DocumentsHubScreen,
   DocumentsItemScreen,
   DocumentsSectionScreen,
+  ApprenticeGroupsTrackingScreen,
   ApprenticeCvBuilderScreen,
   ApprenticeDashboardScreen,
   ApprenticeOtjHoursScreen,
@@ -17,6 +18,7 @@ import {
   EmployerOtjApprovalsScreen,
   TutorOtjApprovalsScreen,
 } from "@/features/apprentice-portal";
+import { resolveApprenticeDeliveryContext } from "@/features/apprentice-portal/domain/delivery-spine";
 import {
   ApprenticeProgrammeTasksScreen,
   ApprenticeTaskFillScreen,
@@ -27,6 +29,7 @@ import {
   ManagementTaskViewScreen,
   CourseBuilderScreen,
 } from "@/features/programme-delivery";
+import type { EffectiveSession } from "@/lib/portal/types";
 import {
   AdministrationDashboardScreen,
   AdminEnrolmentsScreen,
@@ -51,7 +54,6 @@ const STAFF_SHARED_REDIRECTS: Record<string, string> = {
   interventions: "/interventions?from=staff",
   actions: "/actions?from=staff",
   "employer-concerns": "/employer-concerns?from=staff",
-  "support-plans": "/support-plans?from=staff",
   "employer-contacts": "/employers?from=staff",
   // Old module catalogue — Autocare delivery is blocks + tasks now
   modules: "/staff/programme-delivery",
@@ -93,21 +95,39 @@ function renderDocumentsPage(
   return null;
 }
 
-function renderApprenticePage(segment: string) {
-  const moduleMatch = /^modules\/([^/]+)(?:\/([^/]+))?$/.exec(segment);
-  if (moduleMatch) {
-    // Old MV module catalogue — superseded by Autocare college tasks (blocks)
-    redirect("/apprentice/college-tasks");
-  }
+function renderApprenticeTracking(spine: "groups" | "blocks") {
+  // One apprentice-facing page for both spines; delivery model only changes content.
+  if (spine === "blocks") return <ApprenticeProgrammeTasksScreen />;
+  return <ApprenticeGroupsTrackingScreen />;
+}
+
+async function renderApprenticePage(
+  segment: string,
+  session: EffectiveSession,
+) {
+  const spine =
+    session.account.deliverySpine ??
+    (
+      await resolveApprenticeDeliveryContext(session.account.linkedApprenticeId)
+    ).deliverySpine;
 
   const reviewMatch = /^reviews\/([^/]+)$/.exec(segment);
   if (reviewMatch) {
     return <ApprenticeReviewDetailScreen reviewId={reviewMatch[1]} />;
   }
 
-  const collegeTaskMatch = /^college-tasks\/([^/]+)$/.exec(segment);
-  if (collegeTaskMatch) {
-    return <ApprenticeTaskFillScreen taskId={collegeTaskMatch[1]} />;
+  // Retired module catalogue paths → personal tracking.
+  if (/^modules(?:\/|$)/.test(segment)) {
+    redirect("/apprentice/tracking");
+  }
+
+  // Task fill lives under /tracking/[taskId] (blocks). Legacy college-tasks kept as alias.
+  const trackingTaskMatch =
+    /^tracking\/([^/]+)$/.exec(segment) ??
+    /^college-tasks\/([^/]+)$/.exec(segment);
+  if (trackingTaskMatch) {
+    if (spine !== "blocks") redirect("/apprentice/tracking");
+    return <ApprenticeTaskFillScreen taskId={trackingTaskMatch[1]} />;
   }
 
   const documentsPage = renderDocumentsPage("apprentice", segment);
@@ -118,20 +138,20 @@ function renderApprenticePage(segment: string) {
       return <ApprenticeDashboardScreen />;
     case "learning":
       return <ApprenticeLearningScreen />;
-    case "college-tasks":
-      return <ApprenticeProgrammeTasksScreen />;
-    case "modules":
-      redirect("/apprentice/college-tasks");
+    case "tracking":
+      return renderApprenticeTracking(spine);
+    // Legacy aliases — never use CEA / college-tasks as the canonical apprentice path.
     case "cea":
-      // Old CEA personal-tracking UI — college delivery is block tasks now
-      redirect("/apprentice/college-tasks");
+    case "personal-tracking":
+    case "college-tasks":
+    case "modules":
+    case "assignments":
+      redirect("/apprentice/tracking");
     case "otj":
       return <ApprenticeOtjHoursScreen />;
     case "training-plan":
       // Legacy path — Documents hub replaces the single training-plan page.
       redirect("/apprentice/documents");
-    case "assignments":
-      redirect("/apprentice/college-tasks");
     case "evidence":
       // Legacy path — OTJ hours used to live under /apprentice/evidence.
       redirect("/apprentice/otj");
@@ -193,7 +213,7 @@ export async function renderWorkspacePage(
   }
 
   if (workspace === "apprentice") {
-    const page = renderApprenticePage(segment);
+    const page = await renderApprenticePage(segment, session);
     if (page) return page;
   }
 
@@ -344,6 +364,11 @@ export async function renderWorkspacePage(
 
   if (workspace === "curriculum" && segment === "course-builder") {
     return <CourseBuilderScreen />;
+  }
+
+  // Shared safeguarding contacts page (case management not built yet).
+  if (workspace === "safeguarding") {
+    return <ApprenticeSupportScreen audience="administration" />;
   }
 
   const stub = resolveWorkspaceStub(workspace, slug);

@@ -50,7 +50,7 @@ import {
   validateSkill,
   type CvReferencePerson,
 } from "../domain/cv/validation";
-import { ALEX_PROFILE } from "../domain/mock-apprentice";
+import { BLANK_APPRENTICE_PROFILE } from "../domain/apprentice-profile";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./apprentice-pages.module.css";
 
@@ -226,11 +226,8 @@ function sortEducation(items: CvEducation[]): CvEducation[] {
   });
 }
 
-function buildDefaultState(
-  profile = ALEX_PROFILE,
-  live = false,
-): CvState {
-  return buildCvFromPortal(profile, live ? [] : undefined) as CvState;
+function buildDefaultState(profile = BLANK_APPRENTICE_PROFILE): CvState {
+  return buildCvFromPortal(profile, []) as CvState;
 }
 
 type GtaCvFile = {
@@ -401,7 +398,7 @@ function CharCount({ value, max }: { value: string; max: number }) {
 }
 
 export function ApprenticeCvBuilderScreen() {
-  const { profile, live, loading } = useApprenticePortalProfile();
+  const { profile, loading } = useApprenticePortalProfile();
   const [cv, setCv] = useState<CvState>(() => buildDefaultState());
   const [skillDraft, setSkillDraft] = useState("");
   const [jobDescription, setJobDescription] = useState("");
@@ -527,13 +524,12 @@ export function ApprenticeCvBuilderScreen() {
   }, [profile]);
 
   useEffect(() => {
-    if (!live || loading || !hydrated || !profile.apprenticeId) return;
-    // Drop Alex demo CV seed once the live apprentice profile is known.
+    if (loading || !hydrated || !profile.apprenticeId) return;
     setCv((prev) => {
-      if (prev.fullName !== ALEX_PROFILE.displayName) return prev;
-      return buildDefaultState(profile, true);
+      if (prev.fullName !== BLANK_APPRENTICE_PROFILE.displayName) return prev;
+      return buildDefaultState(profile);
     });
-  }, [hydrated, live, loading, profile]);
+  }, [hydrated, loading, profile]);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -769,7 +765,7 @@ export function ApprenticeCvBuilderScreen() {
       "Reset to portal facts only? This clears your written summary, skills, bullets, and other manual extras.",
     );
     if (!confirmed) return;
-    const fresh = buildDefaultState(profile, live);
+    const fresh = buildDefaultState(profile);
     setCv(fresh);
     setJobDescription("");
     setAiMessage(null);
@@ -1175,7 +1171,7 @@ export function ApprenticeCvBuilderScreen() {
                 aria-invalid={visibleError("fullName", validation.errors.fullName) ? true : undefined}
                 onBlur={() => markTouched("fullName")}
                 onChange={(e) => setField("fullName", e.target.value)}
-                placeholder="e.g. Alex Morgan"
+                placeholder="e.g. Full name"
               />
               <FieldError message={visibleError("fullName", validation.errors.fullName)} />
             </div>

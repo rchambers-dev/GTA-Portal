@@ -81,7 +81,7 @@ export function ApprenticeChatProvider({
   /** Signed-in chat identity — apprentice or employer contact id. */
   selfContactId?: string;
 }) {
-  const { profile, live, loading } = useApprenticePortalProfile();
+  const { profile, loading } = useApprenticePortalProfile();
   const [version, setVersion] = useState(0);
   const [pendingShare, setPendingShare] =
     useState<ChatPortalLinkAttachment | null>(null);
@@ -95,11 +95,10 @@ export function ApprenticeChatProvider({
   }
 
   useEffect(() => {
-    if (!live || loading || !profile.displayName) return;
+    if (loading || !profile.displayName) return;
     syncChatContactsFromProfile(profile);
     setVersion((v) => v + 1);
   }, [
-    live,
     loading,
     profile.displayName,
     profile.initials,

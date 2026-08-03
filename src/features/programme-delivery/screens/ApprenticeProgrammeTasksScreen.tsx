@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 import {
   ApprenticePageShell,
   ApprenticeStatusChip,
@@ -36,6 +37,7 @@ import styles from "./programme-delivery.module.css";
  * Past/current week blocks unlock for catch-up; future blocks stay locked.
  */
 export function ApprenticeProgrammeTasksScreen() {
+  const router = useRouter();
   const { profile, loading, error } = useApprenticePortalProfile();
   const apprenticeId = profile.apprenticeId || "live-apprentice";
   useSyncExternalStore(
@@ -43,6 +45,13 @@ export function ApprenticeProgrammeTasksScreen() {
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
+
+  useEffect(() => {
+    if (loading) return;
+    if (profile.deliverySpine && profile.deliverySpine !== "blocks") {
+      router.replace("/apprentice/tracking");
+    }
+  }, [loading, profile.deliverySpine, router]);
 
   const taskedBlocks = useMemo(
     () => AUTOCARE_BLOCKS.filter((b) => tasksForBlock(b.id).length > 0),
@@ -52,7 +61,7 @@ export function ApprenticeProgrammeTasksScreen() {
   if (loading) {
     return (
       <ApprenticePageShell
-        title="College tasks"
+        title="Personal tracking"
         description="Loading your programme…"
       >
         <p className={styles.purposeBody}>Loading college tasks…</p>
@@ -60,10 +69,23 @@ export function ApprenticeProgrammeTasksScreen() {
     );
   }
 
+  if (profile.deliverySpine && profile.deliverySpine !== "blocks") {
+    return (
+      <ApprenticePageShell
+        title="Personal tracking"
+        description="Redirecting to your groups spine…"
+      >
+        <p className={styles.purposeBody}>
+          You are enrolled on the groups spine. Opening personal tracking…
+        </p>
+      </ApprenticePageShell>
+    );
+  }
+
   return (
     <ApprenticePageShell
-      title="College tasks"
-      description="Practical tasks and block reflections for your Autocare programme. Complete these in the portal where you can — or upload the PDFs if you could not get on that college day."
+      title="Personal tracking"
+      description="College practicals and block reflections for your programme. Complete these in the portal where you can — or upload the PDFs if you could not get on that college day."
     >
       <div className={styles.root}>
         {error ? (
@@ -153,7 +175,7 @@ export function ApprenticeProgrammeTasksScreen() {
                     const taskRag = apprenticeTaskRag(sub.status, locked);
                     const href = locked
                       ? "#"
-                      : `/apprentice/college-tasks/${task.id}`;
+                      : `/apprentice/tracking/${task.id}`;
                     return (
                       <li key={task.id}>
                         <Link

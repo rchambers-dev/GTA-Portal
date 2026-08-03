@@ -9,7 +9,7 @@ import {
   formatOtjDuration,
   isOtjCatchUpEntry,
   otjHours,
-} from "@/features/apprentice-portal/domain/mock-apprentice";
+} from "@/features/apprentice-portal/domain/apprentice-profile";
 import apprenticeStyles from "@/features/apprentice-portal/screens/apprentice-pages.module.css";
 import {
   EMPLOYER_OPEN_CASES,

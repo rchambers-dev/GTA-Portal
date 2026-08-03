@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { getStandalonePorts } from "@/adapters/standalone";
-import { isDemoModeEnabled } from "@/lib/env/portal";
 import { getDefaultWorkspaceRoute } from "@/lib/permissions/workspace";
 import { LoginForm } from "./LoginForm";
 import styles from "./login.module.css";
@@ -10,10 +9,6 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  if (isDemoModeEnabled()) {
-    redirect("/");
-  }
-
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
   if (session) {

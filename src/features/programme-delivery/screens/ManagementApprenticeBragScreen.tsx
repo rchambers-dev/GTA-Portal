@@ -116,7 +116,7 @@ export function ManagementApprenticeBragScreen() {
     getTaskServerSnapshot,
   );
   const admin = useAdminStore();
-  const [apprenticeId, setApprenticeId] = useState<string>("lrn-alex-morgan");
+  const [apprenticeId, setApprenticeId] = useState<string>("");
   const [openBlockId, setOpenBlockId] = useState<number | null>(null);
 
   useEffect(() => {

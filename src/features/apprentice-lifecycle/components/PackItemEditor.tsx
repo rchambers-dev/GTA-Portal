@@ -12,7 +12,7 @@ import {
 import { getPackItem, upsertPackItem } from "../domain/pack-store";
 import { evidenceStatusLabel, evidenceStatusTone } from "../lib/status";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
+import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import styles from "./PackItemEditor.module.css";
 
 type Props = {

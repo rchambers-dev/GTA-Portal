@@ -33,7 +33,11 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
         items: [
           { href: "/apprentice/dashboard", label: "Dashboard", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
           { href: "/apprentice/learning", label: "My Learning", permission: PERMISSIONS.APPRENTICE_MODULES_VIEW },
-          { href: "/apprentice/college-tasks", label: "College tasks", permission: PERMISSIONS.APPRENTICE_MODULES_VIEW },
+          {
+            href: "/apprentice/tracking",
+            label: "Personal tracking",
+            permission: PERMISSIONS.APPRENTICE_MODULES_VIEW,
+          },
           { href: "/apprentice/progress", label: "Progress", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
           { href: "/apprentice/otj", label: "OTJ hours", permission: PERMISSIONS.APPRENTICE_OTJ_VIEW },
           { href: "/apprentice/documents", label: "Documents", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
@@ -153,14 +157,11 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
     return filterSections(session, [
       {
         items: [
-          { href: "/safeguarding/dashboard", label: "Safeguarding Dashboard", permission: PERMISSIONS.SAFEGUARDING_WORKSPACE_VIEW },
-          { href: "/safeguarding/cases", label: "Restricted Cases", permission: PERMISSIONS.SAFEGUARDING_CASES_VIEW },
-          { href: "/safeguarding/referrals", label: "Referrals", permission: PERMISSIONS.SAFEGUARDING_CASES_VIEW },
-          { href: "/safeguarding/welfare", label: "Welfare Concerns", permission: PERMISSIONS.SAFEGUARDING_CASES_VIEW },
-          { href: "/safeguarding/risk", label: "Risk Assessments", permission: PERMISSIONS.SAFEGUARDING_CONFIDENTIAL_VIEW },
-          { href: "/safeguarding/history", label: "Action History", permission: PERMISSIONS.SAFEGUARDING_CONFIDENTIAL_VIEW },
-          { href: "/safeguarding/notes", label: "Confidential Notes", permission: PERMISSIONS.SAFEGUARDING_CONFIDENTIAL_VIEW },
-          { href: "/safeguarding/escalations", label: "Escalations", permission: PERMISSIONS.SAFEGUARDING_CONFIDENTIAL_VIEW },
+          {
+            href: "/safeguarding/dashboard",
+            label: "Safeguarding",
+            permission: PERMISSIONS.SAFEGUARDING_WORKSPACE_VIEW,
+          },
         ],
       },
     ]);

@@ -2,8 +2,6 @@
 
 import { useMemo, useState } from "react";
 import {
-  ALEX_OTJ_ENTRIES,
-  ALEX_PROFILE,
   canTutorActOnOtj,
   formatModuleDate,
   formatOtjActivityPeriod,
@@ -12,7 +10,7 @@ import {
   otjHours,
   otjTrainingTypeLabel,
   type ApprenticeOtjEntry,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import { ApprenticeStatusChip } from "../components/ApprenticePageShell";
 import styles from "./TutorModuleSignOffScreen.module.css";
 
@@ -20,9 +18,7 @@ import styles from "./TutorModuleSignOffScreen.module.css";
  * Tutor / teacher dashboard stub — final OTJ confirmation only after employer.
  */
 export function TutorOtjApprovalsScreen() {
-  const [entries, setEntries] = useState(
-    ALEX_OTJ_ENTRIES.filter((e) => canTutorActOnOtj(e)),
-  );
+  const [entries, setEntries] = useState<ApprenticeOtjEntry[]>([]);
   const [done, setDone] = useState<ApprenticeOtjEntry[]>([]);
 
   const pendingHours = useMemo(
@@ -41,7 +37,7 @@ export function TutorOtjApprovalsScreen() {
       {
         ...item,
         tutorStatus: "agreed",
-        tutorName: ALEX_PROFILE.tutorName,
+        tutorName: "Tutor",
         tutorDecidedAt: new Date().toISOString(),
       },
       ...prev,
@@ -56,9 +52,9 @@ export function TutorOtjApprovalsScreen() {
       {
         ...item,
         tutorStatus: "returned",
-        tutorName: ALEX_PROFILE.tutorName,
+        tutorName: "Tutor",
         tutorDecidedAt: new Date().toISOString(),
-        tutorNote: "Stub: returned — hours or activity need correcting.",
+        tutorNote: "Returned — hours or activity need correcting.",
       },
       ...prev,
     ]);
@@ -100,7 +96,7 @@ export function TutorOtjApprovalsScreen() {
             {entries.map((entry) => (
               <article key={entry.id} className={styles.card}>
                 <div className={styles.cardMain}>
-                  <p className={styles.apprentice}>{ALEX_PROFILE.displayName}</p>
+                  <p className={styles.apprentice}>Apprentice</p>
                   <h3 className={styles.topic}>
                     Entry {entry.entryNumber} · {entry.activityName}
                   </h3>

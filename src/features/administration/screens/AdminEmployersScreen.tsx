@@ -12,6 +12,10 @@ import {
   type EmployerInput,
 } from "../domain/store";
 import type { AdminEmployerRecord, AdminApprenticeEnrolment } from "../domain/types";
+import {
+  enrolmentKindLabel,
+  enrolmentPositionLabel,
+} from "../domain/enrolment-status";
 import { useAdminStore } from "../hooks/useAdminStore";
 import styles from "./admin-pages.module.css";
 
@@ -756,9 +760,10 @@ export function AdminEmployersScreen() {
                                   >
                                     <strong>{apprentice.displayName}</strong>
                                     <span>
-                                      {apprentice.kind === "new_starter"
-                                        ? "New starter"
-                                        : "Currently studying"}
+                                      {enrolmentKindLabel(
+                                        apprentice.startDate,
+                                        apprentice.kind,
+                                      )}
                                       {" · "}
                                       {apprentice.programmeName}
                                     </span>
@@ -912,13 +917,16 @@ export function AdminEmployersScreen() {
                                   <div className={styles.linkedApprenticeMain}>
                                     <strong>{apprentice.displayName}</strong>
                                     <span>
-                                      {apprentice.kind === "new_starter"
-                                        ? "New starter"
-                                        : "Currently studying"}
-                                      {apprentice.kind === "currently_studying" &&
-                                      apprentice.programmeYear != null
-                                        ? ` · Y${apprentice.programmeYear} · W${apprentice.programmeWeek}`
-                                        : ` · starts ${apprentice.startDate}`}
+                                      {enrolmentKindLabel(
+                                        apprentice.startDate,
+                                        apprentice.kind,
+                                      )}
+                                      {" · "}
+                                      {enrolmentPositionLabel(
+                                        apprentice.startDate,
+                                        apprentice.programmeYear,
+                                        apprentice.programmeWeek,
+                                      ).toLowerCase()}
                                       {" · "}
                                       {apprentice.programmeName}
                                     </span>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { usePortalSession } from "./demo/PortalSessionProvider";
+import { usePortalSession } from "./session/PortalSessionProvider";
 import { NavIcon } from "./nav-icons";
 import { resolveNavigation } from "./workspaces/resolve-navigation";
 import { workspaceLabel } from "./workspaces/workspace-stubs";

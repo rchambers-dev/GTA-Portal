@@ -1,6 +1,6 @@
 import { createSeedSnapshot } from "./seed";
 import { assertJobTitlesAssignable } from "./staff-job-titles";
-import { isDemoModeEnabled } from "@/lib/env/portal";
+import { normalizeEnrolmentTiming } from "./enrolment-status";
 import {
   createCohortOps,
   DEFAULT_TEACHING_GROUP_CAPACITY,
@@ -31,51 +31,13 @@ export {
 };
 export { isCohortStarted, COHORT_LOCKED_MESSAGE, COHORT_VERSION_FROZEN_MESSAGE };
 
-const STORAGE_KEY = "gta-portal.administration.v5";
-
-function isLiveAdminStoreEnabled(): boolean {
-  return typeof window !== "undefined" && !isDemoModeEnabled();
-}
-
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
 }
 
-function loadSnapshot(): AdminStoreSnapshot {
-  if (typeof window === "undefined") return createSeedSnapshot();
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return createSeedSnapshot();
-    const parsed = JSON.parse(raw) as AdminStoreSnapshot;
-    if (parsed?.version !== 19) return createSeedSnapshot();
-    return {
-      ...parsed,
-      teachingGroups: parsed.teachingGroups ?? [],
-      cohortChangeLogs: parsed.cohortChangeLogs ?? [],
-      enrolments: (parsed.enrolments ?? []).map((row) => ({
-        ...row,
-        teachingGroupId: row.teachingGroupId ?? null,
-      })),
-      cohorts: (parsed.cohorts ?? []).map((row) => ({
-        ...row,
-        deliverySpine: row.deliverySpine ?? "blocks",
-        teacherNames:
-          row.teacherNames?.length > 0
-            ? row.teacherNames
-            : row.tutorName
-              ? row.tutorName.split(/\s*\|\s*/).map((n) => n.trim()).filter(Boolean)
-              : [],
-        locked: row.locked ?? true,
-      })),
-    };
-  } catch {
-    return createSeedSnapshot();
-  }
-}
-
-function persist(snapshot: AdminStoreSnapshot): void {
-  if (typeof window === "undefined" || isLiveAdminStoreEnabled()) return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+/** Client mutations always go through live Supabase APIs. */
+function isLiveAdminStoreEnabled(): boolean {
+  return typeof window !== "undefined";
 }
 
 /** Stable seed used for SSR + the first client paint (avoids hydration mismatch). */
@@ -86,16 +48,9 @@ let hydrateScheduled = false;
 const listeners = new Set<() => void>();
 
 function ensureHydrated(): void {
-  if (hydrated || typeof window === "undefined") return;
-  if (isLiveAdminStoreEnabled()) return;
-  snapshot = loadSnapshot();
-  hydrated = true;
+  // Live mode: snapshot is refreshed asynchronously from /api/admin/store.
 }
 
-/**
- * Load localStorage after the first paint so SSR HTML matches the initial
- * client render. Mutations still call ensureHydrated() synchronously.
- */
 async function fetchLiveAdminSlice(): Promise<void> {
   if (typeof window === "undefined") return;
   const response = await fetch("/api/admin/store", {
@@ -116,7 +71,7 @@ async function fetchLiveAdminSlice(): Promise<void> {
   snapshot = {
     ...snapshot,
     apprentices: data.apprentices,
-    enrolments: data.enrolments,
+    enrolments: data.enrolments.map((row) => normalizeEnrolmentTiming(row)),
     employers: data.employers ?? snapshot.employers,
     programmes: data.programmes ?? snapshot.programmes,
     cohorts: data.cohorts ?? snapshot.cohorts,
@@ -131,27 +86,19 @@ function scheduleHydrateFromStorage(): void {
   hydrateScheduled = true;
   queueMicrotask(() => {
     if (hydrated) return;
-    if (isLiveAdminStoreEnabled()) {
-      hydrated = true;
-      void fetchLiveAdminSlice().then(() => {
-        for (const listener of listeners) listener();
-      });
-      return;
-    }
-    const next = loadSnapshot();
     hydrated = true;
-    snapshot = next;
-    for (const listener of listeners) listener();
+    void fetchLiveAdminSlice().then(() => {
+      for (const listener of listeners) listener();
+    });
   });
 }
 
 function emit(): void {
-  persist(snapshot);
   for (const listener of listeners) listener();
 }
 
 function id(prefix: string): string {
-  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+  return prefix + "-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7);
 }
 
 /** Assigned after updateEnrolment — used by cohort ops + enrolment placement. */
@@ -170,10 +117,13 @@ export function subscribeAdminStore(listener: () => void): () => void {
 }
 
 export function getAdminSnapshot(): AdminStoreSnapshot {
-  return snapshot;
+  return {
+    ...snapshot,
+    enrolments: snapshot.enrolments.map((row) => normalizeEnrolmentTiming(row)),
+  };
 }
 
-/** Server / hydration snapshot — never reads localStorage. */
+/** Server / hydration snapshot — blank seed until live fetch lands. */
 export function getAdminServerSnapshot(): AdminStoreSnapshot {
   return SERVER_SNAPSHOT;
 }
@@ -410,14 +360,15 @@ export type EnrolmentInput = {
 
 export function listEnrolments(): AdminApprenticeEnrolment[] {
   ensureHydrated();
-  return [...snapshot.enrolments].sort((a, b) =>
-    b.updatedAt.localeCompare(a.updatedAt),
-  );
+  return snapshot.enrolments
+    .map((row) => normalizeEnrolmentTiming(row))
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
 export function getEnrolment(idValue: string): AdminApprenticeEnrolment | undefined {
   ensureHydrated();
-  return snapshot.enrolments.find((e) => e.id === idValue);
+  const row = snapshot.enrolments.find((e) => e.id === idValue);
+  return row ? normalizeEnrolmentTiming(row) : undefined;
 }
 
 export async function createEnrolment(input: EnrolmentInput): Promise<AdminApprenticeEnrolment> {

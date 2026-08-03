@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Button } from "@/components/ui/Button";
-import { usePortalSession } from "@/shell/demo/PortalSessionProvider";
+import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import { workspaceForRole } from "@/features/administration/domain/account-access";
 import {
   createUser,

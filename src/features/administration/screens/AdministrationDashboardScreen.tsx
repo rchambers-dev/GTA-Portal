@@ -7,9 +7,8 @@ import {
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import apprenticeStyles from "@/features/apprentice-portal/screens/apprentice-pages.module.css";
 import { awaitingEnrolment } from "../domain/intake-pack";
-import { resetAdminStore } from "../domain/store";
+import { enrolmentKindLabel } from "../domain/enrolment-status";
 import { useAdminStore } from "../hooks/useAdminStore";
-import { isDemoModeEnabled } from "@/lib/env/portal";
 import styles from "./admin-pages.module.css";
 
 function formatDate(value: string): string {
@@ -25,7 +24,6 @@ function formatDate(value: string): string {
 
 export function AdministrationDashboardScreen() {
   const store = useAdminStore();
-  const showLocalSeedReset = isDemoModeEnabled();
 
   const enrolledApprenticeIds = store.enrolments.map((e) => e.apprenticeId);
   const intakeQueue = store.apprentices.filter(
@@ -68,23 +66,6 @@ export function AdministrationDashboardScreen() {
           >
             Enrolments
           </Link>
-          {showLocalSeedReset ? (
-            <button
-              type="button"
-              className={styles.secondaryBtn}
-              onClick={() => {
-                if (
-                  window.confirm(
-                    "Reset local administration records to the starter seed?",
-                  )
-                ) {
-                  resetAdminStore();
-                }
-              }}
-            >
-              Reset local seed data
-            </button>
-          ) : null}
         </div>
       }
     >
@@ -347,10 +328,8 @@ export function AdministrationDashboardScreen() {
                     <div className={apprenticeStyles.rowMain}>
                       <strong>{row.displayName}</strong>
                       <span>
-                        {row.kind === "new_starter"
-                          ? "New starter"
-                          : "Currently studying"}{" "}
-                        · {row.programmeName} · {row.employerName}
+                        {enrolmentKindLabel(row.startDate, row.kind)} ·{" "}
+                        {row.programmeName} · {row.employerName}
                         {row.collegeDays ? ` · ${row.collegeDays}` : ""}
                       </span>
                     </div>

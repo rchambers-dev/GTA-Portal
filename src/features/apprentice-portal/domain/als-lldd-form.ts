@@ -127,7 +127,7 @@ export function prefillAlsLlddFromPriorDocs(): AlsLlddState {
   const candidateName =
     [enrolment?.firstName, enrolment?.surname].filter(Boolean).join(" ") ||
     interview?.candidateName ||
-    "Alex Morgan";
+    "";
 
   const apprenticeshipRoute =
     interview?.apprenticeshipRoute ||

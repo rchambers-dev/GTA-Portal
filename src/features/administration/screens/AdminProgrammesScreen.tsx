@@ -2,7 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { ApprenticePageShell, ApprenticeStatusChip } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { formatDisplayDate } from "@/features/apprentice-lifecycle/domain/programme-week";
+import {
+  calculateProgrammeWeek,
+  formatDisplayDate,
+} from "@/features/apprentice-lifecycle/domain/programme-week";
+import { enrolmentPositionLabel } from "../domain/enrolment-status";
 import type {
   AdminCohortRecord,
   AdminApprenticeEnrolment,
@@ -98,19 +102,22 @@ function apprenticeMetaLine(
   }
 
   const startLabel = formatIsoDate(apprentice.startDate);
-  const isPending =
-    apprentice.status === "pending_start" || apprentice.kind === "new_starter";
+  const hasStarted =
+    Boolean(apprentice.startDate) &&
+    calculateProgrammeWeek(apprentice.startDate) != null;
 
-  if (isPending && startLabel) {
+  if (!hasStarted && startLabel) {
     parts.push(`starts ${startLabel}`);
   } else {
     if (startLabel) parts.push(`started ${startLabel}`);
-    if (
-      apprentice.kind === "currently_studying" &&
-      apprentice.programmeYear != null &&
-      apprentice.programmeWeek != null
-    ) {
-      parts.push(`Y${apprentice.programmeYear}`, `W${apprentice.programmeWeek}`);
+    const position = enrolmentPositionLabel(
+      apprentice.startDate,
+      apprentice.programmeYear,
+      apprentice.programmeWeek,
+    );
+    const yw = /^Y(\d+) · W(\d+)$/.exec(position);
+    if (yw) {
+      parts.push(`Y${yw[1]}`, `W${yw[2]}`);
     }
   }
 

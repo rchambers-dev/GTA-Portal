@@ -530,7 +530,7 @@ export function CourseBuilderScreen() {
                             </button>
                             <Link
                               className={styles.tab}
-                              href={`/apprentice/college-tasks/${task.id}`}
+                              href={`/apprentice/tracking/${task.id}`}
                             >
                               Preview as apprentice
                             </Link>

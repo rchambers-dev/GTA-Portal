@@ -13,7 +13,7 @@ import {
   CHAT_SELF_EMPLOYER,
   CHAT_SELF_APPRENTICE,
 } from "@/features/apprentice-portal/domain/chat/store";
-import { PortalSessionProvider } from "./demo/PortalSessionProvider";
+import { PortalSessionProvider } from "./session/PortalSessionProvider";
 import { PortalMain } from "./PortalMain";
 import { SidebarNavigation } from "./SidebarNavigation";
 import styles from "./PortalShell.module.css";

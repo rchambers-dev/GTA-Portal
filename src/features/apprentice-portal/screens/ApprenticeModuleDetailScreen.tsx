@@ -6,11 +6,11 @@ import {
 import { StepBackButton } from "../components/StepBackButton";
 import {
   formatModuleDate,
-  getAlexModuleDetail,
-  ALEX_MODULES,
-  ALEX_PROFILE,
+  getModuleDetail,
+  BLANK_MODULES,
+  BLANK_APPRENTICE_PROFILE,
   type ModuleTopic,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import styles from "./apprentice-pages.module.css";
 
 function statusTone(status: "completed" | "in_progress" | "remaining") {
@@ -104,8 +104,8 @@ function TopicList({
 }
 
 export function ApprenticeModuleDetailScreen({ moduleId }: { moduleId: string }) {
-  const mod = getAlexModuleDetail(moduleId);
-  const row = ALEX_MODULES.find((m) => m.id === moduleId);
+  const mod = getModuleDetail(moduleId);
+  const row = BLANK_MODULES.find((m) => m.id === moduleId);
 
   if (row && !row.released) {
     return (
@@ -115,9 +115,9 @@ export function ApprenticeModuleDetailScreen({ moduleId }: { moduleId: string })
         actions={<StepBackButton parentHref="/apprentice/modules" />}
       >
         <p className={styles.note}>
-          This module is on your {ALEX_PROFILE.programmeName} programme map so you
+          This module is on your {BLANK_APPRENTICE_PROFILE.programmeName} programme map so you
           can see what is coming next. It will unlock when{" "}
-          {ALEX_PROFILE.tutorName} releases it for your group.
+          {BLANK_APPRENTICE_PROFILE.tutorName} releases it for your group.
         </p>
         <p className={styles.empty}>Not released — not clickable from the list.</p>
       </ApprenticePageShell>

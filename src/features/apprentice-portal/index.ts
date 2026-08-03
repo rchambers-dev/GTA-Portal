@@ -7,7 +7,7 @@ export { ApprenticeLearningScreen } from "./screens/ApprenticeLearningScreen";
 export { ApprenticeModulesScreen } from "./screens/ApprenticeModulesScreen";
 export { ApprenticeModuleDetailScreen } from "./screens/ApprenticeModuleDetailScreen";
 export { ApprenticeModuleTopicScreen } from "./screens/ApprenticeModuleTopicScreen";
-export { ApprenticeCeaScreen } from "./screens/ApprenticeCeaScreen";
+export { ApprenticeGroupsTrackingScreen } from "./screens/ApprenticeGroupsTrackingScreen";
 export { ApprenticeOtjHoursScreen } from "./screens/ApprenticeOtjHoursScreen";
 export { ApprenticeProgressScreen } from "./screens/ApprenticeProgressScreen";
 export { ApprenticeReviewsScreen } from "./screens/ApprenticeReviewsScreen";

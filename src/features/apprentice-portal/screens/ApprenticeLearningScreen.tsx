@@ -8,11 +8,10 @@ import {
 } from "../components/ApprenticePageShell";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
-  ALEX_LEARNING,
   learningKindLabel,
   type LearningPlanItem,
   type LearningPlanItemKind,
-} from "../domain/mock-apprentice";
+} from "../domain/apprentice-profile";
 import {
   AUTOCARE_BLOCKS,
   AUTOCARE_STANDARD,
@@ -62,8 +61,9 @@ function PlanItem({ item }: { item: LearningPlanItem }) {
 }
 
 export function ApprenticeLearningScreen() {
-  const { profile, live } = useApprenticePortalProfile();
+  const { profile } = useApprenticePortalProfile();
   const apprenticeId = profile.apprenticeId || "live-apprentice";
+  const onGroups = profile.deliverySpine !== "blocks";
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
@@ -81,67 +81,97 @@ export function ApprenticeLearningScreen() {
     ) ?? AUTOCARE_BLOCKS[0];
 
   const blockTasks = tasksForBlock(currentBlock.id);
-  const learningPlan: LearningPlanItem[] = live
-    ? []
-    : [...ALEX_LEARNING.thisWeek, ...ALEX_LEARNING.lookingAhead];
+  const learningPlan: LearningPlanItem[] = [];
+
+  const spineLabel =
+    profile.standardVersion != null
+      ? `v${String(profile.standardVersion).replace(/^v/i, "")} · ${
+          onGroups ? "Groups" : "Blocks"
+        }`
+      : onGroups
+        ? "Groups"
+        : "Blocks";
 
   return (
     <ApprenticePageShell
       title="My Learning"
-      description={`${profile.programmeName} · Week ${profile.programmeWeek}. College practicals, block reflections, and OTJ.`}
+      description={`${profile.programmeName} · Week ${profile.programmeWeek}. ${
+        onGroups
+          ? "Personal tracking groups and OTJ."
+          : "College practicals, block reflections, and OTJ."
+      }`}
     >
       <div className={styles.stack}>
         <div className={styles.purposeBox}>
           <p className={styles.purposeLead}>
             <strong>
-              {AUTOCARE_STANDARD.label} · {AUTOCARE_STANDARD.code}
+              {profile.programmeName}
             </strong>
+            {" · "}
+            {spineLabel}
             {" · "}
             Week {profile.programmeWeek}
           </p>
           <p className={styles.purposeBody}>
-            College {profile.collegeDays}. Current block: {currentBlock.name}.
+            College {profile.collegeDays}
+            {profile.cohortName ? ` · ${profile.cohortName}` : ""}.
           </p>
         </div>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>This block · college tasks</h2>
-          {blockTasks.length === 0 ? (
-            <p className={styles.note}>No college tasks mapped to this block yet.</p>
-          ) : (
-            <ul className={styles.list}>
-              {blockTasks.map((task) => {
-                const submission = getTaskSubmission(task.id, apprenticeId);
-                return (
-                  <li key={task.id}>
-                    <Link
-                      href={`/apprentice/college-tasks/${task.id}`}
-                      className={styles.rowLink}
-                    >
-                      <div className={styles.rowMain}>
-                        <strong>{task.title}</strong>
-                        <span className={styles.meta}>
-                          {taskKindLabel(task.kind)}
-                        </span>
-                      </div>
-                      <ApprenticeStatusChip tone={statusTone(submission.status)}>
-                        {statusLabel(submission.status)}
-                      </ApprenticeStatusChip>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
+        {onGroups ? (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Personal tracking</h2>
+            <p className={styles.note}>
+              You are on the groups delivery spine. Open personal tracking for
+              groups and workplace tasks released by your tutor.
+            </p>
+            <p>
+              <Link href="/apprentice/tracking" className={styles.linkish}>
+                Open personal tracking →
+              </Link>
+            </p>
+          </section>
+        ) : (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>This block · college tasks</h2>
+            {blockTasks.length === 0 ? (
+              <p className={styles.note}>
+                No college tasks mapped to this block yet.
+              </p>
+            ) : (
+              <ul className={styles.list}>
+                {blockTasks.map((task) => {
+                  const submission = getTaskSubmission(task.id, apprenticeId);
+                  return (
+                    <li key={task.id}>
+                      <Link
+                        href={`/apprentice/tracking/${task.id}`}
+                        className={styles.rowLink}
+                      >
+                        <div className={styles.rowMain}>
+                          <strong>{task.title}</strong>
+                          <span className={styles.meta}>
+                            {taskKindLabel(task.kind)}
+                          </span>
+                        </div>
+                        <ApprenticeStatusChip tone={statusTone(submission.status)}>
+                          {statusLabel(submission.status)}
+                        </ApprenticeStatusChip>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        )}
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Focus plan</h2>
           {learningPlan.length === 0 ? (
             <p className={styles.note}>
-              {live
-                ? "Your live focus plan will build here as tasks, OTJ, and reviews are logged."
-                : "No focus items."}
+              Your focus plan will build here as tasks, OTJ, and reviews are
+              logged.
             </p>
           ) : (
             <ul className={styles.list}>

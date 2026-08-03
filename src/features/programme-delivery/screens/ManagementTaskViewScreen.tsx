@@ -11,7 +11,7 @@ import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
 import { taskById, tasksForBlock } from "../domain/autocare-tasks";
 import { taskKindLabel } from "../domain/task-schema";
 import {
-  DEMO_APPRENTICE_ID,
+  resolveTaskStoreApprenticeId,
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
@@ -24,10 +24,7 @@ import styles from "./programme-delivery.module.css";
 type Props = { taskId: string };
 
 function storeApprenticeId(adminApprenticeId: string | null): string {
-  if (!adminApprenticeId || adminApprenticeId === "lrn-alex-morgan") {
-    return DEMO_APPRENTICE_ID;
-  }
-  return adminApprenticeId;
+  return resolveTaskStoreApprenticeId(adminApprenticeId);
 }
 
 function fieldLabel(key: string): string {
@@ -46,9 +43,7 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
   const apprenticeKey = storeApprenticeId(adminApprenticeId);
   const admin = useAdminStore();
   const enrolment =
-    admin.enrolments.find((e) => e.apprenticeId === adminApprenticeId) ??
-    admin.enrolments.find((e) => e.apprenticeId === "lrn-alex-morgan") ??
-    null;
+    admin.enrolments.find((e) => e.apprenticeId === adminApprenticeId) ?? null;
 
   const task = taskById(taskId);
   useSyncExternalStore(

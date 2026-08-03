@@ -6,9 +6,9 @@ import {
 import { StepBackButton } from "../components/StepBackButton";
 import {
   formatModuleDate,
-  getAlexModuleTopic,
-  ALEX_MODULES,
-} from "../domain/mock-apprentice";
+  getModuleTopic,
+  BLANK_MODULES,
+} from "../domain/apprentice-profile";
 import styles from "./apprentice-pages.module.css";
 
 function topicTone(status: "covered" | "in_progress" | "upcoming") {
@@ -51,7 +51,7 @@ export function ApprenticeModuleTopicScreen({
   moduleId: string;
   topicId: string;
 }) {
-  const moduleRow = ALEX_MODULES.find((m) => m.id === moduleId);
+  const moduleRow = BLANK_MODULES.find((m) => m.id === moduleId);
   if (moduleRow && !moduleRow.released) {
     return (
       <ApprenticePageShell
@@ -64,7 +64,7 @@ export function ApprenticeModuleTopicScreen({
     );
   }
 
-  const result = getAlexModuleTopic(moduleId, topicId);
+  const result = getModuleTopic(moduleId, topicId);
 
   if (!result) {
     return (

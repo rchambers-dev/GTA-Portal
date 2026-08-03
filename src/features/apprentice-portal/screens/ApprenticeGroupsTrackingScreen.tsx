@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
 import {
-  ALEX_CEA_STATE,
+  createBlankCeaState,
   expectedSignOffRole,
   groupAdditionalSignedOffCount,
   groupMandatoryComplete,
@@ -20,7 +20,7 @@ import {
   type CeaTaskDef,
   type CeaTaskProgress,
 } from "../domain/cea";
-import { ALEX_PROFILE } from "../domain/mock-apprentice";
+import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./apprentice-pages.module.css";
 
 function emptyProgress(taskId: string, kind: "mandatory" | "additional"): CeaTaskProgress {
@@ -63,7 +63,7 @@ function TaskRow({
       >
         <span className={styles.ceaTaskMain}>
           <strong>
-            CEA task {task.number}: {task.title}
+            Task {task.number}: {task.title}
           </strong>
           <span>
             {progress.kind === "mandatory" ? "Mandatory" : "Additional @ work"} · Sign-off:{" "}
@@ -153,8 +153,9 @@ function TaskRow({
                   </button>
                 ) : (
                   <span className={styles.meta}>
-                    Waiting for {signer === "teacher" ? ALEX_PROFILE.tutorName : ALEX_PROFILE.employerContact}{" "}
-                    to sign off
+                    Waiting for{" "}
+                    {signer === "teacher" ? "your tutor" : "your employer"} to
+                    sign off
                   </span>
                 )}
               </div>
@@ -407,22 +408,41 @@ function FlowHeading({ children }: { children: string }) {
   return <h2 className={styles.ceaFlowHeading}>{children}</h2>;
 }
 
-export function ApprenticeCeaScreen() {
-  const pack = resolveGroupsPack("ST0499", "1.3");
-  const [state, setState] = useState<CeaApprenticeState>(() => ({
-    ...ALEX_CEA_STATE,
-    packId: pack?.id ?? ALEX_CEA_STATE.packId,
-  }));
+export function ApprenticeGroupsTrackingScreen() {
+  const { profile, loading } = useApprenticePortalProfile();
+  const pack = resolveGroupsPack(
+    "ST0499",
+    profile.standardVersion ?? "1.2",
+  );
+  const [state, setState] = useState<CeaApprenticeState | null>(null);
+
+  useEffect(() => {
+    if (!pack || !profile.apprenticeId) return;
+    setState(createBlankCeaState(profile.apprenticeId, pack));
+  }, [pack, profile.apprenticeId]);
+
   const overview = useMemo(
-    () => (pack ? packOverview(pack, state) : null),
+    () => (pack && state ? packOverview(pack, state) : null),
     [pack, state],
   );
+
+  if (loading || !state) {
+    return (
+      <ApprenticePageShell
+        eyebrow="My learning"
+        title="Personal tracking"
+        description="Loading your groups pack…"
+      >
+        <p>Loading…</p>
+      </ApprenticePageShell>
+    );
+  }
 
   if (!pack || !overview) {
     return (
       <ApprenticePageShell
         eyebrow="My learning"
-        title="CEA tasks"
+        title="Personal tracking"
         description="No groups pack is available for this programme version."
       >
         <p>Contact your tutor if this looks wrong.</p>
@@ -464,6 +484,7 @@ export function ApprenticeCeaScreen() {
 
   function saveNotes(taskId: string, notes: string) {
     setState((prev) => {
+      if (!prev) return prev;
       const existing =
         prev.progress[taskId] ??
         emptyProgress(
@@ -494,6 +515,7 @@ export function ApprenticeCeaScreen() {
 
   function markReady(taskId: string) {
     setState((prev) => {
+      if (!prev) return prev;
       const existing = prev.progress[taskId];
       if (!existing) return prev;
       return {
@@ -511,22 +533,29 @@ export function ApprenticeCeaScreen() {
   }
 
   function updateReflection(milestoneId: string, text: string) {
-    setState((prev) => ({
-      ...prev,
-      milestoneReflections: {
-        ...prev.milestoneReflections,
-        [milestoneId]: {
-          text,
-          status: prev.milestoneReflections[milestoneId]?.status ?? "draft",
+    setState((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        milestoneReflections: {
+          ...prev.milestoneReflections,
+          [milestoneId]: {
+            text,
+            status: prev.milestoneReflections[milestoneId]?.status ?? "draft",
+          },
         },
-      },
-    }));
+      };
+    });
   }
 
   return (
     <ApprenticePageShell
-      title="CEA tasks"
-      description={`${pack.standardLabel} · ${pack.title} ${pack.version}. Read top to bottom — induction items first, then groups in order, with gateways where they sit on the tracking sheet.`}
+      title="Personal tracking"
+      description={`${pack.standardLabel} · ${pack.title} ${pack.version}${
+        profile.standardVersion
+          ? ` · cohort v${String(profile.standardVersion).replace(/^v/i, "")} · Groups`
+          : ""
+      }. Read top to bottom — induction items first, then groups in order, with gateways where they sit on the tracking sheet.`}
     >
       <div className={styles.stack}>
         <div className={styles.ceaOverview}>
@@ -534,7 +563,7 @@ export function ApprenticeCeaScreen() {
             <p className={styles.otjKicker}>{pack.standardCode}</p>
             <h2 className={styles.otjHeroTitle}>{pack.title}</h2>
             <p className={styles.meta}>
-              Apprentice: {ALEX_PROFILE.displayName} · Tutor: {ALEX_PROFILE.tutorName}
+              Apprentice: {profile.displayName} · Tutor: {profile.tutorName}
             </p>
           </div>
           <div className={styles.ceaOverviewStats}>
