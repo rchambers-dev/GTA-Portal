@@ -12,7 +12,7 @@ export const STAFF_BASE_NAV: NavItem[] = [
   },
   {
     href: "/staff/cea-sign-offs",
-    label: "Tracking sign-off",
+    label: "Task sign-off",
     permission: PERMISSIONS.MODULES_DELIVER,
   },
   {

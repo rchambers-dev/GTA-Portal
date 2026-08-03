@@ -22,32 +22,51 @@ type QueueItem = {
   taskId: string;
   taskNumber: number;
   taskTitle: string;
-  status: "ready_to_assess" | "returned";
+  status: "ready_to_assess" | "awaiting_tutor_verify" | "returned";
+  kind: "mandatory" | "additional";
+  isResubmission: boolean;
+  submissionCount: number;
   apprenticeNotes: string;
   readyAt: string | null;
   returnNote: string | null;
+  tutorReview: string | null;
+  employerSignedByName: string | null;
+  employerSignedAt: string | null;
+};
+
+type Props = {
+  audience?: "teacher" | "employer";
 };
 
 function itemKey(item: QueueItem): string {
   return `${item.apprenticeId}::${item.packId}::${item.taskId}`;
 }
 
+function reviewHref(item: QueueItem, audience: "teacher" | "employer"): string {
+  const q = new URLSearchParams({
+    apprenticeId: item.apprenticeId,
+    packId: item.packId,
+    taskId: item.taskId,
+  });
+  if (audience === "employer") {
+    return `/employer/cea-sign-offs/review?${q.toString()}`;
+  }
+  return `/staff/cea-sign-offs/review?${q.toString()}`;
+}
+
 /**
- * Tutor queue for groups-spine CEA mandatory tasks marked ready to assess.
+ * Queue of submitted CEA documents awaiting full-document review.
  */
-export function TutorCeaSignOffScreen() {
+export function TutorCeaSignOffScreen({ audience = "teacher" }: Props) {
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [busyKey, setBusyKey] = useState<string | null>(null);
-  const [returnNotes, setReturnNotes] = useState<Record<string, string>>({});
-  const [flash, setFlash] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/staff/cea-sign-offs");
+      const res = await fetch(`/api/staff/cea-sign-offs?audience=${audience}`);
       const json = (await res.json().catch(() => ({}))) as {
         queue?: QueueItem[];
         error?: string;
@@ -61,76 +80,50 @@ export function TutorCeaSignOffScreen() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [audience]);
 
   useEffect(() => {
     void load();
   }, [load]);
 
-  async function act(
-    item: QueueItem,
-    action: "sign_off" | "return",
-  ): Promise<void> {
-    const key = itemKey(item);
-    setBusyKey(key);
-    setFlash(null);
-    try {
-      const res = await fetch("/api/staff/cea-sign-offs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          apprenticeId: item.apprenticeId,
-          packId: item.packId,
-          taskId: item.taskId,
-          action,
-          returnNote: returnNotes[key],
-        }),
-      });
-      const json = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok) {
-        throw new Error(json.error || `Action failed (${res.status})`);
-      }
-      setQueue((prev) => prev.filter((q) => itemKey(q) !== key));
-      setFlash(
-        action === "sign_off"
-          ? `Signed off · ${item.apprenticeName} · Group ${item.groupNumber} Task ${item.taskNumber}`
-          : `Returned · ${item.apprenticeName} · Group ${item.groupNumber} Task ${item.taskNumber}`,
-      );
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Action failed");
-    } finally {
-      setBusyKey(null);
-    }
-  }
-
   return (
     <ApprenticePageShell
-      eyebrow="Tutor"
-      title="Personal tracking sign-off"
-      description="Mandatory CEA tasks apprentices marked ready to assess. Sign off to complete group quotas for BRAG, or return with a note."
+      eyebrow={audience === "employer" ? "Employer" : "Tutor"}
+      title={
+        audience === "employer"
+          ? "Workplace sign-off"
+          : "Tracking sign-off"
+      }
+      description={
+        audience === "employer"
+          ? "Approve workplace documents first. Tutors still verify before full sign-off."
+          : "Review mandatory submissions, and verify workplace tasks after employer approval."
+      }
     >
       <div className={styles.root}>
         <div className={styles.purpose}>
           <p className={styles.purposeLead}>
-            <strong>Groups spine · teacher sign-off</strong>
+            <strong>
+              {audience === "employer"
+                ? "Additional workplace tasks"
+                : "Groups spine · teacher sign-off"}
+            </strong>
           </p>
           <p className={styles.purposeBody}>
-            This is separate from college block tasks. Employer workplace
-            (additional) tasks do not appear here. Overall BRAG green for a group
-            only after the mandatory quota is signed off.
-          </p>
-          <p className={styles.purposeBody}>
-            <Link href="/management/apprentice-brag" className={styles.linkish}>
-              Open progression BRAG →
-            </Link>
+            Resubmissions are flagged. Use the full document view to tick parts
+            that are already correct so the apprentice only amends what you send
+            back.
           </p>
         </div>
 
-        {flash ? <p className={styles.empty}>{flash}</p> : null}
         {error ? (
           <p className={styles.empty} role="alert">
             {error}{" "}
-            <button type="button" className={styles.linkish} onClick={() => void load()}>
+            <button
+              type="button"
+              className={styles.linkish}
+              onClick={() => void load()}
+            >
               Retry
             </button>
           </p>
@@ -140,99 +133,69 @@ export function TutorCeaSignOffScreen() {
           <p className={styles.empty}>Loading sign-off queue…</p>
         ) : queue.length === 0 ? (
           <p className={styles.empty}>
-            Nothing waiting for tutor sign-off right now.
+            Nothing waiting for{" "}
+            {audience === "employer" ? "employer" : "tutor"} review right now.
           </p>
         ) : (
           <div className={styles.blockList}>
-            {queue.map((item) => {
-              const key = itemKey(item);
-              const busy = busyKey === key;
-              return (
-                <article key={key} className={styles.queueCard}>
-                  <div>
-                    <p className={styles.blockMeta}>
-                      {item.apprenticeName}
-                      {" · "}
-                      {item.standardCode}
-                      {" · "}
-                      {item.programmeName}
-                    </p>
-                    <h3 className={styles.blockTitle}>
-                      Group {item.groupNumber} · Task {item.taskNumber}:{" "}
-                      {item.taskTitle}
-                    </h3>
-                    <p className={styles.blockMeta}>
-                      {item.groupTitle}
-                      {item.readyAt
-                        ? ` · marked ready ${formatDisplayDate(new Date(item.readyAt))}`
+            {queue.map((item) => (
+              <article key={itemKey(item)} className={styles.queueCard}>
+                <div>
+                  <p className={styles.blockMeta}>
+                    {item.apprenticeName}
+                    {" · "}
+                    {item.standardCode}
+                    {" · "}
+                    {item.programmeName}
+                  </p>
+                  <h3 className={styles.blockTitle}>
+                    Group {item.groupNumber} · Task {item.taskNumber}:{" "}
+                    {item.taskTitle}
+                  </h3>
+                  <p className={styles.blockMeta}>
+                    {item.groupTitle}
+                    {item.readyAt
+                      ? ` · submitted ${formatDisplayDate(new Date(item.readyAt))}`
+                      : ""}
+                    {item.isResubmission
+                      ? ` · resubmission (v${item.submissionCount})`
+                      : item.submissionCount > 0
+                        ? ` · v${item.submissionCount}`
                         : ""}
-                    </p>
-                    {item.apprenticeNotes ? (
-                      <p className={styles.purposeBody}>
-                        <strong>Apprentice notes:</strong> {item.apprenticeNotes}
-                      </p>
-                    ) : null}
-                    {item.status === "returned" && item.returnNote ? (
-                      <p className={styles.purposeBody}>
-                        <strong>Last return note:</strong> {item.returnNote}
-                      </p>
-                    ) : null}
-                    <label className={styles.blockMeta} style={{ display: "block", marginTop: "0.75rem" }}>
-                      Return note (optional)
-                      <textarea
-                        rows={2}
-                        value={returnNotes[key] ?? ""}
-                        onChange={(e) =>
-                          setReturnNotes((prev) => ({
-                            ...prev,
-                            [key]: e.target.value,
-                          }))
-                        }
-                        style={{
-                          display: "block",
-                          width: "100%",
-                          marginTop: "0.35rem",
-                          font: "inherit",
-                        }}
-                        placeholder="What should the apprentice fix?"
-                      />
-                    </label>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.5rem",
-                      alignItems: "flex-end",
-                    }}
+                  </p>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                    alignItems: "flex-end",
+                  }}
+                >
+                  <ApprenticeStatusChip
+                    tone={
+                      item.status === "awaiting_tutor_verify"
+                        ? "blue"
+                        : item.isResubmission
+                          ? "blue"
+                          : "amber"
+                    }
                   >
-                    <ApprenticeStatusChip
-                      tone={item.status === "returned" ? "red" : "amber"}
-                    >
-                      {item.status === "returned"
-                        ? "Returned"
-                        : "Ready to assess"}
-                    </ApprenticeStatusChip>
-                    <button
-                      type="button"
-                      className={styles.primaryBtn}
-                      disabled={busy}
-                      onClick={() => void act(item, "sign_off")}
-                    >
-                      {busy ? "Saving…" : "Sign off"}
-                    </button>
-                    <button
-                      type="button"
-                      className={styles.secondaryBtn}
-                      disabled={busy}
-                      onClick={() => void act(item, "return")}
-                    >
-                      Return
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
+                    {item.status === "awaiting_tutor_verify"
+                      ? "Tutor verify"
+                      : item.isResubmission
+                        ? "Resubmission"
+                        : "Submitted"}
+                  </ApprenticeStatusChip>
+                  <Link
+                    href={reviewHref(item, audience)}
+                    className={styles.primaryBtn}
+                  >
+                    Open document →
+                  </Link>
+                </div>
+              </article>
+            ))}
           </div>
         )}
       </div>

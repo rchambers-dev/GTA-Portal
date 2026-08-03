@@ -5,13 +5,13 @@ import {
   DocumentsHubScreen,
   DocumentsItemScreen,
   DocumentsSectionScreen,
-  ApprenticeGroupsTrackingScreen,
   ApprenticeCvBuilderScreen,
   ApprenticeDashboardScreen,
   ApprenticeOtjHoursScreen,
   ApprenticeLearningScreen,
   ApprenticeMessagesScreen,
   ApprenticeProgressScreen,
+  ApprenticeCeaTaskScreen,
   ApprenticeReviewDetailScreen,
   ApprenticeReviewsScreen,
   ApprenticeSupportScreen,
@@ -25,6 +25,7 @@ import {
   TutorProgrammeDeliveryScreen,
   TutorTaskReviewScreen,
   TutorCeaSignOffScreen,
+  TutorCeaReviewRoute,
   ManagementApprenticeRplScreen,
   ManagementApprenticeBragScreen,
   ManagementTaskViewScreen,
@@ -98,9 +99,9 @@ function renderDocumentsPage(
 }
 
 function renderApprenticeTracking(spine: "groups" | "blocks") {
-  // One apprentice-facing page for both spines; delivery model only changes content.
+  // Groups apprentices work from Progress (CEA documents). Blocks keep college tasks.
   if (spine === "blocks") return <ApprenticeProgrammeTasksScreen />;
-  return <ApprenticeGroupsTrackingScreen />;
+  redirect("/apprentice/progress");
 }
 
 async function renderApprenticePage(
@@ -128,8 +129,14 @@ async function renderApprenticePage(
     /^tracking\/([^/]+)$/.exec(segment) ??
     /^college-tasks\/([^/]+)$/.exec(segment);
   if (trackingTaskMatch) {
-    if (spine !== "blocks") redirect("/apprentice/tracking");
+    if (spine !== "blocks") redirect("/apprentice/progress");
     return <ApprenticeTaskFillScreen taskId={trackingTaskMatch[1]} />;
+  }
+
+  const progressTaskMatch = /^progress\/([^/]+)$/.exec(segment);
+  if (progressTaskMatch) {
+    if (spine === "blocks") redirect("/apprentice/progress");
+    return <ApprenticeCeaTaskScreen taskId={progressTaskMatch[1]} />;
   }
 
   const documentsPage = renderDocumentsPage("apprentice", segment);
@@ -142,13 +149,13 @@ async function renderApprenticePage(
       return <ApprenticeLearningScreen />;
     case "tracking":
       return renderApprenticeTracking(spine);
-    // Legacy aliases — never use CEA / college-tasks as the canonical apprentice path.
+    // Legacy aliases — groups → Progress; blocks tracking is college tasks.
     case "cea":
     case "personal-tracking":
     case "college-tasks":
     case "modules":
     case "assignments":
-      redirect("/apprentice/tracking");
+      redirect(spine === "blocks" ? "/apprentice/tracking" : "/apprentice/progress");
     case "otj":
       return <ApprenticeOtjHoursScreen />;
     case "training-plan":
@@ -224,7 +231,22 @@ export async function renderWorkspacePage(
   }
 
   if (workspace === "staff" && segment === "cea-sign-offs") {
-    return <TutorCeaSignOffScreen />;
+    return <TutorCeaSignOffScreen audience="teacher" />;
+  }
+
+  const staffCeaReview =
+    workspace === "staff" && segment === "cea-sign-offs/review";
+  if (staffCeaReview) {
+    // Params read client-side from URL search — pass via wrapper page pattern.
+    return <TutorCeaReviewRoute audience="teacher" />;
+  }
+
+  if (workspace === "employer" && segment === "cea-sign-offs") {
+    return <TutorCeaSignOffScreen audience="employer" />;
+  }
+
+  if (workspace === "employer" && segment === "cea-sign-offs/review") {
+    return <TutorCeaReviewRoute audience="employer" />;
   }
 
   if (workspace === "staff" && segment === "programme-delivery") {

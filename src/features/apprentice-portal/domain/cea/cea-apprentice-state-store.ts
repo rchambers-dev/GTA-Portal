@@ -4,12 +4,20 @@
  */
 
 import {
-  createBlankCeaState,
-  getGroupsPackById,
+  emptyCeaTaskProgress,
+  normalizeCeaTaskProgress,
+  ceaStatusLabel,
   type CeaApprenticeState,
-  type CeaTaskKind,
   type CeaTaskProgress,
-} from "@/features/apprentice-portal/domain/cea";
+} from "./types";
+import { createBlankCeaState } from "./autocare-pack";
+import { getGroupsPackById } from "./packs";
+
+export {
+  emptyCeaTaskProgress,
+  normalizeCeaTaskProgress,
+  ceaStatusLabel as ceaTaskStatusLabel,
+};
 
 type CacheEntry = {
   state: CeaApprenticeState;
@@ -53,6 +61,20 @@ export function getCachedCeaState(
 ): CacheEntry | null {
   if (!apprenticeId || !packId) return null;
   return cache.get(cacheKey(apprenticeId, packId)) ?? null;
+}
+
+export function normalizeLoadedCeaState(
+  state: CeaApprenticeState,
+): CeaApprenticeState {
+  const progress: Record<string, CeaTaskProgress> = {};
+  for (const [taskId, raw] of Object.entries(state.progress ?? {})) {
+    progress[taskId] = normalizeCeaTaskProgress(
+      taskId,
+      raw,
+      raw?.kind ?? "mandatory",
+    );
+  }
+  return { ...state, progress };
 }
 
 function ensureBlankEntry(
@@ -124,7 +146,7 @@ export async function ensureCeaStateLoaded(
         throw new Error(json.error || `Failed to load CEA state (${res.status})`);
       }
       if (json.state) {
-        entry.state = json.state;
+        entry.state = normalizeLoadedCeaState(json.state);
       }
       entry.loaded = true;
       entry.error = null;
@@ -166,7 +188,7 @@ async function persistNow(apprenticeId: string, packId: string) {
     return;
   }
   if (json.state) {
-    entry.state = json.state;
+    entry.state = normalizeLoadedCeaState(json.state);
     entry.loaded = true;
     entry.error = null;
     emit();
@@ -199,24 +221,6 @@ export function updateCeaState(
     schedulePersist(apprenticeId, packId);
   }
   return entry.state;
-}
-
-export function emptyCeaTaskProgress(
-  taskId: string,
-  kind: CeaTaskKind,
-): CeaTaskProgress {
-  return {
-    taskId,
-    kind,
-    additionalEnabled: false,
-    status: "not_started",
-    apprenticeNotes: "",
-    readyAt: null,
-    signedOffByRole: null,
-    signedOffByName: null,
-    signedOffAt: null,
-    returnNote: null,
-  };
 }
 
 /** Flush pending debounce immediately (e.g. before navigation). */

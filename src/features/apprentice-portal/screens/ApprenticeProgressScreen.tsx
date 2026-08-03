@@ -310,17 +310,78 @@ export function ApprenticeProgressScreen() {
 
             <section className={styles.section}>
               <h2 className={styles.dashSectionTitle} data-accent="green">
-                Personal tracking
+                Your group tasks
               </h2>
               <p className={styles.meta}>
-                Open personal tracking for group tasks, workplace evidence and
-                gateway reflections.
+                Open a task, complete the document, declare it is your work, and
+                submit. Returned tasks only let you edit the parts marked for
+                amendment.
               </p>
-              <p>
-                <Link href="/apprentice/tracking" className={styles.linkish}>
-                  Open personal tracking →
-                </Link>
-              </p>
+              {groupsPack ? (
+                <ul className={styles.list}>
+                  {groupsPack.groups.flatMap((group) =>
+                    group.tasks.map((task) => {
+                      const cached = getCachedCeaState(
+                        profile.apprenticeId ?? "",
+                        groupsPack.id,
+                      );
+                      const progress = cached?.state?.progress[task.id];
+                      const status = progress?.status ?? "not_started";
+                      const tone =
+                        status === "signed_off"
+                          ? "green"
+                          : status === "ready_to_assess"
+                            ? "amber"
+                            : status === "awaiting_tutor_verify"
+                              ? "blue"
+                              : status === "returned"
+                                ? "red"
+                                : status === "in_progress"
+                                  ? "blue"
+                                  : "neutral";
+                      return (
+                        <li key={task.id}>
+                          <Link
+                            href={`/apprentice/progress/${task.id}`}
+                            className={styles.rowLink}
+                          >
+                            <div className={styles.rowMain}>
+                              <strong>
+                                Group {group.number} · Task {task.number}:{" "}
+                                {task.title}
+                              </strong>
+                              <span>
+                                {group.title}
+                                {progress?.isResubmission
+                                  ? " · resubmission"
+                                  : ""}
+                              </span>
+                            </div>
+                            <div className={styles.rowEnd}>
+                              <ApprenticeStatusChip tone={tone}>
+                                {status === "ready_to_assess"
+                                  ? "Submitted"
+                                  : status === "awaiting_tutor_verify"
+                                    ? "Employer approved — tutor verify"
+                                    : status === "returned"
+                                      ? "Returned — amend"
+                                      : status === "signed_off"
+                                        ? "Signed off"
+                                        : status === "in_progress"
+                                          ? "In progress"
+                                          : "Not started"}
+                              </ApprenticeStatusChip>
+                              <span className={styles.linkish}>Open →</span>
+                            </div>
+                          </Link>
+                        </li>
+                      );
+                    }),
+                  )}
+                </ul>
+              ) : (
+                <p className={styles.meta}>Loading tasks…</p>
+              )}
             </section>
           </>
         ) : (

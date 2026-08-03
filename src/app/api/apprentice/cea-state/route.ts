@@ -3,8 +3,12 @@ import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import {
   createBlankCeaState,
+  emptyCeaTaskProgress,
   getGroupsPackById,
+  normalizeCeaTaskProgress,
+  normalizeLoadedCeaState,
   type CeaApprenticeState,
+  type CeaFieldReviewStatus,
   type CeaTaskProgress,
 } from "@/features/apprentice-portal/domain/cea";
 import { calculateGroupsProgress } from "@/features/programme-delivery/domain/groups-progression";
@@ -18,26 +22,27 @@ type DbRow = {
   milestone_reflections: CeaApprenticeState["milestoneReflections"];
 };
 
-function isStaffWorkspace(session: EffectiveSession): boolean {
-  return session.account.workspace !== "apprentice";
-}
-
 function canAccessApprentice(
   session: EffectiveSession,
   apprenticeId: string,
 ): boolean {
-  if (isStaffWorkspace(session)) return true;
-  return session.account.linkedApprenticeId === apprenticeId;
+  if (session.account.workspace === "apprentice") {
+    return session.account.linkedApprenticeId === apprenticeId;
+  }
+  if (session.account.workspace === "employer") {
+    return session.account.linkedApprenticeId === apprenticeId;
+  }
+  return true;
 }
 
 function rowToState(row: DbRow): CeaApprenticeState {
-  return {
+  return normalizeLoadedCeaState({
     apprenticeId: row.apprentice_id,
     packId: row.pack_id,
     mandatoryByGroup: row.mandatory_by_group ?? {},
     progress: row.progress ?? {},
     milestoneReflections: row.milestone_reflections ?? {},
-  };
+  });
 }
 
 function mergeWithBlank(
@@ -45,7 +50,7 @@ function mergeWithBlank(
   loaded: CeaApprenticeState | null,
 ): CeaApprenticeState {
   if (!loaded) return blank;
-  return {
+  return normalizeLoadedCeaState({
     apprenticeId: blank.apprenticeId,
     packId: blank.packId,
     mandatoryByGroup: {
@@ -54,10 +59,35 @@ function mergeWithBlank(
     },
     progress: { ...loaded.progress },
     milestoneReflections: { ...loaded.milestoneReflections },
-  };
+  });
 }
 
-/** Apprentices may advance readiness/notes; staff may write the full state. */
+function mergeApprenticeFields(
+  prev: CeaTaskProgress,
+  nextFields: Record<string, string> | undefined,
+): Record<string, string> {
+  if (!nextFields || typeof nextFields !== "object") return prev.fields;
+  const merged = { ...prev.fields };
+  for (const [key, value] of Object.entries(nextFields)) {
+    if (typeof value !== "string") continue;
+    if (prev.status === "returned") {
+      const review: CeaFieldReviewStatus =
+        prev.fieldReviews[key] ?? "open";
+      if (review === "approved") continue;
+    }
+    if (
+      prev.status === "ready_to_assess" ||
+      prev.status === "awaiting_tutor_verify" ||
+      prev.status === "signed_off"
+    ) {
+      continue;
+    }
+    merged[key] = value;
+  }
+  return merged;
+}
+
+/** Apprentices may save drafts / submit; staff/employer write via their APIs. */
 function sanitizeApprenticePatch(
   blank: CeaApprenticeState,
   existing: CeaApprenticeState,
@@ -65,51 +95,108 @@ function sanitizeApprenticePatch(
 ): CeaApprenticeState {
   const progress: Record<string, CeaTaskProgress> = { ...existing.progress };
 
-  for (const [taskId, next] of Object.entries(incoming.progress ?? {})) {
-    const prev = existing.progress[taskId];
-    const base: CeaTaskProgress = prev ?? {
+  for (const [taskId, nextRaw] of Object.entries(incoming.progress ?? {})) {
+    const prev = normalizeCeaTaskProgress(
       taskId,
-      kind: next.kind ?? "mandatory",
-      additionalEnabled: false,
-      status: "not_started",
-      apprenticeNotes: "",
-      readyAt: null,
-      signedOffByRole: null,
-      signedOffByName: null,
-      signedOffAt: null,
-      returnNote: null,
-    };
+      existing.progress[taskId],
+      nextRaw.kind ?? "mandatory",
+    );
+    const next = nextRaw;
+    const base =
+      existing.progress[taskId] != null
+        ? prev
+        : emptyCeaTaskProgress(taskId, next.kind ?? "mandatory");
 
     let status = base.status;
     let readyAt = base.readyAt;
+    let submittedAt = base.submittedAt;
+    let apprenticeDeclaredAt = base.apprenticeDeclaredAt;
+    let submissionCount = base.submissionCount;
+    let isResubmission = base.isResubmission;
+    let versions = base.versions;
+    let fieldReviews = base.fieldReviews;
+    let comments = base.comments;
+      let returnNote = base.returnNote;
+    let tutorReview = base.tutorReview;
+    let employerSignedByName = base.employerSignedByName;
+    let employerSignedAt = base.employerSignedAt;
+
+    const fields = mergeApprenticeFields(base, next.fields);
+
     if (
       next.status === "in_progress" &&
       (base.status === "not_started" || base.status === "returned")
     ) {
       status = "in_progress";
     }
+
     if (
       next.status === "ready_to_assess" &&
       (base.status === "not_started" ||
         base.status === "in_progress" ||
         base.status === "returned")
     ) {
+      const now = next.readyAt ?? new Date().toISOString();
+      const declared =
+        next.apprenticeDeclaredAt ?? new Date().toISOString();
+      const wasReturn = base.status === "returned";
+      submissionCount = base.submissionCount + 1;
+      isResubmission = wasReturn || base.submissionCount > 0;
+      const versionEntry = {
+        version: submissionCount,
+        submittedAt: now,
+        isResubmission,
+        declaredAt: declared,
+        fields: { ...fields },
+        reviewNote: null,
+        outcome: "pending" as const,
+      };
+      versions = [...base.versions, versionEntry];
+      // Keep approved ticks; re-open anything that needed amendment.
+      const nextReviews: Record<string, CeaFieldReviewStatus> = {
+        ...base.fieldReviews,
+      };
+      for (const [key, review] of Object.entries(nextReviews)) {
+        if (review === "needs_amendment") nextReviews[key] = "open";
+      }
+      fieldReviews = nextReviews;
+      comments = base.comments.map((c) =>
+        c.fieldKey && nextReviews[c.fieldKey] === "open" && wasReturn
+          ? { ...c, resolved: true }
+          : c,
+      );
       status = "ready_to_assess";
-      readyAt = next.readyAt ?? new Date().toISOString();
+      readyAt = now;
+      submittedAt = now;
+      apprenticeDeclaredAt = declared;
+      returnNote = null;
+      tutorReview = null;
+      employerSignedByName = null;
+      employerSignedAt = null;
     }
 
     progress[taskId] = {
       ...base,
+      fields,
       apprenticeNotes: next.apprenticeNotes ?? base.apprenticeNotes,
       status,
       readyAt,
-      // Apprentice cannot self-sign or change allocation flags.
+      submittedAt,
+      apprenticeDeclaredAt,
+      submissionCount,
+      isResubmission,
+      versions,
+      fieldReviews,
+      comments,
+      returnNote,
+      tutorReview,
+      employerSignedByName,
+      employerSignedAt,
       kind: base.kind,
       additionalEnabled: base.additionalEnabled,
       signedOffByRole: base.signedOffByRole,
       signedOffByName: base.signedOffByName,
       signedOffAt: base.signedOffAt,
-      returnNote: base.returnNote,
     };
   }
 
@@ -270,17 +357,20 @@ export async function PUT(request: Request) {
     existingRow ? rowToState(existingRow as DbRow) : null,
   );
 
-  const nextState = isStaffWorkspace(session)
-    ? {
-        apprenticeId,
-        packId,
-        mandatoryByGroup:
-          body.state.mandatoryByGroup ?? existing.mandatoryByGroup,
-        progress: body.state.progress ?? existing.progress,
-        milestoneReflections:
-          body.state.milestoneReflections ?? existing.milestoneReflections,
-      }
-    : sanitizeApprenticePatch(blank, existing, body.state);
+  // Only GTA staff may write unrestricted state. Employers use /api/staff/cea-sign-offs.
+  const nextState =
+    session.account.workspace !== "apprentice" &&
+    session.account.workspace !== "employer"
+      ? normalizeLoadedCeaState({
+          apprenticeId,
+          packId,
+          mandatoryByGroup:
+            body.state.mandatoryByGroup ?? existing.mandatoryByGroup,
+          progress: body.state.progress ?? existing.progress,
+          milestoneReflections:
+            body.state.milestoneReflections ?? existing.milestoneReflections,
+        })
+      : sanitizeApprenticePatch(blank, existing, body.state);
 
   const { data, error } = await supabase
     .from("cea_apprentice_states")

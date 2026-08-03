@@ -28,16 +28,21 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
   const { workspace } = session.account;
 
   if (workspace === "apprentice") {
+    const onBlocks = session.account.deliverySpine === "blocks";
     return filterSections(session, [
       {
         items: [
           { href: "/apprentice/dashboard", label: "Dashboard", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
           { href: "/apprentice/learning", label: "My Learning", permission: PERMISSIONS.APPRENTICE_MODULES_VIEW },
-          {
-            href: "/apprentice/tracking",
-            label: "Personal tracking",
-            permission: PERMISSIONS.APPRENTICE_MODULES_VIEW,
-          },
+          ...(onBlocks
+            ? [
+                {
+                  href: "/apprentice/tracking",
+                  label: "College tasks",
+                  permission: PERMISSIONS.APPRENTICE_MODULES_VIEW,
+                },
+              ]
+            : []),
           { href: "/apprentice/progress", label: "Progress", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
           { href: "/apprentice/otj", label: "OTJ hours", permission: PERMISSIONS.APPRENTICE_OTJ_VIEW },
           { href: "/apprentice/documents", label: "Documents", permission: PERMISSIONS.APPRENTICE_WORKSPACE_OWN },
@@ -58,6 +63,11 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/employer/dashboard", label: "Dashboard", permission: PERMISSIONS.EMPLOYER_WORKSPACE_VIEW },
           { href: "/employer/apprentice", label: "Apprentice Overview", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/progress", label: "Progress", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
+          {
+            href: "/employer/cea-sign-offs",
+            label: "Workplace sign-off",
+            permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW,
+          },
           { href: "/employer/attendance", label: "Attendance", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/otj", label: "OTJ hours", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/reviews", label: "Reviews", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },

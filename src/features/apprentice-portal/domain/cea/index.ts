@@ -7,9 +7,13 @@ export {
   groupAdditionalSignedOffCount,
   milestoneProgressPercent,
   packOverview,
+  currentReviewerRole,
   expectedSignOffRole,
   ceaStatusLabel,
   ceaStatusTone,
+  emptyCeaTaskProgress,
+  normalizeCeaTaskProgress,
+  isCeaFieldEditableForApprentice,
 } from "./types";
 export {
   AUTOCARE_CEA_PACK,
@@ -34,6 +38,7 @@ export {
   getCachedCeaState,
   ensureCeaStateLoaded,
   updateCeaState,
-  emptyCeaTaskProgress,
+  ceaTaskStatusLabel,
   flushCeaStateSave,
+  normalizeLoadedCeaState,
 } from "./cea-apprentice-state-store";
