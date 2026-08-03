@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
 import {
-  createBlankCeaState,
   expectedSignOffRole,
   groupAdditionalSignedOffCount,
   groupMandatoryComplete,
@@ -15,6 +14,13 @@ import {
   ceaStatusLabel,
   ceaStatusTone,
   resolveGroupsPack,
+  ensureCeaStateLoaded,
+  getCachedCeaState,
+  getCeaStateStoreServerSnapshot,
+  getCeaStateStoreSnapshot,
+  subscribeCeaStateStore,
+  emptyCeaTaskProgress,
+  updateCeaState,
   type CeaGroupDef,
   type CeaApprenticeState,
   type CeaTaskDef,
@@ -23,18 +29,13 @@ import {
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import styles from "./apprentice-pages.module.css";
 
-function emptyProgress(taskId: string, kind: "mandatory" | "additional"): CeaTaskProgress {
+function emptyProgress(
+  taskId: string,
+  kind: "mandatory" | "additional",
+): CeaTaskProgress {
   return {
-    taskId,
-    kind,
+    ...emptyCeaTaskProgress(taskId, kind),
     additionalEnabled: kind === "additional",
-    status: "not_started",
-    apprenticeNotes: "",
-    readyAt: null,
-    signedOffByRole: null,
-    signedOffByName: null,
-    signedOffAt: null,
-    returnNote: null,
   };
 }
 
@@ -414,19 +415,32 @@ export function ApprenticeGroupsTrackingScreen() {
     profile.standardCode ?? "ST0499",
     profile.standardVersion ?? "1.2",
   );
-  const [state, setState] = useState<CeaApprenticeState | null>(null);
+  const apprenticeId = profile.apprenticeId;
+  const packId = pack?.id ?? "";
+
+  useSyncExternalStore(
+    subscribeCeaStateStore,
+    getCeaStateStoreSnapshot,
+    getCeaStateStoreServerSnapshot,
+  );
 
   useEffect(() => {
-    if (!pack || !profile.apprenticeId) return;
-    setState(createBlankCeaState(profile.apprenticeId, pack));
-  }, [pack, profile.apprenticeId]);
+    if (!packId || !apprenticeId) return;
+    void ensureCeaStateLoaded(apprenticeId, packId);
+  }, [packId, apprenticeId]);
+
+  const cached = apprenticeId && packId
+    ? getCachedCeaState(apprenticeId, packId)
+    : null;
+  const state = cached?.state ?? null;
+  const stateLoading = Boolean(cached?.loading) || !cached?.loaded;
 
   const overview = useMemo(
     () => (pack && state ? packOverview(pack, state) : null),
     [pack, state],
   );
 
-  if (loading || !state) {
+  if (loading || !apprenticeId || stateLoading || !state) {
     return (
       <ApprenticePageShell
         eyebrow="My learning"
@@ -434,6 +448,7 @@ export function ApprenticeGroupsTrackingScreen() {
         description="Loading your groups pack…"
       >
         <p>Loading…</p>
+        {cached?.error ? <p className={styles.meta}>{cached.error}</p> : null}
       </ApprenticePageShell>
     );
   }
@@ -488,8 +503,7 @@ export function ApprenticeGroupsTrackingScreen() {
   );
 
   function saveNotes(taskId: string, notes: string) {
-    setState((prev) => {
-      if (!prev) return prev;
+    updateCeaState(apprenticeId, packId, (prev) => {
       const existing =
         prev.progress[taskId] ??
         emptyProgress(
@@ -511,7 +525,9 @@ export function ApprenticeGroupsTrackingScreen() {
             ...existing,
             apprenticeNotes: notes,
             status:
-              existing.status === "not_started" ? "in_progress" : existing.status,
+              existing.status === "not_started"
+                ? "in_progress"
+                : existing.status,
           },
         },
       };
@@ -519,8 +535,7 @@ export function ApprenticeGroupsTrackingScreen() {
   }
 
   function markReady(taskId: string) {
-    setState((prev) => {
-      if (!prev) return prev;
+    updateCeaState(apprenticeId, packId, (prev) => {
       const existing = prev.progress[taskId];
       if (!existing) return prev;
       return {
@@ -538,19 +553,16 @@ export function ApprenticeGroupsTrackingScreen() {
   }
 
   function updateReflection(milestoneId: string, text: string) {
-    setState((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        milestoneReflections: {
-          ...prev.milestoneReflections,
-          [milestoneId]: {
-            text,
-            status: prev.milestoneReflections[milestoneId]?.status ?? "draft",
-          },
+    updateCeaState(apprenticeId, packId, (prev) => ({
+      ...prev,
+      milestoneReflections: {
+        ...prev.milestoneReflections,
+        [milestoneId]: {
+          text,
+          status: prev.milestoneReflections[milestoneId]?.status ?? "draft",
         },
-      };
-    });
+      },
+    }));
   }
 
   return (

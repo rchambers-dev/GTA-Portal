@@ -7,8 +7,12 @@ import {
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import {
-  createBlankCeaState,
+  ensureCeaStateLoaded,
+  getCachedCeaState,
+  getCeaStateStoreServerSnapshot,
+  getCeaStateStoreSnapshot,
   resolveGroupsPack,
+  subscribeCeaStateStore,
 } from "@/features/apprentice-portal/domain/cea";
 import { formatDisplayDate } from "@/features/apprentice-lifecycle/domain/programme-week";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
@@ -146,6 +150,11 @@ export function ManagementApprenticeBragScreen() {
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
+  const ceaSnap = useSyncExternalStore(
+    subscribeCeaStateStore,
+    getCeaStateStoreSnapshot,
+    getCeaStateStoreServerSnapshot,
+  );
   const admin = useAdminStore();
   const [apprenticeId, setApprenticeId] = useState<string>("");
   const [openBlockId, setOpenBlockId] = useState<number | null>(null);
@@ -195,18 +204,25 @@ export function ManagementApprenticeBragScreen() {
     );
   }, [onGroups, enrolment, cohort?.standardVersion]);
 
+  const ceaApprenticeId = enrolment?.apprenticeId ?? "";
+  const ceaPackId = groupsPack?.id ?? "";
+
+  useEffect(() => {
+    if (!onGroups || !ceaApprenticeId || !ceaPackId) return;
+    void ensureCeaStateLoaded(ceaApprenticeId, ceaPackId);
+  }, [onGroups, ceaApprenticeId, ceaPackId]);
+
   const groupsBoard = useMemo(() => {
-    if (!groupsPack || !enrolment) return null;
-    const state = createBlankCeaState(
-      enrolment.apprenticeId ?? enrolment.id,
-      groupsPack,
-    );
+    void ceaSnap;
+    if (!groupsPack || !ceaApprenticeId) return null;
+    const cached = getCachedCeaState(ceaApprenticeId, groupsPack.id);
+    if (!cached?.loaded || !cached.state) return null;
     return buildGroupsBragBoard({
       pack: groupsPack,
-      state,
+      state: cached.state,
       programmeStartIso: programmeStartDate,
     });
-  }, [groupsPack, enrolment, programmeStartDate]);
+  }, [ceaSnap, groupsPack, ceaApprenticeId, programmeStartDate]);
 
   const { trainingRows, epaBlockSummary, milestoneRows } = useMemo(() => {
     void taskSnap;
@@ -599,6 +615,12 @@ export function ManagementApprenticeBragScreen() {
               <p className={styles.muted}>
                 No groups pack is registered for {enrolment.standardCode}{" "}
                 {cohort?.standardVersion ?? ""}.
+              </p>
+            ) : null}
+
+            {onGroups && groupsPack && !groupsBoard ? (
+              <p className={styles.muted}>
+                Loading personal tracking progress for BRAG…
               </p>
             ) : null}
 

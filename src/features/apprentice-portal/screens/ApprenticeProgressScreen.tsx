@@ -1,15 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
 import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
 import {
-  createBlankCeaState,
+  ensureCeaStateLoaded,
+  getCachedCeaState,
+  getCeaStateStoreServerSnapshot,
+  getCeaStateStoreSnapshot,
   resolveGroupsPack,
+  subscribeCeaStateStore,
 } from "../domain/cea";
 import {
   AUTOCARE_BLOCKS,
@@ -42,7 +46,7 @@ import styles from "./apprentice-pages.module.css";
 
 /**
  * Progress against the apprentice's delivery spine:
- * - groups → MV tracker month brackets + course %
+ * - groups → MV tracker month brackets + course % from persisted CEA state
  * - blocks → programme weeks and college block tasks
  */
 export function ApprenticeProgressScreen() {
@@ -54,6 +58,11 @@ export function ApprenticeProgressScreen() {
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
+  const ceaSnap = useSyncExternalStore(
+    subscribeCeaStateStore,
+    getCeaStateStoreSnapshot,
+    getCeaStateStoreServerSnapshot,
+  );
 
   const groupsPack = useMemo(() => {
     if (!onGroups) return null;
@@ -63,15 +72,29 @@ export function ApprenticeProgressScreen() {
     );
   }, [onGroups, profile.standardCode, profile.standardVersion]);
 
+  useEffect(() => {
+    if (!onGroups || !profile.apprenticeId || !groupsPack?.id) return;
+    void ensureCeaStateLoaded(profile.apprenticeId, groupsPack.id);
+  }, [onGroups, profile.apprenticeId, groupsPack?.id]);
+
   const groupsBoard = useMemo(() => {
-    if (!groupsPack || !profile.programmeStartDate) return null;
-    const state = createBlankCeaState(apprenticeId, groupsPack);
+    void ceaSnap;
+    if (!groupsPack || !profile.programmeStartDate || !profile.apprenticeId) {
+      return null;
+    }
+    const cached = getCachedCeaState(profile.apprenticeId, groupsPack.id);
+    if (!cached?.loaded || !cached.state) return null;
     return buildGroupsBragBoard({
       pack: groupsPack,
-      state,
+      state: cached.state,
       programmeStartIso: profile.programmeStartDate,
     });
-  }, [apprenticeId, groupsPack, profile.programmeStartDate]);
+  }, [
+    ceaSnap,
+    groupsPack,
+    profile.apprenticeId,
+    profile.programmeStartDate,
+  ]);
 
   const taskedBlocks = useMemo(
     () => AUTOCARE_BLOCKS.filter((b) => tasksForBlock(b.id).length > 0),

@@ -27,3 +27,13 @@ export {
   groupsPackId,
   listGroupsPacksForStandard,
 } from "./packs";
+export {
+  subscribeCeaStateStore,
+  getCeaStateStoreSnapshot,
+  getCeaStateStoreServerSnapshot,
+  getCachedCeaState,
+  ensureCeaStateLoaded,
+  updateCeaState,
+  emptyCeaTaskProgress,
+  flushCeaStateSave,
+} from "./cea-apprentice-state-store";
