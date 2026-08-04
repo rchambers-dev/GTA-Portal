@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import type { SafeguardingLead } from "@/features/apprentice-portal/domain/safeguarding-leads";
 import { ApprenticePageShell } from "../components/ApprenticePageShell";
 import { useApprenticeChat } from "../components/ApprenticeChatProvider";
 import { useApprenticePortalProfile } from "../hooks/useApprenticePortalProfile";
@@ -84,25 +86,6 @@ const ArrowIcon = () => (
 );
 
 /* ---------------- Data ---------------- */
-const SAFEGUARDING_LEADS = [
-  {
-    role: "Designated Safeguarding Lead",
-    name: "Sarah Bennett",
-    initials: "SB",
-    org: "GTA Doncaster",
-    phone: "01302 555 140",
-    email: "safeguarding@gta-doncaster.ac.uk",
-  },
-  {
-    role: "Deputy Safeguarding Lead",
-    name: "Mark Ellis",
-    initials: "ME",
-    org: "GTA Doncaster",
-    phone: "01302 555 141",
-    email: "dsl.deputy@gta-doncaster.ac.uk",
-  },
-];
-
 const HELPLINES = [
   {
     name: "Childline",
@@ -221,12 +204,49 @@ export function ApprenticeSupportScreen({
 } = {}) {
   const { profile } = useApprenticePortalProfile();
   const { ensureThreadWithContact } = useApprenticeChat();
+  const [leads, setLeads] = useState<SafeguardingLead[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(true);
+  const [leadsError, setLeadsError] = useState<string | null>(null);
   const copy = AUDIENCE_COPY[audience];
   const isEmployer = audience === "employer";
   const isAdministration =
     audience === "administration" || audience === "management";
   const messagesHref = copy.messagesHref;
   const supportHref = copy.supportHref;
+
+  useEffect(() => {
+    let cancelled = false;
+    setLeadsLoading(true);
+    setLeadsError(null);
+    fetch("/api/safeguarding/leads")
+      .then(async (res) => {
+        const data = (await res.json()) as {
+          leads?: SafeguardingLead[];
+          error?: string;
+        };
+        if (!res.ok) {
+          throw new Error(data.error || "Unable to load safeguarding leads.");
+        }
+        if (!cancelled) {
+          setLeads(data.leads ?? []);
+          setLeadsLoading(false);
+        }
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          setLeads([]);
+          setLeadsError(
+            err instanceof Error
+              ? err.message
+              : "Unable to load safeguarding leads.",
+          );
+          setLeadsLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const openChat = (contactId: string) => () =>
     ensureThreadWithContact(contactId);
@@ -434,8 +454,20 @@ export function ApprenticeSupportScreen({
           </div>
 
           <div className={styles.sgGrid}>
-            {SAFEGUARDING_LEADS.map((lead) => (
-              <div key={lead.email} className={styles.sgContact}>
+            {leadsLoading ? (
+              <p className={styles.sgOrg}>Loading safeguarding contacts…</p>
+            ) : null}
+            {leadsError ? (
+              <p className={styles.sgOrg}>{leadsError}</p>
+            ) : null}
+            {!leadsLoading && !leadsError && leads.length === 0 ? (
+              <p className={styles.sgOrg}>
+                No safeguarding leads are currently listed. Message Safeguarding
+                or ask reception for the duty DSL.
+              </p>
+            ) : null}
+            {leads.map((lead) => (
+              <div key={lead.id} className={styles.sgContact}>
                 <div className={styles.sgContactTop}>
                   <span className={styles.sgAvatar}>{lead.initials}</span>
                   <div>
@@ -447,14 +479,8 @@ export function ApprenticeSupportScreen({
                   </div>
                 </div>
                 <div className={styles.sgActions}>
-                  <a
-                    className={styles.sgAction}
-                    href={`tel:${lead.phone.replace(/\s+/g, "")}`}
-                  >
-                    <PhoneIcon /> {lead.phone}
-                  </a>
                   <a className={styles.sgAction} href={`mailto:${lead.email}`}>
-                    <MailIcon /> Email
+                    <MailIcon /> {lead.email}
                   </a>
                   <Link
                     className={styles.sgAction}
