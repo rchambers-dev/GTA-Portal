@@ -476,11 +476,16 @@ export function ApprenticeSupportScreen({
                     </div>
                     <div className={styles.sgName}>{lead.name}</div>
                     <div className={styles.sgOrg}>{lead.org}</div>
+                    <p className={styles.sgEmail}>{lead.email}</p>
                   </div>
                 </div>
                 <div className={styles.sgActions}>
-                  <a className={styles.sgAction} href={`mailto:${lead.email}`}>
-                    <MailIcon /> {lead.email}
+                  <a
+                    className={styles.sgAction}
+                    href={`mailto:${lead.email}`}
+                    title={lead.email}
+                  >
+                    <MailIcon /> Email
                   </a>
                   <Link
                     className={styles.sgAction}
