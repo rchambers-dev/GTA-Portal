@@ -17,6 +17,7 @@ export function LoginForm({
 }) {
   const [state, formAction, isPending] = useActionState(loginAction, initialState);
   const [captchaToken, setCaptchaToken] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const captchaRef = useRef<HCaptcha>(null);
 
   return (
@@ -40,18 +41,30 @@ export function LoginForm({
           defaultValue={defaultEmail}
           autoComplete="username"
           required
+          aria-invalid={state.error ? true : undefined}
         />
       </label>
 
       <label className={styles.field}>
         <span>Password</span>
-        <input
-          className={styles.input}
-          type="password"
-          name="password"
-          autoComplete="current-password"
-          required
-        />
+        <div className={styles.passwordWrap}>
+          <input
+            className={`${styles.input} ${styles.inputPassword}`}
+            type={showPassword ? "text" : "password"}
+            name="password"
+            autoComplete="current-password"
+            required
+            aria-invalid={state.error ? true : undefined}
+          />
+          <button
+            type="button"
+            className={styles.togglePassword}
+            onClick={() => setShowPassword((prev) => !prev)}
+            aria-pressed={showPassword}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
       </label>
 
       {siteKey ? (
@@ -70,14 +83,18 @@ export function LoginForm({
         </p>
       )}
 
-      {state.error ? <p className={styles.error}>{state.error}</p> : null}
+      {state.error ? (
+        <p className={styles.error} role="alert">
+          {state.error}
+        </p>
+      ) : null}
 
       <button
         className={styles.submit}
         type="submit"
         disabled={isPending || (Boolean(siteKey) && !captchaToken)}
       >
-        {isPending ? "Signing in..." : "Sign in"}
+        {isPending ? "Signing in…" : "Sign in"}
       </button>
     </form>
   );

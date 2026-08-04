@@ -51,3 +51,12 @@ next-env.d.ts
 # Local scratch / temp portal — never commit if present under this tree
 /GTA Temp Portal/
 /GTA Temp Portal/**
+
+# Sibling apps (keep portal + website repos separate)
+/GTA Website/
+/GTA Website/**
+/GTA Old Portal/
+/GTA Old Portal/**
+/GTA Temp Portal/
+../GTA Website/
+../GTA Website/**
