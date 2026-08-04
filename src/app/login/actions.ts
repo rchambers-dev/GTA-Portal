@@ -27,7 +27,7 @@ export async function loginAction(
   }
 
   if (!captchaToken) {
-    return { error: "Complete the captcha check, then try again." };
+    return { error: "Complete the security check, then try again." };
   }
 
   const supabase = await createSupabaseServerClient();

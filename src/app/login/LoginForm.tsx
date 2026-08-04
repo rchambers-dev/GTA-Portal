@@ -68,14 +68,27 @@ export function LoginForm({
       </label>
 
       {siteKey ? (
-        <div className={styles.captcha}>
-          <HCaptcha
-            ref={captchaRef}
-            sitekey={siteKey}
-            onVerify={(token) => setCaptchaToken(token)}
-            onExpire={() => setCaptchaToken("")}
-            onError={() => setCaptchaToken("")}
-          />
+        <div className={styles.captchaBlock}>
+          <div className={styles.captchaHead}>
+            <span className={styles.captchaLabel}>Security check</span>
+            <span className={styles.captchaHint}>Confirm you’re human</span>
+          </div>
+          <div
+            className={`${styles.captchaFrame}${captchaToken ? ` ${styles.captchaFrameOk}` : ""}`}
+          >
+            <HCaptcha
+              ref={captchaRef}
+              sitekey={siteKey}
+              size="normal"
+              theme="light"
+              onVerify={(token) => setCaptchaToken(token)}
+              onExpire={() => setCaptchaToken("")}
+              onError={() => setCaptchaToken("")}
+            />
+          </div>
+          {captchaToken ? (
+            <p className={styles.captchaOk}>Verified — you can sign in</p>
+          ) : null}
         </div>
       ) : (
         <p className={styles.error}>

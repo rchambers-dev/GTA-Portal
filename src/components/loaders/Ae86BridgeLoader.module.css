@@ -1,0 +1,71 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 42%, rgb(209 45 51 / 0.16), transparent 62%),
+    rgb(9 11 22 / 0.88);
+  backdrop-filter: blur(6px);
+  animation: fadeIn 220ms ease-out both;
+}
+
+.panel {
+  display: grid;
+  justify-items: center;
+  gap: 0.65rem;
+}
+
+.stage {
+  /* Wide enough for exhaust; car stays centred in the frame */
+  width: min(72vw, 22rem);
+  /* Soft dissolve on edges — no hard rectangular cut */
+  -webkit-mask-image: radial-gradient(
+    ellipse 86% 82% at 50% 50%,
+    #000 52%,
+    transparent 90%
+  );
+  mask-image: radial-gradient(
+    ellipse 86% 82% at 50% 50%,
+    #000 52%,
+    transparent 90%
+  );
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 16px 18px rgb(0 0 0 / 0.45));
+}
+
+.label {
+  margin: 0;
+  font-family: var(--font-display, "Plus Jakarta Sans", system-ui, sans-serif);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.82);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    animation: none;
+  }
+
+  .canvas {
+    filter: drop-shadow(0 12px 14px rgb(0 0 0 / 0.4));
+  }
+}

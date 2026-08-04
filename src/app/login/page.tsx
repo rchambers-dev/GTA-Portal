@@ -27,41 +27,48 @@ export default async function LoginPage({
 
   return (
     <main className={styles.page}>
-      <header className={styles.header}>
-        <a href={WEBSITE_URL} className={styles.brand} aria-label="GTA website">
-          <Image
-            src="/images/brand/gta-logo.png"
-            alt=""
-            width={44}
-            height={44}
-            className={styles.brandMark}
-            priority
-          />
-          <span>GTA Portal</span>
+      <div className={styles.wash} aria-hidden />
+      <p className={styles.watermark} aria-hidden>
+        GTA
+      </p>
+
+      <header className={styles.topBar}>
+        <a href={WEBSITE_URL} className={styles.siteLink}>
+          ← Website
         </a>
-        <a href={WEBSITE_URL} className={styles.back}>
-          Back to website
-        </a>
+        <span className={styles.bayTag}>Bay · Secure entry</span>
       </header>
 
-      <div className={styles.main}>
-        <section className={styles.card}>
-          <p className={styles.eyebrow}>Secure access</p>
-          <h1 className={styles.title}>Sign in</h1>
-          <p className={styles.copy}>
-            Use your GTA account (
-            <strong>@doncastergta.co.uk</strong> for staff). Your role opens the
-            right workspace automatically.
-          </p>
-          <LoginForm
-            defaultEmail="reisschambers@doncastergta.co.uk"
-            next={next}
-          />
-          <p className={styles.note}>
-            Public site and portal are one platform — sign in here to continue
-            your apprenticeship journey.
-          </p>
-        </section>
+      <div className={styles.frame}>
+        <article className={styles.pass}>
+          <div className={styles.passRail} aria-hidden />
+          <div className={styles.passBody}>
+            <div className={styles.passHead}>
+              <Image
+                src="/images/brand/gta-logo.png"
+                alt=""
+                width={56}
+                height={56}
+                className={styles.logo}
+                priority
+              />
+              <div>
+                <p className={styles.passMeta}>Doncaster &amp; Sheffield</p>
+                <h1 className={styles.passTitle}>GTA Portal</h1>
+              </div>
+            </div>
+
+            <p className={styles.passLead}>
+              Sign in to open your workspace. Staff accounts use{" "}
+              <strong>@doncastergta.co.uk</strong>.
+            </p>
+
+            <LoginForm
+              defaultEmail="reisschambers@doncastergta.co.uk"
+              next={next}
+            />
+          </div>
+        </article>
       </div>
     </main>
   );
