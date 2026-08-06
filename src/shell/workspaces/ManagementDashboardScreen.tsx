@@ -56,7 +56,10 @@ export function ManagementDashboardScreen() {
       description="Programme oversight, staffing, funding and progression — not the Administration intake desk. Day-to-day apprentice enrolment stays with Administration."
       actions={
         <div className={styles.toolbarActions}>
-          <Link href="/management/course-builder" className={styles.primaryBtn}>
+          <Link href="/management/programme-builder" className={styles.primaryBtn}>
+            Programme Builder
+          </Link>
+          <Link href="/management/course-builder" className={styles.secondaryBtn}>
             Course Builder
           </Link>
           <Link href="/management/staff" className={styles.secondaryBtn}>
@@ -131,6 +134,13 @@ export function ManagementDashboardScreen() {
             enrolments, and apprentice account setup.
           </p>
           <div className={apprenticeStyles.shortcuts}>
+            <Link
+              className={apprenticeStyles.shortcut}
+              href="/management/programme-builder"
+              data-tone="navy"
+            >
+              Programme Builder
+            </Link>
             <Link
               className={apprenticeStyles.shortcut}
               href="/management/course-builder"
@@ -297,6 +307,23 @@ export function ManagementDashboardScreen() {
             Programme &amp; funding
           </h2>
           <ul className={apprenticeStyles.list}>
+            <li>
+              <Link
+                href="/management/programme-builder"
+                className={apprenticeStyles.rowLink}
+                data-tone="navy"
+              >
+                <div className={apprenticeStyles.rowMain}>
+                  <strong>Programme Builder</strong>
+                  <span>
+                    Import Skills England standards, spine, and block KSB assignment
+                  </span>
+                </div>
+                <div className={apprenticeStyles.rowEnd}>
+                  <span className={apprenticeStyles.linkish}>Open →</span>
+                </div>
+              </Link>
+            </li>
             <li>
               <Link
                 href="/management/course-builder"

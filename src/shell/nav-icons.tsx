@@ -136,6 +136,16 @@ export function NavIcon({ href }: { href: string }) {
       </svg>
     );
   }
+  if (key.includes("/management/programme-builder")) {
+    return (
+      <svg {...common}>
+        <path d="M4 6h16" />
+        <path d="M4 12h16" />
+        <path d="M4 18h10" />
+        <path d="M16 16v4M14 18h4" />
+      </svg>
+    );
+  }
   if (
     key.includes("/management/course-builder") ||
     key.includes("/curriculum/course-builder")

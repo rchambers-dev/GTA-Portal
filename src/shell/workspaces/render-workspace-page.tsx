@@ -31,6 +31,7 @@ import {
   ManagementTaskViewScreen,
   CourseBuilderScreen,
 } from "@/features/programme-delivery";
+import { ProgrammeBuilderScreen } from "@/features/programme-definition";
 import type { EffectiveSession } from "@/lib/portal/types";
 import {
   AdministrationDashboardScreen,
@@ -349,6 +350,8 @@ export async function renderWorkspacePage(
         return <AdminEmployersScreen />;
       case "programmes-records":
         return <AdminProgrammesScreen />;
+      case "programme-builder":
+        return <ProgrammeBuilderScreen />;
       case "course-builder":
         return <CourseBuilderScreen />;
       case "cohorts":

@@ -13,7 +13,8 @@
     "bootstrap:org-staff": "node scripts/bootstrap-org-staff.mjs",
     "db:migrate": "node scripts/run-migration.mjs",
     "db:seed:autocare-forms": "node --experimental-strip-types scripts/seed-autocare-course-forms.ts",
-    "db:generate:autocare-forms-sql": "node --experimental-strip-types scripts/generate-autocare-forms-sql.ts"
+    "db:generate:autocare-forms-sql": "node --experimental-strip-types scripts/generate-autocare-forms-sql.ts",
+    "probe:skills-england": "node --env-file=.env.local skillsengland/probe.mjs"
   },
   "dependencies": {
     "@giphy/js-fetch-api": "^5.8.0",
