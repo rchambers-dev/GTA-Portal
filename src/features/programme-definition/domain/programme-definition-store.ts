@@ -13,7 +13,10 @@ import type {
 } from "./types";
 import { emptyState } from "./validation";
 
-const STORAGE_KEY = "gta.programmeDefinition.v1";
+const STORAGE_KEY = "gta.programmeDefinition.v2";
+
+/** Stable reference for useSyncExternalStore getServerSnapshot (must not allocate each call). */
+const SERVER_SNAPSHOT: ProgrammeDefinitionState = emptyState();
 
 let state: ProgrammeDefinitionState = emptyState();
 let hydrated = false;
@@ -39,10 +42,25 @@ function hydrate() {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const parsed = JSON.parse(raw) as ProgrammeDefinitionState;
-    if (parsed?.version === 1) state = parsed;
+    if (parsed?.version === 2) state = normalizeState(parsed);
   } catch {
     /* ignore */
   }
+}
+
+function normalizeState(
+  parsed: ProgrammeDefinitionState,
+): ProgrammeDefinitionState {
+  return {
+    ...parsed,
+    version: 2,
+    programmes: (parsed.programmes || []).map((p) => ({
+      ...p,
+      standardCode: p.standardCode || "",
+      externalVersion: p.externalVersion || "",
+      hasEnrolledApprentices: Boolean(p.hasEnrolledApprentices),
+    })),
+  };
 }
 
 export function subscribeProgrammeDefinition(listener: () => void) {
@@ -57,7 +75,7 @@ export function getProgrammeDefinitionSnapshot(): ProgrammeDefinitionState {
 }
 
 export function getProgrammeDefinitionServerSnapshot(): ProgrammeDefinitionState {
-  return emptyState();
+  return SERVER_SNAPSHOT;
 }
 
 export function replaceOfficialVersion(official: OfficialStandardVersion) {
@@ -119,14 +137,30 @@ export function createProgrammeForOfficial(
   opts?: CreateProgrammeOptions,
 ) {
   hydrate();
+  // Reopen the same GTA draft for this ST + Skills England version (no duplicates).
   const existing = state.programmes.find(
-    (p) => p.standardVersionId === official.id,
+    (p) =>
+      p.standardVersionId === official.id ||
+      (p.standardCode === official.standardCode &&
+        p.externalVersion === official.externalVersion),
   );
   if (existing) {
-    state = { ...state, selectedProgrammeId: existing.id };
+    const synced: GtaProgrammeVersion = {
+      ...existing,
+      standardVersionId: official.id,
+      standardCode: official.standardCode,
+      externalVersion: official.externalVersion,
+    };
+    state = {
+      ...state,
+      programmes: state.programmes.map((p) =>
+        p.id === existing.id ? synced : p,
+      ),
+      selectedProgrammeId: existing.id,
+    };
     persist();
     emit();
-    return existing;
+    return synced;
   }
 
   const title = displayApprenticeshipTitle(
@@ -143,8 +177,11 @@ export function createProgrammeForOfficial(
     programmeId: crypto.randomUUID(),
     programmeTitle: `${title} — GTA Delivery`,
     standardVersionId: official.id,
+    standardCode: official.standardCode,
+    externalVersion: official.externalVersion,
     internalVersion: "1",
     status: "draft",
+    hasEnrolledApprentices: false,
     spineItems: useTemplate
       ? buildAutocareSpineItems()
       : emptySpineWithEpa(title),
@@ -179,6 +216,17 @@ export function updateProgrammeSpine(
   updater: (programme: GtaProgrammeVersion) => GtaProgrammeVersion,
 ) {
   hydrate();
+  const current = state.programmes.find((p) => p.id === programmeId);
+  if (!current) return;
+  if (
+    current.hasEnrolledApprentices ||
+    current.status === "published" ||
+    current.status === "superseded" ||
+    current.status === "archived"
+  ) {
+    // Structural lock — ignore spine/KSB mutations.
+    return;
+  }
   state = {
     ...state,
     programmes: state.programmes.map((p) =>
@@ -189,6 +237,28 @@ export function updateProgrammeSpine(
   };
   persist();
   emit();
+}
+
+/** Soft wording update — allowed even when structure is locked. */
+export function updateProgrammeTitle(programmeId: string, title: string) {
+  hydrate();
+  const trimmed = title.trim();
+  if (!trimmed) return;
+  state = {
+    ...state,
+    programmes: state.programmes.map((p) =>
+      p.id === programmeId
+        ? { ...p, programmeTitle: trimmed, updatedAt: new Date().toISOString() }
+        : p,
+    ),
+  };
+  persist();
+  emit();
+}
+
+/** Leave the builder detail view; draft remains saved. */
+export function goBackToCatalogue() {
+  selectProgramme(null);
 }
 
 export function clearProgrammeDefinitionPreview() {

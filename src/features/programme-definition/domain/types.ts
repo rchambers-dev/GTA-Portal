@@ -82,15 +82,24 @@ export type GtaProgrammeVersion = {
   programmeId: string;
   programmeTitle: string;
   standardVersionId: string;
+  /** Skills England ST code — used to reopen the same draft without duplicates. */
+  standardCode: string;
+  /** Skills England external version string (e.g. "1.5"). */
+  externalVersion: string;
   internalVersion: string;
   status: ProgrammeVersionStatus;
   spineItems: SpineItem[];
+  /**
+   * When true, structure/KSB/hours are locked (apprentices enrolled).
+   * Soft wording edits may still be allowed later.
+   */
+  hasEnrolledApprentices: boolean;
   createdAt: string;
   updatedAt: string;
 };
 
 export type ProgrammeDefinitionState = {
-  version: 1;
+  version: 2;
   officialVersions: OfficialStandardVersion[];
   programmes: GtaProgrammeVersion[];
   selectedProgrammeId: string | null;

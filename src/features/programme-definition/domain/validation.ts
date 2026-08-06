@@ -93,11 +93,21 @@ export function validateProgrammeDefinition(
 
 export function emptyState(): ProgrammeDefinitionState {
   return {
-    version: 1,
+    version: 2,
     officialVersions: [],
     programmes: [],
     selectedProgrammeId: null,
   };
+}
+
+/** Structural edits blocked once apprentices are on this programme version. */
+export function isStructureLocked(programme: GtaProgrammeVersion): boolean {
+  return (
+    programme.hasEnrolledApprentices ||
+    programme.status === "published" ||
+    programme.status === "superseded" ||
+    programme.status === "archived"
+  );
 }
 
 export function findOfficial(

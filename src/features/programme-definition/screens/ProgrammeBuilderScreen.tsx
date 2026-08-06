@@ -16,13 +16,16 @@ import {
   createProgrammeForOfficial,
   getProgrammeDefinitionServerSnapshot,
   getProgrammeDefinitionSnapshot,
+  goBackToCatalogue,
   replaceOfficialVersion,
   selectProgramme,
   subscribeProgrammeDefinition,
   updateProgrammeSpine,
+  updateProgrammeTitle,
 } from "../domain/programme-definition-store";
 import type { OfficialStandardVersion, SpineItem } from "../domain/types";
 import {
+  isStructureLocked,
   summariseHours,
   toggleKsbOnBlock,
   validateProgrammeDefinition,
@@ -47,6 +50,14 @@ function numOrDash(value: number | null | undefined, suffix = ""): string {
   return `${value}${suffix}`;
 }
 
+function formatSavedAt(iso: string): string {
+  try {
+    return new Date(iso).toLocaleString("en-GB");
+  } catch {
+    return iso;
+  }
+}
+
 export function ProgrammeBuilderScreen() {
   const state = useProgrammeDefinition();
   const [busy, setBusy] = useState(false);
@@ -58,13 +69,25 @@ export function ProgrammeBuilderScreen() {
   const [ksbFilter, setKsbFilter] = useState<
     "all" | "knowledge" | "skill" | "behaviour"
   >("all");
+  const [titleDraft, setTitleDraft] = useState("");
+  const [selectedDutyKsb, setSelectedDutyKsb] = useState<{
+    dutyCode: string;
+    ksbCode: string;
+  } | null>(null);
 
   const programme = state.programmes.find(
     (p) => p.id === state.selectedProgrammeId,
   );
   const official = programme
-    ? state.officialVersions.find((v) => v.id === programme.standardVersionId)
-    : state.officialVersions[0];
+    ? state.officialVersions.find((v) => v.id === programme.standardVersionId) ||
+      state.officialVersions.find(
+        (v) =>
+          v.standardCode === programme.standardCode &&
+          v.externalVersion === programme.externalVersion,
+      )
+    : undefined;
+
+  const structureLocked = programme ? isStructureLocked(programme) : false;
 
   const hours = programme ? summariseHours(programme) : null;
   const issues =
@@ -97,11 +120,41 @@ export function ProgrammeBuilderScreen() {
     ? displayApprenticeshipTitle(official.standardCode, official.title)
     : selectedApprenticeship.title;
 
+  const savedDraftForSelected = state.programmes.find(
+    (p) => p.standardCode === selectedApprenticeship.standardCode,
+  );
+
   async function importSelected() {
     setBusy(true);
     setMessage(null);
     try {
-      // System first (portal DB), then Skills England if missing. No silent offline fallback.
+      const localExisting = state.programmes.find(
+        (p) => p.standardCode === selectedApprenticeship.standardCode,
+      );
+      const localOfficial = localExisting
+        ? state.officialVersions.find(
+            (v) =>
+              v.id === localExisting.standardVersionId ||
+              (v.standardCode === localExisting.standardCode &&
+                v.externalVersion === localExisting.externalVersion),
+          )
+        : state.officialVersions.find(
+            (v) => v.standardCode === selectedApprenticeship.standardCode,
+          );
+
+      if (localExisting && localOfficial) {
+        createProgrammeForOfficial(localOfficial, {
+          useDeliveryTemplate:
+            useTemplateIfAvailable &&
+            selectedApprenticeship.hasDeliveryTemplate,
+        });
+        setTitleDraft(localExisting.programmeTitle);
+        setMessage(
+          `Reopened saved draft for ${selectedApprenticeship.title} (no new version). Last saved ${formatSavedAt(localExisting.updatedAt)}.`,
+        );
+        return;
+      }
+
       const res = await fetch("/api/management/programme-definition/import", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -127,16 +180,16 @@ export function ProgrammeBuilderScreen() {
       }
 
       const stored = replaceOfficialVersion(data.official);
-      createProgrammeForOfficial(stored, {
+      const opened = createProgrammeForOfficial(stored, {
         useDeliveryTemplate:
           useTemplateIfAvailable && selectedApprenticeship.hasDeliveryTemplate,
       });
+      setTitleDraft(opened.programmeTitle);
 
       const base =
-        data.message ||
-        (data.source === "database"
-          ? `Loaded ${selectedApprenticeship.title} from the portal database.`
-          : `Imported ${selectedApprenticeship.title} from Skills England and saved.`);
+        data.source === "database"
+          ? `Loaded ${selectedApprenticeship.title} from the portal database and opened the GTA draft.`
+          : `Imported ${selectedApprenticeship.title} from Skills England and saved. Opened GTA draft (no duplicate for this official version).`;
       setMessage(
         data.apprenticeshipError
           ? `${base} Product details incomplete: ${data.apprenticeshipError}`
@@ -149,35 +202,62 @@ export function ProgrammeBuilderScreen() {
     }
   }
 
+  function onBack() {
+    goBackToCatalogue();
+    setMessage("Draft kept — come back anytime via Load or Your programmes.");
+  }
+
   function onToggleKsb(code: string) {
-    if (!programme || !selectedBlock) return;
+    if (!programme || !selectedBlock || structureLocked) return;
     updateProgrammeSpine(programme.id, (p) => ({
       ...p,
       spineItems: toggleKsbOnBlock(p.spineItems, selectedBlock.id, code),
     }));
+    setMessage(`Saved · ${formatSavedAt(new Date().toISOString())}`);
+  }
+
+  function onSaveTitle() {
+    if (!programme) return;
+    updateProgrammeTitle(programme.id, titleDraft || programme.programmeTitle);
+    setMessage(`Title saved · ${formatSavedAt(new Date().toISOString())}`);
   }
 
   return (
     <ApprenticePageShell
       eyebrow="Management"
       title="Programme Builder"
-      description="Choose an apprenticeship. If it is already in the portal it loads from the database; if not, it is imported once from Skills England and saved. Then build GTA’s delivery spine and assign KSBs to blocks."
+      description="One GTA draft per Skills England version. Edits auto-save. A new version is only for a newer official release. Once apprentices are enrolled, structure is locked (wording can still be tidied)."
       actions={
         <div className={adminStyles.toolbarActions}>
+          {programme && official ? (
+            <button
+              type="button"
+              className={adminStyles.secondaryBtn}
+              onClick={onBack}
+            >
+              Back
+            </button>
+          ) : null}
           <Link
             href="/management/course-builder"
             className={adminStyles.secondaryBtn}
           >
             Course Builder
           </Link>
-          <button
-            type="button"
-            className={adminStyles.primaryBtn}
-            disabled={busy || !selectedApprenticeship}
-            onClick={() => importSelected()}
-          >
-            {busy ? "Working…" : `Load ${selectedApprenticeship.title}`}
-          </button>
+          {!programme || !official ? (
+            <button
+              type="button"
+              className={adminStyles.primaryBtn}
+              disabled={busy || !selectedApprenticeship}
+              onClick={() => importSelected()}
+            >
+              {busy
+                ? "Working…"
+                : savedDraftForSelected
+                  ? `Open ${selectedApprenticeship.title}`
+                  : `Load ${selectedApprenticeship.title}`}
+            </button>
+          ) : null}
         </div>
       }
     >
@@ -195,6 +275,9 @@ export function ProgrammeBuilderScreen() {
               {PROGRAMME_APPRENTICESHIPS.map((item) => {
                 const active =
                   selectedApprenticeship.standardCode === item.standardCode;
+                const draft = state.programmes.find(
+                  (p) => p.standardCode === item.standardCode,
+                );
                 return (
                   <button
                     key={item.standardCode}
@@ -206,9 +289,11 @@ export function ProgrammeBuilderScreen() {
                     <strong>{item.title}</strong>
                     <span>
                       Current pack v{item.currentVersion}
-                      {item.hasDeliveryTemplate
-                        ? " · GTA template available"
-                        : " · Spine not built yet"}
+                      {draft
+                        ? ` · Draft saved ${formatSavedAt(draft.updatedAt)}`
+                        : item.hasDeliveryTemplate
+                          ? " · GTA template available"
+                          : " · Spine not built yet"}
                     </span>
                   </button>
                 );
@@ -217,24 +302,29 @@ export function ProgrammeBuilderScreen() {
           </section>
 
           <section className={styles.panel}>
-            <h2>Load {selectedApprenticeship.title}</h2>
+            <h2>
+              {savedDraftForSelected
+                ? `Open ${selectedApprenticeship.title}`
+                : `Load ${selectedApprenticeship.title}`}
+            </h2>
             <ol className={styles.steps}>
               <li>
-                If this apprenticeship is already in the portal database, open
-                that locked version (no duplicate).
+                Reopening always uses the same draft for this official version —
+                never a duplicate.
               </li>
               <li>
-                If it is not in the database, import it from Skills England once
-                and save it.
+                If the official standard is not in the portal yet, import it
+                once from Skills England and save it.
               </li>
               <li>
-                Start a GTA programme draft — empty spine, or a delivery template
-                where one exists. Assign KSBs to blocks here; tasks later in
-                Course Builder.
+                Edits auto-save. Use Back to return here without losing work.
+                New GTA version only when Skills England releases a newer
+                version.
               </li>
             </ol>
 
-            {selectedApprenticeship.hasDeliveryTemplate ? (
+            {selectedApprenticeship.hasDeliveryTemplate &&
+            !savedDraftForSelected ? (
               <label className={styles.checkRow}>
                 <input
                   type="checkbox"
@@ -244,6 +334,12 @@ export function ProgrammeBuilderScreen() {
                 Use the existing GTA delivery template for this apprenticeship
                 (blocks, gateways, EPA)
               </label>
+            ) : savedDraftForSelected ? (
+              <p className={styles.meta}>
+                Saved draft will reopen as-is (Internal v
+                {savedDraftForSelected.internalVersion},{" "}
+                {savedDraftForSelected.status}).
+              </p>
             ) : (
               <p className={styles.meta}>
                 No GTA delivery template yet for this apprenticeship — load will
@@ -260,7 +356,9 @@ export function ProgrammeBuilderScreen() {
               >
                 {busy
                   ? "Working…"
-                  : `Load ${selectedApprenticeship.title}`}
+                  : savedDraftForSelected
+                    ? `Open ${selectedApprenticeship.title}`
+                    : `Load ${selectedApprenticeship.title}`}
               </button>
             </div>
           </section>
@@ -341,16 +439,47 @@ export function ProgrammeBuilderScreen() {
           <section className={styles.panel}>
             <div className={styles.panelHead}>
               <h2>Programme</h2>
-              <ApprenticeStatusChip tone="amber">
-                {programme.status}
+              <ApprenticeStatusChip tone={structureLocked ? "red" : "amber"}>
+                {structureLocked ? "Structure locked" : programme.status}
               </ApprenticeStatusChip>
             </div>
-            <p className={styles.lead}>{programme.programmeTitle}</p>
+            <label className={styles.titleEdit}>
+              <span>Delivery title (wording)</span>
+              <div className={styles.titleEditRow}>
+                <input
+                  type="text"
+                  value={titleDraft || programme.programmeTitle}
+                  onChange={(e) => setTitleDraft(e.target.value)}
+                  onFocus={() =>
+                    setTitleDraft((t) => t || programme.programmeTitle)
+                  }
+                />
+                <button
+                  type="button"
+                  className={adminStyles.secondaryBtn}
+                  onClick={onSaveTitle}
+                >
+                  Save title
+                </button>
+              </div>
+            </label>
             <p className={styles.meta}>
-              Internal v{programme.internalVersion} ·{" "}
+              Internal v{programme.internalVersion} · Skills England v
+              {programme.externalVersion || official.externalVersion} ·{" "}
               {hours?.blockCount ?? 0} blocks · {hours?.gatewayCount ?? 0}{" "}
               gateways · EPA {hours?.hasEpa ? "present" : "missing"}
             </p>
+            <p className={styles.meta}>
+              Auto-saved {formatSavedAt(programme.updatedAt)}. Back keeps this
+              draft — Load will reopen it, not create another.
+            </p>
+            {structureLocked ? (
+              <p className={styles.lockNote}>
+                Apprentices are on this version (or it is published). Spine,
+                hours, and KSB assignments cannot change. Titles and wording
+                can still be updated.
+              </p>
+            ) : null}
             <div className={styles.hoursBox}>
               <div>
                 <span>Target (min compliance)</span>
@@ -387,7 +516,7 @@ export function ProgrammeBuilderScreen() {
                 {issues.slice(0, 12).map((issue) => (
                   <li
                     key={`${issue.code}-${issue.message}`}
-                    data-sev={issue.severity}
+                    data-severity={issue.severity}
                   >
                     {issue.message}
                   </li>
@@ -403,7 +532,9 @@ export function ProgrammeBuilderScreen() {
             <h2>Spine</h2>
             <p className={styles.meta}>
               Structure is GTA-owned. Official wording above stays locked.
-              Select a block to assign KSBs.
+              {structureLocked
+                ? " Structure editing is locked while apprentices are enrolled."
+                : " Select a block to assign KSBs."}
             </p>
             <div className={styles.spineTableWrap}>
               <table className={styles.spineTable}>
@@ -471,6 +602,11 @@ export function ProgrammeBuilderScreen() {
                 )}
               </div>
             </div>
+            {structureLocked ? (
+              <p className={styles.lockNote}>
+                KSB assignments are locked on this version.
+              </p>
+            ) : null}
             {!selectedBlock ? (
               <p className={styles.meta}>Select a block in the spine table.</p>
             ) : (
@@ -485,6 +621,7 @@ export function ProgrammeBuilderScreen() {
                       type="button"
                       className={styles.ksbChip}
                       data-on={on ? "true" : "false"}
+                      disabled={structureLocked}
                       onClick={() => onToggleKsb(ksb.code)}
                       title={ksb.description}
                     >
@@ -499,21 +636,124 @@ export function ProgrammeBuilderScreen() {
 
           <section className={`${styles.panel} ${styles.span2}`}>
             <h2>Official duties (locked)</h2>
-            <ul className={styles.dutyList}>
-              {official.duties.map((d) => (
-                <li key={d.code}>
-                  <strong>{d.code}</strong> {d.description}
-                  <span className={styles.meta}>
-                    Maps to {d.mappedKsbCodes.length} KSBs
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <p className={styles.meta}>
+              Open a duty to see its KSBs. Select a KSB pill to read its
+              wording.
+            </p>
+            {official.duties.length === 0 ? (
+              <p className={styles.meta}>
+                No duties were imported for this standard version.
+              </p>
+            ) : (
+              <ul className={styles.dutyList}>
+                {official.duties.map((d) => {
+                  const mapped = d.mappedKsbCodes.map((code) => {
+                    const ksb = official.ksbs.find(
+                      (k) => k.code.toUpperCase() === code.toUpperCase(),
+                    );
+                    return {
+                      code,
+                      type: ksb?.type ?? null,
+                      description: ksb?.description ?? "Description not found",
+                    };
+                  });
+                  const selectedCode =
+                    selectedDutyKsb?.dutyCode === d.code
+                      ? selectedDutyKsb.ksbCode
+                      : null;
+                  const selectedKsb = selectedCode
+                    ? mapped.find(
+                        (k) =>
+                          k.code.toUpperCase() === selectedCode.toUpperCase(),
+                      )
+                    : null;
+                  return (
+                    <li key={d.code}>
+                      <details
+                        className={styles.dutyDetails}
+                        onToggle={(e) => {
+                          if (!(e.currentTarget as HTMLDetailsElement).open) {
+                            setSelectedDutyKsb((cur) =>
+                              cur?.dutyCode === d.code ? null : cur,
+                            );
+                          }
+                        }}
+                      >
+                        <summary className={styles.dutySummary}>
+                          <span className={styles.dutySummaryMain}>
+                            <strong>{d.code}</strong> {d.description}
+                          </span>
+                          <span className={styles.dutySummaryCount}>
+                            {mapped.length} KSB
+                            {mapped.length === 1 ? "" : "s"}
+                          </span>
+                        </summary>
+                        <div className={styles.dutyBody}>
+                          {mapped.length === 0 ? (
+                            <p className={styles.meta}>
+                              No KSBs mapped to this duty.
+                            </p>
+                          ) : (
+                            <>
+                              <div className={styles.dutyKsbPills}>
+                                {mapped.map((k) => {
+                                  const on =
+                                    selectedCode?.toUpperCase() ===
+                                    k.code.toUpperCase();
+                                  return (
+                                    <button
+                                      key={`${d.code}-${k.code}`}
+                                      type="button"
+                                      className={styles.dutyKsbPill}
+                                      data-on={on ? "true" : "false"}
+                                      data-type={k.type || "unknown"}
+                                      onClick={() =>
+                                        setSelectedDutyKsb((cur) =>
+                                          cur?.dutyCode === d.code &&
+                                          cur.ksbCode.toUpperCase() ===
+                                            k.code.toUpperCase()
+                                            ? null
+                                            : {
+                                                dutyCode: d.code,
+                                                ksbCode: k.code,
+                                              },
+                                        )
+                                      }
+                                    >
+                                      {k.code}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                              {selectedKsb ? (
+                                <div className={styles.dutyKsbDetail}>
+                                  <strong>{selectedKsb.code}</strong>
+                                  {selectedKsb.type ? (
+                                    <span className={styles.dutyKsbType}>
+                                      {selectedKsb.type}
+                                    </span>
+                                  ) : null}
+                                  <p>{selectedKsb.description}</p>
+                                </div>
+                              ) : (
+                                <p className={styles.meta}>
+                                  Select a KSB to read its description.
+                                </p>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </details>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </section>
         </div>
       )}
 
-      {state.programmes.length > 0 ? (
+      {state.programmes.length > 0 && (!programme || !official) ? (
         <section className={styles.panel}>
           <h2>Your programmes</h2>
           <ul className={styles.programmeList}>
@@ -522,18 +762,17 @@ export function ProgrammeBuilderScreen() {
                 <button
                   type="button"
                   className={styles.linkish}
-                  onClick={() => selectProgramme(p.id)}
+                  onClick={() => {
+                    setTitleDraft(p.programmeTitle);
+                    selectProgramme(p.id);
+                  }}
                 >
-                  {p.programmeTitle} (v{p.internalVersion})
+                  {p.programmeTitle} (v{p.internalVersion}
+                  {p.externalVersion ? ` · SE v${p.externalVersion}` : ""})
                 </button>
               </li>
             ))}
           </ul>
-          {!programme ? (
-            <p className={styles.meta}>
-              Open one above, or import another apprenticeship.
-            </p>
-          ) : null}
         </section>
       ) : null}
     </ApprenticePageShell>
