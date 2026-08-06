@@ -30,6 +30,29 @@ export function summariseHours(programme: GtaProgrammeVersion): {
   };
 }
 
+/** Hours still needed vs Skills England minimum (from Jon’s structured OTJ). */
+export function hoursDeficitAgainstMinimum(
+  minimumComplianceHours: number | null | undefined,
+  structurePlannedOtjHours: number,
+): number | null {
+  if (minimumComplianceHours == null) return null;
+  return Math.max(
+    0,
+    Math.round((minimumComplianceHours - structurePlannedOtjHours) * 10) / 10,
+  );
+}
+
+export function hoursSurplusAgainstMinimum(
+  minimumComplianceHours: number | null | undefined,
+  structurePlannedOtjHours: number,
+): number | null {
+  if (minimumComplianceHours == null) return null;
+  return Math.max(
+    0,
+    Math.round((structurePlannedOtjHours - minimumComplianceHours) * 10) / 10,
+  );
+}
+
 export function validateProgrammeDefinition(
   official: OfficialStandardVersion,
   programme: GtaProgrammeVersion,
@@ -93,10 +116,12 @@ export function validateProgrammeDefinition(
 
 export function emptyState(): ProgrammeDefinitionState {
   return {
-    version: 2,
+    version: 4,
     officialVersions: [],
     programmes: [],
     selectedProgrammeId: null,
+    activityLog: [],
+    apiPingByStandard: {},
   };
 }
 
@@ -104,7 +129,6 @@ export function emptyState(): ProgrammeDefinitionState {
 export function isStructureLocked(programme: GtaProgrammeVersion): boolean {
   return (
     programme.hasEnrolledApprentices ||
-    programme.status === "published" ||
     programme.status === "superseded" ||
     programme.status === "archived"
   );

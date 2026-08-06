@@ -62,6 +62,49 @@ export type OfficialStandardVersion = {
   locked: true;
 };
 
+/**
+ * Named RPL / APL calculator locked onto a programme version.
+ * Add new keys when the maths changes — never silently rewrite behaviour
+ * of an existing key (learners may already be enrolled against it).
+ */
+export type RplFormulaKey = "weighted_ksb_cap_v1";
+
+export type RplFormulaStatus = "draft" | "published";
+
+export type ProgrammeDeliveryParameters = {
+  /**
+   * Jon’s intended total OTJ hours for this delivery
+   * (“how long he thinks the course will be” in OTJ hours).
+   */
+  expectedOtjHours: number | null;
+  /** Which calculator to run when a learner’s prior learning is entered. */
+  formulaKey: RplFormulaKey;
+  /** Publish state for the RPL formula snapshot (separate from spine publish). */
+  formulaStatus: RplFormulaStatus;
+  /**
+   * When false, that letter is omitted from the factor (not used in the calc).
+   * Defaults all true — staff can drop e.g. Behaviours for a programme.
+   */
+  includeAplK: boolean;
+  includeAplS: boolean;
+  includeAplB: boolean;
+  /**
+   * Weights on Knowledge / Skill / Behaviour prior-learning % scores.
+   * Autocare ST0499 live defaults: 0.30 / 0.50 / 0.20 (sum to 1).
+   * Ignored for any letter with includeApl* = false.
+   */
+  aplWeightK: number;
+  aplWeightS: number;
+  aplWeightB: number;
+  /**
+   * Cap on APL deduction as a fraction of block OTJ (0–1).
+   * Autocare ST0499 default: 0.30 → at most 30% of the block can be deducted.
+   */
+  aplMaxFraction: number;
+  /** Optional staff notes (evidence rules, local policy, etc.). */
+  rplNotes: string;
+};
+
 export type SpineItem = {
   id: string;
   itemType: SpineItemType;
@@ -89,6 +132,8 @@ export type GtaProgrammeVersion = {
   internalVersion: string;
   status: ProgrammeVersionStatus;
   spineItems: SpineItem[];
+  /** Jon-owned delivery parameters (RPL formula, expected OTJ, etc.). */
+  parameters: ProgrammeDeliveryParameters;
   /**
    * When true, structure/KSB/hours are locked (apprentices enrolled).
    * Soft wording edits may still be allowed later.
@@ -98,9 +143,48 @@ export type GtaProgrammeVersion = {
   updatedAt: string;
 };
 
+export type ProgrammeActivityKind =
+  | "api_request"
+  | "api_ok"
+  | "api_error"
+  | "new_version"
+  | "official_cached"
+  | "draft_reopened"
+  | "programme_created"
+  | "spine_saved"
+  | "parameters_saved"
+  | "formula_published"
+  | "spine_published"
+  | "title_saved";
+
+/** Append-only audit trail for Programme Builder (API + staff edits). */
+export type ProgrammeActivityEntry = {
+  id: string;
+  at: string;
+  kind: ProgrammeActivityKind;
+  /** Human summary shown in the log. */
+  summary: string;
+  /** Who did it — multi-staff ready; defaults to this device until auth actor is wired. */
+  actor: string;
+  standardCode?: string;
+  externalVersion?: string;
+  programmeId?: string;
+  /** Compact request/response set for operational checks. */
+  detail?: Record<string, string | number | boolean | null>;
+};
+
+export type ApiPingScheduleEntry = {
+  lastApiCallAt: string | null;
+  nextPingAt: string;
+};
+
 export type ProgrammeDefinitionState = {
-  version: 2;
+  version: 4;
   officialVersions: OfficialStandardVersion[];
   programmes: GtaProgrammeVersion[];
   selectedProgrammeId: string | null;
+  /** Newest-first activity for Official panel history. */
+  activityLog: ProgrammeActivityEntry[];
+  /** Per-standard last API call + next scheduled ping (6-hour cadence). */
+  apiPingByStandard: Record<string, ApiPingScheduleEntry>;
 };

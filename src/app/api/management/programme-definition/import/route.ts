@@ -14,6 +14,7 @@ import {
   OccupationalMapsClient,
   resolveApprenticeshipProductCode,
 } from "@/features/programme-definition/domain/skills-england-clients";
+import type { OfficialStandardVersion } from "@/features/programme-definition/domain/types";
 
 export const runtime = "nodejs";
 
@@ -21,6 +22,49 @@ type Body = {
   occupationCode?: string;
   standardCode?: string;
 };
+
+function receiptFor(
+  official: OfficialStandardVersion,
+  args: {
+    occupationCode: string;
+    standardCode: string;
+    source: "database" | "skills_england";
+    productCode?: string | null;
+    apprenticeshipError?: string | null;
+    persisted?: boolean;
+    dbWarning?: string | null;
+  },
+) {
+  return {
+    at: new Date().toISOString(),
+    request: {
+      occupationCode: args.occupationCode,
+      standardCode: args.standardCode,
+      productCode: args.productCode ?? null,
+    },
+    source: args.source,
+    ok: true,
+    externalVersion: official.externalVersion,
+    sourceHash: official.sourceHash,
+    duties: official.duties.length,
+    ksbs: official.ksbs.length,
+    title: official.title,
+    apprenticeshipError: args.apprenticeshipError ?? null,
+    persisted: args.persisted ?? true,
+    dbWarning: args.dbWarning ?? null,
+  };
+}
+
+/** Keep client store / localStorage lean — raw JSON stays in Supabase. */
+function slimOfficialForClient(
+  official: OfficialStandardVersion,
+): OfficialStandardVersion {
+  return {
+    ...official,
+    occupationRawPayload: { note: "Raw payload kept in database only" },
+    apprenticeshipRawPayload: null,
+  };
+}
 
 /**
  * Load official standard from DB if present; otherwise import from Skills England
@@ -38,8 +82,9 @@ export async function POST(request: Request) {
     }
     if (!standardCode && occupationCode) {
       standardCode =
-        PROGRAMME_APPRENTICESHIPS.find((a) => a.occupationCode === occupationCode)
-          ?.standardCode || "";
+        PROGRAMME_APPRENTICESHIPS.find(
+          (a) => a.occupationCode === occupationCode,
+        )?.standardCode || "";
     }
 
     if (!occupationCode && !standardCode) {
@@ -52,33 +97,33 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabase = createSupabaseAdminClient();
-
+    let dbWarning: string | null = null;
     try {
+      const supabase = createSupabaseAdminClient();
       const existing = await findOfficialInDatabase(supabase, {
         occupationCode,
         standardCode,
       });
       if (existing) {
+        const official = slimOfficialForClient(existing);
         return NextResponse.json({
           ok: true,
           source: "database",
-          official: existing,
+          official,
           message: "Loaded from the portal database (already imported).",
+          receipt: receiptFor(official, {
+            occupationCode,
+            standardCode,
+            source: "database",
+          }),
         });
       }
     } catch (dbReadError) {
-      return NextResponse.json(
-        {
-          ok: false,
-          source: "database",
-          error:
-            dbReadError instanceof Error
-              ? `Could not read the portal database: ${dbReadError.message}`
-              : "Could not read the portal database.",
-        },
-        { status: 503 },
-      );
+      // Fall through to Skills England — DB blips must not block Load.
+      dbWarning =
+        dbReadError instanceof Error
+          ? `Portal database unavailable: ${dbReadError.message}`
+          : "Portal database unavailable.";
     }
 
     const apiKey = process.env.SKILLS_ENGLAND_API_KEY?.trim();
@@ -87,8 +132,9 @@ export async function POST(request: Request) {
         {
           ok: false,
           source: "skills_england",
-          error:
-            "This apprenticeship is not in the portal database yet, and SKILLS_ENGLAND_API_KEY is not configured to import it.",
+          error: dbWarning
+            ? `${dbWarning} Skills England key is also not configured, so this apprenticeship cannot be loaded.`
+            : "This apprenticeship is not in the portal database yet, and SKILLS_ENGLAND_API_KEY is not configured to import it.",
         },
         { status: 503 },
       );
@@ -117,8 +163,8 @@ export async function POST(request: Request) {
           source: "skills_england",
           error:
             err instanceof Error
-              ? `Not in database, and Skills England Maps import failed: ${err.message}`
-              : "Not in database, and Skills England Maps import failed.",
+              ? `${dbWarning ? `${dbWarning} ` : ""}Skills England Maps import failed: ${err.message}`
+              : `${dbWarning ? `${dbWarning} ` : ""}Skills England Maps import failed.`,
         },
         { status: 502 },
       );
@@ -153,29 +199,38 @@ export async function POST(request: Request) {
       apprenticeshipRaw,
     });
 
-    let saved;
+    let saved = built;
+    let persisted = false;
     try {
+      const supabase = createSupabaseAdminClient();
       saved = await saveOfficialToDatabase(supabase, built);
+      persisted = true;
     } catch (err) {
-      return NextResponse.json(
-        {
-          ok: false,
-          source: "database",
-          error:
-            err instanceof Error
-              ? `Fetched from Skills England but could not save to the database: ${err.message}`
-              : "Fetched from Skills England but could not save to the database.",
-        },
-        { status: 500 },
-      );
+      // Still hand the pack to the client so Programme Builder can open.
+      dbWarning =
+        err instanceof Error
+          ? `Fetched from Skills England but could not save to the database: ${err.message}`
+          : "Fetched from Skills England but could not save to the database.";
     }
 
+    const official = slimOfficialForClient(saved);
     return NextResponse.json({
       ok: true,
       source: "skills_england",
-      official: saved,
+      official,
       apprenticeshipError,
-      message: `Imported ${saved.title || saved.standardCode} v${saved.externalVersion} from Skills England and saved to the portal database.`,
+      message: persisted
+        ? `Imported ${official.title || official.standardCode} v${official.externalVersion} from Skills England and saved to the portal database.`
+        : `Imported ${official.title || official.standardCode} v${official.externalVersion} from Skills England (not saved to database yet).`,
+      receipt: receiptFor(official, {
+        occupationCode,
+        standardCode,
+        source: "skills_england",
+        productCode,
+        apprenticeshipError,
+        persisted,
+        dbWarning,
+      }),
     });
   } catch (err) {
     return NextResponse.json(

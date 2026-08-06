@@ -1,0 +1,451 @@
+.root {
+  display: grid;
+  gap: var(--space-4, 1rem);
+  margin-top: 0.75rem;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .root {
+    grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  }
+}
+
+.canvas {
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 28%, #94a3b8);
+  border-radius: var(--radius-lg, 0.75rem);
+  background: white;
+  padding: var(--space-4, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 0.75rem);
+  min-width: 0;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--color-navy-900, #0f172a) 6%, transparent);
+}
+
+.canvasDragging {
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 6%, white);
+  border-color: var(--color-navy-700, #1e3a5f);
+}
+
+.canvasTitle {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.hoursStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  padding: 0.55rem 0.7rem;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 28%, #94a3b8);
+  border-radius: var(--radius-md, 0.5rem);
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 6%, white);
+  font-size: 0.82rem;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 75%, #64748b);
+}
+
+.hoursStrip strong {
+  color: var(--color-navy-900, #0f172a);
+  font-weight: 800;
+}
+
+.hoursStripDeficit {
+  border-color: color-mix(in srgb, #b91c1c 45%, #fecaca);
+  background: color-mix(in srgb, #ef4444 10%, white);
+}
+
+.hoursStripDeficit strong {
+  color: #9b1c1c;
+}
+
+.hoursStripOk {
+  border-color: color-mix(in srgb, #15803d 40%, #bbf7d0);
+  background: color-mix(in srgb, #22c55e 12%, white);
+}
+
+.hoursStripOk strong {
+  color: #14532d;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 72%, #64748b);
+  line-height: 1.35;
+}
+
+.paletteTitle,
+.canvasTitle {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.ksbHeading {
+  margin-top: 0.15rem;
+}
+
+.palette {
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 28%, #94a3b8);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 0;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--color-navy-900, #0f172a) 6%, transparent);
+  /* Sticky only — do not trap wheel/scroll on the whole panel */
+  overflow: visible;
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 4%, #f8fafc);
+}
+
+@media (min-width: 960px) {
+  .palette {
+    position: sticky;
+    top: calc(var(--header-height, 3.5rem) + 0.75rem);
+    align-self: start;
+    z-index: 2;
+  }
+}
+
+.paletteItem,
+.ksbDrag {
+  appearance: none;
+  text-align: left;
+  border: 2px dashed color-mix(in srgb, var(--color-navy-700, #1e3a5f) 45%, #94a3b8);
+  border-radius: var(--radius-md, 0.5rem);
+  background: white;
+  padding: 0.4rem 0.55rem;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-navy-900, #0f172a) 8%, transparent);
+  /* Let wheel reach the list; drag still works via HTML5 DnD */
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.paletteItem:hover,
+.ksbDrag:hover {
+  border-color: var(--color-navy-700, #1e3a5f);
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 6%, white);
+}
+
+.paletteItem:active,
+.ksbDrag:active {
+  cursor: grabbing;
+}
+
+.paletteItem strong,
+.ksbDrag strong {
+  font-size: 0.82rem;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.paletteItem span,
+.ksbDrag span {
+  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 65%, #64748b);
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.paletteList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.filterBtn {
+  appearance: none;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 35%, #94a3b8);
+  background: white;
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 80%, #64748b);
+}
+
+.filterBtn[data-active="true"] {
+  background: var(--color-navy-700, #1e3a5f);
+  border-color: var(--color-navy-700, #1e3a5f);
+  color: #fff;
+}
+
+.ksbPalette {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 0;
+  /* Most of the sticky column — structure chips stay compact above */
+  max-height: min(52vh, 28rem);
+  flex: 1 1 auto;
+  overflow: auto;
+  overscroll-behavior: auto;
+  padding: 0.4rem;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 22%, #94a3b8);
+  border-radius: var(--radius-md, 0.5rem);
+  background: white;
+  scrollbar-width: thin;
+  /* Prefer vertical pan/scroll over drag-gesture capture */
+  touch-action: pan-y;
+}
+
+.emptyCanvas {
+  margin: 0.15rem 0 0.35rem;
+  padding: 1.5rem 1rem;
+  border: 2.5px dashed #4b6280;
+  border-radius: var(--radius-md, 0.5rem);
+  background-color: #f8fafc;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #f1f5f9,
+    #f1f5f9 8px,
+    #e8eef5 8px,
+    #e8eef5 16px
+  );
+  color: #1e3a5f;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.dropZone {
+  position: relative;
+  isolation: isolate;
+  min-height: 3.25rem;
+  box-sizing: border-box;
+  margin: 0.35rem 0;
+  border: 2.5px dashed #4b6280;
+  border-radius: var(--radius-md, 0.5rem);
+  background-color: #f8fafc;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #f1f5f9,
+    #f1f5f9 8px,
+    #e8eef5 8px,
+    #e8eef5 16px
+  );
+  background-size: auto;
+  background-position: 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.85rem;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    min-height 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.dropZoneDragging {
+  min-height: 3.75rem;
+  border-color: #1e3a5f;
+  animation: dropStripeDrift 12s linear infinite;
+}
+
+.dropZoneActive {
+  min-height: 4.5rem;
+  border-color: #1e3a5f;
+  border-width: 3px;
+  background-color: #e8eef5;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, #1e3a5f 20%, transparent);
+  animation-duration: 9s;
+}
+
+.dropZoneLabel {
+  position: relative;
+  z-index: 1;
+  font-size: 0.86rem;
+  font-weight: 750;
+  color: #1e3a5f;
+  text-align: center;
+}
+
+@keyframes dropStripeDrift {
+  to {
+    background-position: 22px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dropZoneDragging,
+  .dropZoneActive {
+    animation: none;
+  }
+}
+
+.canvasItemWrap {
+  display: grid;
+}
+
+.card {
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 35%, #94a3b8);
+  border-radius: var(--radius-md, 0.5rem);
+  background: white;
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.6rem;
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--color-navy-900, #0f172a) 10%, transparent);
+}
+
+.cardBlock {
+  border-color: color-mix(in srgb, var(--color-navy-700, #1e3a5f) 45%, #94a3b8);
+}
+
+.cardKsbActive {
+  outline: 3px solid var(--color-navy-700, #1e3a5f);
+  outline-offset: 1px;
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 8%, white);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.dragHandle {
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 28%, #94a3b8);
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 6%, #f8fafc);
+  border-radius: var(--radius-md, 0.5rem);
+  padding: 0.25rem 0.45rem;
+  cursor: grab;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 70%, #64748b);
+  font-size: 0.85rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--color-navy-700, #1e3a5f);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+}
+
+.removeBtn {
+  margin-left: auto;
+  appearance: none;
+  border: 2px solid color-mix(in srgb, #9b1c1c 45%, #fecaca);
+  background: color-mix(in srgb, #ef4444 10%, white);
+  border-radius: var(--radius-md, 0.5rem);
+  color: #9b1c1c;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 0.28rem 0.55rem;
+}
+
+.removeBtn:hover {
+  background: color-mix(in srgb, #ef4444 18%, white);
+}
+
+.field {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 70%, #64748b);
+}
+
+.field input {
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 28%, #94a3b8);
+  border-radius: var(--radius-md, 0.5rem);
+  padding: 0.45rem 0.55rem;
+  font: inherit;
+  font-weight: 550;
+  color: var(--color-navy-900, #0f172a);
+  background: #fff;
+}
+
+.field input:focus {
+  outline: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 45%, transparent);
+  outline-offset: 1px;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+
+.assigned {
+  display: grid;
+  gap: 0.4rem;
+  padding-top: 0.35rem;
+  border-top: 2px dashed color-mix(in srgb, var(--color-navy-700, #1e3a5f) 22%, #94a3b8);
+}
+
+.assignedLabel {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.assignedPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.assignedPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 30%, #94a3b8);
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 8%, white);
+  border-radius: 999px;
+  padding: 0.18rem 0.3rem 0.18rem 0.55rem;
+  font-size: 0.78rem;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.assignedPill strong {
+  font-weight: 800;
+}
+
+.assignedPill button {
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 65%, #64748b);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 0.25rem;
+  font-weight: 800;
+}
+
+@media (max-width: 959px) {
+  .ksbPalette {
+    max-height: min(40vh, 18rem);
+  }
+}

@@ -1,5 +1,9 @@
 /**
- * Autocare (ST0499) spine seed — structure from live portal / Jon's reference.
+ * DEPRECATED — kept as offline reference only.
+ * Programme Builder no longer seeds Autocare spines automatically.
+ * Build spines manually in Spine Builder from an empty spine.
+ *
+ * Former Autocare (ST0499) layout from live portal / Jon's reference.
  * Weeks are fixed on the programme; dates come later from learner start.
  */
 

@@ -58,5 +58,10 @@ next-env.d.ts
 /GTA Old Portal/
 /GTA Old Portal/**
 /GTA Temp Portal/
+/GTA Temp Portal/**
+/Other Portal/
+/Other Portal/**
 ../GTA Website/
 ../GTA Website/**
+../Other Portal/
+../Other Portal/**
