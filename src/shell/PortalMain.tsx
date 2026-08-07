@@ -20,8 +20,8 @@ function isFormField(target: EventTarget | null): target is
  * Main column with auto-hiding header: scrolls down to hide, up to reveal.
  *
  * Focus must not jump the page — browsers scroll focused fields into view,
- * which fights the sticky header. We focus without scrolling and briefly
- * pin scroll position after each focus change.
+ * which fights the sticky header. We pin scroll position around focus changes
+ * without forcing the header to reappear (that stays scroll-driven only).
  */
 export function PortalMain({
   children,
@@ -36,13 +36,11 @@ export function PortalMain({
   const pinnedScrollTop = useRef(0);
   const lockUntil = useRef(0);
   const [headerHidden, setHeaderHidden] = useState(false);
-  const [fieldFocused, setFieldFocused] = useState(false);
   const [prevPathname, setPrevPathname] = useState(pathname);
 
   if (pathname !== prevPathname) {
     setPrevPathname(pathname);
     setHeaderHidden(false);
-    setFieldFocused(false);
   }
 
   useEffect(() => {
@@ -87,8 +85,8 @@ export function PortalMain({
     function onFocusIn(event: FocusEvent) {
       if (!isFormField(event.target)) return;
       if (!el?.contains(event.target)) return;
-      setFieldFocused(true);
       // Undo any scroll-into-view the browser already applied.
+      // Do not force the header visible — only scroll-up should reveal it.
       el.scrollTop = pinnedScrollTop.current;
       lockScroll(150);
     }
@@ -96,9 +94,6 @@ export function PortalMain({
     function onFocusOut(event: FocusEvent) {
       if (!isFormField(event.target)) return;
       requestAnimationFrame(() => {
-        const active = document.activeElement;
-        if (isFormField(active) && el?.contains(active)) return;
-        setFieldFocused(false);
         if (el) {
           lastScrollTop.current = el.scrollTop;
           pinnedScrollTop.current = el.scrollTop;
@@ -153,9 +148,6 @@ export function PortalMain({
     scrollRef.current?.scrollTo({ top: 0 });
   }, [pathname]);
 
-  // While a field is focused, keep the header visible so it cannot toggle mid-edit.
-  const headerIsHidden = fieldFocused ? false : headerHidden;
-
   // Full-height pages (e.g. Messages) manage their own internal scrolling and
   // should fill the viewport rather than float with wasted space below.
   const activePath = pathname.split("?")[0] ?? pathname;
@@ -171,7 +163,7 @@ export function PortalMain({
 
   return (
     <div ref={scrollRef} className={mainClass}>
-      <GlobalHeader hidden={headerIsHidden} />
+      <GlobalHeader hidden={headerHidden} />
       <div
         className={
           isFillPage ? `${styles.content} ${styles.contentFill}` : styles.content

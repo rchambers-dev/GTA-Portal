@@ -14,7 +14,8 @@ export type AiFeatureKey =
   | "cv.improve_education"
   | "chat.draft_reply"
   | "support.suggest_response"
-  | "learning.explain";
+  | "learning.explain"
+  | "programme.recommend_ksb_intent";
 
 export type AiFeatureMeta = {
   key: AiFeatureKey;

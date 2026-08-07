@@ -4,8 +4,19 @@
  */
 
 import { displayApprenticeshipTitle } from "./programme-apprenticeships";
-import { defaultWeightedKsbCapParams, formulaHasIncludedLetters } from "./rpl-formulas";
+import {
+  describePrimaryOwnershipChanges,
+  filterMappingsToBlocks,
+  migrateAssignedCodesToMappings,
+  stripLegacyAssignedCodes,
+} from "./block-ksb-mappings";
+import {
+  defaultWeightedKsbCapParams,
+  formulaHasIncludedLetters,
+  validateFormulaWeights,
+} from "./rpl-formulas";
 import type {
+  BlockKsbMapping,
   GtaProgrammeVersion,
   OfficialStandardVersion,
   ProgrammeActivityEntry,
@@ -16,10 +27,15 @@ import type {
   RplFormulaStatus,
   SpineItem,
 } from "./types";
-import { emptyState, isStructureLocked } from "./validation";
+import {
+  emptyState,
+  isStructureLocked,
+  validateProgrammeDefinition,
+} from "./validation";
 
-const STORAGE_KEY = "gta.programmeDefinition.v4";
+const STORAGE_KEY = "gta.programmeDefinition.v5";
 const LEGACY_KEYS = [
+  "gta.programmeDefinition.v4",
   "gta.programmeDefinition.v3",
   "gta.programmeDefinition.v2",
 ] as const;
@@ -73,7 +89,7 @@ function pushActivity(
     /** Only merge into the newest row when this key matches (e.g. same param field). */
     coalesceKey?: string;
   },
-) {
+): ProgrammeActivityEntry | null {
   const at = entry.at ?? nowIso();
   const nextEntry: ProgrammeActivityEntry = {
     id: crypto.randomUUID(),
@@ -107,7 +123,8 @@ function pushActivity(
     ) {
       log[0] = { ...nextEntry, id: newest.id };
       state = { ...state, activityLog: log.slice(0, ACTIVITY_CAP) };
-      return;
+      // Local coalesce only — do not spam shared DB with typing keystrokes.
+      return null;
     }
   }
 
@@ -115,6 +132,70 @@ function pushActivity(
     ...state,
     activityLog: [nextEntry, ...log].slice(0, ACTIVITY_CAP),
   };
+  queueRemoteActivity(nextEntry);
+  return nextEntry;
+}
+
+function queueRemoteActivity(entry: ProgrammeActivityEntry) {
+  if (typeof window === "undefined") return;
+  if (!entry.standardCode) return;
+  void fetch("/api/management/programme-definition/activity", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id: entry.id,
+      at: entry.at,
+      kind: entry.kind,
+      summary: entry.summary,
+      actor: entry.actor,
+      standardCode: entry.standardCode,
+      externalVersion: entry.externalVersion,
+      programmeId: entry.programmeId,
+      detail: entry.detail,
+    }),
+  }).catch(() => {
+    /* keep local log even if shared save fails */
+  });
+}
+
+/**
+ * Load shared History & API log from the portal database (all staff).
+ * Replaces browser-local rows for that standard with the DB truth.
+ */
+export async function loadSharedActivityLog(standardCode: string) {
+  hydrate();
+  const code = standardCode.trim().toUpperCase();
+  if (!code) return;
+
+  const res = await fetch(
+    `/api/management/programme-definition/activity?standardCode=${encodeURIComponent(code)}`,
+  );
+  const data = (await res.json()) as {
+    ok: boolean;
+    entries?: ProgrammeActivityEntry[];
+    lastApiCallAt?: string | null;
+    error?: string;
+  };
+  if (!data.ok || !data.entries) {
+    throw new Error(data.error || "Could not load shared history.");
+  }
+
+  const others = (state.activityLog || []).filter(
+    (e) => (e.standardCode || "").toUpperCase() !== code,
+  );
+  state = {
+    ...state,
+    activityLog: [...data.entries, ...others].slice(0, ACTIVITY_CAP),
+  };
+
+  if (data.lastApiCallAt) {
+    markApiCallInternal(code, data.lastApiCallAt);
+  } else {
+    ensureApiPingSchedule(code);
+  }
+
+  persist();
+  emit();
 }
 
 /** Public append for UI events (API request start/fail, etc.). */
@@ -336,18 +417,6 @@ function describeSpineChanges(
     if (prev.plannedWeeks !== item.plannedWeeks) {
       changes.push(`weeks ${prev.plannedWeeks ?? "—"} → ${item.plannedWeeks ?? "—"}`);
     }
-    const prevKsbs = [...prev.assignedKsbCodes].sort().join(",");
-    const nextKsbs = [...item.assignedKsbCodes].sort().join(",");
-    if (prevKsbs !== nextKsbs) {
-      const gained = item.assignedKsbCodes.filter(
-        (c) => !prev.assignedKsbCodes.includes(c),
-      );
-      const lost = prev.assignedKsbCodes.filter(
-        (c) => !item.assignedKsbCodes.includes(c),
-      );
-      if (gained.length) changes.push(`KSBs +${gained.join(", ")}`);
-      if (lost.length) changes.push(`KSBs −${lost.join(", ")}`);
-    }
     if (prev.sequence !== item.sequence) changes.push("reordered");
     if (changes.length) {
       edited += 1;
@@ -484,12 +553,119 @@ function withParameters(
   };
 }
 
-/** Blank spine — nothing until staff builds in Spine Builder. */
-export function emptySpine(): SpineItem[] {
-  return [];
+function normalizeProgramme(
+  p: GtaProgrammeVersion & {
+    spineItems?: Array<SpineItem & { assignedKsbCodes?: string[] }>;
+    ksbMappings?: BlockKsbMapping[];
+  },
+): GtaProgrammeVersion {
+  const spineRaw = p.spineItems || [];
+  const spineItems = stripLegacyAssignedCodes(spineRaw);
+  const mappings = filterMappingsToBlocks(
+    migrateAssignedCodesToMappings(spineRaw, p.ksbMappings, activityActor),
+    spineItems,
+  );
+  return withParameters({
+    ...p,
+    standardCode: p.standardCode || "",
+    externalVersion: p.externalVersion || "",
+    hasEnrolledApprentices: Boolean(p.hasEnrolledApprentices),
+    spineItems,
+    ksbMappings: mappings,
+  });
 }
 
-function migrateToV4(parsed: {
+/** Published (unlocked) versions: material curriculum edits require a new version. */
+export function requiresNewVersionForMaterialEdit(
+  programme: GtaProgrammeVersion,
+): boolean {
+  return programme.status === "published" && !isStructureLocked(programme);
+}
+
+const MATERIAL_PARAM_KEYS: (keyof ProgrammeDeliveryParameters)[] = [
+  "expectedOtjHours",
+  "formulaKey",
+  "formulaStatus",
+  "includeAplK",
+  "includeAplS",
+  "includeAplB",
+  "aplWeightK",
+  "aplWeightS",
+  "aplWeightB",
+  "aplMaxFraction",
+];
+
+export type ProgrammeMutationResult =
+  | { ok: true; programmeId: string }
+  | { ok: false; reason: "not_found" | "locked" | "requires_new_version"; error: string };
+
+/**
+ * Fork a published programme version into a new draft (internalVersion + 1).
+ * Copies spine, mappings, formula, and delivery parameters. Source left unchanged.
+ */
+export function createNextProgrammeVersion(
+  fromProgrammeId: string,
+): { ok: true; programme: GtaProgrammeVersion } | { ok: false; error: string } {
+  hydrate();
+  const current = state.programmes.find((p) => p.id === fromProgrammeId);
+  if (!current) return { ok: false, error: "Programme not found." };
+  if (isStructureLocked(current)) {
+    return {
+      ok: false,
+      error: "This version is locked and cannot be forked for editing.",
+    };
+  }
+  if (current.status !== "published") {
+    return {
+      ok: false,
+      error: "Only published versions create a new version for material changes.",
+    };
+  }
+
+  const nextNumber = Math.max(1, Number(current.internalVersion) || 1) + 1;
+  const now = new Date().toISOString();
+  const forked: GtaProgrammeVersion = normalizeProgramme({
+    ...current,
+    id: crypto.randomUUID(),
+    internalVersion: String(nextNumber),
+    status: "draft",
+    spineItems: current.spineItems.map((item) => ({
+      ...item,
+      metadata: { ...item.metadata },
+    })),
+    ksbMappings: current.ksbMappings.map((m) => ({ ...m })),
+    parameters: { ...current.parameters, formulaStatus: "draft" },
+    createdAt: now,
+    updatedAt: now,
+  });
+
+  state = {
+    ...state,
+    programmes: [...state.programmes, forked],
+    selectedProgrammeId: forked.id,
+  };
+  pushActivity({
+    kind: "version_forked",
+    summary: `Programme Version ${forked.internalVersion} created from Version ${current.internalVersion} (material curriculum change)`,
+    standardCode: current.standardCode,
+    externalVersion: current.externalVersion,
+    programmeId: forked.id,
+    detail: {
+      fromVersionId: current.id,
+      fromInternalVersion: current.internalVersion,
+      toVersionId: forked.id,
+      toInternalVersion: forked.internalVersion,
+      spineItems: forked.spineItems.length,
+      ksbMappings: forked.ksbMappings.length,
+    },
+  });
+  persist();
+  emit();
+  queueSpineSync(forked);
+  return { ok: true, programme: forked };
+}
+
+function migrateToV5(parsed: {
   officialVersions?: ProgrammeDefinitionState["officialVersions"];
   programmes?: ProgrammeDefinitionState["programmes"];
   selectedProgrammeId?: string | null;
@@ -497,19 +673,9 @@ function migrateToV4(parsed: {
   apiPingByStandard?: ProgrammeDefinitionState["apiPingByStandard"];
 }): ProgrammeDefinitionState {
   return {
-    version: 4,
+    version: 5,
     officialVersions: parsed.officialVersions || [],
-    programmes: (parsed.programmes || []).map((p) =>
-      withParameters({
-        ...p,
-        standardCode: p.standardCode || "",
-        externalVersion: p.externalVersion || "",
-        hasEnrolledApprentices: Boolean(p.hasEnrolledApprentices),
-        // Clear starter / template spines — rebuild from empty
-        spineItems: emptySpine(),
-        updatedAt: new Date().toISOString(),
-      }),
-    ),
+    programmes: (parsed.programmes || []).map((p) => normalizeProgramme(p)),
     selectedProgrammeId: parsed.selectedProgrammeId ?? null,
     activityLog: Array.isArray(parsed.activityLog) ? parsed.activityLog : [],
     apiPingByStandard:
@@ -524,15 +690,8 @@ function normalizeState(
 ): ProgrammeDefinitionState {
   return {
     ...parsed,
-    version: 4,
-    programmes: (parsed.programmes || []).map((p) =>
-      withParameters({
-        ...p,
-        standardCode: p.standardCode || "",
-        externalVersion: p.externalVersion || "",
-        hasEnrolledApprentices: Boolean(p.hasEnrolledApprentices),
-      }),
-    ),
+    version: 5,
+    programmes: (parsed.programmes || []).map((p) => normalizeProgramme(p)),
     activityLog: Array.isArray(parsed.activityLog) ? parsed.activityLog : [],
     apiPingByStandard:
       parsed.apiPingByStandard && typeof parsed.apiPingByStandard === "object"
@@ -545,10 +704,10 @@ function hydrate() {
   if (hydrated || typeof window === "undefined") return;
   hydrated = true;
   try {
-    const rawV4 = window.localStorage.getItem(STORAGE_KEY);
-    if (rawV4) {
-      const parsed = JSON.parse(rawV4) as ProgrammeDefinitionState;
-      if (parsed?.version === 4) state = normalizeState(parsed);
+    const rawV5 = window.localStorage.getItem(STORAGE_KEY);
+    if (rawV5) {
+      const parsed = JSON.parse(rawV5) as ProgrammeDefinitionState;
+      if (parsed?.version === 5) state = normalizeState(parsed);
       return;
     }
 
@@ -560,9 +719,15 @@ function hydrate() {
         officialVersions?: ProgrammeDefinitionState["officialVersions"];
         programmes?: ProgrammeDefinitionState["programmes"];
         selectedProgrammeId?: string | null;
+        activityLog?: ProgrammeDefinitionState["activityLog"];
+        apiPingByStandard?: ProgrammeDefinitionState["apiPingByStandard"];
       };
-      if (parsed?.version === 2 || parsed?.version === 3) {
-        state = migrateToV4(parsed);
+      if (
+        parsed?.version === 2 ||
+        parsed?.version === 3 ||
+        parsed?.version === 4
+      ) {
+        state = migrateToV5(parsed);
         persist();
         for (const legacy of LEGACY_KEYS) {
           window.localStorage.removeItem(legacy);
@@ -657,6 +822,11 @@ export function replaceOfficialVersion(official: OfficialStandardVersion) {
   return slim;
 }
 
+/** Blank spine — nothing until staff builds in Spine Builder. */
+export function emptySpine(): SpineItem[] {
+  return [];
+}
+
 export function createProgrammeForOfficial(official: OfficialStandardVersion) {
   hydrate();
   // Reopen the same GTA draft for this ST + Skills England version (no duplicates).
@@ -667,7 +837,7 @@ export function createProgrammeForOfficial(official: OfficialStandardVersion) {
         p.externalVersion === official.externalVersion),
   );
   if (existing) {
-    const synced: GtaProgrammeVersion = withParameters({
+    const synced: GtaProgrammeVersion = normalizeProgramme({
       ...existing,
       standardVersionId: official.id,
       standardCode: official.standardCode,
@@ -689,10 +859,12 @@ export function createProgrammeForOfficial(official: OfficialStandardVersion) {
       detail: {
         status: synced.status,
         spineItems: synced.spineItems.length,
+        ksbMappings: synced.ksbMappings.length,
       },
     });
     persist();
     emit();
+    queueSpineSync(synced);
     return synced;
   }
 
@@ -713,6 +885,7 @@ export function createProgrammeForOfficial(official: OfficialStandardVersion) {
     status: "draft",
     hasEnrolledApprentices: false,
     spineItems: emptySpine(),
+    ksbMappings: [],
     parameters: defaultProgrammeParameters(),
     createdAt: now,
     updatedAt: now,
@@ -733,6 +906,7 @@ export function createProgrammeForOfficial(official: OfficialStandardVersion) {
   });
   persist();
   emit();
+  queueSpineSync(programme);
   return programme;
 }
 
@@ -751,15 +925,31 @@ export function selectProgramme(id: string | null) {
 export function updateProgrammeSpine(
   programmeId: string,
   updater: (programme: GtaProgrammeVersion) => GtaProgrammeVersion,
-) {
+): ProgrammeMutationResult {
   hydrate();
   const current = state.programmes.find((p) => p.id === programmeId);
-  if (!current) return;
-  if (isStructureLocked(current)) {
-    // Structural lock — ignore spine/KSB mutations.
-    return;
+  if (!current) {
+    return { ok: false, reason: "not_found", error: "Programme not found." };
   }
-  const updated = updater({ ...current, updatedAt: new Date().toISOString() });
+  if (isStructureLocked(current)) {
+    return {
+      ok: false,
+      reason: "locked",
+      error: "This version is locked — structure and KSB mappings cannot change.",
+    };
+  }
+  if (requiresNewVersionForMaterialEdit(current)) {
+    return {
+      ok: false,
+      reason: "requires_new_version",
+      error:
+        "This change affects the approved curriculum. Create a new programme version to continue.",
+    };
+  }
+
+  const updated = normalizeProgramme({
+    ...updater({ ...current, updatedAt: new Date().toISOString() }),
+  });
   state = {
     ...state,
     programmes: state.programmes.map((p) =>
@@ -770,30 +960,78 @@ export function updateProgrammeSpine(
     current.spineItems,
     updated.spineItems,
   );
+  const mappingDelta =
+    (updated.ksbMappings?.length ?? 0) - (current.ksbMappings?.length ?? 0);
+  const primaryLines = describePrimaryOwnershipChanges(
+    current.ksbMappings ?? [],
+    updated.ksbMappings ?? [],
+    updated.spineItems,
+  );
   pushActivity(
     {
       kind: "spine_saved",
-      summary: spineChange.summary,
-      standardCode: updated.standardCode,
-      externalVersion: updated.externalVersion,
-      programmeId: updated.id,
-      detail: spineChange.detail,
+      summary:
+        mappingDelta !== 0
+          ? `${spineChange.summary}; KSB mappings ${mappingDelta > 0 ? "+" : ""}${mappingDelta}`
+          : spineChange.summary,
+      standardCode: current.standardCode,
+      externalVersion: current.externalVersion,
+      programmeId: current.id,
+      detail: {
+        ...spineChange.detail,
+        ksbMappings: updated.ksbMappings.length,
+      },
     },
-    { coalesceKind: "spine_saved" },
+    { coalesceKind: "spine_saved", coalesceMs: 12_000 },
   );
+  for (const line of primaryLines) {
+    pushActivity({
+      kind: "primary_moved",
+      summary: line,
+      standardCode: current.standardCode,
+      externalVersion: current.externalVersion,
+      programmeId: current.id,
+      detail: { change: line },
+    });
+  }
   persist();
   emit();
+  queueSpineSync(updated);
+  return { ok: true, programmeId };
 }
 
-/** Jon-owned delivery parameters (expected OTJ + RPL formula). Autsaves. */
+/** Jon-owned delivery parameters (expected OTJ + RPL formula). Autosaves. */
 export function updateProgrammeParameters(
   programmeId: string,
   patch: Partial<ProgrammeDeliveryParameters>,
-) {
+): ProgrammeMutationResult {
   hydrate();
   const current = state.programmes.find((p) => p.id === programmeId);
-  if (!current) return;
-  if (isStructureLocked(current)) return;
+  if (!current) {
+    return { ok: false, reason: "not_found", error: "Programme not found." };
+  }
+  if (isStructureLocked(current)) {
+    return {
+      ok: false,
+      reason: "locked",
+      error: "This version is locked — delivery parameters cannot change.",
+    };
+  }
+
+  const materialKeysTouched = MATERIAL_PARAM_KEYS.some(
+    (key) => patch[key] !== undefined,
+  );
+  if (
+    materialKeysTouched &&
+    requiresNewVersionForMaterialEdit(current)
+  ) {
+    return {
+      ok: false,
+      reason: "requires_new_version",
+      error:
+        "This change affects the approved curriculum. Create a new programme version to continue.",
+    };
+  }
 
   const defaults = defaultProgrammeParameters();
   const formulaLocked =
@@ -814,7 +1052,11 @@ export function updateProgrammeParameters(
     formulaLocked &&
     formulaFieldKeys.some((key) => patch[key] !== undefined)
   ) {
-    return;
+    return {
+      ok: false,
+      reason: "locked",
+      error: "The RPL formula is published and locked on this version.",
+    };
   }
 
   const nextExpected =
@@ -847,7 +1089,11 @@ export function updateProgrammeParameters(
 
   // Keep at least one letter in the formula.
   if (!formulaHasIncludedLetters(nextIncludes)) {
-    return;
+    return {
+      ok: false,
+      reason: "locked",
+      error: "Include at least one of K, S, or B in the formula.",
+    };
   }
 
   state = {
@@ -939,6 +1185,7 @@ export function updateProgrammeParameters(
   }
   persist();
   emit();
+  return { ok: true, programmeId };
 }
 
 /**
@@ -957,6 +1204,13 @@ export function publishProgrammeFormula(
       error: "This version is locked — the formula cannot be changed.",
     };
   }
+  if (requiresNewVersionForMaterialEdit(current)) {
+    return {
+      ok: false,
+      error:
+        "Publishing formula on an already-published spine requires a new programme version first.",
+    };
+  }
   if (current.parameters?.formulaStatus === "published") {
     return { ok: false, error: "This formula is already published." };
   }
@@ -965,6 +1219,10 @@ export function publishProgrammeFormula(
       ok: false,
       error: "Include at least one of K, S, or B before publishing the formula.",
     };
+  }
+  const weights = validateFormulaWeights(current.parameters);
+  if (!weights.ok) {
+    return { ok: false, error: weights.message };
   }
 
   state = {
@@ -994,16 +1252,21 @@ export function publishProgrammeFormula(
       includeS: current.parameters.includeAplS,
       includeB: current.parameters.includeAplB,
       maxAplPercent: Math.round(current.parameters.aplMaxFraction * 100),
+      enabledWeightSum: weights.sum,
     },
   });
   persist();
   emit();
+  queueSpineSync(
+    state.programmes.find((p) => p.id === programmeId) || current,
+  );
   return { ok: true };
 }
 
 /**
  * Mark a programme version published.
- * Structure stays editable until learners are enrolled on this version.
+ * After publish, only wording/metadata may change in-place; material curriculum
+ * edits require createNextProgrammeVersion(). Locked once learners enrol.
  */
 export function publishProgramme(
   programmeId: string,
@@ -1022,31 +1285,53 @@ export function publishProgramme(
     return { ok: false, error: "This programme is already published." };
   }
 
+  const official = state.officialVersions.find(
+    (v) =>
+      v.id === current.standardVersionId ||
+      (v.standardCode === current.standardCode &&
+        v.externalVersion === current.externalVersion),
+  );
+  if (!official) {
+    return { ok: false, error: "Official standard version not loaded." };
+  }
+  const blockers = validateProgrammeDefinition(official, current, {
+    context: "publish",
+  }).filter((i) => i.severity === "error");
+  if (blockers.length > 0) {
+    return {
+      ok: false,
+      error: blockers[0]?.message || "Fix publish blockers before publishing.",
+    };
+  }
+
+  const published: GtaProgrammeVersion = {
+    ...current,
+    status: "published",
+    updatedAt: new Date().toISOString(),
+  };
+
   state = {
     ...state,
     programmes: state.programmes.map((p) =>
-      p.id === programmeId
-        ? {
-            ...p,
-            status: "published",
-            updatedAt: new Date().toISOString(),
-          }
-        : p,
+      p.id === programmeId ? published : p,
     ),
   };
   pushActivity({
     kind: "spine_published",
-    summary: `Spine published: ${current.programmeTitle}`,
+    summary: `Spine published: ${current.programmeTitle} (v${current.internalVersion})`,
     standardCode: current.standardCode,
     externalVersion: current.externalVersion,
     programmeId: current.id,
     detail: {
       spineItems: current.spineItems.length,
+      ksbMappings: current.ksbMappings.length,
       formulaStatus: current.parameters.formulaStatus,
+      internalVersion: current.internalVersion,
     },
   });
   persist();
   emit();
+  queueSpineSync(published);
   return { ok: true };
 }
 
@@ -1080,6 +1365,84 @@ export function updateProgrammeTitle(programmeId: string, title: string) {
 /** Leave the builder detail view; draft remains saved. */
 export function goBackToCatalogue() {
   selectProgramme(null);
+}
+
+let spineSyncTimer: ReturnType<typeof setTimeout> | null = null;
+let spineSyncPending: GtaProgrammeVersion | null = null;
+
+function queueSpineSync(programme: GtaProgrammeVersion) {
+  if (typeof window === "undefined") return;
+  spineSyncPending = programme;
+  if (spineSyncTimer) clearTimeout(spineSyncTimer);
+  spineSyncTimer = setTimeout(() => {
+    const payload = spineSyncPending;
+    spineSyncPending = null;
+    spineSyncTimer = null;
+    if (!payload) return;
+    void fetch("/api/management/programme-definition/spine", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        programmeId: payload.programmeId,
+        programmeVersionId: payload.id,
+        programmeTitle: payload.programmeTitle,
+        standardCode: payload.standardCode,
+        externalVersion: payload.externalVersion,
+        standardVersionId: payload.standardVersionId,
+        status: payload.status,
+        internalVersion: payload.internalVersion,
+        spineItems: payload.spineItems,
+        ksbMappings: payload.ksbMappings,
+        parameters: payload.parameters,
+      }),
+    }).catch(() => {
+      /* DB sync best-effort; local cache remains */
+    });
+  }, 800);
+}
+
+/** Hydrate spine + mappings from Supabase (source of truth when present). */
+export async function loadSharedProgrammeSpine(args: {
+  standardCode: string;
+  programmeVersionId?: string;
+}) {
+  hydrate();
+  const code = args.standardCode.trim().toUpperCase();
+  if (!code) return;
+
+  const qs = new URLSearchParams({ standardCode: code });
+  if (args.programmeVersionId) {
+    qs.set("programmeVersionId", args.programmeVersionId);
+  }
+  const res = await fetch(
+    `/api/management/programme-definition/spine?${qs.toString()}`,
+  );
+  const data = (await res.json()) as {
+    ok: boolean;
+    programme?: GtaProgrammeVersion;
+    error?: string;
+  };
+  if (!data.ok || !data.programme) return;
+
+  const incoming = normalizeProgramme(data.programme);
+  const idx = state.programmes.findIndex((p) => p.id === incoming.id);
+  if (idx >= 0) {
+    state = {
+      ...state,
+      programmes: state.programmes.map((p) =>
+        p.id === incoming.id ? { ...p, ...incoming, id: p.id } : p,
+      ),
+      selectedProgrammeId: incoming.id,
+    };
+  } else {
+    state = {
+      ...state,
+      programmes: [...state.programmes, incoming],
+      selectedProgrammeId: incoming.id,
+    };
+  }
+  persist();
+  emit();
 }
 
 export function clearProgrammeDefinitionPreview() {

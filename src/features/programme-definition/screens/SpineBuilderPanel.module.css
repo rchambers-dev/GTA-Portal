@@ -208,25 +208,6 @@
   touch-action: pan-y;
 }
 
-.emptyCanvas {
-  margin: 0.15rem 0 0.35rem;
-  padding: 1.5rem 1rem;
-  border: 2.5px dashed #4b6280;
-  border-radius: var(--radius-md, 0.5rem);
-  background-color: #f8fafc;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    #f1f5f9,
-    #f1f5f9 8px,
-    #e8eef5 8px,
-    #e8eef5 16px
-  );
-  color: #1e3a5f;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
 .dropZone {
   position: relative;
   isolation: isolate;
@@ -254,6 +235,12 @@
     background-color 120ms ease,
     min-height 120ms ease,
     box-shadow 120ms ease;
+}
+
+.dropZoneEmpty {
+  min-height: 7.5rem;
+  margin: 0.15rem 0 0.35rem;
+  padding: 1.5rem 1rem;
 }
 
 .dropZoneDragging {
@@ -433,7 +420,9 @@
   font-weight: 800;
 }
 
-.assignedPill button {
+.assignedPill button,
+.pillRemove,
+.pillEdit {
   border: 0;
   background: transparent;
   color: color-mix(in srgb, var(--color-navy-900, #0f172a) 65%, #64748b);
@@ -442,6 +431,161 @@
   line-height: 1;
   padding: 0 0.25rem;
   font-weight: 800;
+}
+
+.pillEdit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--color-navy-900, #0f172a);
+  font-size: 0.78rem;
+  padding: 0;
+}
+
+.assignedPillPrimary {
+  border-color: color-mix(in srgb, var(--color-navy-700, #1e3a5f) 55%, #94a3b8);
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 14%, white);
+}
+
+.pillIntent {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 72%, #64748b);
+}
+
+.pillPrimaryMark {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-navy-700, #1e3a5f);
+}
+
+.assignBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: color-mix(in srgb, #0f172a 45%, transparent);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.assignPanel {
+  width: min(32rem, 100%);
+  max-height: min(90vh, 40rem);
+  overflow: auto;
+  background: #fff;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 35%, #94a3b8);
+  border-radius: var(--radius-lg, 0.75rem);
+  padding: 1.1rem 1.2rem;
+  display: grid;
+  gap: 0.85rem;
+  box-shadow: 0 12px 40px color-mix(in srgb, #0f172a 25%, transparent);
+}
+
+.assignPanel h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.primaryToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.primaryElsewhere {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-md, 0.5rem);
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 28%, #94a3b8);
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 8%, white);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.intentFieldset {
+  margin: 0;
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 22%, #94a3b8);
+  border-radius: var(--radius-md, 0.5rem);
+  padding: 0.65rem 0.75rem 0.75rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.intentFieldset legend {
+  padding: 0 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.recommendBanner {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--color-navy-900, #0f172a) 78%, #64748b);
+}
+
+.intentList {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.intentOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-md, 0.5rem);
+  border: 2px solid transparent;
+  font-size: 0.85rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.intentOption[data-selected="true"] {
+  border-color: color-mix(in srgb, var(--color-navy-700, #1e3a5f) 40%, #94a3b8);
+  background: color-mix(in srgb, var(--color-navy-500, #3b6ea5) 10%, white);
+}
+
+.intentOption[data-recommended="true"] span::after {
+  content: "";
+}
+
+.assignActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.assignCancel,
+.assignConfirm {
+  appearance: none;
+  border-radius: var(--radius-md, 0.5rem);
+  font: inherit;
+  font-weight: 800;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+}
+
+.assignCancel {
+  border: 2px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 28%, #94a3b8);
+  background: #fff;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.assignConfirm {
+  border: 2px solid var(--color-navy-700, #1e3a5f);
+  background: var(--color-navy-700, #1e3a5f);
+  color: #fff;
 }
 
 @media (max-width: 959px) {

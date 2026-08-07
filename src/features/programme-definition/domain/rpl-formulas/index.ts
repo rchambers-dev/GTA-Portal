@@ -139,3 +139,65 @@ export function formulaHasIncludedLetters(
     params.includeAplK || params.includeAplS || params.includeAplB,
   );
 }
+
+/** Sum of weights for enabled letters only (disabled are ignored, not renormalised). */
+export function enabledFormulaWeightsSum(
+  params: Pick<
+    ProgrammeDeliveryParameters,
+    | "includeAplK"
+    | "includeAplS"
+    | "includeAplB"
+    | "aplWeightK"
+    | "aplWeightS"
+    | "aplWeightB"
+  >,
+): number {
+  let sum = 0;
+  if (params.includeAplK) sum += Number(params.aplWeightK) || 0;
+  if (params.includeAplS) sum += Number(params.aplWeightS) || 0;
+  if (params.includeAplB) sum += Number(params.aplWeightB) || 0;
+  return sum;
+}
+
+const WEIGHT_SUM_EPSILON = 0.001;
+
+/**
+ * Enabled K/S/B weights must sum to 1.0. Never silently renormalises.
+ */
+export function validateFormulaWeights(
+  params: Pick<
+    ProgrammeDeliveryParameters,
+    | "includeAplK"
+    | "includeAplS"
+    | "includeAplB"
+    | "aplWeightK"
+    | "aplWeightS"
+    | "aplWeightB"
+    | "aplMaxFraction"
+  >,
+): { ok: true; sum: number } | { ok: false; sum: number; message: string } {
+  if (!formulaHasIncludedLetters(params)) {
+    return {
+      ok: false,
+      sum: 0,
+      message: "Include at least one of K, S, or B in the formula.",
+    };
+  }
+  const sum = enabledFormulaWeightsSum(params);
+  if (Math.abs(sum - 1) > WEIGHT_SUM_EPSILON) {
+    return {
+      ok: false,
+      sum,
+      message: `Enabled K/S/B weights must sum to 1.0 (currently ${sum.toFixed(3)}). Weights are not auto-adjusted.`,
+    };
+  }
+  const max = Number(params.aplMaxFraction);
+  if (!Number.isFinite(max) || max < 0 || max > 1) {
+    return {
+      ok: false,
+      sum,
+      message: "Max APL must be between 0% and 100% (0–1 internally).",
+    };
+  }
+  return { ok: true, sum };
+}

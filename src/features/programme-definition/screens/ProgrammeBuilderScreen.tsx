@@ -14,16 +14,20 @@ import {
 } from "../domain/programme-apprenticeships";
 import {
   createProgrammeForOfficial,
+  createNextProgrammeVersion,
   ensureApiPingSchedule,
   getApiPingSchedule,
   getProgrammeDefinitionServerSnapshot,
   getProgrammeDefinitionSnapshot,
   goBackToCatalogue,
   isApiPingDue,
+  loadSharedActivityLog,
+  loadSharedProgrammeSpine,
   publishProgramme,
   publishProgrammeFormula,
   recordProgrammeActivity,
   replaceOfficialVersion,
+  requiresNewVersionForMaterialEdit,
   selectProgramme,
   setProgrammeActivityActor,
   subscribeProgrammeDefinition,
@@ -33,15 +37,19 @@ import {
 } from "../domain/programme-definition-store";
 import { labelSpineType } from "../domain/spine-builder";
 import type {
+  BlockKsbMapping,
   OfficialStandardVersion,
   ProgrammeActivityEntry,
+  ProgrammeDeliveryParameters,
   SpineItem,
 } from "../domain/types";
 import { RPL_FORMULA_OPTIONS } from "../domain/rpl-formulas";
 import {
+  buildPublishChecklist,
   hoursDeficitAgainstMinimum,
   hoursSurplusAgainstMinimum,
   isStructureLocked,
+  primaryCoverage,
   summariseHours,
   validateProgrammeDefinition,
 } from "../domain/validation";
@@ -137,6 +145,10 @@ function activityKindLabel(kind: ProgrammeActivityEntry["kind"]): string {
       return "Published";
     case "title_saved":
       return "Title";
+    case "primary_moved":
+      return "Primary";
+    case "version_forked":
+      return "New version";
     default:
       return "Event";
   }
@@ -160,27 +172,37 @@ function ActivityLogItem({ entry }: { entry: ProgrammeActivityEntry }) {
     (entry.detail?.method && entry.detail?.endpoint
       ? `${entry.detail.method} ${entry.detail.endpoint}`
       : null);
+  const canExpand = detailEntries.length > 0;
 
   return (
     <li className={styles.activityItem} data-kind={entry.kind}>
-      <button
-        type="button"
-        className={styles.activityItemBtn}
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-      >
-        <span className={styles.activityKind}>
-          {activityKindLabel(entry.kind)}
-        </span>
+      <div className={styles.activityItemBody}>
+        <div className={styles.activityItemTop}>
+          <span className={styles.activityKind}>
+            {activityKindLabel(entry.kind)}
+          </span>
+          {canExpand ? (
+            <button
+              type="button"
+              className={styles.activityExpandBtn}
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+            >
+              {open ? "Hide" : "Details"}
+            </button>
+          ) : null}
+        </div>
         {httpLine ? (
-          <code className={styles.activityHttp}>{httpLine}</code>
+          <code className={styles.activityHttp} title="Select to copy">
+            {httpLine}
+          </code>
         ) : null}
-        <span className={styles.activitySummary}>{entry.summary}</span>
-        <span className={styles.activityMeta}>
+        <p className={styles.activitySummary}>{entry.summary}</p>
+        <p className={styles.activityMeta}>
           {formatSavedAt(entry.at)} · {entry.actor}
-        </span>
-      </button>
-      {open && detailEntries.length > 0 ? (
+        </p>
+      </div>
+      {open && canExpand ? (
         <dl className={styles.activityDetail}>
           {detailEntries.map(([key, value]) => (
             <div
@@ -229,10 +251,17 @@ export function ProgrammeBuilderScreen() {
   const [spineMode, setSpineMode] = useState<"view" | "builder">("view");
   const [expandedKsb, setExpandedKsb] = useState<string | null>(null);
   const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
+  const [forkConfirmOpen, setForkConfirmOpen] = useState(false);
+  const [pendingForkAction, setPendingForkAction] = useState<
+    null | "spine" | "parameters"
+  >(null);
   const [enableApprenticeshipOpen, setEnableApprenticeshipOpen] =
     useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
   const [pingBusy, setPingBusy] = useState(false);
+  const [openChecklistGroupId, setOpenChecklistGroupId] = useState<string | null>(
+    null,
+  );
 
   useLayoutEffect(() => {
     setProgrammeActivityActor(session.account.name);
@@ -269,7 +298,47 @@ export function ProgrammeBuilderScreen() {
   useEffect(() => {
     if (!official?.standardCode) return;
     ensureApiPingSchedule(official.standardCode);
-  }, [official?.standardCode]);
+    void loadSharedActivityLog(official.standardCode).catch(() => {
+      /* local history still available if shared load fails */
+    });
+    void loadSharedProgrammeSpine({
+      standardCode: official.standardCode,
+      programmeVersionId: programme?.id,
+    }).catch(() => {
+      /* local draft remains if DB hydrate fails */
+    });
+  }, [official?.standardCode, programme?.id]);
+
+  const issues =
+    programme && official
+      ? validateProgrammeDefinition(official, programme, { context: "draft" })
+      : [];
+  const publishErrors =
+    programme && official
+      ? validateProgrammeDefinition(official, programme, {
+          context: "publish",
+        }).filter((i) => i.severity === "error")
+      : [];
+  const errors = publishErrors;
+  const warnings = issues.filter((i) => i.severity === "warning");
+  const coverage =
+    programme && official ? primaryCoverage(programme, official) : null;
+  const checklistGroups = buildPublishChecklist(issues);
+  const firstErrorChecklistId =
+    checklistGroups.find((g) => g.severity === "error")?.id ?? null;
+  const checklistGroupIds = checklistGroups.map((g) => g.id).join("|");
+
+  useEffect(() => {
+    if (!firstErrorChecklistId) {
+      setOpenChecklistGroupId(null);
+      return;
+    }
+    const ids = checklistGroupIds ? checklistGroupIds.split("|") : [];
+    setOpenChecklistGroupId((current) => {
+      if (current && ids.includes(current)) return current;
+      return firstErrorChecklistId;
+    });
+  }, [firstErrorChecklistId, checklistGroupIds]);
 
   const runScheduledApiPing = useCallback(async () => {
     if (!official || pingBusy) return;
@@ -390,12 +459,6 @@ export function ProgrammeBuilderScreen() {
         structuredOtj,
       )
     : null;
-  const issues =
-    programme && official
-      ? validateProgrammeDefinition(official, programme)
-      : [];
-  const errors = issues.filter((i) => i.severity === "error");
-  const warnings = issues.filter((i) => i.severity === "warning");
 
   const filteredKsbs = useMemo(() => {
     if (!official) return [];
@@ -403,6 +466,16 @@ export function ProgrammeBuilderScreen() {
       (k) => ksbFilter === "all" || k.type === ksbFilter,
     );
   }, [official, ksbFilter]);
+
+  const ksbTotals = useMemo(() => {
+    const ksbs = official?.ksbs ?? [];
+    return {
+      total: ksbs.length,
+      knowledge: ksbs.filter((k) => k.type === "knowledge").length,
+      skill: ksbs.filter((k) => k.type === "skill").length,
+      behaviour: ksbs.filter((k) => k.type === "behaviour").length,
+    };
+  }, [official]);
 
   const apprenticeshipTitle = official
     ? displayApprenticeshipTitle(official.standardCode, official.title)
@@ -546,13 +619,55 @@ export function ProgrammeBuilderScreen() {
     setMessage("Draft kept — come back anytime via Load or Your programmes.");
   }
 
-  function onSpineChange(next: SpineItem[]) {
+  function onSpineChange(next: {
+    spineItems: SpineItem[];
+    ksbMappings: BlockKsbMapping[];
+  }) {
     if (!programme || structureLocked) return;
-    updateProgrammeSpine(programme.id, (p) => ({
+    const result = updateProgrammeSpine(programme.id, (p) => ({
       ...p,
-      spineItems: next,
+      spineItems: next.spineItems,
+      ksbMappings: next.ksbMappings,
     }));
+    if (!result.ok) {
+      if (result.reason === "requires_new_version") {
+        setPendingForkAction("spine");
+        setForkConfirmOpen(true);
+        return;
+      }
+      setMessage(result.error);
+      return;
+    }
     setMessage(`Spine saved · ${formatSavedAt(new Date().toISOString())}`);
+  }
+
+  function applyParameterPatch(patch: Partial<ProgrammeDeliveryParameters>) {
+    if (!programme || structureLocked) return;
+    const result = updateProgrammeParameters(programme.id, patch);
+    if (!result.ok) {
+      if (result.reason === "requires_new_version") {
+        setPendingForkAction("parameters");
+        setForkConfirmOpen(true);
+        return;
+      }
+      setMessage(result.error);
+    }
+  }
+
+  function onConfirmFork() {
+    if (!programme) return;
+    const result = createNextProgrammeVersion(programme.id);
+    setForkConfirmOpen(false);
+    setPendingForkAction(null);
+    if (!result.ok) {
+      setMessage(result.error);
+      return;
+    }
+    setTitleDraft(result.programme.programmeTitle);
+    setSpineMode("builder");
+    setMessage(
+      `Programme Version ${result.programme.internalVersion} created from Version ${programme.internalVersion}. V${programme.internalVersion} is unchanged — edit the new draft.`,
+    );
   }
 
   function onSaveTitle() {
@@ -591,7 +706,7 @@ export function ProgrammeBuilderScreen() {
     <ApprenticePageShell
       eyebrow="Management"
       title="Programme Builder"
-      description="One GTA draft per Skills England version. Spines start empty and auto-save while you build. Publish when ready — structure locks only after learners enrol."
+      description="Load an official Skills England pack, build the GTA delivery spine, map KSBs with LearningIntent + Primary, then publish. Material edits after publish create a new programme version."
       actions={
         <div className={adminStyles.toolbarActions}>
           {programme && official ? (
@@ -660,22 +775,43 @@ export function ProgrammeBuilderScreen() {
             </p>
             <ul className={styles.modalList}>
               <li>
-                Publishing marks this version as the live delivery spine for
-                this official standard release.
+                Publishing marks this version as the approved curriculum for
+                this official standard release (internal v
+                {programme.internalVersion}).
               </li>
               <li>
-                This cannot be casually undone. There is no “unpublish” that
-                rewound history.
+                After publish, only title/wording can change in-place. Spine,
+                KSB mappings, primaries, OTJ hours, and formula changes create a
+                new programme version.
               </li>
               <li>
-                Once any learner is enrolled on this version, the spine, hours,
-                and KSB assignments lock permanently for that version.
+                Once any learner is enrolled on this version, it becomes fully
+                locked.
               </li>
               <li>
-                Until learners enrol, you can still edit the published spine
-                (drafts and published versions both auto-save).
+                Generated documents should always cite this programme version
+                id and internal version.
               </li>
             </ul>
+            {coverage ? (
+              <div className={styles.primarySummary}>
+                <p>
+                  <strong>
+                    {coverage.withPrimary} of {coverage.required}
+                  </strong>{" "}
+                  required KSBs have a primary block.
+                </p>
+                {coverage.missingPrimary.length > 0 ? (
+                  <p className={styles.lockNote}>
+                    Missing primary:{" "}
+                    {coverage.missingPrimary.slice(0, 24).join(", ")}
+                    {coverage.missingPrimary.length > 24
+                      ? ` …and ${coverage.missingPrimary.length - 24} more`
+                      : ""}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
             {errors.length > 0 ? (
               <p className={styles.lockNote}>
                 There are still {errors.length} publish blocker
@@ -697,6 +833,69 @@ export function ProgrammeBuilderScreen() {
                 onClick={onConfirmPublish}
               >
                 Yes, publish
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {forkConfirmOpen && programme ? (
+        <div
+          className={styles.modalBackdrop}
+          role="presentation"
+          onClick={() => {
+            setForkConfirmOpen(false);
+            setPendingForkAction(null);
+          }}
+        >
+          <div
+            className={styles.modal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="fork-dialog-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 id="fork-dialog-title">Create Programme Version{" "}
+              {Math.max(1, Number(programme.internalVersion) || 1) + 1}?
+            </h2>
+            <p>
+              This change affects the approved curriculum on{" "}
+              <strong>{programme.programmeTitle}</strong> (Version{" "}
+              {programme.internalVersion}).
+            </p>
+            <ul className={styles.modalList}>
+              <li>
+                Version {programme.internalVersion} stays unchanged
+                {pendingForkAction
+                  ? " (still published)"
+                  : ""}.
+              </li>
+              <li>
+                The new draft will copy: spine, KSB mappings, formula, and
+                delivery parameters.
+              </li>
+              <li>
+                Continue editing on the new draft only.
+              </li>
+            </ul>
+            <div className={styles.modalActions}>
+              <button
+                type="button"
+                className={adminStyles.secondaryBtn}
+                onClick={() => {
+                  setForkConfirmOpen(false);
+                  setPendingForkAction(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={adminStyles.primaryBtn}
+                onClick={onConfirmFork}
+              >
+                Create Version{" "}
+                {Math.max(1, Number(programme.internalVersion) || 1) + 1}
               </button>
             </div>
           </div>
@@ -950,8 +1149,9 @@ export function ProgrammeBuilderScreen() {
                 );
               })()}
               <p className={styles.activityLogHint}>
-                History shows who changed what on this apprenticeship. Expand a
-                row for the detail.
+                Shared history for all staff (saved in the portal database).
+                Select an endpoint line to copy it, or open Details for the full
+                payload.
               </p>
               {(() => {
                 const entries = (state.activityLog || []).filter(
@@ -962,8 +1162,9 @@ export function ProgrammeBuilderScreen() {
                 if (entries.length === 0) {
                   return (
                     <p className={styles.activityEmpty}>
-                      No events yet. Load / refresh this apprenticeship or
-                      edit the programme to start the log.
+                      No shared events yet for this apprenticeship. Load /
+                      refresh it once to write the first database history row
+                      (visible to all staff).
                     </p>
                   );
                 }
@@ -975,6 +1176,158 @@ export function ProgrammeBuilderScreen() {
                   </ul>
                 );
               })()}
+            </div>
+
+            <div className={styles.checklistEmbed} aria-label="Publish checklist">
+              <div className={styles.checklistHead}>
+                <h3>Publish checklist</h3>
+                <p>
+                  <strong data-tone={errors.length ? "error" : "ok"}>
+                    {errors.length}
+                  </strong>{" "}
+                  blockers · <strong>{warnings.length}</strong> warnings
+                </p>
+              </div>
+
+              <div className={styles.checklistHours}>
+                <div>
+                  <span>Structure OTJ</span>
+                  <strong>{structuredOtj} hrs</strong>
+                </div>
+                <div>
+                  <span>Min compliance</span>
+                  <strong>
+                    {numOrDash(official.minimumComplianceHours)} hrs
+                  </strong>
+                </div>
+                <div
+                  className={
+                    hoursDeficit != null && hoursDeficit > 0
+                      ? styles.hoursDeficit
+                      : hoursSurplus != null && hoursSurplus > 0
+                        ? styles.hoursSurplus
+                        : undefined
+                  }
+                >
+                  <span>Vs minimum</span>
+                  <strong>
+                    {hoursDeficit == null
+                      ? "—"
+                      : hoursDeficit > 0
+                        ? `${hoursDeficit} short`
+                        : hoursSurplus != null && hoursSurplus > 0
+                          ? `${hoursSurplus} surplus`
+                          : "On target"}
+                  </strong>
+                </div>
+              </div>
+
+              {coverage ? (
+                <div className={styles.checklistProgress}>
+                  <div className={styles.checklistProgressRow}>
+                    <span>Assigned to a block</span>
+                    <strong>
+                      {Math.max(
+                        0,
+                        coverage.required -
+                          (checklistGroups.find((g) => g.id === "unassigned")
+                            ?.count ?? 0),
+                      )}{" "}
+                      / {coverage.required}
+                    </strong>
+                  </div>
+                  <div className={styles.checklistProgressRow}>
+                    <span>Primary set</span>
+                    <strong>
+                      {coverage.withPrimary} / {coverage.required}
+                    </strong>
+                  </div>
+                  <div
+                    className={styles.checklistBar}
+                    role="progressbar"
+                    aria-valuenow={coverage.withPrimary}
+                    aria-valuemin={0}
+                    aria-valuemax={coverage.required || 1}
+                    aria-label="KSBs with a primary block"
+                  >
+                    <span
+                      style={{
+                        width: `${
+                          coverage.required
+                            ? Math.round(
+                                (coverage.withPrimary / coverage.required) *
+                                  100,
+                              )
+                            : 0
+                        }%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ) : null}
+
+              {checklistGroups.length === 0 ? (
+                <p className={styles.checklistDone}>
+                  Ready to publish — no blockers or warnings.
+                </p>
+              ) : (
+                <div className={styles.checklistGroups}>
+                  {checklistGroups.map((group) => (
+                    <details
+                      key={group.id}
+                      className={styles.checklistGroup}
+                      data-severity={group.severity}
+                      open={openChecklistGroupId === group.id}
+                      onToggle={(e) => {
+                        const el = e.currentTarget;
+                        if (el.open) {
+                          setOpenChecklistGroupId(group.id);
+                        } else if (openChecklistGroupId === group.id) {
+                          setOpenChecklistGroupId(null);
+                        }
+                      }}
+                    >
+                      <summary>
+                        <span className={styles.checklistGroupTitle}>
+                          {group.title}
+                        </span>
+                        <span className={styles.checklistCount}>
+                          {group.count}
+                        </span>
+                      </summary>
+                      <p className={styles.checklistAction}>{group.action}</p>
+                      {group.messages.length > 0 ? (
+                        <ul className={styles.checklistMessages}>
+                          {group.messages.map((msg) => (
+                            <li key={msg}>{msg}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+                      {group.ksbCodes.length > 0 ? (
+                        <div className={styles.checklistChips}>
+                          {group.ksbCodes.map((code) => (
+                            <span key={code} className={styles.checklistChip}>
+                              {code}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+                      {(group.id === "unassigned" ||
+                        group.id === "missing_primary" ||
+                        group.id === "structure") &&
+                      !structureLocked ? (
+                        <button
+                          type="button"
+                          className={styles.checklistCta}
+                          onClick={() => setSpineMode("builder")}
+                        >
+                          Open Spine Builder
+                        </button>
+                      ) : null}
+                    </details>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
 
@@ -1023,9 +1376,10 @@ export function ProgrammeBuilderScreen() {
               </p>
             ) : programme.status === "published" ? (
               <p className={styles.meta}>
-                Published — still editable because no learners are on this
-                version yet. Structure will lock automatically once learners
-                enrol.
+                Published (v{programme.internalVersion}) — title/wording can
+                still be edited. Spine, KSB mappings, OTJ hours, and formula
+                changes create Programme Version{" "}
+                {Math.max(1, Number(programme.internalVersion) || 1) + 1}.
               </p>
             ) : null}
             <div className={styles.paramsBox}>
@@ -1051,7 +1405,7 @@ export function ProgrammeBuilderScreen() {
                   value={programme.parameters?.expectedOtjHours ?? ""}
                   onChange={(e) => {
                     const raw = e.target.value;
-                    updateProgrammeParameters(programme.id, {
+                    applyParameterPatch({
                       expectedOtjHours:
                         raw === "" ? null : Math.max(0, Number(raw) || 0),
                     });
@@ -1100,7 +1454,7 @@ export function ProgrammeBuilderScreen() {
                         disabled={formulaLocked}
                         onClick={() => {
                           if (formulaLocked || selected) return;
-                          updateProgrammeParameters(programme.id, {
+                          applyParameterPatch({
                             formulaKey: opt.key,
                           });
                         }}
@@ -1227,7 +1581,7 @@ export function ProgrammeBuilderScreen() {
                               : `Add ${item.name} to formula`
                           }
                           onClick={() =>
-                            updateProgrammeParameters(programme.id, {
+                            applyParameterPatch({
                               [item.key]: !on,
                             })
                           }
@@ -1251,7 +1605,7 @@ export function ProgrammeBuilderScreen() {
                                 item.defaultWeight
                               }
                               onChange={(e) =>
-                                updateProgrammeParameters(programme.id, {
+                                applyParameterPatch({
                                   [item.weightKey]: Math.max(
                                     0,
                                     Number(e.target.value) || 0,
@@ -1286,7 +1640,7 @@ export function ProgrammeBuilderScreen() {
                             100,
                             Math.max(0, Number(e.target.value) || 0),
                           );
-                          updateProgrammeParameters(programme.id, {
+                          applyParameterPatch({
                             aplMaxFraction: pct / 100,
                           });
                         }}
@@ -1320,7 +1674,7 @@ export function ProgrammeBuilderScreen() {
                   placeholder="Local policy, evidence rules, etc."
                   value={programme.parameters?.rplNotes ?? ""}
                   onChange={(e) =>
-                    updateProgrammeParameters(programme.id, {
+                    applyParameterPatch({
                       rplNotes: e.target.value,
                     })
                   }
@@ -1337,57 +1691,6 @@ export function ProgrammeBuilderScreen() {
                       : " · spine matches Jon’s expected total"}
                 </p>
               ) : null}
-            </div>
-            <div className={styles.hoursBox}>
-              <div>
-                <span>Target (min compliance)</span>
-                <strong>
-                  {numOrDash(official.minimumComplianceHours)} hrs
-                </strong>
-              </div>
-              <div>
-                <span>Structure planned OTJ</span>
-                <strong>{structuredOtj} hrs</strong>
-              </div>
-              <div
-                className={
-                  hoursDeficit != null && hoursDeficit > 0
-                    ? styles.hoursDeficit
-                    : hoursSurplus != null && hoursSurplus > 0
-                      ? styles.hoursSurplus
-                      : undefined
-                }
-              >
-                <span>Hours deficit vs minimum</span>
-                <strong>
-                  {hoursDeficit == null
-                    ? "—"
-                    : hoursDeficit > 0
-                      ? `${hoursDeficit} hrs short`
-                      : hoursSurplus != null && hoursSurplus > 0
-                        ? `${hoursSurplus} hrs surplus`
-                        : "On target"}
-                </strong>
-              </div>
-            </div>
-            <div className={styles.issues}>
-              <p>
-                <strong>{errors.length}</strong> publish blockers ·{" "}
-                <strong>{warnings.length}</strong> warnings
-              </p>
-              <ul>
-                {issues.slice(0, 12).map((issue) => (
-                  <li
-                    key={`${issue.code}-${issue.message}`}
-                    data-severity={issue.severity}
-                  >
-                    {issue.message}
-                  </li>
-                ))}
-                {issues.length > 12 ? (
-                  <li>…and {issues.length - 12} more</li>
-                ) : null}
-              </ul>
             </div>
           </section>
 
@@ -1443,7 +1746,9 @@ export function ProgrammeBuilderScreen() {
             {spineMode === "builder" && !structureLocked ? (
               <SpineBuilderPanel
                 items={programme.spineItems}
+                ksbMappings={programme.ksbMappings ?? []}
                 ksbs={official.ksbs}
+                actor={session.account.name}
                 hoursDeficit={hoursDeficit}
                 minimumComplianceHours={official.minimumComplianceHours}
                 structurePlannedOtjHours={structuredOtj}
@@ -1473,7 +1778,14 @@ export function ProgrammeBuilderScreen() {
                     {programme.spineItems
                       .slice()
                       .sort((a, b) => a.sequence - b.sequence)
-                      .map((item) => (
+                      .map((item) => {
+                        const ksbCount =
+                          item.itemType === "block"
+                            ? (programme.ksbMappings ?? []).filter(
+                                (m) => m.blockId === item.id,
+                              ).length
+                            : 0;
+                        return (
                         <tr key={item.id}>
                           <td>{item.sequence}</td>
                           <td>{labelSpineType(item)}</td>
@@ -1484,9 +1796,10 @@ export function ProgrammeBuilderScreen() {
                               : item.plannedWeeks}
                           </td>
                           <td>{item.plannedOtjHours}</td>
-                          <td>{item.assignedKsbCodes.length}</td>
+                          <td>{item.itemType === "block" ? ksbCount : "—"}</td>
                         </tr>
-                      ))}
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -1495,7 +1808,35 @@ export function ProgrammeBuilderScreen() {
 
           <section className={`${styles.panel} ${styles.span2}`}>
             <div className={styles.panelHead}>
-              <h2>KSB reference</h2>
+              <div className={styles.ksbRefTitle}>
+                <h2>KSB reference</h2>
+                <div
+                  className={styles.ksbTotals}
+                  title="Unique official KSBs from Skills England (not duty placements)"
+                >
+                  <span className={styles.ksbTotalMain}>
+                    <strong>{ksbTotals.total}</strong>
+                    <span>total KSBs</span>
+                  </span>
+                  <span className={styles.ksbTotalSplit} aria-hidden>
+                    ·
+                  </span>
+                  <ul className={styles.ksbTypeCounts}>
+                    <li data-type="knowledge">
+                      <span>K</span>
+                      <strong>{ksbTotals.knowledge}</strong>
+                    </li>
+                    <li data-type="skill">
+                      <span>S</span>
+                      <strong>{ksbTotals.skill}</strong>
+                    </li>
+                    <li data-type="behaviour">
+                      <span>B</span>
+                      <strong>{ksbTotals.behaviour}</strong>
+                    </li>
+                  </ul>
+                </div>
+              </div>
               <div className={styles.filters}>
                 {(["all", "knowledge", "skill", "behaviour"] as const).map(
                   (f) => (
@@ -1507,6 +1848,13 @@ export function ProgrammeBuilderScreen() {
                       onClick={() => setKsbFilter(f)}
                     >
                       {f}
+                      {f === "all"
+                        ? ` (${ksbTotals.total})`
+                        : f === "knowledge"
+                          ? ` (${ksbTotals.knowledge})`
+                          : f === "skill"
+                            ? ` (${ksbTotals.skill})`
+                            : ` (${ksbTotals.behaviour})`}
                     </button>
                   ),
                 )}
@@ -1515,6 +1863,12 @@ export function ProgrammeBuilderScreen() {
             <p className={styles.meta}>
               Reference only — read official KSB wording here. Assign KSBs in
               Spine Builder.
+              {ksbFilter !== "all" ? (
+                <>
+                  {" "}
+                  Showing {filteredKsbs.length} of {ksbTotals.total}.
+                </>
+              ) : null}
             </p>
             <div className={styles.ksbGrid}>
               {filteredKsbs.map((ksb) => {

@@ -61,6 +61,13 @@ export const AI_FEATURES: Record<AiFeatureKey, AiFeatureMeta> = {
     area: "apprentice",
     description: "Explain a module or topic in simpler language.",
   },
+  "programme.recommend_ksb_intent": {
+    key: "programme.recommend_ksb_intent",
+    label: "Recommend KSB learning intent",
+    area: "staff",
+    description:
+      "Suggest INTRODUCE / PRACTISE / APPLY / REINFORCE / CONSOLIDATE / ASSESS when mapping a KSB to a block.",
+  },
 };
 
 export function getAiFeature(key: AiFeatureKey): AiFeatureMeta {

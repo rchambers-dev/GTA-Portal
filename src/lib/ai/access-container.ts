@@ -18,7 +18,8 @@ export type AiDataScope =
   | "apprentice.modules_public"
   | "module.published_content"
   | "chat.thread_current"
-  | "support.ticket_summary";
+  | "support.ticket_summary"
+  | "programme.curriculum";
 
 /**
  * Named actions AI may perform. Keep this list small and explicit.
@@ -177,6 +178,16 @@ export const AI_ACCESS_CONTAINERS: Record<AiFeatureKey, AiAccessContainer> = {
     allowedActions: ["text.explain"],
     allowedWorkspaces: ["apprentice"],
     maxContextChars: 12_000,
+    allowFreeformUserText: true,
+  },
+  "programme.recommend_ksb_intent": {
+    feature: "programme.recommend_ksb_intent",
+    purpose:
+      "Suggest one LearningIntent when staff map a KSB onto a curriculum block. Never write mappings; staff must confirm.",
+    allowedScopes: ["programme.curriculum"],
+    allowedActions: ["text.suggest"],
+    allowedWorkspaces: ["management", "staff", "quality"],
+    maxContextChars: 8_000,
     allowFreeformUserText: true,
   },
 };

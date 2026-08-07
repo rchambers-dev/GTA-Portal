@@ -23,6 +23,7 @@ const AI_FEATURE_KEYS = [
   "chat.draft_reply",
   "support.suggest_response",
   "learning.explain",
+  "programme.recommend_ksb_intent",
 ] as const satisfies readonly AiFeatureKey[];
 
 const AI_ACTIONS = [

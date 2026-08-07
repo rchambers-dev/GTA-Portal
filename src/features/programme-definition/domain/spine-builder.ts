@@ -3,7 +3,6 @@
  */
 
 import type { ImportedKsb, SpineItem, SpineItemType } from "./types";
-import { toggleKsbOnBlock } from "./validation";
 
 export const SPINE_STRUCTURE_PALETTE: Array<{
   type: SpineItemType;
@@ -54,6 +53,26 @@ export function resequenceSpineItems(items: SpineItem[]): SpineItem[] {
   }));
 }
 
+function baseItem(
+  type: SpineItemType,
+  title: string,
+  sequenceHint: number,
+  extras: Partial<SpineItem> = {},
+): SpineItem {
+  return {
+    id: crypto.randomUUID(),
+    itemType: type,
+    gatewayType: null,
+    title,
+    sequence: sequenceHint,
+    plannedWeeks: null,
+    plannedOtjHours: 0,
+    countsTowardsLearningHours: false,
+    metadata: {},
+    ...extras,
+  };
+}
+
 export function createSpineItemFromType(
   type: SpineItemType,
   sequenceHint: number,
@@ -61,70 +80,22 @@ export function createSpineItemFromType(
   const blockNumber = Math.max(1, sequenceHint);
   switch (type) {
     case "block":
-      return {
-        id: crypto.randomUUID(),
-        itemType: "block",
-        gatewayType: null,
-        title: `Block ${blockNumber}`,
-        sequence: sequenceHint,
-        plannedWeeks: null,
-        plannedOtjHours: 0,
+      return baseItem("block", `Block ${blockNumber}`, sequenceHint, {
         countsTowardsLearningHours: true,
-        assignedKsbCodes: [],
         metadata: { blockNumber },
-      };
+      });
     case "gateway":
-      return {
-        id: crypto.randomUUID(),
-        itemType: "gateway",
+      return baseItem("gateway", "Gateway", sequenceHint, {
         gatewayType: "internal",
-        title: "Gateway",
-        sequence: sequenceHint,
-        plannedWeeks: null,
-        plannedOtjHours: 0,
-        countsTowardsLearningHours: false,
-        assignedKsbCodes: [],
-        metadata: {},
-      };
+      });
     case "epa":
-      return {
-        id: crypto.randomUUID(),
-        itemType: "epa",
-        gatewayType: null,
-        title: "End-Point Assessment (EPA)",
-        sequence: sequenceHint,
+      return baseItem("epa", "End-Point Assessment (EPA)", sequenceHint, {
         plannedWeeks: 0,
-        plannedOtjHours: 0,
-        countsTowardsLearningHours: false,
-        assignedKsbCodes: [],
-        metadata: {},
-      };
+      });
     case "milestone":
-      return {
-        id: crypto.randomUUID(),
-        itemType: "milestone",
-        gatewayType: null,
-        title: "Milestone",
-        sequence: sequenceHint,
-        plannedWeeks: null,
-        plannedOtjHours: 0,
-        countsTowardsLearningHours: false,
-        assignedKsbCodes: [],
-        metadata: {},
-      };
+      return baseItem("milestone", "Milestone", sequenceHint);
     case "break":
-      return {
-        id: crypto.randomUUID(),
-        itemType: "break",
-        gatewayType: null,
-        title: "Break",
-        sequence: sequenceHint,
-        plannedWeeks: null,
-        plannedOtjHours: 0,
-        countsTowardsLearningHours: false,
-        assignedKsbCodes: [],
-        metadata: {},
-      };
+      return baseItem("break", "Break", sequenceHint);
   }
 }
 
@@ -185,31 +156,6 @@ export function updateSpineItemFields(
 
 export function removeSpineItem(items: SpineItem[], id: string): SpineItem[] {
   return resequenceSpineItems(items.filter((item) => item.id !== id));
-}
-
-export function assignKsbToBlock(
-  items: SpineItem[],
-  blockId: string,
-  ksbCode: string,
-): SpineItem[] {
-  return toggleKsbOnBlock(items, blockId, ksbCode);
-}
-
-export function removeKsbFromBlock(
-  items: SpineItem[],
-  blockId: string,
-  ksbCode: string,
-): SpineItem[] {
-  const code = ksbCode.toUpperCase();
-  return items.map((item) => {
-    if (item.id !== blockId || item.itemType !== "block") return item;
-    return {
-      ...item,
-      assignedKsbCodes: item.assignedKsbCodes.filter(
-        (c) => c.toUpperCase() !== code,
-      ),
-    };
-  });
 }
 
 export function labelSpineType(item: SpineItem): string {

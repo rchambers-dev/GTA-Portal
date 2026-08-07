@@ -14,10 +14,7 @@ function id(suffix: string): string {
 }
 
 /** User-confirmed Autocare layout (weeks + themes). */
-export const AUTOCARE_SPINE_SEED: Omit<
-  SpineItem,
-  "assignedKsbCodes"
->[] = [
+export const AUTOCARE_SPINE_SEED: SpineItem[] = [
   {
     id: id("b01"),
     itemType: "block",
@@ -175,8 +172,5 @@ export const AUTOCARE_SPINE_SEED: Omit<
 ];
 
 export function buildAutocareSpineItems(): SpineItem[] {
-  return AUTOCARE_SPINE_SEED.map((item) => ({
-    ...item,
-    assignedKsbCodes: [],
-  }));
+  return AUTOCARE_SPINE_SEED.map((item) => ({ ...item }));
 }

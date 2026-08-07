@@ -57,6 +57,8 @@ export const AI_OUTPUT_CONTRACTS: Partial<Record<AiFeatureKey, string>> = {
     "Return a suggested staff reply. Plain text only. Never claim actions have been taken.",
   "learning.explain":
     "Explain the topic simply for an apprentice. Plain text only. Use short paragraphs.",
+  "programme.recommend_ksb_intent":
+    'Return JSON only: {"intent":"introduce|practise|apply|reinforce|consolidate|assess","confidence":0.0-1.0,"reasonSummary":"..."}. Suggest only; never claim the mapping was saved.',
 };
 
 export function getAiOutputContract(feature: AiFeatureKey): string | null {
