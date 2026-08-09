@@ -48,6 +48,17 @@ next-env.d.ts
 .vercel
 .cursor/
 
+# Programme Builder / Autocare scratch outputs (regenerable; do not commit)
+# Permanent frozen eval/audit artifacts live under tests/artifacts/autocare-v1/
+.tmp-*
+.tmp-*/
+
+# Local script console captures
+scripts/.reset-*.txt
+scripts/*-out.txt
+scripts/*-err.txt
+scripts/*-stderr.txt
+
 # Local scratch / temp portal — never commit if present under this tree
 /GTA Temp Portal/
 /GTA Temp Portal/**

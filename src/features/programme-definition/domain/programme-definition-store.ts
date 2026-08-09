@@ -5,16 +5,24 @@
 
 import { displayApprenticeshipTitle } from "./programme-apprenticeships";
 import {
+  describeCurriculumValueChanges,
   describePrimaryOwnershipChanges,
   filterMappingsToBlocks,
   migrateAssignedCodesToMappings,
   stripLegacyAssignedCodes,
 } from "./block-ksb-mappings";
 import {
-  defaultWeightedKsbCapParams,
+  createDefaultProgrammeParameters,
+  enabledFormulaWeightsSum,
   formulaHasIncludedLetters,
+  isLegacyWeightedFormula,
+  resolveRplFormulaKey,
   validateFormulaWeights,
 } from "./rpl-formulas";
+import { normalizeCurriculumValue } from "./rpl-formulas/block-curriculum-value";
+import { normalizeFixedCostLines } from "./rpl-formulas/tnp1";
+import { mergeProgrammeFromDb } from "./spine-repository";
+import type { FixedCostLineItem } from "./types";
 import type {
   BlockKsbMapping,
   GtaProgrammeVersion,
@@ -324,6 +332,15 @@ function formatParamDisplay(
     if (!Number.isFinite(n)) return "empty";
     return `${Math.round(n * 1000) / 10}%`;
   }
+  if (key === "fixedCostLines") {
+    const lines = normalizeFixedCostLines(value);
+    if (lines.length === 0) return "none";
+    const enabled = lines.filter((l) => l.enabled).length;
+    const total = lines
+      .filter((l) => l.enabled)
+      .reduce((s, l) => s + l.amountPounds, 0);
+    return `${enabled}/${lines.length} lines · £${Math.round(total * 100) / 100}`;
+  }
   if (typeof value === "boolean") return value ? "on" : "off";
   if (value == null || value === "") return "empty";
   if (typeof value === "string") {
@@ -345,6 +362,11 @@ const PARAM_LABELS: Record<keyof ProgrammeDeliveryParameters, string> = {
   aplWeightS: "Weight S",
   aplWeightB: "Weight B",
   aplMaxFraction: "Max APL",
+  includeRplKnowledge: "RPL eligible: Knowledge",
+  includeRplSkills: "RPL eligible: Skills",
+  includeRplBehaviours: "RPL eligible: Behaviours",
+  fundingBandPounds: "Funding band",
+  fixedCostLines: "Fixed cost lines",
   rplNotes: "RPL notes",
 };
 
@@ -491,8 +513,40 @@ function clampFraction(n: unknown, fallback: number): number {
 }
 
 function resolveFormulaKey(raw: unknown): RplFormulaKey {
-  if (raw === "weighted_ksb_cap_v1") return raw;
-  return "weighted_ksb_cap_v1";
+  return resolveRplFormulaKey(raw);
+}
+
+function resolveNullableMoney(raw: unknown): number | null {
+  if (raw == null || raw === "") return null;
+  const v = Number(raw);
+  if (!Number.isFinite(v) || v < 0) return null;
+  return v;
+}
+
+/**
+ * Migrate legacy single fixedCostTotalPounds into one editable line when
+ * line items are missing. Label is generic — not a GTA business constant.
+ */
+function resolveFixedCostLines(
+  incoming: Partial<ProgrammeDeliveryParameters> | undefined,
+): FixedCostLineItem[] {
+  const lines = normalizeFixedCostLines(incoming?.fixedCostLines);
+  if (lines.length > 0) return lines;
+  const legacy = (incoming as { fixedCostTotalPounds?: unknown } | undefined)
+    ?.fixedCostTotalPounds;
+  const amount = Number(legacy);
+  if (Number.isFinite(amount) && amount > 0) {
+    return [
+      {
+        id: crypto.randomUUID(),
+        label: "Fixed costs (migrated)",
+        amountPounds: amount,
+        enabled: true,
+        sequence: 0,
+      },
+    ];
+  }
+  return [];
 }
 
 function resolveFormulaStatus(raw: unknown): RplFormulaStatus {
@@ -506,11 +560,7 @@ function resolveBool(raw: unknown, fallback: boolean): boolean {
 }
 
 export function defaultProgrammeParameters(): ProgrammeDeliveryParameters {
-  return {
-    expectedOtjHours: null,
-    ...defaultWeightedKsbCapParams(),
-    rplNotes: "",
-  };
+  return createDefaultProgrammeParameters();
 }
 
 function withParameters(
@@ -548,6 +598,22 @@ function withParameters(
         incoming?.aplMaxFraction,
         defaults.aplMaxFraction,
       ),
+      includeRplKnowledge: resolveBool(
+        incoming?.includeRplKnowledge,
+        defaults.includeRplKnowledge,
+      ),
+      includeRplSkills: resolveBool(
+        incoming?.includeRplSkills,
+        defaults.includeRplSkills,
+      ),
+      includeRplBehaviours: resolveBool(
+        incoming?.includeRplBehaviours,
+        defaults.includeRplBehaviours,
+      ),
+      fundingBandPounds: resolveNullableMoney(
+        incoming?.fundingBandPounds ?? defaults.fundingBandPounds,
+      ),
+      fixedCostLines: resolveFixedCostLines(incoming),
       rplNotes: legacyNotes,
     },
   };
@@ -564,7 +630,10 @@ function normalizeProgramme(
   const mappings = filterMappingsToBlocks(
     migrateAssignedCodesToMappings(spineRaw, p.ksbMappings, activityActor),
     spineItems,
-  );
+  ).map((m) => ({
+    ...m,
+    curriculumValue: normalizeCurriculumValue(m.curriculumValue),
+  }));
   return withParameters({
     ...p,
     standardCode: p.standardCode || "",
@@ -593,6 +662,11 @@ const MATERIAL_PARAM_KEYS: (keyof ProgrammeDeliveryParameters)[] = [
   "aplWeightS",
   "aplWeightB",
   "aplMaxFraction",
+  "includeRplKnowledge",
+  "includeRplSkills",
+  "includeRplBehaviours",
+  "fundingBandPounds",
+  "fixedCostLines",
 ];
 
 export type ProgrammeMutationResult =
@@ -688,10 +762,27 @@ function migrateToV5(parsed: {
 function normalizeState(
   parsed: ProgrammeDefinitionState,
 ): ProgrammeDefinitionState {
+  const programmes: GtaProgrammeVersion[] = [];
+  for (const p of parsed.programmes || []) {
+    try {
+      programmes.push(normalizeProgramme(p));
+    } catch (err) {
+      console.error(
+        "[programme-definition] Skipping programme with invalid formula config:",
+        p?.id,
+        err instanceof Error ? err.message : err,
+      );
+    }
+  }
   return {
     ...parsed,
     version: 5,
-    programmes: (parsed.programmes || []).map((p) => normalizeProgramme(p)),
+    programmes,
+    selectedProgrammeId:
+      parsed.selectedProgrammeId &&
+      programmes.some((p) => p.id === parsed.selectedProgrammeId)
+        ? parsed.selectedProgrammeId
+        : null,
     activityLog: Array.isArray(parsed.activityLog) ? parsed.activityLog : [],
     apiPingByStandard:
       parsed.apiPingByStandard && typeof parsed.apiPingByStandard === "object"
@@ -864,7 +955,8 @@ export function createProgrammeForOfficial(official: OfficialStandardVersion) {
     });
     persist();
     emit();
-    queueSpineSync(synced);
+    // Do not queueSpineSync on local reopen — stale localStorage must not
+    // overwrite DB-backed programme versions (including approved Primaries).
     return synced;
   }
 
@@ -908,11 +1000,6 @@ export function createProgrammeForOfficial(official: OfficialStandardVersion) {
   emit();
   queueSpineSync(programme);
   return programme;
-}
-
-/** @deprecated Prefer createProgrammeForOfficial — no longer seeds Autocare. */
-export function upsertAutocareProgramme(official: OfficialStandardVersion) {
-  return createProgrammeForOfficial(official);
 }
 
 export function selectProgramme(id: string | null) {
@@ -994,6 +1081,21 @@ export function updateProgrammeSpine(
       detail: { change: line },
     });
   }
+  const valueLines = describeCurriculumValueChanges(
+    current.ksbMappings ?? [],
+    updated.ksbMappings ?? [],
+    updated.spineItems,
+  );
+  for (const line of valueLines) {
+    pushActivity({
+      kind: "ksb_curriculum_value_changed",
+      summary: line,
+      standardCode: current.standardCode,
+      externalVersion: current.externalVersion,
+      programmeId: current.id,
+      detail: { change: line },
+    });
+  }
   persist();
   emit();
   queueSpineSync(updated);
@@ -1047,6 +1149,9 @@ export function updateProgrammeParameters(
     "aplWeightS",
     "aplWeightB",
     "aplMaxFraction",
+    "includeRplKnowledge",
+    "includeRplSkills",
+    "includeRplBehaviours",
   ];
   if (
     formulaLocked &&
@@ -1065,6 +1170,22 @@ export function updateProgrammeParameters(
       : patch.expectedOtjHours == null || Number.isNaN(Number(patch.expectedOtjHours))
         ? null
         : Math.max(0, Number(patch.expectedOtjHours));
+
+  let nextFormulaKey: RplFormulaKey;
+  try {
+    nextFormulaKey = resolveFormulaKey(
+      patch.formulaKey ?? current.parameters?.formulaKey,
+    );
+  } catch (err) {
+    return {
+      ok: false,
+      reason: "locked",
+      error:
+        err instanceof Error
+          ? err.message
+          : "Unknown RPL formula key on this programme version.",
+    };
+  }
 
   const nextIncludes = {
     includeAplK: resolveBool(
@@ -1087,8 +1208,32 @@ export function updateProgrammeParameters(
     ),
   };
 
-  // Keep at least one letter in the formula.
-  if (!formulaHasIncludedLetters(nextIncludes)) {
+  const nextRplIncludes = {
+    includeRplKnowledge: resolveBool(
+      patch.includeRplKnowledge !== undefined
+        ? patch.includeRplKnowledge
+        : current.parameters?.includeRplKnowledge,
+      defaults.includeRplKnowledge,
+    ),
+    includeRplSkills: resolveBool(
+      patch.includeRplSkills !== undefined
+        ? patch.includeRplSkills
+        : current.parameters?.includeRplSkills,
+      defaults.includeRplSkills,
+    ),
+    includeRplBehaviours: resolveBool(
+      patch.includeRplBehaviours !== undefined
+        ? patch.includeRplBehaviours
+        : current.parameters?.includeRplBehaviours,
+      defaults.includeRplBehaviours,
+    ),
+  };
+
+  // Legacy weighted formula only: keep at least one letter.
+  if (
+    isLegacyWeightedFormula(nextFormulaKey) &&
+    !formulaHasIncludedLetters(nextIncludes)
+  ) {
     return {
       ok: false,
       reason: "locked",
@@ -1107,10 +1252,9 @@ export function updateProgrammeParameters(
               ...p.parameters,
               ...patch,
               ...nextIncludes,
+              ...nextRplIncludes,
               expectedOtjHours: nextExpected,
-              formulaKey: resolveFormulaKey(
-                patch.formulaKey ?? p.parameters?.formulaKey,
-              ),
+              formulaKey: nextFormulaKey,
               formulaStatus: resolveFormulaStatus(
                 patch.formulaStatus ?? p.parameters?.formulaStatus,
               ),
@@ -1138,6 +1282,15 @@ export function updateProgrammeParameters(
                   : p.parameters?.aplMaxFraction,
                 defaults.aplMaxFraction,
               ),
+              fundingBandPounds: resolveNullableMoney(
+                patch.fundingBandPounds !== undefined
+                  ? patch.fundingBandPounds
+                  : p.parameters?.fundingBandPounds,
+              ),
+              fixedCostLines:
+                patch.fixedCostLines !== undefined
+                  ? normalizeFixedCostLines(patch.fixedCostLines)
+                  : normalizeFixedCostLines(p.parameters?.fixedCostLines),
               rplNotes:
                 patch.rplNotes !== undefined
                   ? patch.rplNotes
@@ -1214,15 +1367,18 @@ export function publishProgrammeFormula(
   if (current.parameters?.formulaStatus === "published") {
     return { ok: false, error: "This formula is already published." };
   }
-  if (!formulaHasIncludedLetters(current.parameters)) {
-    return {
-      ok: false,
-      error: "Include at least one of K, S, or B before publishing the formula.",
-    };
-  }
-  const weights = validateFormulaWeights(current.parameters);
-  if (!weights.ok) {
-    return { ok: false, error: weights.message };
+  if (isLegacyWeightedFormula(current.parameters?.formulaKey)) {
+    if (!formulaHasIncludedLetters(current.parameters)) {
+      return {
+        ok: false,
+        error:
+          "Include at least one of K, S, or B before publishing the formula.",
+      };
+    }
+    const weights = validateFormulaWeights(current.parameters);
+    if (!weights.ok) {
+      return { ok: false, error: weights.message };
+    }
   }
 
   state = {
@@ -1248,11 +1404,20 @@ export function publishProgrammeFormula(
     programmeId: current.id,
     detail: {
       formulaKey: current.parameters.formulaKey,
-      includeK: current.parameters.includeAplK,
-      includeS: current.parameters.includeAplS,
-      includeB: current.parameters.includeAplB,
-      maxAplPercent: Math.round(current.parameters.aplMaxFraction * 100),
-      enabledWeightSum: weights.sum,
+      ...(isLegacyWeightedFormula(current.parameters.formulaKey)
+        ? {
+            includeK: current.parameters.includeAplK,
+            includeS: current.parameters.includeAplS,
+            includeB: current.parameters.includeAplB,
+            maxAplPercent: Math.round(current.parameters.aplMaxFraction * 100),
+            enabledWeightSum: enabledFormulaWeightsSum(current.parameters),
+          }
+        : {
+            includeRplKnowledge: current.parameters.includeRplKnowledge,
+            includeRplSkills: current.parameters.includeRplSkills,
+            includeRplBehaviours: current.parameters.includeRplBehaviours,
+            otjAllocation: "VALUE_SHARE",
+          }),
     },
   });
   persist();
@@ -1401,19 +1566,80 @@ function queueSpineSync(programme: GtaProgrammeVersion) {
   }, 800);
 }
 
-/** Hydrate spine + mappings from Supabase (source of truth when present). */
+export type ProgrammeVersionCatalogueRow = {
+  programmeVersionId: string;
+  programmeId: string;
+  programmeTitle: string;
+  internalVersion: string;
+  status: string;
+  standardVersionId: string;
+  updatedAt: string;
+  primaryCount: number;
+  spineItemCount: number;
+  structuredOtjHours: number;
+};
+
+/** List DB programme versions for a standard. Never auto-selects a version. */
+export async function listProgrammeVersionsForStandard(
+  standardCode: string,
+): Promise<ProgrammeVersionCatalogueRow[]> {
+  const code = standardCode.trim().toUpperCase();
+  if (!code) {
+    throw new Error("standardCode is required to list programme versions.");
+  }
+  const qs = new URLSearchParams({ standardCode: code });
+  const res = await fetch(
+    `/api/management/programme-definition/versions?${qs.toString()}`,
+  );
+  const data = (await res.json()) as {
+    ok: boolean;
+    versions?: ProgrammeVersionCatalogueRow[];
+    error?: string;
+  };
+  if (!data.ok) {
+    throw new Error(data.error || "Could not list programme versions.");
+  }
+  return data.versions ?? [];
+}
+
+/**
+ * Resolve which DB programme version to open — no silent newest fallback.
+ * - 0 versions → null (caller may create a blank draft)
+ * - 1 version → that version
+ * - >1 → preferredId only if it is in the list; otherwise null
+ */
+export function resolveProgrammeVersionToOpen(
+  versions: ProgrammeVersionCatalogueRow[],
+  preferredProgrammeVersionId?: string | null,
+): ProgrammeVersionCatalogueRow | null {
+  if (versions.length === 0) return null;
+  if (versions.length === 1) return versions[0] ?? null;
+  const preferred = preferredProgrammeVersionId?.trim();
+  if (!preferred) return null;
+  return versions.find((v) => v.programmeVersionId === preferred) ?? null;
+}
+
+/** Hydrate spine + mappings + parameters from Supabase (DB is source of truth). */
 export async function loadSharedProgrammeSpine(args: {
   standardCode: string;
-  programmeVersionId?: string;
-}) {
+  programmeVersionId: string;
+}): Promise<GtaProgrammeVersion | null> {
   hydrate();
   const code = args.standardCode.trim().toUpperCase();
-  if (!code) return;
-
-  const qs = new URLSearchParams({ standardCode: code });
-  if (args.programmeVersionId) {
-    qs.set("programmeVersionId", args.programmeVersionId);
+  const programmeVersionId = args.programmeVersionId.trim();
+  if (!code) {
+    throw new Error("standardCode is required to hydrate a programme spine.");
   }
+  if (!programmeVersionId) {
+    throw new Error(
+      "programmeVersionId is required. Programme versions must be loaded explicitly.",
+    );
+  }
+
+  const qs = new URLSearchParams({
+    standardCode: code,
+    programmeVersionId,
+  });
   const res = await fetch(
     `/api/management/programme-definition/spine?${qs.toString()}`,
   );
@@ -1422,32 +1648,48 @@ export async function loadSharedProgrammeSpine(args: {
     programme?: GtaProgrammeVersion;
     error?: string;
   };
-  if (!data.ok || !data.programme) return;
+  if (!data.ok) {
+    throw new Error(data.error || "Could not load programme spine.");
+  }
+  if (!data.programme) return null;
 
   const incoming = normalizeProgramme(data.programme);
+  const local = state.programmes.find((p) => p.id === incoming.id);
+  const merged = mergeProgrammeFromDb(local, incoming);
   const idx = state.programmes.findIndex((p) => p.id === incoming.id);
   if (idx >= 0) {
     state = {
       ...state,
       programmes: state.programmes.map((p) =>
-        p.id === incoming.id ? { ...p, ...incoming, id: p.id } : p,
+        p.id === incoming.id ? merged : p,
       ),
       selectedProgrammeId: incoming.id,
     };
   } else {
     state = {
       ...state,
-      programmes: [...state.programmes, incoming],
+      programmes: [...state.programmes, merged],
       selectedProgrammeId: incoming.id,
     };
   }
   persist();
   emit();
+  return merged;
 }
 
+/**
+ * Clears local Programme Builder cache only (browser localStorage).
+ * Does not modify remote database / Supabase rows.
+ * Also removes legacy programme-definition keys from earlier migrations.
+ */
 export function clearProgrammeDefinitionPreview() {
   hydrate();
   state = emptyState();
-  persist();
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    for (const key of LEGACY_KEYS) {
+      window.localStorage.removeItem(key);
+    }
+  }
   emit();
 }

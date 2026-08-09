@@ -157,6 +157,13 @@ export function ManagementDashboardScreen() {
             </Link>
             <Link
               className={apprenticeStyles.shortcut}
+              href="/management/apprentice-tnp"
+              data-tone="amber"
+            >
+              Apprentice TNP1
+            </Link>
+            <Link
+              className={apprenticeStyles.shortcut}
               href="/management/apprentice-brag"
               data-tone="red"
             >
@@ -333,7 +340,7 @@ export function ManagementDashboardScreen() {
                 <div className={apprenticeStyles.rowMain}>
                   <strong>Course Builder</strong>
                   <span>
-                    Author groups and block packs per Skills England version
+                    Author block tasks on a selected GTA programme version
                   </span>
                 </div>
                 <div className={apprenticeStyles.rowEnd}>

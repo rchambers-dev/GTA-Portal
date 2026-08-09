@@ -31,6 +31,7 @@ const KIND_SET = new Set<ProgrammeActivityKind>([
   "title_saved",
   "primary_moved",
   "version_forked",
+  "ksb_curriculum_value_changed",
 ]);
 
 function rowToEntry(row: ActivityRow): ProgrammeActivityEntry {

@@ -1,0 +1,1299 @@
+{
+  "status": "V1_GOLDEN_BASELINE_APPROVED_AND_PERSISTED",
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "title": "Autocare V1 FINAL Baseline Analysis — ready for human persist approval",
+  "analyserVersion": "v2.2-final-human-verified",
+  "notPersisted": false,
+  "readyForFinalPersistApproval": false,
+  "A_currentStateVerification": {
+    "official": 64,
+    "persistedApprovedPrimaries": 15,
+    "existingReviewedGaps": 14,
+    "unresolvedBeforeAnalysis": 35,
+    "listMatchedExpected35": true
+  },
+  "B_goldenSetAccuracy": {
+    "existing15Primaries": {
+      "reproduced": 9,
+      "ambiguous": 3,
+      "disagreed": 3,
+      "detail": [
+        {
+          "ksbCode": "K12",
+          "humanApprovedPrimary": 2,
+          "analyserPredictedPrimary": null,
+          "analyserClassification": "AMBIGUOUS",
+          "analyserScore": 8.9,
+          "status": "ambiguous",
+          "top": [
+            {
+              "block": 2,
+              "score": 8.9,
+              "week": 17,
+              "topic": "Advanced Brake Diagnostics",
+              "titleHit": true
+            },
+            {
+              "block": 3,
+              "score": 8.9,
+              "week": 24,
+              "topic": "Brake wear checks, tyre condition and wheel security",
+              "titleHit": true
+            }
+          ]
+        },
+        {
+          "ksbCode": "K24",
+          "humanApprovedPrimary": 2,
+          "analyserPredictedPrimary": null,
+          "analyserClassification": "AMBIGUOUS",
+          "analyserScore": 13.9,
+          "status": "ambiguous",
+          "top": [
+            {
+              "block": 2,
+              "score": 13.9,
+              "week": 11,
+              "topic": "Customer Service Scenarios",
+              "titleHit": true
+            },
+            {
+              "block": 4,
+              "score": 13.5,
+              "week": 31,
+              "topic": "Customer updates, ETA management and expectation setting",
+              "titleHit": true
+            }
+          ]
+        },
+        {
+          "ksbCode": "S12",
+          "humanApprovedPrimary": 2,
+          "analyserPredictedPrimary": 2,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 12.4,
+          "status": "reproduced",
+          "top": "Wheel Alignment - Advanced"
+        },
+        {
+          "ksbCode": "S15",
+          "humanApprovedPrimary": 2,
+          "analyserPredictedPrimary": null,
+          "analyserClassification": "AMBIGUOUS",
+          "analyserScore": 10.9,
+          "status": "ambiguous",
+          "top": [
+            {
+              "block": 2,
+              "score": 10.9,
+              "week": 11,
+              "topic": "Customer Service Scenarios",
+              "titleHit": true
+            },
+            {
+              "block": 3,
+              "score": 10.9,
+              "week": 28,
+              "topic": "Estimates, authorisation and customer approval skills",
+              "titleHit": true
+            }
+          ]
+        },
+        {
+          "ksbCode": "K29",
+          "humanApprovedPrimary": 3,
+          "analyserPredictedPrimary": 3,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 12.4,
+          "status": "reproduced",
+          "top": "Estimates, authorisation and customer approval skills"
+        },
+        {
+          "ksbCode": "K30",
+          "humanApprovedPrimary": 3,
+          "analyserPredictedPrimary": 3,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 13.9,
+          "status": "reproduced",
+          "top": "Fast-fit repairs, bay discipline and effective handoffs"
+        },
+        {
+          "ksbCode": "S1",
+          "humanApprovedPrimary": 3,
+          "analyserPredictedPrimary": 1,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 17.0,
+          "status": "disagreed",
+          "top": "Workshop Safety, Hazards, Housekeeping and Occupational Expectations"
+        },
+        {
+          "ksbCode": "S2",
+          "humanApprovedPrimary": 3,
+          "analyserPredictedPrimary": 3,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 19.9,
+          "status": "reproduced",
+          "top": "Housekeeping, 5S routines and safe storage control"
+        },
+        {
+          "ksbCode": "S3",
+          "humanApprovedPrimary": 3,
+          "analyserPredictedPrimary": 3,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 14.4,
+          "status": "reproduced",
+          "top": "Housekeeping, 5S routines and safe storage control"
+        },
+        {
+          "ksbCode": "S19",
+          "humanApprovedPrimary": 3,
+          "analyserPredictedPrimary": 1,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 9.5,
+          "status": "disagreed",
+          "top": "Technical Documentation, Job Cards, Handover and Specialist Transition"
+        },
+        {
+          "ksbCode": "S4",
+          "humanApprovedPrimary": 4,
+          "analyserPredictedPrimary": 4,
+          "analyserClassification": "MEDIUM_CONFIDENCE_PRIMARY",
+          "analyserScore": 6.5,
+          "status": "reproduced",
+          "top": "COSHH awareness, workshop cleanliness and tool control"
+        },
+        {
+          "ksbCode": "K21",
+          "humanApprovedPrimary": 6,
+          "analyserPredictedPrimary": 6,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 14.0,
+          "status": "reproduced",
+          "top": "Emerging Technology - EV Service, Charging and Safety Procedures"
+        },
+        {
+          "ksbCode": "K23",
+          "humanApprovedPrimary": 6,
+          "analyserPredictedPrimary": 6,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 12.0,
+          "status": "reproduced",
+          "top": "Emerging Technology - EV Service, Charging and Safety Procedures"
+        },
+        {
+          "ksbCode": "S13",
+          "humanApprovedPrimary": 6,
+          "analyserPredictedPrimary": 6,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 13.0,
+          "status": "reproduced",
+          "top": "Emerging Technology - EV Service, Charging and Safety Procedures"
+        },
+        {
+          "ksbCode": "S14",
+          "humanApprovedPrimary": 6,
+          "analyserPredictedPrimary": 2,
+          "analyserClassification": "HIGH_CONFIDENCE_PRIMARY",
+          "analyserScore": 12.9,
+          "status": "disagreed",
+          "top": "Stock Auditing"
+        }
+      ]
+    },
+    "existing14Gaps": {
+      "reproducedAsGaps": 12,
+      "ambiguous": 1,
+      "disagreedCovered": 1,
+      "detail": [
+        {
+          "ksbCode": "B5",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "K1",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "K13",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "K18",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "K2",
+          "analyserClassification": "AMBIGUOUS",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 5.92,
+          "status": "ambiguous",
+          "topic": null
+        },
+        {
+          "ksbCode": "K20",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 3.4,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "K31",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "K34",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "K7",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "S11",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "S20",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "S23",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "S25",
+          "analyserClassification": "CURRICULUM_GAP",
+          "analyserPredictedPrimary": null,
+          "analyserScore": 0,
+          "status": "reproduced_as_gap",
+          "topic": null
+        },
+        {
+          "ksbCode": "S7",
+          "analyserClassification": "MEDIUM_CONFIDENCE_PRIMARY",
+          "analyserPredictedPrimary": 3,
+          "analyserScore": 7.54,
+          "status": "disagreed_covered",
+          "topic": "Routine servicing, inspection workflow and service schedules"
+        }
+      ]
+    }
+  },
+  "1_existingApprovedPrimariesPersisted": [
+    {
+      "ksbCode": "K12",
+      "approvedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Braking systems: purpose, function, and location of systems and components for inspection, removal and replacement: brake discs, brake pads, brake shoes, brake drum, hydraulic components, anti-lock braking systems, electronic stability programmes, brake pedal simulator, brake pipe and hoses, wheel bearings."
+    },
+    {
+      "ksbCode": "K24",
+      "approvedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Principles of customer care: pre and post vehicle customer service, identifying customer and vehicle needs, how to handle challenging conversations."
+    },
+    {
+      "ksbCode": "S12",
+      "approvedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles."
+    },
+    {
+      "ksbCode": "S15",
+      "approvedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Apply customer service principles and organisational customer care practices. For example, identifying customer and vehicle needs, resolve low level customer complaints, make recommendations to customers based on results of inspection, maintenance, or repair of vehicles,  customer payment transactions and organisational sales processes."
+    },
+    {
+      "ksbCode": "K29",
+      "approvedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Principles of sales processes."
+    },
+    {
+      "ksbCode": "K30",
+      "approvedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Team working principles."
+    },
+    {
+      "ksbCode": "S1",
+      "approvedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance."
+    },
+    {
+      "ksbCode": "S2",
+      "approvedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards."
+    },
+    {
+      "ksbCode": "S3",
+      "approvedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Maintain and restore the work area during and on completion of the activity."
+    },
+    {
+      "ksbCode": "S19",
+      "approvedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Apply team working principles."
+    },
+    {
+      "ksbCode": "S4",
+      "approvedPrimaryBlock": 4,
+      "proposedPrimaryBlockTitle": "Emerging Technology and Driveline Systems",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Store, maintain, including calibration checks, and return tools and equipment to storage."
+    },
+    {
+      "ksbCode": "K21",
+      "approvedPrimaryBlock": 6,
+      "proposedPrimaryBlockTitle": "Vehicle Systems Integration and Advanced Diagnostics",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Awareness of electrified vehicle technologies and principles of operation: condition monitoring of high voltage batteries and onboard chargers."
+    },
+    {
+      "ksbCode": "K23",
+      "approvedPrimaryBlock": 6,
+      "proposedPrimaryBlockTitle": "Vehicle Systems Integration and Advanced Diagnostics",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Safe working procedures for electrified vehicles. High voltage systems, safe isolation."
+    },
+    {
+      "ksbCode": "S13",
+      "approvedPrimaryBlock": 6,
+      "proposedPrimaryBlockTitle": "Vehicle Systems Integration and Advanced Diagnostics",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Apply safe working practices and procedures to isolate electrified vehicles for maintenance."
+    },
+    {
+      "ksbCode": "S14",
+      "approvedPrimaryBlock": 6,
+      "proposedPrimaryBlockTitle": "Vehicle Systems Integration and Advanced Diagnostics",
+      "status": "PERSISTED_CURRENT_TRUTH",
+      "officialRequirement": "Record vehicle service maintenance, parts replacement, or repair."
+    }
+  ],
+  "2_automatedHighConfidencePrimaryCandidates": [
+    {
+      "ksbCode": "B1",
+      "officialRequirement": "Put health and safety first.",
+      "proposedPrimaryBlock": 1,
+      "proposedPrimaryBlockTitle": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "week": 1,
+      "topic": "Workshop Safety, Hazards, Housekeeping and Occupational Expectations",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "B2",
+      "officialRequirement": "Consider the impact on the environment when using resources and carrying out work.",
+      "proposedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "week": 30,
+      "topic": "Environmental risk, spill response and emergency preparedness",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "B3",
+      "officialRequirement": "Respond and adapt to changing work demands.",
+      "proposedPrimaryBlock": 6,
+      "proposedPrimaryBlockTitle": "Vehicle Systems Integration and Advanced Diagnostics",
+      "week": 53,
+      "topic": "Workshop productivity, task sequencing and team support",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "B4",
+      "officialRequirement": "Seek learning and development opportunities, continual professional development.",
+      "proposedPrimaryBlock": 10,
+      "proposedPrimaryBlockTitle": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+      "week": 100,
+      "topic": "Portfolio-Based Reflective Learning and Evidence Improvement",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K3",
+      "officialRequirement": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER).",
+      "proposedPrimaryBlock": 1,
+      "proposedPrimaryBlockTitle": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "week": 1,
+      "topic": "Workshop Safety, Hazards, Housekeeping and Occupational Expectations",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K4",
+      "officialRequirement": "Environment and sustainability guidance relevant to the occupation and autocare technician's role and responsibilities. Recycling, reuse, and safe disposal of waste.",
+      "proposedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "week": 30,
+      "topic": "Environmental risk, spill response and emergency preparedness",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K5",
+      "officialRequirement": "Tools and equipment used in automotive industry. Purpose and operation.",
+      "proposedPrimaryBlock": 1,
+      "proposedPrimaryBlockTitle": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "week": 2,
+      "topic": "Health and Safety, Tools, Equipment and Safe Vehicle Support",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K9",
+      "officialRequirement": "Tyres: legislation, replacement, repair, and technical information including EU tyre labelling, tyre pressure monitoring systems (TPMS), sidewall markings, homologated fitments relating to cars, car derived vans and light goods vehicles.",
+      "proposedPrimaryBlock": 7,
+      "proposedPrimaryBlockTitle": "Advanced Workshop Practice and Technical Communication",
+      "week": 64,
+      "topic": "Tyre and TPMS service integration",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K11",
+      "officialRequirement": "Suspension systems: purpose, function, and location of systems and components for inspection, removal and replacement. Macpherson strut, double wishbone, ball joints, suspension arms, spring types, including leaf and coil, dampers and shock absorbers, air or hydraulic suspension, subframes.",
+      "proposedPrimaryBlock": 5,
+      "proposedPrimaryBlockTitle": "Diagnostic Thinking and Complex Repair Activities",
+      "week": 44,
+      "topic": "Suspension component replacement and alignment preparation",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K14",
+      "officialRequirement": "Vehicle heating, ventilation, and air conditioning systems (HVAC): purpose, function and location of  systems including climate control systems for inspection, maintenance, and replacement: refrigerants, coolants, blower motors, valves, heat exchangers, pipes and hoses.",
+      "proposedPrimaryBlock": 6,
+      "proposedPrimaryBlockTitle": "Vehicle Systems Integration and Advanced Diagnostics",
+      "week": 52,
+      "topic": "Air-conditioning and climate-control checks",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K17",
+      "officialRequirement": "Awareness of advanced driver-assistance systems (ADAS) and impact of repair work: static and dynamic calibration methods, calibration equipment.",
+      "proposedPrimaryBlock": 9,
+      "proposedPrimaryBlockTitle": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+      "week": 89,
+      "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K19",
+      "officialRequirement": "Four-wheel geometry principles including wheel alignment, Ackermann principle, alignment principles, toe, camber, thrust angle, adjustment types and methods.",
+      "proposedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "week": 18,
+      "topic": "Wheel Alignment - Advanced",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K22",
+      "officialRequirement": "Awareness of hydrogen powered vehicle technologies and principles of operation: storage and condition monitoring of fuel cells.",
+      "proposedPrimaryBlock": 9,
+      "proposedPrimaryBlockTitle": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+      "week": 94,
+      "topic": "Emerging Technology - Hydrogen Systems Safety and Application",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K26",
+      "officialRequirement": "Vehicle parts costings and procurement: customer, organisation and vehicle needs.",
+      "proposedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "week": 15,
+      "topic": "Supplier Liaison",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K27",
+      "officialRequirement": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes.",
+      "proposedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "week": 19,
+      "topic": "Stock Auditing",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K33",
+      "officialRequirement": "Written communication techniques electronic and paper. Autocare industry terminology.",
+      "proposedPrimaryBlock": 1,
+      "proposedPrimaryBlockTitle": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "week": 10,
+      "topic": "Technical Documentation, Job Cards, Handover and Specialist Transition",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S5",
+      "officialRequirement": "Access vehicle technical data to inform inspections and make judgements on wear and serviceability.",
+      "proposedPrimaryBlock": 1,
+      "proposedPrimaryBlockTitle": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "week": 5,
+      "topic": "Measurement, Technical Information and Tolerances",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S6",
+      "officialRequirement": "Comply with environmental and sustainability procedures, regulations, standards, and guidance. Segregate resources for reuse, recycling, and disposal.",
+      "proposedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "week": 30,
+      "topic": "Environmental risk, spill response and emergency preparedness",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S8",
+      "officialRequirement": "Select and use tools and equipment, mechanical and electrical measuring tools, and diagnostic equipment.",
+      "proposedPrimaryBlock": 1,
+      "proposedPrimaryBlockTitle": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "week": 7,
+      "topic": "Multimeter Use, Electrical Measurement and Fabrication Quality",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S17",
+      "officialRequirement": "Apply procedures for stock and parts storage: ordering, checking and stock rotation.",
+      "proposedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "week": 19,
+      "topic": "Stock Auditing",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S18",
+      "officialRequirement": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing.",
+      "proposedPrimaryBlock": 8,
+      "proposedPrimaryBlockTitle": "Advanced Diagnostics and Workshop Organisation",
+      "week": 78,
+      "topic": "Quotations, authorisation chains and ethical upsell practice",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S22",
+      "officialRequirement": "Communicate in writing, for example with internal and external customers, colleagues, and managers.",
+      "proposedPrimaryBlock": 1,
+      "proposedPrimaryBlockTitle": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "week": 10,
+      "topic": "Technical Documentation, Job Cards, Handover and Specialist Transition",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S24",
+      "officialRequirement": "Complete and record learning and development activities.",
+      "proposedPrimaryBlock": 10,
+      "proposedPrimaryBlockTitle": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+      "week": 100,
+      "topic": "Portfolio-Based Reflective Learning and Evidence Improvement",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "AUTOMATED_HIGH_CONFIDENCE",
+      "confidence": "HIGH",
+      "evidenceSummary": "Retained after human-review verification wave (original curriculum title/practical evidence).",
+      "reinforcementBlocks": [],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    }
+  ],
+  "3_humanVerifiedPrimaryCandidates": [
+    {
+      "ksbCode": "K15",
+      "officialRequirement": "Low voltage batteries: purpose, function, and location of low voltage batteries, starting and charging systems: auxiliary battery, starter motor, alternator, e-machine.",
+      "proposedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "week": 12,
+      "topic": "Electrical System Inspection",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "HUMAN_APPROVED_AFTER_VERIFICATION",
+      "confidence": "HIGH",
+      "evidenceSummary": "W12 theory: battery construction, charging/alternator, starting/starter; practical tests; charging-fault application.",
+      "reinforcementBlocks": [
+        1
+      ],
+      "warnings": [
+        "B1 W04 = awareness reinforcement only."
+      ],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K16",
+      "officialRequirement": "Maintenance and replacement of low voltage batteries, starting and charging systems.",
+      "proposedPrimaryBlock": 2,
+      "proposedPrimaryBlockTitle": "Vehicle Inspection, Servicing and Customer Interaction",
+      "week": 12,
+      "topic": "Electrical System Inspection",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "HUMAN_APPROVED_AFTER_VERIFICATION",
+      "confidence": "HIGH",
+      "evidenceSummary": "Same W12 substantive LV battery/starting/charging teaching and application.",
+      "reinforcementBlocks": [
+        1
+      ],
+      "warnings": [
+        "B1 W04 = awareness reinforcement only."
+      ],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K32",
+      "officialRequirement": "Verbal communication techniques. Giving and receiving information. Matching style to audience.",
+      "proposedPrimaryBlock": 5,
+      "proposedPrimaryBlockTitle": "Diagnostic Thinking and Complex Repair Activities",
+      "week": 41,
+      "topic": "Technical handover and managing customer expectations on diagnostic work",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "HUMAN_APPROVED_AFTER_VERIFICATION",
+      "confidence": "HIGH",
+      "evidenceSummary": "W41 deliberate verbal communication teaching + customer role-play (fault/cause/consequence/action).",
+      "reinforcementBlocks": [
+        7,
+        9
+      ],
+      "warnings": [
+        "B7 advanced communication = Reinforcement."
+      ],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S21",
+      "officialRequirement": "Communicate with others verbally, for example customers, suppliers, and colleagues.",
+      "proposedPrimaryBlock": 5,
+      "proposedPrimaryBlockTitle": "Diagnostic Thinking and Complex Repair Activities",
+      "week": 41,
+      "topic": "Technical handover and managing customer expectations on diagnostic work",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "HUMAN_APPROVED_AFTER_VERIFICATION",
+      "confidence": "HIGH",
+      "evidenceSummary": "W41 verbal communication practice with customers/colleagues context via role-play and records.",
+      "reinforcementBlocks": [
+        7,
+        9
+      ],
+      "warnings": [
+        "B7 = Reinforcement."
+      ],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "S16",
+      "officialRequirement": "Provide quotation of cost and order automotive parts, products, and consumables applicable to the vehicle.",
+      "proposedPrimaryBlock": 3,
+      "proposedPrimaryBlockTitle": "Workshop Processes, Tools and Environmental Awareness",
+      "week": 28,
+      "topic": "Estimates, authorisation and customer approval skills",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "HUMAN_APPROVED_AFTER_VERIFICATION",
+      "confidence": "HIGH",
+      "evidenceSummary": "W28 quotation build (labour/parts/VAT) + customer authorisation role-play — earlier substantive teaching.",
+      "reinforcementBlocks": [
+        4,
+        5,
+        8
+      ],
+      "warnings": [],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K6",
+      "officialRequirement": "Maintenance and storage methods for tools and equipment, including calibration checks.",
+      "proposedPrimaryBlock": 1,
+      "proposedPrimaryBlockTitle": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "week": 2,
+      "topic": "Health and Safety, Tools, Equipment and Safe Vehicle Support",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "HUMAN_APPROVED_AFTER_VERIFICATION",
+      "confidence": "HIGH",
+      "evidenceSummary": "W02 objectives/theory/practice cover tool/equipment condition, calibration importance, pre-use checks, recording equipment checks, remove-from-use decisions, and calibration/maintenance examples in consolidation. B4/W37 rejected (COSHH title-only).",
+      "reinforcementBlocks": [
+        8,
+        5
+      ],
+      "warnings": [
+        "Dedicated long-term storage methods are thinner in W02; B8/W77 is Reinforcement for equipment care/storage routines."
+      ],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    },
+    {
+      "ksbCode": "K25",
+      "officialRequirement": "Business operation considerations: efficiency, customer satisfaction, competitiveness, minimising risks to operation, and ethical issues.",
+      "proposedPrimaryBlock": 6,
+      "proposedPrimaryBlockTitle": "Vehicle Systems Integration and Advanced Diagnostics",
+      "week": 53,
+      "topic": "Workshop productivity, task sequencing and team support",
+      "sourceDocument": "Autocare_L2_Lesson_Plans_v1.0 (original untouched)",
+      "sourceVersion": "v1.0",
+      "decisionSource": "HUMAN_APPROVED_AFTER_VERIFICATION",
+      "confidence": "MEDIUM",
+      "evidenceSummary": "W53 deliberately teaches workshop productivity without compromising safety, repair quality or customer satisfaction; multi-job planning against parts/time/customer requirements. B10/W105 rejected as consolidation ('revisiting').",
+      "reinforcementBlocks": [
+        10,
+        3,
+        7
+      ],
+      "warnings": [
+        "Official competitiveness and ethical issues are not explicit in W53 — core efficiency/customer-satisfaction/operational-risk content is present."
+      ],
+      "status": "REVIEW_ONLY_CANDIDATE"
+    }
+  ],
+  "4_existingReviewedGaps": [
+    {
+      "ksbCode": "B5",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Support an inclusive workplace, for example, being respectful of different views."
+    },
+    {
+      "ksbCode": "K1",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels."
+    },
+    {
+      "ksbCode": "K2",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability."
+    },
+    {
+      "ksbCode": "K7",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement."
+    },
+    {
+      "ksbCode": "K13",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Emission control systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Catalytic converters, evaporative control systems, exhaust gas recirculation (EGR), diesel particulate filter (DPF), petrol particulate filter (PPF), selective catalyst reduction (SCR)."
+    },
+    {
+      "ksbCode": "K18",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Advanced driver-assistance systems (ADAS) levels of autonomy: passive and active advanced driver assistance systems."
+    },
+    {
+      "ksbCode": "K20",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters."
+    },
+    {
+      "ksbCode": "K31",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work."
+    },
+    {
+      "ksbCode": "K34",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Information and digital technology: email, collaboration packages, databases,  equipment digital interfaces, management information systems, word processing, work sharing platforms, point of sale, GDPR, cyber security."
+    },
+    {
+      "ksbCode": "S7",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle."
+    },
+    {
+      "ksbCode": "S11",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Apply state-of-health condition monitoring tests to high voltage batteries and chargers for electrified cars, car derived vans, or light goods vehicles."
+    },
+    {
+      "ksbCode": "S20",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Comply with equity, diversity, and inclusion guidance."
+    },
+    {
+      "ksbCode": "S23",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Use information and digital technology systems. Comply with GDPR and cyber security."
+    },
+    {
+      "ksbCode": "S25",
+      "classification": "REVIEWED_CURRICULUM_GAP",
+      "status": "CURRENT_TRUTH_GAP_REGISTER",
+      "officialRequirement": "Apply procedures to check and replace fluids, and filtration parts."
+    }
+  ],
+  "5_newCurriculumGaps": [
+    {
+      "ksbCode": "S9",
+      "officialRequirement": "Remove, repair and replace vehicle tyre and balance wheel assemblies on car, car derived van or light goods vehicle. For example, ultra-low profile, directional, asymmetric, run-flat tyres.",
+      "classification": "CURRICULUM_GAP",
+      "decisionSource": "HUMAN_CONDITIONAL_FAILED_CONTENT_TEST",
+      "why": "W64 fails strip/remove/replace/balance practical test; W14 TPMS and W106 consolidation rejected as Primary.",
+      "partialEvidence": [
+        "W14 TPMS",
+        "W64 tyre/TPMS inspection integration",
+        "W106 late consolidation"
+      ],
+      "status": "REVIEW_ONLY_NEW_GAP"
+    },
+    {
+      "ksbCode": "K10",
+      "officialRequirement": "Steering systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Mechanical, hydraulic and electric power assisted steering.",
+      "classification": "CURRICULUM_GAP",
+      "decisionSource": "HUMAN_CONDITIONAL_FAILED_CONTENT_TEST",
+      "why": "No original session teaches steering systems (mechanical/hydraulic/EPAS) purpose/function/location for inspect/remove/replace. W34 is geometry/tyre wear only.",
+      "status": "REVIEW_ONLY_NEW_GAP"
+    },
+    {
+      "ksbCode": "K28",
+      "officialRequirement": "Principles of customer sales and financial compliance: Financial conduct authority (FCA), payment card industry (PCI) requirements.",
+      "classification": "CURRICULUM_GAP",
+      "decisionSource": "AUTOMATED_THEN_CONFIRMED",
+      "why": "No FCA/PCI financial-compliance teaching in original curriculum.",
+      "status": "REVIEW_ONLY_NEW_GAP"
+    },
+    {
+      "ksbCode": "K8",
+      "officialRequirement": "Vehicle service records, owner's manuals, and warranties. Purpose and use.",
+      "classification": "CURRICULUM_GAP",
+      "decisionSource": "HUMAN_EVIDENCE_VERIFIED_GAP",
+      "why": "W10 is job-card/handover documentation, not service literature/manuals/warranties. W35 warranty alone does not cover full official K8 breadth. No combined teaching of service records + owner's manuals + warranties.",
+      "partialEvidenceRetainAsReinforcementOnly": [
+        {
+          "block": 4,
+          "week": 35,
+          "topic": "Warranty parts, returns and supplier escalation",
+          "role": "PARTIAL_ONLY_NOT_PRIMARY"
+        },
+        {
+          "block": 8,
+          "week": 75,
+          "topic": "Specialist parts, alternatives and warranty evidence",
+          "role": "PARTIAL_ONLY_NOT_PRIMARY"
+        }
+      ],
+      "proposedAmendmentHint": "Strengthen an existing documentation/service-information session rather than inventing a Primary mapping now.",
+      "status": "REVIEW_ONLY_NEW_GAP"
+    }
+  ],
+  "6_distributedSkillPrimaryOwnershipProblems": [
+    {
+      "ksbCode": "S10",
+      "officialRequirement": "Inspect, remove, and replace of parts or components in  cars, car derived vans, or light goods vehicles for the following: steering systems and suspension systems, braking systems, emission systems, air conditioning systems, battery and charging systems, fluid and filtration systems.",
+      "classification": "DISTRIBUTED_SKILL_PRIMARY_OWNERSHIP_PROBLEM",
+      "decisionSource": "HUMAN_DECISION",
+      "why": "Teaching exists across multiple systems/blocks, but no single defensible Primary owner for the official multi-system breadth. Distinct from 'no teaching exists'.",
+      "evidenceExistsAcrossBlocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        10
+      ],
+      "status": "REVIEW_ONLY"
+    }
+  ],
+  "7_remainingGenuineAmbiguities": [],
+  "8_reinforcementRecommendations": {
+    "K15_K16": {
+      "primary": 2,
+      "reinforce": [
+        1
+      ],
+      "note": "B1 W04 awareness"
+    },
+    "K32_S21": {
+      "primary": 5,
+      "reinforce": [
+        7,
+        9
+      ],
+      "note": "B7/B9 advanced customer communication"
+    },
+    "S16": {
+      "primary": 3,
+      "reinforce": [
+        4,
+        5,
+        8
+      ]
+    },
+    "K6": {
+      "primary": 1,
+      "reinforce": [
+        8,
+        5
+      ],
+      "note": "B8 W77 equipment care/storage; B1 W05 measuring-equipment calibration"
+    },
+    "K25": {
+      "primary": 6,
+      "reinforce": [
+        10,
+        3,
+        7
+      ],
+      "note": "B10 revisit only"
+    },
+    "K4_S6_B2": {
+      "primary": 3,
+      "reinforce": [],
+      "note": "Coherent environmental family on W30"
+    },
+    "K8": {
+      "primary": null,
+      "partialOnly": [
+        4,
+        8
+      ],
+      "note": "Warranty partial — NOT Primary"
+    },
+    "S9": {
+      "primary": null,
+      "partialOnly": [
+        2,
+        7,
+        10
+      ],
+      "note": "Tyre/TPMS exposure — NOT Primary under strip/balance rule"
+    },
+    "S10": {
+      "primary": null,
+      "distributedReinforce": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "note": "No Primary; distributed skill"
+    }
+  },
+  "9_conditionalVerificationLedger": {
+    "K15_K16": "APPROVED B2/W12",
+    "S9": "GAP — W64 failed strip/balance practical test",
+    "S10": "DISTRIBUTED_SKILL_PROBLEM",
+    "K32_S21": "APPROVED B5/W41",
+    "K8": "GAP — full breadth not taught; W35 partial only",
+    "S16": "APPROVED B3/W28",
+    "K6": "APPROVED B1/W02 after B4 reject + W02 content pass",
+    "K10": "GAP — no steering-systems teaching",
+    "K25": "APPROVED B6/W53 MEDIUM after B10 reject + W53 content pass (competitiveness/ethics weak)"
+  },
+  "10_exactAccountingAcross64": {
+    "existingApprovedPrimaries": 15,
+    "automatedHighConfidenceCandidates": 23,
+    "humanVerifiedCandidates": 7,
+    "existingReviewedGaps": 14,
+    "newCurriculumGaps": 4,
+    "distributedSkillProblems": 1,
+    "remainingGenuineAmbiguities": 0,
+    "totalAccountedFor": 64,
+    "buckets": {
+      "existingApprovedPrimaries": [
+        "K12",
+        "K24",
+        "S12",
+        "S15",
+        "K29",
+        "K30",
+        "S1",
+        "S2",
+        "S3",
+        "S19",
+        "S4",
+        "K21",
+        "K23",
+        "S13",
+        "S14"
+      ],
+      "automatedHighConfidencePrimaryCandidates": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "K3",
+        "K4",
+        "K5",
+        "K9",
+        "K11",
+        "K14",
+        "K17",
+        "K19",
+        "K22",
+        "K26",
+        "K27",
+        "K33",
+        "S5",
+        "S6",
+        "S8",
+        "S17",
+        "S18",
+        "S22",
+        "S24"
+      ],
+      "humanVerifiedPrimaryCandidates": [
+        "K15",
+        "K16",
+        "K32",
+        "S21",
+        "S16",
+        "K6",
+        "K25"
+      ],
+      "existingReviewedGaps": [
+        "B5",
+        "K1",
+        "K2",
+        "K7",
+        "K13",
+        "K18",
+        "K20",
+        "K31",
+        "K34",
+        "S7",
+        "S11",
+        "S20",
+        "S23",
+        "S25"
+      ],
+      "newCurriculumGaps": [
+        "S9",
+        "K10",
+        "K28",
+        "K8"
+      ],
+      "distributedSkillProblems": [
+        "S10"
+      ],
+      "remainingGenuineAmbiguities": []
+    },
+    "missingFromAccounting": [],
+    "duplicateInBuckets": [],
+    "identityCheck": "15+23+7+14+4+1+0 = 64"
+  },
+  "11_embeddedAiImplementationLearnings": [
+    "Title/conditional approval must be invalidated by practical text (S9, K8, K6, K10).",
+    "Partial coverage must not become Primary (K8 warranty-only).",
+    "Distributed-skill state is distinct from gap (S10).",
+    "Consolidation 'revisiting' weeks cannot own Primary (K25 W105).",
+    "False friends: tool control≠tool maintenance; steering geometry≠steering systems; documentation≠owner manuals.",
+    "Foundation Block 1 can legitimately own Autocare Primaries when content matches (K6, K3, etc.).",
+    "Future amendment UX should prefer strengthening existing sessions over inventing Primaries for gaps."
+  ],
+  "stopPoint": "REVIEW_ONLY baseline analysis complete. Remaining genuine ambiguities: none. Awaiting explicit approval to persist new Primaries/gaps. Nothing written to programme truth.",
+  "persistedAt": "2026-08-08T13:24:44.557Z",
+  "persistReport": ".tmp-persist-v1-baseline-30-primaries-report.json",
+  "provenanceArtifact": ".tmp-autocare-v1-golden-baseline-provenance.json"
+}

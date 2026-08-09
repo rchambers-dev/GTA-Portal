@@ -32,3 +32,11 @@ Canonical apprentice path: `/apprentice/tracking`. Legacy paths (`/cea`, `/colle
 ## Standards data
 
 Autocare (ST0499) source HTML and the KSB catalog live under `docs/standards/st0499/` and feed programme / RPL tooling — not fictional learner fixtures.
+
+## Programme definition & embedded AI curriculum mapping
+
+Programme Builder architecture (ownership, Coverage/Gap, **baseline-once + delta/impact versioning**, copy-forward provenance, and `forkProgrammeOntoOfficialVersion` design) lives in:
+
+[`src/features/programme-definition/README.md`](../src/features/programme-definition/README.md)
+
+**Product principle:** first GTA programme version = full human/AI baseline review once; future versions = copy-forward + exception-only review. Do not require re-mapping all KSBs on every official or GTA revision.

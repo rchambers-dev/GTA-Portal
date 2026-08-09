@@ -21,6 +21,7 @@ import {
   getProgrammeDefinitionSnapshot,
   goBackToCatalogue,
   isApiPingDue,
+  listProgrammeVersionsForStandard,
   loadSharedActivityLog,
   loadSharedProgrammeSpine,
   publishProgramme,
@@ -28,13 +29,16 @@ import {
   recordProgrammeActivity,
   replaceOfficialVersion,
   requiresNewVersionForMaterialEdit,
+  resolveProgrammeVersionToOpen,
   selectProgramme,
   setProgrammeActivityActor,
   subscribeProgrammeDefinition,
   updateProgrammeParameters,
   updateProgrammeSpine,
   updateProgrammeTitle,
+  clearProgrammeDefinitionPreview,
 } from "../domain/programme-definition-store";
+import { clearCourseBuilderLocalCache } from "@/features/programme-delivery/domain/course-builder-store";
 import { labelSpineType } from "../domain/spine-builder";
 import type {
   BlockKsbMapping,
@@ -43,7 +47,14 @@ import type {
   ProgrammeDeliveryParameters,
   SpineItem,
 } from "../domain/types";
-import { RPL_FORMULA_OPTIONS } from "../domain/rpl-formulas";
+import {
+  RPL_FORMULA_OPTIONS,
+  calculateFixedCostTotal,
+  createFixedCostLine,
+  isLegacyWeightedFormula,
+  officialRplDimensions,
+} from "../domain/rpl-formulas";
+import type { FixedCostLineItem } from "../domain/types";
 import {
   buildPublishChecklist,
   hoursDeficitAgainstMinimum,
@@ -53,7 +64,9 @@ import {
   summariseHours,
   validateProgrammeDefinition,
 } from "../domain/validation";
+import { buildCurriculumCoverageSnapshot } from "../domain/curriculum-coverage";
 import { SpineBuilderPanel } from "./SpineBuilderPanel";
+import { CurriculumCoveragePanel } from "./CurriculumCoveragePanel";
 import styles from "./programme-builder.module.css";
 import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 
@@ -147,6 +160,8 @@ function activityKindLabel(kind: ProgrammeActivityEntry["kind"]): string {
       return "Title";
     case "primary_moved":
       return "Primary";
+    case "ksb_curriculum_value_changed":
+      return "KSB value";
     case "version_forked":
       return "New version";
     default:
@@ -296,14 +311,14 @@ export function ProgrammeBuilderScreen() {
   }, [structureLocked, spineMode]);
 
   useEffect(() => {
-    if (!official?.standardCode) return;
+    if (!official?.standardCode || !programme?.id) return;
     ensureApiPingSchedule(official.standardCode);
     void loadSharedActivityLog(official.standardCode).catch(() => {
       /* local history still available if shared load fails */
     });
     void loadSharedProgrammeSpine({
       standardCode: official.standardCode,
-      programmeVersionId: programme?.id,
+      programmeVersionId: programme.id,
     }).catch(() => {
       /* local draft remains if DB hydrate fails */
     });
@@ -323,6 +338,10 @@ export function ProgrammeBuilderScreen() {
   const warnings = issues.filter((i) => i.severity === "warning");
   const coverage =
     programme && official ? primaryCoverage(programme, official) : null;
+  const curriculumCoverage =
+    programme && official
+      ? buildCurriculumCoverageSnapshot(programme, official)
+      : null;
   const checklistGroups = buildPublishChecklist(issues);
   const firstErrorChecklistId =
     checklistGroups.find((g) => g.severity === "error")?.id ?? null;
@@ -492,7 +511,7 @@ export function ProgrammeBuilderScreen() {
       const localExisting = state.programmes.find(
         (p) => p.standardCode === selectedApprenticeship.standardCode,
       );
-      const localOfficial = localExisting
+      let localOfficial = localExisting
         ? state.officialVersions.find(
             (v) =>
               v.id === localExisting.standardVersionId ||
@@ -503,108 +522,143 @@ export function ProgrammeBuilderScreen() {
             (v) => v.standardCode === selectedApprenticeship.standardCode,
           );
 
-      if (localExisting && localOfficial) {
-        createProgrammeForOfficial(localOfficial);
-        setTitleDraft(localExisting.programmeTitle);
-        setSpineMode("view");
-        setMessage(
-          `Reopened ${selectedApprenticeship.title} (no API search — pack already held in the portal). Last saved ${formatSavedAt(localExisting.updatedAt)}.`,
-        );
-        return;
-      }
-
-      recordProgrammeActivity({
-        kind: "api_request",
-        summary: `Searching for official pack: ${selectedApprenticeship.title} (${selectedApprenticeship.standardCode}). Portal DB first, then Skills England if needed.`,
-        standardCode: selectedApprenticeship.standardCode,
-        detail: {
-          method: "POST",
-          endpoint: IMPORT_ENDPOINT,
-          httpLine: `POST ${IMPORT_ENDPOINT}`,
-          when: "Fired when Load is clicked and this apprenticeship is not already open in Programme Builder",
-          searchingFor: selectedApprenticeship.title,
-          occupationCode: selectedApprenticeship.occupationCode,
-          standardCode: selectedApprenticeship.standardCode,
-        },
-      });
-
-      const res = await fetch(IMPORT_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          occupationCode: selectedApprenticeship.occupationCode,
-          standardCode: selectedApprenticeship.standardCode,
-        }),
-      });
-      const data = (await res.json()) as {
-        ok: boolean;
-        source?: "database" | "skills_england";
-        official?: OfficialStandardVersion;
-        error?: string;
-        message?: string;
-        apprenticeshipError?: string | null;
-        receipt?: Record<string, string | number | boolean | null>;
-      };
-
-      if (!data.ok || !data.official) {
+      // Ensure official pack is available before opening a DB programme version.
+      if (!localOfficial) {
         recordProgrammeActivity({
-          kind: "api_error",
-          summary: `POST search failed for ${selectedApprenticeship.title}`,
+          kind: "api_request",
+          summary: `Searching for official pack: ${selectedApprenticeship.title} (${selectedApprenticeship.standardCode}). Portal DB first, then Skills England if needed.`,
           standardCode: selectedApprenticeship.standardCode,
           detail: {
             method: "POST",
             endpoint: IMPORT_ENDPOINT,
-            httpLine: `POST ${IMPORT_ENDPOINT} → ${res.status}`,
-            status: res.status,
-            error: data.error || "Unknown error",
-            source: data.source || null,
+            httpLine: `POST ${IMPORT_ENDPOINT}`,
+            when: "Fired when Load is clicked and this apprenticeship is not already open in Programme Builder",
+            searchingFor: selectedApprenticeship.title,
+            occupationCode: selectedApprenticeship.occupationCode,
+            standardCode: selectedApprenticeship.standardCode,
           },
         });
+
+        const res = await fetch(IMPORT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            occupationCode: selectedApprenticeship.occupationCode,
+            standardCode: selectedApprenticeship.standardCode,
+          }),
+        });
+        const data = (await res.json()) as {
+          ok: boolean;
+          source?: "database" | "skills_england";
+          official?: OfficialStandardVersion;
+          error?: string;
+          message?: string;
+          apprenticeshipError?: string | null;
+          receipt?: Record<string, string | number | boolean | null>;
+        };
+
+        if (!data.ok || !data.official) {
+          recordProgrammeActivity({
+            kind: "api_error",
+            summary: `POST search failed for ${selectedApprenticeship.title}`,
+            standardCode: selectedApprenticeship.standardCode,
+            detail: {
+              method: "POST",
+              endpoint: IMPORT_ENDPOINT,
+              httpLine: `POST ${IMPORT_ENDPOINT} → ${res.status}`,
+              status: res.status,
+              error: data.error || "Unknown error",
+              source: data.source || null,
+            },
+          });
+          throw new Error(
+            data.error ||
+              `${selectedApprenticeship.title} is not in the portal database and could not be imported from Skills England.`,
+          );
+        }
+
+        recordProgrammeActivity({
+          kind: "api_ok",
+          summary:
+            data.source === "database"
+              ? `POST response: found in portal database (${data.official.standardCode} v${data.official.externalVersion})`
+              : `POST response: fetched from Skills England (${data.official.standardCode} v${data.official.externalVersion})`,
+          standardCode: data.official.standardCode,
+          externalVersion: data.official.externalVersion,
+          detail: {
+            method: "POST",
+            endpoint: IMPORT_ENDPOINT,
+            httpLine: `POST ${IMPORT_ENDPOINT} → ${res.status}`,
+            httpStatus: res.status,
+            source: data.source || null,
+            message: data.message || null,
+            externalVersion: data.official.externalVersion,
+            sourceHash: data.official.sourceHash,
+            duties: data.official.duties.length,
+            ksbs: data.official.ksbs.length,
+            title: data.official.title,
+            occupationCode: selectedApprenticeship.occupationCode,
+            standardCode: data.official.standardCode,
+            apprenticeshipError: data.apprenticeshipError || null,
+          },
+        });
+
+        localOfficial = replaceOfficialVersion(data.official);
+        if (data.apprenticeshipError) {
+          setMessage(
+            `Product details incomplete: ${data.apprenticeshipError}`,
+          );
+        }
+      }
+
+      // Prefer an explicit DB programme version — do not invent a parallel local draft
+      // when a version already exists. No silent newest fallback when multiple exist.
+      const dbVersions = await listProgrammeVersionsForStandard(
+        selectedApprenticeship.standardCode,
+      );
+      const preferredId =
+        state.selectedProgrammeId &&
+        dbVersions.some((v) => v.programmeVersionId === state.selectedProgrammeId)
+          ? state.selectedProgrammeId
+          : localExisting &&
+              dbVersions.some((v) => v.programmeVersionId === localExisting.id)
+            ? localExisting.id
+            : // Autocare rebuild identity (explicit; not "newest")
+              selectedApprenticeship.standardCode === "ST0499"
+              ? "231a8a32-d876-4312-a178-960d19dcf938"
+              : null;
+      const toOpen = resolveProgrammeVersionToOpen(dbVersions, preferredId);
+
+      if (toOpen) {
+        const hydrated = await loadSharedProgrammeSpine({
+          standardCode: selectedApprenticeship.standardCode,
+          programmeVersionId: toOpen.programmeVersionId,
+        });
+        if (!hydrated) {
+          throw new Error(
+            `Programme version ${toOpen.programmeVersionId} was listed but could not be loaded from the database.`,
+          );
+        }
+        setTitleDraft(hydrated.programmeTitle);
+        setSpineMode("view");
+        setMessage(
+          `Opened DB programme version ${hydrated.id} (${hydrated.programmeTitle}, v${hydrated.internalVersion}) with ${hydrated.ksbMappings?.length ?? 0} Block↔KSB mapping(s).`,
+        );
+        return;
+      }
+
+      if (dbVersions.length > 1) {
         throw new Error(
-          data.error ||
-            `${selectedApprenticeship.title} is not in the portal database and could not be imported from Skills England.`,
+          `${selectedApprenticeship.title} has ${dbVersions.length} programme versions in the database. Open an explicit version — the portal will not pick one automatically.`,
         );
       }
 
-      recordProgrammeActivity({
-        kind: "api_ok",
-        summary:
-          data.source === "database"
-            ? `POST response: found in portal database (${data.official.standardCode} v${data.official.externalVersion})`
-            : `POST response: fetched from Skills England (${data.official.standardCode} v${data.official.externalVersion})`,
-        standardCode: data.official.standardCode,
-        externalVersion: data.official.externalVersion,
-        detail: {
-          method: "POST",
-          endpoint: IMPORT_ENDPOINT,
-          httpLine: `POST ${IMPORT_ENDPOINT} → ${res.status}`,
-          httpStatus: res.status,
-          source: data.source || null,
-          message: data.message || null,
-          externalVersion: data.official.externalVersion,
-          sourceHash: data.official.sourceHash,
-          duties: data.official.duties.length,
-          ksbs: data.official.ksbs.length,
-          title: data.official.title,
-          occupationCode: selectedApprenticeship.occupationCode,
-          standardCode: data.official.standardCode,
-          apprenticeshipError: data.apprenticeshipError || null,
-        },
-      });
-
-      const stored = replaceOfficialVersion(data.official);
-      const opened = createProgrammeForOfficial(stored);
+      // No DB version yet — create a blank local draft (first-time authoring).
+      const opened = createProgrammeForOfficial(localOfficial);
       setTitleDraft(opened.programmeTitle);
       setSpineMode("view");
-
-      const base =
-        data.source === "database"
-          ? `Loaded ${selectedApprenticeship.title} from the portal database and opened the GTA draft.`
-          : `Imported ${selectedApprenticeship.title} from Skills England and saved. Opened GTA draft (no duplicate for this official version).`;
       setMessage(
-        data.apprenticeshipError
-          ? `${base} Product details incomplete: ${data.apprenticeshipError}`
-          : base,
+        `Opened new GTA draft for ${selectedApprenticeship.title} (no DB programme version yet).`,
       );
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "Import failed");
@@ -702,6 +756,21 @@ export function ProgrammeBuilderScreen() {
     );
   }
 
+  function onClearLocalCache() {
+    const ok = window.confirm(
+      "Clear local builder cache on this browser?\n\n" +
+        "This removes locally cached GTA programmes, spines, activity history, and Course Builder task drafts from this device only.\n\n" +
+        "It does NOT delete anything from the database. Staff accounts and Skills England official packs are untouched.",
+    );
+    if (!ok) return;
+    clearProgrammeDefinitionPreview();
+    clearCourseBuilderLocalCache();
+    setSpineMode("view");
+    setMessage(
+      "Local builder cache cleared on this browser. Remote database was not changed.",
+    );
+  }
+
   return (
     <ApprenticePageShell
       eyebrow="Management"
@@ -718,6 +787,14 @@ export function ProgrammeBuilderScreen() {
               Back
             </button>
           ) : null}
+          <button
+            type="button"
+            className={adminStyles.secondaryBtn}
+            onClick={onClearLocalCache}
+            title="Clears browser localStorage for Programme Builder and Course Builder only"
+          >
+            Clear local cache
+          </button>
           <Link
             href="/management/course-builder"
             className={adminStyles.secondaryBtn}
@@ -1416,6 +1493,157 @@ export function ProgrammeBuilderScreen() {
               <div className={styles.formulaBlock}>
                 <div className={styles.formulaHead}>
                   <div className={styles.formulaHeadText}>
+                    <p className={styles.formulaEyebrow}>Funding / TNP1 config</p>
+                    <p className={styles.formulaTitle}>
+                      Negotiated base and fixed costs (variable pot is derived)
+                    </p>
+                  </div>
+                </div>
+                <label className={styles.field}>
+                  <span>Funding band / negotiated base (£)</span>
+                  <input
+                    type="number"
+                    min={0}
+                    step={1}
+                    disabled={structureLocked}
+                    placeholder={
+                      official.maximumFundingPounds != null
+                        ? `e.g. ${official.maximumFundingPounds}`
+                        : "Programme base £"
+                    }
+                    value={programme.parameters?.fundingBandPounds ?? ""}
+                    onChange={(e) => {
+                      const raw = e.target.value;
+                      applyParameterPatch({
+                        fundingBandPounds:
+                          raw === "" ? null : Math.max(0, Number(raw) || 0),
+                      });
+                    }}
+                  />
+                </label>
+                <p className={styles.formulaHint}>
+                  Fixed costs are line items. Total is calculated — not typed.
+                  RPL never reduces fixed costs. Variable pot = band − fixed
+                  total.
+                </p>
+                <div className={styles.fixedCostList}>
+                  {(programme.parameters?.fixedCostLines ?? []).map((line) => (
+                    <div key={line.id} className={styles.fixedCostRow}>
+                      <label className={styles.fixedCostEnable}>
+                        <input
+                          type="checkbox"
+                          checked={line.enabled}
+                          disabled={structureLocked}
+                          onChange={(e) => {
+                            const next = (
+                              programme.parameters?.fixedCostLines ?? []
+                            ).map((l) =>
+                              l.id === line.id
+                                ? { ...l, enabled: e.target.checked }
+                                : l,
+                            );
+                            applyParameterPatch({ fixedCostLines: next });
+                          }}
+                        />
+                        <span className={styles.srOnly}>Enabled</span>
+                      </label>
+                      <input
+                        type="text"
+                        className={styles.fixedCostLabel}
+                        disabled={structureLocked}
+                        value={line.label}
+                        placeholder="Cost label"
+                        onChange={(e) => {
+                          const next = (
+                            programme.parameters?.fixedCostLines ?? []
+                          ).map((l) =>
+                            l.id === line.id
+                              ? { ...l, label: e.target.value }
+                              : l,
+                          );
+                          applyParameterPatch({ fixedCostLines: next });
+                        }}
+                      />
+                      <input
+                        type="number"
+                        min={0}
+                        step={1}
+                        className={styles.fixedCostAmount}
+                        disabled={structureLocked}
+                        value={line.amountPounds}
+                        onChange={(e) => {
+                          const amount = Math.max(0, Number(e.target.value) || 0);
+                          const next = (
+                            programme.parameters?.fixedCostLines ?? []
+                          ).map((l) =>
+                            l.id === line.id
+                              ? { ...l, amountPounds: amount }
+                              : l,
+                          );
+                          applyParameterPatch({ fixedCostLines: next });
+                        }}
+                      />
+                      <button
+                        type="button"
+                        className={styles.fixedCostRemove}
+                        disabled={structureLocked}
+                        aria-label={`Remove ${line.label || "line"}`}
+                        onClick={() => {
+                          const next = (
+                            programme.parameters?.fixedCostLines ?? []
+                          ).filter((l) => l.id !== line.id);
+                          applyParameterPatch({ fixedCostLines: next });
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div className={styles.formulaFooter}>
+                  <button
+                    type="button"
+                    className={adminStyles.secondaryBtn}
+                    disabled={structureLocked}
+                    onClick={() => {
+                      const existing = programme.parameters?.fixedCostLines ?? [];
+                      const line: FixedCostLineItem = createFixedCostLine({
+                        label: "",
+                        amountPounds: 0,
+                        sequence: existing.length,
+                      });
+                      applyParameterPatch({
+                        fixedCostLines: [...existing, line],
+                      });
+                    }}
+                  >
+                    Add fixed-cost line
+                  </button>
+                  <p className={styles.formulaLockedNote}>
+                    Fixed total: £
+                    {Math.round(
+                      calculateFixedCostTotal(
+                        programme.parameters?.fixedCostLines ?? [],
+                      ) * 100,
+                    ) / 100}
+                    {programme.parameters?.fundingBandPounds != null
+                      ? ` · Variable pot: £${
+                          Math.round(
+                            (programme.parameters.fundingBandPounds -
+                              calculateFixedCostTotal(
+                                programme.parameters?.fixedCostLines ?? [],
+                              )) *
+                              100,
+                          ) / 100
+                        }`
+                      : ""}
+                  </p>
+                </div>
+              </div>
+
+              <div className={styles.formulaBlock}>
+                <div className={styles.formulaHead}>
+                  <div className={styles.formulaHeadText}>
                     <p className={styles.formulaEyebrow}>RPL calculation type</p>
                     <p className={styles.formulaTitle}>
                       How prior learning reduces OTJ on this programme
@@ -1439,10 +1667,17 @@ export function ProgrammeBuilderScreen() {
                   role="radiogroup"
                   aria-label="RPL calculation type"
                 >
+                  {isLegacyWeightedFormula(programme.parameters?.formulaKey) ? (
+                    <p className={styles.formulaHint}>
+                      This version still uses the retired weighted KSB method.
+                      Select the curriculum-value formula below to switch (creates
+                      a material change on published spines).
+                    </p>
+                  ) : null}
                   {RPL_FORMULA_OPTIONS.map((opt) => {
                     const selected =
                       (programme.parameters?.formulaKey ??
-                        "weighted_ksb_cap_v1") === opt.key;
+                        "block_ksb_value_v1") === opt.key;
                     return (
                       <button
                         key={opt.key}
@@ -1502,6 +1737,8 @@ export function ProgrammeBuilderScreen() {
                   })}
                 </div>
 
+                {isLegacyWeightedFormula(programme.parameters?.formulaKey) ? (
+                  <>
                 <div className={styles.formulaMath} aria-label="Formula">
                   <div className={styles.formulaMathRow}>
                     <span className={styles.formulaMathKey}>Factor</span>
@@ -1532,8 +1769,9 @@ export function ProgrammeBuilderScreen() {
                 </div>
 
                 <p className={styles.formulaHint}>
-                  Toggle a letter off if that part should not count for this
-                  programme. Applied per block when a learner joins.
+                  Legacy weighted formula. Toggle a letter off if that part
+                  should not count for this programme. Applied per block when a
+                  learner joins.
                 </p>
 
                 <div className={styles.ksbCards}>
@@ -1664,6 +1902,153 @@ export function ProgrammeBuilderScreen() {
                     </p>
                   ) : null}
                 </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.formulaMath} aria-label="Formula">
+                      <div className={styles.formulaMathRow}>
+                        <span className={styles.formulaMathKey}>Block value</span>
+                        <code>
+                          SUM(curriculumValue of Block↔KSB mappings)
+                        </code>
+                      </div>
+                      <div className={styles.formulaMathRow}>
+                        <span className={styles.formulaMathKey}>Recognised</span>
+                        <code>
+                          (K×k%) + (S×s%) + (B×b%) per block — only RPL-eligible
+                          dimensions
+                        </code>
+                      </div>
+                      <div className={styles.formulaMathRow}>
+                        <span className={styles.formulaMathKey}>OTJ</span>
+                        <code>
+                          remainingBlockValue × (expectedOTJ ÷ programmeValue)
+                        </code>
+                      </div>
+                    </div>
+                    <p className={styles.formulaHint}>
+                      Curriculum values are edited in Spine Builder. Learner
+                      percentages are entered on the apprentice RPL page for
+                      RPL-eligible dimensions only. Turning a dimension OFF
+                      keeps its curriculum value in the programme but prevents
+                      recognition. No K/S/B weights and no 30% cap.
+                    </p>
+
+                    <div className={styles.rplEligibleBlock}>
+                      <p className={styles.rplEligibleTitle}>
+                        RPL eligible dimensions
+                      </p>
+                      <p className={styles.formulaHint}>
+                        ON = learner recognition % can reduce that category.
+                        OFF = category stays in the curriculum, but recognised
+                        value for it is always 0. Only dimensions present on the
+                        bound official standard are shown.
+                      </p>
+                      <div className={styles.ksbCards}>
+                        {(
+                          [
+                            {
+                              dim: "knowledge" as const,
+                              key: "includeRplKnowledge" as const,
+                              letter: "K",
+                              name: "Knowledge",
+                            },
+                            {
+                              dim: "skill" as const,
+                              key: "includeRplSkills" as const,
+                              letter: "S",
+                              name: "Skills",
+                            },
+                            {
+                              dim: "behaviour" as const,
+                              key: "includeRplBehaviours" as const,
+                              letter: "B",
+                              name: "Behaviours",
+                            },
+                          ] as const
+                        )
+                          .filter((item) =>
+                            official
+                              ? officialRplDimensions(official.ksbs).includes(
+                                  item.dim,
+                                )
+                              : true,
+                          )
+                          .map((item) => {
+                            const on =
+                              programme.parameters?.[item.key] !== false;
+                            return (
+                              <div
+                                key={item.key}
+                                className={styles.ksbCard}
+                                data-on={on ? "true" : "false"}
+                              >
+                                <button
+                                  type="button"
+                                  className={styles.ksbCardToggle}
+                                  data-on={on ? "true" : "false"}
+                                  disabled={formulaLocked}
+                                  aria-pressed={on}
+                                  title={
+                                    on
+                                      ? `Exclude ${item.name} from learner RPL`
+                                      : `Include ${item.name} in learner RPL`
+                                  }
+                                  onClick={() =>
+                                    applyParameterPatch({
+                                      [item.key]: !on,
+                                    })
+                                  }
+                                >
+                                  <span className={styles.ksbLetter}>
+                                    {item.letter}
+                                  </span>
+                                  <span className={styles.ksbName}>
+                                    {item.name}
+                                  </span>
+                                  <span className={styles.ksbState}>
+                                    {on ? "On" : "Off"}
+                                  </span>
+                                </button>
+                                <p className={styles.ksbOffNote}>
+                                  {on
+                                    ? "Eligible for learner RPL"
+                                    : "In curriculum — not RPL-eligible"}
+                                </p>
+                              </div>
+                            );
+                          })}
+                      </div>
+                      {!official ? (
+                        <p className={styles.formulaHint}>
+                          Bind an official standard to filter which dimensions
+                          appear here.
+                        </p>
+                      ) : officialRplDimensions(official.ksbs).length === 0 ? (
+                        <p className={styles.formulaHint}>
+                          Bound official pack has no K/S/B types to configure.
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <div className={styles.formulaFooter}>
+                      {programme.parameters?.formulaStatus !== "published" &&
+                      !structureLocked ? (
+                        <button
+                          type="button"
+                          className={adminStyles.primaryBtn}
+                          onClick={onPublishFormula}
+                        >
+                          Publish formula
+                        </button>
+                      ) : programme.parameters?.formulaStatus === "published" ? (
+                        <p className={styles.formulaLockedNote}>
+                          Locked for this version
+                        </p>
+                      ) : null}
+                    </div>
+                  </>
+                )}
               </div>
 
               <label className={styles.field}>
@@ -1693,6 +2078,15 @@ export function ProgrammeBuilderScreen() {
               ) : null}
             </div>
           </section>
+
+          {curriculumCoverage ? (
+            <CurriculumCoveragePanel
+              snapshot={curriculumCoverage}
+              programmeVersionId={programme.id}
+              structureLocked={structureLocked}
+              onOpenSpineBuilder={() => setSpineMode("builder")}
+            />
+          ) : null}
 
           <section className={`${styles.panel} ${styles.span2}`}>
             <div className={styles.panelHead}>

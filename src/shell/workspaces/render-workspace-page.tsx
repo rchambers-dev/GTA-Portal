@@ -27,6 +27,7 @@ import {
   TutorCeaSignOffScreen,
   TutorCeaReviewRoute,
   ManagementApprenticeRplScreen,
+  ManagementApprenticeTnpScreen,
   ManagementApprenticeBragScreen,
   ManagementTaskViewScreen,
   CourseBuilderScreen,
@@ -363,6 +364,9 @@ export async function renderWorkspacePage(
       case "apprentice-funding":
       case "ksb-rpl":
         return <ManagementApprenticeRplScreen />;
+      case "apprentice-tnp":
+      case "tnp1":
+        return <ManagementApprenticeTnpScreen />;
       case "apprentice-brag":
       case "progression-brag":
         return <ManagementApprenticeBragScreen />;

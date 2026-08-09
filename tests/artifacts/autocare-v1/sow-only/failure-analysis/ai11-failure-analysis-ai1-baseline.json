@@ -1,0 +1,34 @@
+{
+  "note": "Frozen AI-1 (pre-tune) failure analysis snapshot from AI-1.1 first pass. Source disagreements: .tmp-autocare-v1-ai1-golden-eval-portal_ai.json @ baseline-curriculum-analysis@1.1. Do not overwrite.",
+  "at": "2026-08-09T16:50:51.000Z",
+  "ai1BenchmarkPromptVersion": "baseline-curriculum-analysis@1.1",
+  "disagreementCount": 29,
+  "retrievalVsJudgement": {
+    "RETRIEVAL_MISS": 7,
+    "JUDGEMENT_MISS": 18,
+    "N_A_gap_or_non_primary": 4,
+    "note": "RETRIEVAL_MISS = golden Primary block not in top-N candidates. JUDGEMENT_MISS = golden Primary block present but model selected another. N_A for golden gaps/distributed where there is no correct Primary block."
+  },
+  "failureClassCounts": {
+    "correct_coverage_wrong_primary_block": 17,
+    "chose_reinforcement_over_first_substantive_teaching": 17,
+    "later_specialist_consolidation_over_earlier_teaching": 17,
+    "lexical_false_friend": 19,
+    "insufficient_evidence": 6,
+    "genuine_distributed_skill": 1,
+    "genuine_ambiguity_near_tie": 16,
+    "curriculum_gap_incorrectly_forced_into_primary": 5,
+    "retrieval_failure": 7,
+    "evidence_ranking_failure": 7,
+    "model_judgement_failure": 22,
+    "golden_decision_potentially_evidence_sensitive": 6
+  },
+  "retrievalMissKsbs": ["S4", "K5", "K26", "K27", "S17", "S18", "S22"],
+  "baselineFrozen": {
+    "approvedPrimaries": 45,
+    "reviewedGaps": 18,
+    "distributedSkillReviews": 1,
+    "unresolved": 0,
+    "structuredOtjHours": 611.5
+  }
+}

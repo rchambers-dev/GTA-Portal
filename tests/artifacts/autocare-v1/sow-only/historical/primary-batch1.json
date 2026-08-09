@@ -1,0 +1,570 @@
+[
+  {
+    "ksbCode": "K24",
+    "type": "knowledge",
+    "description": "Principles of customer care: pre and post vehicle customer service, identifying customer and vehicle needs, how to handle challenging conversations.",
+    "flag": {
+      "ksbCode": "K24",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 3,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 8.0,
+          "topics": [
+            "Service reception, booking diagnostics and first impressions"
+          ]
+        },
+        {
+          "block": 7,
+          "score": 8.0,
+          "topics": [
+            "Advanced service adviser communication and trust-building",
+            "Service recovery, complaint closure and records"
+          ]
+        },
+        {
+          "block": 9,
+          "score": 8.0,
+          "topics": [
+            "Emerging Technology - EV Customer Handover, Charging and Application",
+            "Customer Journey and Service Adviser Day"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 2,
+        "title": "Vehicle Inspection, Servicing and Customer Interaction",
+        "currentRole": "REINFORCEMENT",
+        "score": 6.0,
+        "topics": [
+          "Customer Service Scenarios",
+          "Customer Dispute Resolution"
+        ],
+        "weeks": [
+          {
+            "week": 11,
+            "duty": "D6",
+            "topic": "Customer Service Scenarios",
+            "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end"
+          },
+          {
+            "week": 20,
+            "duty": "D6",
+            "topic": "Customer Dispute Resolution",
+            "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Complete this week"
+          }
+        ]
+      },
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "PRIMARY",
+        "score": 8.0,
+        "topics": [
+          "Service reception, booking diagnostics and first impressions"
+        ],
+        "weeks": [
+          {
+            "week": 21,
+            "duty": "D1",
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 4,
+        "title": "Emerging Technology and Driveline Systems",
+        "currentRole": "REINFORCEMENT",
+        "score": 5.5,
+        "topics": [
+          "Customer updates, ETA management and expectation setting"
+        ],
+        "weeks": [
+          {
+            "week": 31,
+            "duty": "D1",
+            "topic": "Customer updates, ETA management and expectation setting",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 5,
+        "title": "Diagnostic Thinking and Complex Repair Activities",
+        "currentRole": "REINFORCEMENT",
+        "score": 5.0,
+        "topics": [
+          "Technical handover and managing customer expectations on diagnostic work"
+        ],
+        "weeks": [
+          {
+            "week": 41,
+            "duty": "D1",
+            "topic": "Technical handover and managing customer expectations on diagnostic work",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 6,
+        "title": "Vehicle Systems Integration and Advanced Diagnostics",
+        "currentRole": "REINFORCEMENT",
+        "score": 3.0,
+        "topics": [
+          "Customer interaction during longer diagnostic jobs"
+        ],
+        "weeks": [
+          {
+            "week": 51,
+            "duty": "D1",
+            "topic": "Customer interaction during longer diagnostic jobs",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 7,
+        "title": "Advanced Workshop Practice and Technical Communication",
+        "currentRole": "REINFORCEMENT",
+        "score": 8.0,
+        "topics": [
+          "Advanced service adviser communication and trust-building",
+          "Service recovery, complaint closure and records",
+          "Multi-line estimates and customer choice conversations"
+        ],
+        "weeks": [
+          {
+            "week": 61,
+            "duty": "D1",
+            "topic": "Advanced service adviser communication and trust-building",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          },
+          {
+            "week": 66,
+            "duty": "D6",
+            "topic": "Service recovery, complaint closure and records",
+            "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end"
+          },
+          {
+            "week": 68,
+            "duty": "D8",
+            "topic": "Multi-line estimates and customer choice conversations",
+            "focusLine": "Duty 8 | K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 9,
+        "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 8.0,
+        "topics": [
+          "Emerging Technology - EV Customer Handover, Charging and Application",
+          "Customer Journey and Service Adviser Day"
+        ],
+        "weeks": [
+          {
+            "week": 82,
+            "duty": null,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "focusLine": ""
+          },
+          {
+            "week": 84,
+            "duty": null,
+            "topic": "Customer Journey and Service Adviser Day",
+            "focusLine": ""
+          }
+        ]
+      },
+      {
+        "block": 10,
+        "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+        "currentRole": "REINFORCEMENT",
+        "score": 3.0,
+        "topics": [
+          "Duty 1 Skills Development and EPA Readiness Practice - Customer Communication"
+        ],
+        "weeks": [
+          {
+            "week": 109,
+            "duty": "D1",
+            "topic": "Duty 1 Skills Development and EPA Readiness Practice - Customer Communication",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "S15",
+    "type": "skill",
+    "description": "Apply customer service principles and organisational customer care practices. For example, identifying customer and vehicle needs, resolve low level customer complaints, make recommendations to customers based on results of inspection, maintenance, or repair of vehicles,  customer payment transactions and organisational sales processes.",
+    "flag": {
+      "ksbCode": "S15",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 2,
+      "contenders": [
+        {
+          "block": 2,
+          "score": 6.0,
+          "topics": [
+            "Customer Service Scenarios",
+            "Customer Dispute Resolution"
+          ]
+        },
+        {
+          "block": 3,
+          "score": 6.0,
+          "topics": [
+            "Service reception, booking diagnostics and first impressions"
+          ]
+        },
+        {
+          "block": 7,
+          "score": 6.0,
+          "topics": [
+            "Advanced service adviser communication and trust-building",
+            "Service recovery, complaint closure and records"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 2,
+        "title": "Vehicle Inspection, Servicing and Customer Interaction",
+        "currentRole": "PRIMARY",
+        "score": 6.0,
+        "topics": [
+          "Customer Service Scenarios",
+          "Customer Dispute Resolution"
+        ],
+        "weeks": [
+          {
+            "week": 11,
+            "duty": "D6",
+            "topic": "Customer Service Scenarios",
+            "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end"
+          },
+          {
+            "week": 20,
+            "duty": "D6",
+            "topic": "Customer Dispute Resolution",
+            "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Complete this week"
+          }
+        ]
+      },
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 6.0,
+        "topics": [
+          "Service reception, booking diagnostics and first impressions"
+        ],
+        "weeks": [
+          {
+            "week": 21,
+            "duty": "D1",
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 4,
+        "title": "Emerging Technology and Driveline Systems",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Customer updates, ETA management and expectation setting"
+        ],
+        "weeks": [
+          {
+            "week": 31,
+            "duty": "D1",
+            "topic": "Customer updates, ETA management and expectation setting",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 5,
+        "title": "Diagnostic Thinking and Complex Repair Activities",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Technical handover and managing customer expectations on diagnostic work",
+          "Complaint prevention through process discipline and record quality"
+        ],
+        "weeks": [
+          {
+            "week": 41,
+            "duty": "D1",
+            "topic": "Technical handover and managing customer expectations on diagnostic work",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          },
+          {
+            "week": 46,
+            "duty": "D6",
+            "topic": "Complaint prevention through process discipline and record quality",
+            "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 7,
+        "title": "Advanced Workshop Practice and Technical Communication",
+        "currentRole": "REINFORCEMENT",
+        "score": 6.0,
+        "topics": [
+          "Advanced service adviser communication and trust-building",
+          "Service recovery, complaint closure and records",
+          "Multi-line estimates and customer choice conversations"
+        ],
+        "weeks": [
+          {
+            "week": 61,
+            "duty": "D1",
+            "topic": "Advanced service adviser communication and trust-building",
+            "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end"
+          },
+          {
+            "week": 66,
+            "duty": "D6",
+            "topic": "Service recovery, complaint closure and records",
+            "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end"
+          },
+          {
+            "week": 68,
+            "duty": "D8",
+            "topic": "Multi-line estimates and customer choice conversations",
+            "focusLine": "Duty 8 | K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 9,
+        "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 5.5,
+        "topics": [
+          "Customer Journey and Service Adviser Day"
+        ],
+        "weeks": [
+          {
+            "week": 84,
+            "duty": null,
+            "topic": "Customer Journey and Service Adviser Day",
+            "focusLine": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "K12",
+    "type": "knowledge",
+    "description": "Braking systems: purpose, function, and location of systems and components for inspection, removal and replacement: brake discs, brake pads, brake shoes, brake drum, hydraulic components, anti-lock braking systems, electronic stability programmes, brake pedal simulator, brake pipe and hoses, wheel bearings.",
+    "flag": {
+      "ksbCode": "K12",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 2,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 4.0,
+          "topics": [
+            "Brake wear checks, tyre condition and wheel security"
+          ]
+        },
+        {
+          "block": 2,
+          "score": 4.0,
+          "topics": [
+            "Advanced Brake Diagnostics"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 2,
+        "title": "Vehicle Inspection, Servicing and Customer Interaction",
+        "currentRole": "PRIMARY",
+        "score": 4.0,
+        "topics": [
+          "Advanced Brake Diagnostics"
+        ],
+        "weeks": [
+          {
+            "week": 17,
+            "duty": "D3",
+            "topic": "Advanced Brake Diagnostics",
+            "focusLine": "Duty 3 | B3, B4, B5, K25, K30, K31, S20, S21, S25 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Brake wear checks, tyre condition and wheel security"
+        ],
+        "weeks": [
+          {
+            "week": 24,
+            "duty": "D4",
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "S12",
+    "type": "skill",
+    "description": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles.",
+    "flag": {
+      "ksbCode": "S12",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 2,
+      "contenders": [
+        {
+          "block": 2,
+          "score": 4.0,
+          "topics": [
+            "Wheel Alignment - Advanced"
+          ]
+        },
+        {
+          "block": 4,
+          "score": 4.0,
+          "topics": [
+            "Steering geometry and advanced tyre diagnosis"
+          ]
+        },
+        {
+          "block": 5,
+          "score": 4.0,
+          "topics": [
+            "Suspension component replacement and alignment preparation"
+          ]
+        },
+        {
+          "block": 8,
+          "score": 4.0,
+          "topics": [
+            "Alignment, ride height and geometry correlation"
+          ]
+        },
+        {
+          "block": 9,
+          "score": 4.0,
+          "topics": [
+            "Pre-calibration checks: alignment, ride height and sensor inputs"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 2,
+        "title": "Vehicle Inspection, Servicing and Customer Interaction",
+        "currentRole": "PRIMARY",
+        "score": 4.0,
+        "topics": [
+          "Wheel Alignment - Advanced"
+        ],
+        "weeks": [
+          {
+            "week": 18,
+            "duty": "D4",
+            "topic": "Wheel Alignment - Advanced",
+            "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 4,
+        "title": "Emerging Technology and Driveline Systems",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Steering geometry and advanced tyre diagnosis"
+        ],
+        "weeks": [
+          {
+            "week": 34,
+            "duty": "D4",
+            "topic": "Steering geometry and advanced tyre diagnosis",
+            "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 5,
+        "title": "Diagnostic Thinking and Complex Repair Activities",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Suspension component replacement and alignment preparation"
+        ],
+        "weeks": [
+          {
+            "week": 44,
+            "duty": "D4",
+            "topic": "Suspension component replacement and alignment preparation",
+            "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Alignment, ride height and geometry correlation"
+        ],
+        "weeks": [
+          {
+            "week": 74,
+            "duty": "D4",
+            "topic": "Alignment, ride height and geometry correlation",
+            "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end"
+          }
+        ]
+      },
+      {
+        "block": 9,
+        "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Pre-calibration checks: alignment, ride height and sensor inputs"
+        ],
+        "weeks": [
+          {
+            "week": 89,
+            "duty": "D4",
+            "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+            "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end"
+          }
+        ]
+      }
+    ]
+  }
+]

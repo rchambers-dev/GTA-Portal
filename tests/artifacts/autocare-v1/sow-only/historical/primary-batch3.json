@@ -1,0 +1,477 @@
+[
+  {
+    "ksbCode": "S4",
+    "type": "skill",
+    "description": "Store, maintain, including calibration checks, and return tools and equipment to storage.",
+    "flag": {
+      "ksbCode": "S4",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 3,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 4.0,
+          "topics": [
+            "Housekeeping, 5S routines and safe storage control"
+          ]
+        },
+        {
+          "block": 8,
+          "score": 4.0,
+          "topics": [
+            "Quality, cleanliness and equipment care routines"
+          ]
+        },
+        {
+          "block": 4,
+          "score": 4.0,
+          "topics": [
+            "COSHH awareness, workshop cleanliness and tool control"
+          ]
+        },
+        {
+          "block": 9,
+          "score": 4.0,
+          "topics": [
+            "Pre-calibration checks: alignment, ride height and sensor inputs"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "PRIMARY",
+        "score": 4.0,
+        "topics": [
+          "Housekeeping, 5S routines and safe storage control"
+        ],
+        "weeks": [
+          {
+            "week": 27,
+            "duty": "D7",
+            "topic": "Housekeeping, 5S routines and safe storage control"
+          }
+        ]
+      },
+      {
+        "block": 4,
+        "title": "Emerging Technology and Driveline Systems",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "COSHH awareness, workshop cleanliness and tool control"
+        ],
+        "weeks": [
+          {
+            "week": 37,
+            "duty": "D7",
+            "topic": "COSHH awareness, workshop cleanliness and tool control"
+          }
+        ]
+      },
+      {
+        "block": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Quality, cleanliness and equipment care routines"
+        ],
+        "weeks": [
+          {
+            "week": 77,
+            "duty": "D7",
+            "topic": "Quality, cleanliness and equipment care routines"
+          }
+        ]
+      },
+      {
+        "block": 9,
+        "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Pre-calibration checks: alignment, ride height and sensor inputs"
+        ],
+        "weeks": [
+          {
+            "week": 89,
+            "duty": "D4",
+            "topic": "Pre-calibration checks: alignment, ride height and sensor inputs"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "K29",
+    "type": "knowledge",
+    "description": "Principles of sales processes.",
+    "flag": {
+      "ksbCode": "K29",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 3,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 4.0,
+          "topics": [
+            "Estimates, authorisation and customer approval skills"
+          ]
+        },
+        {
+          "block": 5,
+          "score": 4.0,
+          "topics": [
+            "Additional work identification and quote revision"
+          ]
+        },
+        {
+          "block": 7,
+          "score": 4.0,
+          "topics": [
+            "Multi-line estimates and customer choice conversations"
+          ]
+        },
+        {
+          "block": 8,
+          "score": 4.0,
+          "topics": [
+            "Quotations, authorisation chains and ethical upsell practice"
+          ]
+        },
+        {
+          "block": 4,
+          "score": 4.0,
+          "topics": [
+            "Quotations: labour, parts and value options"
+          ]
+        },
+        {
+          "block": 6,
+          "score": 4.0,
+          "topics": [
+            "Quote approval, consent and final documentation"
+          ]
+        },
+        {
+          "block": 9,
+          "score": 4.0,
+          "topics": [
+            "Integrated inspection, quotation and consent scenario"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "PRIMARY",
+        "score": 4.0,
+        "topics": [
+          "Estimates, authorisation and customer approval skills"
+        ],
+        "weeks": [
+          {
+            "week": 28,
+            "duty": "D8",
+            "topic": "Estimates, authorisation and customer approval skills"
+          }
+        ]
+      },
+      {
+        "block": 4,
+        "title": "Emerging Technology and Driveline Systems",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Quotations: labour, parts and value options"
+        ],
+        "weeks": [
+          {
+            "week": 38,
+            "duty": "D8",
+            "topic": "Quotations: labour, parts and value options"
+          }
+        ]
+      },
+      {
+        "block": 5,
+        "title": "Diagnostic Thinking and Complex Repair Activities",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Additional work identification and quote revision"
+        ],
+        "weeks": [
+          {
+            "week": 48,
+            "duty": "D8",
+            "topic": "Additional work identification and quote revision"
+          }
+        ]
+      },
+      {
+        "block": 6,
+        "title": "Vehicle Systems Integration and Advanced Diagnostics",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Quote approval, consent and final documentation"
+        ],
+        "weeks": [
+          {
+            "week": 58,
+            "duty": "D8",
+            "topic": "Quote approval, consent and final documentation"
+          }
+        ]
+      },
+      {
+        "block": 7,
+        "title": "Advanced Workshop Practice and Technical Communication",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Multi-line estimates and customer choice conversations"
+        ],
+        "weeks": [
+          {
+            "week": 68,
+            "duty": "D8",
+            "topic": "Multi-line estimates and customer choice conversations"
+          }
+        ]
+      },
+      {
+        "block": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Quotations, authorisation chains and ethical upsell practice"
+        ],
+        "weeks": [
+          {
+            "week": 78,
+            "duty": "D8",
+            "topic": "Quotations, authorisation chains and ethical upsell practice"
+          }
+        ]
+      },
+      {
+        "block": 9,
+        "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Integrated inspection, quotation and consent scenario"
+        ],
+        "weeks": [
+          {
+            "week": 88,
+            "duty": "D8",
+            "topic": "Integrated inspection, quotation and consent scenario"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "S19",
+    "type": "skill",
+    "description": "Apply team working principles.",
+    "flag": {
+      "ksbCode": "S19",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 3,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 4.0,
+          "topics": [
+            "Fast-fit repairs, bay discipline and effective handoffs"
+          ]
+        },
+        {
+          "block": 8,
+          "score": 4.0,
+          "topics": [
+            "Repair planning, delegation and sign-off discipline"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "PRIMARY",
+        "score": 4.0,
+        "topics": [
+          "Fast-fit repairs, bay discipline and effective handoffs"
+        ],
+        "weeks": [
+          {
+            "week": 23,
+            "duty": "D3",
+            "topic": "Fast-fit repairs, bay discipline and effective handoffs"
+          }
+        ]
+      },
+      {
+        "block": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Repair planning, delegation and sign-off discipline"
+        ],
+        "weeks": [
+          {
+            "week": 73,
+            "duty": "D3",
+            "topic": "Repair planning, delegation and sign-off discipline"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "S14",
+    "type": "skill",
+    "description": "Record vehicle service maintenance, parts replacement, or repair.",
+    "flag": {
+      "ksbCode": "S14",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 6,
+      "contenders": [
+        {
+          "block": 6,
+          "score": 6.0,
+          "topics": [
+            "Record keeping, compliance checks and audit readiness"
+          ]
+        },
+        {
+          "block": 8,
+          "score": 6.0,
+          "topics": [
+            "Documentation for handover and audit trail completeness"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 5,
+        "title": "Diagnostic Thinking and Complex Repair Activities",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "VIN lookup, technical data and parts availability checks",
+          "Complaint prevention through process discipline and record quality"
+        ],
+        "weeks": [
+          {
+            "week": 45,
+            "duty": "D5",
+            "topic": "VIN lookup, technical data and parts availability checks"
+          },
+          {
+            "week": 46,
+            "duty": "D6",
+            "topic": "Complaint prevention through process discipline and record quality"
+          }
+        ]
+      },
+      {
+        "block": 6,
+        "title": "Vehicle Systems Integration and Advanced Diagnostics",
+        "currentRole": "PRIMARY",
+        "score": 6.0,
+        "topics": [
+          "Record keeping, compliance checks and audit readiness"
+        ],
+        "weeks": [
+          {
+            "week": 56,
+            "duty": "D6",
+            "topic": "Record keeping, compliance checks and audit readiness"
+          }
+        ]
+      },
+      {
+        "block": 7,
+        "title": "Advanced Workshop Practice and Technical Communication",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Service recovery, complaint closure and records"
+        ],
+        "weeks": [
+          {
+            "week": 66,
+            "duty": "D6",
+            "topic": "Service recovery, complaint closure and records"
+          }
+        ]
+      },
+      {
+        "block": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "currentRole": "REINFORCEMENT",
+        "score": 6.0,
+        "topics": [
+          "Documentation for handover and audit trail completeness"
+        ],
+        "weeks": [
+          {
+            "week": 76,
+            "duty": "D6",
+            "topic": "Documentation for handover and audit trail completeness"
+          }
+        ]
+      },
+      {
+        "block": 9,
+        "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 3.0,
+        "topics": [
+          "Workshop compliance deep dive: documentation and waste control"
+        ],
+        "weeks": [
+          {
+            "week": 86,
+            "duty": "D10",
+            "topic": "Workshop compliance deep dive: documentation and waste control"
+          }
+        ]
+      },
+      {
+        "block": 10,
+        "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Duty 6 Skills Development and EPA Readiness Practice - Procedures and Documentation"
+        ],
+        "weeks": [
+          {
+            "week": 108,
+            "duty": "D6",
+            "topic": "Duty 6 Skills Development and EPA Readiness Practice - Procedures and Documentation"
+          }
+        ]
+      }
+    ]
+  }
+]

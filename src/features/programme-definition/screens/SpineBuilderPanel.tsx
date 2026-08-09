@@ -19,6 +19,12 @@ import {
   updateBlockKsbMapping,
 } from "../domain/block-ksb-mappings";
 import {
+  DEFAULT_CURRICULUM_VALUE,
+  buildKsbTypeMap,
+  calculateBlockCurriculumTotals,
+  validateCurriculumValue,
+} from "../domain/rpl-formulas";
+import {
   recommendLearningIntent,
   type IntentRecommendation,
 } from "../domain/ksb-intent-recommender";
@@ -51,6 +57,7 @@ type AssignDraft = {
   mappingId?: string;
   isPrimary: boolean;
   learningIntent: LearningIntent;
+  curriculumValue: number;
 };
 
 type Props = {
@@ -99,6 +106,8 @@ export function SpineBuilderPanel({
       ksbs.filter((k) => ksbFilter === "all" || k.type === ksbFilter),
     [ksbs, ksbFilter],
   );
+
+  const ksbTypes = useMemo(() => buildKsbTypeMap(ksbs), [ksbs]);
 
   useEffect(() => {
     const el = ksbListRef.current;
@@ -183,15 +192,14 @@ export function SpineBuilderPanel({
 
   function openAssign(blockId: string, code: string) {
     const existing = findMapping(ksbMappings, blockId, code);
-    const primary = primaryMappingForKsb(ksbMappings, code);
     setAssignDraft({
       blockId,
       ksbCode: code.toUpperCase(),
       mappingId: existing?.id,
       isPrimary: existing?.isPrimary ?? false,
       learningIntent: existing?.learningIntent ?? "practise",
+      curriculumValue: existing?.curriculumValue ?? DEFAULT_CURRICULUM_VALUE,
     });
-    void primary;
   }
 
   function onDropAt(index: number, e: React.DragEvent) {
@@ -229,7 +237,13 @@ export function SpineBuilderPanel({
 
   function confirmAssign() {
     if (!assignDraft) return;
-    const { blockId, ksbCode, mappingId, learningIntent } = assignDraft;
+    const valueCheck = validateCurriculumValue(assignDraft.curriculumValue);
+    if (!valueCheck.ok) {
+      window.alert(valueCheck.message);
+      return;
+    }
+    const { blockId, ksbCode, mappingId, learningIntent, curriculumValue } =
+      assignDraft;
     const primary = primaryMappingForKsb(ksbMappings, ksbCode);
     const primaryOnOtherBlock = Boolean(
       primary && primary.blockId !== blockId,
@@ -267,6 +281,7 @@ export function SpineBuilderPanel({
       next = updateBlockKsbMapping(ksbMappings, mappingId, {
         isPrimary,
         learningIntent,
+        curriculumValue,
         mappingSource,
         ...provenance,
       });
@@ -276,6 +291,7 @@ export function SpineBuilderPanel({
         ksbCode,
         isPrimary,
         learningIntent,
+        curriculumValue,
         mappingSource,
         ...provenance,
         createdBy: actor,
@@ -462,6 +478,10 @@ export function SpineBuilderPanel({
             item.itemType === "block"
               ? mappingsForBlock(ksbMappings, item.id)
               : [];
+          const blockTotals =
+            item.itemType === "block"
+              ? calculateBlockCurriculumTotals(item.id, ksbMappings, ksbTypes)
+              : null;
           return (
             <div key={item.id} className={styles.canvasItemWrap}>
               <article
@@ -608,6 +628,9 @@ export function SpineBuilderPanel({
                                     Primary
                                   </span>
                                 ) : null}
+                                <span className={styles.pillValue}>
+                                  · {m.curriculumValue}
+                                </span>
                               </button>
                               <button
                                 type="button"
@@ -631,6 +654,14 @@ export function SpineBuilderPanel({
                         })}
                       </div>
                     )}
+                    {blockTotals ? (
+                      <div className={styles.blockValueTotals}>
+                        <span>K {blockTotals.knowledgeValue}</span>
+                        <span>S {blockTotals.skillsValue}</span>
+                        <span>B {blockTotals.behaviourValue}</span>
+                        <strong>Block {blockTotals.blockValue}</strong>
+                      </div>
+                    ) : null}
                   </div>
                 ) : (
                   <p className={styles.hint}>
@@ -749,6 +780,33 @@ export function SpineBuilderPanel({
                 })}
               </div>
             </fieldset>
+
+            <label className={styles.field}>
+              <span>Curriculum value</span>
+              <input
+                type="number"
+                min={0.01}
+                step={0.1}
+                value={assignDraft.curriculumValue}
+                onChange={(e) => {
+                  const n = Number(e.target.value);
+                  setAssignDraft((d) =>
+                    d
+                      ? {
+                          ...d,
+                          curriculumValue: Number.isFinite(n)
+                            ? n
+                            : d.curriculumValue,
+                        }
+                      : d,
+                  );
+                }}
+              />
+              <span className={styles.hint}>
+                Contribution of this KSB occurrence to this block (default 1).
+                Primary and LearningIntent are separate.
+              </span>
+            </label>
 
             <div className={styles.assignActions}>
               <button

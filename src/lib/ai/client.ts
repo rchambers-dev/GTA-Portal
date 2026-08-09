@@ -89,6 +89,7 @@ async function executeAi(
       messages: request.messages,
       temperature: request.temperature,
       maxTokens: request.maxTokens,
+      jsonObject: request.jsonObject,
     });
 
     const usage: AiUsageEvent = {

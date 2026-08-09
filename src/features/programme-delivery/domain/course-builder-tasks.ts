@@ -1,5 +1,5 @@
 /**
- * Course Builder → apprentice-completable practical tasks.
+ * Course Builder task drafts authored against a GTA Programme Version spine block.
  * KSBs left blank for Jon. Source PDFs optional (portal-first).
  */
 
@@ -16,9 +16,16 @@ import {
 
 export type CourseBuilderTaskDraft = {
   id: string;
-  packId: string;
-  blockId: number;
-  /** 1–5 within the block (Autocare pattern); extra tasks use 3+ as practical. */
+  /** GTA programme version this task belongs to. */
+  programmeVersionId: string;
+  /** Spine item id (itemType === "block"). */
+  spineBlockId: string;
+  /**
+   * Numeric block ordinal for legacy PracticalTaskDef / Autocare bridges
+   * (metadata.blockNumber or sequence).
+   */
+  blockOrdinal: number;
+  /** 1–5 within the block; extra tasks use 3+ as practical. */
   taskNumber: number;
   kind: PracticalTaskKind;
   title: string;
@@ -31,8 +38,9 @@ export type CourseBuilderTaskDraft = {
 };
 
 export type CourseBuilderTaskInput = {
-  packId: string;
-  blockId: number;
+  programmeVersionId: string;
+  spineBlockId: string;
+  blockOrdinal: number;
   title: string;
   scenario?: string;
   kind?: PracticalTaskKind;
@@ -53,12 +61,14 @@ function slug(value: string): string {
 }
 
 export function newCourseBuilderTaskId(
-  packId: string,
-  blockId: number,
+  programmeVersionId: string,
+  spineBlockId: string,
   title: string,
 ): string {
   const base = slug(title) || "task";
-  return `cb-${packId}-b${blockId}-${base}-${Date.now().toString(36)}`;
+  const shortPv = programmeVersionId.slice(0, 8);
+  const shortBlock = spineBlockId.slice(0, 8);
+  return `cb-${shortPv}-${shortBlock}-${base}-${Date.now().toString(36)}`;
 }
 
 /** Build a fillable PracticalTaskDef from Course Builder draft fields. */
@@ -92,10 +102,10 @@ export function draftToPracticalTask(
   return {
     id: draft.id,
     evidenceRef: draft.id,
-    blockId: draft.blockId,
+    blockId: draft.blockOrdinal,
     taskNumber,
     kind: draft.kind,
-    title: draft.title.trim() || `Block ${draft.blockId} task`,
+    title: draft.title.trim() || `Block ${draft.blockOrdinal} task`,
     scenario:
       draft.scenario.trim() ||
       "Complete this college task as directed by your tutor.",
@@ -158,9 +168,14 @@ export function createTaskDraft(
     existingInBlock.reduce((max, t) => Math.max(max, t.taskNumber), 0) + 1;
   const title = input.title.trim() || `Task ${nextNumber}`;
   return {
-    id: newCourseBuilderTaskId(input.packId, input.blockId, title),
-    packId: input.packId,
-    blockId: input.blockId,
+    id: newCourseBuilderTaskId(
+      input.programmeVersionId,
+      input.spineBlockId,
+      title,
+    ),
+    programmeVersionId: input.programmeVersionId,
+    spineBlockId: input.spineBlockId,
+    blockOrdinal: Math.max(1, Math.floor(input.blockOrdinal) || 1),
     taskNumber: nextNumber,
     kind: input.kind ?? "practical",
     title,

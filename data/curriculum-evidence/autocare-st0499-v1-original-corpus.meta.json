@@ -1,0 +1,11 @@
+{
+  "sourceDocumentId": "autocare-st0499-v1-original-corpus",
+  "sourceType": "lesson_plan_corpus",
+  "title": "Autocare L2 Lesson Plans v1.0 original corpus",
+  "version": "v1.0",
+  "evidenceStatus": "current_approved",
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "contentHashSha256": "a69472cc8e53bd9ea37e21b3acc0c595033350ead14016ebc8c80a2c35ba31f1",
+  "excluded": "AI Proposed Amendments",
+  "path": "data/curriculum-evidence/autocare-st0499-v1-original-corpus.json"
+}

@@ -1,0 +1,101 @@
+{
+  "at": "2026-08-08T01:01:37.933Z",
+  "st0499ProgrammeCount": 1,
+  "st0499VersionCount": 1,
+  "targetExists": true,
+  "target": {
+    "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+    "programmeId": "41de7e43-b305-456f-a8a2-a5b9ef19b62b",
+    "programmeTitle": "Autocare technician — GTA Delivery",
+    "internalVersion": "1",
+    "status": "draft",
+    "standardCode": "ST0499",
+    "standardVersionId": "decc0ba5-31b5-4bff-80d8-c3e2782bac2e",
+    "expectedOtjHours": null,
+    "updatedAt": "2026-08-07T23:48:18.392+00:00",
+    "isTarget": true,
+    "spineItemCount": 12,
+    "structuredOtj": 611.5,
+    "blocks": [
+      {
+        "seq": 1,
+        "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+        "otj": 45
+      },
+      {
+        "seq": 2,
+        "title": "Vehicle Inspection, Servicing and Customer Interaction",
+        "otj": 55
+      },
+      {
+        "seq": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "otj": 55
+      },
+      {
+        "seq": 4,
+        "title": "Emerging Technology and Driveline Systems",
+        "otj": 55
+      },
+      {
+        "seq": 5,
+        "title": "Diagnostic Thinking and Complex Repair Activities",
+        "otj": 55
+      },
+      {
+        "seq": 6,
+        "title": "Vehicle Systems Integration and Advanced Diagnostics",
+        "otj": 55
+      },
+      {
+        "seq": 7,
+        "title": "Advanced Workshop Practice and Technical Communication",
+        "otj": 55
+      },
+      {
+        "seq": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "otj": 55
+      },
+      {
+        "seq": 9,
+        "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+        "otj": 77
+      },
+      {
+        "seq": 10,
+        "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+        "otj": 104.5
+      }
+    ],
+    "nonBlocks": [
+      {
+        "seq": 11,
+        "type": "gateway",
+        "title": "Gateway Readiness and Confirmation"
+      },
+      {
+        "seq": 12,
+        "type": "epa",
+        "title": "End-Point Assessment"
+      }
+    ],
+    "mappingCount": 15,
+    "primaryCount": 15
+  },
+  "allVersionsSummary": [
+    {
+      "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+      "programmeTitle": "Autocare technician — GTA Delivery",
+      "internalVersion": "1",
+      "status": "draft",
+      "structuredOtj": 611.5,
+      "spineItemCount": 12,
+      "primaryCount": 15,
+      "mappingCount": 15,
+      "isTarget": true,
+      "updatedAt": "2026-08-07T23:48:18.392+00:00"
+    }
+  ],
+  "emptyPrimaryVersions": []
+}

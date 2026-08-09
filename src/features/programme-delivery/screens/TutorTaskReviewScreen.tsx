@@ -1,17 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { usePortalSession } from "@/shell/session/PortalSessionProvider";
-import { taskById } from "../domain/autocare-tasks";
+import { taskByDeliveryId } from "../domain/published-delivery-catalogue";
+import { usePublishedDeliveryCatalogue } from "../domain/use-published-delivery-catalogue";
 import {
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
+  resolveTaskStoreApprenticeId,
   statusLabel,
   statusTone,
   subscribeTaskStore,
@@ -23,24 +26,60 @@ type Props = { taskId: string };
 
 /**
  * Tutor reviews a submission — mentor then trainer verify.
- * Task 5 reflection: trainer “Progress verified” unlocks the next block.
+ * Resolves the task from the selected learner's pinned published catalogue.
  */
 export function TutorTaskReviewScreen({ taskId }: Props) {
   const { session } = usePortalSession();
-  const task = taskById(taskId);
+  const search = useSearchParams();
+  const apprenticeId = search.get("apprentice")?.trim() || "";
+  const storeId = resolveTaskStoreApprenticeId(apprenticeId);
+
+  const { catalogue, loading } = usePublishedDeliveryCatalogue({
+    apprenticeId: apprenticeId || null,
+    enabled: Boolean(apprenticeId),
+  });
+  const task = taskByDeliveryId(catalogue, taskId);
+
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
 
-  const sub = getTaskSubmission(taskId);
+  const sub = getTaskSubmission(taskId, storeId);
   const [note, setNote] = useState("");
   const [message, setMessage] = useState<string | null>(null);
 
-  if (!task) {
+  if (!apprenticeId) {
+    return (
+      <ApprenticePageShell eyebrow="Tutor" title="Select a learner" description="">
+        <p className={styles.purposeBody}>
+          Open this task from Programme delivery with a learner selected so the
+          correct pinned programme version is used.
+        </p>
+        <Link href="/staff/programme-delivery" className={styles.back}>
+          ← Back to programme delivery
+        </Link>
+      </ApprenticePageShell>
+    );
+  }
+
+  if (loading) {
+    return (
+      <ApprenticePageShell eyebrow="Tutor" title="Loading task…" description="">
+        <p className={styles.purposeBody}>Loading published catalogue…</p>
+      </ApprenticePageShell>
+    );
+  }
+
+  if (catalogue.status !== "ready" || !task) {
     return (
       <ApprenticePageShell eyebrow="Tutor" title="Task not found" description="">
+        <p className={styles.purposeBody}>
+          {catalogue.status !== "ready"
+            ? catalogue.message
+            : "This task is not in the learner’s published Course Builder catalogue."}
+        </p>
         <Link href="/staff/programme-delivery" className={styles.back}>
           ← Back to programme delivery
         </Link>
@@ -49,12 +88,16 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
   }
 
   function signAsMentor() {
-    upsertTaskSubmission(taskId, {
-      mentorSignedAt: new Date().toISOString(),
-      mentorSignedBy: session.account.name,
-      status: "awaiting_trainer",
-      fields: { ...sub.fields, mentorSign: "signed" },
-    });
+    upsertTaskSubmission(
+      taskId,
+      {
+        mentorSignedAt: new Date().toISOString(),
+        mentorSignedBy: session.account.name,
+        status: "awaiting_trainer",
+        fields: { ...sub.fields, mentorSign: "signed" },
+      },
+      storeId,
+    );
     setMessage("Mentor sign-off recorded. Waiting for trainer verify.");
   }
 
@@ -68,26 +111,35 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
       assessmentDecision:
         sub.fields.assessmentDecision ||
         (isReflection ? "Progress verified" : "Pass"),
+      ...(note.trim() ? { trainerNote: note.trim() } : {}),
     };
-    upsertTaskSubmission(taskId, {
-      trainerSignedAt: new Date().toISOString(),
-      trainerSignedBy: session.account.name,
-      trainerDecision: fields.trainerDecision,
-      status: "verified",
-      fields,
-    });
+    upsertTaskSubmission(
+      taskId,
+      {
+        trainerSignedAt: new Date().toISOString(),
+        trainerSignedBy: session.account.name,
+        trainerDecision: fields.trainerDecision,
+        status: "verified",
+        fields,
+      },
+      storeId,
+    );
     setMessage(
       isReflection
-        ? "Progress verified — next block unlocked for the apprentice."
-        : "Task verified.",
+        ? "Progress verified — next block can unlock for this learner."
+        : "Trainer verification recorded.",
     );
   }
 
   function returnWork() {
-    upsertTaskSubmission(taskId, {
-      status: "returned",
-      returnNote: note || "Please amend and resubmit.",
-    });
+    upsertTaskSubmission(
+      taskId,
+      {
+        status: "returned",
+        returnNote: note || "Please amend and resubmit.",
+      },
+      storeId,
+    );
     setMessage("Returned to apprentice.");
   }
 
@@ -99,7 +151,7 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
     <ApprenticePageShell
       eyebrow="Tutor"
       title={task.title}
-      description={`${task.evidenceRef} · Block ${task.blockId}`}
+      description={`${task.evidenceRef} · ${catalogue.programmeTitle || "Programme"}`}
     >
       <div className={styles.root}>
         <Link href="/staff/programme-delivery" className={styles.back}>
@@ -160,12 +212,20 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
           </p>
           <div className={styles.actions}>
             {sub.status === "awaiting_mentor" ? (
-              <button type="button" className={styles.secondaryBtn} onClick={signAsMentor}>
+              <button
+                type="button"
+                className={styles.secondaryBtn}
+                onClick={signAsMentor}
+              >
                 Record mentor sign-off
               </button>
             ) : null}
             {sub.status === "awaiting_trainer" ? (
-              <button type="button" className={styles.primaryBtn} onClick={verifyAsTrainer}>
+              <button
+                type="button"
+                className={styles.primaryBtn}
+                onClick={verifyAsTrainer}
+              >
                 Verify as trainer
               </button>
             ) : null}
@@ -182,7 +242,11 @@ export function TutorTaskReviewScreen({ taskId }: Props) {
             />
           </div>
           <div className={styles.actions}>
-            <button type="button" className={styles.secondaryBtn} onClick={returnWork}>
+            <button
+              type="button"
+              className={styles.secondaryBtn}
+              onClick={returnWork}
+            >
               Return to apprentice
             </button>
           </div>

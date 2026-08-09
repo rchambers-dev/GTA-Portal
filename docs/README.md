@@ -9,5 +9,6 @@ Doncaster GTA apprenticeship portal — live Supabase only.
 | [architecture.md](./architecture.md) | How the app is shaped (adapters, workspaces, delivery spines) |
 | [local-setup.md](./local-setup.md) | Env vars and running the app locally |
 | [standards/st0499/](./standards/st0499/) | Autocare Technician standard sources and KSB catalog |
+| [Programme definition README](../src/features/programme-definition/README.md) | Programme Builder + embedded AI curriculum baseline/delta architecture |
 
 Older planning / handoff docs were removed. Prefer this set plus the code.

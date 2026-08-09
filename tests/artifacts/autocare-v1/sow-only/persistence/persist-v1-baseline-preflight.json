@@ -1,0 +1,189 @@
+{
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "standardVersionId": "decc0ba5-31b5-4bff-80d8-c3e2782bac2e",
+  "spineId": "c0292971-0eec-4cc4-97e3-b22ca3983326",
+  "structuredOtj": 611.5,
+  "officialKsbCount": 64,
+  "blocks": [
+    {
+      "id": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "sequence": 1,
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "blockNumber": 1
+    },
+    {
+      "id": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "sequence": 2,
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "blockNumber": 2
+    },
+    {
+      "id": "06873abc-907b-4f07-a360-44afc76d2843",
+      "sequence": 3,
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "blockNumber": 3
+    },
+    {
+      "id": "fe75972c-69c5-466b-819e-65eeb8ce7666",
+      "sequence": 4,
+      "title": "Emerging Technology and Driveline Systems",
+      "blockNumber": 4
+    },
+    {
+      "id": "997300c5-ee32-4ef4-b562-e0571e436a6a",
+      "sequence": 5,
+      "title": "Diagnostic Thinking and Complex Repair Activities",
+      "blockNumber": 5
+    },
+    {
+      "id": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "sequence": 6,
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "blockNumber": 6
+    },
+    {
+      "id": "677a5a43-df92-4c9d-92ae-30e2c2979c40",
+      "sequence": 7,
+      "title": "Advanced Workshop Practice and Technical Communication",
+      "blockNumber": 7
+    },
+    {
+      "id": "1975e5ce-49fe-4baa-944a-a637a1f4d9be",
+      "sequence": 8,
+      "title": "Advanced Diagnostics and Workshop Organisation",
+      "blockNumber": 8
+    },
+    {
+      "id": "358fb8a6-e2a3-42e9-bee1-28873a0643ef",
+      "sequence": 9,
+      "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+      "blockNumber": 9
+    },
+    {
+      "id": "93f19eef-9378-4e90-a913-510382777ac5",
+      "sequence": 10,
+      "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+      "blockNumber": 10
+    }
+  ],
+  "nonBlocks": [
+    {
+      "id": "3cd5180a-adf3-4503-bc01-38fd67d816e2",
+      "type": "gateway",
+      "title": "Gateway Readiness and Confirmation"
+    },
+    {
+      "id": "aa2e16a5-d9a3-44ef-8dfa-75b034bb2310",
+      "type": "epa",
+      "title": "End-Point Assessment"
+    }
+  ],
+  "existingMappings": 15,
+  "existingPrimaries": [
+    {
+      "code": "K12",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "K21",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "K23",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "K24",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "K29",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "K30",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S1",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S12",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S13",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S14",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S15",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S19",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S2",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S3",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "code": "S4",
+      "blockId": "fe75972c-69c5-466b-819e-65eeb8ce7666",
+      "intent": "introduce",
+      "value": 1,
+      "createdBy": "human-approved-primary-batch"
+    }
+  ]
+}

@@ -17,13 +17,16 @@ import {
 import { formatDisplayDate } from "@/features/apprentice-lifecycle/domain/programme-week";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
 import { normalizeDeliverySpine } from "@/features/administration/domain/cohort-products";
-import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "../domain/autocare-blocks";
 import {
   AUTOCARE_GATEWAYS,
   gatewayMilestoneAnchorLabel,
   gatewayMilestoneDueIso,
 } from "../domain/gateways";
-import { tasksForBlock } from "../domain/autocare-tasks";
+import {
+  tasksForDeliveryBlock,
+  type DeliveryBlockView,
+} from "../domain/published-delivery-catalogue";
+import { usePublishedDeliveryCatalogue } from "../domain/use-published-delivery-catalogue";
 import { taskKindLabel } from "../domain/task-schema";
 import { buildGroupsBragBoard } from "../domain/groups-progression";
 import {
@@ -157,7 +160,7 @@ export function ManagementApprenticeBragScreen() {
   );
   const admin = useAdminStore();
   const [apprenticeId, setApprenticeId] = useState<string>("");
-  const [openBlockId, setOpenBlockId] = useState<number | null>(null);
+  const [openBlockId, setOpenBlockId] = useState<string | null>(null);
   const [openGroupId, setOpenGroupId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -196,6 +199,14 @@ export function ManagementApprenticeBragScreen() {
     cohort?.expectedEndDate || enrolment?.originalPlannedEndDate || null;
   const storeApprenticeId = resolveTaskStoreApprenticeId(apprenticeId);
 
+  const { catalogue, loading: catalogueLoading } = usePublishedDeliveryCatalogue(
+    {
+      programmeVersionId: enrolment?.gtaProgrammeVersionId ?? null,
+      apprenticeId: enrolment?.apprenticeId ?? null,
+      enabled: Boolean(enrolment) && !onGroups,
+    },
+  );
+
   const groupsPack = useMemo(() => {
     if (!onGroups || !enrolment) return null;
     return resolveGroupsPack(
@@ -224,61 +235,68 @@ export function ManagementApprenticeBragScreen() {
     });
   }, [ceaSnap, groupsPack, ceaApprenticeId, programmeStartDate]);
 
-  const { trainingRows, epaBlockSummary, milestoneRows } = useMemo(() => {
+  const { trainingRows, milestoneRows, catalogueStatusMessage } = useMemo(() => {
     void taskSnap;
     if (onGroups) {
       return {
         trainingRows: [] as Array<{
-          block: (typeof AUTOCARE_BLOCKS)[number];
+          block: DeliveryBlockView;
           summary: ReturnType<typeof summariseBlockCompletion>;
           window: { startIso: string; endIso: string } | null;
           brag: ProgressionBrag | null;
         }>,
-        epaBlockSummary: null as ReturnType<
-          typeof summariseBlockCompletion
-        > | null,
         milestoneRows: [] as Array<{
           gw: (typeof AUTOCARE_GATEWAYS)[number];
           dueIso: string | null;
           milestone: ReturnType<typeof calculateMilestoneStatus>;
           complete: boolean;
         }>,
+        catalogueStatusMessage: null as string | null,
+      };
+    }
+
+    if (catalogue.status !== "ready") {
+      return {
+        trainingRows: [] as Array<{
+          block: DeliveryBlockView;
+          summary: ReturnType<typeof summariseBlockCompletion>;
+          window: { startIso: string; endIso: string } | null;
+          brag: ProgressionBrag | null;
+        }>,
+        milestoneRows: [] as Array<{
+          gw: (typeof AUTOCARE_GATEWAYS)[number];
+          dueIso: string | null;
+          milestone: ReturnType<typeof calculateMilestoneStatus>;
+          complete: boolean;
+        }>,
+        catalogueStatusMessage: catalogue.message,
       };
     }
 
     const training = [];
-    let epaSummary = null as ReturnType<typeof summariseBlockCompletion> | null;
-
-    for (const block of AUTOCARE_BLOCKS) {
-      const tasks = tasksForBlock(block.id);
+    for (const block of catalogue.blocks) {
+      const tasks = tasksForDeliveryBlock(catalogue, block.spineItemId);
       if (tasks.length === 0) continue;
       const summary = summariseBlockCompletion(tasks, storeApprenticeId);
-
-      if (block.kind === "training") {
-        const window = blockCohortWindowDates(block, cohortStartDate);
-        const brag = calculateBlockProgressionBrag({
-          windowStartIso: window?.startIso ?? null,
-          windowEndIso: window?.endIso ?? null,
-          complete: summary.complete,
-          completedAtIso: summary.completedAt,
-        });
-        training.push({ block, summary, window, brag });
-        continue;
-      }
-
-      if (block.kind === "epa") {
-        epaSummary = summary;
-      }
+      const window = blockCohortWindowDates(block, cohortStartDate);
+      const brag = calculateBlockProgressionBrag({
+        windowStartIso: window?.startIso ?? null,
+        windowEndIso: window?.endIso ?? null,
+        complete: summary.complete,
+        completedAtIso: summary.completedAt,
+      });
+      training.push({ block, summary, window, brag });
     }
 
+    // TEMPORARY: gateway milestones remain static Autocare placeholders until
+    // GTA programme versions model GW1/GW2/EPA dates. Not used for block/task lists.
     const milestones = AUTOCARE_GATEWAYS.map((gw) => {
       const dueIso = gatewayMilestoneDueIso({
         milestone: gw,
         cohortStartIso: cohortStartDate,
         deliveryEndIso: deliveryEnd,
       });
-      const complete =
-        gw.kind === "epa" ? Boolean(epaSummary?.complete) : false;
+      const complete = false;
       const milestone = calculateMilestoneStatus({
         kind: gw.kind,
         complete,
@@ -289,10 +307,11 @@ export function ManagementApprenticeBragScreen() {
 
     return {
       trainingRows: training,
-      epaBlockSummary: epaSummary,
       milestoneRows: milestones,
+      catalogueStatusMessage: null as string | null,
     };
   }, [
+    catalogue,
     cohortStartDate,
     deliveryEnd,
     onGroups,
@@ -412,18 +431,6 @@ export function ManagementApprenticeBragScreen() {
       taskTotal += row.summary.total;
     }
 
-    if (epaBlockSummary) {
-      verified += epaBlockSummary.verified;
-      inFlight += epaBlockSummary.inFlight;
-      const epaMilestone = milestoneRows.find((m) => m.gw.kind === "epa");
-      if (epaMilestone?.milestone === "behind") {
-        notStartedOverdue += epaBlockSummary.notStarted;
-      } else {
-        notStartedPending += epaBlockSummary.notStarted;
-      }
-      taskTotal += epaBlockSummary.total;
-    }
-
     const milestoneCounts = {
       complete: 0,
       onTrack: 0,
@@ -500,7 +507,6 @@ export function ManagementApprenticeBragScreen() {
       },
     };
   }, [
-    epaBlockSummary,
     groupsBoard,
     milestoneRows,
     onGroups,
@@ -511,7 +517,9 @@ export function ManagementApprenticeBragScreen() {
     ? groupsPack
       ? `${groupsPack.standardLabel}`
       : enrolment?.programmeName ?? "Groups programme"
-    : `${AUTOCARE_STANDARD.label} · ${AUTOCARE_STANDARD.code} ${AUTOCARE_STANDARD.version}`;
+    : catalogue.programmeTitle
+      ? `${catalogue.programmeTitle}${catalogue.standardCode ? ` · ${catalogue.standardCode}` : ""}${catalogue.internalVersion ? ` · GTA v${catalogue.internalVersion}` : ""}`
+      : enrolment?.programmeName ?? "Pinned programme version";
 
   return (
     <ApprenticePageShell
@@ -633,7 +641,7 @@ export function ManagementApprenticeBragScreen() {
                 ariaLabel={`BRAG mix across ${charts.trainingBlockTotal} ${charts.unitLabel}`}
               />
               <BragPieCard
-                title={onGroups ? "Mandatory tasks" : "All tasks (60)"}
+                title={onGroups ? "Mandatory tasks" : "Published tasks"}
                 centerValue={`${charts.verified}/${charts.taskTotal}`}
                 centerLabel={onGroups ? "signed off" : "verified"}
                 slices={charts.taskSlices}
@@ -798,23 +806,37 @@ export function ManagementApprenticeBragScreen() {
             {!onGroups ? (
               <>
                 <h2 className={styles.panelTitle}>Training blocks</h2>
-                <p className={styles.muted}>
-                  Select a block to expand its tasks, then open a task to review
-                  the quality of work submitted.
-                </p>
+                {catalogueLoading ? (
+                  <p className={styles.muted}>
+                    Loading published programme catalogue…
+                  </p>
+                ) : null}
+                {catalogueStatusMessage ? (
+                  <p className={styles.muted}>{catalogueStatusMessage}</p>
+                ) : (
+                  <p className={styles.muted}>
+                    Select a block to expand its published Course Builder tasks,
+                    then open a task to review the quality of work submitted.
+                  </p>
+                )}
                 {trainingRows.map(({ block, summary, window, brag }) => {
-                  const open = openBlockId === block.id;
-                  const tasks = tasksForBlock(block.id);
+                  const open = openBlockId === block.spineItemId;
+                  const tasks = tasksForDeliveryBlock(
+                    catalogue,
+                    block.spineItemId,
+                  );
                   return (
                     <article
-                      key={block.id}
+                      key={block.spineItemId}
                       className={deliveryStyles.bragRow}
                       data-brag={brag ?? undefined}
                     >
                       <button
                         type="button"
                         className={deliveryStyles.fundingBlockHead}
-                        onClick={() => setOpenBlockId(open ? null : block.id)}
+                        onClick={() =>
+                          setOpenBlockId(open ? null : block.spineItemId)
+                        }
                         aria-expanded={open}
                         style={{
                           width: "100%",
@@ -829,7 +851,7 @@ export function ManagementApprenticeBragScreen() {
                       >
                         <div>
                           <h3 className={styles.panelTitle}>
-                            Block {block.id} · {block.name}
+                            Block {block.displayOrdinal} · {block.title}
                           </h3>
                           <p className={styles.muted}>
                             {window
@@ -960,10 +982,9 @@ export function ManagementApprenticeBragScreen() {
 
                 <h2 className={styles.panelTitle}>Gateway &amp; EPA milestones</h2>
                 <p className={styles.muted}>
-                  Separate from training blocks (MBB model). Gateway 1 after Block
-                  5 (~12 months), Gateway 2 after Block 10 (~24 months), EPA at
-                  cohort delivery end. Green = complete, amber = on track, red =
-                  behind.
+                  Temporary Autocare static placeholders — not yet modelled on
+                  GTA programme versions. Separate from published training
+                  blocks. Green = complete, amber = on track, red = behind.
                 </p>
                 {milestoneRows.map(({ gw, dueIso, milestone }) => {
                   const tone = milestoneChipTone(milestone);

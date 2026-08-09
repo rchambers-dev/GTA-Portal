@@ -1,0 +1,360 @@
+{
+  "foundation": [],
+  "specialist": {
+    "W11": {
+      "file": "Autocare_L2_Week_011_Lesson_Plan_v1.0.docx",
+      "week": 11,
+      "block": 2,
+      "topic": "Customer Service Scenarios",
+      "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for customer service scenarios. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to customer service scenarios. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Tutor-led session exploring different customer service scenarios including complaints, misunderstandings and service delays. Explanation of customer expectations, workshop limitations and how poor communication can escalate issues.",
+        "Structured role-play activities where learners handle realistic customer complaints, including incorrect work, delays and cost disputes. Tutor models effective responses before learners practise independently. Observation used to assess communication skills, tone, and ability to ",
+        "Application linking complaint scenarios to documentation and evidence. Learners complete written records of customer interactions including notes on issues raised and actions taken. Emphasis on accuracy, clarity and accountability.",
+        "Consolidation through group discussion reviewing responses and identifying best practice. Tutor-led questioning checks understanding of complaint handling procedures. Evidence generated through written documentation, observation and questioning."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B3",
+          "B5",
+          "K25",
+          "K7",
+          "K8",
+          "S16",
+          "S20",
+          "S22",
+          "S23",
+          "S24"
+        ]
+      }
+    },
+    "W13": {
+      "file": "Autocare_L2_Week_013_Lesson_Plan_v1.0.docx",
+      "week": 13,
+      "block": 2,
+      "topic": "Engine Repairs",
+      "focusLine": "Duty 3 | B3, B4, B5, K25, K30, K31, S20, S21, S25 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for engine repairs. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to engine repairs. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Detailed theory session covering engine mechanical components including pistons, crankshaft, camshaft, valves and timing systems. Explanation of how these components interact during the four-stroke cycle, with emphasis on correct timing and mechanical synchronisation.",
+        "Guided practical identification of engine components using training engines or vehicles. Learners locate and identify key components and discuss their function. Tutor demonstrates inspection techniques including checking for oil leaks, loose components and visible wear.",
+        "Application activity analysing engine fault scenarios such as knocking noises, poor performance and visible leaks. Learners link symptoms to possible mechanical causes and record findings on a structured diagnostic worksheet or job card.",
+        "Consolidation through group discussion reviewing fault scenarios and common diagnostic errors. Tutor-led questioning checks understanding of engine operation and fault impact. Evidence generated through written diagnostic responses, observation and questioning."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B3",
+          "B4",
+          "B5",
+          "K25",
+          "K30",
+          "K31",
+          "S20",
+          "S21",
+          "S25"
+        ]
+      }
+    },
+    "W15": {
+      "file": "Autocare_L2_Week_015_Lesson_Plan_v1.0.docx",
+      "week": 15,
+      "block": 2,
+      "topic": "Supplier Liaison",
+      "focusLine": "Duty 5 | B3, K26, K27, K28, K29, S17, S18, S19 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for supplier liaison. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to supplier liaison. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Tutor-led session covering supplier communication, parts sourcing processes and use of catalogues or digital systems. Explanation of how to identify correct parts using vehicle information such as registration or VIN.",
+        "Practical activity where learners use catalogues or systems to identify and select parts for given vehicle scenarios. Learners compare options, check compatibility and confirm specifications. Tutor observation used to assess accuracy, attention to detail and correct selection pro",
+        "Application activity managing supplier-related issues such as incorrect parts, damaged deliveries or delays. Learners complete ordering documentation and communication records, demonstrating clear written communication and problem-solving skills.",
+        "Consolidation through discussion reviewing decisions made and common sourcing errors. Tutor-led questioning checks understanding of parts selection and supplier communication. Evidence generated through completed documentation and observation."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B3",
+          "K26",
+          "K27",
+          "K28",
+          "K29",
+          "S17",
+          "S18",
+          "S19"
+        ]
+      }
+    },
+    "W16": {
+      "file": "Autocare_L2_Week_016_Lesson_Plan_v1.0.docx",
+      "week": 16,
+      "block": 2,
+      "topic": "Duties 1 / 2: Intake plus Inspection",
+      "focusLine": "Mapped occupational duties | K34, S1, S2, B2, K32, K33 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for duties 1 / 2: intake plus inspection. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to duties 1 / 2: intake plus inspection. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Tutor-led session linking customer communication to vehicle intake procedures. Learners explore how to gather accurate information about vehicle concerns using effective questioning. Discussion of how initial information influences inspection planning and fault identification.",
+        "Structured role-play activity where learners simulate vehicle intake, greeting customers, gathering information and recording concerns on job cards. Tutor models best practice before learners carry out tasks independently.",
+        "Application activity linking customer concerns to inspection planning. Learners identify which checks should be prioritised based on symptoms described and complete job cards and inspection plans. Emphasis placed on clear written communication and logical thinking.",
+        "Consolidation through discussion reviewing intake scenarios and inspection decisions. Tutor-led questioning checks understanding of the link between communication and diagnostics. Evidence generated through completed job cards, observation and questioning."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B2",
+          "K32",
+          "K33",
+          "K34",
+          "S1",
+          "S2"
+        ]
+      }
+    },
+    "W17": {
+      "file": "Autocare_L2_Week_017_Lesson_Plan_v1.0.docx",
+      "week": 17,
+      "block": 2,
+      "topic": "Advanced Brake Diagnostics",
+      "focusLine": "Duty 3 | B3, B4, B5, K25, K30, K31, S20, S21, S25 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for advanced brake diagnostics. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to advanced brake diagnostics. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Detailed theory session covering advanced brake system operation including ABS components such as wheel speed sensors, tone rings, hydraulic control unit and ECU interaction.",
+        "Structured practical session identifying ABS components on training vehicles. Learners locate sensors, inspect wiring routes and identify mounting positions. Tutor demonstrates visual inspection techniques and highlights common issues such as damaged wiring, corrosion and incorre",
+        "Application activity diagnosing brake and ABS-related faults based on given scenarios including ABS warning light, intermittent braking issues and vibration under braking. Learners interpret symptoms, suggest possible root causes and record findings on a structured diagnostic wor",
+        "Consolidation through group discussion reviewing diagnostic decisions and common errors. Tutor-led questioning checks understanding of system operation and fault impact. Short knowledge check reinforces key learning points."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B3",
+          "B4",
+          "B5",
+          "K25",
+          "K30",
+          "K31",
+          "S20",
+          "S21",
+          "S25"
+        ]
+      }
+    },
+    "W21": {
+      "file": "Autocare_L2_Week_021_Lesson_Plan_v1.0.docx",
+      "week": 21,
+      "block": 3,
+      "topic": "Service reception, booking diagnostics and first impressions",
+      "focusLine": "Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for service reception, booking diagnostics and first impressions. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to service reception, booking diagnostics and first impressions. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Tutor-led session covering the role of service reception within workshop operations. Explanation of booking procedures, job allocation and how accurate information gathering impacts workshop efficiency.",
+        "Structured role-play activity where learners simulate booking a vehicle into the workshop. Learners gather customer information, identify concerns and complete booking documentation. Tutor observation used to assess questioning techniques, accuracy of information and professional",
+        "Application activity linking booking information to workshop workflow. Learners plan job allocation based on given scenarios, considering time, resources and urgency. Learners complete job cards and scheduling tasks, developing organisational and written communication skills.",
+        "Consolidation through discussion reviewing workflow decisions and identifying common booking errors. Tutor-led questioning checks understanding of how reception links to workshop efficiency. Evidence generated through completed documentation, observation and questioning."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [
+          "role of"
+        ],
+        "instruction": [],
+        "ksb_codes": [
+          "B3",
+          "B5",
+          "K1",
+          "K24",
+          "K32",
+          "K33",
+          "K34",
+          "S16",
+          "S22",
+          "S23",
+          "S24"
+        ]
+      }
+    },
+    "W24": {
+      "file": "Autocare_L2_Week_024_Lesson_Plan_v1.0.docx",
+      "week": 24,
+      "block": 3,
+      "topic": "Brake wear checks, tyre condition and wheel security",
+      "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for brake wear checks, tyre condition and wheel security. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to brake wear checks, tyre condition and wheel security. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Detailed theory session covering brake and tyre inspection standards including wear limits, legal requirements and safety implications. Tutor reinforces how incorrect decisions can directly impact vehicle safety and customer risk.",
+        "Structured practical inspection of brake and tyre systems on training vehicles. Learners assess wear, damage and condition using correct tools and techniques. Tutor demonstrates correct methods and highlights common errors. Observation used to assess accuracy and safe working.",
+        "Application activity requiring learners to identify and prioritise defects as advisory or safety-critical. Learners justify decisions and record findings on structured inspection documentation. Tutor challenges learners to explain reasoning and link to safety outcomes.",
+        "Consolidation through discussion reviewing inspection decisions and highlighting correct judgement. Tutor-led questioning checks understanding of legal requirements and safety implications. Evidence generated through inspection records, observation and questioning"
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B1",
+          "K10",
+          "K11",
+          "K12",
+          "K13",
+          "K14",
+          "K15",
+          "K16",
+          "K19",
+          "K9",
+          "S10",
+          "S11",
+          "S13",
+          "S26"
+        ]
+      }
+    },
+    "W25": {
+      "file": "Autocare_L2_Week_025_Lesson_Plan_v1.0.docx",
+      "week": 25,
+      "block": 3,
+      "topic": "Parts identification, catalogue use and alternative part selection",
+      "focusLine": "Duty 5 | B3, K26, K27, K28, K29, S17, S18, S19 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for parts identification, catalogue use and alternative part selection. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to parts identification, catalogue use and alternative part selection. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Tutor-led session covering advanced parts identification using catalogues, vehicle data and technical information. Explanation of selecting correct components based on specifications, compatibility and application. Discussion of risks associated with incorrect parts selection.",
+        "Practical activity identifying and selecting parts for given vehicle scenarios. Learners use available systems to confirm correct components and specifications. Tutor observation used to assess accuracy and attention to detail.",
+        "Application activity linking parts selection to repair quality and customer satisfaction. Learners analyse scenarios involving incorrect parts and identify causes and solutions. Learners record findings using structured written responses.",
+        "Consolidation through discussion reviewing decisions and common errors in parts selection. Tutor-led questioning checks understanding of processes and impact on workshop operations. Evidence generated through written work, observation and questioning."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B3",
+          "K26",
+          "K27",
+          "K28",
+          "K29",
+          "S17",
+          "S18",
+          "S19"
+        ]
+      }
+    },
+    "W26": {
+      "file": "Autocare_L2_Week_026_Lesson_Plan_v1.0.docx",
+      "week": 26,
+      "block": 3,
+      "topic": "Workshop procedures, documentation control and handover discipline",
+      "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for workshop procedures, documentation control and handover discipline. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to workshop procedures, documentation control and handover discipline. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Tutor-led session covering workshop procedures including job card lifecycle from creation through to completion and sign-off. Explanation of why accurate documentation is critical for legal protection, traceability and customer communication.",
+        "Structured activity reviewing sample job cards and identifying errors or missing information. Learners correct documentation and discuss how inaccuracies could impact workshop operations or customer trust. Tutor observation used to assess attention to detail and understanding of ",
+        "Application activity where learners complete job cards based on given fault scenarios, ensuring accurate recording of customer concerns, inspection findings and actions taken. Emphasis placed on clear written communication, correct terminology and logical sequencing of informatio",
+        "Consolidation through group discussion reviewing completed job cards and identifying best practice. Tutor-led questioning checks understanding of documentation importance and audit requirements. Evidence generated through completed job cards, observation and questioning."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B3",
+          "B5",
+          "K25",
+          "K7",
+          "K8",
+          "S16",
+          "S20",
+          "S22",
+          "S23",
+          "S24"
+        ]
+      }
+    },
+    "W27": {
+      "file": "Autocare_L2_Week_027_Lesson_Plan_v1.0.docx",
+      "week": 27,
+      "block": 3,
+      "topic": "Housekeeping, 5S routines and safe storage control",
+      "focusLine": "Duty 7 | B1, B2, K3, K4, S1, S2, S3, S4 | Scheduled at block end",
+      "eligibleOtj": 5.5,
+      "aims": "• Develop secure occupational knowledge and terminology for housekeeping, 5s routines and safe storage control. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to housekeeping, 5s routines and safe storage control. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.",
+      "objectives": null,
+      "activities": [
+        "Detailed theory session introducing 5S principles including sort, set in order, shine, standardise and sustain. Tutor explains how organisation impacts safety, efficiency and productivity. Discussion of common workshop hazards such as oil spills, poor storage and clutter, linking",
+        "Practical activity applying 5S principles within the workshop environment. Learners assess a work area, identify hazards and implement improvements such as organising tools, cleaning areas and improving layout. Tutor observation used to assess safe working and application of prin",
+        "Application activity where learners evaluate how poor organisation affects workflow, safety and job completion times. Learners record findings and suggest improvements using structured written responses, linking to real workshop scenarios.",
+        "Consolidation through discussion reviewing improvements made and identifying ongoing actions. Tutor-led questioning checks understanding of 5S and safety responsibilities. Evidence generated through written work, observation and questioning."
+      ],
+      "contentHits": {
+        "fluid": [],
+        "schedule": [],
+        "edi": [],
+        "role": [],
+        "instruction": [],
+        "ksb_codes": [
+          "B1",
+          "B2",
+          "K3",
+          "K4",
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ]
+      }
+    }
+  },
+  "fluidScanWeeks1to30": [
+    {
+      "week": 30,
+      "block": 3,
+      "topic": "Environmental risk, spill response and emergency preparedness",
+      "snippets": [
+        "thin the automotive industry. Tutor explains types of hazardous waste including engine oil, coolant, brake fluid, batteries and contaminated materials. Baseline/retrieval check; correct misconceptions. Support:"
+      ]
+    }
+  ]
+}

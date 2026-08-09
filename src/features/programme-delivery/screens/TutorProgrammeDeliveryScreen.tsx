@@ -1,22 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "../domain/autocare-blocks";
+import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
+import { Select } from "@/components/ui/Select";
+import { isDeliveryBlockUnlocked } from "../domain/delivery-unlock";
 import {
-  AUTOCARE_PRACTICAL_TASKS,
-  lessonPlansForBlock,
-  tasksForBlock,
-} from "../domain/autocare-tasks";
+  tasksForDeliveryBlock,
+} from "../domain/published-delivery-catalogue";
+import { usePublishedDeliveryCatalogue } from "../domain/use-published-delivery-catalogue";
 import {
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
   listAwaitingTrainer,
+  resolveTaskStoreApprenticeId,
   statusLabel,
   statusTone,
   subscribeTaskStore,
@@ -26,189 +28,224 @@ import styles from "./programme-delivery.module.css";
 type Tab = "queue" | "blocks";
 
 /**
- * Tutor programme delivery — lesson plans + practical tasks.
- * Apprentices never see lesson plans; tutors see everything.
+ * Tutor programme delivery — published Course Builder tasks for a selected
+ * learner's pinned GTA programme version. No Autocare static fallback.
  */
 export function TutorProgrammeDeliveryScreen() {
   const [tab, setTab] = useState<Tab>("queue");
+  const admin = useAdminStore();
+  const enrolments = useMemo(
+    () =>
+      admin.enrolments
+        .filter((e) => e.apprenticeId)
+        .slice()
+        .sort((a, b) =>
+          (a.displayName || a.apprenticeId || "").localeCompare(
+            b.displayName || b.apprenticeId || "",
+          ),
+        ),
+    [admin.enrolments],
+  );
+  const [apprenticeId, setApprenticeId] = useState("");
+  const selected =
+    enrolments.find((e) => e.apprenticeId === apprenticeId) ?? enrolments[0] ?? null;
+  const resolvedApprenticeId = selected?.apprenticeId ?? "";
+  const storeId = resolveTaskStoreApprenticeId(resolvedApprenticeId);
+
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
 
-  const awaiting = listAwaitingTrainer(AUTOCARE_PRACTICAL_TASKS);
+  const { catalogue, loading } = usePublishedDeliveryCatalogue({
+    programmeVersionId: selected?.gtaProgrammeVersionId ?? null,
+    apprenticeId: resolvedApprenticeId || null,
+    enabled: Boolean(selected),
+  });
 
-  const taskedBlocks = AUTOCARE_BLOCKS.filter(
-    (b) => tasksForBlock(b.id).length > 0,
-  );
+  const awaiting =
+    catalogue.status === "ready"
+      ? listAwaitingTrainer(catalogue.tasks, storeId)
+      : [];
+
+  const taskedBlocks =
+    catalogue.status === "ready"
+      ? catalogue.blocks.filter(
+          (b) => tasksForDeliveryBlock(catalogue, b.spineItemId).length > 0,
+        )
+      : [];
 
   return (
     <ApprenticePageShell
       eyebrow="Tutor"
       title="Programme delivery"
-      description="Lesson plans and college practical tasks for Autocare. Review apprentice submissions, verify Task 5 reflections to unlock the next block, and use curriculum review status while leads check transcribed content."
+      description="Review published Course Builder tasks for a learner’s pinned GTA programme version. Draft content never appears here."
     >
       <div className={styles.root}>
         <div className={styles.purpose}>
-          <p className={styles.purposeLead}>
+          <label className={styles.blockMeta} style={{ display: "grid", gap: 6 }}>
+            <span>Learner (enrolment pin)</span>
+            <Select
+              value={resolvedApprenticeId}
+              onChange={setApprenticeId}
+              options={
+                enrolments.length === 0
+                  ? [{ value: "", label: "No enrolments…" }]
+                  : enrolments.map((e) => ({
+                      value: e.apprenticeId!,
+                      label: `${e.displayName || e.apprenticeId}${
+                        e.gtaProgrammeVersionId ? "" : " · unpinned"
+                      }`,
+                    }))
+              }
+            />
+          </label>
+          <p className={styles.purposeLead} style={{ marginTop: 12 }}>
             <strong>
-              {AUTOCARE_STANDARD.label} · {AUTOCARE_STANDARD.code}{" "}
-              {AUTOCARE_STANDARD.version}
+              {catalogue.programmeTitle ||
+                selected?.programmeName ||
+                "Programme"}
             </strong>
+            {catalogue.standardCode ? ` · ${catalogue.standardCode}` : ""}
+            {catalogue.internalVersion
+              ? ` · GTA v${catalogue.internalVersion}`
+              : ""}
           </p>
-          <p className={styles.purposeBody}>
-            You see lesson plans and tasks. Apprentices only see tasks. Sign-off
-            order for reflections: apprentice → mentor (employer portal) → you
-            verify. Difficulty ratings feed next-year curriculum tweaks.
-          </p>
-        </div>
-
-        <div className={styles.tabRow} role="tablist">
-          <button
-            type="button"
-            role="tab"
-            className={tab === "queue" ? styles.tabActive : styles.tab}
-            aria-selected={tab === "queue"}
-            onClick={() => setTab("queue")}
-          >
-            Sign-off queue ({awaiting.length})
-          </button>
-          <button
-            type="button"
-            role="tab"
-            className={tab === "blocks" ? styles.tabActive : styles.tab}
-            aria-selected={tab === "blocks"}
-            onClick={() => setTab("blocks")}
-          >
-            Blocks & lesson plans
-          </button>
-        </div>
-
-        {tab === "queue" ? (
-          awaiting.length === 0 ? (
-            <p className={styles.empty}>
-              Nothing waiting for mentor or trainer sign-off right now.
+          {selected && !selected.gtaProgrammeVersionId ? (
+            <p className={styles.purposeBody}>
+              This enrolment has no GTA programme version pin. Bind one on RPL/TNP
+              before delivery content can load.
             </p>
-          ) : (
-            <div className={styles.blockList}>
-              {awaiting.map((task) => {
-                const sub = getTaskSubmission(task.id);
-                return (
-                  <article key={task.id} className={styles.queueCard}>
-                    <div>
-                      <p className={styles.blockMeta}>
-                        Apprentice · Block {task.blockId} · {task.evidenceRef}
-                      </p>
-                      <h3 className={styles.blockTitle}>{task.title}</h3>
-                      <p className={styles.blockMeta}>
-                        Method:{" "}
-                        {sub.method === "pdf_upload"
-                          ? `PDF upload (${sub.uploadedPdfNames.join(", ") || "files"})`
-                          : "Portal form"}
-                        {sub.difficulty ? ` · Difficulty: ${sub.difficulty}` : ""}
-                      </p>
-                    </div>
-                    <div className={styles.taskEnd}>
-                      <ApprenticeStatusChip tone={statusTone(sub.status)}>
-                        {statusLabel(sub.status)}
-                      </ApprenticeStatusChip>
-                      <Link
-                        className={styles.linkish}
-                        href={`/staff/programme-delivery/${task.id}`}
-                      >
-                        Review →
-                      </Link>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          )
+          ) : null}
+          {selected?.gtaProgrammeVersionId && catalogue.status !== "ready" ? (
+            <p className={styles.purposeBody}>{catalogue.message}</p>
+          ) : null}
+          {selected && catalogue.status === "ready" ? (
+            <p className={styles.purposeBody}>
+              Learners on the same cohort may be pinned to different GTA programme
+              versions — always select the learner before reviewing.
+            </p>
+          ) : null}
+        </div>
+
+        {!selected ? (
+          <p className={styles.empty}>Select a learner to open delivery.</p>
+        ) : loading ? (
+          <p className={styles.empty}>Loading published tasks…</p>
+        ) : catalogue.status !== "ready" ? (
+          <p className={styles.empty}>{catalogue.message}</p>
         ) : (
-          <div className={styles.blockList}>
-            {taskedBlocks.map((block) => {
-              const tasks = tasksForBlock(block.id);
-              const plans = lessonPlansForBlock(block.id);
-              return (
-                <article key={block.id} className={styles.blockCard}>
-                  <div className={styles.blockHead}>
-                    <div>
+          <>
+            <div className={styles.tabRow} role="tablist">
+              <button
+                type="button"
+                role="tab"
+                className={tab === "queue" ? styles.tabActive : styles.tab}
+                aria-selected={tab === "queue"}
+                onClick={() => setTab("queue")}
+              >
+                Sign-off queue ({awaiting.length})
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className={tab === "blocks" ? styles.tabActive : styles.tab}
+                aria-selected={tab === "blocks"}
+                onClick={() => setTab("blocks")}
+              >
+                Blocks
+              </button>
+            </div>
+
+            {tab === "queue" ? (
+              awaiting.length === 0 ? (
+                <p className={styles.empty}>
+                  Nothing waiting for mentor or trainer sign-off right now.
+                </p>
+              ) : (
+                <div className={styles.blockList}>
+                  {awaiting.map((task) => {
+                    const sub = getTaskSubmission(task.id, storeId);
+                    return (
+                      <article key={task.id} className={styles.queueCard}>
+                        <div>
+                          <p className={styles.blockMeta}>
+                            Block {task.blockId} · Task {task.taskNumber}
+                          </p>
+                          <h2 className={styles.blockTitle}>{task.title}</h2>
+                          <ApprenticeStatusChip tone={statusTone(sub.status)}>
+                            {statusLabel(sub.status)}
+                          </ApprenticeStatusChip>
+                        </div>
+                        <Link
+                          href={`/staff/programme-delivery/${task.id}?apprentice=${encodeURIComponent(resolvedApprenticeId)}`}
+                          className={styles.linkish}
+                        >
+                          Review →
+                        </Link>
+                      </article>
+                    );
+                  })}
+                </div>
+              )
+            ) : (
+              <div className={styles.blockList}>
+                {taskedBlocks.map((block, index) => {
+                  const tasks = tasksForDeliveryBlock(
+                    catalogue,
+                    block.spineItemId,
+                  );
+                  const prior =
+                    index > 0
+                      ? tasksForDeliveryBlock(
+                          catalogue,
+                          taskedBlocks[index - 1]!.spineItemId,
+                        )
+                      : [];
+                  const unlocked = isDeliveryBlockUnlocked({
+                    block,
+                    blocks: catalogue.blocks,
+                    programmeWeek: 999,
+                    priorBlockTasks: prior,
+                    apprenticeId: storeId,
+                  });
+                  return (
+                    <article key={block.spineItemId} className={styles.blockCard}>
                       <h2 className={styles.blockTitle}>
-                        Block {block.id} · {block.name}
+                        Block {block.displayOrdinal} · {block.title}
                       </h2>
-                      <p className={styles.blockMeta}>
-                        {block.weekStart != null && block.weekEnd != null
-                          ? `Weeks ${block.weekStart}–${block.weekEnd}`
-                          : block.kind === "epa"
-                            ? "EPA assessment"
-                            : "Pre-EPA consolidation"}
-                        {" · "}
-                        {block.plannedOtjHours} OTJ / {block.plannedNonOtjHours}{" "}
-                        non-OTJ hrs
-                      </p>
-                    </div>
-                  </div>
-
-                  {plans.length > 0 ? (
-                    <>
-                      <p
-                        className={styles.staffOnly}
-                        style={{ padding: "0.75rem 1rem 0" }}
-                      >
-                        Lesson plans · staff only
-                      </p>
-                      <ul className={styles.lessonList}>
-                        {plans.map((plan) => (
-                          <li key={plan.id} className={styles.lessonItem}>
-                            <span>
-                              Week {plan.week}: {plan.title}
-                            </span>
-                            <span className={styles.blockMeta}>
-                              {plan.sourceFile}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </>
-                  ) : null}
-
-                  {tasks.length > 0 ? (
-                    <ul className={styles.taskList}>
-                      {tasks.map((task) => {
-                        const sub = getTaskSubmission(task.id);
-                        return (
-                          <li key={task.id}>
-                            <Link
-                              href={`/staff/programme-delivery/${task.id}`}
-                              className={styles.taskRow}
-                            >
-                              <div className={styles.taskMain}>
-                                <strong>{task.title}</strong>
-                                <span>
-                                  {task.evidenceRef} · review: {task.reviewStatus}
-                                </span>
-                              </div>
-                              <div className={styles.taskEnd}>
+                      <ul className={styles.taskList}>
+                        {tasks.map((task) => {
+                          const sub = getTaskSubmission(task.id, storeId);
+                          return (
+                            <li key={task.id}>
+                              <Link
+                                href={`/staff/programme-delivery/${task.id}?apprentice=${encodeURIComponent(resolvedApprenticeId)}`}
+                                className={styles.taskRow}
+                              >
+                                <div className={styles.taskMain}>
+                                  <strong>
+                                    Task {task.taskNumber}: {task.title}
+                                  </strong>
+                                  <span>
+                                    {unlocked ? "Open" : "Prior reflection may gate unlock"}
+                                  </span>
+                                </div>
                                 <ApprenticeStatusChip tone={statusTone(sub.status)}>
                                   {statusLabel(sub.status)}
                                 </ApprenticeStatusChip>
-                                <span className={styles.linkish}>Open →</span>
-                              </div>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : (
-                    <p className={styles.empty} style={{ margin: "0.75rem" }}>
-                      No practical tasks listed for this block.
-                    </p>
-                  )}
-                </article>
-              );
-            })}
-          </div>
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </div>
     </ApprenticePageShell>

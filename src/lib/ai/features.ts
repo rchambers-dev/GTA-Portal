@@ -68,6 +68,13 @@ export const AI_FEATURES: Record<AiFeatureKey, AiFeatureMeta> = {
     description:
       "Suggest INTRODUCE / PRACTISE / APPLY / REINFORCE / CONSOLIDATE / ASSESS when mapping a KSB to a block.",
   },
+  "programme.baseline_curriculum_analysis": {
+    key: "programme.baseline_curriculum_analysis",
+    label: "Baseline curriculum analysis",
+    area: "staff",
+    description:
+      "Analyse official KSBs against current approved curriculum evidence and recommend Primaries/gaps (never auto-persist).",
+  },
 };
 
 export function getAiFeature(key: AiFeatureKey): AiFeatureMeta {

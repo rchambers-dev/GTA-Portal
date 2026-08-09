@@ -1,0 +1,608 @@
+{
+  "at": "2026-08-08T13:24:44.557Z",
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "standardVersionId": "decc0ba5-31b5-4bff-80d8-c3e2782bac2e",
+  "before": {
+    "primaryCount": 15,
+    "mappingCount": 15,
+    "structuredOtj": 611.5
+  },
+  "after": {
+    "primaryCount": 45,
+    "mappingCount": 45,
+    "structuredOtj": 611.5
+  },
+  "rowsWritten": [
+    {
+      "ksbCode": "B1",
+      "block": 1,
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "B2",
+      "block": 3,
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "B3",
+      "block": 6,
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "B4",
+      "block": 10,
+      "blockId": "93f19eef-9378-4e90-a913-510382777ac5",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K3",
+      "block": 1,
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K4",
+      "block": 3,
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K5",
+      "block": 1,
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K9",
+      "block": 7,
+      "blockId": "677a5a43-df92-4c9d-92ae-30e2c2979c40",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K11",
+      "block": 5,
+      "blockId": "997300c5-ee32-4ef4-b562-e0571e436a6a",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K14",
+      "block": 6,
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K17",
+      "block": 9,
+      "blockId": "358fb8a6-e2a3-42e9-bee1-28873a0643ef",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K19",
+      "block": 2,
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K22",
+      "block": 9,
+      "blockId": "358fb8a6-e2a3-42e9-bee1-28873a0643ef",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K26",
+      "block": 2,
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K27",
+      "block": 2,
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K33",
+      "block": 1,
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S5",
+      "block": 1,
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S6",
+      "block": 3,
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S8",
+      "block": 1,
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S17",
+      "block": 2,
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S18",
+      "block": 8,
+      "blockId": "1975e5ce-49fe-4baa-944a-a637a1f4d9be",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S22",
+      "block": 1,
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S24",
+      "block": 10,
+      "blockId": "93f19eef-9378-4e90-a913-510382777ac5",
+      "provenance": "AUTOMATED_HIGH",
+      "createdBy": "v1-baseline-auto-high-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K15",
+      "block": 2,
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "provenance": "HUMAN_VERIFIED",
+      "createdBy": "v1-baseline-human-verified-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K16",
+      "block": 2,
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "provenance": "HUMAN_VERIFIED",
+      "createdBy": "v1-baseline-human-verified-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K32",
+      "block": 5,
+      "blockId": "997300c5-ee32-4ef4-b562-e0571e436a6a",
+      "provenance": "HUMAN_VERIFIED",
+      "createdBy": "v1-baseline-human-verified-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S21",
+      "block": 5,
+      "blockId": "997300c5-ee32-4ef4-b562-e0571e436a6a",
+      "provenance": "HUMAN_VERIFIED",
+      "createdBy": "v1-baseline-human-verified-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S16",
+      "block": 3,
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "provenance": "HUMAN_VERIFIED",
+      "createdBy": "v1-baseline-human-verified-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K6",
+      "block": 1,
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "provenance": "HUMAN_VERIFIED",
+      "createdBy": "v1-baseline-human-verified-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K25",
+      "block": 6,
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "provenance": "HUMAN_VERIFIED",
+      "createdBy": "v1-baseline-human-verified-approved",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    }
+  ],
+  "rowsWrittenCount": 30,
+  "duplicatePrimaryCodes": [],
+  "nonBlockPrimaryCount": 0,
+  "gapPrimaryConflicts": [],
+  "distributedPrimaryConflicts": [],
+  "gatewayEpaMappingCount": 0,
+  "parametersUnchanged": true,
+  "otjUnchanged": true,
+  "reconciliation": {
+    "official": 64,
+    "approvedPrimaries": 45,
+    "reviewedGaps": 18,
+    "distributedSkill": 1,
+    "unresolved": 0,
+    "multiClassified": [],
+    "sum": 64
+  },
+  "classificationAudit": [],
+  "allPrimaries": [
+    {
+      "ksbCode": "B1",
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "B2",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "B3",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "B4",
+      "blockId": "93f19eef-9378-4e90-a913-510382777ac5",
+      "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K11",
+      "blockId": "997300c5-ee32-4ef4-b562-e0571e436a6a",
+      "title": "Diagnostic Thinking and Complex Repair Activities",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K12",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "K14",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K15",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "v1-baseline-human-verified-approved"
+    },
+    {
+      "ksbCode": "K16",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "v1-baseline-human-verified-approved"
+    },
+    {
+      "ksbCode": "K17",
+      "blockId": "358fb8a6-e2a3-42e9-bee1-28873a0643ef",
+      "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K19",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K21",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "K22",
+      "blockId": "358fb8a6-e2a3-42e9-bee1-28873a0643ef",
+      "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K23",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "K24",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "K25",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "createdBy": "v1-baseline-human-verified-approved"
+    },
+    {
+      "ksbCode": "K26",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K27",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K29",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "K3",
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K30",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "K32",
+      "blockId": "997300c5-ee32-4ef4-b562-e0571e436a6a",
+      "title": "Diagnostic Thinking and Complex Repair Activities",
+      "createdBy": "v1-baseline-human-verified-approved"
+    },
+    {
+      "ksbCode": "K33",
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K4",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K5",
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "K6",
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "createdBy": "v1-baseline-human-verified-approved"
+    },
+    {
+      "ksbCode": "K9",
+      "blockId": "677a5a43-df92-4c9d-92ae-30e2c2979c40",
+      "title": "Advanced Workshop Practice and Technical Communication",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "S1",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S12",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S13",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S14",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S15",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S16",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "v1-baseline-human-verified-approved"
+    },
+    {
+      "ksbCode": "S17",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "S18",
+      "blockId": "1975e5ce-49fe-4baa-944a-a637a1f4d9be",
+      "title": "Advanced Diagnostics and Workshop Organisation",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "S19",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S2",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S21",
+      "blockId": "997300c5-ee32-4ef4-b562-e0571e436a6a",
+      "title": "Diagnostic Thinking and Complex Repair Activities",
+      "createdBy": "v1-baseline-human-verified-approved"
+    },
+    {
+      "ksbCode": "S22",
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "S24",
+      "blockId": "93f19eef-9378-4e90-a913-510382777ac5",
+      "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "S3",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S4",
+      "blockId": "fe75972c-69c5-466b-819e-65eeb8ce7666",
+      "title": "Emerging Technology and Driveline Systems",
+      "createdBy": "human-approved-primary-batch"
+    },
+    {
+      "ksbCode": "S5",
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "S6",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "createdBy": "v1-baseline-auto-high-approved"
+    },
+    {
+      "ksbCode": "S8",
+      "blockId": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "createdBy": "v1-baseline-auto-high-approved"
+    }
+  ],
+  "ok": true
+}

@@ -130,6 +130,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/management/programme-builder", label: "Programme Builder", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
           { href: "/management/course-builder", label: "Course Builder", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
           { href: "/management/apprentice-funding", label: "Apprentice funding (RPL / KSB)", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
+          { href: "/management/apprentice-tnp", label: "Apprentice TNP1", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
           { href: "/management/apprentice-brag", label: "Apprentice progression BRAG", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
           { href: "/management/staff", label: "Staff", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/staff-records?from=management", label: "Staff Records", permission: PERMISSIONS.ADMIN_USERS_MANAGE },

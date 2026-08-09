@@ -2,7 +2,9 @@ import type { LessonPlanDef, PracticalTaskDef } from "../task-schema";
 import {
   getCourseBuilderPracticalTask,
   listAllCourseBuilderPracticalTasks,
+  listAllCourseBuilderTaskDrafts,
 } from "../course-builder-store";
+import { draftToPracticalTask } from "../course-builder-tasks";
 import { BLOCK_01_TASKS } from "./block-01";
 import { BLOCK_02_TASKS } from "./block-02";
 import { BLOCK_03_TASKS } from "./block-03";
@@ -90,13 +92,18 @@ export function tasksForBlock(blockId: number): PracticalTaskDef[] {
   return [...byId.values()].sort((a, b) => a.taskNumber - b.taskNumber);
 }
 
-/** Tasks authored in Course Builder for a GTA block pack only. */
+/** Tasks authored in Course Builder for one spine block on a GTA programme version. */
 export function courseBuilderTasksForBlock(
-  packId: string,
-  blockId: number,
+  programmeVersionId: string,
+  spineBlockId: string,
 ): PracticalTaskDef[] {
-  return listAllCourseBuilderPracticalTasks()
-    .filter((t) => t.blockId === blockId && t.id.includes(packId))
+  return listAllCourseBuilderTaskDrafts()
+    .filter(
+      (t) =>
+        t.programmeVersionId === programmeVersionId &&
+        t.spineBlockId === spineBlockId,
+    )
+    .map(draftToPracticalTask)
     .sort((a, b) => a.taskNumber - b.taskNumber);
 }
 

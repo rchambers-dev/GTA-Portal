@@ -1,0 +1,472 @@
+{
+  "remaining": [
+    "S23",
+    "S25"
+  ],
+  "batchD": [
+    {
+      "ksbCode": "S23",
+      "type": "skill",
+      "description": "Use information and digital technology systems. Comply with GDPR and cyber security.",
+      "relatedDuties": [
+        "D1",
+        "D3",
+        "D5",
+        "D6",
+        "D8",
+        "D9"
+      ],
+      "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+      "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+      "suggestedPrimary": 7,
+      "candidates": [
+        {
+          "block": 7,
+          "title": "Advanced Workshop Practice and Technical Communication",
+          "bestScore": 2.5,
+          "evidenceWeeks": [
+            {
+              "week": 69,
+              "block": 7,
+              "topic": "Consumables management and stock security",
+              "duty": "D9",
+              "score": 2.5,
+              "title": "Advanced Workshop Practice and Technical Communication"
+            }
+          ]
+        },
+        {
+          "block": 9,
+          "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+          "bestScore": 2.5,
+          "evidenceWeeks": [
+            {
+              "week": 90,
+              "block": 9,
+              "topic": "Emerging technology readiness review and case studies",
+              "duty": "D10",
+              "score": 2.5,
+              "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+            },
+            {
+              "week": 82,
+              "block": 9,
+              "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+              "duty": null,
+              "score": 2.0,
+              "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+            },
+            {
+              "week": 94,
+              "block": 9,
+              "topic": "Emerging Technology - Hydrogen Systems Safety and Application",
+              "duty": null,
+              "score": 2.0,
+              "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+            }
+          ]
+        },
+        {
+          "block": 3,
+          "title": "Workshop Processes, Tools and Environmental Awareness",
+          "bestScore": 2.0,
+          "evidenceWeeks": [
+            {
+              "week": 24,
+              "block": 3,
+              "topic": "Brake wear checks, tyre condition and wheel security",
+              "duty": "D4",
+              "score": 2.0,
+              "title": "Workshop Processes, Tools and Environmental Awareness"
+            }
+          ]
+        },
+        {
+          "block": 6,
+          "title": "Vehicle Systems Integration and Advanced Diagnostics",
+          "bestScore": 2.0,
+          "evidenceWeeks": [
+            {
+              "week": 54,
+              "block": 6,
+              "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+              "duty": null,
+              "score": 2.0,
+              "title": "Vehicle Systems Integration and Advanced Diagnostics"
+            }
+          ]
+        }
+      ],
+      "focusHitsIncluded": [
+        {
+          "week": 11,
+          "block": 2,
+          "excluded": false,
+          "topic": "Customer Service Scenarios",
+          "duty": "D6"
+        },
+        {
+          "week": 20,
+          "block": 2,
+          "excluded": false,
+          "topic": "Customer Dispute Resolution",
+          "duty": "D6"
+        },
+        {
+          "week": 21,
+          "block": 3,
+          "excluded": false,
+          "topic": "Service reception, booking diagnostics and first impressions",
+          "duty": "D1"
+        },
+        {
+          "week": 26,
+          "block": 3,
+          "excluded": false,
+          "topic": "Workshop procedures, documentation control and handover discipline",
+          "duty": "D6"
+        },
+        {
+          "week": 28,
+          "block": 3,
+          "excluded": false,
+          "topic": "Estimates, authorisation and customer approval skills",
+          "duty": "D8"
+        },
+        {
+          "week": 31,
+          "block": 4,
+          "excluded": false,
+          "topic": "Customer updates, ETA management and expectation setting",
+          "duty": "D1"
+        },
+        {
+          "week": 36,
+          "block": 4,
+          "excluded": false,
+          "topic": "Job-card accuracy, escalation routes and quality gatekeeping",
+          "duty": "D6"
+        },
+        {
+          "week": 38,
+          "block": 4,
+          "excluded": false,
+          "topic": "Quotations: labour, parts and value options",
+          "duty": "D8"
+        }
+      ],
+      "focusHitsExcludedSample": [],
+      "pipelineRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 4
+        }
+      ],
+      "foundationProseHits": [],
+      "strictSample": [
+        {
+          "week": 69,
+          "block": 7,
+          "excluded": false,
+          "topic": "Consumables management and stock security",
+          "strictHits": [],
+          "hasStrictEvidence": false
+        },
+        {
+          "week": 82,
+          "block": 9,
+          "excluded": false,
+          "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+          "strictHits": [],
+          "hasStrictEvidence": false
+        }
+      ],
+      "strictAny": false
+    },
+    {
+      "ksbCode": "S25",
+      "type": "skill",
+      "description": "Apply procedures to check and replace fluids, and filtration parts.",
+      "relatedDuties": [
+        "D2",
+        "D4"
+      ],
+      "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+      "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+      "suggestedPrimary": 3,
+      "candidates": [
+        {
+          "block": 3,
+          "title": "Workshop Processes, Tools and Environmental Awareness",
+          "bestScore": 2.5,
+          "evidenceWeeks": [
+            {
+              "week": 25,
+              "block": 3,
+              "topic": "Parts identification, catalogue use and alternative part selection",
+              "duty": "D5",
+              "score": 2.5,
+              "title": "Workshop Processes, Tools and Environmental Awareness"
+            }
+          ]
+        },
+        {
+          "block": 4,
+          "title": "Emerging Technology and Driveline Systems",
+          "bestScore": 2.5,
+          "evidenceWeeks": [
+            {
+              "week": 39,
+              "block": 4,
+              "topic": "Goods-in checks, parts storage and consumables control",
+              "duty": "D9",
+              "score": 2.5,
+              "title": "Emerging Technology and Driveline Systems"
+            },
+            {
+              "week": 35,
+              "block": 4,
+              "topic": "Warranty parts, returns and supplier escalation",
+              "duty": "D5",
+              "score": 2.0,
+              "title": "Emerging Technology and Driveline Systems"
+            },
+            {
+              "week": 38,
+              "block": 4,
+              "topic": "Quotations: labour, parts and value options",
+              "duty": "D8",
+              "score": 2.0,
+              "title": "Emerging Technology and Driveline Systems"
+            }
+          ]
+        },
+        {
+          "block": 5,
+          "title": "Diagnostic Thinking and Complex Repair Activities",
+          "bestScore": 2.5,
+          "evidenceWeeks": [
+            {
+              "week": 45,
+              "block": 5,
+              "topic": "VIN lookup, technical data and parts availability checks",
+              "duty": "D5",
+              "score": 2.5,
+              "title": "Diagnostic Thinking and Complex Repair Activities"
+            }
+          ]
+        },
+        {
+          "block": 6,
+          "title": "Vehicle Systems Integration and Advanced Diagnostics",
+          "bestScore": 2.5,
+          "evidenceWeeks": [
+            {
+              "week": 55,
+              "block": 6,
+              "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+              "duty": "D5",
+              "score": 2.5,
+              "title": "Vehicle Systems Integration and Advanced Diagnostics"
+            }
+          ]
+        },
+        {
+          "block": 8,
+          "title": "Advanced Diagnostics and Workshop Organisation",
+          "bestScore": 2.5,
+          "evidenceWeeks": [
+            {
+              "week": 75,
+              "block": 8,
+              "topic": "Specialist parts, alternatives and warranty evidence",
+              "duty": "D5",
+              "score": 2.5,
+              "title": "Advanced Diagnostics and Workshop Organisation"
+            }
+          ]
+        },
+        {
+          "block": 10,
+          "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+          "bestScore": 2.5,
+          "evidenceWeeks": [
+            {
+              "week": 107,
+              "block": 10,
+              "topic": "Duty 5 Skills Development and EPA Readiness Practice - Parts Identification and Sourcing",
+              "duty": "D5",
+              "score": 2.5,
+              "title": "Final Consolidation, Corrective Learning and EPA Readiness Training"
+            },
+            {
+              "week": 106,
+              "block": 10,
+              "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+              "duty": "D4",
+              "score": 2.0,
+              "title": "Final Consolidation, Corrective Learning and EPA Readiness Training"
+            }
+          ]
+        }
+      ],
+      "focusHitsIncluded": [
+        {
+          "week": 13,
+          "block": 2,
+          "excluded": false,
+          "topic": "Engine Repairs",
+          "duty": "D3"
+        },
+        {
+          "week": 17,
+          "block": 2,
+          "excluded": false,
+          "topic": "Advanced Brake Diagnostics",
+          "duty": "D3"
+        },
+        {
+          "week": 23,
+          "block": 3,
+          "excluded": false,
+          "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+          "duty": "D3"
+        },
+        {
+          "week": 33,
+          "block": 4,
+          "excluded": false,
+          "topic": "Driveline service, task allocation and team communication",
+          "duty": "D3"
+        },
+        {
+          "week": 43,
+          "block": 5,
+          "excluded": false,
+          "topic": "Complex repairs, time management and QA sign-off",
+          "duty": "D3"
+        },
+        {
+          "week": 53,
+          "block": 6,
+          "excluded": false,
+          "topic": "Workshop productivity, task sequencing and team support",
+          "duty": "D3"
+        },
+        {
+          "week": 63,
+          "block": 7,
+          "excluded": false,
+          "topic": "Engine management repairs and quality assurance",
+          "duty": "D3"
+        },
+        {
+          "week": 73,
+          "block": 8,
+          "excluded": false,
+          "topic": "Repair planning, delegation and sign-off discipline",
+          "duty": "D3"
+        }
+      ],
+      "focusHitsExcludedSample": [],
+      "pipelineRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2
+        },
+        {
+          "block": 3,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1
+        },
+        {
+          "block": 4,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1
+        },
+        {
+          "block": 5,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1
+        },
+        {
+          "block": 6,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1
+        },
+        {
+          "block": 7,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1
+        },
+        {
+          "block": 8,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1
+        },
+        {
+          "block": 10,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1
+        }
+      ],
+      "foundationProseHits": [],
+      "strictSample": [
+        {
+          "week": 25,
+          "block": 3,
+          "excluded": false,
+          "topic": "Parts identification, catalogue use and alternative part selection",
+          "strictHits": [],
+          "hasStrictEvidence": false
+        },
+        {
+          "week": 39,
+          "block": 4,
+          "excluded": false,
+          "topic": "Goods-in checks, parts storage and consumables control",
+          "strictHits": [],
+          "hasStrictEvidence": false
+        }
+      ],
+      "strictAny": false
+    }
+  ]
+}

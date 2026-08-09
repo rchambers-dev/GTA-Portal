@@ -1,0 +1,2581 @@
+{
+  "approvedPrimaries": {
+    "K24": {
+      "primaryBlock": 2,
+      "rationale": "First dedicated customer-service teaching (scenarios + dispute resolution)"
+    },
+    "S15": {
+      "primaryBlock": 2,
+      "rationale": "First clear practical customer-service skill application"
+    },
+    "K12": {
+      "primaryBlock": 2,
+      "rationale": "Advanced Brake Diagnostics strongest primary; B3 wear checks = reinforcement"
+    },
+    "S12": {
+      "primaryBlock": 2,
+      "rationale": "Wheel Alignment - Advanced first explicit geometry teaching; no B3 artefact"
+    },
+    "K30": {
+      "primaryBlock": 3,
+      "rationale": "Earliest clear team-working via bay discipline/handoffs; B8 advanced; B10 consolidation"
+    },
+    "S3": {
+      "primaryBlock": 3,
+      "rationale": "W27 Housekeeping/5S/safe storage first teaching home"
+    },
+    "S1": {
+      "primaryBlock": 3,
+      "rationale": "Earliest sustained workplace H&S practice; later blocks specialist/reinforcement"
+    },
+    "S2": {
+      "primaryBlock": 3,
+      "rationale": "First clear work-area preparation/housekeeping teaching"
+    },
+    "S4": {
+      "primaryBlock": 4,
+      "rationale": "Clearest tool-control teaching; B3/B8 reinforcement; B9 dropped unless tool-cal evidence"
+    },
+    "K29": {
+      "primaryBlock": 3,
+      "rationale": "First estimates/authorisation teaching; later quotation blocks reinforcement"
+    },
+    "S19": {
+      "primaryBlock": 3,
+      "rationale": "Aligned with K30→B3; B8 advanced delegation reinforcement"
+    },
+    "S14": {
+      "primaryBlock": 6,
+      "rationale": "First dedicated high-intensity record-keeping/compliance/audit teaching; B8 advanced; B10 consolidation"
+    },
+    "K21": {
+      "primaryBlock": 6,
+      "rationale": "First dedicated EV service/charging/safety teaching; B9 specialist reinforcement"
+    },
+    "K23": {
+      "primaryBlock": 6,
+      "rationale": "Strongest HV safe working/isolation match; B9 reinforces later"
+    },
+    "S13": {
+      "primaryBlock": 6,
+      "rationale": "Primary practical home for EV isolation for maintenance; B9 reinforcement"
+    }
+  },
+  "batches": [
+    {
+      "batch": 1,
+      "codes": [
+        "K24",
+        "S15",
+        "K12",
+        "S12"
+      ],
+      "status": "approved",
+      "approvals": {
+        "K24": {
+          "primaryBlock": 2,
+          "rationale": "First dedicated customer-service teaching (scenarios + dispute resolution)"
+        },
+        "S15": {
+          "primaryBlock": 2,
+          "rationale": "First clear practical customer-service skill application"
+        },
+        "K12": {
+          "primaryBlock": 2,
+          "rationale": "Advanced Brake Diagnostics strongest primary; B3 wear checks = reinforcement"
+        },
+        "S12": {
+          "primaryBlock": 2,
+          "rationale": "Wheel Alignment - Advanced first explicit geometry teaching; no B3 artefact"
+        }
+      }
+    },
+    {
+      "batch": 2,
+      "codes": [
+        "K30",
+        "S3",
+        "S1",
+        "S2"
+      ],
+      "status": "approved",
+      "approvals": {
+        "K30": {
+          "primaryBlock": 3,
+          "rationale": "Earliest clear team-working via bay discipline/handoffs; B8 advanced; B10 consolidation"
+        },
+        "S3": {
+          "primaryBlock": 3,
+          "rationale": "W27 Housekeeping/5S/safe storage first teaching home"
+        },
+        "S1": {
+          "primaryBlock": 3,
+          "rationale": "Earliest sustained workplace H&S practice; later blocks specialist/reinforcement"
+        },
+        "S2": {
+          "primaryBlock": 3,
+          "rationale": "First clear work-area preparation/housekeeping teaching"
+        }
+      }
+    },
+    {
+      "batch": 2,
+      "codes": [
+        "K30",
+        "S3",
+        "S1",
+        "S2"
+      ],
+      "status": "approved",
+      "approvals": {
+        "K30": {
+          "primaryBlock": 3,
+          "rationale": "Earliest clear team-working via bay discipline/handoffs; B8 advanced; B10 consolidation"
+        },
+        "S3": {
+          "primaryBlock": 3,
+          "rationale": "W27 Housekeeping/5S/safe storage first teaching home"
+        },
+        "S1": {
+          "primaryBlock": 3,
+          "rationale": "Earliest sustained workplace H&S practice; later blocks specialist/reinforcement"
+        },
+        "S2": {
+          "primaryBlock": 3,
+          "rationale": "First clear work-area preparation/housekeeping teaching"
+        }
+      }
+    },
+    {
+      "batch": 3,
+      "codes": [
+        "S4",
+        "K29",
+        "S19",
+        "S14"
+      ],
+      "status": "approved",
+      "approvals": {
+        "S4": {
+          "primaryBlock": 4,
+          "rationale": "Clearest tool-control teaching; B3/B8 reinforcement; B9 dropped unless tool-cal evidence",
+          "dropBlocks": [
+            9
+          ]
+        },
+        "K29": {
+          "primaryBlock": 3,
+          "rationale": "First estimates/authorisation teaching; later quotation blocks reinforcement"
+        },
+        "S19": {
+          "primaryBlock": 3,
+          "rationale": "Aligned with K30→B3; B8 advanced delegation reinforcement"
+        },
+        "S14": {
+          "primaryBlock": 6,
+          "rationale": "First dedicated high-intensity record-keeping/compliance/audit teaching; B8 advanced; B10 consolidation"
+        }
+      },
+      "s4_b9_audit": {
+        "week": 89,
+        "file": "Autocare_L2_Week_089_Lesson_Plan_v1.0.docx",
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "aimsSnippet": "• Develop secure occupational knowledge and terminology for pre-calibration checks: alignment, ride height and sensor inputs. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify a",
+        "activitySnippets": [
+          "Detailed theory session covering the importance of pre-calibration checks before any advanced driver assistance, alignment-related or sensor-influenced work is considered.",
+          "Guided practical inspection activity using alignment equipment, tyre and suspension checks, sensor-location diagrams or vehicle examples.",
+          "Application activity using pre-calibration scenarios. Learners review cases such as a vehicle with uneven ride height after suspension work, an off-centre steering wheel, ADAS warning messages after a",
+          "Consolidation through group review of pre-check findings and decision-making. The tutor questions learners on why calibration readiness depends on mechanical condition and correct setup, and challenge"
+        ],
+        "mentionsToolEquipmentStoreOrCalibration": true,
+        "mentionsAdasAlignmentSensorCalibration": true,
+        "keepS4Block9Reinforcement": true
+      },
+      "s4_b9_audit_strict": {
+        "week": 89,
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end",
+        "activities": [
+          "Detailed theory session covering the importance of pre-calibration checks before any advanced driver assistance, alignment-related or sensor-influenced work is considered.",
+          "Guided practical inspection activity using alignment equipment, tyre and suspension checks, sensor-location diagrams or vehicle examples.",
+          "Application activity using pre-calibration scenarios. Learners review cases such as a vehicle with uneven ride height after suspension work, an off-centre steering wheel, ADAS warning messages after alignment, damaged se",
+          "Consolidation through group review of pre-check findings and decision-making. The tutor questions learners on why calibration readiness depends on mechanical condition and correct setup, and challenges any decisions that"
+        ],
+        "strictToolStoreMaintainHits": [],
+        "adasAlignmentSnippets": [
+          "S13, S26 | Scheduled at block end Topic Pre-calibration checks: alignment, ride height and sens",
+          "block end Topic Pre-calibration checks: alignment, ride height and sensor inputs Occupati",
+          "opic Pre-calibration checks: alignment, ride height and sensor inputs Occupational relevanc",
+          "tion checks: alignment, ride height and sensor inputs Occupational relevance: This ses",
+          "edge and practical judgement needed for pre-calibration checks: alignment, ride height and sens",
+          "ment needed for pre-calibration checks: alignment, ride height and sensor inputs. Followi",
+          " for pre-calibration checks: alignment, ride height and sensor inputs. Following technical ",
+          "tion checks: alignment, ride height and sensor inputs. Following technical information"
+        ],
+        "decision": "DROP_S4_B9_REINFORCEMENT",
+        "rationale": "W89 is alignment/sensor/ADAS pre-calibration teaching; no proven S4 tool/equipment store/maintain/calibrate content — drop valued S4@B9"
+      }
+    },
+    {
+      "batch": 4,
+      "codes": [
+        "K21",
+        "K23",
+        "S13"
+      ],
+      "status": "approved",
+      "approvals": {
+        "K21": {
+          "primaryBlock": 6,
+          "rationale": "First dedicated EV service/charging/safety teaching; B9 specialist reinforcement"
+        },
+        "K23": {
+          "primaryBlock": 6,
+          "rationale": "Strongest HV safe working/isolation match; B9 reinforces later"
+        },
+        "S13": {
+          "primaryBlock": 6,
+          "rationale": "Primary practical home for EV isolation for maintenance; B9 reinforcement"
+        }
+      }
+    },
+    {
+      "batch": "unmapped-A",
+      "codes": [
+        "K18",
+        "S11",
+        "S20",
+        "K34"
+      ],
+      "status": "curriculum_gap_recorded",
+      "approvals": {
+        "K18": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "ADAS levels of autonomy (passive/active) not taught; W89 is pre-calibration only. Likely add explicit ADAS teaching in advanced/emerging-tech block.",
+          "likelyDesignAreas": [
+            "B9",
+            "B10"
+          ],
+          "doNotAssignNearestBlock": true
+        },
+        "S11": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "No explicit HV battery/charger SoH testing activity found in W54/W82. Need practical SoH session before B6 or B9 can be Primary.",
+          "likelyDesignAreas": [
+            "B6",
+            "B9"
+          ],
+          "doNotAssignNearestBlock": true
+        },
+        "S20": {
+          "status": "CURRICULUM_GAP_FOCUS_TEMPLATE_ONLY",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "EDI appears only on templated Duty/KSB focus lists; need explicit EDI teaching/application.",
+          "likelyDesignAreas": [
+            "B2",
+            "B3",
+            "B10"
+          ],
+          "doNotAssignNearestBlock": true
+        },
+        "K34": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "No digital/GDPR/cyber/systems teaching found; stock-security was false friend. Need explicit digital systems curriculum.",
+          "likelyDesignAreas": [
+            "B5",
+            "B7",
+            "B9",
+            "B10"
+          ],
+          "doNotAssignNearestBlock": true
+        }
+      }
+    },
+    {
+      "batch": "unmapped-B",
+      "codes": [
+        "B5",
+        "K1",
+        "K2",
+        "K7"
+      ],
+      "status": "curriculum_gap_recorded",
+      "approvals": {
+        "B5": {
+          "status": "CURRICULUM_GAP_FOCUS_TEMPLATE_ONLY",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "Do not use generic team-support language as inclusive-workplace proof. Needs explicit inclusion/respect/EDI teaching or application.",
+          "likelyDesignAreas": [
+            "B2",
+            "B3",
+            "B10"
+          ],
+          "doNotAssignNearestBlock": true
+        },
+        "K1": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "Do not use lesson headers. Needs explicit teaching: automotive industry context, role of autocare technician, limits of autonomy, reporting channels. May fit early foundation/induction only after that content exists.",
+          "likelyDesignAreas": [
+            "B1",
+            "B2"
+          ],
+          "doNotAssignNearestBlock": true
+        },
+        "K2": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "Needs explicit manufacturer specifications, approved schedules, vehicle-specific data, legal wear/serviceability. Do not assign B2/B3 only because they contain inspection/brake-wear.",
+          "likelyDesignAreas": [
+            "B2",
+            "B3",
+            "B10"
+          ],
+          "doNotAssignNearestBlock": true
+        },
+        "K7": {
+          "status": "CURRICULUM_GAP_WEAK_EVIDENCE",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "Needs explicit workplace-instructions teaching for inspection/maintenance/replacement. Generic replacement/inspection sessions are insufficient.",
+          "likelyDesignAreas": [
+            "B2",
+            "B3",
+            "B5"
+          ],
+          "doNotAssignNearestBlock": true
+        }
+      }
+    },
+    {
+      "batch": "unmapped-C",
+      "codes": [
+        "K13",
+        "K20",
+        "K31",
+        "S7"
+      ],
+      "status": "curriculum_gap_recorded",
+      "approvals": {
+        "K13": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "No explicit emissions teaching (catalytic/EGR/DPF/PPF/SCR). Do not assign by suspension/inspection proximity.",
+          "likelyDesignAreas": [
+            "B2",
+            "B4",
+            "B5",
+            "B10"
+          ],
+          "cluster": null,
+          "doNotAssignNearestBlock": true
+        },
+        "K20": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "No defensible fluids/filtration teaching (brake fluid, oil/oil filters, air filters). Do not use brake diagnostics as nearest Primary. Cluster with S25.",
+          "likelyDesignAreas": [
+            "B2",
+            "B3",
+            "B10"
+          ],
+          "cluster": "fluids_filtration",
+          "doNotAssignNearestBlock": true
+        },
+        "K31": {
+          "status": "CURRICULUM_GAP_FOCUS_TEMPLATE_ONLY",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "EDI knowledge gap cluster with S20+B5. Templated focus lists insufficient.",
+          "likelyDesignAreas": [
+            "B2",
+            "B3",
+            "B10"
+          ],
+          "cluster": "edi",
+          "doNotAssignNearestBlock": true
+        },
+        "S7": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "Tied to K2 gap. Needs explicit safety inspection + routine maintenance using schedules/vehicle-specific data/wear limits. Do not assign B2/B10 by title proximity.",
+          "likelyDesignAreas": [
+            "B2",
+            "B3",
+            "B10"
+          ],
+          "cluster": "inspection_to_spec",
+          "doNotAssignNearestBlock": true
+        }
+      }
+    },
+    {
+      "batch": "unmapped-D",
+      "codes": [
+        "S23",
+        "S25"
+      ],
+      "status": "curriculum_gap_recorded",
+      "approvals": {
+        "S23": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "Paired with K34. Needs explicit digital systems + GDPR + cyber teaching. No stock-security / generic emerging-tech substitute.",
+          "likelyDesignAreas": [
+            "B5",
+            "B7",
+            "B9",
+            "B10"
+          ],
+          "cluster": "digital_gdpr_cyber",
+          "doNotAssignNearestBlock": true
+        },
+        "S25": {
+          "status": "CURRICULUM_GAP",
+          "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+          "notes": "Paired with K20. Needs explicit check/replace fluids and filtration parts practical. No parts/catalogue/brake nearest-fit.",
+          "likelyDesignAreas": [
+            "B2",
+            "B3",
+            "B10"
+          ],
+          "cluster": "fluids_filtration",
+          "doNotAssignNearestBlock": true
+        }
+      }
+    }
+  ],
+  "curriculumGaps": {
+    "K18": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "ADAS levels of autonomy (passive/active) not taught; W89 is pre-calibration only. Likely add explicit ADAS teaching in advanced/emerging-tech block.",
+      "likelyDesignAreas": [
+        "B9",
+        "B10"
+      ],
+      "doNotAssignNearestBlock": true,
+      "type": "knowledge",
+      "description": "Advanced driver-assistance systems (ADAS) levels of autonomy: passive and active advanced driver assistance systems.",
+      "evidenceSnapshot": {
+        "verdict": "GENUINE_CURRICULUM_GAP",
+        "why": "No focus listing and no topic/anchor teaching evidence in approved specialist SOW",
+        "focusHitsIncludedSample": [],
+        "candidatesRejectedAsInsufficient": [],
+        "foundationProseHits": []
+      },
+      "publicationBlocker": true
+    },
+    "S11": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "No explicit HV battery/charger SoH testing activity found in W54/W82. Need practical SoH session before B6 or B9 can be Primary.",
+      "likelyDesignAreas": [
+        "B6",
+        "B9"
+      ],
+      "doNotAssignNearestBlock": true,
+      "type": "skill",
+      "description": "Apply state-of-health condition monitoring tests to high voltage batteries and chargers for electrified cars, car derived vans, or light goods vehicles.",
+      "evidenceSnapshot": {
+        "verdict": "MAPPABLE_NEEDS_PRIMARY_DECISION",
+        "why": "Defensible topic/anchor evidence exists in SOW; needs human Primary choice",
+        "focusHitsIncludedSample": [
+          {
+            "week": 14,
+            "block": 2,
+            "excluded": false,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "duty": "D4"
+          },
+          {
+            "week": 18,
+            "block": 2,
+            "excluded": false,
+            "topic": "Wheel Alignment - Advanced",
+            "duty": "D4"
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "excluded": false,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "duty": "D4"
+          },
+          {
+            "week": 34,
+            "block": 4,
+            "excluded": false,
+            "topic": "Steering geometry and advanced tyre diagnosis",
+            "duty": "D4"
+          },
+          {
+            "week": 44,
+            "block": 5,
+            "excluded": false,
+            "topic": "Suspension component replacement and alignment preparation",
+            "duty": "D4"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 10,
+            "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+            "bestScore": 6.0,
+            "evidenceWeeks": [
+              {
+                "week": 106,
+                "block": 10,
+                "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+                "duty": "D4",
+                "score": 6.0,
+                "title": "Final Consolidation, Corrective Learning and EPA Readiness Training"
+              }
+            ]
+          },
+          {
+            "block": 4,
+            "title": "Emerging Technology and Driveline Systems",
+            "bestScore": 3.0,
+            "evidenceWeeks": [
+              {
+                "week": 39,
+                "block": 4,
+                "topic": "Goods-in checks, parts storage and consumables control",
+                "duty": "D9",
+                "score": 3.0,
+                "title": "Emerging Technology and Driveline Systems"
+              }
+            ]
+          },
+          {
+            "block": 3,
+            "title": "Workshop Processes, Tools and Environmental Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 24,
+                "block": 3,
+                "topic": "Brake wear checks, tyre condition and wheel security",
+                "duty": "D4",
+                "score": 2.5,
+                "title": "Workshop Processes, Tools and Environmental Awareness"
+              }
+            ]
+          },
+          {
+            "block": 5,
+            "title": "Diagnostic Thinking and Complex Repair Activities",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 47,
+                "block": 5,
+                "topic": "Battery handling, waste segregation and PPE discipline",
+                "duty": "D7",
+                "score": 2.5,
+                "title": "Diagnostic Thinking and Complex Repair Activities"
+              }
+            ]
+          },
+          {
+            "block": 2,
+            "title": "Vehicle Inspection, Servicing and Customer Interaction",
+            "bestScore": 2.0,
+            "evidenceWeeks": [
+              {
+                "week": 14,
+                "block": 2,
+                "topic": "Tyre Pressure Monitoring Systems",
+                "duty": "D4",
+                "score": 2.0,
+                "title": "Vehicle Inspection, Servicing and Customer Interaction"
+              }
+            ]
+          }
+        ],
+        "foundationProseHits": []
+      },
+      "publicationBlocker": true
+    },
+    "S20": {
+      "status": "CURRICULUM_GAP_FOCUS_TEMPLATE_ONLY",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "EDI appears only on templated Duty/KSB focus lists; need explicit EDI teaching/application.",
+      "likelyDesignAreas": [
+        "B2",
+        "B3",
+        "B10"
+      ],
+      "doNotAssignNearestBlock": true,
+      "type": "skill",
+      "description": "Comply with equity, diversity, and inclusion guidance.",
+      "evidenceSnapshot": {
+        "verdict": "FOCUS_LIST_ONLY",
+        "why": "Appears on Duty/KSB focus lists without distinctive topic teaching evidence — reference-only unless you designate a Primary from SOW redesign",
+        "focusHitsIncludedSample": [
+          {
+            "week": 11,
+            "block": 2,
+            "excluded": false,
+            "topic": "Customer Service Scenarios",
+            "duty": "D6"
+          },
+          {
+            "week": 13,
+            "block": 2,
+            "excluded": false,
+            "topic": "Engine Repairs",
+            "duty": "D3"
+          },
+          {
+            "week": 17,
+            "block": 2,
+            "excluded": false,
+            "topic": "Advanced Brake Diagnostics",
+            "duty": "D3"
+          },
+          {
+            "week": 20,
+            "block": 2,
+            "excluded": false,
+            "topic": "Customer Dispute Resolution",
+            "duty": "D6"
+          },
+          {
+            "week": 23,
+            "block": 3,
+            "excluded": false,
+            "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+            "duty": "D3"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [],
+        "foundationProseHits": []
+      },
+      "publicationBlocker": true
+    },
+    "K34": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "No digital/GDPR/cyber/systems teaching found; stock-security was false friend. Need explicit digital systems curriculum.",
+      "likelyDesignAreas": [
+        "B5",
+        "B7",
+        "B9",
+        "B10"
+      ],
+      "doNotAssignNearestBlock": true,
+      "type": "knowledge",
+      "description": "Information and digital technology: email, collaboration packages, databases,  equipment digital interfaces, management information systems, word processing, work sharing platforms, point of sale, GDPR, cyber security.",
+      "evidenceSnapshot": {
+        "verdict": "MAPPABLE_NEEDS_PRIMARY_DECISION",
+        "why": "Defensible topic/anchor evidence exists in SOW; needs human Primary choice",
+        "focusHitsIncludedSample": [
+          {
+            "week": 21,
+            "block": 3,
+            "excluded": false,
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "duty": "D1"
+          },
+          {
+            "week": 31,
+            "block": 4,
+            "excluded": false,
+            "topic": "Customer updates, ETA management and expectation setting",
+            "duty": "D1"
+          },
+          {
+            "week": 41,
+            "block": 5,
+            "excluded": false,
+            "topic": "Technical handover and managing customer expectations on diagnostic work",
+            "duty": "D1"
+          },
+          {
+            "week": 51,
+            "block": 6,
+            "excluded": false,
+            "topic": "Customer interaction during longer diagnostic jobs",
+            "duty": "D1"
+          },
+          {
+            "week": 61,
+            "block": 7,
+            "excluded": false,
+            "topic": "Advanced service adviser communication and trust-building",
+            "duty": "D1"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 7,
+            "title": "Advanced Workshop Practice and Technical Communication",
+            "bestScore": 5.0,
+            "evidenceWeeks": [
+              {
+                "week": 69,
+                "block": 7,
+                "topic": "Consumables management and stock security",
+                "duty": "D9",
+                "score": 5.0,
+                "title": "Advanced Workshop Practice and Technical Communication"
+              },
+              {
+                "week": 63,
+                "block": 7,
+                "topic": "Engine management repairs and quality assurance",
+                "duty": "D3",
+                "score": 2.5,
+                "title": "Advanced Workshop Practice and Technical Communication"
+              }
+            ]
+          },
+          {
+            "block": 8,
+            "title": "Advanced Diagnostics and Workshop Organisation",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 77,
+                "block": 8,
+                "topic": "Quality, cleanliness and equipment care routines",
+                "duty": "D7",
+                "score": 2.5,
+                "title": "Advanced Diagnostics and Workshop Organisation"
+              }
+            ]
+          },
+          {
+            "block": 9,
+            "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 90,
+                "block": 9,
+                "topic": "Emerging technology readiness review and case studies",
+                "duty": "D10",
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              },
+              {
+                "week": 82,
+                "block": 9,
+                "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+                "duty": null,
+                "score": 2.0,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              },
+              {
+                "week": 94,
+                "block": 9,
+                "topic": "Emerging Technology - Hydrogen Systems Safety and Application",
+                "duty": null,
+                "score": 2.0,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              }
+            ]
+          },
+          {
+            "block": 3,
+            "title": "Workshop Processes, Tools and Environmental Awareness",
+            "bestScore": 2.0,
+            "evidenceWeeks": [
+              {
+                "week": 24,
+                "block": 3,
+                "topic": "Brake wear checks, tyre condition and wheel security",
+                "duty": "D4",
+                "score": 2.0,
+                "title": "Workshop Processes, Tools and Environmental Awareness"
+              }
+            ]
+          },
+          {
+            "block": 4,
+            "title": "Emerging Technology and Driveline Systems",
+            "bestScore": 2.0,
+            "evidenceWeeks": [
+              {
+                "week": 31,
+                "block": 4,
+                "topic": "Customer updates, ETA management and expectation setting",
+                "duty": "D1",
+                "score": 2.0,
+                "title": "Emerging Technology and Driveline Systems"
+              }
+            ]
+          },
+          {
+            "block": 5,
+            "title": "Diagnostic Thinking and Complex Repair Activities",
+            "bestScore": 2.0,
+            "evidenceWeeks": [
+              {
+                "week": 43,
+                "block": 5,
+                "topic": "Complex repairs, time management and QA sign-off",
+                "duty": "D3",
+                "score": 2.0,
+                "title": "Diagnostic Thinking and Complex Repair Activities"
+              }
+            ]
+          },
+          {
+            "block": 6,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics",
+            "bestScore": 2.0,
+            "evidenceWeeks": [
+              {
+                "week": 54,
+                "block": 6,
+                "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+                "duty": null,
+                "score": 2.0,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              }
+            ]
+          }
+        ],
+        "foundationProseHits": []
+      },
+      "publicationBlocker": true
+    },
+    "B5": {
+      "status": "CURRICULUM_GAP_FOCUS_TEMPLATE_ONLY",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "Do not use generic team-support language as inclusive-workplace proof. Needs explicit inclusion/respect/EDI teaching or application.",
+      "likelyDesignAreas": [
+        "B2",
+        "B3",
+        "B10"
+      ],
+      "doNotAssignNearestBlock": true,
+      "type": "behaviour",
+      "description": "Support an inclusive workplace, for example, being respectful of different views.",
+      "evidenceSnapshot": {
+        "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+        "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+        "focusHitsIncludedSample": [
+          {
+            "week": 11,
+            "block": 2,
+            "excluded": false,
+            "topic": "Customer Service Scenarios",
+            "duty": "D6"
+          },
+          {
+            "week": 13,
+            "block": 2,
+            "excluded": false,
+            "topic": "Engine Repairs",
+            "duty": "D3"
+          },
+          {
+            "week": 17,
+            "block": 2,
+            "excluded": false,
+            "topic": "Advanced Brake Diagnostics",
+            "duty": "D3"
+          },
+          {
+            "week": 20,
+            "block": 2,
+            "excluded": false,
+            "topic": "Customer Dispute Resolution",
+            "duty": "D6"
+          },
+          {
+            "week": 21,
+            "block": 3,
+            "excluded": false,
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "duty": "D1"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 6,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 57,
+                "block": 6,
+                "topic": "Safe lifting, jacking and vehicle support",
+                "duty": "D7",
+                "score": 2.5,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              },
+              {
+                "week": 53,
+                "block": 6,
+                "topic": "Workshop productivity, task sequencing and team support",
+                "duty": "D3",
+                "score": 2.0,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              }
+            ]
+          }
+        ],
+        "strictSample": []
+      },
+      "publicationBlocker": true
+    },
+    "K1": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "Do not use lesson headers. Needs explicit teaching: automotive industry context, role of autocare technician, limits of autonomy, reporting channels. May fit early foundation/induction only after that content exists.",
+      "likelyDesignAreas": [
+        "B1",
+        "B2"
+      ],
+      "doNotAssignNearestBlock": true,
+      "type": "knowledge",
+      "description": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels.",
+      "evidenceSnapshot": {
+        "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+        "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+        "focusHitsIncludedSample": [
+          {
+            "week": 21,
+            "block": 3,
+            "excluded": false,
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "duty": "D1"
+          },
+          {
+            "week": 31,
+            "block": 4,
+            "excluded": false,
+            "topic": "Customer updates, ETA management and expectation setting",
+            "duty": "D1"
+          },
+          {
+            "week": 41,
+            "block": 5,
+            "excluded": false,
+            "topic": "Technical handover and managing customer expectations on diagnostic work",
+            "duty": "D1"
+          },
+          {
+            "week": 51,
+            "block": 6,
+            "excluded": false,
+            "topic": "Customer interaction during longer diagnostic jobs",
+            "duty": "D1"
+          },
+          {
+            "week": 61,
+            "block": 7,
+            "excluded": false,
+            "topic": "Advanced service adviser communication and trust-building",
+            "duty": "D1"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 4,
+            "title": "Emerging Technology and Driveline Systems",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 40,
+                "block": 4,
+                "topic": "Fire safety, first response and incident reporting",
+                "duty": "D10",
+                "score": 2.5,
+                "title": "Emerging Technology and Driveline Systems"
+              }
+            ]
+          }
+        ],
+        "strictSample": [
+          {
+            "week": 40,
+            "block": 4,
+            "excluded": false,
+            "topic": "Fire safety, first response and incident reporting",
+            "strictHits": [
+              " Autocare Technician Level 2 - Week 40 Lesson Plan Trainer Cohort / d",
+              "Plan Trainer Cohort / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Session / week Week 40 | Bl",
+              ".3 Session / week Week 40 | Block 4 SOW reference Autocare Technician Level 2 SOW v4.1 | Block 4 | Week 40 Planned hour"
+            ],
+            "hasStrictEvidence": true
+          },
+          {
+            "week": 21,
+            "block": 3,
+            "excluded": false,
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "strictHits": [
+              " Autocare Technician Level 2 - Week 21 Lesson Plan Trainer Cohort / d",
+              "Plan Trainer Cohort / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Session / week Week 21 | Bl",
+              ".3 Session / week Week 21 | Block 3 SOW reference Autocare Technician Level 2 SOW v4.1 | Block 3 | Week 21 Planned hour"
+            ],
+            "hasStrictEvidence": true
+          }
+        ]
+      },
+      "publicationBlocker": true
+    },
+    "K2": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "Needs explicit manufacturer specifications, approved schedules, vehicle-specific data, legal wear/serviceability. Do not assign B2/B3 only because they contain inspection/brake-wear.",
+      "likelyDesignAreas": [
+        "B2",
+        "B3",
+        "B10"
+      ],
+      "doNotAssignNearestBlock": true,
+      "type": "knowledge",
+      "description": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability.",
+      "evidenceSnapshot": {
+        "verdict": "MAPPABLE_NEEDS_PRIMARY_DECISION",
+        "why": "Defensible topic/anchor evidence exists in SOW; needs human Primary choice",
+        "focusHitsIncludedSample": [],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 3,
+            "title": "Workshop Processes, Tools and Environmental Awareness",
+            "bestScore": 4.0,
+            "evidenceWeeks": [
+              {
+                "week": 24,
+                "block": 3,
+                "topic": "Brake wear checks, tyre condition and wheel security",
+                "duty": "D4",
+                "score": 4.0,
+                "title": "Workshop Processes, Tools and Environmental Awareness"
+              }
+            ]
+          },
+          {
+            "block": 5,
+            "title": "Diagnostic Thinking and Complex Repair Activities",
+            "bestScore": 3.5,
+            "evidenceWeeks": [
+              {
+                "week": 45,
+                "block": 5,
+                "topic": "VIN lookup, technical data and parts availability checks",
+                "duty": "D5",
+                "score": 3.5,
+                "title": "Diagnostic Thinking and Complex Repair Activities"
+              }
+            ]
+          },
+          {
+            "block": 6,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics",
+            "bestScore": 3.0,
+            "evidenceWeeks": [
+              {
+                "week": 60,
+                "block": 6,
+                "topic": "Environmental controls, waste streams and site safety",
+                "duty": "D10",
+                "score": 3.0,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              },
+              {
+                "week": 54,
+                "block": 6,
+                "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+                "duty": null,
+                "score": 2.5,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              }
+            ]
+          },
+          {
+            "block": 2,
+            "title": "Vehicle Inspection, Servicing and Customer Interaction",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 16,
+                "block": 2,
+                "topic": "Duties 1 / 2: Intake plus Inspection",
+                "duty": null,
+                "score": 2.5,
+                "title": "Vehicle Inspection, Servicing and Customer Interaction"
+              }
+            ]
+          },
+          {
+            "block": 4,
+            "title": "Emerging Technology and Driveline Systems",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 40,
+                "block": 4,
+                "topic": "Fire safety, first response and incident reporting",
+                "duty": "D10",
+                "score": 2.5,
+                "title": "Emerging Technology and Driveline Systems"
+              }
+            ]
+          },
+          {
+            "block": 8,
+            "title": "Advanced Diagnostics and Workshop Organisation",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 80,
+                "block": 8,
+                "topic": "Emergency response, near misses and environmental safety",
+                "duty": "D10",
+                "score": 2.5,
+                "title": "Advanced Diagnostics and Workshop Organisation"
+              }
+            ]
+          },
+          {
+            "block": 9,
+            "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 88,
+                "block": 9,
+                "topic": "Integrated inspection, quotation and consent scenario",
+                "duty": "D8",
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              },
+              {
+                "week": 94,
+                "block": 9,
+                "topic": "Emerging Technology - Hydrogen Systems Safety and Application",
+                "duty": null,
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              }
+            ]
+          }
+        ],
+        "strictSample": [
+          {
+            "week": 24,
+            "block": 3,
+            "excluded": false,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          },
+          {
+            "week": 16,
+            "block": 2,
+            "excluded": false,
+            "topic": "Duties 1 / 2: Intake plus Inspection",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          },
+          {
+            "week": 12,
+            "block": 2,
+            "excluded": true,
+            "topic": "Electrical System Inspection",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          }
+        ]
+      },
+      "publicationBlocker": true
+    },
+    "K7": {
+      "status": "CURRICULUM_GAP_WEAK_EVIDENCE",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "Needs explicit workplace-instructions teaching for inspection/maintenance/replacement. Generic replacement/inspection sessions are insufficient.",
+      "likelyDesignAreas": [
+        "B2",
+        "B3",
+        "B5"
+      ],
+      "doNotAssignNearestBlock": true,
+      "type": "knowledge",
+      "description": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement.",
+      "evidenceSnapshot": {
+        "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+        "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+        "focusHitsIncludedSample": [
+          {
+            "week": 11,
+            "block": 2,
+            "excluded": false,
+            "topic": "Customer Service Scenarios",
+            "duty": "D6"
+          },
+          {
+            "week": 20,
+            "block": 2,
+            "excluded": false,
+            "topic": "Customer Dispute Resolution",
+            "duty": "D6"
+          },
+          {
+            "week": 26,
+            "block": 3,
+            "excluded": false,
+            "topic": "Workshop procedures, documentation control and handover discipline",
+            "duty": "D6"
+          },
+          {
+            "week": 36,
+            "block": 4,
+            "excluded": false,
+            "topic": "Job-card accuracy, escalation routes and quality gatekeeping",
+            "duty": "D6"
+          },
+          {
+            "week": 46,
+            "block": 5,
+            "excluded": false,
+            "topic": "Complaint prevention through process discipline and record quality",
+            "duty": "D6"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 5,
+            "title": "Diagnostic Thinking and Complex Repair Activities",
+            "bestScore": 3.0,
+            "evidenceWeeks": [
+              {
+                "week": 44,
+                "block": 5,
+                "topic": "Suspension component replacement and alignment preparation",
+                "duty": "D4",
+                "score": 3.0,
+                "title": "Diagnostic Thinking and Complex Repair Activities"
+              }
+            ]
+          },
+          {
+            "block": 2,
+            "title": "Vehicle Inspection, Servicing and Customer Interaction",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 16,
+                "block": 2,
+                "topic": "Duties 1 / 2: Intake plus Inspection",
+                "duty": null,
+                "score": 2.5,
+                "title": "Vehicle Inspection, Servicing and Customer Interaction"
+              }
+            ]
+          },
+          {
+            "block": 9,
+            "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 88,
+                "block": 9,
+                "topic": "Integrated inspection, quotation and consent scenario",
+                "duty": "D8",
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              }
+            ]
+          }
+        ],
+        "strictSample": []
+      },
+      "publicationBlocker": true
+    },
+    "K13": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "No explicit emissions teaching (catalytic/EGR/DPF/PPF/SCR). Do not assign by suspension/inspection proximity.",
+      "likelyDesignAreas": [
+        "B2",
+        "B4",
+        "B5",
+        "B10"
+      ],
+      "cluster": null,
+      "doNotAssignNearestBlock": true,
+      "type": "knowledge",
+      "description": "Emission control systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Catalytic converters, evaporative control systems, exhaust gas recirculation (EGR), diesel particulate filter (DPF), petrol particulate filter (PPF), selective catalyst reduction (SCR).",
+      "evidenceSnapshot": {
+        "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+        "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+        "focusHitsIncludedSample": [
+          {
+            "week": 14,
+            "block": 2,
+            "excluded": false,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "duty": "D4"
+          },
+          {
+            "week": 18,
+            "block": 2,
+            "excluded": false,
+            "topic": "Wheel Alignment - Advanced",
+            "duty": "D4"
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "excluded": false,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "duty": "D4"
+          },
+          {
+            "week": 34,
+            "block": 4,
+            "excluded": false,
+            "topic": "Steering geometry and advanced tyre diagnosis",
+            "duty": "D4"
+          },
+          {
+            "week": 44,
+            "block": 5,
+            "excluded": false,
+            "topic": "Suspension component replacement and alignment preparation",
+            "duty": "D4"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 5,
+            "title": "Diagnostic Thinking and Complex Repair Activities",
+            "bestScore": 3.5,
+            "evidenceWeeks": [
+              {
+                "week": 44,
+                "block": 5,
+                "topic": "Suspension component replacement and alignment preparation",
+                "duty": "D4",
+                "score": 3.5,
+                "title": "Diagnostic Thinking and Complex Repair Activities"
+              }
+            ]
+          },
+          {
+            "block": 2,
+            "title": "Vehicle Inspection, Servicing and Customer Interaction",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 16,
+                "block": 2,
+                "topic": "Duties 1 / 2: Intake plus Inspection",
+                "duty": null,
+                "score": 2.5,
+                "title": "Vehicle Inspection, Servicing and Customer Interaction"
+              }
+            ]
+          },
+          {
+            "block": 3,
+            "title": "Workshop Processes, Tools and Environmental Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 26,
+                "block": 3,
+                "topic": "Workshop procedures, documentation control and handover discipline",
+                "duty": "D6",
+                "score": 2.5,
+                "title": "Workshop Processes, Tools and Environmental Awareness"
+              },
+              {
+                "week": 27,
+                "block": 3,
+                "topic": "Housekeeping, 5S routines and safe storage control",
+                "duty": "D7",
+                "score": 2.0,
+                "title": "Workshop Processes, Tools and Environmental Awareness"
+              }
+            ]
+          },
+          {
+            "block": 4,
+            "title": "Emerging Technology and Driveline Systems",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 37,
+                "block": 4,
+                "topic": "COSHH awareness, workshop cleanliness and tool control",
+                "duty": "D7",
+                "score": 2.5,
+                "title": "Emerging Technology and Driveline Systems"
+              },
+              {
+                "week": 39,
+                "block": 4,
+                "topic": "Goods-in checks, parts storage and consumables control",
+                "duty": "D9",
+                "score": 2.0,
+                "title": "Emerging Technology and Driveline Systems"
+              }
+            ]
+          },
+          {
+            "block": 7,
+            "title": "Advanced Workshop Practice and Technical Communication",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 65,
+                "block": 7,
+                "topic": "Supplier performance, cost control and escalation",
+                "duty": "D5",
+                "score": 2.5,
+                "title": "Advanced Workshop Practice and Technical Communication"
+              }
+            ]
+          },
+          {
+            "block": 9,
+            "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 86,
+                "block": 9,
+                "topic": "Workshop compliance deep dive: documentation and waste control",
+                "duty": "D10",
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              },
+              {
+                "week": 88,
+                "block": 9,
+                "topic": "Integrated inspection, quotation and consent scenario",
+                "duty": "D8",
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              }
+            ]
+          }
+        ],
+        "strictSample": [
+          {
+            "week": 44,
+            "block": 5,
+            "excluded": false,
+            "topic": "Suspension component replacement and alignment preparation",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          },
+          {
+            "week": 16,
+            "block": 2,
+            "excluded": false,
+            "topic": "Duties 1 / 2: Intake plus Inspection",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          }
+        ]
+      },
+      "publicationBlocker": true
+    },
+    "K20": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "No defensible fluids/filtration teaching (brake fluid, oil/oil filters, air filters). Do not use brake diagnostics as nearest Primary. Cluster with S25.",
+      "likelyDesignAreas": [
+        "B2",
+        "B3",
+        "B10"
+      ],
+      "cluster": "fluids_filtration",
+      "doNotAssignNearestBlock": true,
+      "type": "knowledge",
+      "description": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters.",
+      "evidenceSnapshot": {
+        "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+        "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+        "focusHitsIncludedSample": [],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 2,
+            "title": "Vehicle Inspection, Servicing and Customer Interaction",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 17,
+                "block": 2,
+                "topic": "Advanced Brake Diagnostics",
+                "duty": "D3",
+                "score": 2.5,
+                "title": "Vehicle Inspection, Servicing and Customer Interaction"
+              }
+            ]
+          },
+          {
+            "block": 3,
+            "title": "Workshop Processes, Tools and Environmental Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 24,
+                "block": 3,
+                "topic": "Brake wear checks, tyre condition and wheel security",
+                "duty": "D4",
+                "score": 2.5,
+                "title": "Workshop Processes, Tools and Environmental Awareness"
+              }
+            ]
+          }
+        ],
+        "strictSample": [
+          {
+            "week": 17,
+            "block": 2,
+            "excluded": false,
+            "topic": "Advanced Brake Diagnostics",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "excluded": false,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          }
+        ]
+      },
+      "publicationBlocker": true
+    },
+    "K31": {
+      "status": "CURRICULUM_GAP_FOCUS_TEMPLATE_ONLY",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "EDI knowledge gap cluster with S20+B5. Templated focus lists insufficient.",
+      "likelyDesignAreas": [
+        "B2",
+        "B3",
+        "B10"
+      ],
+      "cluster": "edi",
+      "doNotAssignNearestBlock": true,
+      "type": "knowledge",
+      "description": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work.",
+      "evidenceSnapshot": {
+        "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+        "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+        "focusHitsIncludedSample": [
+          {
+            "week": 13,
+            "block": 2,
+            "excluded": false,
+            "topic": "Engine Repairs",
+            "duty": "D3"
+          },
+          {
+            "week": 17,
+            "block": 2,
+            "excluded": false,
+            "topic": "Advanced Brake Diagnostics",
+            "duty": "D3"
+          },
+          {
+            "week": 23,
+            "block": 3,
+            "excluded": false,
+            "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+            "duty": "D3"
+          },
+          {
+            "week": 33,
+            "block": 4,
+            "excluded": false,
+            "topic": "Driveline service, task allocation and team communication",
+            "duty": "D3"
+          },
+          {
+            "week": 43,
+            "block": 5,
+            "excluded": false,
+            "topic": "Complex repairs, time management and QA sign-off",
+            "duty": "D3"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 6,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 59,
+                "block": 6,
+                "topic": "Order tracking, back orders and customer impact",
+                "duty": "D9",
+                "score": 2.5,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              }
+            ]
+          }
+        ],
+        "strictSample": []
+      },
+      "publicationBlocker": true
+    },
+    "S7": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "Tied to K2 gap. Needs explicit safety inspection + routine maintenance using schedules/vehicle-specific data/wear limits. Do not assign B2/B10 by title proximity.",
+      "likelyDesignAreas": [
+        "B2",
+        "B3",
+        "B10"
+      ],
+      "cluster": "inspection_to_spec",
+      "doNotAssignNearestBlock": true,
+      "type": "skill",
+      "description": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle.",
+      "evidenceSnapshot": {
+        "verdict": "MAPPABLE_NEEDS_PRIMARY_DECISION",
+        "why": "Defensible topic/anchor evidence exists in SOW; needs human Primary choice",
+        "focusHitsIncludedSample": [],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 10,
+            "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+            "bestScore": 6.5,
+            "evidenceWeeks": [
+              {
+                "week": 106,
+                "block": 10,
+                "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+                "duty": "D4",
+                "score": 6.5,
+                "title": "Final Consolidation, Corrective Learning and EPA Readiness Training"
+              }
+            ]
+          },
+          {
+            "block": 6,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics",
+            "bestScore": 3.0,
+            "evidenceWeeks": [
+              {
+                "week": 60,
+                "block": 6,
+                "topic": "Environmental controls, waste streams and site safety",
+                "duty": "D10",
+                "score": 3.0,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              },
+              {
+                "week": 54,
+                "block": 6,
+                "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+                "duty": null,
+                "score": 2.5,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              }
+            ]
+          },
+          {
+            "block": 2,
+            "title": "Vehicle Inspection, Servicing and Customer Interaction",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 16,
+                "block": 2,
+                "topic": "Duties 1 / 2: Intake plus Inspection",
+                "duty": null,
+                "score": 2.5,
+                "title": "Vehicle Inspection, Servicing and Customer Interaction"
+              }
+            ]
+          },
+          {
+            "block": 4,
+            "title": "Emerging Technology and Driveline Systems",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 39,
+                "block": 4,
+                "topic": "Goods-in checks, parts storage and consumables control",
+                "duty": "D9",
+                "score": 2.5,
+                "title": "Emerging Technology and Driveline Systems"
+              },
+              {
+                "week": 40,
+                "block": 4,
+                "topic": "Fire safety, first response and incident reporting",
+                "duty": "D10",
+                "score": 2.5,
+                "title": "Emerging Technology and Driveline Systems"
+              }
+            ]
+          },
+          {
+            "block": 5,
+            "title": "Diagnostic Thinking and Complex Repair Activities",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 45,
+                "block": 5,
+                "topic": "VIN lookup, technical data and parts availability checks",
+                "duty": "D5",
+                "score": 2.5,
+                "title": "Diagnostic Thinking and Complex Repair Activities"
+              }
+            ]
+          },
+          {
+            "block": 8,
+            "title": "Advanced Diagnostics and Workshop Organisation",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 80,
+                "block": 8,
+                "topic": "Emergency response, near misses and environmental safety",
+                "duty": "D10",
+                "score": 2.5,
+                "title": "Advanced Diagnostics and Workshop Organisation"
+              }
+            ]
+          },
+          {
+            "block": 9,
+            "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 88,
+                "block": 9,
+                "topic": "Integrated inspection, quotation and consent scenario",
+                "duty": "D8",
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              },
+              {
+                "week": 94,
+                "block": 9,
+                "topic": "Emerging Technology - Hydrogen Systems Safety and Application",
+                "duty": null,
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              }
+            ]
+          }
+        ],
+        "strictSample": [
+          {
+            "week": 106,
+            "block": 10,
+            "excluded": false,
+            "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          },
+          {
+            "week": 16,
+            "block": 2,
+            "excluded": false,
+            "topic": "Duties 1 / 2: Intake plus Inspection",
+            "strictHits": [],
+            "hasStrictEvidence": false
+          }
+        ]
+      },
+      "publicationBlocker": true
+    },
+    "S23": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "Paired with K34. Needs explicit digital systems + GDPR + cyber teaching. No stock-security / generic emerging-tech substitute.",
+      "likelyDesignAreas": [
+        "B5",
+        "B7",
+        "B9",
+        "B10"
+      ],
+      "cluster": "digital_gdpr_cyber",
+      "doNotAssignNearestBlock": true,
+      "type": "skill",
+      "description": "Use information and digital technology systems. Comply with GDPR and cyber security.",
+      "evidenceSnapshot": {
+        "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+        "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+        "focusHitsIncludedSample": [
+          {
+            "week": 11,
+            "block": 2,
+            "excluded": false,
+            "topic": "Customer Service Scenarios",
+            "duty": "D6"
+          },
+          {
+            "week": 20,
+            "block": 2,
+            "excluded": false,
+            "topic": "Customer Dispute Resolution",
+            "duty": "D6"
+          },
+          {
+            "week": 21,
+            "block": 3,
+            "excluded": false,
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "duty": "D1"
+          },
+          {
+            "week": 26,
+            "block": 3,
+            "excluded": false,
+            "topic": "Workshop procedures, documentation control and handover discipline",
+            "duty": "D6"
+          },
+          {
+            "week": 28,
+            "block": 3,
+            "excluded": false,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "duty": "D8"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 7,
+            "title": "Advanced Workshop Practice and Technical Communication",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 69,
+                "block": 7,
+                "topic": "Consumables management and stock security",
+                "duty": "D9",
+                "score": 2.5,
+                "title": "Advanced Workshop Practice and Technical Communication"
+              }
+            ]
+          },
+          {
+            "block": 9,
+            "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 90,
+                "block": 9,
+                "topic": "Emerging technology readiness review and case studies",
+                "duty": "D10",
+                "score": 2.5,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              },
+              {
+                "week": 82,
+                "block": 9,
+                "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+                "duty": null,
+                "score": 2.0,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              },
+              {
+                "week": 94,
+                "block": 9,
+                "topic": "Emerging Technology - Hydrogen Systems Safety and Application",
+                "duty": null,
+                "score": 2.0,
+                "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness"
+              }
+            ]
+          },
+          {
+            "block": 3,
+            "title": "Workshop Processes, Tools and Environmental Awareness",
+            "bestScore": 2.0,
+            "evidenceWeeks": [
+              {
+                "week": 24,
+                "block": 3,
+                "topic": "Brake wear checks, tyre condition and wheel security",
+                "duty": "D4",
+                "score": 2.0,
+                "title": "Workshop Processes, Tools and Environmental Awareness"
+              }
+            ]
+          },
+          {
+            "block": 6,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics",
+            "bestScore": 2.0,
+            "evidenceWeeks": [
+              {
+                "week": 54,
+                "block": 6,
+                "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+                "duty": null,
+                "score": 2.0,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              }
+            ]
+          }
+        ]
+      },
+      "publicationBlocker": true
+    },
+    "S25": {
+      "status": "CURRICULUM_GAP",
+      "label": "OFFICIAL KSB REQUIRED + NO DEFENSIBLE PRIMARY YET + CURRICULUM AMENDMENT REQUIRED",
+      "notes": "Paired with K20. Needs explicit check/replace fluids and filtration parts practical. No parts/catalogue/brake nearest-fit.",
+      "likelyDesignAreas": [
+        "B2",
+        "B3",
+        "B10"
+      ],
+      "cluster": "fluids_filtration",
+      "doNotAssignNearestBlock": true,
+      "type": "skill",
+      "description": "Apply procedures to check and replace fluids, and filtration parts.",
+      "evidenceSnapshot": {
+        "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+        "why": "Some topical signal but below strong threshold — curriculum gap risk if forced",
+        "focusHitsIncludedSample": [
+          {
+            "week": 13,
+            "block": 2,
+            "excluded": false,
+            "topic": "Engine Repairs",
+            "duty": "D3"
+          },
+          {
+            "week": 17,
+            "block": 2,
+            "excluded": false,
+            "topic": "Advanced Brake Diagnostics",
+            "duty": "D3"
+          },
+          {
+            "week": 23,
+            "block": 3,
+            "excluded": false,
+            "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+            "duty": "D3"
+          },
+          {
+            "week": 33,
+            "block": 4,
+            "excluded": false,
+            "topic": "Driveline service, task allocation and team communication",
+            "duty": "D3"
+          },
+          {
+            "week": 43,
+            "block": 5,
+            "excluded": false,
+            "topic": "Complex repairs, time management and QA sign-off",
+            "duty": "D3"
+          }
+        ],
+        "candidatesRejectedAsInsufficient": [
+          {
+            "block": 3,
+            "title": "Workshop Processes, Tools and Environmental Awareness",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 25,
+                "block": 3,
+                "topic": "Parts identification, catalogue use and alternative part selection",
+                "duty": "D5",
+                "score": 2.5,
+                "title": "Workshop Processes, Tools and Environmental Awareness"
+              }
+            ]
+          },
+          {
+            "block": 4,
+            "title": "Emerging Technology and Driveline Systems",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 39,
+                "block": 4,
+                "topic": "Goods-in checks, parts storage and consumables control",
+                "duty": "D9",
+                "score": 2.5,
+                "title": "Emerging Technology and Driveline Systems"
+              },
+              {
+                "week": 35,
+                "block": 4,
+                "topic": "Warranty parts, returns and supplier escalation",
+                "duty": "D5",
+                "score": 2.0,
+                "title": "Emerging Technology and Driveline Systems"
+              },
+              {
+                "week": 38,
+                "block": 4,
+                "topic": "Quotations: labour, parts and value options",
+                "duty": "D8",
+                "score": 2.0,
+                "title": "Emerging Technology and Driveline Systems"
+              }
+            ]
+          },
+          {
+            "block": 5,
+            "title": "Diagnostic Thinking and Complex Repair Activities",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 45,
+                "block": 5,
+                "topic": "VIN lookup, technical data and parts availability checks",
+                "duty": "D5",
+                "score": 2.5,
+                "title": "Diagnostic Thinking and Complex Repair Activities"
+              }
+            ]
+          },
+          {
+            "block": 6,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 55,
+                "block": 6,
+                "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+                "duty": "D5",
+                "score": 2.5,
+                "title": "Vehicle Systems Integration and Advanced Diagnostics"
+              }
+            ]
+          },
+          {
+            "block": 8,
+            "title": "Advanced Diagnostics and Workshop Organisation",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 75,
+                "block": 8,
+                "topic": "Specialist parts, alternatives and warranty evidence",
+                "duty": "D5",
+                "score": 2.5,
+                "title": "Advanced Diagnostics and Workshop Organisation"
+              }
+            ]
+          },
+          {
+            "block": 10,
+            "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+            "bestScore": 2.5,
+            "evidenceWeeks": [
+              {
+                "week": 107,
+                "block": 10,
+                "topic": "Duty 5 Skills Development and EPA Readiness Practice - Parts Identification and Sourcing",
+                "duty": "D5",
+                "score": 2.5,
+                "title": "Final Consolidation, Corrective Learning and EPA Readiness Training"
+              },
+              {
+                "week": 106,
+                "block": 10,
+                "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+                "duty": "D4",
+                "score": 2.0,
+                "title": "Final Consolidation, Corrective Learning and EPA Readiness Training"
+              }
+            ]
+          }
+        ]
+      },
+      "publicationBlocker": true
+    }
+  },
+  "curriculumGapRegister": {
+    "title": "Autocare v1.3 curriculum-gap register (publication blockers)",
+    "rule": "Every official KSB → exactly 1 defensible Primary training block before programme publication",
+    "status": "PUBLICATION BLOCKED — 14 required KSBs have no defensible Primary yet",
+    "counts": {
+      "officialCatalogue": 64,
+      "humanApprovedPrimaries": 15,
+      "curriculumGaps": 14,
+      "gapCodes": [
+        "B5",
+        "K1",
+        "K2",
+        "K7",
+        "K13",
+        "K18",
+        "K20",
+        "K31",
+        "K34",
+        "S7",
+        "S11",
+        "S20",
+        "S23",
+        "S25"
+      ],
+      "groupedCodes": [
+        "B5",
+        "K1",
+        "K2",
+        "K7",
+        "K13",
+        "K18",
+        "K20",
+        "K31",
+        "K34",
+        "S7",
+        "S11",
+        "S20",
+        "S23",
+        "S25"
+      ],
+      "allGapsCoveredInRegister": true
+    },
+    "humanApprovedPrimariesSoFar": {
+      "K24": {
+        "primaryBlock": 2,
+        "rationale": "First dedicated customer-service teaching (scenarios + dispute resolution)"
+      },
+      "S15": {
+        "primaryBlock": 2,
+        "rationale": "First clear practical customer-service skill application"
+      },
+      "K12": {
+        "primaryBlock": 2,
+        "rationale": "Advanced Brake Diagnostics strongest primary; B3 wear checks = reinforcement"
+      },
+      "S12": {
+        "primaryBlock": 2,
+        "rationale": "Wheel Alignment - Advanced first explicit geometry teaching; no B3 artefact"
+      },
+      "K30": {
+        "primaryBlock": 3,
+        "rationale": "Earliest clear team-working via bay discipline/handoffs; B8 advanced; B10 consolidation"
+      },
+      "S3": {
+        "primaryBlock": 3,
+        "rationale": "W27 Housekeeping/5S/safe storage first teaching home"
+      },
+      "S1": {
+        "primaryBlock": 3,
+        "rationale": "Earliest sustained workplace H&S practice; later blocks specialist/reinforcement"
+      },
+      "S2": {
+        "primaryBlock": 3,
+        "rationale": "First clear work-area preparation/housekeeping teaching"
+      },
+      "S4": {
+        "primaryBlock": 4,
+        "rationale": "Clearest tool-control teaching; B3/B8 reinforcement; B9 dropped unless tool-cal evidence"
+      },
+      "K29": {
+        "primaryBlock": 3,
+        "rationale": "First estimates/authorisation teaching; later quotation blocks reinforcement"
+      },
+      "S19": {
+        "primaryBlock": 3,
+        "rationale": "Aligned with K30→B3; B8 advanced delegation reinforcement"
+      },
+      "S14": {
+        "primaryBlock": 6,
+        "rationale": "First dedicated high-intensity record-keeping/compliance/audit teaching; B8 advanced; B10 consolidation"
+      },
+      "K21": {
+        "primaryBlock": 6,
+        "rationale": "First dedicated EV service/charging/safety teaching; B9 specialist reinforcement"
+      },
+      "K23": {
+        "primaryBlock": 6,
+        "rationale": "Strongest HV safe working/isolation match; B9 reinforces later"
+      },
+      "S13": {
+        "primaryBlock": 6,
+        "rationale": "Primary practical home for EV isolation for maintenance; B9 reinforcement"
+      }
+    },
+    "groups": [
+      {
+        "groupId": "edi_inclusive_workplace",
+        "title": "Equity, diversity, inclusion & inclusive workplace",
+        "ksbs": [
+          "B5",
+          "K31",
+          "S20"
+        ],
+        "missingTeaching": [
+          "Explicit EDI principles and workplace impact (K31)",
+          "Complying with EDI guidance in practice (S20)",
+          "Supporting an inclusive workplace / respectful of different views (B5)"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 2,
+            "why": "Customer Interaction — natural early professional behaviours/customer context"
+          },
+          {
+            "block": 3,
+            "why": "Workshop Processes — already Primary home for several workplace behaviours/skills"
+          },
+          {
+            "block": 10,
+            "why": "Consolidation — can reinforce but usually weak as first Primary unless new dedicated session"
+          }
+        ],
+        "needs": {
+          "newSession": true,
+          "amendExistingSession": true,
+          "practicalActivity": true,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 3,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "Align with approved workplace-behaviour Primaries (B1/B2/S1/S2/S3 → B3). Only valid once an explicit EDI session/activity exists."
+        }
+      },
+      {
+        "groupId": "role_industry_autonomy",
+        "title": "Industry context, technician role, autonomy & reporting",
+        "ksbs": [
+          "K1"
+        ],
+        "missingTeaching": [
+          "Automotive industry context",
+          "Role of the autocare technician",
+          "Limits of autonomy",
+          "Reporting channels"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 1,
+            "why": "Foundation Skills / induction — logical home IF approved FS↔KSB crosswalk + explicit content are added"
+          },
+          {
+            "block": 2,
+            "why": "Early specialist block if B1 remains without coded KSB ownership"
+          }
+        ],
+        "needs": {
+          "newSession": true,
+          "amendExistingSession": true,
+          "practicalActivity": false,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 1,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "Best pedagogical fit for induction/role context, but NOT defensible until Block 1 has explicit content and approved KSB mapping evidence."
+        }
+      },
+      {
+        "groupId": "inspection_to_spec",
+        "title": "Safety inspection & routine maintenance to manufacturer data/schedules",
+        "ksbs": [
+          "K2",
+          "S7"
+        ],
+        "missingTeaching": [
+          "Manufacturer specifications / approved maintenance schedules (K2)",
+          "Vehicle-specific data use and legal wear/serviceability requirements (K2)",
+          "Apply safety inspection and routine maintenance procedures using vehicle-specific data (S7)"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 2,
+            "why": "Already hosts intake/inspection and service themes — strongest logical early host once content is explicit"
+          },
+          {
+            "block": 3,
+            "why": "Brake/tyre wear checks exist but currently lack schedule/spec/data teaching"
+          },
+          {
+            "block": 10,
+            "why": "Consolidation practice only after Primary teaching exists earlier"
+          }
+        ],
+        "needs": {
+          "newSession": true,
+          "amendExistingSession": true,
+          "practicalActivity": true,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 2,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "Natural Primary for K2+S7 together once an explicit inspection-to-spec/data session is added (e.g. strengthen W16 or insert dedicated week)."
+        }
+      },
+      {
+        "groupId": "workplace_instructions",
+        "title": "Workplace instructions (purpose and use)",
+        "ksbs": [
+          "K7"
+        ],
+        "missingTeaching": [
+          "What workplace instructions are",
+          "Purpose and use for inspection, maintenance and replacement",
+          "Applying instructions as a taught object of learning (not assumed)"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 2,
+            "why": "Intake/inspection workflow"
+          },
+          {
+            "block": 3,
+            "why": "Workshop procedures/documentation already present"
+          },
+          {
+            "block": 5,
+            "why": "Process discipline / record quality weeks"
+          }
+        ],
+        "needs": {
+          "newSession": false,
+          "amendExistingSession": true,
+          "practicalActivity": true,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 3,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "W26 workshop procedures/documentation is the best amendment target; Primary only after explicit 'workplace instructions' learning objectives/evidence exist."
+        }
+      },
+      {
+        "groupId": "emissions_systems",
+        "title": "Emission control systems knowledge",
+        "ksbs": [
+          "K13"
+        ],
+        "missingTeaching": [
+          "Purpose/function/location of emission control systems",
+          "Catalytic converters, evaporative controls, EGR, DPF, PPF, SCR"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 2,
+            "why": "Systems inspection progression"
+          },
+          {
+            "block": 5,
+            "why": "Complex repair/diagnostic context"
+          },
+          {
+            "block": 10,
+            "why": "Consolidation/EPA systems practice — weak as sole Primary"
+          }
+        ],
+        "needs": {
+          "newSession": true,
+          "amendExistingSession": false,
+          "practicalActivity": true,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 5,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "Best diagnostic/systems home once a dedicated emissions session is added; do not use current suspension/inspection proximity."
+        }
+      },
+      {
+        "groupId": "fluids_filtration",
+        "title": "Fluids & filtration (knowledge + skill)",
+        "ksbs": [
+          "K20",
+          "S25"
+        ],
+        "missingTeaching": [
+          "Fluid and filtration systems: brake fluid, oil/oil filters, air filters (K20)",
+          "Check and replace fluids and filtration parts (S25)"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 2,
+            "why": "Service/inspection pathway — logical practical home"
+          },
+          {
+            "block": 3,
+            "why": "Foundation workshop practice"
+          },
+          {
+            "block": 10,
+            "why": "Consolidation only after Primary teaching exists"
+          }
+        ],
+        "needs": {
+          "newSession": true,
+          "amendExistingSession": true,
+          "practicalActivity": true,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 2,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "Co-locate K20+S25 in an early service block with an explicit fluids/filters practical; not brake-diagnostics by association."
+        }
+      },
+      {
+        "groupId": "digital_gdpr_cyber",
+        "title": "Information & digital technology / GDPR / cyber",
+        "ksbs": [
+          "K34",
+          "S23"
+        ],
+        "missingTeaching": [
+          "Digital technology systems: email, collaboration, databases, MIS, POS, equipment interfaces (K34)",
+          "GDPR and cyber security (K34/S23)",
+          "Use information and digital technology systems in practice (S23)"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 5,
+            "why": "VIN/technical data / process-digital touchpoints"
+          },
+          {
+            "block": 7,
+            "why": "Advanced workshop practice — if digital job systems are taught explicitly"
+          },
+          {
+            "block": 9,
+            "why": "Emerging tech block — only if digital/GDPR content is added (not stock-security)"
+          },
+          {
+            "block": 10,
+            "why": "Portfolio/EPA digital evidence practices"
+          }
+        ],
+        "needs": {
+          "newSession": true,
+          "amendExistingSession": true,
+          "practicalActivity": true,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 5,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "Best early data/systems fit once explicit GDPR/cyber/digital session exists; stock-security must never be used as evidence."
+        }
+      },
+      {
+        "groupId": "adas_autonomy_levels",
+        "title": "ADAS levels of autonomy (passive/active)",
+        "ksbs": [
+          "K18"
+        ],
+        "missingTeaching": [
+          "ADAS levels of autonomy",
+          "Passive vs active advanced driver assistance systems"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 9,
+            "why": "Emerging technologies / pre-calibration adjacency (W89 teaches pre-checks, not autonomy levels)"
+          },
+          {
+            "block": 10,
+            "why": "Consolidation only after Primary teaching is added"
+          }
+        ],
+        "needs": {
+          "newSession": true,
+          "amendExistingSession": true,
+          "practicalActivity": false,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 9,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "Extend emerging-tech/ADAS strand with an explicit autonomy-levels session (W89/W90 amendment or new week). Current pre-calibration content is insufficient alone."
+        }
+      },
+      {
+        "groupId": "hv_battery_soh",
+        "title": "HV battery / charger state-of-health testing",
+        "ksbs": [
+          "S11"
+        ],
+        "missingTeaching": [
+          "State-of-health condition monitoring tests on high voltage batteries",
+          "SoH / condition monitoring of onboard chargers",
+          "Explicit practical activity (not generic EV awareness/safety)"
+        ],
+        "likelyHostBlocks": [
+          {
+            "block": 6,
+            "why": "Already Primary for K21/K23/S13 EV service/safety — best host if SoH practical is added"
+          },
+          {
+            "block": 9,
+            "why": "EV specialty block — alternative if SoH practical is placed in emerging-tech pathway"
+          }
+        ],
+        "needs": {
+          "newSession": true,
+          "amendExistingSession": true,
+          "practicalActivity": true,
+          "assessmentEvidence": true
+        },
+        "proposedPrimaryAfterAmendment": {
+          "block": 6,
+          "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+          "rationale": "Keep with approved EV Primary cluster (K21/K23/S13 → B6) once a real SoH testing activity is added to W54 or a new adjacent week."
+        }
+      }
+    ],
+    "publicationGate": {
+      "blocked": true,
+      "mustResolveBeforePublish": [
+        "B5",
+        "K1",
+        "K2",
+        "K7",
+        "K13",
+        "K18",
+        "K20",
+        "K31",
+        "K34",
+        "S7",
+        "S11",
+        "S20",
+        "S23",
+        "S25"
+      ],
+      "nextDecisionSteps": [
+        "For each gap group, choose host block(s)",
+        "Specify new session vs amend existing vs practical/assessment artefacts",
+        "Amend SOW with explicit teaching evidence",
+        "Then set exactly one Primary per KSB and optional Reinforcement",
+        "Only then persist Block↔KSB mappings and later curriculumValue"
+      ]
+    }
+  },
+  "proposedAmendmentsPack": {
+    "status": "PROPOSAL_ONLY_SEPARATE_FROM_BASELINE",
+    "originalUntouched": true,
+    "otjRemains": 611.5,
+    "gapCountStillBlockingBaseline": 14,
+    "files": {
+      "changeRegister": "C:\\Users\\Reiss\\Desktop\\Portal Questions\\AutoCare L2\\SOW Guide Clean Master v4.1 - AI Proposed Amendments Change Register.xlsx",
+      "cover": "C:\\Users\\Reiss\\Desktop\\Portal Questions\\AutoCare L2\\SOW Guide Clean Master v4.1 - AI Proposed Amendments COVER.docx",
+      "proposedLessonPack": "C:\\Users\\Reiss\\Desktop\\Portal Questions\\AutoCare L2\\Autocare_L2_Lesson_Plans\\Autocare_L2_Lesson_Plans_v1.0 - AI Proposed Amendments"
+    },
+    "rule": "Proposed Primaries must not be persisted as current programme truth until Jon/GTA adopts SOW amendments"
+  }
+}

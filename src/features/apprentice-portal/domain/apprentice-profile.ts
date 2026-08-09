@@ -28,6 +28,8 @@ export type ApprenticePortalProfile = {
   /** Cohort delivery spine — groups (CEA) or blocks (programme tasks). */
   deliverySpine?: "groups" | "blocks";
   cohortName?: string | null;
+  /** Enrolment pin to GTA programme version — required for blocks delivery. */
+  gtaProgrammeVersionId?: string | null;
 };
 
 /** Blank profile template — live data comes from /api/apprentice/me. */
@@ -57,6 +59,7 @@ export const BLANK_APPRENTICE_PROFILE: ApprenticePortalProfile = {
   standardVersion: null,
   deliverySpine: "groups",
   cohortName: null,
+  gtaProgrammeVersionId: null,
 };
 
 export type ApprenticeModuleRow = {

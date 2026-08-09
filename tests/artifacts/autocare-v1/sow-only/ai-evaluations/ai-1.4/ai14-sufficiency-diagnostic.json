@@ -1,0 +1,642 @@
+{
+  "at": "2026-08-09T23:20:22.460Z",
+  "rows": [
+    {
+      "code": "K30",
+      "bucket": "false_gap",
+      "description": "Team working principles.",
+      "type": "knowledge",
+      "strength": "ABSENT",
+      "ratio": 0,
+      "missingMaterial": true,
+      "practicalRequired": false,
+      "practicalPresent": false,
+      "covered": [],
+      "missing": [
+        "C1"
+      ],
+      "reasons": [
+        "No usable retrieved evidence or no decomposable requirement."
+      ],
+      "topHits": [
+        {
+          "w": 22,
+          "b": 3,
+          "topic": "Routine servicing, inspection workflow and service schedules",
+          "score": 1.52
+        },
+        {
+          "w": 4,
+          "b": 1,
+          "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+          "score": 1.51
+        },
+        {
+          "w": 24,
+          "b": 3,
+          "topic": "Brake wear checks, tyre condition and wheel security",
+          "score": 1.5
+        },
+        {
+          "w": 5,
+          "b": 1,
+          "topic": "Measurement, Technical Information and Tolerances",
+          "score": 1.5
+        }
+      ]
+    },
+    {
+      "code": "S19",
+      "bucket": "false_gap",
+      "description": "Apply team working principles.",
+      "type": "skill",
+      "strength": "ABSENT",
+      "ratio": 0,
+      "missingMaterial": true,
+      "practicalRequired": false,
+      "practicalPresent": false,
+      "covered": [],
+      "missing": [
+        "C1"
+      ],
+      "reasons": [
+        "No usable retrieved evidence or no decomposable requirement."
+      ],
+      "topHits": [
+        {
+          "w": 22,
+          "b": 3,
+          "topic": "Routine servicing, inspection workflow and service schedules",
+          "score": 1.84
+        },
+        {
+          "w": 27,
+          "b": 3,
+          "topic": "Housekeeping, 5S routines and safe storage control",
+          "score": 1.8
+        },
+        {
+          "w": 5,
+          "b": 1,
+          "topic": "Measurement, Technical Information and Tolerances",
+          "score": 1.7
+        },
+        {
+          "w": 70,
+          "b": 7,
+          "topic": "Safe working with new vehicle systems",
+          "score": 1.58
+        }
+      ]
+    },
+    {
+      "code": "B3",
+      "bucket": "false_gap",
+      "description": "Respond and adapt to changing work demands.",
+      "type": "behaviour",
+      "strength": "ABSENT",
+      "ratio": 0,
+      "missingMaterial": true,
+      "practicalRequired": false,
+      "practicalPresent": false,
+      "covered": [],
+      "missing": [
+        "C1"
+      ],
+      "reasons": [
+        "No usable retrieved evidence or no decomposable requirement."
+      ],
+      "topHits": [
+        {
+          "w": 4,
+          "b": 1,
+          "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+          "score": 2.07
+        },
+        {
+          "w": 6,
+          "b": 1,
+          "topic": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+          "score": 2.05
+        },
+        {
+          "w": 59,
+          "b": 6,
+          "topic": "Order tracking, back orders and customer impact",
+          "score": 1.3
+        },
+        {
+          "w": 68,
+          "b": 7,
+          "topic": "Multi-line estimates and customer choice conversations",
+          "score": 1.3
+        }
+      ]
+    },
+    {
+      "code": "K3",
+      "bucket": "false_gap",
+      "description": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER).",
+      "type": "knowledge",
+      "strength": "PARTIAL",
+      "ratio": 0.6,
+      "missingMaterial": true,
+      "practicalRequired": false,
+      "practicalPresent": true,
+      "covered": [
+        "C1:Awareness of health and safety regulations, standards, and g",
+        "C2:Safe working procedures, Control of Substances Hazardous to ",
+        "C3:Good housekeeping",
+        "C4:Hazards and risks",
+        "C8:Safety equipment",
+        "C10:Safety signage"
+      ],
+      "missing": [
+        "C5:Health and Safety at Work Act",
+        "C6:Manual handling",
+        "C7:Personal Protective Equipment (PPE)",
+        "C9:guards, fire extinguishers"
+      ],
+      "reasons": [
+        "Partial official breadth — material components missing."
+      ],
+      "topHits": [
+        {
+          "w": 4,
+          "b": 1,
+          "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+          "score": 18.9
+        },
+        {
+          "w": 1,
+          "b": 1,
+          "topic": "Workshop Safety, Hazards, Housekeeping and Occupational Expectations",
+          "score": 13.32
+        },
+        {
+          "w": 37,
+          "b": 4,
+          "topic": "COSHH awareness, workshop cleanliness and tool control",
+          "score": 12.57
+        },
+        {
+          "w": 27,
+          "b": 3,
+          "topic": "Housekeeping, 5S routines and safe storage control",
+          "score": 11.94
+        }
+      ]
+    },
+    {
+      "code": "K26",
+      "bucket": "false_gap",
+      "description": "Vehicle parts costings and procurement: customer, organisation and vehicle needs.",
+      "type": "knowledge",
+      "strength": "PARTIAL",
+      "ratio": 0.5,
+      "missingMaterial": true,
+      "practicalRequired": false,
+      "practicalPresent": true,
+      "covered": [
+        "C2:customer, organisation and vehicle needs"
+      ],
+      "missing": [
+        "C1:Vehicle parts costings and procurement"
+      ],
+      "reasons": [
+        "Partial official breadth — material components missing."
+      ],
+      "topHits": [
+        {
+          "w": 39,
+          "b": 4,
+          "topic": "Goods-in checks, parts storage and consumables control",
+          "score": 12.43
+        },
+        {
+          "w": 29,
+          "b": 3,
+          "topic": "Stock rotation, reorder points and traceability",
+          "score": 10.61
+        },
+        {
+          "w": 35,
+          "b": 4,
+          "topic": "Warranty parts, returns and supplier escalation",
+          "score": 9.48
+        },
+        {
+          "w": 25,
+          "b": 3,
+          "topic": "Parts identification, catalogue use and alternative part selection",
+          "score": 8.7
+        }
+      ]
+    },
+    {
+      "code": "K27",
+      "bucket": "false_gap",
+      "description": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes.",
+      "type": "knowledge",
+      "strength": "PARTIAL",
+      "ratio": 0.5,
+      "missingMaterial": true,
+      "practicalRequired": false,
+      "practicalPresent": true,
+      "covered": [
+        "C1:Materials, resources, and stock storage used in automotive i"
+      ],
+      "missing": [
+        "C2:Stock and resource management processes"
+      ],
+      "reasons": [
+        "Partial official breadth — material components missing."
+      ],
+      "topHits": [
+        {
+          "w": 39,
+          "b": 4,
+          "topic": "Goods-in checks, parts storage and consumables control",
+          "score": 12.62
+        },
+        {
+          "w": 29,
+          "b": 3,
+          "topic": "Stock rotation, reorder points and traceability",
+          "score": 10.93
+        },
+        {
+          "w": 35,
+          "b": 4,
+          "topic": "Warranty parts, returns and supplier escalation",
+          "score": 9.48
+        },
+        {
+          "w": 25,
+          "b": 3,
+          "topic": "Parts identification, catalogue use and alternative part selection",
+          "score": 8.7
+        }
+      ]
+    },
+    {
+      "code": "S6",
+      "bucket": "false_gap",
+      "description": "Comply with environmental and sustainability procedures, regulations, standards, and guidance. Segregate resources for reuse, recycling, and disposal.",
+      "type": "skill",
+      "strength": "PARTIAL",
+      "ratio": 0.5,
+      "missingMaterial": true,
+      "practicalRequired": true,
+      "practicalPresent": true,
+      "covered": [
+        "C1:Comply with environmental and sustainability procedures, reg"
+      ],
+      "missing": [
+        "C2:Segregate resources for reuse, recycling, and disposal"
+      ],
+      "reasons": [
+        "Partial official breadth — material components missing."
+      ],
+      "topHits": [
+        {
+          "w": 30,
+          "b": 3,
+          "topic": "Environmental risk, spill response and emergency preparedness",
+          "score": 10.32
+        },
+        {
+          "w": 80,
+          "b": 8,
+          "topic": "Emergency response, near misses and environmental safety",
+          "score": 7.84
+        },
+        {
+          "w": 60,
+          "b": 6,
+          "topic": "Environmental controls, waste streams and site safety",
+          "score": 7.16
+        },
+        {
+          "w": 47,
+          "b": 5,
+          "topic": "Battery handling, waste segregation and PPE discipline",
+          "score": 6.06
+        }
+      ]
+    },
+    {
+      "code": "S18",
+      "bucket": "false_gap",
+      "description": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing.",
+      "type": "skill",
+      "strength": "PARTIAL",
+      "ratio": 0.6666666666666666,
+      "missingMaterial": true,
+      "practicalRequired": true,
+      "practicalPresent": true,
+      "covered": [
+        "C1:Apply organisational sales processes",
+        "C2:show and tell, features and benefits, consultative selling, "
+      ],
+      "missing": [
+        "D-sales-process:sales-process"
+      ],
+      "reasons": [
+        "Partial official breadth — material components missing."
+      ],
+      "topHits": [
+        {
+          "w": 78,
+          "b": 8,
+          "topic": "Quotations, authorisation chains and ethical upsell practice",
+          "score": 11.6
+        },
+        {
+          "w": 28,
+          "b": 3,
+          "topic": "Estimates, authorisation and customer approval skills",
+          "score": 9.26
+        },
+        {
+          "w": 48,
+          "b": 5,
+          "topic": "Additional work identification and quote revision",
+          "score": 6.26
+        },
+        {
+          "w": 38,
+          "b": 4,
+          "topic": "Quotations: labour, parts and value options",
+          "score": 5.82
+        }
+      ]
+    },
+    {
+      "code": "S22",
+      "bucket": "false_gap",
+      "description": "Communicate in writing, for example with internal and external customers, colleagues, and managers.",
+      "type": "skill",
+      "strength": "ABSENT",
+      "ratio": 0,
+      "missingMaterial": true,
+      "practicalRequired": true,
+      "practicalPresent": true,
+      "covered": [],
+      "missing": [
+        "C1:Communicate in writing,",
+        "C2:with internal and external customers, colleagues, and manage"
+      ],
+      "reasons": [],
+      "topHits": [
+        {
+          "w": 10,
+          "b": 1,
+          "topic": "Technical Documentation, Job Cards, Handover and Specialist Transition",
+          "score": 18.34
+        },
+        {
+          "w": 41,
+          "b": 5,
+          "topic": "Technical handover and managing customer expectations on diagnostic work",
+          "score": 18.21
+        },
+        {
+          "w": 26,
+          "b": 3,
+          "topic": "Workshop procedures, documentation control and handover discipline",
+          "score": 17.18
+        },
+        {
+          "w": 16,
+          "b": 2,
+          "topic": "Duties 1 / 2: Intake plus Inspection",
+          "score": 15.74
+        }
+      ]
+    },
+    {
+      "code": "S21",
+      "bucket": "false_gap",
+      "description": "Communicate with others verbally, for example customers, suppliers, and colleagues.",
+      "type": "skill",
+      "strength": "ABSENT",
+      "ratio": 0,
+      "missingMaterial": true,
+      "practicalRequired": true,
+      "practicalPresent": true,
+      "covered": [],
+      "missing": [
+        "C1:Communicate with others verbally,",
+        "C2:customers, suppliers, and colleagues"
+      ],
+      "reasons": [],
+      "topHits": [
+        {
+          "w": 28,
+          "b": 3,
+          "topic": "Estimates, authorisation and customer approval skills",
+          "score": 15.38
+        },
+        {
+          "w": 38,
+          "b": 4,
+          "topic": "Quotations: labour, parts and value options",
+          "score": 14.5
+        },
+        {
+          "w": 35,
+          "b": 4,
+          "topic": "Warranty parts, returns and supplier escalation",
+          "score": 12.69
+        },
+        {
+          "w": 25,
+          "b": 3,
+          "topic": "Parts identification, catalogue use and alternative part selection",
+          "score": 12.05
+        }
+      ]
+    },
+    {
+      "code": "K1",
+      "bucket": "false_primary",
+      "description": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels.",
+      "type": "knowledge",
+      "strength": "FULL",
+      "ratio": 1,
+      "missingMaterial": false,
+      "practicalRequired": false,
+      "practicalPresent": true,
+      "covered": [
+        "C1:The automotive industry and the role of the autocare technic",
+        "C2:Limits of autonomy and reporting channels"
+      ],
+      "missing": [],
+      "reasons": [
+        "Near-full substantive match to official requirement breadth."
+      ],
+      "topHits": [
+        {
+          "w": 4,
+          "b": 1,
+          "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+          "score": 2.83
+        },
+        {
+          "w": 7,
+          "b": 1,
+          "topic": "Multimeter Use, Electrical Measurement and Fabrication Quality",
+          "score": 2.24
+        },
+        {
+          "w": 11,
+          "b": 2,
+          "topic": "Customer Service Scenarios",
+          "score": 1.59
+        },
+        {
+          "w": 16,
+          "b": 2,
+          "topic": "Duties 1 / 2: Intake plus Inspection",
+          "score": 1.56
+        }
+      ]
+    },
+    {
+      "code": "K2",
+      "bucket": "false_primary",
+      "description": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability.",
+      "type": "knowledge",
+      "strength": "FULL",
+      "ratio": 1,
+      "missingMaterial": false,
+      "practicalRequired": false,
+      "practicalPresent": true,
+      "covered": [
+        "C1:Vehicle safety inspections and routine maintenance",
+        "C2:manufacturers specifications or approved schedules",
+        "C3:The use of vehicle specific data and the legal requirements "
+      ],
+      "missing": [],
+      "reasons": [
+        "Near-full substantive match to official requirement breadth."
+      ],
+      "topHits": [
+        {
+          "w": 5,
+          "b": 1,
+          "topic": "Measurement, Technical Information and Tolerances",
+          "score": 3.38
+        },
+        {
+          "w": 4,
+          "b": 1,
+          "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+          "score": 2.07
+        },
+        {
+          "w": 22,
+          "b": 3,
+          "topic": "Routine servicing, inspection workflow and service schedules",
+          "score": 2.07
+        },
+        {
+          "w": 44,
+          "b": 5,
+          "topic": "Suspension component replacement and alignment preparation",
+          "score": 1.96
+        }
+      ]
+    },
+    {
+      "code": "K7",
+      "bucket": "false_primary",
+      "description": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement.",
+      "type": "knowledge",
+      "strength": "FULL",
+      "ratio": 1,
+      "missingMaterial": false,
+      "practicalRequired": false,
+      "practicalPresent": true,
+      "covered": [
+        "C1:Workplace instructions",
+        "C2:Purpose and use for inspection, maintenance, and replacement"
+      ],
+      "missing": [],
+      "reasons": [
+        "Near-full substantive match to official requirement breadth."
+      ],
+      "topHits": [
+        {
+          "w": 4,
+          "b": 1,
+          "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+          "score": 2.64
+        },
+        {
+          "w": 5,
+          "b": 1,
+          "topic": "Measurement, Technical Information and Tolerances",
+          "score": 2.26
+        },
+        {
+          "w": 14,
+          "b": 2,
+          "topic": "Tyre Pressure Monitoring Systems",
+          "score": 1.69
+        },
+        {
+          "w": 44,
+          "b": 5,
+          "topic": "Suspension component replacement and alignment preparation",
+          "score": 1.67
+        }
+      ]
+    },
+    {
+      "code": "S25",
+      "bucket": "false_primary",
+      "description": "Apply procedures to check and replace fluids, and filtration parts.",
+      "type": "skill",
+      "strength": "FULL",
+      "ratio": 1,
+      "missingMaterial": false,
+      "practicalRequired": true,
+      "practicalPresent": true,
+      "covered": [
+        "C1:Apply procedures to check and replace fluids, and filtration"
+      ],
+      "missing": [],
+      "reasons": [
+        "Near-full substantive match to official requirement breadth."
+      ],
+      "topHits": [
+        {
+          "w": 35,
+          "b": 4,
+          "topic": "Warranty parts, returns and supplier escalation",
+          "score": 10.2
+        },
+        {
+          "w": 38,
+          "b": 4,
+          "topic": "Quotations: labour, parts and value options",
+          "score": 10.06
+        },
+        {
+          "w": 25,
+          "b": 3,
+          "topic": "Parts identification, catalogue use and alternative part selection",
+          "score": 9.13
+        },
+        {
+          "w": 28,
+          "b": 3,
+          "topic": "Estimates, authorisation and customer approval skills",
+          "score": 9.01
+        }
+      ]
+    }
+  ]
+}

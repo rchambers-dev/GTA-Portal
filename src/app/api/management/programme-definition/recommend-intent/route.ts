@@ -67,6 +67,7 @@ export async function POST(request: Request) {
       ksbCode: ksb.code,
       isPrimary: p.isPrimary,
       learningIntent: p.intent as IntentRecommendContext["existingMappings"][0]["learningIntent"],
+      curriculumValue: 1,
       mappingSource: "manual" as const,
       recommendationProvider: null,
       recommendationFeature: null,

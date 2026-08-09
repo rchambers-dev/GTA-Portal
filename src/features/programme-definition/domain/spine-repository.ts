@@ -14,6 +14,11 @@ import type {
   SpineItemType,
 } from "./types";
 import { isLearningIntent } from "./block-ksb-mappings";
+import { normalizeCurriculumValue } from "./rpl-formulas/block-curriculum-value";
+import {
+  parseStoredProgrammeParameters,
+  serializeProgrammeParameters,
+} from "./rpl-formulas/programme-parameters";
 
 type ProgrammeVersionRow = {
   id: string;
@@ -21,6 +26,7 @@ type ProgrammeVersionRow = {
   standard_version_id: string;
   internal_version: string;
   status: string;
+  parameters: unknown;
 };
 
 type SpineItemRow = {
@@ -41,6 +47,7 @@ type MappingRow = {
   ksb_id: string;
   is_primary: boolean;
   learning_intent: string;
+  curriculum_value: number | string | null;
   mapping_source: string;
   recommendation_provider: string | null;
   recommendation_feature: string | null;
@@ -53,52 +60,6 @@ type MappingRow = {
   updated_at: string;
 };
 
-export async function findProgrammeVersionByStandard(
-  supabase: SupabaseClient,
-  standardCode: string,
-): Promise<{
-  programmeVersionId: string;
-  programmeId: string;
-  standardVersionId: string;
-  title: string;
-} | null> {
-  const code = standardCode.trim().toUpperCase();
-  const { data: standard, error: sErr } = await supabase
-    .from("se_standards")
-    .select("id, title, standard_code")
-    .eq("standard_code", code)
-    .maybeSingle();
-  if (sErr) throw new Error(sErr.message);
-  if (!standard) return null;
-
-  const { data: prog, error: pErr } = await supabase
-    .from("gta_programmes")
-    .select("id, title")
-    .eq("standard_id", standard.id)
-    .order("updated_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (pErr) throw new Error(pErr.message);
-  if (!prog) return null;
-
-  const { data: version, error: vErr } = await supabase
-    .from("gta_programme_versions")
-    .select("id, programme_id, standard_version_id, internal_version, status")
-    .eq("programme_id", prog.id)
-    .order("updated_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (vErr) throw new Error(vErr.message);
-  if (!version) return null;
-
-  return {
-    programmeVersionId: version.id,
-    programmeId: prog.id,
-    standardVersionId: version.standard_version_id,
-    title: prog.title,
-  };
-}
-
 export async function loadProgrammeSpine(
   supabase: SupabaseClient,
   programmeVersionId: string,
@@ -106,14 +67,19 @@ export async function loadProgrammeSpine(
   spineItems: SpineItem[];
   ksbMappings: BlockKsbMapping[];
   version: ProgrammeVersionRow | null;
+  parameters: ProgrammeDeliveryParameters;
 } | null> {
   const { data: version, error: vErr } = await supabase
     .from("gta_programme_versions")
-    .select("id, programme_id, standard_version_id, internal_version, status")
+    .select(
+      "id, programme_id, standard_version_id, internal_version, status, parameters",
+    )
     .eq("id", programmeVersionId)
     .maybeSingle();
   if (vErr) throw new Error(vErr.message);
   if (!version) return null;
+
+  const parameters = parseStoredProgrammeParameters(version.parameters);
 
   const { data: spine, error: spineErr } = await supabase
     .from("gta_spines")
@@ -124,7 +90,12 @@ export async function loadProgrammeSpine(
     .maybeSingle();
   if (spineErr) throw new Error(spineErr.message);
   if (!spine) {
-    return { spineItems: [], ksbMappings: [], version: version as ProgrammeVersionRow };
+    return {
+      spineItems: [],
+      ksbMappings: [],
+      version: version as ProgrammeVersionRow,
+      parameters,
+    };
   }
 
   const { data: items, error: itemsErr } = await supabase
@@ -151,13 +122,18 @@ export async function loadProgrammeSpine(
 
   const itemIds = itemRows.map((i) => i.id);
   if (itemIds.length === 0) {
-    return { spineItems, ksbMappings: [], version: version as ProgrammeVersionRow };
+    return {
+      spineItems,
+      ksbMappings: [],
+      version: version as ProgrammeVersionRow,
+      parameters,
+    };
   }
 
   const { data: mapRows, error: mapErr } = await supabase
     .from("gta_spine_item_ksbs")
     .select(
-      "id, spine_item_id, ksb_id, is_primary, learning_intent, mapping_source, recommendation_provider, recommendation_feature, recommended_intent, recommendation_accepted, confidence, ai_reason_summary, created_by, created_at, updated_at",
+      "id, spine_item_id, ksb_id, is_primary, learning_intent, curriculum_value, mapping_source, recommendation_provider, recommendation_feature, recommended_intent, recommendation_accepted, confidence, ai_reason_summary, created_by, created_at, updated_at",
     )
     .in("spine_item_id", itemIds);
   if (mapErr) throw new Error(mapErr.message);
@@ -206,6 +182,7 @@ export async function loadProgrammeSpine(
         ksbCode: code,
         isPrimary: Boolean(row.is_primary),
         learningIntent: intent,
+        curriculumValue: normalizeCurriculumValue(row.curriculum_value),
         mappingSource: source,
         recommendationProvider: provider,
         recommendationFeature: row.recommendation_feature,
@@ -227,6 +204,7 @@ export async function loadProgrammeSpine(
     spineItems,
     ksbMappings,
     version: version as ProgrammeVersionRow,
+    parameters,
   };
 }
 
@@ -242,10 +220,11 @@ export async function saveProgrammeSpine(
     internalVersion: string;
     spineItems: SpineItem[];
     ksbMappings: BlockKsbMapping[];
-    parameters?: ProgrammeDeliveryParameters;
+    parameters: ProgrammeDeliveryParameters;
   },
 ): Promise<void> {
   const code = input.standardCode.trim().toUpperCase();
+  const parameters = serializeProgrammeParameters(input.parameters);
 
   // Ensure standard + programme rows exist
   const { data: standard, error: sErr } = await supabase
@@ -278,6 +257,7 @@ export async function saveProgrammeSpine(
       standard_version_id: input.standardVersionId,
       internal_version: input.internalVersion || "1",
       status: input.status || "draft",
+      parameters,
       updated_at: new Date().toISOString(),
     },
     { onConflict: "id" },
@@ -308,20 +288,39 @@ export async function saveProgrammeSpine(
     spineId = created.id;
   }
 
-  // Replace spine items
+  // Upsert spine items — do NOT delete+recreate all rows (would cascade-break
+  // gta_course_tasks via RESTRICT / wipe content under CASCADE).
   const { data: oldItems, error: oldErr } = await supabase
     .from("gta_spine_items")
     .select("id")
     .eq("spine_id", spineId);
   if (oldErr) throw new Error(oldErr.message);
-  const oldIds = (oldItems ?? []).map((r) => r.id);
-  if (oldIds.length) {
-    await supabase.from("gta_spine_item_ksbs").delete().in("spine_item_id", oldIds);
-    await supabase.from("gta_spine_items").delete().in("id", oldIds);
+  const oldIds = new Set((oldItems ?? []).map((r) => r.id as string));
+  const incomingIds = new Set(input.spineItems.map((i) => i.id));
+  const removedIds = [...oldIds].filter((id) => !incomingIds.has(id));
+
+  if (removedIds.length) {
+    const { error: mapDelErr } = await supabase
+      .from("gta_spine_item_ksbs")
+      .delete()
+      .in("spine_item_id", removedIds);
+    if (mapDelErr) throw new Error(mapDelErr.message);
+    const { error: itemDelErr } = await supabase
+      .from("gta_spine_items")
+      .delete()
+      .in("id", removedIds);
+    if (itemDelErr) {
+      throw new Error(
+        itemDelErr.message.includes("gta_course_tasks") ||
+          itemDelErr.code === "23503"
+          ? "Cannot remove a spine block that still has Course Builder tasks. Delete or move those tasks first."
+          : itemDelErr.message,
+      );
+    }
   }
 
   if (input.spineItems.length) {
-    const { error: insertItemsErr } = await supabase.from("gta_spine_items").insert(
+    const { error: upsertItemsErr } = await supabase.from("gta_spine_items").upsert(
       input.spineItems.map((item) => ({
         id: item.id,
         spine_id: spineId,
@@ -334,8 +333,21 @@ export async function saveProgrammeSpine(
         counts_towards_learning_hours: item.countsTowardsLearningHours,
         metadata: item.metadata ?? {},
       })),
+      { onConflict: "id" },
     );
-    if (insertItemsErr) throw new Error(insertItemsErr.message);
+    if (upsertItemsErr) throw new Error(upsertItemsErr.message);
+  }
+
+  // Replace mappings for remaining blocks on this version
+  const keepBlockIds = input.spineItems
+    .filter((i) => i.itemType === "block")
+    .map((i) => i.id);
+  if (keepBlockIds.length) {
+    const { error: clearMapErr } = await supabase
+      .from("gta_spine_item_ksbs")
+      .delete()
+      .in("spine_item_id", keepBlockIds);
+    if (clearMapErr) throw new Error(clearMapErr.message);
   }
 
   if (!input.ksbMappings.length) return;
@@ -366,6 +378,7 @@ export async function saveProgrammeSpine(
         programme_version_id: input.programmeVersionId,
         is_primary: m.isPrimary,
         learning_intent: m.learningIntent,
+        curriculum_value: normalizeCurriculumValue(m.curriculumValue),
         mapping_source: m.mappingSource,
         recommendation_provider: m.recommendationProvider,
         recommendation_feature: m.recommendationFeature,
@@ -378,9 +391,7 @@ export async function saveProgrammeSpine(
         updated_at: m.updatedAt,
       };
     })
-    .filter(
-      (row): row is NonNullable<typeof row> => row != null,
-    );
+    .filter((row): row is NonNullable<typeof row> => row != null);
 
   if (mappingInserts.length) {
     // Insert non-primary first, then primaries, to reduce unique-index churn
@@ -399,6 +410,27 @@ export async function saveProgrammeSpine(
   }
 }
 
+/**
+ * Merge a DB-hydrated programme over a local cache entry.
+ * DB spine / mappings / parameters always win — localStorage cannot clobber them.
+ */
+export function mergeProgrammeFromDb(
+  local: GtaProgrammeVersion | undefined,
+  incoming: GtaProgrammeVersion,
+): GtaProgrammeVersion {
+  if (!local || local.id !== incoming.id) {
+    return incoming;
+  }
+  return {
+    ...local,
+    ...incoming,
+    id: local.id,
+    spineItems: incoming.spineItems,
+    ksbMappings: incoming.ksbMappings,
+    parameters: incoming.parameters,
+  };
+}
+
 export function toClientProgramme(
   base: Partial<GtaProgrammeVersion> & {
     id: string;
@@ -412,6 +444,7 @@ export function toClientProgramme(
     spineItems: SpineItem[];
     ksbMappings: BlockKsbMapping[];
     version: ProgrammeVersionRow | null;
+    parameters: ProgrammeDeliveryParameters;
   },
 ): GtaProgrammeVersion {
   const now = new Date().toISOString();
@@ -426,7 +459,7 @@ export function toClientProgramme(
     status: (loaded.version?.status as GtaProgrammeVersion["status"]) || "draft",
     spineItems: loaded.spineItems,
     ksbMappings: loaded.ksbMappings,
-    parameters: base.parameters!,
+    parameters: loaded.parameters,
     hasEnrolledApprentices: Boolean(base.hasEnrolledApprentices),
     createdAt: base.createdAt || now,
     updatedAt: now,

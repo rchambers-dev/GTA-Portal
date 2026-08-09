@@ -1,0 +1,120 @@
+{
+  "at": "2026-08-07T23:48:18.706Z",
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "source": {
+    "controlledSource": "Clean Master v4.1",
+    "citedIn": "GTA_SOW_Design_and_RPL_Adjustment_Guide_v1.4_Portal_Logic.docx",
+    "weekCalendar": "left empty per rebuild rules (weekStart/weekEnd not set)"
+  },
+  "expectedOtjTotal": 611.5,
+  "items": [
+    {
+      "id": "8434da7b-1783-4430-9cb7-bd5884bbda9d",
+      "sequence": 1,
+      "itemType": "block",
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "plannedOtjHours": 45,
+      "plannedWeeks": 10,
+      "blockNumber": 1
+    },
+    {
+      "id": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "sequence": 2,
+      "itemType": "block",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "plannedOtjHours": 55,
+      "plannedWeeks": 10,
+      "blockNumber": 2
+    },
+    {
+      "id": "06873abc-907b-4f07-a360-44afc76d2843",
+      "sequence": 3,
+      "itemType": "block",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "plannedOtjHours": 55,
+      "plannedWeeks": 10,
+      "blockNumber": 3
+    },
+    {
+      "id": "fe75972c-69c5-466b-819e-65eeb8ce7666",
+      "sequence": 4,
+      "itemType": "block",
+      "title": "Emerging Technology and Driveline Systems",
+      "plannedOtjHours": 55,
+      "plannedWeeks": 10,
+      "blockNumber": 4
+    },
+    {
+      "id": "997300c5-ee32-4ef4-b562-e0571e436a6a",
+      "sequence": 5,
+      "itemType": "block",
+      "title": "Diagnostic Thinking and Complex Repair Activities",
+      "plannedOtjHours": 55,
+      "plannedWeeks": 10,
+      "blockNumber": 5
+    },
+    {
+      "id": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "sequence": 6,
+      "itemType": "block",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "plannedOtjHours": 55,
+      "plannedWeeks": 10,
+      "blockNumber": 6
+    },
+    {
+      "id": "677a5a43-df92-4c9d-92ae-30e2c2979c40",
+      "sequence": 7,
+      "itemType": "block",
+      "title": "Advanced Workshop Practice and Technical Communication",
+      "plannedOtjHours": 55,
+      "plannedWeeks": 10,
+      "blockNumber": 7
+    },
+    {
+      "id": "1975e5ce-49fe-4baa-944a-a637a1f4d9be",
+      "sequence": 8,
+      "itemType": "block",
+      "title": "Advanced Diagnostics and Workshop Organisation",
+      "plannedOtjHours": 55,
+      "plannedWeeks": 10,
+      "blockNumber": 8
+    },
+    {
+      "id": "358fb8a6-e2a3-42e9-bee1-28873a0643ef",
+      "sequence": 9,
+      "itemType": "block",
+      "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+      "plannedOtjHours": 77,
+      "plannedWeeks": 14,
+      "blockNumber": 9
+    },
+    {
+      "id": "93f19eef-9378-4e90-a913-510382777ac5",
+      "sequence": 10,
+      "itemType": "block",
+      "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+      "plannedOtjHours": 104.5,
+      "plannedWeeks": 19,
+      "blockNumber": 10
+    },
+    {
+      "id": "3cd5180a-adf3-4503-bc01-38fd67d816e2",
+      "sequence": 11,
+      "itemType": "gateway",
+      "title": "Gateway Readiness and Confirmation",
+      "plannedOtjHours": 0,
+      "plannedWeeks": null,
+      "blockNumber": null
+    },
+    {
+      "id": "aa2e16a5-d9a3-44ef-8dfa-75b034bb2310",
+      "sequence": 12,
+      "itemType": "epa",
+      "title": "End-Point Assessment",
+      "plannedOtjHours": 0,
+      "plannedWeeks": 0,
+      "blockNumber": null
+    }
+  ]
+}

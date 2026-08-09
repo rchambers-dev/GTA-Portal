@@ -1,0 +1,22 @@
+{
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "official": 64,
+  "approvedPrimaries": 45,
+  "reviewedGaps": 18,
+  "distributedSkill": 1,
+  "unresolved": 0,
+  "sum": 64,
+  "duplicatePrimaries": 0,
+  "nonBlockPrimaries": 0,
+  "gatewayEpaMappings": 0,
+  "mappingRows": 45,
+  "structuredOtj": 611.5,
+  "publicationBlocked": true,
+  "provenanceCounts": {
+    "human-approved-primary-batch": 15,
+    "v1-baseline-auto-high-approved": 23,
+    "v1-baseline-human-verified-approved": 7
+  },
+  "classificationIssues": [],
+  "ok": true
+}

@@ -6,11 +6,14 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { taskById } from "../domain/autocare-tasks";
+import { useApprenticePortalProfile } from "@/features/apprentice-portal/hooks/useApprenticePortalProfile";
+import { taskByDeliveryId } from "../domain/published-delivery-catalogue";
+import { usePublishedDeliveryCatalogue } from "../domain/use-published-delivery-catalogue";
 import {
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
+  resolveTaskStoreApprenticeId,
   statusLabel,
   statusTone,
   subscribeTaskStore,
@@ -49,18 +52,26 @@ function difficultyMeta(fields: Record<string, string>) {
 }
 
 /**
- * Apprentice fills a practical / reflection in-portal, or uploads PDFs as fallback.
+ * Apprentice fills a published Course Builder task for their pinned programme version.
  * Answers autosave — no manual Save needed.
  */
 export function ApprenticeTaskFillScreen({ taskId }: Props) {
-  const task = taskById(taskId);
+  const { profile, loading: profileLoading } = useApprenticePortalProfile();
+  const apprenticeId = resolveTaskStoreApprenticeId(profile.apprenticeId);
+  const { catalogue, loading: catalogueLoading } = usePublishedDeliveryCatalogue({
+    programmeVersionId: profile.gtaProgrammeVersionId,
+    apprenticeId: profile.apprenticeId || null,
+    enabled: !profileLoading,
+  });
+  const task = taskByDeliveryId(catalogue, taskId);
+
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
 
-  const submission = getTaskSubmission(taskId);
+  const submission = getTaskSubmission(taskId, apprenticeId);
   const locked = !isEditableStatus(submission.status);
 
   const [method, setMethod] = useState<"portal_form" | "pdf_upload">(
@@ -88,7 +99,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
       setSaveState("saving");
-      const current = getTaskSubmission(taskId);
+      const current = getTaskSubmission(taskId, apprenticeId);
       if (
         !isEditableStatus(current.status) &&
         current.status !== "awaiting_mentor"
@@ -101,13 +112,17 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
         current.status === "not_started" || current.status === "returned"
           ? "in_progress"
           : current.status;
-      upsertTaskSubmission(taskId, {
-        method,
-        status: nextStatus,
-        fields,
-        uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
-        ...difficultyMeta(fields),
-      });
+      upsertTaskSubmission(
+        taskId,
+        {
+          method,
+          status: nextStatus,
+          fields,
+          uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
+          ...difficultyMeta(fields),
+        },
+        apprenticeId,
+      );
       setSaveState("saved");
       setDirty(false);
     }, 450);
@@ -115,22 +130,24 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
-  }, [dirty, fields, method, pdfNames, taskId, locked]);
+  }, [dirty, fields, method, pdfNames, taskId, locked, apprenticeId]);
 
-  // Flush any pending draft if the tab closes mid-type
   useEffect(() => {
     function flush() {
       if (!dirty || locked) return;
-      upsertTaskSubmission(taskId, {
-        method,
-        status:
-          getTaskSubmission(taskId).status === "not_started"
-            ? "in_progress"
-            : getTaskSubmission(taskId).status,
-        fields,
-        uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
-        ...difficultyMeta(fields),
-      });
+      const current = getTaskSubmission(taskId, apprenticeId);
+      upsertTaskSubmission(
+        taskId,
+        {
+          method,
+          status:
+            current.status === "not_started" ? "in_progress" : current.status,
+          fields,
+          uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
+          ...difficultyMeta(fields),
+        },
+        apprenticeId,
+      );
     }
     window.addEventListener("beforeunload", flush);
     return () => {
@@ -140,11 +157,34 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
         saveTimer.current = null;
       }
     };
-  }, [dirty, locked, taskId, method, fields, pdfNames]);
+  }, [dirty, locked, taskId, method, fields, pdfNames, apprenticeId]);
+
+  if (profileLoading || catalogueLoading) {
+    return (
+      <ApprenticePageShell title="Loading task…" description="">
+        <p className={styles.purposeBody}>Loading published college tasks…</p>
+      </ApprenticePageShell>
+    );
+  }
+
+  if (catalogue.status !== "ready") {
+    return (
+      <ApprenticePageShell title="College tasks not ready" description="">
+        <p className={styles.purposeBody}>{catalogue.message}</p>
+        <Link href="/apprentice/tracking" className={styles.back}>
+          ← Back to college tasks
+        </Link>
+      </ApprenticePageShell>
+    );
+  }
 
   if (!task) {
     return (
       <ApprenticePageShell title="Task not found" description="">
+        <p className={styles.purposeBody}>
+          This task is not in your published Course Builder catalogue for the
+          pinned programme version.
+        </p>
         <Link href="/apprentice/tracking" className={styles.back}>
           ← Back to college tasks
         </Link>
@@ -189,16 +229,20 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
     const needsMentor = allFields.some((f) => f.signOffRole === "mentor");
     const apprenticeSigned = fields.apprenticeSign === "signed";
 
-    upsertTaskSubmission(taskId, {
-      method,
-      fields,
-      uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
-      ...difficultyMeta(fields),
-      apprenticeSignedAt: apprenticeSigned
-        ? new Date().toISOString()
-        : submission.apprenticeSignedAt,
-      status: needsMentor ? "awaiting_mentor" : "awaiting_trainer",
-    });
+    upsertTaskSubmission(
+      taskId,
+      {
+        method,
+        fields,
+        uploadedPdfNames: method === "pdf_upload" ? pdfNames : [],
+        ...difficultyMeta(fields),
+        apprenticeSignedAt: apprenticeSigned
+          ? new Date().toISOString()
+          : submission.apprenticeSignedAt,
+        status: needsMentor ? "awaiting_mentor" : "awaiting_trainer",
+      },
+      apprenticeId,
+    );
     setDirty(false);
     setSaveState("saved");
     setMessage(
@@ -275,7 +319,12 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
           ) : null}
           {(task.weeks || task.dutiesCovered || task.ksbsCovered) && (
             <p className={styles.purposeNote}>
-              {[task.weeks, task.dutiesCovered ? `Duties ${task.dutiesCovered}` : null, task.ksbsCovered ? `KSBs ${task.ksbsCovered}` : null, task.assessmentType]
+              {[
+                task.weeks,
+                task.dutiesCovered ? `Duties ${task.dutiesCovered}` : null,
+                task.ksbsCovered ? `KSBs ${task.ksbsCovered}` : null,
+                task.assessmentType,
+              ]
                 .filter(Boolean)
                 .join(" · ")}
             </p>
@@ -317,7 +366,7 @@ export function ApprenticeTaskFillScreen({ taskId }: Props) {
             <h2 className={styles.sectionTitle}>Upload PDF(s) for this task</h2>
             <p className={styles.fieldHint}>
               If college day had multiple PDFs, upload each to its own task —
-              not one combined dump. Source file: {task.sourcePdf}
+              not one combined dump. Source file: {task.sourcePdf || "—"}
             </p>
             <input
               type="file"

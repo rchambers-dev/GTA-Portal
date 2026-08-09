@@ -1,0 +1,153 @@
+{
+  "at": "2026-08-08T00:54:04.568Z",
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "standardVersionId": "decc0ba5-31b5-4bff-80d8-c3e2782bac2e",
+  "structuredOtjBefore": 611.5,
+  "structuredOtjAfter": 611.5,
+  "parametersUnchanged": true,
+  "mappingCount": 15,
+  "primaryCount": 15,
+  "duplicatePrimaryCodes": [],
+  "nonBlockPrimaryCount": 0,
+  "forbiddenGapPrimaryCount": 0,
+  "gatewayEpaMappingCount": 0,
+  "officialKsbCountOnStandard": 64,
+  "rows": [
+    {
+      "ksbCode": "K12",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "itemType": "block",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K21",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "itemType": "block",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K23",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "itemType": "block",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K24",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "itemType": "block",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K29",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "itemType": "block",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "K30",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "itemType": "block",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S1",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "itemType": "block",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S12",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "itemType": "block",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S13",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "itemType": "block",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S14",
+      "blockId": "41b13e4c-a689-4a0a-b883-51139a0537cc",
+      "itemType": "block",
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S15",
+      "blockId": "dfdf81db-7ed0-46ba-856a-df0f87b07782",
+      "itemType": "block",
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S19",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "itemType": "block",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S2",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "itemType": "block",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S3",
+      "blockId": "06873abc-907b-4f07-a360-44afc76d2843",
+      "itemType": "block",
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    },
+    {
+      "ksbCode": "S4",
+      "blockId": "fe75972c-69c5-466b-819e-65eeb8ce7666",
+      "itemType": "block",
+      "title": "Emerging Technology and Driveline Systems",
+      "isPrimary": true,
+      "learningIntent": "introduce",
+      "curriculumValue": 1
+    }
+  ],
+  "ok": true
+}

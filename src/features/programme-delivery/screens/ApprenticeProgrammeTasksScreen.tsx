@@ -8,17 +8,19 @@ import {
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { useApprenticePortalProfile } from "@/features/apprentice-portal/hooks/useApprenticePortalProfile";
-import { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "../domain/autocare-blocks";
-import { tasksForBlock } from "../domain/autocare-tasks";
 import { formatCohortBlockWindow } from "../domain/rpl-funding-calc";
 import {
   apprenticeBlockRag,
   apprenticeBlockRagLabel,
   apprenticeTaskRag,
   apprenticeTaskRagLabel,
-  isApprenticeBlockUnlocked,
   summariseBlockCompletion,
 } from "../domain/progression-status";
+import { isDeliveryBlockUnlocked } from "../domain/delivery-unlock";
+import {
+  tasksForDeliveryBlock,
+} from "../domain/published-delivery-catalogue";
+import { usePublishedDeliveryCatalogue } from "../domain/use-published-delivery-catalogue";
 import { taskKindLabel } from "../domain/task-schema";
 import {
   getTaskServerSnapshot,
@@ -29,22 +31,24 @@ import {
 import styles from "./programme-delivery.module.css";
 
 /**
- * Apprentice college tasks — knowledge test, job card, practicals and reflection.
- * Lesson plans are never shown here (staff/tutor only).
- *
- * Dates: programme weeks + cohort calendar from cohort start.
- * RAG: green complete · amber in progress · red needs completing (no Blue).
- * Past/current week blocks unlock for catch-up; future blocks stay locked.
+ * Apprentice college tasks from pinned GTA programme version published content.
  */
 export function ApprenticeProgrammeTasksScreen() {
   const router = useRouter();
   const { profile, loading, error } = useApprenticePortalProfile();
-  const apprenticeId = profile.apprenticeId || "live-apprentice";
+  const apprenticeId = profile.apprenticeId || "";
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
     getTaskServerSnapshot,
   );
+
+  const onBlocks = profile.deliverySpine === "blocks";
+  const { catalogue, loading: catalogueLoading } = usePublishedDeliveryCatalogue({
+    programmeVersionId: profile.gtaProgrammeVersionId,
+    apprenticeId: apprenticeId || null,
+    enabled: !loading && onBlocks,
+  });
 
   useEffect(() => {
     if (loading) return;
@@ -54,11 +58,14 @@ export function ApprenticeProgrammeTasksScreen() {
   }, [loading, profile.deliverySpine, router]);
 
   const taskedBlocks = useMemo(
-    () => AUTOCARE_BLOCKS.filter((b) => tasksForBlock(b.id).length > 0),
-    [],
+    () =>
+      catalogue.blocks.filter(
+        (b) => tasksForDeliveryBlock(catalogue, b.spineItemId).length > 0,
+      ),
+    [catalogue],
   );
 
-  if (loading) {
+  if (loading || (onBlocks && catalogueLoading)) {
     return (
       <ApprenticePageShell
         title="Personal tracking"
@@ -82,6 +89,43 @@ export function ApprenticeProgrammeTasksScreen() {
     );
   }
 
+  if (catalogue.status !== "ready") {
+    return (
+      <ApprenticePageShell
+        title="Personal tracking"
+        description="College practicals for your pinned programme version."
+      >
+        <div className={styles.root}>
+          <div className={styles.purpose}>
+            <p className={styles.purposeLead}>
+              <strong>
+                {catalogue.status === "unpinned"
+                  ? "Programme version not assigned"
+                  : catalogue.status === "empty_published"
+                    ? "Course content not yet published"
+                    : "Programme version unavailable"}
+              </strong>
+            </p>
+            <p className={styles.purposeBody}>{catalogue.message}</p>
+          </div>
+        </div>
+      </ApprenticePageShell>
+    );
+  }
+
+  const titleBits = [
+    catalogue.programmeTitle,
+    catalogue.standardCode,
+    catalogue.externalVersion
+      ? `SE v${catalogue.externalVersion}`
+      : null,
+    catalogue.internalVersion
+      ? `GTA v${catalogue.internalVersion}`
+      : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
     <ApprenticePageShell
       title="Personal tracking"
@@ -95,20 +139,16 @@ export function ApprenticeProgrammeTasksScreen() {
         ) : null}
         <div className={styles.purpose}>
           <p className={styles.purposeLead}>
-            <strong>
-              {AUTOCARE_STANDARD.label} · {AUTOCARE_STANDARD.code}{" "}
-              {AUTOCARE_STANDARD.version}
-            </strong>
+            <strong>{titleBits || "Programme"}</strong>
             {" · Week "}
             {profile.programmeWeek}
             {" · "}
             {profile.collegeDays}
           </p>
           <p className={styles.purposeBody}>
-            Preferred: fill each task in the portal. Fallback: upload every PDF
-            required for that college day (each maps to its own task). Blocks you
-            have already reached stay open together so catch-up can stack — being
-            behind on an earlier block does not lock later ones.
+            Tasks come from your assigned GTA programme version (Course Builder,
+            published only). Blocks you have already reached stay open together so
+            catch-up can stack.
           </p>
           <ul className={styles.ragLegend} aria-label="Status colours">
             <li>
@@ -124,18 +164,25 @@ export function ApprenticeProgrammeTasksScreen() {
         </div>
 
         <div className={styles.blockList}>
-          {taskedBlocks.map((block) => {
-            const tasks = tasksForBlock(block.id);
+          {taskedBlocks.map((block, index) => {
+            const tasks = tasksForDeliveryBlock(catalogue, block.spineItemId);
+            const prior =
+              index > 0
+                ? tasksForDeliveryBlock(
+                    catalogue,
+                    taskedBlocks[index - 1]!.spineItemId,
+                  )
+                : [];
             const cohortWindow = formatCohortBlockWindow(
               profile.programmeStartDate,
               block.weekStart,
               block.weekEnd,
             );
-            const locked = !isApprenticeBlockUnlocked({
-              blockId: block.id,
-              weekStart: block.weekStart,
+            const locked = !isDeliveryBlockUnlocked({
+              block,
+              blocks: catalogue.blocks,
               programmeWeek: profile.programmeWeek,
-              priorBlockTasks: tasksForBlock(block.id - 1),
+              priorBlockTasks: prior,
               apprenticeId,
             });
             const summary = summariseBlockCompletion(tasks, apprenticeId);
@@ -143,29 +190,28 @@ export function ApprenticeProgrammeTasksScreen() {
 
             return (
               <article
-                key={block.id}
+                key={block.spineItemId}
                 className={styles.blockCard}
                 data-rag={blockRag}
               >
                 <div className={styles.blockHead}>
                   <div>
                     <h2 className={styles.blockTitle}>
-                      Block {block.id} · {block.name}
+                      Block {block.displayOrdinal} · {block.title}
                     </h2>
                     <p className={styles.blockMeta}>
                       {block.weekStart != null && block.weekEnd != null
                         ? `Weeks ${block.weekStart}–${block.weekEnd}`
-                        : block.kind === "epa"
-                          ? "EPA assessment"
-                          : "Pre-EPA consolidation"}
+                        : `Sequence ${block.sequence}`}
                       {cohortWindow ? ` · ${cohortWindow}` : ""}
-                      {block.monthHint ? ` · ${block.monthHint}` : ""}
                       {block.plannedOtjHours > 0
                         ? ` · ${block.plannedOtjHours} hrs planned OTJ`
                         : ""}
                     </p>
                   </div>
-                  <ApprenticeStatusChip tone={blockRag === "neutral" ? "neutral" : blockRag}>
+                  <ApprenticeStatusChip
+                    tone={blockRag === "neutral" ? "neutral" : blockRag}
+                  >
                     {apprenticeBlockRagLabel(blockRag, summary)}
                   </ApprenticeStatusChip>
                 </div>
@@ -194,9 +240,6 @@ export function ApprenticeProgrammeTasksScreen() {
                             <span>
                               {task.estimatedMinutes} min ·{" "}
                               {taskKindLabel(task.kind)}
-                              {task.reviewStatus === "curriculum_review"
-                                ? " · Curriculum reviewing content"
-                                : ""}
                             </span>
                           </div>
                           <div className={styles.taskEnd}>

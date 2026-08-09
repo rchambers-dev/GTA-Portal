@@ -1,5 +1,9 @@
 /** Programme definition domain types — Skills England lock + GTA spine. */
 
+import type { FixedCostLineItem } from "./rpl-formulas/tnp1";
+
+export type { FixedCostLineItem };
+
 export type KsbType = "knowledge" | "skill" | "behaviour";
 
 export type SpineItemType = "block" | "gateway" | "epa" | "milestone" | "break";
@@ -52,8 +56,10 @@ export type MappingSource = "manual" | "ai_suggested" | "imported";
 export type RecommendationProvider = "portal_ai" | "heuristic";
 
 /**
- * One Block ↔ KSB relationship. Primary is for valuation ownership;
- * LearningIntent describes educational use (never labelled "secondary").
+ * One Block ↔ KSB relationship.
+ * - isPrimary: curriculum ownership / uniqueness (not financial)
+ * - learningIntent: pedagogical role
+ * - curriculumValue: contribution of THIS occurrence to THIS block's value
  * Only `itemType === "block"` spine items may be targets.
  */
 export type BlockKsbMapping = {
@@ -62,6 +68,11 @@ export type BlockKsbMapping = {
   ksbCode: string;
   isPrimary: boolean;
   learningIntent: LearningIntent;
+  /**
+   * Contribution of this Block↔KSB occurrence to block curriculum value.
+   * Must be finite and > 0. Default 1.0. Not official SE metadata.
+   */
+  curriculumValue: number;
   mappingSource: MappingSource;
   /** Suggestion engine that last helped (kept even if staff overrode). */
   recommendationProvider: RecommendationProvider | null;
@@ -133,14 +144,19 @@ export type OfficialStandardVersion = {
  * Add new keys when the maths changes — never silently rewrite behaviour
  * of an existing key (learners may already be enrolled against it).
  */
-export type RplFormulaKey = "weighted_ksb_cap_v1";
+/**
+ * Named RPL calculator locked onto a programme version.
+ * - block_ksb_value_v1: curriculum values + VALUE_SHARE OTJ (current default)
+ * - weighted_ksb_cap_v1: legacy Autocare weights + max % cap (frozen)
+ */
+export type RplFormulaKey = "block_ksb_value_v1" | "weighted_ksb_cap_v1";
 
 export type RplFormulaStatus = "draft" | "published";
 
 export type ProgrammeDeliveryParameters = {
   /**
-   * Jon’s intended total OTJ hours for this delivery
-   * (“how long he thinks the course will be” in OTJ hours).
+   * Versioned programme expected OTJ hours used by VALUE_SHARE allocation.
+   * Not hard-coded per standard — set per programme version.
    */
   expectedOtjHours: number | null;
   /** Which calculator to run when a learner’s prior learning is entered. */
@@ -148,25 +164,43 @@ export type ProgrammeDeliveryParameters = {
   /** Publish state for the RPL formula snapshot (separate from spine publish). */
   formulaStatus: RplFormulaStatus;
   /**
-   * When false, that letter is omitted from the factor (not used in the calc).
-   * Defaults all true — staff can drop e.g. Behaviours for a programme.
+   * Legacy weighted_ksb_cap_v1 only: when false, letter omitted from factor.
+   * Do not use for block_ksb_value_v1 — use includeRpl* instead.
    */
   includeAplK: boolean;
   includeAplS: boolean;
   includeAplB: boolean;
   /**
-   * Weights on Knowledge / Skill / Behaviour prior-learning % scores.
-   * Enabled letters must sum to 1.0 (validated; never silently renormalised).
-   * Autocare ST0499 live defaults: 0.30 / 0.50 / 0.20.
+   * Legacy weighted_ksb_cap_v1 only: weights on K/S/B prior-learning %.
+   * Enabled letters must sum to 1.0. Unused by block_ksb_value_v1.
    */
   aplWeightK: number;
   aplWeightS: number;
   aplWeightB: number;
   /**
-   * Cap on APL deduction as a fraction of block OTJ (0–1).
-   * Autocare ST0499 default: 0.30 → at most 30% of the block can be deducted.
+   * Legacy weighted_ksb_cap_v1 only: max APL deduction as fraction of block OTJ.
+   * Unused by block_ksb_value_v1 (no cap).
    */
   aplMaxFraction: number;
+  /**
+   * block_ksb_value_v1 only: whether this KSB category may contribute recognised
+   * curriculum value via learner RPL. OFF keeps mappings/curriculum intact but
+   * forces recognised value for that dimension to 0. Defaults true.
+   * Independent of legacy includeApl*.
+   */
+  includeRplKnowledge: boolean;
+  includeRplSkills: boolean;
+  includeRplBehaviours: boolean;
+  /**
+   * Programme / negotiated funding base (GBP). Versioned config.
+   * Used by Phase 2 TNP1: band − fixed = variable pot.
+   */
+  fundingBandPounds: number | null;
+  /**
+   * Editable fixed-cost line items for this programme version.
+   * fixedCostTotal is DERIVED (sum of enabled lines) — never typed separately.
+   */
+  fixedCostLines: FixedCostLineItem[];
   /** Optional staff notes (evidence rules, local policy, etc.). */
   rplNotes: string;
 };
@@ -222,7 +256,8 @@ export type ProgrammeActivityKind =
   | "spine_published"
   | "title_saved"
   | "primary_moved"
-  | "version_forked";
+  | "version_forked"
+  | "ksb_curriculum_value_changed";
 
 /** Append-only audit trail for Programme Builder (API + staff edits). */
 export type ProgrammeActivityEntry = {

@@ -1,14 +1,17 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
-import { defaultProgrammeParameters } from "@/features/programme-definition/domain/programme-definition-store";
 import {
-  findProgrammeVersionByStandard,
   loadProgrammeSpine,
   saveProgrammeSpine,
 } from "@/features/programme-definition/domain/spine-repository";
+import {
+  ProgrammeParametersValidationError,
+  parseStoredProgrammeParameters,
+} from "@/features/programme-definition/domain/rpl-formulas/programme-parameters";
 import type {
   BlockKsbMapping,
   GtaProgrammeVersion,
+  ProgrammeDeliveryParameters,
   SpineItem,
 } from "@/features/programme-definition/domain/types";
 
@@ -23,35 +26,19 @@ export async function GET(request: Request) {
     const programmeVersionId =
       url.searchParams.get("programmeVersionId")?.trim() || "";
 
-    if (!standardCode && !programmeVersionId) {
+    if (!programmeVersionId) {
       return NextResponse.json(
-        { ok: false, error: "standardCode or programmeVersionId is required." },
+        {
+          ok: false,
+          error:
+            "programmeVersionId is required. Programme versions must be loaded explicitly — the API will not select the newest version.",
+        },
         { status: 400 },
       );
     }
 
     const supabase = createSupabaseAdminClient();
-    let versionId = programmeVersionId;
-    let meta: {
-      programmeId: string;
-      standardVersionId: string;
-      title: string;
-    } | null = null;
-
-    if (!versionId) {
-      const found = await findProgrammeVersionByStandard(supabase, standardCode);
-      if (!found) {
-        return NextResponse.json({ ok: true, programme: null });
-      }
-      versionId = found.programmeVersionId;
-      meta = {
-        programmeId: found.programmeId,
-        standardVersionId: found.standardVersionId,
-        title: found.title,
-      };
-    }
-
-    const loaded = await loadProgrammeSpine(supabase, versionId);
+    const loaded = await loadProgrammeSpine(supabase, programmeVersionId);
     if (!loaded?.version) {
       return NextResponse.json({ ok: true, programme: null });
     }
@@ -76,18 +63,29 @@ export async function GET(request: Request) {
           .maybeSingle()
       : { data: null };
 
+    const resolvedCode = (std?.standard_code || "").toUpperCase();
+    if (standardCode && resolvedCode && standardCode !== resolvedCode) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: `programmeVersionId does not belong to standard ${standardCode}.`,
+        },
+        { status: 400 },
+      );
+    }
+
     const programme: GtaProgrammeVersion = {
       id: loaded.version.id,
       programmeId: loaded.version.programme_id,
-      programmeTitle: prog?.title || meta?.title || "GTA Delivery",
+      programmeTitle: prog?.title || "GTA Delivery",
       standardVersionId: loaded.version.standard_version_id,
-      standardCode: (std?.standard_code || standardCode || "").toUpperCase(),
+      standardCode: resolvedCode || standardCode,
       externalVersion: stdVer?.external_version || "",
       internalVersion: loaded.version.internal_version || "1",
       status: loaded.version.status as GtaProgrammeVersion["status"],
       spineItems: loaded.spineItems,
       ksbMappings: loaded.ksbMappings,
-      parameters: defaultProgrammeParameters(),
+      parameters: loaded.parameters,
       hasEnrolledApprentices: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -95,12 +93,14 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ ok: true, programme });
   } catch (err) {
+    const status =
+      err instanceof ProgrammeParametersValidationError ? 422 : 500;
     return NextResponse.json(
       {
         ok: false,
         error: err instanceof Error ? err.message : "Could not load spine.",
       },
-      { status: 500 },
+      { status },
     );
   }
 }
@@ -116,6 +116,7 @@ type PutBody = {
   internalVersion?: string;
   spineItems?: SpineItem[];
   ksbMappings?: BlockKsbMapping[];
+  parameters?: ProgrammeDeliveryParameters;
 };
 
 export async function PUT(request: Request) {
@@ -137,6 +138,33 @@ export async function PUT(request: Request) {
       );
     }
 
+    if (body.parameters == null) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error:
+            "parameters are required. Programme calculation configuration must be persisted with the version.",
+        },
+        { status: 400 },
+      );
+    }
+
+    let parameters: ProgrammeDeliveryParameters;
+    try {
+      parameters = parseStoredProgrammeParameters(body.parameters);
+    } catch (err) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error:
+            err instanceof Error
+              ? err.message
+              : "Invalid programme parameters.",
+        },
+        { status: 422 },
+      );
+    }
+
     const supabase = createSupabaseAdminClient();
     await saveProgrammeSpine(supabase, {
       programmeId: body.programmeId,
@@ -148,16 +176,19 @@ export async function PUT(request: Request) {
       internalVersion: body.internalVersion || "1",
       spineItems: body.spineItems || [],
       ksbMappings: body.ksbMappings || [],
+      parameters,
     });
 
     return NextResponse.json({ ok: true });
   } catch (err) {
+    const status =
+      err instanceof ProgrammeParametersValidationError ? 422 : 500;
     return NextResponse.json(
       {
         ok: false,
         error: err instanceof Error ? err.message : "Could not save spine.",
       },
-      { status: 500 },
+      { status },
     );
   }
 }

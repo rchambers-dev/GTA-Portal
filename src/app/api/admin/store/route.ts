@@ -72,6 +72,7 @@ type ApprenticeProgrammeRow = {
   apprentice_id: string | null;
   programme_name: string;
   standard_code: string;
+  gta_programme_version_id: string | null;
   cohort_id: string | null;
   teaching_group_id: string | null;
   employer_id: string;
@@ -142,6 +143,7 @@ function mapEnrolment(row: ApprenticeProgrammeRow): AdminApprenticeEnrolment {
     uln: apprentice?.uln ?? "",
     programmeName: row.programme_name,
     standardCode: row.standard_code,
+    gtaProgrammeVersionId: row.gta_programme_version_id ?? null,
     cohortId: row.cohort_id,
     teachingGroupId: row.teaching_group_id ?? null,
     employerId: row.employer_id,
@@ -471,6 +473,7 @@ export async function POST(request: Request) {
         apprentice_id: input.apprenticeId,
         programme_name: input.programmeName,
         standard_code: input.standardCode,
+        gta_programme_version_id: input.gtaProgrammeVersionId ?? null,
         cohort_id: input.cohortId,
         teaching_group_id: input.teachingGroupId ?? null,
         employer_id: input.employerId,
@@ -508,6 +511,9 @@ export async function POST(request: Request) {
   if (patch.apprenticeId !== undefined) update.apprentice_id = patch.apprenticeId;
   if (patch.programmeName != null) update.programme_name = patch.programmeName;
   if (patch.standardCode != null) update.standard_code = patch.standardCode;
+  if (patch.gtaProgrammeVersionId !== undefined) {
+    update.gta_programme_version_id = patch.gtaProgrammeVersionId;
+  }
   if (patch.cohortId !== undefined) update.cohort_id = patch.cohortId;
   if (patch.teachingGroupId !== undefined) {
     update.teaching_group_id = patch.teachingGroupId;

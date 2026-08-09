@@ -15,7 +15,8 @@ export type AiFeatureKey =
   | "chat.draft_reply"
   | "support.suggest_response"
   | "learning.explain"
-  | "programme.recommend_ksb_intent";
+  | "programme.recommend_ksb_intent"
+  | "programme.baseline_curriculum_analysis";
 
 export type AiFeatureMeta = {
   key: AiFeatureKey;
@@ -58,6 +59,8 @@ export type AiRunRequest = {
   /** Optional temperature override (provider may ignore). */
   temperature?: number;
   maxTokens?: number;
+  /** Prefer structured JSON when the provider supports it. */
+  jsonObject?: boolean;
 };
 
 export type AiRunResult = {
@@ -72,6 +75,7 @@ export type AiProvider = {
     messages: AiMessage[];
     temperature?: number;
     maxTokens?: number;
+    jsonObject?: boolean;
   }): Promise<{
     text: string;
     inputTokens?: number;

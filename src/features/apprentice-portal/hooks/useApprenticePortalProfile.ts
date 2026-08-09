@@ -38,6 +38,7 @@ const EMPTY_LIVE_PROFILE: ApprenticePortalProfile = {
   standardCode: null,
   standardVersion: null,
   cohortName: null,
+  gtaProgrammeVersionId: null,
 };
 
 const EMPTY_STATE: State = {

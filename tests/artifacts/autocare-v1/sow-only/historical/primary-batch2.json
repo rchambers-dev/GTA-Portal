@@ -1,0 +1,415 @@
+[
+  {
+    "ksbCode": "K30",
+    "type": "knowledge",
+    "description": "Team working principles.",
+    "flag": {
+      "ksbCode": "K30",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 3,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 4.0,
+          "topics": [
+            "Fast-fit repairs, bay discipline and effective handoffs"
+          ]
+        },
+        {
+          "block": 8,
+          "score": 4.0,
+          "topics": [
+            "Repair planning, delegation and sign-off discipline"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "PRIMARY",
+        "score": 4.0,
+        "topics": [
+          "Fast-fit repairs, bay discipline and effective handoffs"
+        ],
+        "weeks": [
+          {
+            "week": 23,
+            "duty": "D3",
+            "topic": "Fast-fit repairs, bay discipline and effective handoffs"
+          }
+        ]
+      },
+      {
+        "block": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Repair planning, delegation and sign-off discipline"
+        ],
+        "weeks": [
+          {
+            "week": 73,
+            "duty": "D3",
+            "topic": "Repair planning, delegation and sign-off discipline"
+          }
+        ]
+      },
+      {
+        "block": 10,
+        "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+        "currentRole": "REINFORCEMENT",
+        "score": 2.0,
+        "topics": [
+          "Work independently and as part of a team, contributing to business outcomes"
+        ],
+        "weeks": [
+          {
+            "week": 105,
+            "duty": "D3",
+            "topic": "Work independently and as part of a team, contributing to business outcomes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "S3",
+    "type": "skill",
+    "description": "Maintain and restore the work area during and on completion of the activity.",
+    "flag": {
+      "ksbCode": "S3",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 3,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 4.0,
+          "topics": [
+            "Housekeeping, 5S routines and safe storage control"
+          ]
+        },
+        {
+          "block": 7,
+          "score": 4.0,
+          "topics": [
+            "Workshop flow, layout and housekeeping"
+          ]
+        },
+        {
+          "block": 8,
+          "score": 4.0,
+          "topics": [
+            "Quality, cleanliness and equipment care routines"
+          ]
+        },
+        {
+          "block": 4,
+          "score": 4.0,
+          "topics": [
+            "COSHH awareness, workshop cleanliness and tool control"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "PRIMARY",
+        "score": 4.0,
+        "topics": [
+          "Housekeeping, 5S routines and safe storage control"
+        ],
+        "weeks": [
+          {
+            "week": 27,
+            "duty": "D7",
+            "topic": "Housekeeping, 5S routines and safe storage control"
+          }
+        ]
+      },
+      {
+        "block": 4,
+        "title": "Emerging Technology and Driveline Systems",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "COSHH awareness, workshop cleanliness and tool control"
+        ],
+        "weeks": [
+          {
+            "week": 37,
+            "duty": "D7",
+            "topic": "COSHH awareness, workshop cleanliness and tool control"
+          }
+        ]
+      },
+      {
+        "block": 7,
+        "title": "Advanced Workshop Practice and Technical Communication",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Workshop flow, layout and housekeeping"
+        ],
+        "weeks": [
+          {
+            "week": 67,
+            "duty": "D7",
+            "topic": "Workshop flow, layout and housekeeping"
+          }
+        ]
+      },
+      {
+        "block": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Quality, cleanliness and equipment care routines"
+        ],
+        "weeks": [
+          {
+            "week": 77,
+            "duty": "D7",
+            "topic": "Quality, cleanliness and equipment care routines"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "S1",
+    "type": "skill",
+    "description": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance.",
+    "flag": {
+      "ksbCode": "S1",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 3,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 3.0,
+          "topics": [
+            "Housekeeping, 5S routines and safe storage control"
+          ]
+        },
+        {
+          "block": 7,
+          "score": 3.0,
+          "topics": [
+            "Safe working with new vehicle systems"
+          ]
+        },
+        {
+          "block": 8,
+          "score": 3.0,
+          "topics": [
+            "Emergency response, near misses and environmental safety"
+          ]
+        },
+        {
+          "block": 4,
+          "score": 3.0,
+          "topics": [
+            "Fire safety, first response and incident reporting"
+          ]
+        },
+        {
+          "block": 9,
+          "score": 3.0,
+          "topics": [
+            "Workshop compliance deep dive: documentation and waste control"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "PRIMARY",
+        "score": 3.0,
+        "topics": [
+          "Housekeeping, 5S routines and safe storage control"
+        ],
+        "weeks": [
+          {
+            "week": 27,
+            "duty": "D7",
+            "topic": "Housekeeping, 5S routines and safe storage control"
+          }
+        ]
+      },
+      {
+        "block": 4,
+        "title": "Emerging Technology and Driveline Systems",
+        "currentRole": "REINFORCEMENT",
+        "score": 3.0,
+        "topics": [
+          "Fire safety, first response and incident reporting"
+        ],
+        "weeks": [
+          {
+            "week": 40,
+            "duty": "D10",
+            "topic": "Fire safety, first response and incident reporting"
+          }
+        ]
+      },
+      {
+        "block": 5,
+        "title": "Diagnostic Thinking and Complex Repair Activities",
+        "currentRole": "REINFORCEMENT",
+        "score": 2.5,
+        "topics": [
+          "Risk assessment refresh and safe systems of work"
+        ],
+        "weeks": [
+          {
+            "week": 50,
+            "duty": "D10",
+            "topic": "Risk assessment refresh and safe systems of work"
+          }
+        ]
+      },
+      {
+        "block": 6,
+        "title": "Vehicle Systems Integration and Advanced Diagnostics",
+        "currentRole": "REINFORCEMENT",
+        "score": 2.5,
+        "topics": [
+          "Safe lifting, jacking and vehicle support",
+          "Environmental controls, waste streams and site safety"
+        ],
+        "weeks": [
+          {
+            "week": 57,
+            "duty": "D7",
+            "topic": "Safe lifting, jacking and vehicle support"
+          },
+          {
+            "week": 60,
+            "duty": "D10",
+            "topic": "Environmental controls, waste streams and site safety"
+          }
+        ]
+      },
+      {
+        "block": 7,
+        "title": "Advanced Workshop Practice and Technical Communication",
+        "currentRole": "REINFORCEMENT",
+        "score": 3.0,
+        "topics": [
+          "Safe working with new vehicle systems"
+        ],
+        "weeks": [
+          {
+            "week": 70,
+            "duty": "D10",
+            "topic": "Safe working with new vehicle systems"
+          }
+        ]
+      },
+      {
+        "block": 8,
+        "title": "Advanced Diagnostics and Workshop Organisation",
+        "currentRole": "REINFORCEMENT",
+        "score": 3.0,
+        "topics": [
+          "Emergency response, near misses and environmental safety"
+        ],
+        "weeks": [
+          {
+            "week": 80,
+            "duty": "D10",
+            "topic": "Emergency response, near misses and environmental safety"
+          }
+        ]
+      },
+      {
+        "block": 9,
+        "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+        "currentRole": "REINFORCEMENT",
+        "score": 3.0,
+        "topics": [
+          "Workshop compliance deep dive: documentation and waste control"
+        ],
+        "weeks": [
+          {
+            "week": 86,
+            "duty": "D10",
+            "topic": "Workshop compliance deep dive: documentation and waste control"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "ksbCode": "S2",
+    "type": "skill",
+    "description": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards.",
+    "flag": {
+      "ksbCode": "S2",
+      "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+      "chosenPrimary": 3,
+      "contenders": [
+        {
+          "block": 3,
+          "score": 4.0,
+          "topics": [
+            "Housekeeping, 5S routines and safe storage control"
+          ]
+        },
+        {
+          "block": 7,
+          "score": 4.0,
+          "topics": [
+            "Workshop flow, layout and housekeeping"
+          ]
+        }
+      ],
+      "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+    },
+    "candidates": [
+      {
+        "block": 3,
+        "title": "Workshop Processes, Tools and Environmental Awareness",
+        "currentRole": "PRIMARY",
+        "score": 4.0,
+        "topics": [
+          "Housekeeping, 5S routines and safe storage control"
+        ],
+        "weeks": [
+          {
+            "week": 27,
+            "duty": "D7",
+            "topic": "Housekeeping, 5S routines and safe storage control"
+          }
+        ]
+      },
+      {
+        "block": 7,
+        "title": "Advanced Workshop Practice and Technical Communication",
+        "currentRole": "REINFORCEMENT",
+        "score": 4.0,
+        "topics": [
+          "Workshop flow, layout and housekeeping"
+        ],
+        "weeks": [
+          {
+            "week": 67,
+            "duty": "D7",
+            "topic": "Workshop flow, layout and housekeeping"
+          }
+        ]
+      }
+    ]
+  }
+]

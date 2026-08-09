@@ -24,6 +24,7 @@ const AI_FEATURE_KEYS = [
   "support.suggest_response",
   "learning.explain",
   "programme.recommend_ksb_intent",
+  "programme.baseline_curriculum_analysis",
 ] as const satisfies readonly AiFeatureKey[];
 
 const AI_ACTIONS = [

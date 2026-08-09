@@ -1,0 +1,3765 @@
+[
+  {
+    "ksbCode": "B3",
+    "type": "behaviour",
+    "description": "Respond and adapt to changing work demands.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D10"
+    ],
+    "focusHitsTotal": 43,
+    "focusHitsIncluded": [
+      {
+        "week": 11,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Service Scenarios",
+        "duty": "D6"
+      },
+      {
+        "week": 13,
+        "block": 2,
+        "excluded": false,
+        "topic": "Engine Repairs",
+        "duty": "D3"
+      },
+      {
+        "week": 15,
+        "block": 2,
+        "excluded": false,
+        "topic": "Supplier Liaison",
+        "duty": "D5"
+      },
+      {
+        "week": 17,
+        "block": 2,
+        "excluded": false,
+        "topic": "Advanced Brake Diagnostics",
+        "duty": "D3"
+      },
+      {
+        "week": 19,
+        "block": 2,
+        "excluded": false,
+        "topic": "Stock Auditing",
+        "duty": "D5"
+      },
+      {
+        "week": 20,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Dispute Resolution",
+        "duty": "D6"
+      },
+      {
+        "week": 21,
+        "block": 3,
+        "excluded": false,
+        "topic": "Service reception, booking diagnostics and first impressions",
+        "duty": "D1"
+      },
+      {
+        "week": 23,
+        "block": 3,
+        "excluded": false,
+        "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+        "duty": "D3"
+      },
+      {
+        "week": 25,
+        "block": 3,
+        "excluded": false,
+        "topic": "Parts identification, catalogue use and alternative part selection",
+        "duty": "D5"
+      },
+      {
+        "week": 26,
+        "block": 3,
+        "excluded": false,
+        "topic": "Workshop procedures, documentation control and handover discipline",
+        "duty": "D6"
+      },
+      {
+        "week": 29,
+        "block": 3,
+        "excluded": false,
+        "topic": "Stock rotation, reorder points and traceability",
+        "duty": "D9"
+      },
+      {
+        "week": 31,
+        "block": 4,
+        "excluded": false,
+        "topic": "Customer updates, ETA management and expectation setting",
+        "duty": "D1"
+      },
+      {
+        "week": 33,
+        "block": 4,
+        "excluded": false,
+        "topic": "Driveline service, task allocation and team communication",
+        "duty": "D3"
+      },
+      {
+        "week": 35,
+        "block": 4,
+        "excluded": false,
+        "topic": "Warranty parts, returns and supplier escalation",
+        "duty": "D5"
+      },
+      {
+        "week": 36,
+        "block": 4,
+        "excluded": false,
+        "topic": "Job-card accuracy, escalation routes and quality gatekeeping",
+        "duty": "D6"
+      },
+      {
+        "week": 39,
+        "block": 4,
+        "excluded": false,
+        "topic": "Goods-in checks, parts storage and consumables control",
+        "duty": "D9"
+      },
+      {
+        "week": 41,
+        "block": 5,
+        "excluded": false,
+        "topic": "Technical handover and managing customer expectations on diagnostic work",
+        "duty": "D1"
+      },
+      {
+        "week": 43,
+        "block": 5,
+        "excluded": false,
+        "topic": "Complex repairs, time management and QA sign-off",
+        "duty": "D3"
+      },
+      {
+        "week": 45,
+        "block": 5,
+        "excluded": false,
+        "topic": "VIN lookup, technical data and parts availability checks",
+        "duty": "D5"
+      },
+      {
+        "week": 46,
+        "block": 5,
+        "excluded": false,
+        "topic": "Complaint prevention through process discipline and record quality",
+        "duty": "D6"
+      },
+      {
+        "week": 49,
+        "block": 5,
+        "excluded": false,
+        "topic": "Stock variance investigation and corrective action planning",
+        "duty": "D9"
+      },
+      {
+        "week": 51,
+        "block": 6,
+        "excluded": false,
+        "topic": "Customer interaction during longer diagnostic jobs",
+        "duty": "D1"
+      },
+      {
+        "week": 53,
+        "block": 6,
+        "excluded": false,
+        "topic": "Workshop productivity, task sequencing and team support",
+        "duty": "D3"
+      },
+      {
+        "week": 55,
+        "block": 6,
+        "excluded": false,
+        "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+        "duty": "D5"
+      },
+      {
+        "week": 56,
+        "block": 6,
+        "excluded": false,
+        "topic": "Record keeping, compliance checks and audit readiness",
+        "duty": "D6"
+      },
+      {
+        "week": 59,
+        "block": 6,
+        "excluded": false,
+        "topic": "Order tracking, back orders and customer impact",
+        "duty": "D9"
+      },
+      {
+        "week": 61,
+        "block": 7,
+        "excluded": false,
+        "topic": "Advanced service adviser communication and trust-building",
+        "duty": "D1"
+      },
+      {
+        "week": 63,
+        "block": 7,
+        "excluded": false,
+        "topic": "Engine management repairs and quality assurance",
+        "duty": "D3"
+      },
+      {
+        "week": 65,
+        "block": 7,
+        "excluded": false,
+        "topic": "Supplier performance, cost control and escalation",
+        "duty": "D5"
+      },
+      {
+        "week": 66,
+        "block": 7,
+        "excluded": false,
+        "topic": "Service recovery, complaint closure and records",
+        "duty": "D6"
+      },
+      {
+        "week": 69,
+        "block": 7,
+        "excluded": false,
+        "topic": "Consumables management and stock security",
+        "duty": "D9"
+      },
+      {
+        "week": 71,
+        "block": 8,
+        "excluded": false,
+        "topic": "Technical explanations for complex repairs and delays",
+        "duty": "D1"
+      },
+      {
+        "week": 73,
+        "block": 8,
+        "excluded": false,
+        "topic": "Repair planning, delegation and sign-off discipline",
+        "duty": "D3"
+      },
+      {
+        "week": 75,
+        "block": 8,
+        "excluded": false,
+        "topic": "Specialist parts, alternatives and warranty evidence",
+        "duty": "D5"
+      },
+      {
+        "week": 76,
+        "block": 8,
+        "excluded": false,
+        "topic": "Documentation for handover and audit trail completeness",
+        "duty": "D6"
+      },
+      {
+        "week": 79,
+        "block": 8,
+        "excluded": false,
+        "topic": "Inventory accuracy, obsolescence review and safe disposal",
+        "duty": "D9"
+      },
+      {
+        "week": 85,
+        "block": 9,
+        "excluded": false,
+        "topic": "Workshop quality checks and road-test feedback capture",
+        "duty": "D6"
+      },
+      {
+        "week": 87,
+        "block": 9,
+        "excluded": false,
+        "topic": "Supplier and stock optimisation for emerging technologies",
+        "duty": "D5"
+      },
+      {
+        "week": 103,
+        "block": 10,
+        "excluded": false,
+        "topic": "Communicate with customers establishing vehicle problems and their requirements",
+        "duty": "D1"
+      },
+      {
+        "week": 105,
+        "block": 10,
+        "excluded": false,
+        "topic": "Work independently and as part of a team, contributing to business outcomes",
+        "duty": "D3"
+      },
+      {
+        "week": 107,
+        "block": 10,
+        "excluded": false,
+        "topic": "Duty 5 Skills Development and EPA Readiness Practice - Parts Identification and Sourcing",
+        "duty": "D5"
+      },
+      {
+        "week": 108,
+        "block": 10,
+        "excluded": false,
+        "topic": "Duty 6 Skills Development and EPA Readiness Practice - Procedures and Documentation",
+        "duty": "D6"
+      },
+      {
+        "week": 109,
+        "block": 10,
+        "excluded": false,
+        "topic": "Duty 1 Skills Development and EPA Readiness Practice - Customer Communication",
+        "duty": "D1"
+      }
+    ],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [],
+    "topicHitCount": 0,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        6
+      ],
+      [
+        3,
+        "High",
+        5
+      ],
+      [
+        4,
+        "High",
+        5
+      ],
+      [
+        5,
+        "High",
+        5
+      ],
+      [
+        6,
+        "High",
+        6
+      ],
+      [
+        7,
+        "High",
+        5
+      ],
+      [
+        8,
+        "High",
+        5
+      ],
+      [
+        9,
+        "High",
+        4
+      ],
+      [
+        10,
+        "High",
+        6
+      ]
+    ],
+    "verdict": "FOCUS_TEMPLATE_ONLY_NOT_PROMOTED",
+    "why": "Appears on Duty/KSB focus lists but no distinctive topic alignment after family-aware/topic filters"
+  },
+  {
+    "ksbCode": "K1",
+    "type": "knowledge",
+    "description": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 8,
+    "focusHitsIncluded": [
+      {
+        "week": 21,
+        "block": 3,
+        "excluded": false,
+        "topic": "Service reception, booking diagnostics and first impressions",
+        "duty": "D1"
+      },
+      {
+        "week": 31,
+        "block": 4,
+        "excluded": false,
+        "topic": "Customer updates, ETA management and expectation setting",
+        "duty": "D1"
+      },
+      {
+        "week": 41,
+        "block": 5,
+        "excluded": false,
+        "topic": "Technical handover and managing customer expectations on diagnostic work",
+        "duty": "D1"
+      },
+      {
+        "week": 51,
+        "block": 6,
+        "excluded": false,
+        "topic": "Customer interaction during longer diagnostic jobs",
+        "duty": "D1"
+      },
+      {
+        "week": 61,
+        "block": 7,
+        "excluded": false,
+        "topic": "Advanced service adviser communication and trust-building",
+        "duty": "D1"
+      },
+      {
+        "week": 71,
+        "block": 8,
+        "excluded": false,
+        "topic": "Technical explanations for complex repairs and delays",
+        "duty": "D1"
+      },
+      {
+        "week": 103,
+        "block": 10,
+        "excluded": false,
+        "topic": "Communicate with customers establishing vehicle problems and their requirements",
+        "duty": "D1"
+      },
+      {
+        "week": 109,
+        "block": 10,
+        "excluded": false,
+        "topic": "Duty 1 Skills Development and EPA Readiness Practice - Customer Communication",
+        "duty": "D1"
+      }
+    ],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [
+      {
+        "week": 40,
+        "block": 4,
+        "excluded": false,
+        "topic": "Fire safety, first response and incident reporting",
+        "matched": [
+          "reporting"
+        ]
+      }
+    ],
+    "topicHitCount": 1,
+    "pipelineConfidenceRows": [
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        6,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "High",
+        2
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K2",
+    "type": "knowledge",
+    "description": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D10"
+    ],
+    "focusHitsTotal": 7,
+    "focusHitsIncluded": [],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "matched": [
+          "routine",
+          "schedules"
+        ]
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "matched": [
+          "wear"
+        ]
+      },
+      {
+        "week": 45,
+        "block": 5,
+        "excluded": false,
+        "topic": "VIN lookup, technical data and parts availability checks",
+        "matched": [
+          "data"
+        ]
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "matched": [
+          "inspections",
+          "maintenance",
+          "routine"
+        ]
+      }
+    ],
+    "topicHitCount": 4,
+    "pipelineConfidenceRows": [
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        3
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K5",
+    "type": "knowledge",
+    "description": "Tools and equipment used in automotive industry. Purpose and operation.",
+    "relatedDuties": [
+      "D2",
+      "D3",
+      "D4",
+      "D6",
+      "D7",
+      "D10"
+    ],
+    "focusHitsTotal": 7,
+    "focusHitsIncluded": [],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 77,
+        "block": 8,
+        "excluded": false,
+        "topic": "Quality, cleanliness and equipment care routines",
+        "matched": [
+          "equipment"
+        ]
+      }
+    ],
+    "topicHitCount": 1,
+    "pipelineConfidenceRows": [
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        3
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K7",
+    "type": "knowledge",
+    "description": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D6",
+      "D7",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 17,
+    "focusHitsIncluded": [
+      {
+        "week": 11,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Service Scenarios",
+        "duty": "D6"
+      },
+      {
+        "week": 20,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Dispute Resolution",
+        "duty": "D6"
+      },
+      {
+        "week": 26,
+        "block": 3,
+        "excluded": false,
+        "topic": "Workshop procedures, documentation control and handover discipline",
+        "duty": "D6"
+      },
+      {
+        "week": 36,
+        "block": 4,
+        "excluded": false,
+        "topic": "Job-card accuracy, escalation routes and quality gatekeeping",
+        "duty": "D6"
+      },
+      {
+        "week": 46,
+        "block": 5,
+        "excluded": false,
+        "topic": "Complaint prevention through process discipline and record quality",
+        "duty": "D6"
+      },
+      {
+        "week": 56,
+        "block": 6,
+        "excluded": false,
+        "topic": "Record keeping, compliance checks and audit readiness",
+        "duty": "D6"
+      },
+      {
+        "week": 66,
+        "block": 7,
+        "excluded": false,
+        "topic": "Service recovery, complaint closure and records",
+        "duty": "D6"
+      },
+      {
+        "week": 76,
+        "block": 8,
+        "excluded": false,
+        "topic": "Documentation for handover and audit trail completeness",
+        "duty": "D6"
+      },
+      {
+        "week": 85,
+        "block": 9,
+        "excluded": false,
+        "topic": "Workshop quality checks and road-test feedback capture",
+        "duty": "D6"
+      },
+      {
+        "week": 108,
+        "block": 10,
+        "excluded": false,
+        "topic": "Duty 6 Skills Development and EPA Readiness Practice - Procedures and Documentation",
+        "duty": "D6"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "matched": [
+          "maintenance"
+        ]
+      }
+    ],
+    "topicHitCount": 1,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        6,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "High",
+        2
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K10",
+    "type": "knowledge",
+    "description": "Steering systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Mechanical, hydraulic and electric power assisted steering.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 16,
+    "focusHitsIncluded": [
+      {
+        "week": 14,
+        "block": 2,
+        "excluded": false,
+        "topic": "Tyre Pressure Monitoring Systems",
+        "duty": "D4"
+      },
+      {
+        "week": 18,
+        "block": 2,
+        "excluded": false,
+        "topic": "Wheel Alignment - Advanced",
+        "duty": "D4"
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "duty": "D4"
+      },
+      {
+        "week": 34,
+        "block": 4,
+        "excluded": false,
+        "topic": "Steering geometry and advanced tyre diagnosis",
+        "duty": "D4"
+      },
+      {
+        "week": 44,
+        "block": 5,
+        "excluded": false,
+        "topic": "Suspension component replacement and alignment preparation",
+        "duty": "D4"
+      },
+      {
+        "week": 64,
+        "block": 7,
+        "excluded": false,
+        "topic": "Tyre and TPMS service integration",
+        "duty": "D4"
+      },
+      {
+        "week": 74,
+        "block": 8,
+        "excluded": false,
+        "topic": "Alignment, ride height and geometry correlation",
+        "duty": "D4"
+      },
+      {
+        "week": 89,
+        "block": 9,
+        "excluded": false,
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "duty": "D4"
+      },
+      {
+        "week": 106,
+        "block": 10,
+        "excluded": false,
+        "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+        "duty": "D4"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 34,
+        "block": 4,
+        "excluded": false,
+        "topic": "Steering geometry and advanced tyre diagnosis",
+        "matched": [
+          "steering"
+        ]
+      }
+    ],
+    "topicHitCount": 1,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        3
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K11",
+    "type": "knowledge",
+    "description": "Suspension systems: purpose, function, and location of systems and components for inspection, removal and replacement. Macpherson strut, double wishbone, ball joints, suspension arms, spring types, including leaf and coil, dampers and shock absorbers, air or hydraulic suspension, subframes.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 16,
+    "focusHitsIncluded": [
+      {
+        "week": 14,
+        "block": 2,
+        "excluded": false,
+        "topic": "Tyre Pressure Monitoring Systems",
+        "duty": "D4"
+      },
+      {
+        "week": 18,
+        "block": 2,
+        "excluded": false,
+        "topic": "Wheel Alignment - Advanced",
+        "duty": "D4"
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "duty": "D4"
+      },
+      {
+        "week": 34,
+        "block": 4,
+        "excluded": false,
+        "topic": "Steering geometry and advanced tyre diagnosis",
+        "duty": "D4"
+      },
+      {
+        "week": 44,
+        "block": 5,
+        "excluded": false,
+        "topic": "Suspension component replacement and alignment preparation",
+        "duty": "D4"
+      },
+      {
+        "week": 64,
+        "block": 7,
+        "excluded": false,
+        "topic": "Tyre and TPMS service integration",
+        "duty": "D4"
+      },
+      {
+        "week": 74,
+        "block": 8,
+        "excluded": false,
+        "topic": "Alignment, ride height and geometry correlation",
+        "duty": "D4"
+      },
+      {
+        "week": 89,
+        "block": 9,
+        "excluded": false,
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "duty": "D4"
+      },
+      {
+        "week": 106,
+        "block": 10,
+        "excluded": false,
+        "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+        "duty": "D4"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 44,
+        "block": 5,
+        "excluded": false,
+        "topic": "Suspension component replacement and alignment preparation",
+        "matched": [
+          "suspension"
+        ]
+      }
+    ],
+    "topicHitCount": 1,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        2
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K13",
+    "type": "knowledge",
+    "description": "Emission control systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Catalytic converters, evaporative control systems, exhaust gas recirculation (EGR), diesel particulate filter (DPF), petrol particulate filter (PPF), selective catalyst reduction (SCR).",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 16,
+    "focusHitsIncluded": [
+      {
+        "week": 14,
+        "block": 2,
+        "excluded": false,
+        "topic": "Tyre Pressure Monitoring Systems",
+        "duty": "D4"
+      },
+      {
+        "week": 18,
+        "block": 2,
+        "excluded": false,
+        "topic": "Wheel Alignment - Advanced",
+        "duty": "D4"
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "duty": "D4"
+      },
+      {
+        "week": 34,
+        "block": 4,
+        "excluded": false,
+        "topic": "Steering geometry and advanced tyre diagnosis",
+        "duty": "D4"
+      },
+      {
+        "week": 44,
+        "block": 5,
+        "excluded": false,
+        "topic": "Suspension component replacement and alignment preparation",
+        "duty": "D4"
+      },
+      {
+        "week": 64,
+        "block": 7,
+        "excluded": false,
+        "topic": "Tyre and TPMS service integration",
+        "duty": "D4"
+      },
+      {
+        "week": 74,
+        "block": 8,
+        "excluded": false,
+        "topic": "Alignment, ride height and geometry correlation",
+        "duty": "D4"
+      },
+      {
+        "week": 89,
+        "block": 9,
+        "excluded": false,
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "duty": "D4"
+      },
+      {
+        "week": 106,
+        "block": 10,
+        "excluded": false,
+        "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+        "duty": "D4"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [],
+    "topicHitCount": 0,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        2
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "FOCUS_TEMPLATE_ONLY_NOT_PROMOTED",
+    "why": "Appears on Duty/KSB focus lists but no distinctive topic alignment after family-aware/topic filters"
+  },
+  {
+    "ksbCode": "K14",
+    "type": "knowledge",
+    "description": "Vehicle heating, ventilation, and air conditioning systems (HVAC): purpose, function and location of  systems including climate control systems for inspection, maintenance, and replacement: refrigerants, coolants, blower motors, valves, heat exchangers, pipes and hoses.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 16,
+    "focusHitsIncluded": [
+      {
+        "week": 14,
+        "block": 2,
+        "excluded": false,
+        "topic": "Tyre Pressure Monitoring Systems",
+        "duty": "D4"
+      },
+      {
+        "week": 18,
+        "block": 2,
+        "excluded": false,
+        "topic": "Wheel Alignment - Advanced",
+        "duty": "D4"
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "duty": "D4"
+      },
+      {
+        "week": 34,
+        "block": 4,
+        "excluded": false,
+        "topic": "Steering geometry and advanced tyre diagnosis",
+        "duty": "D4"
+      },
+      {
+        "week": 44,
+        "block": 5,
+        "excluded": false,
+        "topic": "Suspension component replacement and alignment preparation",
+        "duty": "D4"
+      },
+      {
+        "week": 64,
+        "block": 7,
+        "excluded": false,
+        "topic": "Tyre and TPMS service integration",
+        "duty": "D4"
+      },
+      {
+        "week": 74,
+        "block": 8,
+        "excluded": false,
+        "topic": "Alignment, ride height and geometry correlation",
+        "duty": "D4"
+      },
+      {
+        "week": 89,
+        "block": 9,
+        "excluded": false,
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "duty": "D4"
+      },
+      {
+        "week": 106,
+        "block": 10,
+        "excluded": false,
+        "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+        "duty": "D4"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "matched": [
+          "climate",
+          "conditioning"
+        ]
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "matched": [
+          "maintenance"
+        ]
+      }
+    ],
+    "topicHitCount": 2,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        2
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K15",
+    "type": "knowledge",
+    "description": "Low voltage batteries: purpose, function, and location of low voltage batteries, starting and charging systems: auxiliary battery, starter motor, alternator, e-machine.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 16,
+    "focusHitsIncluded": [
+      {
+        "week": 14,
+        "block": 2,
+        "excluded": false,
+        "topic": "Tyre Pressure Monitoring Systems",
+        "duty": "D4"
+      },
+      {
+        "week": 18,
+        "block": 2,
+        "excluded": false,
+        "topic": "Wheel Alignment - Advanced",
+        "duty": "D4"
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "duty": "D4"
+      },
+      {
+        "week": 34,
+        "block": 4,
+        "excluded": false,
+        "topic": "Steering geometry and advanced tyre diagnosis",
+        "duty": "D4"
+      },
+      {
+        "week": 44,
+        "block": 5,
+        "excluded": false,
+        "topic": "Suspension component replacement and alignment preparation",
+        "duty": "D4"
+      },
+      {
+        "week": 64,
+        "block": 7,
+        "excluded": false,
+        "topic": "Tyre and TPMS service integration",
+        "duty": "D4"
+      },
+      {
+        "week": 74,
+        "block": 8,
+        "excluded": false,
+        "topic": "Alignment, ride height and geometry correlation",
+        "duty": "D4"
+      },
+      {
+        "week": 89,
+        "block": 9,
+        "excluded": false,
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "duty": "D4"
+      },
+      {
+        "week": 106,
+        "block": 10,
+        "excluded": false,
+        "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+        "duty": "D4"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 47,
+        "block": 5,
+        "excluded": false,
+        "topic": "Battery handling, waste segregation and PPE discipline",
+        "matched": [
+          "battery"
+        ]
+      },
+      {
+        "week": 54,
+        "block": 6,
+        "excluded": false,
+        "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+        "matched": [
+          "charging"
+        ]
+      },
+      {
+        "week": 82,
+        "block": 9,
+        "excluded": false,
+        "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+        "matched": [
+          "charging"
+        ]
+      }
+    ],
+    "topicHitCount": 3,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        2
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K16",
+    "type": "knowledge",
+    "description": "Maintenance and replacement of low voltage batteries, starting and charging systems.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 16,
+    "focusHitsIncluded": [
+      {
+        "week": 14,
+        "block": 2,
+        "excluded": false,
+        "topic": "Tyre Pressure Monitoring Systems",
+        "duty": "D4"
+      },
+      {
+        "week": 18,
+        "block": 2,
+        "excluded": false,
+        "topic": "Wheel Alignment - Advanced",
+        "duty": "D4"
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "duty": "D4"
+      },
+      {
+        "week": 34,
+        "block": 4,
+        "excluded": false,
+        "topic": "Steering geometry and advanced tyre diagnosis",
+        "duty": "D4"
+      },
+      {
+        "week": 44,
+        "block": 5,
+        "excluded": false,
+        "topic": "Suspension component replacement and alignment preparation",
+        "duty": "D4"
+      },
+      {
+        "week": 64,
+        "block": 7,
+        "excluded": false,
+        "topic": "Tyre and TPMS service integration",
+        "duty": "D4"
+      },
+      {
+        "week": 74,
+        "block": 8,
+        "excluded": false,
+        "topic": "Alignment, ride height and geometry correlation",
+        "duty": "D4"
+      },
+      {
+        "week": 89,
+        "block": 9,
+        "excluded": false,
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "duty": "D4"
+      },
+      {
+        "week": 106,
+        "block": 10,
+        "excluded": false,
+        "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+        "duty": "D4"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 54,
+        "block": 6,
+        "excluded": false,
+        "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+        "matched": [
+          "charging"
+        ]
+      },
+      {
+        "week": 82,
+        "block": 9,
+        "excluded": false,
+        "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+        "matched": [
+          "charging"
+        ]
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "matched": [
+          "maintenance"
+        ]
+      }
+    ],
+    "topicHitCount": 3,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        2
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K18",
+    "type": "knowledge",
+    "description": "Advanced driver-assistance systems (ADAS) levels of autonomy: passive and active advanced driver assistance systems.",
+    "relatedDuties": [
+      "D1",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ],
+    "focusHitsTotal": 0,
+    "focusHitsIncluded": [],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [],
+    "topicHitCount": 0,
+    "pipelineConfidenceRows": [
+      [
+        9,
+        "High",
+        2
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "GENUINE_GAP",
+    "why": "No Duty/KSB focus listing and no strict topic lexical match in approved SOW sessions"
+  },
+  {
+    "ksbCode": "K20",
+    "type": "knowledge",
+    "description": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters.",
+    "relatedDuties": [
+      "D4"
+    ],
+    "focusHitsTotal": 7,
+    "focusHitsIncluded": [],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 17,
+        "block": 2,
+        "excluded": false,
+        "topic": "Advanced Brake Diagnostics",
+        "matched": [
+          "brake"
+        ]
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "matched": [
+          "brake"
+        ]
+      }
+    ],
+    "topicHitCount": 2,
+    "pipelineConfidenceRows": [
+      [
+        6,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K22",
+    "type": "knowledge",
+    "description": "Awareness of hydrogen powered vehicle technologies and principles of operation: storage and condition monitoring of fuel cells.",
+    "relatedDuties": [
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D10"
+    ],
+    "focusHitsTotal": 8,
+    "focusHitsIncluded": [
+      {
+        "week": 30,
+        "block": 3,
+        "excluded": false,
+        "topic": "Environmental risk, spill response and emergency preparedness",
+        "duty": "D10"
+      },
+      {
+        "week": 40,
+        "block": 4,
+        "excluded": false,
+        "topic": "Fire safety, first response and incident reporting",
+        "duty": "D10"
+      },
+      {
+        "week": 50,
+        "block": 5,
+        "excluded": false,
+        "topic": "Risk assessment refresh and safe systems of work",
+        "duty": "D10"
+      },
+      {
+        "week": 60,
+        "block": 6,
+        "excluded": false,
+        "topic": "Environmental controls, waste streams and site safety",
+        "duty": "D10"
+      },
+      {
+        "week": 70,
+        "block": 7,
+        "excluded": false,
+        "topic": "Safe working with new vehicle systems",
+        "duty": "D10"
+      },
+      {
+        "week": 80,
+        "block": 8,
+        "excluded": false,
+        "topic": "Emergency response, near misses and environmental safety",
+        "duty": "D10"
+      },
+      {
+        "week": 86,
+        "block": 9,
+        "excluded": false,
+        "topic": "Workshop compliance deep dive: documentation and waste control",
+        "duty": "D10"
+      },
+      {
+        "week": 90,
+        "block": 9,
+        "excluded": false,
+        "topic": "Emerging technology readiness review and case studies",
+        "duty": "D10"
+      }
+    ],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [
+      {
+        "week": 14,
+        "block": 2,
+        "excluded": false,
+        "topic": "Tyre Pressure Monitoring Systems",
+        "matched": [
+          "monitoring"
+        ]
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "matched": [
+          "condition"
+        ]
+      },
+      {
+        "week": 27,
+        "block": 3,
+        "excluded": false,
+        "topic": "Housekeeping, 5S routines and safe storage control",
+        "matched": [
+          "storage"
+        ]
+      },
+      {
+        "week": 37,
+        "block": 4,
+        "excluded": false,
+        "topic": "COSHH awareness, workshop cleanliness and tool control",
+        "matched": [
+          "awareness"
+        ]
+      },
+      {
+        "week": 39,
+        "block": 4,
+        "excluded": false,
+        "topic": "Goods-in checks, parts storage and consumables control",
+        "matched": [
+          "storage"
+        ]
+      },
+      {
+        "week": 81,
+        "block": 9,
+        "excluded": false,
+        "topic": "Applied Awareness",
+        "matched": [
+          "awareness"
+        ]
+      },
+      {
+        "week": 87,
+        "block": 9,
+        "excluded": false,
+        "topic": "Supplier and stock optimisation for emerging technologies",
+        "matched": [
+          "technologies"
+        ]
+      },
+      {
+        "week": 94,
+        "block": 9,
+        "excluded": false,
+        "topic": "Emerging Technology - Hydrogen Systems Safety and Application",
+        "matched": [
+          "hydrogen"
+        ]
+      }
+    ],
+    "topicHitCount": 8,
+    "pipelineConfidenceRows": [
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "High",
+        2
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        6,
+        "High",
+        2
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        5
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "K31",
+    "type": "knowledge",
+    "description": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ],
+    "focusHitsTotal": 9,
+    "focusHitsIncluded": [
+      {
+        "week": 13,
+        "block": 2,
+        "excluded": false,
+        "topic": "Engine Repairs",
+        "duty": "D3"
+      },
+      {
+        "week": 17,
+        "block": 2,
+        "excluded": false,
+        "topic": "Advanced Brake Diagnostics",
+        "duty": "D3"
+      },
+      {
+        "week": 23,
+        "block": 3,
+        "excluded": false,
+        "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+        "duty": "D3"
+      },
+      {
+        "week": 33,
+        "block": 4,
+        "excluded": false,
+        "topic": "Driveline service, task allocation and team communication",
+        "duty": "D3"
+      },
+      {
+        "week": 43,
+        "block": 5,
+        "excluded": false,
+        "topic": "Complex repairs, time management and QA sign-off",
+        "duty": "D3"
+      },
+      {
+        "week": 53,
+        "block": 6,
+        "excluded": false,
+        "topic": "Workshop productivity, task sequencing and team support",
+        "duty": "D3"
+      },
+      {
+        "week": 63,
+        "block": 7,
+        "excluded": false,
+        "topic": "Engine management repairs and quality assurance",
+        "duty": "D3"
+      },
+      {
+        "week": 73,
+        "block": 8,
+        "excluded": false,
+        "topic": "Repair planning, delegation and sign-off discipline",
+        "duty": "D3"
+      },
+      {
+        "week": 105,
+        "block": 10,
+        "excluded": false,
+        "topic": "Work independently and as part of a team, contributing to business outcomes",
+        "duty": "D3"
+      }
+    ],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [
+      {
+        "week": 59,
+        "block": 6,
+        "excluded": false,
+        "topic": "Order tracking, back orders and customer impact",
+        "matched": [
+          "impact"
+        ]
+      }
+    ],
+    "topicHitCount": 1,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        6,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "High",
+        2
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "S2",
+    "type": "skill",
+    "description": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards.",
+    "relatedDuties": [
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ],
+    "focusHitsTotal": 13,
+    "focusHitsIncluded": [
+      {
+        "week": 27,
+        "block": 3,
+        "excluded": false,
+        "topic": "Housekeeping, 5S routines and safe storage control",
+        "duty": "D7"
+      },
+      {
+        "week": 37,
+        "block": 4,
+        "excluded": false,
+        "topic": "COSHH awareness, workshop cleanliness and tool control",
+        "duty": "D7"
+      },
+      {
+        "week": 47,
+        "block": 5,
+        "excluded": false,
+        "topic": "Battery handling, waste segregation and PPE discipline",
+        "duty": "D7"
+      },
+      {
+        "week": 57,
+        "block": 6,
+        "excluded": false,
+        "topic": "Safe lifting, jacking and vehicle support",
+        "duty": "D7"
+      },
+      {
+        "week": 67,
+        "block": 7,
+        "excluded": false,
+        "topic": "Workshop flow, layout and housekeeping",
+        "duty": "D7"
+      },
+      {
+        "week": 77,
+        "block": 8,
+        "excluded": false,
+        "topic": "Quality, cleanliness and equipment care routines",
+        "duty": "D7"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [],
+    "topicHitCount": 0,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "Medium",
+        1
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        6,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "FOCUS_TEMPLATE_ONLY_NOT_PROMOTED",
+    "why": "Appears on Duty/KSB focus lists but no distinctive topic alignment after family-aware/topic filters"
+  },
+  {
+    "ksbCode": "S3",
+    "type": "skill",
+    "description": "Maintain and restore the work area during and on completion of the activity.",
+    "relatedDuties": [
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ],
+    "focusHitsTotal": 6,
+    "focusHitsIncluded": [
+      {
+        "week": 27,
+        "block": 3,
+        "excluded": false,
+        "topic": "Housekeeping, 5S routines and safe storage control",
+        "duty": "D7"
+      },
+      {
+        "week": 37,
+        "block": 4,
+        "excluded": false,
+        "topic": "COSHH awareness, workshop cleanliness and tool control",
+        "duty": "D7"
+      },
+      {
+        "week": 47,
+        "block": 5,
+        "excluded": false,
+        "topic": "Battery handling, waste segregation and PPE discipline",
+        "duty": "D7"
+      },
+      {
+        "week": 57,
+        "block": 6,
+        "excluded": false,
+        "topic": "Safe lifting, jacking and vehicle support",
+        "duty": "D7"
+      },
+      {
+        "week": 67,
+        "block": 7,
+        "excluded": false,
+        "topic": "Workshop flow, layout and housekeeping",
+        "duty": "D7"
+      },
+      {
+        "week": 77,
+        "block": 8,
+        "excluded": false,
+        "topic": "Quality, cleanliness and equipment care routines",
+        "duty": "D7"
+      }
+    ],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [],
+    "topicHitCount": 0,
+    "pipelineConfidenceRows": [
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        6,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "FOCUS_TEMPLATE_ONLY_NOT_PROMOTED",
+    "why": "Appears on Duty/KSB focus lists but no distinctive topic alignment after family-aware/topic filters"
+  },
+  {
+    "ksbCode": "S7",
+    "type": "skill",
+    "description": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ],
+    "focusHitsTotal": 7,
+    "focusHitsIncluded": [],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "matched": [
+          "routine"
+        ]
+      },
+      {
+        "week": 45,
+        "block": 5,
+        "excluded": false,
+        "topic": "VIN lookup, technical data and parts availability checks",
+        "matched": [
+          "data"
+        ]
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "matched": [
+          "maintenance",
+          "routine"
+        ]
+      }
+    ],
+    "topicHitCount": 3,
+    "pipelineConfidenceRows": [
+      [
+        6,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "High",
+        3
+      ],
+      [
+        10,
+        "High",
+        5
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "S13",
+    "type": "skill",
+    "description": "Apply safe working practices and procedures to isolate electrified vehicles for maintenance.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ],
+    "focusHitsTotal": 16,
+    "focusHitsIncluded": [
+      {
+        "week": 14,
+        "block": 2,
+        "excluded": false,
+        "topic": "Tyre Pressure Monitoring Systems",
+        "duty": "D4"
+      },
+      {
+        "week": 18,
+        "block": 2,
+        "excluded": false,
+        "topic": "Wheel Alignment - Advanced",
+        "duty": "D4"
+      },
+      {
+        "week": 24,
+        "block": 3,
+        "excluded": false,
+        "topic": "Brake wear checks, tyre condition and wheel security",
+        "duty": "D4"
+      },
+      {
+        "week": 34,
+        "block": 4,
+        "excluded": false,
+        "topic": "Steering geometry and advanced tyre diagnosis",
+        "duty": "D4"
+      },
+      {
+        "week": 44,
+        "block": 5,
+        "excluded": false,
+        "topic": "Suspension component replacement and alignment preparation",
+        "duty": "D4"
+      },
+      {
+        "week": 64,
+        "block": 7,
+        "excluded": false,
+        "topic": "Tyre and TPMS service integration",
+        "duty": "D4"
+      },
+      {
+        "week": 74,
+        "block": 8,
+        "excluded": false,
+        "topic": "Alignment, ride height and geometry correlation",
+        "duty": "D4"
+      },
+      {
+        "week": 89,
+        "block": 9,
+        "excluded": false,
+        "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+        "duty": "D4"
+      },
+      {
+        "week": 106,
+        "block": 10,
+        "excluded": false,
+        "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+        "duty": "D4"
+      }
+    ],
+    "focusHitsExcludedOnly": [
+      {
+        "week": 12,
+        "block": 2,
+        "excluded": true,
+        "topic": "Electrical System Inspection",
+        "duty": "D2"
+      },
+      {
+        "week": 22,
+        "block": 3,
+        "excluded": true,
+        "topic": "Routine servicing, inspection workflow and service schedules",
+        "duty": "D2"
+      },
+      {
+        "week": 42,
+        "block": 5,
+        "excluded": true,
+        "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+        "duty": "D2"
+      },
+      {
+        "week": 52,
+        "block": 6,
+        "excluded": true,
+        "topic": "Air-conditioning and climate-control checks",
+        "duty": "D2"
+      },
+      {
+        "week": 62,
+        "block": 7,
+        "excluded": true,
+        "topic": "Complex system inspection and defect prioritisation",
+        "duty": "D2"
+      },
+      {
+        "week": 72,
+        "block": 8,
+        "excluded": true,
+        "topic": "Advanced diagnostic process and confirmation of root cause",
+        "duty": "D2"
+      },
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "duty": "D2"
+      }
+    ],
+    "topicHitsStrict": [
+      {
+        "week": 104,
+        "block": 10,
+        "excluded": true,
+        "topic": "Conduct vehicle inspections and routine maintenance work",
+        "matched": [
+          "maintenance"
+        ]
+      }
+    ],
+    "topicHitCount": 1,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "Medium",
+        1
+      ],
+      [
+        4,
+        "Medium",
+        1
+      ],
+      [
+        5,
+        "Medium",
+        1
+      ],
+      [
+        7,
+        "Medium",
+        1
+      ],
+      [
+        8,
+        "Medium",
+        1
+      ],
+      [
+        9,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "High",
+        2
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "S18",
+    "type": "skill",
+    "description": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing.",
+    "relatedDuties": [
+      "D1",
+      "D3",
+      "D5",
+      "D6",
+      "D8",
+      "D9"
+    ],
+    "focusHitsTotal": 16,
+    "focusHitsIncluded": [
+      {
+        "week": 15,
+        "block": 2,
+        "excluded": false,
+        "topic": "Supplier Liaison",
+        "duty": "D5"
+      },
+      {
+        "week": 19,
+        "block": 2,
+        "excluded": false,
+        "topic": "Stock Auditing",
+        "duty": "D5"
+      },
+      {
+        "week": 25,
+        "block": 3,
+        "excluded": false,
+        "topic": "Parts identification, catalogue use and alternative part selection",
+        "duty": "D5"
+      },
+      {
+        "week": 29,
+        "block": 3,
+        "excluded": false,
+        "topic": "Stock rotation, reorder points and traceability",
+        "duty": "D9"
+      },
+      {
+        "week": 35,
+        "block": 4,
+        "excluded": false,
+        "topic": "Warranty parts, returns and supplier escalation",
+        "duty": "D5"
+      },
+      {
+        "week": 39,
+        "block": 4,
+        "excluded": false,
+        "topic": "Goods-in checks, parts storage and consumables control",
+        "duty": "D9"
+      },
+      {
+        "week": 45,
+        "block": 5,
+        "excluded": false,
+        "topic": "VIN lookup, technical data and parts availability checks",
+        "duty": "D5"
+      },
+      {
+        "week": 49,
+        "block": 5,
+        "excluded": false,
+        "topic": "Stock variance investigation and corrective action planning",
+        "duty": "D9"
+      },
+      {
+        "week": 55,
+        "block": 6,
+        "excluded": false,
+        "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+        "duty": "D5"
+      },
+      {
+        "week": 59,
+        "block": 6,
+        "excluded": false,
+        "topic": "Order tracking, back orders and customer impact",
+        "duty": "D9"
+      },
+      {
+        "week": 65,
+        "block": 7,
+        "excluded": false,
+        "topic": "Supplier performance, cost control and escalation",
+        "duty": "D5"
+      },
+      {
+        "week": 69,
+        "block": 7,
+        "excluded": false,
+        "topic": "Consumables management and stock security",
+        "duty": "D9"
+      },
+      {
+        "week": 75,
+        "block": 8,
+        "excluded": false,
+        "topic": "Specialist parts, alternatives and warranty evidence",
+        "duty": "D5"
+      },
+      {
+        "week": 79,
+        "block": 8,
+        "excluded": false,
+        "topic": "Inventory accuracy, obsolescence review and safe disposal",
+        "duty": "D9"
+      },
+      {
+        "week": 87,
+        "block": 9,
+        "excluded": false,
+        "topic": "Supplier and stock optimisation for emerging technologies",
+        "duty": "D5"
+      },
+      {
+        "week": 107,
+        "block": 10,
+        "excluded": false,
+        "topic": "Duty 5 Skills Development and EPA Readiness Practice - Parts Identification and Sourcing",
+        "duty": "D5"
+      }
+    ],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [],
+    "topicHitCount": 0,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "High",
+        2
+      ],
+      [
+        4,
+        "High",
+        2
+      ],
+      [
+        5,
+        "High",
+        2
+      ],
+      [
+        6,
+        "High",
+        2
+      ],
+      [
+        7,
+        "High",
+        2
+      ],
+      [
+        8,
+        "High",
+        2
+      ],
+      [
+        9,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "FOCUS_TEMPLATE_ONLY_NOT_PROMOTED",
+    "why": "Appears on Duty/KSB focus lists but no distinctive topic alignment after family-aware/topic filters"
+  },
+  {
+    "ksbCode": "S19",
+    "type": "skill",
+    "description": "Apply team working principles.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 23,
+    "focusHitsIncluded": [
+      {
+        "week": 15,
+        "block": 2,
+        "excluded": false,
+        "topic": "Supplier Liaison",
+        "duty": "D5"
+      },
+      {
+        "week": 19,
+        "block": 2,
+        "excluded": false,
+        "topic": "Stock Auditing",
+        "duty": "D5"
+      },
+      {
+        "week": 25,
+        "block": 3,
+        "excluded": false,
+        "topic": "Parts identification, catalogue use and alternative part selection",
+        "duty": "D5"
+      },
+      {
+        "week": 28,
+        "block": 3,
+        "excluded": false,
+        "topic": "Estimates, authorisation and customer approval skills",
+        "duty": "D8"
+      },
+      {
+        "week": 29,
+        "block": 3,
+        "excluded": false,
+        "topic": "Stock rotation, reorder points and traceability",
+        "duty": "D9"
+      },
+      {
+        "week": 35,
+        "block": 4,
+        "excluded": false,
+        "topic": "Warranty parts, returns and supplier escalation",
+        "duty": "D5"
+      },
+      {
+        "week": 38,
+        "block": 4,
+        "excluded": false,
+        "topic": "Quotations: labour, parts and value options",
+        "duty": "D8"
+      },
+      {
+        "week": 39,
+        "block": 4,
+        "excluded": false,
+        "topic": "Goods-in checks, parts storage and consumables control",
+        "duty": "D9"
+      },
+      {
+        "week": 45,
+        "block": 5,
+        "excluded": false,
+        "topic": "VIN lookup, technical data and parts availability checks",
+        "duty": "D5"
+      },
+      {
+        "week": 48,
+        "block": 5,
+        "excluded": false,
+        "topic": "Additional work identification and quote revision",
+        "duty": "D8"
+      },
+      {
+        "week": 49,
+        "block": 5,
+        "excluded": false,
+        "topic": "Stock variance investigation and corrective action planning",
+        "duty": "D9"
+      },
+      {
+        "week": 55,
+        "block": 6,
+        "excluded": false,
+        "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+        "duty": "D5"
+      },
+      {
+        "week": 58,
+        "block": 6,
+        "excluded": false,
+        "topic": "Quote approval, consent and final documentation",
+        "duty": "D8"
+      },
+      {
+        "week": 59,
+        "block": 6,
+        "excluded": false,
+        "topic": "Order tracking, back orders and customer impact",
+        "duty": "D9"
+      },
+      {
+        "week": 65,
+        "block": 7,
+        "excluded": false,
+        "topic": "Supplier performance, cost control and escalation",
+        "duty": "D5"
+      },
+      {
+        "week": 68,
+        "block": 7,
+        "excluded": false,
+        "topic": "Multi-line estimates and customer choice conversations",
+        "duty": "D8"
+      },
+      {
+        "week": 69,
+        "block": 7,
+        "excluded": false,
+        "topic": "Consumables management and stock security",
+        "duty": "D9"
+      },
+      {
+        "week": 75,
+        "block": 8,
+        "excluded": false,
+        "topic": "Specialist parts, alternatives and warranty evidence",
+        "duty": "D5"
+      },
+      {
+        "week": 78,
+        "block": 8,
+        "excluded": false,
+        "topic": "Quotations, authorisation chains and ethical upsell practice",
+        "duty": "D8"
+      },
+      {
+        "week": 79,
+        "block": 8,
+        "excluded": false,
+        "topic": "Inventory accuracy, obsolescence review and safe disposal",
+        "duty": "D9"
+      },
+      {
+        "week": 87,
+        "block": 9,
+        "excluded": false,
+        "topic": "Supplier and stock optimisation for emerging technologies",
+        "duty": "D5"
+      },
+      {
+        "week": 88,
+        "block": 9,
+        "excluded": false,
+        "topic": "Integrated inspection, quotation and consent scenario",
+        "duty": "D8"
+      },
+      {
+        "week": 107,
+        "block": 10,
+        "excluded": false,
+        "topic": "Duty 5 Skills Development and EPA Readiness Practice - Parts Identification and Sourcing",
+        "duty": "D5"
+      }
+    ],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [
+      {
+        "week": 33,
+        "block": 4,
+        "excluded": false,
+        "topic": "Driveline service, task allocation and team communication",
+        "matched": [
+          "team"
+        ]
+      },
+      {
+        "week": 53,
+        "block": 6,
+        "excluded": false,
+        "topic": "Workshop productivity, task sequencing and team support",
+        "matched": [
+          "team"
+        ]
+      },
+      {
+        "week": 105,
+        "block": 10,
+        "excluded": false,
+        "topic": "Work independently and as part of a team, contributing to business outcomes",
+        "matched": [
+          "team"
+        ]
+      }
+    ],
+    "topicHitCount": 3,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        2
+      ],
+      [
+        3,
+        "High",
+        3
+      ],
+      [
+        4,
+        "High",
+        3
+      ],
+      [
+        5,
+        "High",
+        3
+      ],
+      [
+        6,
+        "High",
+        3
+      ],
+      [
+        7,
+        "High",
+        3
+      ],
+      [
+        8,
+        "High",
+        3
+      ],
+      [
+        9,
+        "High",
+        2
+      ],
+      [
+        10,
+        "Medium",
+        1
+      ]
+    ],
+    "verdict": "HAS_TOPIC_EVIDENCE_NOT_PROMOTED",
+    "why": "Strict topic match exists; check if score thresholds / High-gate blocked promotion — candidate for review add"
+  },
+  {
+    "ksbCode": "S20",
+    "type": "skill",
+    "description": "Comply with equity, diversity, and inclusion guidance.",
+    "relatedDuties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ],
+    "focusHitsTotal": 19,
+    "focusHitsIncluded": [
+      {
+        "week": 11,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Service Scenarios",
+        "duty": "D6"
+      },
+      {
+        "week": 13,
+        "block": 2,
+        "excluded": false,
+        "topic": "Engine Repairs",
+        "duty": "D3"
+      },
+      {
+        "week": 17,
+        "block": 2,
+        "excluded": false,
+        "topic": "Advanced Brake Diagnostics",
+        "duty": "D3"
+      },
+      {
+        "week": 20,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Dispute Resolution",
+        "duty": "D6"
+      },
+      {
+        "week": 23,
+        "block": 3,
+        "excluded": false,
+        "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+        "duty": "D3"
+      },
+      {
+        "week": 26,
+        "block": 3,
+        "excluded": false,
+        "topic": "Workshop procedures, documentation control and handover discipline",
+        "duty": "D6"
+      },
+      {
+        "week": 33,
+        "block": 4,
+        "excluded": false,
+        "topic": "Driveline service, task allocation and team communication",
+        "duty": "D3"
+      },
+      {
+        "week": 36,
+        "block": 4,
+        "excluded": false,
+        "topic": "Job-card accuracy, escalation routes and quality gatekeeping",
+        "duty": "D6"
+      },
+      {
+        "week": 43,
+        "block": 5,
+        "excluded": false,
+        "topic": "Complex repairs, time management and QA sign-off",
+        "duty": "D3"
+      },
+      {
+        "week": 46,
+        "block": 5,
+        "excluded": false,
+        "topic": "Complaint prevention through process discipline and record quality",
+        "duty": "D6"
+      },
+      {
+        "week": 53,
+        "block": 6,
+        "excluded": false,
+        "topic": "Workshop productivity, task sequencing and team support",
+        "duty": "D3"
+      },
+      {
+        "week": 56,
+        "block": 6,
+        "excluded": false,
+        "topic": "Record keeping, compliance checks and audit readiness",
+        "duty": "D6"
+      },
+      {
+        "week": 63,
+        "block": 7,
+        "excluded": false,
+        "topic": "Engine management repairs and quality assurance",
+        "duty": "D3"
+      },
+      {
+        "week": 66,
+        "block": 7,
+        "excluded": false,
+        "topic": "Service recovery, complaint closure and records",
+        "duty": "D6"
+      },
+      {
+        "week": 73,
+        "block": 8,
+        "excluded": false,
+        "topic": "Repair planning, delegation and sign-off discipline",
+        "duty": "D3"
+      },
+      {
+        "week": 76,
+        "block": 8,
+        "excluded": false,
+        "topic": "Documentation for handover and audit trail completeness",
+        "duty": "D6"
+      },
+      {
+        "week": 85,
+        "block": 9,
+        "excluded": false,
+        "topic": "Workshop quality checks and road-test feedback capture",
+        "duty": "D6"
+      },
+      {
+        "week": 105,
+        "block": 10,
+        "excluded": false,
+        "topic": "Work independently and as part of a team, contributing to business outcomes",
+        "duty": "D3"
+      },
+      {
+        "week": 108,
+        "block": 10,
+        "excluded": false,
+        "topic": "Duty 6 Skills Development and EPA Readiness Practice - Procedures and Documentation",
+        "duty": "D6"
+      }
+    ],
+    "focusHitsExcludedOnly": [],
+    "topicHitsStrict": [],
+    "topicHitCount": 0,
+    "pipelineConfidenceRows": [
+      [
+        2,
+        "High",
+        4
+      ],
+      [
+        3,
+        "High",
+        2
+      ],
+      [
+        4,
+        "High",
+        2
+      ],
+      [
+        5,
+        "High",
+        2
+      ],
+      [
+        6,
+        "High",
+        2
+      ],
+      [
+        7,
+        "High",
+        2
+      ],
+      [
+        8,
+        "High",
+        2
+      ],
+      [
+        9,
+        "Medium",
+        1
+      ],
+      [
+        10,
+        "High",
+        2
+      ]
+    ],
+    "verdict": "FOCUS_TEMPLATE_ONLY_NOT_PROMOTED",
+    "why": "Appears on Duty/KSB focus lists but no distinctive topic alignment after family-aware/topic filters"
+  }
+]

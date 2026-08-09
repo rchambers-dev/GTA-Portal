@@ -1,0 +1,959 @@
+[
+  {
+    "ksb_code": "K1",
+    "ksb_type": "knowledge",
+    "description": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K2",
+    "ksb_type": "knowledge",
+    "description": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K3",
+    "ksb_type": "knowledge",
+    "description": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER).",
+    "duties": [
+      "D2",
+      "D3",
+      "D4",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K4",
+    "ksb_type": "knowledge",
+    "description": "Environment and sustainability guidance relevant to the occupation and autocare technician's role and responsibilities. Recycling, reuse, and safe disposal of waste.",
+    "duties": [
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K5",
+    "ksb_type": "knowledge",
+    "description": "Tools and equipment used in automotive industry. Purpose and operation.",
+    "duties": [
+      "D2",
+      "D3",
+      "D4",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K6",
+    "ksb_type": "knowledge",
+    "description": "Maintenance and storage methods for tools and equipment, including calibration checks.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K7",
+    "ksb_type": "knowledge",
+    "description": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D6",
+      "D7",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K8",
+    "ksb_type": "knowledge",
+    "description": "Vehicle service records, owner's manuals, and warranties. Purpose and use.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K9",
+    "ksb_type": "knowledge",
+    "description": "Tyres: legislation, replacement, repair, and technical information including EU tyre labelling, tyre pressure monitoring systems (TPMS), sidewall markings, homologated fitments relating to cars, car derived vans and light goods vehicles.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K10",
+    "ksb_type": "knowledge",
+    "description": "Steering systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Mechanical, hydraulic and electric power assisted steering.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K11",
+    "ksb_type": "knowledge",
+    "description": "Suspension systems: purpose, function, and location of systems and components for inspection, removal and replacement. Macpherson strut, double wishbone, ball joints, suspension arms, spring types, including leaf and coil, dampers and shock absorbers, air or hydraulic suspension, subframes.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K12",
+    "ksb_type": "knowledge",
+    "description": "Braking systems: purpose, function, and location of systems and components for inspection, removal and replacement: brake discs, brake pads, brake shoes, brake drum, hydraulic components, anti-lock braking systems, electronic stability programmes, brake pedal simulator, brake pipe and hoses, wheel bearings.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K13",
+    "ksb_type": "knowledge",
+    "description": "Emission control systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Catalytic converters, evaporative control systems, exhaust gas recirculation (EGR), diesel particulate filter (DPF), petrol particulate filter (PPF), selective catalyst reduction (SCR).",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K14",
+    "ksb_type": "knowledge",
+    "description": "Vehicle heating, ventilation, and air conditioning systems (HVAC): purpose, function and location of  systems including climate control systems for inspection, maintenance, and replacement: refrigerants, coolants, blower motors, valves, heat exchangers, pipes and hoses.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K15",
+    "ksb_type": "knowledge",
+    "description": "Low voltage batteries: purpose, function, and location of low voltage batteries, starting and charging systems: auxiliary battery, starter motor, alternator, e-machine.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K16",
+    "ksb_type": "knowledge",
+    "description": "Maintenance and replacement of low voltage batteries, starting and charging systems.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K17",
+    "ksb_type": "knowledge",
+    "description": "Awareness of advanced driver-assistance systems (ADAS) and impact of repair work: static and dynamic calibration methods, calibration equipment.",
+    "duties": [
+      "D1",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K18",
+    "ksb_type": "knowledge",
+    "description": "Advanced driver-assistance systems (ADAS) levels of autonomy: passive and active advanced driver assistance systems.",
+    "duties": [
+      "D1",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K19",
+    "ksb_type": "knowledge",
+    "description": "Four-wheel geometry principles including wheel alignment, Ackermann principle, alignment principles, toe, camber, thrust angle, adjustment types and methods.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K20",
+    "ksb_type": "knowledge",
+    "description": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters.",
+    "duties": [
+      "D4"
+    ]
+  },
+  {
+    "ksb_code": "K21",
+    "ksb_type": "knowledge",
+    "description": "Awareness of electrified vehicle technologies and principles of operation: condition monitoring of high voltage batteries and onboard chargers.",
+    "duties": [
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K22",
+    "ksb_type": "knowledge",
+    "description": "Awareness of hydrogen powered vehicle technologies and principles of operation: storage and condition monitoring of fuel cells.",
+    "duties": [
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K23",
+    "ksb_type": "knowledge",
+    "description": "Safe working procedures for electrified vehicles. High voltage systems, safe isolation.",
+    "duties": [
+      "D2",
+      "D3",
+      "D7",
+      "D8",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K24",
+    "ksb_type": "knowledge",
+    "description": "Principles of customer care: pre and post vehicle customer service, identifying customer and vehicle needs, how to handle challenging conversations.",
+    "duties": [
+      "D1",
+      "D3",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "K25",
+    "ksb_type": "knowledge",
+    "description": "Business operation considerations: efficiency, customer satisfaction, competitiveness, minimising risks to operation, and ethical issues.",
+    "duties": [
+      "D1",
+      "D3",
+      "D6",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "K26",
+    "ksb_type": "knowledge",
+    "description": "Vehicle parts costings and procurement: customer, organisation and vehicle needs.",
+    "duties": [
+      "D1",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "K27",
+    "ksb_type": "knowledge",
+    "description": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "K28",
+    "ksb_type": "knowledge",
+    "description": "Principles of customer sales and financial compliance: Financial conduct authority (FCA), payment card industry (PCI) requirements.",
+    "duties": [
+      "D1",
+      "D3",
+      "D5",
+      "D6",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "K29",
+    "ksb_type": "knowledge",
+    "description": "Principles of sales processes.",
+    "duties": [
+      "D1",
+      "D3",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "K30",
+    "ksb_type": "knowledge",
+    "description": "Team working principles.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K31",
+    "ksb_type": "knowledge",
+    "description": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K32",
+    "ksb_type": "knowledge",
+    "description": "Verbal communication techniques. Giving and receiving information. Matching style to audience.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "K33",
+    "ksb_type": "knowledge",
+    "description": "Written communication techniques electronic and paper. Autocare industry terminology.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "K34",
+    "ksb_type": "knowledge",
+    "description": "Information and digital technology: email, collaboration packages, databases,  equipment digital interfaces, management information systems, word processing, work sharing platforms, point of sale, GDPR, cyber security.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "S1",
+    "ksb_type": "skill",
+    "description": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance.",
+    "duties": [
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S2",
+    "ksb_type": "skill",
+    "description": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards.",
+    "duties": [
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S3",
+    "ksb_type": "skill",
+    "description": "Maintain and restore the work area during and on completion of the activity.",
+    "duties": [
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S4",
+    "ksb_type": "skill",
+    "description": "Store, maintain, including calibration checks, and return tools and equipment to storage.",
+    "duties": [
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S5",
+    "ksb_type": "skill",
+    "description": "Access vehicle technical data to inform inspections and make judgements on wear and serviceability.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7"
+    ]
+  },
+  {
+    "ksb_code": "S6",
+    "ksb_type": "skill",
+    "description": "Comply with environmental and sustainability procedures, regulations, standards, and guidance. Segregate resources for reuse, recycling, and disposal.",
+    "duties": [
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7"
+    ]
+  },
+  {
+    "ksb_code": "S7",
+    "ksb_type": "skill",
+    "description": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S8",
+    "ksb_type": "skill",
+    "description": "Select and use tools and equipment, mechanical and electrical measuring tools, and diagnostic equipment.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S9",
+    "ksb_type": "skill",
+    "description": "Remove, repair and replace vehicle tyre and balance wheel assemblies on car, car derived van or light goods vehicle. For example, ultra-low profile, directional, asymmetric, run-flat tyres.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S10",
+    "ksb_type": "skill",
+    "description": "Inspect, remove, and replace of parts or components in  cars, car derived vans, or light goods vehicles for the following: steering systems and suspension systems, braking systems, emission systems, air conditioning systems, battery and charging systems, fluid and filtration systems.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S11",
+    "ksb_type": "skill",
+    "description": "Apply state-of-health condition monitoring tests to high voltage batteries and chargers for electrified cars, car derived vans, or light goods vehicles.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S12",
+    "ksb_type": "skill",
+    "description": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S13",
+    "ksb_type": "skill",
+    "description": "Apply safe working practices and procedures to isolate electrified vehicles for maintenance.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D5",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S14",
+    "ksb_type": "skill",
+    "description": "Record vehicle service maintenance, parts replacement, or repair.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S15",
+    "ksb_type": "skill",
+    "description": "Apply customer service principles and organisational customer care practices. For example, identifying customer and vehicle needs, resolve low level customer complaints, make recommendations to customers based on results of inspection, maintenance, or repair of vehicles,  customer payment transactions and organisational sales processes.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "S16",
+    "ksb_type": "skill",
+    "description": "Provide quotation of cost and order automotive parts, products, and consumables applicable to the vehicle.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S17",
+    "ksb_type": "skill",
+    "description": "Apply procedures for stock and parts storage: ordering, checking and stock rotation.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "S18",
+    "ksb_type": "skill",
+    "description": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing.",
+    "duties": [
+      "D1",
+      "D3",
+      "D5",
+      "D6",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "S19",
+    "ksb_type": "skill",
+    "description": "Apply team working principles.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S20",
+    "ksb_type": "skill",
+    "description": "Comply with equity, diversity, and inclusion guidance.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S21",
+    "ksb_type": "skill",
+    "description": "Communicate with others verbally, for example customers, suppliers, and colleagues.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S22",
+    "ksb_type": "skill",
+    "description": "Communicate in writing, for example with internal and external customers, colleagues, and managers.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S23",
+    "ksb_type": "skill",
+    "description": "Use information and digital technology systems. Comply with GDPR and cyber security.",
+    "duties": [
+      "D1",
+      "D3",
+      "D5",
+      "D6",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "ksb_code": "S24",
+    "ksb_type": "skill",
+    "description": "Complete and record learning and development activities.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "S25",
+    "ksb_type": "skill",
+    "description": "Apply procedures to check and replace fluids, and filtration parts.",
+    "duties": [
+      "D2",
+      "D4"
+    ]
+  },
+  {
+    "ksb_code": "B1",
+    "ksb_type": "behaviour",
+    "description": "Put health and safety first.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "B2",
+    "ksb_type": "behaviour",
+    "description": "Consider the impact on the environment when using resources and carrying out work.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "B3",
+    "ksb_type": "behaviour",
+    "description": "Respond and adapt to changing work demands.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "B4",
+    "ksb_type": "behaviour",
+    "description": "Seek learning and development opportunities, continual professional development.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  },
+  {
+    "ksb_code": "B5",
+    "ksb_type": "behaviour",
+    "description": "Support an inclusive workplace, for example, being respectful of different views.",
+    "duties": [
+      "D1",
+      "D2",
+      "D3",
+      "D6",
+      "D7",
+      "D8",
+      "D9",
+      "D10"
+    ]
+  }
+]

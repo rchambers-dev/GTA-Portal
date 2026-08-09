@@ -1,0 +1,395 @@
+{
+  "K34": [
+    {
+      "week": 69,
+      "block": 7,
+      "excluded": false,
+      "topic": "Consumables management and stock security",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 63,
+      "block": 7,
+      "excluded": false,
+      "topic": "Engine management repairs and quality assurance",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "S11": [
+    {
+      "week": 106,
+      "block": 10,
+      "excluded": false,
+      "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 54,
+      "block": 6,
+      "excluded": false,
+      "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 82,
+      "block": 9,
+      "excluded": false,
+      "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "K2": [
+    {
+      "week": 24,
+      "block": 3,
+      "excluded": false,
+      "topic": "Brake wear checks, tyre condition and wheel security",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 16,
+      "block": 2,
+      "excluded": false,
+      "topic": "Duties 1 / 2: Intake plus Inspection",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 12,
+      "block": 2,
+      "excluded": true,
+      "topic": "Electrical System Inspection",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "S7": [
+    {
+      "week": 106,
+      "block": 10,
+      "excluded": false,
+      "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 16,
+      "block": 2,
+      "excluded": false,
+      "topic": "Duties 1 / 2: Intake plus Inspection",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "K1": [
+    {
+      "week": 40,
+      "block": 4,
+      "excluded": false,
+      "topic": "Fire safety, first response and incident reporting",
+      "strictHits": [
+        " Autocare Technician Level 2 - Week 40 Lesson Plan Trainer Cohort / d",
+        "Plan Trainer Cohort / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Session / week Week 40 | Bl",
+        ".3 Session / week Week 40 | Block 4 SOW reference Autocare Technician Level 2 SOW v4.1 | Block 4 | Week 40 Planned hour"
+      ],
+      "hasStrictEvidence": true
+    },
+    {
+      "week": 21,
+      "block": 3,
+      "excluded": false,
+      "topic": "Service reception, booking diagnostics and first impressions",
+      "strictHits": [
+        " Autocare Technician Level 2 - Week 21 Lesson Plan Trainer Cohort / d",
+        "Plan Trainer Cohort / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Session / week Week 21 | Bl",
+        ".3 Session / week Week 21 | Block 3 SOW reference Autocare Technician Level 2 SOW v4.1 | Block 3 | Week 21 Planned hour"
+      ],
+      "hasStrictEvidence": true
+    }
+  ],
+  "K18": [
+    {
+      "week": 89,
+      "block": 9,
+      "excluded": false,
+      "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 90,
+      "block": 9,
+      "excluded": false,
+      "topic": "Emerging technology readiness review and case studies",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "K20": [
+    {
+      "week": 17,
+      "block": 2,
+      "excluded": false,
+      "topic": "Advanced Brake Diagnostics",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 24,
+      "block": 3,
+      "excluded": false,
+      "topic": "Brake wear checks, tyre condition and wheel security",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "S25": [
+    {
+      "week": 25,
+      "block": 3,
+      "excluded": false,
+      "topic": "Parts identification, catalogue use and alternative part selection",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 39,
+      "block": 4,
+      "excluded": false,
+      "topic": "Goods-in checks, parts storage and consumables control",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "K13": [
+    {
+      "week": 44,
+      "block": 5,
+      "excluded": false,
+      "topic": "Suspension component replacement and alignment preparation",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 16,
+      "block": 2,
+      "excluded": false,
+      "topic": "Duties 1 / 2: Intake plus Inspection",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "S23": [
+    {
+      "week": 69,
+      "block": 7,
+      "excluded": false,
+      "topic": "Consumables management and stock security",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    },
+    {
+      "week": 82,
+      "block": 9,
+      "excluded": false,
+      "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+      "strictHits": [],
+      "hasStrictEvidence": false
+    }
+  ],
+  "S20_summary": {
+    "verdict": "FOCUS_LIST_ONLY",
+    "focusIncludedSample": [
+      {
+        "week": 11,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Service Scenarios",
+        "duty": "D6"
+      },
+      {
+        "week": 13,
+        "block": 2,
+        "excluded": false,
+        "topic": "Engine Repairs",
+        "duty": "D3"
+      },
+      {
+        "week": 17,
+        "block": 2,
+        "excluded": false,
+        "topic": "Advanced Brake Diagnostics",
+        "duty": "D3"
+      }
+    ],
+    "candidates": [],
+    "foundation": []
+  },
+  "B5_summary": {
+    "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+    "focusIncludedSample": [
+      {
+        "week": 11,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Service Scenarios",
+        "duty": "D6"
+      },
+      {
+        "week": 13,
+        "block": 2,
+        "excluded": false,
+        "topic": "Engine Repairs",
+        "duty": "D3"
+      },
+      {
+        "week": 17,
+        "block": 2,
+        "excluded": false,
+        "topic": "Advanced Brake Diagnostics",
+        "duty": "D3"
+      }
+    ],
+    "candidates": [
+      {
+        "block": 6,
+        "title": "Vehicle Systems Integration and Advanced Diagnostics",
+        "bestScore": 2.5,
+        "evidenceWeeks": [
+          {
+            "week": 57,
+            "block": 6,
+            "topic": "Safe lifting, jacking and vehicle support",
+            "duty": "D7",
+            "score": 2.5,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics"
+          },
+          {
+            "week": 53,
+            "block": 6,
+            "topic": "Workshop productivity, task sequencing and team support",
+            "duty": "D3",
+            "score": 2.0,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics"
+          }
+        ]
+      }
+    ],
+    "foundation": []
+  },
+  "K31_summary": {
+    "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+    "focusIncludedSample": [
+      {
+        "week": 13,
+        "block": 2,
+        "excluded": false,
+        "topic": "Engine Repairs",
+        "duty": "D3"
+      },
+      {
+        "week": 17,
+        "block": 2,
+        "excluded": false,
+        "topic": "Advanced Brake Diagnostics",
+        "duty": "D3"
+      },
+      {
+        "week": 23,
+        "block": 3,
+        "excluded": false,
+        "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+        "duty": "D3"
+      }
+    ],
+    "candidates": [
+      {
+        "block": 6,
+        "title": "Vehicle Systems Integration and Advanced Diagnostics",
+        "bestScore": 2.5,
+        "evidenceWeeks": [
+          {
+            "week": 59,
+            "block": 6,
+            "topic": "Order tracking, back orders and customer impact",
+            "duty": "D9",
+            "score": 2.5,
+            "title": "Vehicle Systems Integration and Advanced Diagnostics"
+          }
+        ]
+      }
+    ],
+    "foundation": []
+  },
+  "K7_summary": {
+    "verdict": "WEAK_EVIDENCE_NEEDS_DECISION",
+    "focusIncludedSample": [
+      {
+        "week": 11,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Service Scenarios",
+        "duty": "D6"
+      },
+      {
+        "week": 20,
+        "block": 2,
+        "excluded": false,
+        "topic": "Customer Dispute Resolution",
+        "duty": "D6"
+      },
+      {
+        "week": 26,
+        "block": 3,
+        "excluded": false,
+        "topic": "Workshop procedures, documentation control and handover discipline",
+        "duty": "D6"
+      }
+    ],
+    "candidates": [
+      {
+        "block": 5,
+        "title": "Diagnostic Thinking and Complex Repair Activities",
+        "bestScore": 3.0,
+        "evidenceWeeks": [
+          {
+            "week": 44,
+            "block": 5,
+            "topic": "Suspension component replacement and alignment preparation",
+            "duty": "D4",
+            "score": 3.0,
+            "title": "Diagnostic Thinking and Complex Repair Activities"
+          }
+        ]
+      },
+      {
+        "block": 2,
+        "title": "Vehicle Inspection, Servicing and Customer Interaction",
+        "bestScore": 2.5,
+        "evidenceWeeks": [
+          {
+            "week": 16,
+            "block": 2,
+            "topic": "Duties 1 / 2: Intake plus Inspection",
+            "duty": null,
+            "score": 2.5,
+            "title": "Vehicle Inspection, Servicing and Customer Interaction"
+          }
+        ]
+      }
+    ],
+    "foundation": []
+  },
+  "K18_summary": {
+    "verdict": "GENUINE_CURRICULUM_GAP",
+    "focusIncludedSample": [],
+    "candidates": [],
+    "foundation": []
+  }
+}

@@ -1,0 +1,461 @@
+{
+  "title": "Autocare v1.3 curriculum-gap register (publication blockers)",
+  "rule": "Every official KSB → exactly 1 defensible Primary training block before programme publication",
+  "status": "PUBLICATION BLOCKED — 14 required KSBs have no defensible Primary yet",
+  "counts": {
+    "officialCatalogue": 64,
+    "humanApprovedPrimaries": 15,
+    "curriculumGaps": 14,
+    "gapCodes": [
+      "B5",
+      "K1",
+      "K2",
+      "K7",
+      "K13",
+      "K18",
+      "K20",
+      "K31",
+      "K34",
+      "S7",
+      "S11",
+      "S20",
+      "S23",
+      "S25"
+    ],
+    "groupedCodes": [
+      "B5",
+      "K1",
+      "K2",
+      "K7",
+      "K13",
+      "K18",
+      "K20",
+      "K31",
+      "K34",
+      "S7",
+      "S11",
+      "S20",
+      "S23",
+      "S25"
+    ],
+    "allGapsCoveredInRegister": true
+  },
+  "humanApprovedPrimariesSoFar": {
+    "K24": {
+      "primaryBlock": 2,
+      "rationale": "First dedicated customer-service teaching (scenarios + dispute resolution)"
+    },
+    "S15": {
+      "primaryBlock": 2,
+      "rationale": "First clear practical customer-service skill application"
+    },
+    "K12": {
+      "primaryBlock": 2,
+      "rationale": "Advanced Brake Diagnostics strongest primary; B3 wear checks = reinforcement"
+    },
+    "S12": {
+      "primaryBlock": 2,
+      "rationale": "Wheel Alignment - Advanced first explicit geometry teaching; no B3 artefact"
+    },
+    "K30": {
+      "primaryBlock": 3,
+      "rationale": "Earliest clear team-working via bay discipline/handoffs; B8 advanced; B10 consolidation"
+    },
+    "S3": {
+      "primaryBlock": 3,
+      "rationale": "W27 Housekeeping/5S/safe storage first teaching home"
+    },
+    "S1": {
+      "primaryBlock": 3,
+      "rationale": "Earliest sustained workplace H&S practice; later blocks specialist/reinforcement"
+    },
+    "S2": {
+      "primaryBlock": 3,
+      "rationale": "First clear work-area preparation/housekeeping teaching"
+    },
+    "S4": {
+      "primaryBlock": 4,
+      "rationale": "Clearest tool-control teaching; B3/B8 reinforcement; B9 dropped unless tool-cal evidence"
+    },
+    "K29": {
+      "primaryBlock": 3,
+      "rationale": "First estimates/authorisation teaching; later quotation blocks reinforcement"
+    },
+    "S19": {
+      "primaryBlock": 3,
+      "rationale": "Aligned with K30→B3; B8 advanced delegation reinforcement"
+    },
+    "S14": {
+      "primaryBlock": 6,
+      "rationale": "First dedicated high-intensity record-keeping/compliance/audit teaching; B8 advanced; B10 consolidation"
+    },
+    "K21": {
+      "primaryBlock": 6,
+      "rationale": "First dedicated EV service/charging/safety teaching; B9 specialist reinforcement"
+    },
+    "K23": {
+      "primaryBlock": 6,
+      "rationale": "Strongest HV safe working/isolation match; B9 reinforces later"
+    },
+    "S13": {
+      "primaryBlock": 6,
+      "rationale": "Primary practical home for EV isolation for maintenance; B9 reinforcement"
+    }
+  },
+  "groups": [
+    {
+      "groupId": "edi_inclusive_workplace",
+      "title": "Equity, diversity, inclusion & inclusive workplace",
+      "ksbs": [
+        "B5",
+        "K31",
+        "S20"
+      ],
+      "missingTeaching": [
+        "Explicit EDI principles and workplace impact (K31)",
+        "Complying with EDI guidance in practice (S20)",
+        "Supporting an inclusive workplace / respectful of different views (B5)"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 2,
+          "why": "Customer Interaction — natural early professional behaviours/customer context"
+        },
+        {
+          "block": 3,
+          "why": "Workshop Processes — already Primary home for several workplace behaviours/skills"
+        },
+        {
+          "block": 10,
+          "why": "Consolidation — can reinforce but usually weak as first Primary unless new dedicated session"
+        }
+      ],
+      "needs": {
+        "newSession": true,
+        "amendExistingSession": true,
+        "practicalActivity": true,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 3,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "Align with approved workplace-behaviour Primaries (B1/B2/S1/S2/S3 → B3). Only valid once an explicit EDI session/activity exists."
+      }
+    },
+    {
+      "groupId": "role_industry_autonomy",
+      "title": "Industry context, technician role, autonomy & reporting",
+      "ksbs": [
+        "K1"
+      ],
+      "missingTeaching": [
+        "Automotive industry context",
+        "Role of the autocare technician",
+        "Limits of autonomy",
+        "Reporting channels"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 1,
+          "why": "Foundation Skills / induction — logical home IF approved FS↔KSB crosswalk + explicit content are added"
+        },
+        {
+          "block": 2,
+          "why": "Early specialist block if B1 remains without coded KSB ownership"
+        }
+      ],
+      "needs": {
+        "newSession": true,
+        "amendExistingSession": true,
+        "practicalActivity": false,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 1,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "Best pedagogical fit for induction/role context, but NOT defensible until Block 1 has explicit content and approved KSB mapping evidence."
+      }
+    },
+    {
+      "groupId": "inspection_to_spec",
+      "title": "Safety inspection & routine maintenance to manufacturer data/schedules",
+      "ksbs": [
+        "K2",
+        "S7"
+      ],
+      "missingTeaching": [
+        "Manufacturer specifications / approved maintenance schedules (K2)",
+        "Vehicle-specific data use and legal wear/serviceability requirements (K2)",
+        "Apply safety inspection and routine maintenance procedures using vehicle-specific data (S7)"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 2,
+          "why": "Already hosts intake/inspection and service themes — strongest logical early host once content is explicit"
+        },
+        {
+          "block": 3,
+          "why": "Brake/tyre wear checks exist but currently lack schedule/spec/data teaching"
+        },
+        {
+          "block": 10,
+          "why": "Consolidation practice only after Primary teaching exists earlier"
+        }
+      ],
+      "needs": {
+        "newSession": true,
+        "amendExistingSession": true,
+        "practicalActivity": true,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 2,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "Natural Primary for K2+S7 together once an explicit inspection-to-spec/data session is added (e.g. strengthen W16 or insert dedicated week)."
+      }
+    },
+    {
+      "groupId": "workplace_instructions",
+      "title": "Workplace instructions (purpose and use)",
+      "ksbs": [
+        "K7"
+      ],
+      "missingTeaching": [
+        "What workplace instructions are",
+        "Purpose and use for inspection, maintenance and replacement",
+        "Applying instructions as a taught object of learning (not assumed)"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 2,
+          "why": "Intake/inspection workflow"
+        },
+        {
+          "block": 3,
+          "why": "Workshop procedures/documentation already present"
+        },
+        {
+          "block": 5,
+          "why": "Process discipline / record quality weeks"
+        }
+      ],
+      "needs": {
+        "newSession": false,
+        "amendExistingSession": true,
+        "practicalActivity": true,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 3,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "W26 workshop procedures/documentation is the best amendment target; Primary only after explicit 'workplace instructions' learning objectives/evidence exist."
+      }
+    },
+    {
+      "groupId": "emissions_systems",
+      "title": "Emission control systems knowledge",
+      "ksbs": [
+        "K13"
+      ],
+      "missingTeaching": [
+        "Purpose/function/location of emission control systems",
+        "Catalytic converters, evaporative controls, EGR, DPF, PPF, SCR"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 2,
+          "why": "Systems inspection progression"
+        },
+        {
+          "block": 5,
+          "why": "Complex repair/diagnostic context"
+        },
+        {
+          "block": 10,
+          "why": "Consolidation/EPA systems practice — weak as sole Primary"
+        }
+      ],
+      "needs": {
+        "newSession": true,
+        "amendExistingSession": false,
+        "practicalActivity": true,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 5,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "Best diagnostic/systems home once a dedicated emissions session is added; do not use current suspension/inspection proximity."
+      }
+    },
+    {
+      "groupId": "fluids_filtration",
+      "title": "Fluids & filtration (knowledge + skill)",
+      "ksbs": [
+        "K20",
+        "S25"
+      ],
+      "missingTeaching": [
+        "Fluid and filtration systems: brake fluid, oil/oil filters, air filters (K20)",
+        "Check and replace fluids and filtration parts (S25)"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 2,
+          "why": "Service/inspection pathway — logical practical home"
+        },
+        {
+          "block": 3,
+          "why": "Foundation workshop practice"
+        },
+        {
+          "block": 10,
+          "why": "Consolidation only after Primary teaching exists"
+        }
+      ],
+      "needs": {
+        "newSession": true,
+        "amendExistingSession": true,
+        "practicalActivity": true,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 2,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "Co-locate K20+S25 in an early service block with an explicit fluids/filters practical; not brake-diagnostics by association."
+      }
+    },
+    {
+      "groupId": "digital_gdpr_cyber",
+      "title": "Information & digital technology / GDPR / cyber",
+      "ksbs": [
+        "K34",
+        "S23"
+      ],
+      "missingTeaching": [
+        "Digital technology systems: email, collaboration, databases, MIS, POS, equipment interfaces (K34)",
+        "GDPR and cyber security (K34/S23)",
+        "Use information and digital technology systems in practice (S23)"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 5,
+          "why": "VIN/technical data / process-digital touchpoints"
+        },
+        {
+          "block": 7,
+          "why": "Advanced workshop practice — if digital job systems are taught explicitly"
+        },
+        {
+          "block": 9,
+          "why": "Emerging tech block — only if digital/GDPR content is added (not stock-security)"
+        },
+        {
+          "block": 10,
+          "why": "Portfolio/EPA digital evidence practices"
+        }
+      ],
+      "needs": {
+        "newSession": true,
+        "amendExistingSession": true,
+        "practicalActivity": true,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 5,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "Best early data/systems fit once explicit GDPR/cyber/digital session exists; stock-security must never be used as evidence."
+      }
+    },
+    {
+      "groupId": "adas_autonomy_levels",
+      "title": "ADAS levels of autonomy (passive/active)",
+      "ksbs": [
+        "K18"
+      ],
+      "missingTeaching": [
+        "ADAS levels of autonomy",
+        "Passive vs active advanced driver assistance systems"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 9,
+          "why": "Emerging technologies / pre-calibration adjacency (W89 teaches pre-checks, not autonomy levels)"
+        },
+        {
+          "block": 10,
+          "why": "Consolidation only after Primary teaching is added"
+        }
+      ],
+      "needs": {
+        "newSession": true,
+        "amendExistingSession": true,
+        "practicalActivity": false,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 9,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "Extend emerging-tech/ADAS strand with an explicit autonomy-levels session (W89/W90 amendment or new week). Current pre-calibration content is insufficient alone."
+      }
+    },
+    {
+      "groupId": "hv_battery_soh",
+      "title": "HV battery / charger state-of-health testing",
+      "ksbs": [
+        "S11"
+      ],
+      "missingTeaching": [
+        "State-of-health condition monitoring tests on high voltage batteries",
+        "SoH / condition monitoring of onboard chargers",
+        "Explicit practical activity (not generic EV awareness/safety)"
+      ],
+      "likelyHostBlocks": [
+        {
+          "block": 6,
+          "why": "Already Primary for K21/K23/S13 EV service/safety — best host if SoH practical is added"
+        },
+        {
+          "block": 9,
+          "why": "EV specialty block — alternative if SoH practical is placed in emerging-tech pathway"
+        }
+      ],
+      "needs": {
+        "newSession": true,
+        "amendExistingSession": true,
+        "practicalActivity": true,
+        "assessmentEvidence": true
+      },
+      "proposedPrimaryAfterAmendment": {
+        "block": 6,
+        "status": "PROVISIONAL_AFTER_AMENDMENT_ONLY",
+        "rationale": "Keep with approved EV Primary cluster (K21/K23/S13 → B6) once a real SoH testing activity is added to W54 or a new adjacent week."
+      }
+    }
+  ],
+  "publicationGate": {
+    "blocked": true,
+    "mustResolveBeforePublish": [
+      "B5",
+      "K1",
+      "K2",
+      "K7",
+      "K13",
+      "K18",
+      "K20",
+      "K31",
+      "K34",
+      "S7",
+      "S11",
+      "S20",
+      "S23",
+      "S25"
+    ],
+    "nextDecisionSteps": [
+      "For each gap group, choose host block(s)",
+      "Specify new session vs amend existing vs practical/assessment artefacts",
+      "Amend SOW with explicit teaching evidence",
+      "Then set exactly one Primary per KSB and optional Reinforcement",
+      "Only then persist Block↔KSB mappings and later curriculumValue"
+    ]
+  }
+}

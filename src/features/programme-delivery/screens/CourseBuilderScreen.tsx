@@ -7,43 +7,36 @@ import {
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import {
-  COURSE_STANDARD_CODES,
-  CURRENT_STANDARD_VERSION,
-  LEGACY_STANDARD_VERSION,
-  standardLabel,
-  type StandardCode,
-} from "@/features/administration/domain/cohort-products";
-import { groupsPackId } from "@/features/apprentice-portal/domain/cea/packs";
-import { resolveBlockPack } from "@/features/programme-delivery/domain/gta-block-shells";
+  getProgrammeDefinitionServerSnapshot,
+  getProgrammeDefinitionSnapshot,
+  selectProgramme,
+  subscribeProgrammeDefinition,
+  clearProgrammeDefinitionPreview,
+} from "@/features/programme-definition/domain/programme-definition-store";
+import type {
+  GtaProgrammeVersion,
+  SpineItem,
+} from "@/features/programme-definition/domain/types";
 import {
   addBlockTask,
   authoredTaskFormBadge,
+  clearCourseBuilderLocalCache,
   ensureAuthoredTaskForm,
   getAuthoredTaskForm,
   getCourseBuilderServerSnapshot,
   getCourseBuilderSnapshot,
-  hasAuthoredTaskForm,
   listBlockTaskDraftsForBlock,
-  listEditableBlockPacks,
-  listEditableGroupsPacks,
+  loadSharedCourseTasks,
   removeBlockTask,
-  resolveEditableBlockPack,
-  resolveEditableGroupsPack,
   saveAuthoredTaskForm,
-  seedAutocareGroupsFormsIfNeeded,
   subscribeCourseBuilder,
-  updateBlockHeading,
   updateBlockTask,
-  updateGroupTaskTitle,
-  updateGroupTitle,
 } from "@/features/programme-delivery/domain/course-builder-store";
 import type { PracticalTaskKind } from "@/features/programme-delivery/domain/task-schema";
 import { taskKindLabel } from "@/features/programme-delivery/domain/task-schema";
 import { TaskFormBuilder } from "@/features/programme-delivery/components/TaskFormBuilder";
 import { Select } from "@/components/ui/Select";
 import styles from "@/features/administration/screens/admin-pages.module.css";
-
-type SpineTab = "groups" | "blocks";
 
 const KIND_OPTIONS: Array<{ value: PracticalTaskKind; label: string }> = [
   { value: "practical", label: taskKindLabel("practical") },
@@ -60,6 +53,14 @@ function useCourseBuilder() {
   );
 }
 
+function useProgrammeDefinition() {
+  return useSyncExternalStore(
+    subscribeProgrammeDefinition,
+    getProgrammeDefinitionSnapshot,
+    getProgrammeDefinitionServerSnapshot,
+  );
+}
+
 function linesToList(value: string): string[] {
   return value
     .split("\n")
@@ -71,12 +72,20 @@ function listToLines(value: string[]): string {
   return value.join("\n");
 }
 
+function blockOrdinal(item: SpineItem): number {
+  const n = item.metadata?.blockNumber;
+  if (typeof n === "number" && Number.isFinite(n) && n > 0) return n;
+  return Math.max(1, item.sequence);
+}
+
+function programmeOptionLabel(p: GtaProgrammeVersion): string {
+  return `${p.programmeTitle} · GTA v${p.internalVersion} · ${p.status}`;
+}
+
 export function CourseBuilderScreen() {
   const snapshot = useCourseBuilder();
-  const [standardCode, setStandardCode] = useState<StandardCode>("ST0499");
-  const [spine, setSpine] = useState<SpineTab>("groups");
-  const [version, setVersion] = useState(CURRENT_STANDARD_VERSION.ST0499);
-  const [expandedBlockId, setExpandedBlockId] = useState<number | null>(1);
+  const programmeState = useProgrammeDefinition();
+  const [expandedBlockId, setExpandedBlockId] = useState<string | null>(null);
   const [draftTitle, setDraftTitle] = useState("");
   const [draftScenario, setDraftScenario] = useState("");
   const [draftKind, setDraftKind] = useState<PracticalTaskKind>("practical");
@@ -85,46 +94,51 @@ export function CourseBuilderScreen() {
   const [draftQuestions, setDraftQuestions] = useState("");
   const [draftMinutes, setDraftMinutes] = useState("60");
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
-  const [groupTaskEditor, setGroupTaskEditor] = useState<{
-    packId: string;
-    taskId: string;
-    title: string;
-  } | null>(null);
 
-  const versionOptions = useMemo(() => {
-    const versions = [
-      LEGACY_STANDARD_VERSION[standardCode],
-      CURRENT_STANDARD_VERSION[standardCode],
-    ];
-    return [...new Set(versions)].map((v) => ({
-      value: v,
-      label:
-        v === CURRENT_STANDARD_VERSION[standardCode]
-          ? `v${v} · current`
-          : `v${v} · legacy`,
-    }));
-  }, [standardCode]);
+  const programmes = useMemo(
+    () =>
+      programmeState.programmes
+        .slice()
+        .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+    [programmeState.programmes],
+  );
 
-  const groupsPackIdResolved =
-    spine === "groups" ? groupsPackId(standardCode, version) : "";
-  const groupsPack =
-    spine === "groups" && groupsPackIdResolved
-      ? resolveEditableGroupsPack(groupsPackIdResolved, snapshot)
-      : null;
+  const programmeId =
+    programmeState.selectedProgrammeId &&
+    programmes.some((p) => p.id === programmeState.selectedProgrammeId)
+      ? programmeState.selectedProgrammeId
+      : "";
+
+  const programme = programmes.find((p) => p.id === programmeId) ?? null;
 
   useEffect(() => {
-    if (spine !== "groups" || !groupsPackIdResolved) return;
-    seedAutocareGroupsFormsIfNeeded(groupsPackIdResolved);
-  }, [spine, groupsPackIdResolved]);
+    if (!programme?.id) return;
+    void loadSharedCourseTasks(programme.id).catch(() => {
+      /* local cache remains if DB hydrate fails */
+    });
+  }, [programme?.id]);
 
-  const blockPack =
-    spine === "blocks"
-      ? resolveEditableBlockPack(
-          resolveBlockPack(standardCode, CURRENT_STANDARD_VERSION[standardCode])
-            ?.id ?? "",
-          snapshot,
-        )
-      : null;
+  const official = programme
+    ? programmeState.officialVersions.find(
+        (v) => v.id === programme.standardVersionId,
+      ) ??
+      programmeState.officialVersions.find(
+        (v) =>
+          v.standardCode.toUpperCase() ===
+            programme.standardCode.toUpperCase() &&
+          v.externalVersion === programme.externalVersion,
+      ) ??
+      null
+    : null;
+
+  const blocks = useMemo(
+    () =>
+      (programme?.spineItems ?? [])
+        .filter((i) => i.itemType === "block")
+        .slice()
+        .sort((a, b) => a.sequence - b.sequence),
+    [programme?.spineItems],
+  );
 
   function resetDraftForm() {
     setDraftTitle("");
@@ -137,17 +151,29 @@ export function CourseBuilderScreen() {
     setEditingTaskId(null);
   }
 
-  function startEditTask(
-    packId: string,
-    blockId: number,
-    taskId: string,
-  ) {
-    const draft = listBlockTaskDraftsForBlock(packId, blockId).find(
-      (t) => t.id === taskId,
+  function onClearLocalCache() {
+    const ok = window.confirm(
+      "Clear local builder cache on this browser?\n\n" +
+        "This removes locally cached GTA programmes and Course Builder task drafts from this device only.\n\n" +
+        "It does NOT delete anything from the database. Staff accounts and Skills England official packs are untouched.",
     );
+    if (!ok) return;
+    clearProgrammeDefinitionPreview();
+    clearCourseBuilderLocalCache();
+    setExpandedBlockId(null);
+    resetDraftForm();
+  }
+
+  function startEditTask(spineBlockId: string, taskId: string) {
+    if (!programme) return;
+    const draft = listBlockTaskDraftsForBlock(
+      programme.id,
+      spineBlockId,
+      snapshot,
+    ).find((t) => t.id === taskId);
     if (!draft) return;
-    ensureAuthoredTaskForm(packId, taskId, draft.title);
-    setExpandedBlockId(blockId);
+    ensureAuthoredTaskForm(programme.id, taskId, draft.title);
+    setExpandedBlockId(spineBlockId);
     setEditingTaskId(draft.id);
     setDraftTitle(draft.title);
     setDraftScenario(draft.scenario);
@@ -158,11 +184,11 @@ export function CourseBuilderScreen() {
     setDraftMinutes(String(draft.estimatedMinutes || 60));
   }
 
-  function saveTaskForBlock(packId: string, blockId: number) {
-    if (!draftTitle.trim()) return;
+  function saveTaskForBlock(block: SpineItem) {
+    if (!programme || !draftTitle.trim()) return;
     const minutes = Number(draftMinutes) || 60;
     if (editingTaskId) {
-      updateBlockTask(packId, editingTaskId, {
+      updateBlockTask(programme.id, editingTaskId, {
         title: draftTitle.trim(),
         scenario: draftScenario.trim(),
         kind: draftKind,
@@ -173,8 +199,9 @@ export function CourseBuilderScreen() {
       });
     } else {
       const created = addBlockTask({
-        packId,
-        blockId,
+        programmeVersionId: programme.id,
+        spineBlockId: block.id,
+        blockOrdinal: blockOrdinal(block),
         title: draftTitle.trim(),
         scenario: draftScenario.trim(),
         kind: draftKind,
@@ -184,7 +211,7 @@ export function CourseBuilderScreen() {
         estimatedMinutes: minutes,
       });
       if (created) {
-        ensureAuthoredTaskForm(packId, created.id, created.title);
+        ensureAuthoredTaskForm(programme.id, created.id, created.title);
         setEditingTaskId(created.id);
         setDraftTitle(created.title);
         setDraftScenario(created.scenario);
@@ -203,274 +230,131 @@ export function CourseBuilderScreen() {
     <ApprenticePageShell
       eyebrow="Management"
       title="Course Builder"
-      description="Build and edit course packs by Skills England version. Current groups and GTA blocks share the newest version. KSBs are left blank for Jon to map."
+      description="Author apprentice tasks on blocks from a selected GTA programme version. Structure and KSBs stay in Programme Builder / Spine Builder."
+      actions={
+        <div className={styles.toolbarActions}>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            onClick={onClearLocalCache}
+            title="Clears browser localStorage for Programme Builder and Course Builder only"
+          >
+            Clear local cache
+          </button>
+          <Link
+            href="/management/programme-builder"
+            className={styles.secondaryBtn}
+          >
+            Programme Builder
+          </Link>
+        </div>
+      }
     >
       <div className={styles.stack}>
         <div className={styles.panel}>
           <p className={styles.panelLead}>
             <strong>KSBs — pending Jon.</strong> Do not invent KSB mappings here.
-            Author tasks apprentices will complete; Jon maps KSBs later.
+            Author tasks apprentices will complete; curriculum ownership lives on
+            the programme version.
           </p>
         </div>
 
         <div className={styles.toolbar}>
-          <label className={styles.field}>
-            <span>Programme / standard</span>
+          <label className={styles.field} style={{ minWidth: "22rem" }}>
+            <span>Programme version</span>
             <Select
-              value={standardCode}
+              value={programmeId}
               onChange={(next) => {
-                const code = next as StandardCode;
-                setStandardCode(code);
-                // Blocks always use the newest Skills England version for that standard.
-                setVersion(CURRENT_STANDARD_VERSION[code]);
+                selectProgramme(next || null);
+                setExpandedBlockId(null);
                 resetDraftForm();
               }}
-              options={COURSE_STANDARD_CODES.map((code) => ({
-                value: code,
-                label: `${standardLabel(code)} (${code})`,
-              }))}
+              options={
+                programmes.length === 0
+                  ? [{ value: "", label: "No GTA programmes yet…" }]
+                  : [
+                      { value: "", label: "Select programme version…" },
+                      ...programmes.map((p) => ({
+                        value: p.id,
+                        label: programmeOptionLabel(p),
+                      })),
+                    ]
+              }
             />
           </label>
-
-          <div className={styles.tabRow} role="tablist" aria-label="Spine">
-            <button
-              type="button"
-              className={spine === "groups" ? styles.tabActive : styles.tab}
-              onClick={() => {
-                setSpine("groups");
-                resetDraftForm();
-              }}
-            >
-              Groups
-            </button>
-            <button
-              type="button"
-              className={spine === "blocks" ? styles.tabActive : styles.tab}
-              onClick={() => {
-                setSpine("blocks");
-                setVersion(CURRENT_STANDARD_VERSION[standardCode]);
-                resetDraftForm();
-              }}
-            >
-              Block
-            </button>
-          </div>
         </div>
 
-        {spine === "groups" ? (
-          <label className={styles.field}>
-            <span>Skills England version</span>
-            <Select
-              value={version}
-              onChange={setVersion}
-              options={versionOptions}
-            />
-          </label>
+        {programme ? (
+          <div className={styles.panel}>
+            <p className={styles.muted}>
+              <strong>Official standard (read-only)</strong>
+              <br />
+              {programme.standardCode}
+              {official?.title ? ` · ${official.title}` : ""} · Skills England v
+              {programme.externalVersion || official?.externalVersion || "—"}
+            </p>
+            <p className={styles.muted}>
+              Switch Skills England pack via Programme Builder (new GTA version /
+              fork). Course Builder does not re-bind SE underneath this version.
+            </p>
+            <p className={styles.muted}>
+              <Link href="/management/programme-builder">
+                Open Programme Builder
+              </Link>
+              {" · "}
+              Spine Builder is inside Programme Builder (Structure → Spine).
+            </p>
+          </div>
+        ) : programmes.length === 0 ? (
+          <p className={styles.muted}>
+            Create a GTA programme in Programme Builder first, then return here to
+            author block tasks.
+          </p>
         ) : (
           <p className={styles.muted}>
-            Block pack is locked to newest version{" "}
-            <strong>v{CURRENT_STANDARD_VERSION[standardCode]}</strong> (same as
-            current groups).
+            Select a GTA programme version to author block tasks. Blocks come from
+            that version&apos;s spine — Course Builder does not pick one for you.
           </p>
         )}
 
-        {spine === "groups" && groupsPack ? (
-          <section className={styles.stack}>
-            <h2 className={styles.panelTitle}>
-              {groupsPack.title} · v{groupsPack.version}
-            </h2>
-            <p className={styles.muted}>
-              {groupsPack.groups.length} groups ·{" "}
-              {groupsPack.gatewayItems.length} gateway items · milestones include
-              Gateway 1 / Gateway 2 / EPA. Open any task to build the learner form
-              with drag-and-drop modules and preview.
-            </p>
-
-            {groupTaskEditor && groupTaskEditor.packId === groupsPack.id ? (
-              <div className={styles.panel}>
-                <TaskFormBuilder
-                  value={getAuthoredTaskForm(
-                    groupTaskEditor.packId,
-                    groupTaskEditor.taskId,
-                    groupTaskEditor.title,
-                    snapshot,
-                  )}
-                  onChange={(next) => {
-                    saveAuthoredTaskForm(
-                      groupTaskEditor.packId,
-                      groupTaskEditor.taskId,
-                      next,
-                    );
-                    if (next.title.trim() !== groupTaskEditor.title) {
-                      const group = groupsPack.groups.find((g) =>
-                        g.tasks.some((t) => t.id === groupTaskEditor.taskId),
-                      );
-                      if (group) {
-                        updateGroupTaskTitle(
-                          groupsPack.id,
-                          group.id,
-                          groupTaskEditor.taskId,
-                          next.title.trim(),
-                        );
-                        setGroupTaskEditor({
-                          ...groupTaskEditor,
-                          title: next.title.trim(),
-                        });
-                      }
-                    }
-                  }}
-                  onClose={() => setGroupTaskEditor(null)}
-                />
-              </div>
-            ) : null}
-
-            {groupsPack.groups.map((group) => (
-              <div key={group.id} className={styles.panel}>
-                <label className={styles.field}>
-                  <span>
-                    Group {group.number} title · {group.yearLabel} ·{" "}
-                    {group.phaseLabel}
-                  </span>
-                  <input
-                    value={group.title}
-                    onChange={(e) =>
-                      updateGroupTitle(
-                        groupsPack.id,
-                        group.id,
-                        e.target.value,
-                      )
-                    }
-                  />
-                </label>
-                <div className={styles.stack}>
-                  {group.tasks.map((task) => (
-                    <div key={task.id} className={styles.stack}>
-                      <label className={styles.field}>
-                        <span>Task {task.number}</span>
-                        <input
-                          value={task.title}
-                          onChange={(e) =>
-                            updateGroupTaskTitle(
-                              groupsPack.id,
-                              group.id,
-                              task.id,
-                              e.target.value,
-                            )
-                          }
-                        />
-                      </label>
-                      <div className={styles.tabRow}>
-                        <button
-                          type="button"
-                          className={
-                            groupTaskEditor?.taskId === task.id
-                              ? styles.tabActive
-                              : styles.tab
-                          }
-                          onClick={() => {
-                            ensureAuthoredTaskForm(
-                              groupsPack.id,
-                              task.id,
-                              task.title,
-                            );
-                            setGroupTaskEditor({
-                              packId: groupsPack.id,
-                              taskId: task.id,
-                              title: task.title,
-                            });
-                          }}
-                        >
-                          {hasAuthoredTaskForm(groupsPack.id, task.id, snapshot)
-                            ? "Edit learner form"
-                            : "Build learner form"}
-                        </button>
-                        {(() => {
-                          const badge = authoredTaskFormBadge(
-                            groupsPack.id,
-                            task.id,
-                            snapshot,
-                          );
-                          return (
-                            <ApprenticeStatusChip tone={badge.tone}>
-                              {badge.label}
-                            </ApprenticeStatusChip>
-                          );
-                        })()}
-                      </div>
-                    </div>
-                  ))}
-                  {group.tasks.length === 0 ? (
-                    <p className={styles.muted}>No tasks in this group yet.</p>
-                  ) : null}
-                </div>
-              </div>
-            ))}
-            <div className={styles.panel}>
-              <h3 className={styles.panelTitle}>Milestones & gateways</h3>
-              <ul>
-                {groupsPack.milestones.map((m) => (
-                  <li key={m.id}>
-                    <strong>{m.title}</strong> — {m.phaseLabel}
-                    {m.description ? ` · ${m.description}` : ""}
-                  </li>
-                ))}
-              </ul>
-              {groupsPack.gatewayItems.length > 0 ? (
-                <ul>
-                  {groupsPack.gatewayItems.map((g) => (
-                    <li key={g.id}>
-                      {g.code}: {g.title}
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </div>
-          </section>
+        {programme && blocks.length === 0 ? (
+          <p className={styles.muted}>
+            This programme version has no training blocks yet. Add blocks in Spine
+            Builder.
+          </p>
         ) : null}
 
-        {spine === "blocks" && blockPack ? (
+        {programme && blocks.length > 0 ? (
           <section className={styles.stack}>
-            <h2 className={styles.panelTitle}>{blockPack.title}</h2>
+            <h2 className={styles.panelTitle}>
+              {programme.programmeTitle} · blocks
+            </h2>
             <p className={styles.muted}>
-              Rename block headings, then add the tasks apprentices will
-              complete. Each task builds a portal form (brief, assessment
-              record, work notes, optional knowledge questions, sign-off). No
-              KSBs.
+              Block titles come from the programme spine (read-only here). Add
+              apprentice tasks and build each learner form. No KSBs.
             </p>
-            {blockPack.blocks.map((block) => {
+            {blocks.map((block) => {
               const tasks = listBlockTaskDraftsForBlock(
-                blockPack.id,
+                programme.id,
                 block.id,
                 snapshot,
               );
               const isOpen = expandedBlockId === block.id;
+              const ordinal = blockOrdinal(block);
               return (
                 <div key={block.id} className={styles.panel}>
-                  <label className={styles.field}>
-                    <span>
-                      Block {block.id}
-                      {block.kind === "pre_epa"
-                        ? " · Pre-EPA"
-                        : block.kind === "epa"
-                          ? " · EPA"
-                          : " · Training"}
-                    </span>
-                    <input
-                      value={block.name}
-                      onChange={(e) =>
-                        updateBlockHeading(
-                          blockPack.id,
-                          block.id,
-                          e.target.value,
-                        )
-                      }
-                    />
-                  </label>
-
                   <div className={styles.toolbar}>
-                    <p className={styles.muted}>
-                      {tasks.length} task{tasks.length === 1 ? "" : "s"}
-                    </p>
+                    <div>
+                      <h3 className={styles.panelTitle}>
+                        Block {ordinal} · {block.title}
+                      </h3>
+                      <p className={styles.muted}>
+                        {block.plannedOtjHours > 0
+                          ? `${block.plannedOtjHours} hrs planned OTJ · `
+                          : ""}
+                        Sequence {block.sequence}
+                      </p>
+                    </div>
                     <button
                       type="button"
                       className={isOpen ? styles.tabActive : styles.tab}
@@ -483,6 +367,10 @@ export function CourseBuilderScreen() {
                     </button>
                   </div>
 
+                  <p className={styles.muted}>
+                    {tasks.length} task{tasks.length === 1 ? "" : "s"}
+                  </p>
+
                   {tasks.length > 0 ? (
                     <ul>
                       {tasks.map((task) => (
@@ -490,19 +378,12 @@ export function CourseBuilderScreen() {
                           <strong>
                             Task {task.taskNumber}: {task.title}
                           </strong>{" "}
-                          · {taskKindLabel(task.kind)} · {task.estimatedMinutes}
-                          m
+                          · {taskKindLabel(task.kind)} · {task.estimatedMinutes}m
                           <div className={styles.tabRow}>
                             <button
                               type="button"
                               className={styles.tab}
-                              onClick={() =>
-                                startEditTask(
-                                  blockPack.id,
-                                  block.id,
-                                  task.id,
-                                )
-                              }
+                              onClick={() => startEditTask(block.id, task.id)}
                             >
                               Edit
                             </button>
@@ -516,14 +397,14 @@ export function CourseBuilderScreen() {
                               type="button"
                               className={styles.tabAmber}
                               onClick={() =>
-                                removeBlockTask(blockPack.id, task.id)
+                                removeBlockTask(programme.id, task.id)
                               }
                             >
                               Remove
                             </button>
                             {(() => {
                               const badge = authoredTaskFormBadge(
-                                blockPack.id,
+                                programme.id,
                                 task.id,
                                 snapshot,
                               );
@@ -548,11 +429,12 @@ export function CourseBuilderScreen() {
                       <h3 className={styles.panelTitle}>
                         {editingTaskId
                           ? "Edit task"
-                          : `Add task to Block ${block.id}`}
+                          : `Add task to Block ${ordinal}`}
                       </h3>
                       <label className={styles.field}>
                         <span>
-                          Title <em className={styles.fieldRequired}>required</em>
+                          Title{" "}
+                          <em className={styles.fieldRequired}>required</em>
                         </span>
                         <input
                           value={draftTitle}
@@ -620,9 +502,7 @@ export function CourseBuilderScreen() {
                         <button
                           type="button"
                           className={styles.tabActive}
-                          onClick={() =>
-                            saveTaskForBlock(blockPack.id, block.id)
-                          }
+                          onClick={() => saveTaskForBlock(block)}
                           disabled={!draftTitle.trim()}
                         >
                           {editingTaskId ? "Save changes" : "Add task"}
@@ -645,7 +525,7 @@ export function CourseBuilderScreen() {
                           </h4>
                           <TaskFormBuilder
                             value={getAuthoredTaskForm(
-                              blockPack.id,
+                              programme.id,
                               editingTaskId,
                               draftTitle || "Task",
                               snapshot,
@@ -655,13 +535,13 @@ export function CourseBuilderScreen() {
                             estimatedMinutes={Number(draftMinutes) || 60}
                             onChange={(next) => {
                               saveAuthoredTaskForm(
-                                blockPack.id,
+                                programme.id,
                                 editingTaskId,
                                 next,
                               );
                               if (next.title.trim()) {
                                 setDraftTitle(next.title);
-                                updateBlockTask(blockPack.id, editingTaskId, {
+                                updateBlockTask(programme.id, editingTaskId, {
                                   title: next.title.trim(),
                                   scenario: next.scenario,
                                 });
@@ -683,21 +563,6 @@ export function CourseBuilderScreen() {
             })}
           </section>
         ) : null}
-
-        {spine === "groups" && !groupsPack ? (
-          <p className={styles.muted}>No groups pack for this selection.</p>
-        ) : null}
-        {spine === "blocks" && !blockPack ? (
-          <p className={styles.muted}>No blocks pack for this standard.</p>
-        ) : null}
-
-        <details className={styles.panel}>
-          <summary>All seeded packs (debug)</summary>
-          <p className={styles.muted}>
-            Groups: {listEditableGroupsPacks(snapshot).length} · Blocks:{" "}
-            {listEditableBlockPacks(snapshot).length}
-          </p>
-        </details>
       </div>
     </ApprenticePageShell>
   );

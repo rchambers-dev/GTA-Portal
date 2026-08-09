@@ -71,7 +71,12 @@ async function fetchLiveAdminSlice(): Promise<void> {
   snapshot = {
     ...snapshot,
     apprentices: data.apprentices,
-    enrolments: data.enrolments.map((row) => normalizeEnrolmentTiming(row)),
+    enrolments: data.enrolments.map((row) =>
+      normalizeEnrolmentTiming({
+        ...row,
+        gtaProgrammeVersionId: row.gtaProgrammeVersionId ?? null,
+      }),
+    ),
     employers: data.employers ?? snapshot.employers,
     programmes: data.programmes ?? snapshot.programmes,
     cohorts: data.cohorts ?? snapshot.cohorts,
@@ -337,6 +342,8 @@ export type EnrolmentInput = {
   uln: string;
   programmeName: string;
   standardCode: string;
+  /** Exact GTA programme version pin (nullable until bound). */
+  gtaProgrammeVersionId?: string | null;
   cohortId: string | null;
   teachingGroupId?: string | null;
   /** When true, allow placing into a full teaching group. */
@@ -359,14 +366,24 @@ export type EnrolmentInput = {
 export function listEnrolments(): AdminApprenticeEnrolment[] {
   ensureHydrated();
   return snapshot.enrolments
-    .map((row) => normalizeEnrolmentTiming(row))
+    .map((row) =>
+      normalizeEnrolmentTiming({
+        ...row,
+        gtaProgrammeVersionId: row.gtaProgrammeVersionId ?? null,
+      }),
+    )
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
 export function getEnrolment(idValue: string): AdminApprenticeEnrolment | undefined {
   ensureHydrated();
   const row = snapshot.enrolments.find((e) => e.id === idValue);
-  return row ? normalizeEnrolmentTiming(row) : undefined;
+  return row
+    ? normalizeEnrolmentTiming({
+        ...row,
+        gtaProgrammeVersionId: row.gtaProgrammeVersionId ?? null,
+      })
+    : undefined;
 }
 
 export async function createEnrolment(input: EnrolmentInput): Promise<AdminApprenticeEnrolment> {
@@ -427,6 +444,7 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminAppre
     uln: input.uln.trim(),
     programmeName: input.programmeName,
     standardCode: input.standardCode,
+    gtaProgrammeVersionId: input.gtaProgrammeVersionId ?? null,
     cohortId,
     teachingGroupId,
     employerId: input.employerId,
@@ -561,6 +579,10 @@ export async function updateEnrolment(
       derived.cohortId !== undefined
         ? derived.cohortId
         : (patch.cohortId ?? existing.cohortId),
+    gtaProgrammeVersionId:
+      patch.gtaProgrammeVersionId !== undefined
+        ? patch.gtaProgrammeVersionId
+        : (existing.gtaProgrammeVersionId ?? null),
     notes: (patch.notes ?? existing.notes).trim(),
     updatedAt: new Date().toISOString(),
   };

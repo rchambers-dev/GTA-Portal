@@ -1,0 +1,4356 @@
+{
+  "weeks": [
+    {
+      "week": 11,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 12,
+      "block": 2,
+      "excluded": true,
+      "excludeReasons": [
+        "oversized>=18"
+      ],
+      "duty": "D2",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K2",
+        "K20",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "S10",
+        "S11",
+        "S13",
+        "S15",
+        "S2",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "count": 24,
+      "topic": null,
+      "aims": "• Develop secure occupational knowledge and terminology for electrical system inspection. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. <w:tcPr><w:tcW w:type=\"dxa\" w:w=\"8468\"/><w:gridSpan w:val=\"2\"/><w:tcMar><w:top w:w=\"55\" w:type=\"dxa\"/><w:start w",
+      "objectives": "– by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to electrical system inspection. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task. • Complete a task or scenario linked to electrical system inspection safely, accurately and in the correct sequence. • Record findings clearly and justify at least one decision using technical information or workpla"
+    },
+    {
+      "week": 13,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 14,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 15,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 16,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "K34",
+        "S1",
+        "S2",
+        "B2",
+        "K32",
+        "K33"
+      ],
+      "count": 6,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 17,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 18,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 19,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 20,
+      "block": 2,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 21,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D1",
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K24",
+        "K32",
+        "K33",
+        "K34",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": "• Develop secure occupational knowledge and terminology for service reception, booking diagnostics and first impressions. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. <w:tcPr><w:tcW w:type=\"dxa\" w:w=\"8468\"/><w:gridSpan w:val=\"2\"/><w:tcMar><w:top w",
+      "objectives": "– by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to service reception, booking diagnostics and first impressions. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task. • Complete a task or scenario linked to service reception, booking diagnostics and first impressions safely, accurately and in the correct sequence. • Record findings clearly and just"
+    },
+    {
+      "week": 22,
+      "block": 3,
+      "excluded": true,
+      "excludeReasons": [
+        "oversized>=18"
+      ],
+      "duty": "D2",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K2",
+        "K20",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "S10",
+        "S11",
+        "S13",
+        "S15",
+        "S2",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "count": 24,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 23,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 24,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 25,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 26,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 27,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D7",
+      "codes": [
+        "B1",
+        "B2",
+        "K3",
+        "K4",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 28,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D8",
+      "codes": [
+        "K24",
+        "K25",
+        "K26",
+        "K29",
+        "S16",
+        "S17",
+        "S19",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 29,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D9",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 30,
+      "block": 3,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D10",
+      "codes": [
+        "B1",
+        "B2",
+        "K21",
+        "K22",
+        "K23",
+        "K3",
+        "K4",
+        "S1",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 31,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D1",
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K24",
+        "K32",
+        "K33",
+        "K34",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 32,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B1",
+        "B2",
+        "K2",
+        "K5",
+        "K6",
+        "K8",
+        "K19",
+        "K21",
+        "K22",
+        "S5",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 33,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 34,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 35,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 36,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 37,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D7",
+      "codes": [
+        "B1",
+        "B2",
+        "K3",
+        "K4",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 38,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D8",
+      "codes": [
+        "K24",
+        "K25",
+        "K26",
+        "K29",
+        "S16",
+        "S17",
+        "S19",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 39,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D9",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 40,
+      "block": 4,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D10",
+      "codes": [
+        "B1",
+        "B2",
+        "K21",
+        "K22",
+        "K23",
+        "K3",
+        "K4",
+        "S1",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 41,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D1",
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K24",
+        "K32",
+        "K33",
+        "K34",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 42,
+      "block": 5,
+      "excluded": true,
+      "excludeReasons": [
+        "oversized>=18"
+      ],
+      "duty": "D2",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K2",
+        "K20",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "S10",
+        "S11",
+        "S13",
+        "S15",
+        "S2",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "count": 24,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 43,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 44,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 45,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 46,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 47,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D7",
+      "codes": [
+        "B1",
+        "B2",
+        "K3",
+        "K4",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 48,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D8",
+      "codes": [
+        "K24",
+        "K25",
+        "K26",
+        "K29",
+        "S16",
+        "S17",
+        "S19",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 49,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D9",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 50,
+      "block": 5,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D10",
+      "codes": [
+        "B1",
+        "B2",
+        "K21",
+        "K22",
+        "K23",
+        "K3",
+        "K4",
+        "S1",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 51,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D1",
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K24",
+        "K32",
+        "K33",
+        "K34",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 52,
+      "block": 6,
+      "excluded": true,
+      "excludeReasons": [
+        "oversized>=18"
+      ],
+      "duty": "D2",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K2",
+        "K20",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "S10",
+        "S11",
+        "S13",
+        "S15",
+        "S2",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "count": 24,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 53,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 54,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B1",
+        "B2",
+        "B3",
+        "K6",
+        "K8",
+        "K19",
+        "K20",
+        "K21",
+        "K22",
+        "S5",
+        "S6",
+        "S7",
+        "S12",
+        "S14"
+      ],
+      "count": 14,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 55,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 56,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 57,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D7",
+      "codes": [
+        "B1",
+        "B2",
+        "K3",
+        "K4",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 58,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D8",
+      "codes": [
+        "K24",
+        "K25",
+        "K26",
+        "K29",
+        "S16",
+        "S17",
+        "S19",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 59,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D9",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 60,
+      "block": 6,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D10",
+      "codes": [
+        "B1",
+        "B2",
+        "K21",
+        "K22",
+        "K23",
+        "K3",
+        "K4",
+        "S1",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 61,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D1",
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K24",
+        "K32",
+        "K33",
+        "K34",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 62,
+      "block": 7,
+      "excluded": true,
+      "excludeReasons": [
+        "oversized>=18"
+      ],
+      "duty": "D2",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K2",
+        "K20",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "S10",
+        "S11",
+        "S13",
+        "S15",
+        "S2",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "count": 24,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 63,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 64,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 65,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 66,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 67,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D7",
+      "codes": [
+        "B1",
+        "B2",
+        "K3",
+        "K4",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 68,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D8",
+      "codes": [
+        "K24",
+        "K25",
+        "K26",
+        "K29",
+        "S16",
+        "S17",
+        "S19",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 69,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D9",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 70,
+      "block": 7,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D10",
+      "codes": [
+        "B1",
+        "B2",
+        "K21",
+        "K22",
+        "K23",
+        "K3",
+        "K4",
+        "S1",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 71,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D1",
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K24",
+        "K32",
+        "K33",
+        "K34",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 72,
+      "block": 8,
+      "excluded": true,
+      "excludeReasons": [
+        "oversized>=18"
+      ],
+      "duty": "D2",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K2",
+        "K20",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "S10",
+        "S11",
+        "S13",
+        "S15",
+        "S2",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "count": 24,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 73,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 74,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 75,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 76,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 77,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D7",
+      "codes": [
+        "B1",
+        "B2",
+        "K3",
+        "K4",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 78,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D8",
+      "codes": [
+        "K24",
+        "K25",
+        "K26",
+        "K29",
+        "S16",
+        "S17",
+        "S19",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 79,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D9",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 80,
+      "block": 8,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D10",
+      "codes": [
+        "B1",
+        "B2",
+        "K21",
+        "K22",
+        "K23",
+        "K3",
+        "K4",
+        "S1",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 81,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B1",
+        "B2",
+        "K2",
+        "K5",
+        "K6",
+        "K8",
+        "K9",
+        "K10",
+        "K19",
+        "K22",
+        "S5",
+        "S6",
+        "S7",
+        "S12",
+        "S14"
+      ],
+      "count": 15,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 82,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K6",
+        "K8",
+        "K17",
+        "K24",
+        "K25",
+        "S6",
+        "S7",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 14,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 83,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S5",
+        "K3",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "B4"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 84,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S5",
+        "K4",
+        "K6",
+        "K15",
+        "K16",
+        "K17",
+        "B5"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 85,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 86,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D10",
+      "codes": [
+        "B1",
+        "B2",
+        "K21",
+        "K22",
+        "K23",
+        "K3",
+        "K4",
+        "S1",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 87,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 88,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D8",
+      "codes": [
+        "K24",
+        "K25",
+        "K26",
+        "K29",
+        "S16",
+        "S17",
+        "S19",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 89,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 90,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D10",
+      "codes": [
+        "B1",
+        "B2",
+        "K21",
+        "K22",
+        "K23",
+        "K3",
+        "K4",
+        "S1",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 91,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S6",
+        "K5",
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "B2"
+      ],
+      "count": 17,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 92,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S5",
+        "K2",
+        "K5",
+        "K6",
+        "K9",
+        "K10",
+        "B3"
+      ],
+      "count": 7,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 93,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B1",
+        "B2",
+        "K2",
+        "K5",
+        "K6",
+        "K8",
+        "K18",
+        "K19",
+        "K21",
+        "K22",
+        "S5",
+        "S6",
+        "S12",
+        "S14"
+      ],
+      "count": 14,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 94,
+      "block": 9,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B1",
+        "B2",
+        "B5",
+        "K18",
+        "K19",
+        "K20",
+        "K21",
+        "K22",
+        "K23",
+        "S6",
+        "S7",
+        "S16",
+        "S22",
+        "S23"
+      ],
+      "count": 14,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 95,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B2",
+        "S7",
+        "K18",
+        "K19",
+        "K20",
+        "K21"
+      ],
+      "count": 6,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 96,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B3",
+        "S6",
+        "S7",
+        "K23",
+        "K24",
+        "K25"
+      ],
+      "count": 6,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 97,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "B4",
+        "S7",
+        "K26",
+        "K27",
+        "K28",
+        "K29"
+      ],
+      "count": 6,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 98,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S5",
+        "B5",
+        "S7",
+        "K30",
+        "K31",
+        "K32"
+      ],
+      "count": 6,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 99,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S6",
+        "S8",
+        "K33",
+        "K34",
+        "S1",
+        "S2"
+      ],
+      "count": 6,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 100,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S6",
+        "S8",
+        "S3",
+        "S4",
+        "S10"
+      ],
+      "count": 5,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 101,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S6",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15"
+      ],
+      "count": 6,
+      "topic": null,
+      "aims": "• Develop secure occupational knowledge and terminology for final skills consolidation and professional practice. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. <w:tcPr><w:tcW w:type=\"dxa\" w:w=\"8468\"/><w:gridSpan w:val=\"2\"/><w:tcMar><w:top w:w=\"55\" ",
+      "objectives": "– by the end, apprentices should be able to • Identify and explain at least three key principles, risks or controls relevant to final skills consolidation and professional practice. • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task. • Complete a task or scenario linked to final skills consolidation and professional practice safely, accurately and in the correct sequence. • Record findings clearly and justify at least one"
+    },
+    {
+      "week": 102,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": null,
+      "codes": [
+        "S6",
+        "S7",
+        "K7",
+        "K8",
+        "K22",
+        "B1"
+      ],
+      "count": 6,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 103,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D1",
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K24",
+        "K32",
+        "K33",
+        "K34",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 104,
+      "block": 10,
+      "excluded": true,
+      "excludeReasons": [
+        "oversized>=18"
+      ],
+      "duty": "D2",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K2",
+        "K20",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "S10",
+        "S11",
+        "S13",
+        "S15",
+        "S2",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "count": 24,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 105,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D3",
+      "codes": [
+        "B3",
+        "B4",
+        "B5",
+        "K25",
+        "K30",
+        "K31",
+        "S20",
+        "S21",
+        "S25"
+      ],
+      "count": 9,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 106,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D4",
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K9",
+        "S10",
+        "S11",
+        "S13"
+      ],
+      "count": 13,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 107,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D5",
+      "codes": [
+        "B3",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S17",
+        "S18",
+        "S19"
+      ],
+      "count": 8,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 108,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D6",
+      "codes": [
+        "B3",
+        "B5",
+        "K25",
+        "K7",
+        "K8",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 10,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 109,
+      "block": 10,
+      "excluded": false,
+      "excludeReasons": [],
+      "duty": "D1",
+      "codes": [
+        "B3",
+        "B5",
+        "K1",
+        "K24",
+        "K32",
+        "K33",
+        "K34",
+        "S16",
+        "S22",
+        "S23",
+        "S24"
+      ],
+      "count": 11,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 110,
+      "block": 10,
+      "excluded": true,
+      "excludeReasons": [
+        "oversized>=18"
+      ],
+      "duty": null,
+      "codes": [
+        "B1",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K2",
+        "K20",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "S10",
+        "S11",
+        "S13",
+        "S15",
+        "S2",
+        "S5",
+        "S7",
+        "S8"
+      ],
+      "count": 24,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 111,
+      "block": 10,
+      "excluded": true,
+      "excludeReasons": [
+        "hard-exclude dump week",
+        "dump>=40",
+        "oversized>=18"
+      ],
+      "duty": null,
+      "codes": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K17",
+        "K18",
+        "K19",
+        "K20",
+        "K21",
+        "K22",
+        "K23",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "K30",
+        "K31",
+        "K32",
+        "K33",
+        "K34",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "count": 63,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 112,
+      "block": 10,
+      "excluded": true,
+      "excludeReasons": [
+        "hard-exclude dump week",
+        "dump>=40",
+        "oversized>=18"
+      ],
+      "duty": null,
+      "codes": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K17",
+        "K18",
+        "K19",
+        "K20",
+        "K21",
+        "K22",
+        "K23",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "K30",
+        "K31",
+        "K32",
+        "K33",
+        "K34",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "count": 63,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    },
+    {
+      "week": 113,
+      "block": 10,
+      "excluded": true,
+      "excludeReasons": [
+        "hard-exclude dump week",
+        "dump>=40",
+        "oversized>=18"
+      ],
+      "duty": null,
+      "codes": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K17",
+        "K18",
+        "K19",
+        "K20",
+        "K21",
+        "K22",
+        "K23",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "K30",
+        "K31",
+        "K32",
+        "K33",
+        "K34",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "count": 63,
+      "topic": null,
+      "aims": null,
+      "objectives": null
+    }
+  ],
+  "includedWeekCount": 92,
+  "blockProfiles": {
+    "2": {
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "includedWeeks": 9,
+      "topics": [],
+      "dutyCounts": {
+        "D6": 2,
+        "D3": 2,
+        "D4": 2,
+        "D5": 2
+      },
+      "topCodes": [
+        [
+          "B3",
+          6
+        ],
+        [
+          "B5",
+          4
+        ],
+        [
+          "K25",
+          4
+        ],
+        [
+          "S20",
+          4
+        ],
+        [
+          "K7",
+          2
+        ],
+        [
+          "K8",
+          2
+        ],
+        [
+          "S16",
+          2
+        ],
+        [
+          "S22",
+          2
+        ],
+        [
+          "S23",
+          2
+        ],
+        [
+          "S24",
+          2
+        ],
+        [
+          "B4",
+          2
+        ],
+        [
+          "K30",
+          2
+        ],
+        [
+          "K31",
+          2
+        ],
+        [
+          "S21",
+          2
+        ],
+        [
+          "S25",
+          2
+        ],
+        [
+          "B1",
+          2
+        ],
+        [
+          "K10",
+          2
+        ],
+        [
+          "K11",
+          2
+        ],
+        [
+          "K12",
+          2
+        ],
+        [
+          "K13",
+          2
+        ],
+        [
+          "K14",
+          2
+        ],
+        [
+          "K15",
+          2
+        ],
+        [
+          "K16",
+          2
+        ],
+        [
+          "K19",
+          2
+        ],
+        [
+          "K9",
+          2
+        ],
+        [
+          "S10",
+          2
+        ],
+        [
+          "S11",
+          2
+        ],
+        [
+          "S13",
+          2
+        ],
+        [
+          "K26",
+          2
+        ],
+        [
+          "K27",
+          2
+        ]
+      ],
+      "codeFreq": {
+        "B3": 6,
+        "B5": 4,
+        "K25": 4,
+        "K7": 2,
+        "K8": 2,
+        "S16": 2,
+        "S20": 4,
+        "S22": 2,
+        "S23": 2,
+        "S24": 2,
+        "B4": 2,
+        "K30": 2,
+        "K31": 2,
+        "S21": 2,
+        "S25": 2,
+        "B1": 2,
+        "K10": 2,
+        "K11": 2,
+        "K12": 2,
+        "K13": 2,
+        "K14": 2,
+        "K15": 2,
+        "K16": 2,
+        "K19": 2,
+        "K9": 2,
+        "S10": 2,
+        "S11": 2,
+        "S13": 2,
+        "K26": 2,
+        "K27": 2,
+        "K28": 2,
+        "K29": 2,
+        "S17": 2,
+        "S18": 2,
+        "S19": 2,
+        "K34": 1,
+        "S1": 1,
+        "S2": 1,
+        "B2": 1,
+        "K32": 1,
+        "K33": 1
+      }
+    },
+    "3": {
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "includedWeeks": 9,
+      "topics": [],
+      "dutyCounts": {
+        "D1": 1,
+        "D3": 1,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1,
+        "D7": 1,
+        "D8": 1,
+        "D9": 1,
+        "D10": 1
+      },
+      "topCodes": [
+        [
+          "B3",
+          5
+        ],
+        [
+          "B5",
+          3
+        ],
+        [
+          "S16",
+          3
+        ],
+        [
+          "S22",
+          3
+        ],
+        [
+          "S23",
+          3
+        ],
+        [
+          "S24",
+          3
+        ],
+        [
+          "K25",
+          3
+        ],
+        [
+          "B1",
+          3
+        ],
+        [
+          "K26",
+          3
+        ],
+        [
+          "S17",
+          3
+        ],
+        [
+          "S19",
+          3
+        ],
+        [
+          "K24",
+          2
+        ],
+        [
+          "S20",
+          2
+        ],
+        [
+          "K27",
+          2
+        ],
+        [
+          "K28",
+          2
+        ],
+        [
+          "K29",
+          2
+        ],
+        [
+          "S18",
+          2
+        ],
+        [
+          "B2",
+          2
+        ],
+        [
+          "K3",
+          2
+        ],
+        [
+          "K4",
+          2
+        ],
+        [
+          "S1",
+          2
+        ],
+        [
+          "K1",
+          1
+        ],
+        [
+          "K32",
+          1
+        ],
+        [
+          "K33",
+          1
+        ],
+        [
+          "K34",
+          1
+        ],
+        [
+          "B4",
+          1
+        ],
+        [
+          "K30",
+          1
+        ],
+        [
+          "K31",
+          1
+        ],
+        [
+          "S21",
+          1
+        ],
+        [
+          "S25",
+          1
+        ]
+      ],
+      "codeFreq": {
+        "B3": 5,
+        "B5": 3,
+        "K1": 1,
+        "K24": 2,
+        "K32": 1,
+        "K33": 1,
+        "K34": 1,
+        "S16": 3,
+        "S22": 3,
+        "S23": 3,
+        "S24": 3,
+        "B4": 1,
+        "K25": 3,
+        "K30": 1,
+        "K31": 1,
+        "S20": 2,
+        "S21": 1,
+        "S25": 1,
+        "B1": 3,
+        "K10": 1,
+        "K11": 1,
+        "K12": 1,
+        "K13": 1,
+        "K14": 1,
+        "K15": 1,
+        "K16": 1,
+        "K19": 1,
+        "K9": 1,
+        "S10": 1,
+        "S11": 1,
+        "S13": 1,
+        "K26": 3,
+        "K27": 2,
+        "K28": 2,
+        "K29": 2,
+        "S17": 3,
+        "S18": 2,
+        "S19": 3,
+        "K7": 1,
+        "K8": 1,
+        "B2": 2,
+        "K3": 2,
+        "K4": 2,
+        "S1": 2,
+        "S2": 1,
+        "S3": 1,
+        "S4": 1,
+        "K21": 1,
+        "K22": 1,
+        "K23": 1,
+        "S6": 1,
+        "S12": 1,
+        "S14": 1
+      }
+    },
+    "4": {
+      "title": "Emerging Technology and Driveline Systems",
+      "includedWeeks": 10,
+      "topics": [],
+      "dutyCounts": {
+        "D1": 1,
+        "D3": 1,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1,
+        "D7": 1,
+        "D8": 1,
+        "D9": 1,
+        "D10": 1
+      },
+      "topCodes": [
+        [
+          "B3",
+          5
+        ],
+        [
+          "B1",
+          4
+        ],
+        [
+          "B5",
+          3
+        ],
+        [
+          "S16",
+          3
+        ],
+        [
+          "S22",
+          3
+        ],
+        [
+          "S23",
+          3
+        ],
+        [
+          "S24",
+          3
+        ],
+        [
+          "B2",
+          3
+        ],
+        [
+          "K25",
+          3
+        ],
+        [
+          "K26",
+          3
+        ],
+        [
+          "S17",
+          3
+        ],
+        [
+          "S19",
+          3
+        ],
+        [
+          "K24",
+          2
+        ],
+        [
+          "K8",
+          2
+        ],
+        [
+          "K19",
+          2
+        ],
+        [
+          "K21",
+          2
+        ],
+        [
+          "K22",
+          2
+        ],
+        [
+          "S6",
+          2
+        ],
+        [
+          "S12",
+          2
+        ],
+        [
+          "S14",
+          2
+        ],
+        [
+          "S20",
+          2
+        ],
+        [
+          "K27",
+          2
+        ],
+        [
+          "K28",
+          2
+        ],
+        [
+          "K29",
+          2
+        ],
+        [
+          "S18",
+          2
+        ],
+        [
+          "K3",
+          2
+        ],
+        [
+          "K4",
+          2
+        ],
+        [
+          "S1",
+          2
+        ],
+        [
+          "K1",
+          1
+        ],
+        [
+          "K32",
+          1
+        ]
+      ],
+      "codeFreq": {
+        "B3": 5,
+        "B5": 3,
+        "K1": 1,
+        "K24": 2,
+        "K32": 1,
+        "K33": 1,
+        "K34": 1,
+        "S16": 3,
+        "S22": 3,
+        "S23": 3,
+        "S24": 3,
+        "B1": 4,
+        "B2": 3,
+        "K2": 1,
+        "K5": 1,
+        "K6": 1,
+        "K8": 2,
+        "K19": 2,
+        "K21": 2,
+        "K22": 2,
+        "S5": 1,
+        "S6": 2,
+        "S12": 2,
+        "S14": 2,
+        "B4": 1,
+        "K25": 3,
+        "K30": 1,
+        "K31": 1,
+        "S20": 2,
+        "S21": 1,
+        "S25": 1,
+        "K10": 1,
+        "K11": 1,
+        "K12": 1,
+        "K13": 1,
+        "K14": 1,
+        "K15": 1,
+        "K16": 1,
+        "K9": 1,
+        "S10": 1,
+        "S11": 1,
+        "S13": 1,
+        "K26": 3,
+        "K27": 2,
+        "K28": 2,
+        "K29": 2,
+        "S17": 3,
+        "S18": 2,
+        "S19": 3,
+        "K7": 1,
+        "K3": 2,
+        "K4": 2,
+        "S1": 2,
+        "S2": 1,
+        "S3": 1,
+        "S4": 1,
+        "K23": 1
+      }
+    },
+    "5": {
+      "title": "Diagnostic Thinking and Complex Repair Activities",
+      "includedWeeks": 9,
+      "topics": [],
+      "dutyCounts": {
+        "D1": 1,
+        "D3": 1,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1,
+        "D7": 1,
+        "D8": 1,
+        "D9": 1,
+        "D10": 1
+      },
+      "topCodes": [
+        [
+          "B3",
+          5
+        ],
+        [
+          "B5",
+          3
+        ],
+        [
+          "S16",
+          3
+        ],
+        [
+          "S22",
+          3
+        ],
+        [
+          "S23",
+          3
+        ],
+        [
+          "S24",
+          3
+        ],
+        [
+          "K25",
+          3
+        ],
+        [
+          "B1",
+          3
+        ],
+        [
+          "K26",
+          3
+        ],
+        [
+          "S17",
+          3
+        ],
+        [
+          "S19",
+          3
+        ],
+        [
+          "K24",
+          2
+        ],
+        [
+          "S20",
+          2
+        ],
+        [
+          "K27",
+          2
+        ],
+        [
+          "K28",
+          2
+        ],
+        [
+          "K29",
+          2
+        ],
+        [
+          "S18",
+          2
+        ],
+        [
+          "B2",
+          2
+        ],
+        [
+          "K3",
+          2
+        ],
+        [
+          "K4",
+          2
+        ],
+        [
+          "S1",
+          2
+        ],
+        [
+          "K1",
+          1
+        ],
+        [
+          "K32",
+          1
+        ],
+        [
+          "K33",
+          1
+        ],
+        [
+          "K34",
+          1
+        ],
+        [
+          "B4",
+          1
+        ],
+        [
+          "K30",
+          1
+        ],
+        [
+          "K31",
+          1
+        ],
+        [
+          "S21",
+          1
+        ],
+        [
+          "S25",
+          1
+        ]
+      ],
+      "codeFreq": {
+        "B3": 5,
+        "B5": 3,
+        "K1": 1,
+        "K24": 2,
+        "K32": 1,
+        "K33": 1,
+        "K34": 1,
+        "S16": 3,
+        "S22": 3,
+        "S23": 3,
+        "S24": 3,
+        "B4": 1,
+        "K25": 3,
+        "K30": 1,
+        "K31": 1,
+        "S20": 2,
+        "S21": 1,
+        "S25": 1,
+        "B1": 3,
+        "K10": 1,
+        "K11": 1,
+        "K12": 1,
+        "K13": 1,
+        "K14": 1,
+        "K15": 1,
+        "K16": 1,
+        "K19": 1,
+        "K9": 1,
+        "S10": 1,
+        "S11": 1,
+        "S13": 1,
+        "K26": 3,
+        "K27": 2,
+        "K28": 2,
+        "K29": 2,
+        "S17": 3,
+        "S18": 2,
+        "S19": 3,
+        "K7": 1,
+        "K8": 1,
+        "B2": 2,
+        "K3": 2,
+        "K4": 2,
+        "S1": 2,
+        "S2": 1,
+        "S3": 1,
+        "S4": 1,
+        "K21": 1,
+        "K22": 1,
+        "K23": 1,
+        "S6": 1,
+        "S12": 1,
+        "S14": 1
+      }
+    },
+    "6": {
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "includedWeeks": 9,
+      "topics": [],
+      "dutyCounts": {
+        "D1": 1,
+        "D3": 1,
+        "D5": 1,
+        "D6": 1,
+        "D7": 1,
+        "D8": 1,
+        "D9": 1,
+        "D10": 1
+      },
+      "topCodes": [
+        [
+          "B3",
+          6
+        ],
+        [
+          "B5",
+          3
+        ],
+        [
+          "S16",
+          3
+        ],
+        [
+          "S22",
+          3
+        ],
+        [
+          "S23",
+          3
+        ],
+        [
+          "S24",
+          3
+        ],
+        [
+          "K25",
+          3
+        ],
+        [
+          "B1",
+          3
+        ],
+        [
+          "B2",
+          3
+        ],
+        [
+          "K26",
+          3
+        ],
+        [
+          "S17",
+          3
+        ],
+        [
+          "S19",
+          3
+        ],
+        [
+          "K24",
+          2
+        ],
+        [
+          "S20",
+          2
+        ],
+        [
+          "K8",
+          2
+        ],
+        [
+          "K21",
+          2
+        ],
+        [
+          "K22",
+          2
+        ],
+        [
+          "S6",
+          2
+        ],
+        [
+          "S12",
+          2
+        ],
+        [
+          "S14",
+          2
+        ],
+        [
+          "K27",
+          2
+        ],
+        [
+          "K28",
+          2
+        ],
+        [
+          "K29",
+          2
+        ],
+        [
+          "S18",
+          2
+        ],
+        [
+          "K3",
+          2
+        ],
+        [
+          "K4",
+          2
+        ],
+        [
+          "S1",
+          2
+        ],
+        [
+          "K1",
+          1
+        ],
+        [
+          "K32",
+          1
+        ],
+        [
+          "K33",
+          1
+        ]
+      ],
+      "codeFreq": {
+        "B3": 6,
+        "B5": 3,
+        "K1": 1,
+        "K24": 2,
+        "K32": 1,
+        "K33": 1,
+        "K34": 1,
+        "S16": 3,
+        "S22": 3,
+        "S23": 3,
+        "S24": 3,
+        "B4": 1,
+        "K25": 3,
+        "K30": 1,
+        "K31": 1,
+        "S20": 2,
+        "S21": 1,
+        "S25": 1,
+        "B1": 3,
+        "B2": 3,
+        "K6": 1,
+        "K8": 2,
+        "K19": 1,
+        "K20": 1,
+        "K21": 2,
+        "K22": 2,
+        "S5": 1,
+        "S6": 2,
+        "S7": 1,
+        "S12": 2,
+        "S14": 2,
+        "K26": 3,
+        "K27": 2,
+        "K28": 2,
+        "K29": 2,
+        "S17": 3,
+        "S18": 2,
+        "S19": 3,
+        "K7": 1,
+        "K3": 2,
+        "K4": 2,
+        "S1": 2,
+        "S2": 1,
+        "S3": 1,
+        "S4": 1,
+        "K23": 1
+      }
+    },
+    "7": {
+      "title": "Advanced Workshop Practice and Technical Communication",
+      "includedWeeks": 9,
+      "topics": [],
+      "dutyCounts": {
+        "D1": 1,
+        "D3": 1,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1,
+        "D7": 1,
+        "D8": 1,
+        "D9": 1,
+        "D10": 1
+      },
+      "topCodes": [
+        [
+          "B3",
+          5
+        ],
+        [
+          "B5",
+          3
+        ],
+        [
+          "S16",
+          3
+        ],
+        [
+          "S22",
+          3
+        ],
+        [
+          "S23",
+          3
+        ],
+        [
+          "S24",
+          3
+        ],
+        [
+          "K25",
+          3
+        ],
+        [
+          "B1",
+          3
+        ],
+        [
+          "K26",
+          3
+        ],
+        [
+          "S17",
+          3
+        ],
+        [
+          "S19",
+          3
+        ],
+        [
+          "K24",
+          2
+        ],
+        [
+          "S20",
+          2
+        ],
+        [
+          "K27",
+          2
+        ],
+        [
+          "K28",
+          2
+        ],
+        [
+          "K29",
+          2
+        ],
+        [
+          "S18",
+          2
+        ],
+        [
+          "B2",
+          2
+        ],
+        [
+          "K3",
+          2
+        ],
+        [
+          "K4",
+          2
+        ],
+        [
+          "S1",
+          2
+        ],
+        [
+          "K1",
+          1
+        ],
+        [
+          "K32",
+          1
+        ],
+        [
+          "K33",
+          1
+        ],
+        [
+          "K34",
+          1
+        ],
+        [
+          "B4",
+          1
+        ],
+        [
+          "K30",
+          1
+        ],
+        [
+          "K31",
+          1
+        ],
+        [
+          "S21",
+          1
+        ],
+        [
+          "S25",
+          1
+        ]
+      ],
+      "codeFreq": {
+        "B3": 5,
+        "B5": 3,
+        "K1": 1,
+        "K24": 2,
+        "K32": 1,
+        "K33": 1,
+        "K34": 1,
+        "S16": 3,
+        "S22": 3,
+        "S23": 3,
+        "S24": 3,
+        "B4": 1,
+        "K25": 3,
+        "K30": 1,
+        "K31": 1,
+        "S20": 2,
+        "S21": 1,
+        "S25": 1,
+        "B1": 3,
+        "K10": 1,
+        "K11": 1,
+        "K12": 1,
+        "K13": 1,
+        "K14": 1,
+        "K15": 1,
+        "K16": 1,
+        "K19": 1,
+        "K9": 1,
+        "S10": 1,
+        "S11": 1,
+        "S13": 1,
+        "K26": 3,
+        "K27": 2,
+        "K28": 2,
+        "K29": 2,
+        "S17": 3,
+        "S18": 2,
+        "S19": 3,
+        "K7": 1,
+        "K8": 1,
+        "B2": 2,
+        "K3": 2,
+        "K4": 2,
+        "S1": 2,
+        "S2": 1,
+        "S3": 1,
+        "S4": 1,
+        "K21": 1,
+        "K22": 1,
+        "K23": 1,
+        "S6": 1,
+        "S12": 1,
+        "S14": 1
+      }
+    },
+    "8": {
+      "title": "Advanced Diagnostics and Workshop Organisation",
+      "includedWeeks": 9,
+      "topics": [],
+      "dutyCounts": {
+        "D1": 1,
+        "D3": 1,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1,
+        "D7": 1,
+        "D8": 1,
+        "D9": 1,
+        "D10": 1
+      },
+      "topCodes": [
+        [
+          "B3",
+          5
+        ],
+        [
+          "B5",
+          3
+        ],
+        [
+          "S16",
+          3
+        ],
+        [
+          "S22",
+          3
+        ],
+        [
+          "S23",
+          3
+        ],
+        [
+          "S24",
+          3
+        ],
+        [
+          "K25",
+          3
+        ],
+        [
+          "B1",
+          3
+        ],
+        [
+          "K26",
+          3
+        ],
+        [
+          "S17",
+          3
+        ],
+        [
+          "S19",
+          3
+        ],
+        [
+          "K24",
+          2
+        ],
+        [
+          "S20",
+          2
+        ],
+        [
+          "K27",
+          2
+        ],
+        [
+          "K28",
+          2
+        ],
+        [
+          "K29",
+          2
+        ],
+        [
+          "S18",
+          2
+        ],
+        [
+          "B2",
+          2
+        ],
+        [
+          "K3",
+          2
+        ],
+        [
+          "K4",
+          2
+        ],
+        [
+          "S1",
+          2
+        ],
+        [
+          "K1",
+          1
+        ],
+        [
+          "K32",
+          1
+        ],
+        [
+          "K33",
+          1
+        ],
+        [
+          "K34",
+          1
+        ],
+        [
+          "B4",
+          1
+        ],
+        [
+          "K30",
+          1
+        ],
+        [
+          "K31",
+          1
+        ],
+        [
+          "S21",
+          1
+        ],
+        [
+          "S25",
+          1
+        ]
+      ],
+      "codeFreq": {
+        "B3": 5,
+        "B5": 3,
+        "K1": 1,
+        "K24": 2,
+        "K32": 1,
+        "K33": 1,
+        "K34": 1,
+        "S16": 3,
+        "S22": 3,
+        "S23": 3,
+        "S24": 3,
+        "B4": 1,
+        "K25": 3,
+        "K30": 1,
+        "K31": 1,
+        "S20": 2,
+        "S21": 1,
+        "S25": 1,
+        "B1": 3,
+        "K10": 1,
+        "K11": 1,
+        "K12": 1,
+        "K13": 1,
+        "K14": 1,
+        "K15": 1,
+        "K16": 1,
+        "K19": 1,
+        "K9": 1,
+        "S10": 1,
+        "S11": 1,
+        "S13": 1,
+        "K26": 3,
+        "K27": 2,
+        "K28": 2,
+        "K29": 2,
+        "S17": 3,
+        "S18": 2,
+        "S19": 3,
+        "K7": 1,
+        "K8": 1,
+        "B2": 2,
+        "K3": 2,
+        "K4": 2,
+        "S1": 2,
+        "S2": 1,
+        "S3": 1,
+        "S4": 1,
+        "K21": 1,
+        "K22": 1,
+        "K23": 1,
+        "S6": 1,
+        "S12": 1,
+        "S14": 1
+      }
+    },
+    "9": {
+      "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+      "includedWeeks": 14,
+      "topics": [],
+      "dutyCounts": {
+        "D6": 1,
+        "D10": 2,
+        "D5": 1,
+        "D8": 1,
+        "D4": 1
+      },
+      "topCodes": [
+        [
+          "S6",
+          7
+        ],
+        [
+          "B1",
+          6
+        ],
+        [
+          "B2",
+          6
+        ],
+        [
+          "K6",
+          5
+        ],
+        [
+          "K22",
+          5
+        ],
+        [
+          "S5",
+          5
+        ],
+        [
+          "S16",
+          5
+        ],
+        [
+          "S22",
+          5
+        ],
+        [
+          "S23",
+          5
+        ],
+        [
+          "K2",
+          4
+        ],
+        [
+          "K5",
+          4
+        ],
+        [
+          "K8",
+          4
+        ],
+        [
+          "K19",
+          4
+        ],
+        [
+          "S12",
+          4
+        ],
+        [
+          "S14",
+          4
+        ],
+        [
+          "B3",
+          4
+        ],
+        [
+          "B5",
+          4
+        ],
+        [
+          "S24",
+          4
+        ],
+        [
+          "K3",
+          4
+        ],
+        [
+          "K4",
+          4
+        ],
+        [
+          "K21",
+          4
+        ],
+        [
+          "K9",
+          3
+        ],
+        [
+          "K10",
+          3
+        ],
+        [
+          "S7",
+          3
+        ],
+        [
+          "K25",
+          3
+        ],
+        [
+          "K23",
+          3
+        ],
+        [
+          "S17",
+          3
+        ],
+        [
+          "S19",
+          3
+        ],
+        [
+          "K1",
+          2
+        ],
+        [
+          "K17",
+          2
+        ]
+      ],
+      "codeFreq": {
+        "B1": 6,
+        "B2": 6,
+        "K2": 4,
+        "K5": 4,
+        "K6": 5,
+        "K8": 4,
+        "K9": 3,
+        "K10": 3,
+        "K19": 4,
+        "K22": 5,
+        "S5": 5,
+        "S6": 7,
+        "S7": 3,
+        "S12": 4,
+        "S14": 4,
+        "B3": 4,
+        "B5": 4,
+        "K1": 2,
+        "K17": 2,
+        "K24": 2,
+        "K25": 3,
+        "S16": 5,
+        "S22": 5,
+        "S23": 5,
+        "S24": 4,
+        "K3": 4,
+        "K11": 2,
+        "K12": 2,
+        "K13": 2,
+        "K14": 2,
+        "B4": 1,
+        "K4": 4,
+        "K15": 2,
+        "K16": 2,
+        "K7": 1,
+        "S20": 2,
+        "K21": 4,
+        "K23": 3,
+        "S1": 2,
+        "K26": 2,
+        "K27": 1,
+        "K28": 1,
+        "K29": 2,
+        "S17": 3,
+        "S18": 2,
+        "S19": 3,
+        "S10": 1,
+        "S11": 1,
+        "S13": 1,
+        "S21": 1,
+        "S25": 1,
+        "K18": 2,
+        "K20": 1
+      }
+    },
+    "10": {
+      "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+      "includedWeeks": 14,
+      "topics": [],
+      "dutyCounts": {
+        "D1": 2,
+        "D3": 1,
+        "D4": 1,
+        "D5": 1,
+        "D6": 1
+      },
+      "topCodes": [
+        [
+          "B3",
+          6
+        ],
+        [
+          "S7",
+          5
+        ],
+        [
+          "S6",
+          5
+        ],
+        [
+          "B5",
+          5
+        ],
+        [
+          "K24",
+          3
+        ],
+        [
+          "K25",
+          3
+        ],
+        [
+          "K32",
+          3
+        ],
+        [
+          "K33",
+          3
+        ],
+        [
+          "K34",
+          3
+        ],
+        [
+          "S16",
+          3
+        ],
+        [
+          "S22",
+          3
+        ],
+        [
+          "S23",
+          3
+        ],
+        [
+          "S24",
+          3
+        ],
+        [
+          "K19",
+          2
+        ],
+        [
+          "B4",
+          2
+        ],
+        [
+          "K26",
+          2
+        ],
+        [
+          "K27",
+          2
+        ],
+        [
+          "K28",
+          2
+        ],
+        [
+          "K29",
+          2
+        ],
+        [
+          "K30",
+          2
+        ],
+        [
+          "K31",
+          2
+        ],
+        [
+          "S8",
+          2
+        ],
+        [
+          "S10",
+          2
+        ],
+        [
+          "S11",
+          2
+        ],
+        [
+          "S13",
+          2
+        ],
+        [
+          "K7",
+          2
+        ],
+        [
+          "K8",
+          2
+        ],
+        [
+          "B1",
+          2
+        ],
+        [
+          "K1",
+          2
+        ],
+        [
+          "S20",
+          2
+        ]
+      ],
+      "codeFreq": {
+        "B2": 1,
+        "S7": 5,
+        "K18": 1,
+        "K19": 2,
+        "K20": 1,
+        "K21": 1,
+        "B3": 6,
+        "S6": 5,
+        "K23": 1,
+        "K24": 3,
+        "K25": 3,
+        "B4": 2,
+        "K26": 2,
+        "K27": 2,
+        "K28": 2,
+        "K29": 2,
+        "S5": 1,
+        "B5": 5,
+        "K30": 2,
+        "K31": 2,
+        "K32": 3,
+        "S8": 2,
+        "K33": 3,
+        "K34": 3,
+        "S1": 1,
+        "S2": 1,
+        "S3": 1,
+        "S4": 1,
+        "S10": 2,
+        "S11": 2,
+        "S12": 1,
+        "S13": 2,
+        "S14": 1,
+        "S15": 1,
+        "K7": 2,
+        "K8": 2,
+        "K22": 1,
+        "B1": 2,
+        "K1": 2,
+        "S16": 3,
+        "S22": 3,
+        "S23": 3,
+        "S24": 3,
+        "S20": 2,
+        "S21": 1,
+        "S25": 1,
+        "K10": 1,
+        "K11": 1,
+        "K12": 1,
+        "K13": 1,
+        "K14": 1,
+        "K15": 1,
+        "K16": 1,
+        "K9": 1,
+        "S17": 1,
+        "S18": 1,
+        "S19": 1
+      }
+    }
+  }
+}

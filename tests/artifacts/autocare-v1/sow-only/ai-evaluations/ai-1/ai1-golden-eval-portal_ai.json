@@ -1,0 +1,310 @@
+{
+  "at": "2026-08-08T14:10:01.629Z",
+  "mode": "portal_ai",
+  "runId": "bf66bee3-2de8-4ca1-9cc8-4db661ff7387",
+  "provider": "portal_ai",
+  "model": "gpt-4o-mini",
+  "promptVersion": "baseline-curriculum-analysis@1.1",
+  "stats": {
+    "gaps": 16,
+    "ksbCount": 64,
+    "ambiguous": 0,
+    "corpusHash": "a69472cc8e53bd9ea37e21b3acc0c595033350ead14016ebc8c80a2c35ba31f1",
+    "distributed": 0,
+    "primaryCandidates": 48
+  },
+  "baselineFrozen": {
+    "approvedPrimariesBefore": 45,
+    "approvedPrimariesAfter": 45,
+    "unchanged": true,
+    "structuredOtj": 611.5
+  },
+  "evaluation": {
+    "official": 64,
+    "compared": 64,
+    "primaryClassificationAccuracy": 0.9555555555555556,
+    "primaryBlockAccuracy": 0.4883720930232558,
+    "gapDetectionAccuracy": 0.7777777777777778,
+    "distributedSkillAccuracy": 0,
+    "falsePositivePrimaryRate": 0.2631578947368421,
+    "falseGapRate": 0.044444444444444446,
+    "ambiguousReviewRate": 0,
+    "confidenceDistribution": {
+      "high": 64,
+      "medium": 0,
+      "low": 0
+    },
+    "disagreements": [
+      {
+        "ksbCode": "S12",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 2,
+        "aiPrimary": 8,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K29",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 3,
+        "aiPrimary": 2,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K30",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 3,
+        "aiPrimary": 4,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S19",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 3,
+        "aiPrimary": 4,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S4",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 4,
+        "aiPrimary": 1,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K23",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 6,
+        "aiPrimary": 9,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S13",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 6,
+        "aiPrimary": 9,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S14",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 6,
+        "aiPrimary": 4,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "B1",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 1,
+        "aiPrimary": 3,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K3",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 1,
+        "aiPrimary": 3,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K5",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 1,
+        "aiPrimary": 3,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K19",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 2,
+        "aiPrimary": 8,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K26",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 2,
+        "aiPrimary": 4,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K27",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 2,
+        "aiPrimary": 9,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S5",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 1,
+        "aiPrimary": 5,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S8",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 1,
+        "aiPrimary": 2,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S17",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 2,
+        "aiPrimary": 9,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S18",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "curriculum_gap",
+        "goldenPrimary": 8,
+        "aiPrimary": null,
+        "confidence": "high",
+        "reason": "Golden Primary not classified as primary_candidate"
+      },
+      {
+        "ksbCode": "S22",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 1,
+        "aiPrimary": 7,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K32",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 5,
+        "aiPrimary": 2,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S21",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 5,
+        "aiPrimary": 9,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "S16",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 3,
+        "aiPrimary": 4,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K6",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "curriculum_gap",
+        "goldenPrimary": 1,
+        "aiPrimary": null,
+        "confidence": "high",
+        "reason": "Golden Primary not classified as primary_candidate"
+      },
+      {
+        "ksbCode": "K25",
+        "goldenClassification": "primary_candidate",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": 6,
+        "aiPrimary": 2,
+        "confidence": "high",
+        "reason": "Primary block mismatch"
+      },
+      {
+        "ksbCode": "K2",
+        "goldenClassification": "curriculum_gap",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": null,
+        "aiPrimary": 3,
+        "confidence": "high",
+        "reason": "Golden gap not classified as curriculum_gap"
+      },
+      {
+        "ksbCode": "K7",
+        "goldenClassification": "curriculum_gap",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": null,
+        "aiPrimary": 5,
+        "confidence": "high",
+        "reason": "Golden gap not classified as curriculum_gap"
+      },
+      {
+        "ksbCode": "S7",
+        "goldenClassification": "curriculum_gap",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": null,
+        "aiPrimary": 3,
+        "confidence": "high",
+        "reason": "Golden gap not classified as curriculum_gap"
+      },
+      {
+        "ksbCode": "S9",
+        "goldenClassification": "curriculum_gap",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": null,
+        "aiPrimary": 7,
+        "confidence": "high",
+        "reason": "Golden gap not classified as curriculum_gap"
+      },
+      {
+        "ksbCode": "S10",
+        "goldenClassification": "distributed_skill",
+        "aiClassification": "primary_candidate",
+        "goldenPrimary": null,
+        "aiPrimary": 5,
+        "confidence": "high",
+        "reason": "Golden distributed-skill not classified as distributed_skill"
+      }
+    ],
+    "counts": {
+      "goldenPrimaries": 45,
+      "goldenGaps": 18,
+      "goldenDistributed": 1,
+      "aiPrimaries": 48,
+      "aiGaps": 16,
+      "aiDistributed": 0,
+      "aiAmbiguous": 0
+    }
+  }
+}

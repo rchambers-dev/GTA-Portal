@@ -588,6 +588,26 @@
   color: #fff;
 }
 
+.pillValue {
+  font-weight: 700;
+  color: var(--color-navy-700, #1e3a5f);
+}
+
+.blockValueTotals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.55rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-navy-700, #1e3a5f) 16%, #e2e8f0);
+  font-size: 0.78rem;
+  color: var(--color-navy-900, #0f172a);
+}
+
+.blockValueTotals strong {
+  margin-left: auto;
+}
+
 @media (max-width: 959px) {
   .ksbPalette {
     max-height: min(40vh, 18rem);

@@ -1,0 +1,343 @@
+{
+  "status": "PLAN ONLY — await human approval before SOW edits",
+  "constraints": {
+    "otjTotalUnchanged": 611.5,
+    "noInventedOtj": true,
+    "noPersistMappings": true,
+    "noCurriculumValue": true,
+    "preferRestructureExisting": true,
+    "primaryRule": "exactly one Primary after amendment evidence exists"
+  },
+  "k1_b1_vs_b2_decision": {
+    "block1Findings": [
+      "Block 1 is Shared Motor Vehicle Foundation Skills (FS01–FS10) for all pathways, not Autocare-only.",
+      "No official KSB codes in FS lesson plans.",
+      "FS01 topic is Workshop Safety… and Occupational Expectations — professional behaviours, not Autocare role/autonomy/reporting channels.",
+      "Clean Master previously flagged missing Foundation Skills KSB cross-reference."
+    ],
+    "recommendation": "Do NOT place K1 Primary in B1 yet.",
+    "reason": "B1 is not currently a taught Autocare KSB-bearing curriculum block. Using B1 would require (a) pathway-specific Autocare content for role/autonomy/reporting and (b) an approved FS↔KSB crosswalk. Until then, K1 belongs in Autocare specialist curriculum.",
+    "proposedPrimary": 2,
+    "session": "W16"
+  },
+  "groups": [
+    {
+      "group": 1,
+      "ksbs": [
+        "K1"
+      ],
+      "types": {
+        "K1": "knowledge"
+      },
+      "official": {
+        "K1": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels."
+      },
+      "proposedPrimaryBlock": 2,
+      "amendSession": {
+        "week": 16,
+        "block": 2,
+        "title": "Duties 1 / 2: Intake plus Inspection",
+        "eligibleOtjHours": 5.5
+      },
+      "reinforcementLater": [
+        {
+          "block": 3,
+          "week": 21,
+          "note": "Reception/booking can revisit reporting channels/escalation — Reinforcement only"
+        },
+        {
+          "block": 10,
+          "note": "EPA readiness customer communication — consolidation Reinforcement only"
+        }
+      ],
+      "otjImpact": "Restructure within existing 5.5h — no added hours; reduce generic intake/comms volume by ~45–60 minutes to insert K1 teaching/application.",
+      "current": {
+        "topic": "Duties 1 / 2: Intake plus Inspection",
+        "focusLine": "Mapped occupational duties | K34, S1, S2, B2, K32, K33 | Scheduled at block end",
+        "activities": [
+          "Tutor-led: link customer communication to vehicle intake; gather concerns; influence on inspection planning",
+          "Role-play: greeting, gathering information, recording on job cards",
+          "Application: prioritise checks from symptoms; complete job cards/inspection plans",
+          "Consolidation: review intake/inspection decisions"
+        ],
+        "gap": "No explicit automotive industry context, autocare technician role, limits of autonomy, or reporting channels."
+      },
+      "proposedAfter": {
+        "retitleOptional": "Intake, technician role boundaries, and inspection planning",
+        "restructure": [
+          "OPEN (≈45–60 min OTJ): Autocare technician role in the automotive industry; what the role may/must not decide alone (limits of autonomy); when/how to report and escalate (reporting channels) using concrete workshop scenarios.",
+          "THEN retain shortened intake role-play applying autonomy/reporting: learner decides what they can confirm vs what must be referred to supervisor/service adviser before promising work/cost/timescale.",
+          "THEN inspection-planning application (also serves Group 4 — see joint note)."
+        ],
+        "howItTeachesK1": "Learners must state role boundaries and choose correct reporting route before completing intake commitments — applied, not mentioned.",
+        "learnerEvidence": [
+          "Short written 'role & reporting map' for 2 scenarios (e.g. safety defect found; customer demands unauthorised discount)",
+          "Observation checklist: correctly escalates vs oversteps autonomy during intake role-play",
+          "Job-card note recording what was referred and to whom"
+        ]
+      }
+    },
+    {
+      "group": 2,
+      "ksbs": [
+        "B5",
+        "K31",
+        "S20"
+      ],
+      "types": {
+        "B5": "behaviour",
+        "K31": "knowledge",
+        "S20": "skill"
+      },
+      "official": {
+        "B5": "Support an inclusive workplace, for example, being respectful of different views.",
+        "K31": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work.",
+        "S20": "Comply with equity, diversity, and inclusion guidance."
+      },
+      "proposedPrimaryBlock": 2,
+      "noteOnEarlierProvisionalB3": "Earlier register suggested B3 to align with workplace-behaviour Primaries. After inspecting actual sessions, W11 already has B5/K31/S20 on the Duty/KSB focus line and is the first customer/people session — better amendment target. Primary therefore proposed as B2 after W11 is strengthened.",
+      "amendSession": {
+        "week": 11,
+        "block": 2,
+        "title": "Customer Service Scenarios",
+        "eligibleOtjHours": 5.5
+      },
+      "reinforcementLater": [
+        {
+          "block": 3,
+          "week": 26,
+          "note": "Workshop procedures/handover — inclusive team communication Reinforcement if EDI behaviours revisited"
+        },
+        {
+          "block": 7,
+          "note": "Advanced adviser/service recovery — Reinforcement for inclusive customer practice"
+        }
+      ],
+      "otjImpact": "Restructure within 5.5h — convert one role-play/scenario block to explicit EDI application; no added hours.",
+      "current": {
+        "topic": "Customer Service Scenarios",
+        "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end",
+        "activities": [
+          "Tutor-led: complaints, misunderstandings, delays; customer expectations; escalation risk from poor communication",
+          "Role-play: complaints about incorrect work/delays/cost disputes",
+          "Application: written records of customer interactions",
+          "Consolidation: best practice discussion"
+        ],
+        "gap": "Focus list names B5/K31/S20 but content has no EDI principles, inclusive workplace, or complying with EDI guidance."
+      },
+      "proposedAfter": {
+        "restructure": [
+          "Add concise taught input on EDI principles (K31) and organisational EDI guidance (S20) with workshop/customer examples.",
+          "Replace/reshape at least one role-play to include inclusive practice (B5): respectful of different views/needs (e.g. language barriers, accessibility, cultural norms, challenging but respectful disagreement among colleagues).",
+          "Require learners to cite the EDI guidance they followed when recording the interaction."
+        ],
+        "howItTeaches": {
+          "K31": "Explicit knowledge of EDI principles and workplace impact",
+          "S20": "Apply/comply with EDI guidance during scenario",
+          "B5": "Demonstrated inclusive behaviour/respect for different views in role-play"
+        },
+        "learnerEvidence": [
+          "EDI knowledge check (short responses linked to workplace impact)",
+          "Observed role-play against inclusive-behaviour criteria",
+          "Written interaction record referencing EDI guidance applied"
+        ]
+      }
+    },
+    {
+      "group": 3,
+      "ksbs": [
+        "K7"
+      ],
+      "types": {
+        "K7": "knowledge"
+      },
+      "official": {
+        "K7": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement."
+      },
+      "proposedPrimaryBlock": 3,
+      "amendSession": {
+        "week": 26,
+        "block": 3,
+        "title": "Workshop procedures, documentation control and handover discipline",
+        "eligibleOtjHours": 5.5
+      },
+      "reinforcementLater": [
+        {
+          "block": 2,
+          "week": 16,
+          "note": "After Group 4 amendment, W16 uses instructions during inspection — Reinforcement"
+        },
+        {
+          "block": 5,
+          "note": "Complex repair process weeks — Reinforcement"
+        }
+      ],
+      "otjImpact": "Restructure within 5.5h — shift part of job-card error-hunt into using authentic workplace instructions (SOP/method statement) for inspect/maintain/replace.",
+      "current": {
+        "topic": "Workshop procedures, documentation control and handover discipline",
+        "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end",
+        "activities": [
+          "Tutor-led: job-card lifecycle; documentation for legal protection/traceability/customer communication",
+          "Review sample job cards; identify/correct errors",
+          "Complete job cards from fault scenarios",
+          "Consolidation on documentation/audit"
+        ],
+        "gap": "K7 appears on focus line, but teaching is about job cards/handover, not workplace instructions as an object of learning for inspection/maintenance/replacement."
+      },
+      "proposedAfter": {
+        "restructure": [
+          "Teach what workplace instructions are (SOP/method statement/manufacturer workshop instructions) vs a job card.",
+          "Practical: given an inspection/maintenance/replacement task, select the correct workplace instruction, extract steps/controls, then complete the job card from that instruction.",
+          "Keep shortened documentation-quality check as secondary."
+        ],
+        "howItTeachesK7": "Learners must locate, interpret and apply workplace instructions to carry out inspect/maintain/replace sequencing — not merely complete a blank job card.",
+        "learnerEvidence": [
+          "Annotated workplace instruction (highlighted mandatory steps/controls)",
+          "Completed task record showing instruction reference ID/version used",
+          "Questioning: purpose of workplace instructions vs job card/customer note"
+        ]
+      }
+    },
+    {
+      "group": 4,
+      "ksbs": [
+        "K2",
+        "S7"
+      ],
+      "types": {
+        "K2": "knowledge",
+        "S7": "skill"
+      },
+      "official": {
+        "K2": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability.",
+        "S7": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle."
+      },
+      "proposedPrimaryBlock": 2,
+      "amendSession": {
+        "week": 16,
+        "block": 2,
+        "title": "Duties 1 / 2: Intake plus Inspection",
+        "eligibleOtjHours": 5.5,
+        "jointWithGroup1": true
+      },
+      "reinforcementLater": [
+        {
+          "block": 3,
+          "week": 24,
+          "note": "Brake/tyre wear checks already mention wear limits/legal — Reinforcement for wear/serviceability after Primary exists"
+        },
+        {
+          "block": 10,
+          "note": "EPA systems inspection practice — consolidation Reinforcement"
+        }
+      ],
+      "otjImpact": "Restructure remaining W16 time after Group 1 insert — convert inspection-planning activity into data/schedule-led inspection practical. Still 5.5h total; no OTJ added.",
+      "current": {
+        "topic": "Duties 1 / 2: Intake plus Inspection",
+        "activities": [
+          "Intake communication focus",
+          "Role-play intake/job cards",
+          "Inspection planning from customer symptoms (not manufacturer schedule/data)",
+          "Consolidation on communication↔diagnostics link"
+        ],
+        "gap": "No manufacturer specifications/approved schedules, no vehicle-specific data lookup driving decisions, no routine-maintenance procedure application against wear/serviceability requirements."
+      },
+      "proposedAfter": {
+        "restructure": [
+          "After K1 opener: teach approved schedules + vehicle-specific data sources + wear/serviceability legal requirements (K2).",
+          "Practical (S7): learners select schedule/data for a given vehicle, perform a defined safety inspection / routine maintenance check set, measure/judge wear/serviceability, record pass/advise/fail against data.",
+          "Keep a short intake link: customer concern ↔ which schedule/data checks are required."
+        ],
+        "howItTeaches": {
+          "K2": "Taught and used: specs/schedules/data/legal wear-serviceability",
+          "S7": "Applied inspection/routine maintenance procedure using that vehicle-specific data"
+        },
+        "learnerEvidence": [
+          "Print/screenshot or referenced schedule & data used for the vehicle",
+          "Completed inspection/maintenance checklist with measured values vs limits",
+          "Observation of procedure sequence and safe working"
+        ],
+        "compatibilityWithGroup1": "W16 hosts both Group 1 (~45–60 min) and Group 4 (remainder). Feasible within 5.5h if intake role-play is shortened."
+      }
+    },
+    {
+      "group": 5,
+      "ksbs": [
+        "K20",
+        "S25"
+      ],
+      "types": {
+        "K20": "knowledge",
+        "S25": "skill"
+      },
+      "official": {
+        "K20": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters.",
+        "S25": "Apply procedures to check and replace fluids, and filtration parts."
+      },
+      "proposedPrimaryBlock": 2,
+      "amendSession": {
+        "week": 13,
+        "block": 2,
+        "title": "Engine Repairs",
+        "eligibleOtjHours": 5.5
+      },
+      "reinforcementLater": [
+        {
+          "block": 3,
+          "week": 30,
+          "note": "Spill/environmental week currently only names fluids as hazardous waste — may Reinforce disposal, NOT Primary for check/replace"
+        },
+        {
+          "block": 10,
+          "note": "Consolidation practical possible later — Reinforcement only"
+        }
+      ],
+      "otjImpact": "Restructure within existing 5.5h W13 — reduce deep mechanical fault-diagnosis proportion; replace with fluids/filtration systems teaching + check/replace practical. No added OTJ. Do NOT use brake diagnostics (W17) or brake-wear (W24) as Primary host.",
+      "whyNotOtherSessions": [
+        "W17 Advanced Brake Diagnostics — ABS/fault focus; S25 on focus list is false association",
+        "W24 Brake wear checks — wear inspection only; no fluid/filter replace procedure",
+        "W30 — fluids only as hazardous waste types, not check/replace teaching",
+        "Fluid scan weeks 1–30: no genuine fluids+filtration practical currently exists"
+      ],
+      "current": {
+        "topic": "Engine Repairs",
+        "focusLine": "Duty 3 | B3, B4, B5, K25, K30, K31, S20, S21, S25 | Scheduled at block end",
+        "activities": [
+          "Theory: pistons/crank/cam/valves/timing/four-stroke",
+          "Practical ID of engine components; visual oil-leak/wear inspection",
+          "Fault scenarios: knocking, poor performance, leaks → mechanical causes",
+          "Consolidation on engine operation/fault impact"
+        ],
+        "gap": "No teaching of fluid/filtration systems (brake fluid, oil/oil filters, air filters) and no procedure to check and replace fluids/filtration parts."
+      },
+      "proposedAfter": {
+        "retitleRecommended": "Engine service systems: fluids, filtration and related mechanical checks",
+        "restructure": [
+          "Teach K20 systems: locations/purpose of engine oil + oil filter, air filter, and brake fluid; contamination/condition indicators; when replacement is required.",
+          "Practical S25 (required): check fluid levels/condition; replace/or simulate replace engine oil and oil filter; replace/inspect air filter; check brake fluid condition/level to procedure (with hygiene/safety controls). Must cover fluids AND filtration components.",
+          "Retain a shorter mechanical context (e.g. leak paths / why filtration matters to engine health) — not full advanced engine rebuild theory."
+        ],
+        "howItTeaches": {
+          "K20": "Explicit systems knowledge for brake fluid, oil/oil filters, air filters",
+          "S25": "Hands-on check/replace fluids and filtration parts to procedure"
+        },
+        "learnerEvidence": [
+          "Pre-task knowledge: identify fluid/filter locations and replace criteria",
+          "Observed practical against procedure checklist (oil+filter, air filter, brake fluid check)",
+          "Completed service record stating parts/fluids checked or replaced and readings/observations"
+        ],
+        "sufficiencyGate": "Amendment is ONLY accepted if practical explicitly covers fluids AND filtration parts — not generic servicing talk or leak visual-only."
+      }
+    }
+  ],
+  "combinedW16CapacityNote": {
+    "week": 16,
+    "hosts": [
+      "Group 1 K1",
+      "Group 4 K2+S7"
+    ],
+    "feasibility": "Yes within 5.5h if intake role-play is shortened and inspection becomes data/schedule-led practical.",
+    "risk": "Overloading if Group 5 is also forced into W16 — avoid; Group 5 stays on W13."
+  },
+  "otjProgrammeNote": "All proposals are zero net OTJ change to the Clean Master 611.5 total: reallocate emphasis inside existing 5.5h specialist sessions."
+}

@@ -1,0 +1,126 @@
+
+==== Autocare_L2_Week_011_Lesson_Plan_v1.0.docx ====
+[7] SOW reference
+    +1: Autocare Technician Level 2 SOW v4.1 | Block 2 | Week 11
+    +2: Planned hours
+    +3: 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks
+[11] Block / period
+    +1: Vehicle Inspection, Servicing and Customer Interaction | Months 3-5
+    +2: Duty / KSB focus
+    +3: Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end
+[13] Duty / KSB focus
+    +1: Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end
+    +2: Topic
+    +3: Customer Service Scenarios
+[15] Topic
+    +1: Customer Service Scenarios
+    +2: Occupational relevance: This session develops accurate, professional practice for customer service scenarios. Clear decisions and records support customer confidence, efficient workshop operation, business protection, traceability and appropriate escalation.
+    +3: Lesson aims
+[22] Learning objectives – by the end, apprentices should be able to
+    +1: • Identify and explain at least three key principles, risks or controls relevant to customer service scenarios.
+    +2: • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.
+    +3: • Complete a task or scenario linked to customer service scenarios safely, accurately and in the correct sequence.
+[25] • Complete a task or scenario linked to customer service scenarios safely, accurately and in the correct sequence.
+    +1: • Record findings clearly and justify at least one decision using technical information or workplace procedure.
+    +2: How learning will be checked
+    +3: • Start: Record a baseline response on the principles, sequence, risks or controls for customer service scenarios.
+[30] • End: Review the completed evidence, require correction after feedback and use an exit explanation linked to workplace application.
+    +1: Simple impact measure
+    +2: • Compare the recorded starting-point response with the completed end task and corrected evidence.
+    +3: • Record one outcome: Not yet secure / Developing / Secure / Exceeding.
+[73] • With the employer/mentor, identify or apply one workplace example linked to customer service scenarios.
+    +1: • Retain a suitable record and explain its effect on safety, quality, efficiency or the customer.
+    +2: Trainer preparation
+    +3: • Check the work area, current technical information, tools/equipment and relevant PPE/RPE.
+[78] • Confirm support needs, reasonable adjustments, any approved recognition-of-prior-learning change and the evidence location. Keep formal assessment, gateway decisions and administration separate from eligible learning.
+    +1: Post-lesson impact: What can apprentices now identify, explain, demonstrate or complete that they could not do at the start?
+    +2: Follow-up: Who needs additional support, practice or stretch; what is the next action and when will it be reviewed?
+    +3: Abbreviations and terms used
+[86] KSB
+    +1: Knowledge, Skills and Behaviours.
+    +2: OTJ
+    +3: Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties.
+
+==== Autocare_L2_Week_041_Lesson_Plan_v1.0.docx ====
+[7] SOW reference
+    +1: Autocare Technician Level 2 SOW v4.1 | Block 5 | Week 41
+    +2: Planned hours
+    +3: 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks
+[11] Block / period
+    +1: Diagnostic Thinking and Complex Repair Activities | Months 10-13
+    +2: Duty / KSB focus
+    +3: Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end
+[13] Duty / KSB focus
+    +1: Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 | Scheduled at block end
+    +2: Topic
+    +3: Technical handover and managing customer expectations on diagnostic work
+[15] Topic
+    +1: Technical handover and managing customer expectations on diagnostic work
+    +2: Occupational relevance: This session develops accurate, professional practice for technical handover and managing customer expectations on diagnostic work. Clear decisions and records support customer confidence, efficient workshop operation, business protection, traceability and appropriate escalat
+    +3: Lesson aims
+[22] Learning objectives – by the end, apprentices should be able to
+    +1: • Identify and explain at least three key principles, risks or controls relevant to technical handover and managing customer expectations on diagnostic work.
+    +2: • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.
+    +3: • Complete a task or scenario linked to technical handover and managing customer expectations on diagnostic work safely, accurately and in the correct sequence.
+[25] • Complete a task or scenario linked to technical handover and managing customer expectations on diagnostic work safely, accurately and in the correct sequence.
+    +1: • Record findings clearly and justify at least one decision using technical information or workplace procedure.
+    +2: How learning will be checked
+    +3: • Start: Record a baseline response on the principles, sequence, risks or controls for technical handover and managing customer expectations on diagnostic work.
+[30] • End: Review the completed evidence, require correction after feedback and use an exit explanation linked to workplace application.
+    +1: Simple impact measure
+    +2: • Compare the recorded starting-point response with the completed end task and corrected evidence.
+    +3: • Record one outcome: Not yet secure / Developing / Secure / Exceeding.
+[73] • With the employer/mentor, identify or apply one workplace example linked to technical handover and managing customer expectations on diagnostic work.
+    +1: • Retain a suitable record and explain its effect on safety, quality, efficiency or the customer.
+    +2: Trainer preparation
+    +3: • Check the work area, current technical information, tools/equipment and relevant PPE/RPE.
+[78] • Confirm support needs, reasonable adjustments, any approved recognition-of-prior-learning change and the evidence location. Keep formal assessment, gateway decisions and administration separate from eligible learning.
+    +1: Post-lesson impact: What can apprentices now identify, explain, demonstrate or complete that they could not do at the start?
+    +2: Follow-up: Who needs additional support, practice or stretch; what is the next action and when will it be reviewed?
+    +3: Abbreviations and terms used
+[86] KSB
+    +1: Knowledge, Skills and Behaviours.
+    +2: OTJ
+    +3: Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties.
+
+==== Autocare_L2_Week_081_Lesson_Plan_v1.0.docx ====
+[7] SOW reference
+    +1: Autocare Technician Level 2 SOW v4.1 | Block 9 | Week 81
+    +2: Planned hours
+    +3: 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks
+[11] Block / period
+    +1: Emerging Technologies, Electric Vehicles and Hydrogen Awareness | Months 20-24
+    +2: Duty / KSB focus
+    +3: Mapped occupational duties | B1, B2, K2, K5, K6, K8, K9, K10, K19, K22, S5, S6, S7, S12, S14 | Scheduled at block end
+[13] Duty / KSB focus
+    +1: Mapped occupational duties | B1, B2, K2, K5, K6, K8, K9, K10, K19, K22, S5, S6, S7, S12, S14 | Scheduled at block end
+    +2: Topic
+    +3: Applied Awareness
+[15] Topic
+    +1: Applied Awareness
+    +2: Occupational relevance: This session develops the knowledge and practical judgement needed for applied awareness. Following technical information and safe procedures supports vehicle safety, work quality, efficient diagnosis or repair, customer confidence and clear accountability.
+    +3: Lesson aims
+[22] Learning objectives – by the end, apprentices should be able to
+    +1: • Identify and explain at least three key principles, risks or controls relevant to applied awareness.
+    +2: • Select and use relevant technical information, workplace procedures, tools, equipment or documentation for the planned task.
+    +3: • Complete a task or scenario linked to applied awareness safely, accurately and in the correct sequence.
+[25] • Complete a task or scenario linked to applied awareness safely, accurately and in the correct sequence.
+    +1: • Record findings clearly and justify at least one decision using technical information or workplace procedure.
+    +2: How learning will be checked
+    +3: • Start: Record a baseline response on the principles, sequence, risks or controls for applied awareness.
+[30] • End: Review the completed evidence, require correction after feedback and use an exit explanation linked to workplace application.
+    +1: Simple impact measure
+    +2: • Compare the recorded starting-point response with the completed end task and corrected evidence.
+    +3: • Record one outcome: Not yet secure / Developing / Secure / Exceeding.
+[73] • With the employer/mentor, identify or apply one workplace example linked to applied awareness.
+    +1: • Retain a suitable record and explain its effect on safety, quality, efficiency or the customer.
+    +2: Trainer preparation
+    +3: • Check the work area, current technical information, tools/equipment and relevant PPE/RPE.
+[78] • Confirm support needs, reasonable adjustments, any approved recognition-of-prior-learning change and the evidence location. Keep formal assessment, gateway decisions and administration separate from eligible learning.
+    +1: Post-lesson impact: What can apprentices now identify, explain, demonstrate or complete that they could not do at the start?
+    +2: Follow-up: Who needs additional support, practice or stretch; what is the next action and when will it be reviewed?
+    +3: Abbreviations and terms used
+[88] KSB
+    +1: Knowledge, Skills and Behaviours.
+    +2: OTJ
+    +3: Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties.

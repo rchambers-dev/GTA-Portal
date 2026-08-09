@@ -13,15 +13,15 @@ import {
   type LearningPlanItemKind,
 } from "../domain/apprentice-profile";
 import {
-  AUTOCARE_BLOCKS,
-  AUTOCARE_STANDARD,
-} from "@/features/programme-delivery/domain/autocare-blocks";
-import { tasksForBlock } from "@/features/programme-delivery/domain/autocare-tasks";
+  tasksForDeliveryBlock,
+} from "@/features/programme-delivery/domain/published-delivery-catalogue";
+import { usePublishedDeliveryCatalogue } from "@/features/programme-delivery/domain/use-published-delivery-catalogue";
 import { taskKindLabel } from "@/features/programme-delivery/domain/task-schema";
 import {
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
+  resolveTaskStoreApprenticeId,
   statusLabel,
   statusTone,
   subscribeTaskStore,
@@ -61,8 +61,8 @@ function PlanItem({ item }: { item: LearningPlanItem }) {
 }
 
 export function ApprenticeLearningScreen() {
-  const { profile } = useApprenticePortalProfile();
-  const apprenticeId = profile.apprenticeId || "live-apprentice";
+  const { profile, loading: profileLoading } = useApprenticePortalProfile();
+  const apprenticeId = resolveTaskStoreApprenticeId(profile.apprenticeId);
   const onGroups = profile.deliverySpine !== "blocks";
   useSyncExternalStore(
     subscribeTaskStore,
@@ -70,17 +70,31 @@ export function ApprenticeLearningScreen() {
     getTaskServerSnapshot,
   );
 
+  const { catalogue, loading: catalogueLoading } = usePublishedDeliveryCatalogue(
+    {
+      programmeVersionId: profile.gtaProgrammeVersionId,
+      apprenticeId: profile.apprenticeId || null,
+      enabled: !profileLoading && !onGroups,
+    },
+  );
+
+  const taskedBlocks =
+    catalogue.status === "ready"
+      ? catalogue.blocks.filter(
+          (b) => tasksForDeliveryBlock(catalogue, b.spineItemId).length > 0,
+        )
+      : [];
   const currentBlock =
-    AUTOCARE_BLOCKS.find(
+    taskedBlocks.find(
       (b) =>
-        b.kind === "training" &&
         b.weekStart != null &&
         b.weekEnd != null &&
         profile.programmeWeek >= b.weekStart &&
         profile.programmeWeek <= b.weekEnd,
-    ) ?? AUTOCARE_BLOCKS[0];
-
-  const blockTasks = tasksForBlock(currentBlock.id);
+    ) ?? taskedBlocks[0];
+  const blockTasks = currentBlock
+    ? tasksForDeliveryBlock(catalogue, currentBlock.spineItemId)
+    : [];
   const learningPlan: LearningPlanItem[] = [];
 
   const spineLabel =
@@ -91,6 +105,14 @@ export function ApprenticeLearningScreen() {
       : onGroups
         ? "Groups"
         : "Blocks";
+
+  if (!onGroups && (profileLoading || catalogueLoading)) {
+    return (
+      <ApprenticePageShell title="My Learning" description="Loading…">
+        <p className={styles.note}>Loading published college tasks…</p>
+      </ApprenticePageShell>
+    );
+  }
 
   return (
     <ApprenticePageShell
@@ -105,7 +127,7 @@ export function ApprenticeLearningScreen() {
         <div className={styles.purposeBox}>
           <p className={styles.purposeLead}>
             <strong>
-              {profile.programmeName}
+              {catalogue.programmeTitle || profile.programmeName}
             </strong>
             {" · "}
             {spineLabel}
@@ -131,12 +153,17 @@ export function ApprenticeLearningScreen() {
               </Link>
             </p>
           </section>
+        ) : catalogue.status !== "ready" ? (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>College tasks not ready</h2>
+            <p className={styles.note}>{catalogue.message}</p>
+          </section>
         ) : (
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>This block · college tasks</h2>
             {blockTasks.length === 0 ? (
               <p className={styles.note}>
-                No college tasks mapped to this block yet.
+                No published college tasks mapped to this block yet.
               </p>
             ) : (
               <ul className={styles.list}>
@@ -152,6 +179,9 @@ export function ApprenticeLearningScreen() {
                           <strong>{task.title}</strong>
                           <span className={styles.meta}>
                             {taskKindLabel(task.kind)}
+                            {currentBlock
+                              ? ` · Block ${currentBlock.displayOrdinal}`
+                              : ""}
                           </span>
                         </div>
                         <ApprenticeStatusChip tone={statusTone(submission.status)}>

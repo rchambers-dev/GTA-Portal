@@ -15,18 +15,16 @@ import {
   resolveGroupsPack,
   subscribeCeaStateStore,
 } from "../domain/cea";
+import { isDeliveryBlockUnlocked } from "@/features/programme-delivery/domain/delivery-unlock";
 import {
-  AUTOCARE_BLOCKS,
-  AUTOCARE_STANDARD,
-} from "@/features/programme-delivery/domain/autocare-blocks";
-import {
-  AUTOCARE_PRACTICAL_TASKS,
-  tasksForBlock,
-} from "@/features/programme-delivery/domain/autocare-tasks";
+  tasksForDeliveryBlock,
+} from "@/features/programme-delivery/domain/published-delivery-catalogue";
+import { usePublishedDeliveryCatalogue } from "@/features/programme-delivery/domain/use-published-delivery-catalogue";
 import {
   getTaskServerSnapshot,
   getTaskSnapshot,
   getTaskSubmission,
+  resolveTaskStoreApprenticeId,
   statusLabel,
   statusTone,
   subscribeTaskStore,
@@ -35,7 +33,6 @@ import {
   apprenticeBlockRag,
   apprenticeBlockRagLabel,
   bragShortLabel,
-  isApprenticeBlockUnlocked,
   milestoneChipTone,
   milestoneShortLabel,
   summariseBlockCompletion,
@@ -47,11 +44,11 @@ import styles from "./apprentice-pages.module.css";
 /**
  * Progress against the apprentice's delivery spine:
  * - groups → MV tracker month brackets + course % from persisted CEA state
- * - blocks → programme weeks and college block tasks
+ * - blocks → pinned programme version published tasks
  */
 export function ApprenticeProgressScreen() {
-  const { profile } = useApprenticePortalProfile();
-  const apprenticeId = profile.apprenticeId || "live-apprentice";
+  const { profile, loading: profileLoading } = useApprenticePortalProfile();
+  const apprenticeId = resolveTaskStoreApprenticeId(profile.apprenticeId);
   const onGroups = profile.deliverySpine !== "blocks";
   useSyncExternalStore(
     subscribeTaskStore,
@@ -62,6 +59,14 @@ export function ApprenticeProgressScreen() {
     subscribeCeaStateStore,
     getCeaStateStoreSnapshot,
     getCeaStateStoreServerSnapshot,
+  );
+
+  const { catalogue, loading: catalogueLoading } = usePublishedDeliveryCatalogue(
+    {
+      programmeVersionId: profile.gtaProgrammeVersionId,
+      apprenticeId: profile.apprenticeId || null,
+      enabled: !profileLoading && !onGroups,
+    },
   );
 
   const groupsPack = useMemo(() => {
@@ -99,14 +104,19 @@ export function ApprenticeProgressScreen() {
   ]);
 
   const taskedBlocks = useMemo(
-    () => AUTOCARE_BLOCKS.filter((b) => tasksForBlock(b.id).length > 0),
-    [],
+    () =>
+      catalogue.status === "ready"
+        ? catalogue.blocks.filter(
+            (b) => tasksForDeliveryBlock(catalogue, b.spineItemId).length > 0,
+          )
+        : [],
+    [catalogue],
   );
 
   let verified = 0;
   let inFlight = 0;
   let notStarted = 0;
-  for (const task of AUTOCARE_PRACTICAL_TASKS) {
+  for (const task of catalogue.tasks) {
     const status = getTaskSubmission(task.id, apprenticeId).status;
     if (status === "verified") verified += 1;
     else if (status === "not_started") notStarted += 1;
@@ -116,7 +126,7 @@ export function ApprenticeProgressScreen() {
     verified,
     inFlight,
     notStarted,
-    total: AUTOCARE_PRACTICAL_TASKS.length,
+    total: catalogue.tasks.length,
   };
 
   const actualPercent = onGroups
@@ -132,13 +142,25 @@ export function ApprenticeProgressScreen() {
     groupsBoard?.trainingRows.filter((r) => r.summary.complete).length ?? 0;
   const groupsTotal = groupsBoard?.trainingRows.length ?? 0;
 
+  const programmeLabel = onGroups
+    ? profile.programmeName
+    : catalogue.programmeTitle || profile.programmeName;
+
+  if (!onGroups && (profileLoading || catalogueLoading)) {
+    return (
+      <ApprenticePageShell title="Progress" description="Loading…">
+        <p className={styles.meta}>Loading published programme progress…</p>
+      </ApprenticePageShell>
+    );
+  }
+
   return (
     <ApprenticePageShell
       title="Progress"
       description={
         onGroups
           ? `Planned versus actual on ${profile.programmeName} — tracked through personal tracking month brackets.`
-          : `Planned versus actual on ${AUTOCARE_STANDARD.label} — tracked by programme weeks and college block tasks.`
+          : `Planned versus actual on ${programmeLabel} — tracked by programme weeks and published college block tasks.`
       }
     >
       <div className={styles.stack}>
@@ -153,7 +175,7 @@ export function ApprenticeProgressScreen() {
             <p className={styles.glanceHint}>
               {onGroups
                 ? "Expected from tracker brackets so far"
-                : `of ${AUTOCARE_STANDARD.deliveryWeeks} delivery weeks`}
+                : "of your current programme calendar"}
             </p>
           </div>
           <div
@@ -180,7 +202,9 @@ export function ApprenticeProgressScreen() {
             <p className={styles.glanceHint}>
               {onGroups
                 ? "Mandatory quota met on personal tracking"
-                : `${taskStats.inFlight} in flight · ${taskStats.notStarted} not started`}
+                : catalogue.status === "ready"
+                  ? `${taskStats.inFlight} in flight · ${taskStats.notStarted} not started`
+                  : catalogue.message}
             </p>
           </div>
         </div>
@@ -233,7 +257,16 @@ export function ApprenticeProgressScreen() {
                     const tone = row.brag ?? "neutral";
                     return (
                       <li key={row.group.id}>
-                        <div className={styles.rowLink} data-tone={tone === "blue" ? "navy" : tone === "neutral" ? "navy" : tone}>
+                        <div
+                          className={styles.rowLink}
+                          data-tone={
+                            tone === "blue"
+                              ? "navy"
+                              : tone === "neutral"
+                                ? "navy"
+                                : tone
+                          }
+                        >
                           <div className={styles.rowMain}>
                             <strong>
                               Group {row.group.number} · {row.group.title}
@@ -384,6 +417,13 @@ export function ApprenticeProgressScreen() {
               )}
             </section>
           </>
+        ) : catalogue.status !== "ready" ? (
+          <section className={styles.section}>
+            <h2 className={styles.dashSectionTitle} data-accent="amber">
+              College blocks not ready
+            </h2>
+            <p className={styles.meta}>{catalogue.message}</p>
+          </section>
         ) : (
           <>
             {(() => {
@@ -395,7 +435,9 @@ export function ApprenticeProgressScreen() {
                     profile.programmeWeek >= b.weekStart &&
                     profile.programmeWeek <= b.weekEnd,
                 ) ?? taskedBlocks[0];
-              const liveTasks = tasksForBlock(currentBlock?.id ?? 1);
+              const liveTasks = currentBlock
+                ? tasksForDeliveryBlock(catalogue, currentBlock.spineItemId)
+                : [];
               if (liveTasks.length === 0) return null;
               return (
                 <section className={styles.section}>
@@ -403,8 +445,9 @@ export function ApprenticeProgressScreen() {
                     Live college tasks
                   </h2>
                   <p className={styles.meta}>
-                    Block {currentBlock?.id} · {currentBlock?.name}. Open any
-                    task below, or browse all blocks from Personal tracking.
+                    Block {currentBlock?.displayOrdinal} ·{" "}
+                    {currentBlock?.title}. Open any task below, or browse all
+                    blocks from Personal tracking.
                   </p>
                   <ul className={styles.list}>
                     {liveTasks.map((task) => {
@@ -445,18 +488,28 @@ export function ApprenticeProgressScreen() {
                 Blocks
               </h2>
               <p className={styles.meta}>
-                All 12 blocks (60 tasks). Green = complete, amber = in progress,
-                red = needs completing. Blocks already reached stay open together
-                for catch-up — being behind does not re-lock later blocks.
+                Published blocks for your pinned programme version. Green =
+                complete, amber = in progress, red = needs completing. Blocks
+                already reached stay open together for catch-up.
               </p>
               <ul className={styles.list}>
-                {taskedBlocks.map((block) => {
-                  const tasks = tasksForBlock(block.id);
-                  const locked = !isApprenticeBlockUnlocked({
-                    blockId: block.id,
-                    weekStart: block.weekStart,
+                {taskedBlocks.map((block, index) => {
+                  const tasks = tasksForDeliveryBlock(
+                    catalogue,
+                    block.spineItemId,
+                  );
+                  const prior =
+                    index > 0
+                      ? tasksForDeliveryBlock(
+                          catalogue,
+                          taskedBlocks[index - 1]!.spineItemId,
+                        )
+                      : [];
+                  const locked = !isDeliveryBlockUnlocked({
+                    block,
+                    blocks: catalogue.blocks,
                     programmeWeek: profile.programmeWeek,
-                    priorBlockTasks: tasksForBlock(block.id - 1),
+                    priorBlockTasks: prior,
                     apprenticeId,
                   });
                   const summary = summariseBlockCompletion(tasks, apprenticeId);
@@ -476,7 +529,7 @@ export function ApprenticeProgressScreen() {
                           : "red";
 
                   return (
-                    <li key={block.id}>
+                    <li key={block.spineItemId}>
                       <Link
                         href={locked ? "#" : "/apprentice/tracking"}
                         className={`${styles.rowLink}${locked ? ` ${styles.rowLocked}` : ""}`}
@@ -488,14 +541,12 @@ export function ApprenticeProgressScreen() {
                       >
                         <div className={styles.rowMain}>
                           <strong>
-                            Block {block.id} · {block.name}
+                            Block {block.displayOrdinal} · {block.title}
                           </strong>
                           <span>
                             {block.weekStart != null && block.weekEnd != null
                               ? `Weeks ${block.weekStart}–${block.weekEnd}`
-                              : block.kind === "epa"
-                                ? "EPA assessment"
-                                : "Pre-EPA consolidation"}
+                              : "Programme block"}
                             {current ? " · current week" : ""}
                             {` · ${summary.verified}/${summary.total} verified`}
                           </span>

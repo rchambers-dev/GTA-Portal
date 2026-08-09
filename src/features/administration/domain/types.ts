@@ -66,7 +66,12 @@ export type AdminApprenticeEnrolment = {
   uln: string;
   programmeName: string;
   standardCode: string;
-  /** Cohort this apprentice belongs to — pins programme version for their journey. */
+  /**
+   * Exact GTA programme version used for curriculum valuation, RPL and TNP.
+   * Null until explicitly bound — never auto-bind to "newest" on publish.
+   */
+  gtaProgrammeVersionId: string | null;
+  /** Cohort this apprentice belongs to — pins cohort calendar / groups. */
   cohortId: string | null;
   /** Teaching group within the cohort — inherits tutor + college days. */
   teachingGroupId: string | null;

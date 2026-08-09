@@ -1,0 +1,227 @@
+{
+  "batch4": [
+    {
+      "ksbCode": "K21",
+      "type": "knowledge",
+      "description": "Awareness of electrified vehicle technologies and principles of operation: condition monitoring of high voltage batteries and onboard chargers.",
+      "flag": {
+        "ksbCode": "K21",
+        "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+        "chosenPrimary": 6,
+        "contenders": [
+          {
+            "block": 6,
+            "score": 4.0,
+            "topics": [
+              "Emerging Technology - EV Service, Charging and Safety Procedures"
+            ]
+          },
+          {
+            "block": 9,
+            "score": 4.0,
+            "topics": [
+              "Applied Awareness",
+              "Emerging Technology - EV Customer Handover, Charging and Application"
+            ]
+          }
+        ],
+        "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+      },
+      "candidates": [
+        {
+          "block": 6,
+          "title": "Vehicle Systems Integration and Advanced Diagnostics",
+          "currentRole": "PRIMARY",
+          "score": 4.0,
+          "topics": [
+            "Emerging Technology - EV Service, Charging and Safety Procedures"
+          ],
+          "weeks": [
+            {
+              "week": 54,
+              "duty": null,
+              "topic": "Emerging Technology - EV Service, Charging and Safety Procedures"
+            }
+          ]
+        },
+        {
+          "block": 9,
+          "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+          "currentRole": "REINFORCEMENT",
+          "score": 4.0,
+          "topics": [
+            "Applied Awareness",
+            "Emerging Technology - EV Customer Handover, Charging and Application"
+          ],
+          "weeks": [
+            {
+              "week": 81,
+              "duty": null,
+              "topic": "Applied Awareness"
+            },
+            {
+              "week": 82,
+              "duty": null,
+              "topic": "Emerging Technology - EV Customer Handover, Charging and Application"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ksbCode": "K23",
+      "type": "knowledge",
+      "description": "Safe working procedures for electrified vehicles. High voltage systems, safe isolation.",
+      "flag": {
+        "ksbCode": "K23",
+        "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+        "chosenPrimary": 6,
+        "contenders": [
+          {
+            "block": 6,
+            "score": 4.0,
+            "topics": [
+              "Emerging Technology - EV Service, Charging and Safety Procedures"
+            ]
+          },
+          {
+            "block": 9,
+            "score": 4.0,
+            "topics": [
+              "Emerging Technology - EV Customer Handover, Charging and Application"
+            ]
+          }
+        ],
+        "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+      },
+      "candidates": [
+        {
+          "block": 6,
+          "title": "Vehicle Systems Integration and Advanced Diagnostics",
+          "currentRole": "PRIMARY",
+          "score": 4.0,
+          "topics": [
+            "Emerging Technology - EV Service, Charging and Safety Procedures"
+          ],
+          "weeks": [
+            {
+              "week": 54,
+              "duty": null,
+              "topic": "Emerging Technology - EV Service, Charging and Safety Procedures"
+            }
+          ]
+        },
+        {
+          "block": 9,
+          "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+          "currentRole": "REINFORCEMENT",
+          "score": 4.0,
+          "topics": [
+            "Emerging Technology - EV Customer Handover, Charging and Application"
+          ],
+          "weeks": [
+            {
+              "week": 82,
+              "duty": null,
+              "topic": "Emerging Technology - EV Customer Handover, Charging and Application"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ksbCode": "S13",
+      "type": "skill",
+      "description": "Apply safe working practices and procedures to isolate electrified vehicles for maintenance.",
+      "flag": {
+        "ksbCode": "S13",
+        "issue": "MULTIPLE_NEAR_EQUAL_PRIMARY_CANDIDATES",
+        "chosenPrimary": 6,
+        "contenders": [
+          {
+            "block": 6,
+            "score": 4.0,
+            "topics": [
+              "Emerging Technology - EV Service, Charging and Safety Procedures"
+            ]
+          },
+          {
+            "block": 9,
+            "score": 4.0,
+            "topics": [
+              "Emerging Technology - EV Customer Handover, Charging and Application"
+            ]
+          }
+        ],
+        "resolution": "Chose earliest block among near-equal scores; others → reinforcement"
+      },
+      "candidates": [
+        {
+          "block": 6,
+          "title": "Vehicle Systems Integration and Advanced Diagnostics",
+          "currentRole": "PRIMARY",
+          "score": 4.0,
+          "topics": [
+            "Emerging Technology - EV Service, Charging and Safety Procedures"
+          ],
+          "weeks": [
+            {
+              "week": 54,
+              "duty": null,
+              "topic": "Emerging Technology - EV Service, Charging and Safety Procedures"
+            }
+          ]
+        },
+        {
+          "block": 9,
+          "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+          "currentRole": "REINFORCEMENT",
+          "score": 4.0,
+          "topics": [
+            "Emerging Technology - EV Customer Handover, Charging and Application"
+          ],
+          "weeks": [
+            {
+              "week": 82,
+              "duty": null,
+              "topic": "Emerging Technology - EV Customer Handover, Charging and Application"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "s4_b9_audit": {
+    "week": 89,
+    "file": "Autocare_L2_Week_089_Lesson_Plan_v1.0.docx",
+    "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+    "aimsSnippet": "• Develop secure occupational knowledge and terminology for pre-calibration checks: alignment, ride height and sensor inputs. • Apply safe, accurate and methodical working procedures through the planned task or scenario. • Produce, review and improve evidence that demonstrates decisions, quality and workplace application. Learning objectives – by the end, apprentices should be able to • Identify a",
+    "activitySnippets": [
+      "Detailed theory session covering the importance of pre-calibration checks before any advanced driver assistance, alignment-related or sensor-influenced work is considered.",
+      "Guided practical inspection activity using alignment equipment, tyre and suspension checks, sensor-location diagrams or vehicle examples.",
+      "Application activity using pre-calibration scenarios. Learners review cases such as a vehicle with uneven ride height after suspension work, an off-centre steering wheel, ADAS warning messages after a",
+      "Consolidation through group review of pre-check findings and decision-making. The tutor questions learners on why calibration readiness depends on mechanical condition and correct setup, and challenge"
+    ],
+    "mentionsToolEquipmentStoreOrCalibration": true,
+    "mentionsAdasAlignmentSensorCalibration": true,
+    "keepS4Block9Reinforcement": true
+  },
+  "remainingMultiAfterThis": [],
+  "unmappedAwaitingDecision": [
+    "B5",
+    "K1",
+    "K2",
+    "K7",
+    "K13",
+    "K18",
+    "K20",
+    "K31",
+    "K34",
+    "S7",
+    "S11",
+    "S20",
+    "S23",
+    "S25"
+  ],
+  "resolvedCount": 12
+}

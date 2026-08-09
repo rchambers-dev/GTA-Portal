@@ -1,0 +1,51 @@
+{
+  "report": {
+    "dbPrimaryCount": 15,
+    "officialKsbCount": 64,
+    "confirmedGapCount": 14,
+    "unresolvedUnrepresentedCount": 35,
+    "duplicatePrimaryCount": 0,
+    "nonBlockPrimaryCount": 0,
+    "gatewayEpaMappingCount": 0,
+    "mappingCount": 15,
+    "structuredOtj": 611.5,
+    "parametersUntouched": true,
+    "allIntroduce": true,
+    "allValueOne": true,
+    "publicationBlocked": true
+  },
+  "approved": [
+    "K12",
+    "K21",
+    "K23",
+    "K24",
+    "K29",
+    "K30",
+    "S1",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S19",
+    "S2",
+    "S3",
+    "S4"
+  ],
+  "reviewedGaps": [
+    "K1",
+    "K2",
+    "K7",
+    "K13",
+    "K18",
+    "K20",
+    "K31",
+    "K34",
+    "S7",
+    "S11",
+    "S20",
+    "S23",
+    "S25",
+    "B5"
+  ],
+  "notYetCount": 35
+}

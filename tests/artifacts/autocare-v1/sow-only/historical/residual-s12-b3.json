@@ -1,0 +1,20 @@
+{
+  "ksbCode": "S12",
+  "description": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles.",
+  "block3Evidence": {
+    "week": 24,
+    "topic": "Brake wear checks, tyre condition and wheel security",
+    "tokenOverlapOfficialOnly": [
+      "and",
+      "checks",
+      "wheel"
+    ],
+    "inFocusList": false,
+    "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end",
+    "activityMentionsGeometry": false,
+    "wasHigh": false,
+    "wasMedium": true
+  },
+  "decision": "ARTEFACT_REMOVE",
+  "rationale": "S12 is four-wheel geometry. Block 3 week 24 topic is brake/tyre/wheel security. Match was via shared token 'wheel' only (or EXTRA), not geometry teaching."
+}

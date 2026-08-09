@@ -32,19 +32,23 @@ export function createOpenAiProvider(opts: {
     isConfigured() {
       return Boolean(opts.apiKey);
     },
-    async complete({ messages, temperature, maxTokens }) {
+    async complete({ messages, temperature, maxTokens, jsonObject }) {
+      const body: Record<string, unknown> = {
+        model: opts.model,
+        messages: toOpenAiMessages(messages),
+        temperature: temperature ?? 0.4,
+        max_tokens: maxTokens ?? 1200,
+      };
+      if (jsonObject) {
+        body.response_format = { type: "json_object" };
+      }
       const res = await fetch(`${baseUrl}/chat/completions`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${opts.apiKey}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          model: opts.model,
-          messages: toOpenAiMessages(messages),
-          temperature: temperature ?? 0.4,
-          max_tokens: maxTokens ?? 1200,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (!res.ok) {

@@ -202,6 +202,8 @@ export function NavIcon({ href }: { href: string }) {
     key.includes("/management/enrolments") ||
     key.includes("/management/apprentice-funding") ||
     key.includes("/management/ksb-rpl") ||
+    key.includes("/management/apprentice-tnp") ||
+    key.includes("/management/tnp1") ||
     key.includes("/management/apprentice-brag") ||
     key.includes("/management/progression-brag")
   ) {

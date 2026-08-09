@@ -1,0 +1,212 @@
+{
+  "W45": {
+    "week": 45,
+    "file": "Autocare_L2_Week_045_Lesson_Plan_v1.0.docx",
+    "topic": "VIN lookup, technical data and parts availability checks",
+    "focusLine": "Duty 5 | B3, K26, K27, K28, K29, S17, S18, S19 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session covering vehicle identification using VIN and manufacturer data systems. Tutor breaks down VIN structure and explains how it identifies engine type, drivetrain, build specification and production details.",
+      "Structured practical activity using VIN or registration data to access vehicle information through catalogues or digital systems. Learners identify correct parts, specifications and service data for given vehicles.",
+      "Application activity linking technical data to repair scenarios. Learners use specifications to make decisions about parts selection, torque settings and procedures. Scenarios include incorrect part selection or wrong torque application, and learners must iden",
+      "Consolidation through discussion reviewing data use and highlighting common mistakes. Tutor-led questioning reinforces importance of accurate information and consequences of errors. Evidence generated through completed documentation, observation and questionin"
+    ],
+    "hits": {
+      "emission": true,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": false,
+      "soh": false,
+      "hv": false
+    }
+  },
+  "W46": {
+    "week": 46,
+    "file": "Autocare_L2_Week_046_Lesson_Plan_v1.0.docx",
+    "topic": "Complaint prevention through process discipline and record quality",
+    "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session focusing on the importance of following workplace procedures accurately to prevent complaints and rework. The tutor explains how poor process discipline leads to missed steps, incorrect repairs and customer dissatisfaction.",
+      "Structured activity where learners are given workplace scenarios involving incomplete or poorly followed procedures. Learners review job cards, service sheets and instructions, identifying where steps have been missed or recorded incorrectly.",
+      "Application activity where learners complete a maintenance or repair task using a fully structured process. Learners must follow instructions step by step, ensuring that each stage is completed in the correct order and recorded accurately.",
+      "Consolidation through review of completed work and documentation. The tutor checks for accuracy, completeness and clarity, highlighting any gaps or inconsistencies. Learners are required to explain how they followed procedures and how their documentation suppo"
+    ],
+    "hits": {
+      "emission": false,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": false,
+      "soh": false,
+      "hv": false
+    }
+  },
+  "W54": {
+    "week": 54,
+    "file": "Autocare_L2_Week_054_Lesson_Plan_v1.0.docx",
+    "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+    "focusLine": "Mapped occupational duties | B1, B2, B3, K6, K8, K19, K20, K21, K22, S5, S6, S7, S12, S14 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session introducing EV service, charging and safety procedures at awareness level.",
+      "Guided practical or demonstration activity using an EV training rig, vehicle, diagrams or manufacturer information. Learners identify visible EV components, charging points, warning labels, service-safe areas and areas that must not be disturbed without correc",
+      "Application activity using EV service and charging scenarios. Learners respond to situations such as a customer reporting reduced range, a charging issue, a warning message or uncertainty about servicing requirements.",
+      "Consolidation through questioning and group review of EV safety decisions. Learners explain how they identified risk, what information they would record and how they would communicate limitations to the customer or workshop supervisor."
+    ],
+    "hits": {
+      "emission": true,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": false,
+      "soh": false,
+      "hv": false
+    }
+  },
+  "W81": {
+    "week": 81,
+    "file": "Autocare_L2_Week_081_Lesson_Plan_v1.0.docx",
+    "topic": "Applied Awareness",
+    "focusLine": "Mapped occupational duties | B1, B2, K2, K5, K6, K8, K9, K10, K19, K22, S5, S6, S7, S12, S14 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session developing applied awareness of electric and hybrid vehicle systems. The tutor revisits key system architecture, including high-voltage battery packs, inverter, electric motor, DC-DC converter, onboard charger, regenerative braking and ",
+      "Guided practical or demonstration activity using an EV or hybrid training rig, vehicle, diagrams, warning-label examples or manufacturer information.",
+      "Application activity using applied EV and hybrid scenarios. Learners respond to situations such as a warning message, reduced range, customer uncertainty over charging, service questions, tyre or brake work on an EV, or a vehicle arriving with unclear system s",
+      "Consolidation through tutor questioning and review of applied safety decisions. Learners explain how they identified risk, what they would record and how they would communicate limitations to a supervisor or customer."
+    ],
+    "hits": {
+      "emission": false,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": false,
+      "soh": false,
+      "hv": true
+    }
+  },
+  "W82": {
+    "week": 82,
+    "file": "Autocare_L2_Week_082_Lesson_Plan_v1.0.docx",
+    "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+    "focusLine": "Mapped occupational duties | B3, B5, K1, K6, K8, K17, K24, K25, S6, S7, S16, S22, S23, S24 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session focused on customer handover for electric and hybrid vehicles.",
+      "Structured role-play activity where learners practise customer handover conversations for EV and hybrid scenarios. Scenarios include a customer asking about reduced range, a charging concern, a dashboard warning message, uncertainty about servicing intervals o",
+      "Application activity where learners create a written EV customer handover sheet or advisory note. The document should explain the customer concern, what has been visually checked, any limitations of the inspection, recommended next steps and whether referral t",
+      "Consolidation through review of handover sheets, role-play performance and customer explanation quality. The tutor questions learners on how they would handle uncertainty, customer anxiety or requests for work outside their competence."
+    ],
+    "hits": {
+      "emission": true,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": false,
+      "soh": false,
+      "hv": true
+    }
+  },
+  "W89": {
+    "week": 89,
+    "file": "Autocare_L2_Week_089_Lesson_Plan_v1.0.docx",
+    "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+    "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session covering the importance of pre-calibration checks before any advanced driver assistance, alignment-related or sensor-influenced work is considered.",
+      "Guided practical inspection activity using alignment equipment, tyre and suspension checks, sensor-location diagrams or vehicle examples.",
+      "Application activity using pre-calibration scenarios. Learners review cases such as a vehicle with uneven ride height after suspension work, an off-centre steering wheel, ADAS warning messages after alignment, damaged sensor brackets or tyre sizes that do not ",
+      "Consolidation through group review of pre-check findings and decision-making. The tutor questions learners on why calibration readiness depends on mechanical condition and correct setup, and challenges any decisions that are not supported by evidence."
+    ],
+    "hits": {
+      "emission": false,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": true,
+      "soh": false,
+      "hv": false
+    }
+  },
+  "W90": {
+    "week": 90,
+    "file": "Autocare_L2_Week_090_Lesson_Plan_v1.0.docx",
+    "topic": "Emerging technology readiness review and case studies",
+    "focusLine": "Duty 10 | B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session reviewing safe working expectations for emerging vehicle technologies. The tutor brings together prior learning on EV and hybrid awareness, ADAS, TPMS, electronic systems, sensor inputs and non-invasive diagnostic boundaries.",
+      "Structured case-study activity where learners review emerging technology scenarios drawn from realistic workshop situations.",
+      "Application activity where learners complete an emerging technology readiness review. They assess a given vehicle or scenario, identify relevant systems, record visible warnings or safety information, determine safe working boundaries and produce a short actio",
+      "Consolidation through review of case-study responses and readiness action plans. The tutor questions learners on how they identified risk, why referral may be required and how poor decisions could affect customer safety, colleague safety, vehicle systems and b"
+    ],
+    "hits": {
+      "emission": false,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": true,
+      "soh": false,
+      "hv": true
+    }
+  },
+  "W44": {
+    "week": 44,
+    "file": "Autocare_L2_Week_044_Lesson_Plan_v1.0.docx",
+    "topic": "Suspension component replacement and alignment preparation",
+    "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session covering suspension system operation and component replacement procedures. Tutor explains function of springs, dampers, control arms and bushes, and how these components influence vehicle stability, braking and tyre wear.",
+      "Structured practical activity inspecting suspension components on training vehicles. Learners identify components, check for wear, damage and movement, and follow a structured inspection routine.",
+      "Application activity diagnosing suspension-related faults based on scenarios such as knocking noises, uneven tyre wear, poor ride quality or vehicle instability. Learners must identify likely causes, link symptoms to specific components and recommend appropria",
+      "Consolidation through discussion reviewing diagnostic decisions and reinforcing safe repair practices. Tutor-led questioning checks understanding of component function, fault impact and correct repair procedures."
+    ],
+    "hits": {
+      "emission": true,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": false,
+      "soh": false,
+      "hv": false
+    }
+  },
+  "W42": {
+    "week": 42,
+    "file": "Autocare_L2_Week_042_Lesson_Plan_v1.0.docx",
+    "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+    "focusLine": "Duty 2 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session covering electrical circuit principles including voltage, current, resistance and common fault types such as open circuits, short circuits and high resistance connections.",
+      "Practical activity using multimeters to carry out voltage, continuity and resistance tests on simple circuits or vehicle systems. Tutor demonstrates correct testing procedures, probe placement and expected readings. Learners carry out tests independently follo",
+      "Application activity diagnosing electrical faults based on given scenarios such as non-start, intermittent faults or warning lights. Learners interpret test results, identify likely causes and record findings on structured diagnostic documentation. Emphasis pl",
+      "Consolidation through review of diagnostic decisions and discussion of common testing errors. Tutor-led questioning checks understanding of circuit behaviour and fault identification. Evidence generated through test records, written diagnostics and observation"
+    ],
+    "hits": {
+      "emission": false,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": false,
+      "soh": false,
+      "hv": false
+    }
+  },
+  "W56": {
+    "week": 56,
+    "file": "Autocare_L2_Week_056_Lesson_Plan_v1.0.docx",
+    "topic": "Record keeping, compliance checks and audit readiness",
+    "focusLine": "Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 | Scheduled at block end",
+    "eligibleOtj": 5.5,
+    "activities": [
+      "Detailed theory session covering the purpose of accurate record keeping and how it supports compliance, quality assurance and audit readiness.",
+      "Structured review activity using sample workshop records that include deliberate errors or omissions. Learners examine job cards, inspection sheets, complaint records, parts orders and handover notes to identify where information is missing, unclear or inconsi",
+      "Application activity where learners complete a full record set for a maintenance or repair scenario. This includes recording the customer concern, the work carried out, checks completed, parts used, any safety considerations and final outcome.",
+      "Consolidation through review of completed records and discussion of audit readiness. The tutor questions learners on why each piece of evidence matters and how it supports compliance, customer protection and quality assurance."
+    ],
+    "hits": {
+      "emission": true,
+      "gdpr": false,
+      "adas_levels": false,
+      "adas_word": false,
+      "soh": false,
+      "hv": false
+    }
+  }
+}

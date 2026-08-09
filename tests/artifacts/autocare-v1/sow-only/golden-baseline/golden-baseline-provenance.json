@@ -1,0 +1,176 @@
+{
+  "status": "V1_GOLDEN_BASELINE_PERSISTED",
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "persistedAt": "2026-08-08T13:24:44.557Z",
+  "classifications": {
+    "existingHumanApprovedPrimaries": [
+      "K12",
+      "K21",
+      "K23",
+      "K24",
+      "K29",
+      "K30",
+      "S1",
+      "S12",
+      "S13",
+      "S14",
+      "S15",
+      "S19",
+      "S2",
+      "S3",
+      "S4"
+    ],
+    "automatedHighApprovedPrimaries": [
+      {
+        "ksbCode": "B1",
+        "primaryBlock": 1
+      },
+      {
+        "ksbCode": "B2",
+        "primaryBlock": 3
+      },
+      {
+        "ksbCode": "B3",
+        "primaryBlock": 6
+      },
+      {
+        "ksbCode": "B4",
+        "primaryBlock": 10
+      },
+      {
+        "ksbCode": "K3",
+        "primaryBlock": 1
+      },
+      {
+        "ksbCode": "K4",
+        "primaryBlock": 3
+      },
+      {
+        "ksbCode": "K5",
+        "primaryBlock": 1
+      },
+      {
+        "ksbCode": "K9",
+        "primaryBlock": 7
+      },
+      {
+        "ksbCode": "K11",
+        "primaryBlock": 5
+      },
+      {
+        "ksbCode": "K14",
+        "primaryBlock": 6
+      },
+      {
+        "ksbCode": "K17",
+        "primaryBlock": 9
+      },
+      {
+        "ksbCode": "K19",
+        "primaryBlock": 2
+      },
+      {
+        "ksbCode": "K22",
+        "primaryBlock": 9
+      },
+      {
+        "ksbCode": "K26",
+        "primaryBlock": 2
+      },
+      {
+        "ksbCode": "K27",
+        "primaryBlock": 2
+      },
+      {
+        "ksbCode": "K33",
+        "primaryBlock": 1
+      },
+      {
+        "ksbCode": "S5",
+        "primaryBlock": 1
+      },
+      {
+        "ksbCode": "S6",
+        "primaryBlock": 3
+      },
+      {
+        "ksbCode": "S8",
+        "primaryBlock": 1
+      },
+      {
+        "ksbCode": "S17",
+        "primaryBlock": 2
+      },
+      {
+        "ksbCode": "S18",
+        "primaryBlock": 8
+      },
+      {
+        "ksbCode": "S22",
+        "primaryBlock": 1
+      },
+      {
+        "ksbCode": "S24",
+        "primaryBlock": 10
+      }
+    ],
+    "humanVerifiedApprovedPrimaries": [
+      {
+        "ksbCode": "K15",
+        "primaryBlock": 2
+      },
+      {
+        "ksbCode": "K16",
+        "primaryBlock": 2
+      },
+      {
+        "ksbCode": "K32",
+        "primaryBlock": 5
+      },
+      {
+        "ksbCode": "S21",
+        "primaryBlock": 5
+      },
+      {
+        "ksbCode": "S16",
+        "primaryBlock": 3
+      },
+      {
+        "ksbCode": "K6",
+        "primaryBlock": 1
+      },
+      {
+        "ksbCode": "K25",
+        "primaryBlock": 6
+      }
+    ],
+    "reviewedCurriculumGaps": [
+      "B5",
+      "K1",
+      "K10",
+      "K13",
+      "K18",
+      "K2",
+      "K20",
+      "K28",
+      "K31",
+      "K34",
+      "K7",
+      "K8",
+      "S11",
+      "S20",
+      "S23",
+      "S25",
+      "S7",
+      "S9"
+    ],
+    "distributedSkillPrimaryOwnershipReview": [
+      "S10"
+    ]
+  },
+  "notes": [
+    "Reinforcement mappings were intentionally not created.",
+    "AI Proposed Amendments remain advisory and contribute 0 to coverage.",
+    "Publication remains blocked (45/64 Primaries)."
+  ]
+}

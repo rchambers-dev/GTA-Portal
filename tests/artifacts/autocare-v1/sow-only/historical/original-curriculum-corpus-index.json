@@ -1,0 +1,680 @@
+[
+  {
+    "week": 1,
+    "block": 1,
+    "title": "Workshop Safety, Hazards, Housekeeping and Occupational Expectations",
+    "file": "Foundation_Skills_FS01_Week_1_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 2,
+    "block": 1,
+    "title": "Health and Safety, Tools, Equipment and Safe Vehicle Support",
+    "file": "Foundation_Skills_FS02_Week_2_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 3,
+    "block": 1,
+    "title": "Hybrid and High-Voltage Vehicle Awareness",
+    "file": "Foundation_Skills_FS03_Week_3_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 4,
+    "block": 1,
+    "title": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+    "file": "Foundation_Skills_FS04_Week_4_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 5,
+    "block": 1,
+    "title": "Measurement, Technical Information and Tolerances",
+    "file": "Foundation_Skills_FS05_Week_5_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 6,
+    "block": 1,
+    "title": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+    "file": "Foundation_Skills_FS06_Week_6_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 7,
+    "block": 1,
+    "title": "Multimeter Use, Electrical Measurement and Fabrication Quality",
+    "file": "Foundation_Skills_FS07_Week_7_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 8,
+    "block": 1,
+    "title": "Tools and Safety Consolidation, Basic Circuits and Relay Awareness",
+    "file": "Foundation_Skills_FS08_Week_8_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 9,
+    "block": 1,
+    "title": "Targeted Occupational Recap, Gap Teaching and First Aid",
+    "file": "Foundation_Skills_FS09_Week_9_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 10,
+    "block": 1,
+    "title": "Technical Documentation, Job Cards, Handover and Specialist Transition",
+    "file": "Foundation_Skills_FS10_Week_10_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 11,
+    "block": 2,
+    "title": "Customer Service Scenarios",
+    "file": "Autocare_L2_Week_011_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 12,
+    "block": 2,
+    "title": "Electrical System Inspection",
+    "file": "Autocare_L2_Week_012_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 13,
+    "block": 2,
+    "title": "Engine Repairs",
+    "file": "Autocare_L2_Week_013_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 14,
+    "block": 2,
+    "title": "Tyre Pressure Monitoring Systems",
+    "file": "Autocare_L2_Week_014_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 15,
+    "block": 2,
+    "title": "Supplier Liaison",
+    "file": "Autocare_L2_Week_015_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 16,
+    "block": 2,
+    "title": "Duties 1 / 2: Intake plus Inspection",
+    "file": "Autocare_L2_Week_016_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 17,
+    "block": 2,
+    "title": "Advanced Brake Diagnostics",
+    "file": "Autocare_L2_Week_017_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 18,
+    "block": 2,
+    "title": "Wheel Alignment - Advanced",
+    "file": "Autocare_L2_Week_018_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 19,
+    "block": 2,
+    "title": "Stock Auditing",
+    "file": "Autocare_L2_Week_019_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 20,
+    "block": 2,
+    "title": "Customer Dispute Resolution",
+    "file": "Autocare_L2_Week_020_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 21,
+    "block": 3,
+    "title": "Service reception, booking diagnostics and first impressions",
+    "file": "Autocare_L2_Week_021_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 22,
+    "block": 3,
+    "title": "Routine servicing, inspection workflow and service schedules",
+    "file": "Autocare_L2_Week_022_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 23,
+    "block": 3,
+    "title": "Fast-fit repairs, bay discipline and effective handoffs",
+    "file": "Autocare_L2_Week_023_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 24,
+    "block": 3,
+    "title": "Brake wear checks, tyre condition and wheel security",
+    "file": "Autocare_L2_Week_024_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 25,
+    "block": 3,
+    "title": "Parts identification, catalogue use and alternative part selection",
+    "file": "Autocare_L2_Week_025_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 26,
+    "block": 3,
+    "title": "Workshop procedures, documentation control and handover discipline",
+    "file": "Autocare_L2_Week_026_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 27,
+    "block": 3,
+    "title": "Housekeeping, 5S routines and safe storage control",
+    "file": "Autocare_L2_Week_027_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 28,
+    "block": 3,
+    "title": "Estimates, authorisation and customer approval skills",
+    "file": "Autocare_L2_Week_028_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 29,
+    "block": 3,
+    "title": "Stock rotation, reorder points and traceability",
+    "file": "Autocare_L2_Week_029_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 30,
+    "block": 3,
+    "title": "Environmental risk, spill response and emergency preparedness",
+    "file": "Autocare_L2_Week_030_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 31,
+    "block": 4,
+    "title": "Customer updates, ETA management and expectation setting",
+    "file": "Autocare_L2_Week_031_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 32,
+    "block": 4,
+    "title": "Intro",
+    "file": "Autocare_L2_Week_032_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 33,
+    "block": 4,
+    "title": "Driveline service, task allocation and team communication",
+    "file": "Autocare_L2_Week_033_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 34,
+    "block": 4,
+    "title": "Steering geometry and advanced tyre diagnosis",
+    "file": "Autocare_L2_Week_034_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 35,
+    "block": 4,
+    "title": "Warranty parts, returns and supplier escalation",
+    "file": "Autocare_L2_Week_035_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 36,
+    "block": 4,
+    "title": "Job-card accuracy, escalation routes and quality gatekeeping",
+    "file": "Autocare_L2_Week_036_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 37,
+    "block": 4,
+    "title": "COSHH awareness, workshop cleanliness and tool control",
+    "file": "Autocare_L2_Week_037_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 38,
+    "block": 4,
+    "title": "Quotations: labour, parts and value options",
+    "file": "Autocare_L2_Week_038_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 39,
+    "block": 4,
+    "title": "Goods-in checks, parts storage and consumables control",
+    "file": "Autocare_L2_Week_039_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 40,
+    "block": 4,
+    "title": "Fire safety, first response and incident reporting",
+    "file": "Autocare_L2_Week_040_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 41,
+    "block": 5,
+    "title": "Technical handover and managing customer expectations on diagnostic work",
+    "file": "Autocare_L2_Week_041_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 42,
+    "block": 5,
+    "title": "Electrical fault finding, basic scope of tests and confirmation checks",
+    "file": "Autocare_L2_Week_042_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 43,
+    "block": 5,
+    "title": "Complex repairs, time management and QA sign-off",
+    "file": "Autocare_L2_Week_043_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 44,
+    "block": 5,
+    "title": "Suspension component replacement and alignment preparation",
+    "file": "Autocare_L2_Week_044_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 45,
+    "block": 5,
+    "title": "VIN lookup, technical data and parts availability checks",
+    "file": "Autocare_L2_Week_045_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 46,
+    "block": 5,
+    "title": "Complaint prevention through process discipline and record quality",
+    "file": "Autocare_L2_Week_046_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 47,
+    "block": 5,
+    "title": "Battery handling, waste segregation and PPE discipline",
+    "file": "Autocare_L2_Week_047_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 48,
+    "block": 5,
+    "title": "Additional work identification and quote revision",
+    "file": "Autocare_L2_Week_048_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 49,
+    "block": 5,
+    "title": "Stock variance investigation and corrective action planning",
+    "file": "Autocare_L2_Week_049_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 50,
+    "block": 5,
+    "title": "Risk assessment refresh and safe systems of work",
+    "file": "Autocare_L2_Week_050_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 51,
+    "block": 6,
+    "title": "Customer interaction during longer diagnostic jobs",
+    "file": "Autocare_L2_Week_051_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 52,
+    "block": 6,
+    "title": "Air-conditioning and climate-control checks",
+    "file": "Autocare_L2_Week_052_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 53,
+    "block": 6,
+    "title": "Workshop productivity, task sequencing and team support",
+    "file": "Autocare_L2_Week_053_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 54,
+    "block": 6,
+    "title": "Emerging Technology - EV Service, Charging and Safety Procedures",
+    "file": "Autocare_L2_Week_054_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 55,
+    "block": 6,
+    "title": "Technical parts sourcing for electrical and diagnostic repairs",
+    "file": "Autocare_L2_Week_055_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 56,
+    "block": 6,
+    "title": "Record keeping, compliance checks and audit readiness",
+    "file": "Autocare_L2_Week_056_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 57,
+    "block": 6,
+    "title": "Safe lifting, jacking and vehicle support",
+    "file": "Autocare_L2_Week_057_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 58,
+    "block": 6,
+    "title": "Quote approval, consent and final documentation",
+    "file": "Autocare_L2_Week_058_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 59,
+    "block": 6,
+    "title": "Order tracking, back orders and customer impact",
+    "file": "Autocare_L2_Week_059_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 60,
+    "block": 6,
+    "title": "Environmental controls, waste streams and site safety",
+    "file": "Autocare_L2_Week_060_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 61,
+    "block": 7,
+    "title": "Advanced service adviser communication and trust-building",
+    "file": "Autocare_L2_Week_061_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 62,
+    "block": 7,
+    "title": "Complex system inspection and defect prioritisation",
+    "file": "Autocare_L2_Week_062_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 63,
+    "block": 7,
+    "title": "Engine management repairs and quality assurance",
+    "file": "Autocare_L2_Week_063_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 64,
+    "block": 7,
+    "title": "Tyre and TPMS service integration",
+    "file": "Autocare_L2_Week_064_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 65,
+    "block": 7,
+    "title": "Supplier performance, cost control and escalation",
+    "file": "Autocare_L2_Week_065_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 66,
+    "block": 7,
+    "title": "Service recovery, complaint closure and records",
+    "file": "Autocare_L2_Week_066_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 67,
+    "block": 7,
+    "title": "Workshop flow, layout and housekeeping",
+    "file": "Autocare_L2_Week_067_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 68,
+    "block": 7,
+    "title": "Multi-line estimates and customer choice conversations",
+    "file": "Autocare_L2_Week_068_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 69,
+    "block": 7,
+    "title": "Consumables management and stock security",
+    "file": "Autocare_L2_Week_069_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 70,
+    "block": 7,
+    "title": "Safe working with new vehicle systems",
+    "file": "Autocare_L2_Week_070_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 71,
+    "block": 8,
+    "title": "Technical explanations for complex repairs and delays",
+    "file": "Autocare_L2_Week_071_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 72,
+    "block": 8,
+    "title": "Advanced diagnostic process and confirmation of root cause",
+    "file": "Autocare_L2_Week_072_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 73,
+    "block": 8,
+    "title": "Repair planning, delegation and sign-off discipline",
+    "file": "Autocare_L2_Week_073_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 74,
+    "block": 8,
+    "title": "Alignment, ride height and geometry correlation",
+    "file": "Autocare_L2_Week_074_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 75,
+    "block": 8,
+    "title": "Specialist parts, alternatives and warranty evidence",
+    "file": "Autocare_L2_Week_075_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 76,
+    "block": 8,
+    "title": "Documentation for handover and audit trail completeness",
+    "file": "Autocare_L2_Week_076_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 77,
+    "block": 8,
+    "title": "Quality, cleanliness and equipment care routines",
+    "file": "Autocare_L2_Week_077_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 78,
+    "block": 8,
+    "title": "Quotations, authorisation chains and ethical upsell practice",
+    "file": "Autocare_L2_Week_078_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 79,
+    "block": 8,
+    "title": "Inventory accuracy, obsolescence review and safe disposal",
+    "file": "Autocare_L2_Week_079_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 80,
+    "block": 8,
+    "title": "Emergency response, near misses and environmental safety",
+    "file": "Autocare_L2_Week_080_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 81,
+    "block": 9,
+    "title": "Applied Awareness",
+    "file": "Autocare_L2_Week_081_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 82,
+    "block": 9,
+    "title": "Emerging Technology - EV Customer Handover, Charging and Application",
+    "file": "Autocare_L2_Week_082_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 83,
+    "block": 9,
+    "title": "Intro",
+    "file": "Autocare_L2_Week_083_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 84,
+    "block": 9,
+    "title": "Customer Journey and Service Adviser Day",
+    "file": "Autocare_L2_Week_084_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 85,
+    "block": 9,
+    "title": "Workshop quality checks and road-test feedback capture",
+    "file": "Autocare_L2_Week_085_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 86,
+    "block": 9,
+    "title": "Workshop compliance deep dive: documentation and waste control",
+    "file": "Autocare_L2_Week_086_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 87,
+    "block": 9,
+    "title": "Supplier and stock optimisation for emerging technologies",
+    "file": "Autocare_L2_Week_087_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 88,
+    "block": 9,
+    "title": "Integrated inspection, quotation and consent scenario",
+    "file": "Autocare_L2_Week_088_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 89,
+    "block": 9,
+    "title": "Pre-calibration checks: alignment, ride height and sensor inputs",
+    "file": "Autocare_L2_Week_089_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 90,
+    "block": 9,
+    "title": "Emerging technology readiness review and case studies",
+    "file": "Autocare_L2_Week_090_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 91,
+    "block": 9,
+    "title": "non-invasive",
+    "file": "Autocare_L2_Week_091_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 92,
+    "block": 9,
+    "title": "non-cert",
+    "file": "Autocare_L2_Week_092_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 93,
+    "block": 9,
+    "title": "Intro",
+    "file": "Autocare_L2_Week_093_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 94,
+    "block": 9,
+    "title": "Emerging Technology - Hydrogen Systems Safety and Application",
+    "file": "Autocare_L2_Week_094_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 95,
+    "block": 10,
+    "title": "F-gas context - no decanting",
+    "file": "Autocare_L2_Week_095_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 96,
+    "block": 10,
+    "title": "Embedded Maths and English in Workshop Tasks",
+    "file": "Autocare_L2_Week_096_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 97,
+    "block": 10,
+    "title": "Capstone Project Sprint 1 - Plan",
+    "file": "Autocare_L2_Week_097_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 98,
+    "block": 10,
+    "title": "Capstone Project Sprint 2 - Execute",
+    "file": "Autocare_L2_Week_098_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 99,
+    "block": 10,
+    "title": "Capstone Showcase and Professional Discussion Practice",
+    "file": "Autocare_L2_Week_099_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 100,
+    "block": 10,
+    "title": "Portfolio-Based Reflective Learning and Evidence Improvement",
+    "file": "Autocare_L2_Week_100_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 101,
+    "block": 10,
+    "title": "Final Skills Consolidation and Professional Practice",
+    "file": "Autocare_L2_Week_101_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 102,
+    "block": 10,
+    "title": "skills-led",
+    "file": "Autocare_L2_Week_102_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 103,
+    "block": 10,
+    "title": "Communicate with customers establishing vehicle problems and their requirements",
+    "file": "Autocare_L2_Week_103_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 104,
+    "block": 10,
+    "title": "Conduct vehicle inspections and routine maintenance work",
+    "file": "Autocare_L2_Week_104_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 105,
+    "block": 10,
+    "title": "Work independently and as part of a team, contributing to business outcomes",
+    "file": "Autocare_L2_Week_105_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 106,
+    "block": 10,
+    "title": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+    "file": "Autocare_L2_Week_106_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 107,
+    "block": 10,
+    "title": "Duty 5 Skills Development and EPA Readiness Practice - Parts Identification and Sourcing",
+    "file": "Autocare_L2_Week_107_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 108,
+    "block": 10,
+    "title": "Duty 6 Skills Development and EPA Readiness Practice - Procedures and Documentation",
+    "file": "Autocare_L2_Week_108_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 109,
+    "block": 10,
+    "title": "Duty 1 Skills Development and EPA Readiness Practice - Customer Communication",
+    "file": "Autocare_L2_Week_109_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 110,
+    "block": 10,
+    "title": "Final Skills Consolidation and Developmental Feedback",
+    "file": "Autocare_L2_Week_110_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 111,
+    "block": 10,
+    "title": "Integrated vehicle health check, diagnosis and customer report",
+    "file": "Autocare_L2_Week_111_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 112,
+    "block": 10,
+    "title": "Targeted KSB gap learning and corrective practical",
+    "file": "Autocare_L2_Week_112_Lesson_Plan_v1.0.docx"
+  },
+  {
+    "week": 113,
+    "block": 10,
+    "title": "Final capstone, evidence quality and gateway readiness",
+    "file": "Autocare_L2_Week_113_Lesson_Plan_v1.0.docx"
+  }
+]

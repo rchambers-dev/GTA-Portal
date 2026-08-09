@@ -8,7 +8,11 @@ import {
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
-import { taskById, tasksForBlock } from "../domain/autocare-tasks";
+import {
+  taskByDeliveryId,
+  tasksForDeliveryBlock,
+} from "../domain/published-delivery-catalogue";
+import { usePublishedDeliveryCatalogue } from "../domain/use-published-delivery-catalogue";
 import { taskKindLabel } from "../domain/task-schema";
 import {
   resolveTaskStoreApprenticeId,
@@ -23,10 +27,6 @@ import styles from "./programme-delivery.module.css";
 
 type Props = { taskId: string };
 
-function storeApprenticeId(adminApprenticeId: string | null): string {
-  return resolveTaskStoreApprenticeId(adminApprenticeId);
-}
-
 function fieldLabel(key: string): string {
   return key
     .replace(/([A-Z])/g, " $1")
@@ -36,16 +36,23 @@ function fieldLabel(key: string): string {
 
 /**
  * Management read-only view of an apprentice's submitted college task work.
+ * Resolves task definitions from the learner's pinned published catalogue.
  */
 export function ManagementTaskViewScreen({ taskId }: Props) {
   const searchParams = useSearchParams();
   const adminApprenticeId = searchParams.get("apprentice");
-  const apprenticeKey = storeApprenticeId(adminApprenticeId);
+  const apprenticeKey = resolveTaskStoreApprenticeId(adminApprenticeId);
   const admin = useAdminStore();
   const enrolment =
     admin.enrolments.find((e) => e.apprenticeId === adminApprenticeId) ?? null;
 
-  const task = taskById(taskId);
+  const { catalogue, loading } = usePublishedDeliveryCatalogue({
+    programmeVersionId: enrolment?.gtaProgrammeVersionId ?? null,
+    apprenticeId: adminApprenticeId,
+    enabled: Boolean(adminApprenticeId),
+  });
+  const task = taskByDeliveryId(catalogue, taskId);
+
   useSyncExternalStore(
     subscribeTaskStore,
     getTaskSnapshot,
@@ -57,13 +64,43 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
     ? `/management/apprentice-brag?apprentice=${encodeURIComponent(adminApprenticeId)}`
     : "/management/apprentice-brag";
 
-  if (!task) {
+  if (!adminApprenticeId) {
+    return (
+      <ApprenticePageShell
+        eyebrow="Management"
+        title="Select an apprentice"
+        description=""
+      >
+        <p className={styles.purposeBody}>
+          Open this task from progression BRAG with an apprentice selected.
+        </p>
+        <Link href={backHref} className={styles.back}>
+          ← Back to progression BRAG
+        </Link>
+      </ApprenticePageShell>
+    );
+  }
+
+  if (loading) {
+    return (
+      <ApprenticePageShell eyebrow="Management" title="Loading task…" description="">
+        <p className={styles.purposeBody}>Loading published catalogue…</p>
+      </ApprenticePageShell>
+    );
+  }
+
+  if (catalogue.status !== "ready" || !task) {
     return (
       <ApprenticePageShell
         eyebrow="Management"
         title="Task not found"
         description=""
       >
+        <p className={styles.purposeBody}>
+          {catalogue.status !== "ready"
+            ? catalogue.message
+            : "This task is not in the apprentice’s published Course Builder catalogue."}
+        </p>
         <Link href={backHref} className={styles.back}>
           ← Back to progression BRAG
         </Link>
@@ -74,14 +111,16 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
   const fieldEntries = Object.entries(sub.fields).filter(
     ([, v]) => v && v.trim() && v !== "signed",
   );
-  const blockTasks = tasksForBlock(task.blockId);
+  const blockTasks = tasksForDeliveryBlock(catalogue, task.spineItemId);
   const displayName = enrolment?.displayName ?? "Apprentice";
+  const block =
+    catalogue.blocks.find((b) => b.spineItemId === task.spineItemId) ?? null;
 
   return (
     <ApprenticePageShell
       eyebrow="Management"
       title={task.title}
-      description={`${displayName} · Block ${task.blockId} · Task ${task.taskNumber} · ${taskKindLabel(task.kind)}`}
+      description={`${displayName} · Block ${block?.displayOrdinal ?? task.blockId} · Task ${task.taskNumber} · ${taskKindLabel(task.kind)}`}
     >
       <div className={styles.root}>
         <Link href={backHref} className={styles.back}>
@@ -177,7 +216,7 @@ export function ManagementTaskViewScreen({ taskId }: Props) {
 
         <section className={styles.sectionCard}>
           <h2 className={styles.sectionTitle}>
-            Other tasks in Block {task.blockId}
+            Other tasks in Block {block?.displayOrdinal ?? task.blockId}
           </h2>
           <ul className={styles.taskList}>
             {blockTasks.map((t) => {

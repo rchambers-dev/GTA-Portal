@@ -1,0 +1,24 @@
+{
+  "week": 89,
+  "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+  "focusLine": "Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 | Scheduled at block end",
+  "activities": [
+    "Detailed theory session covering the importance of pre-calibration checks before any advanced driver assistance, alignment-related or sensor-influenced work is considered.",
+    "Guided practical inspection activity using alignment equipment, tyre and suspension checks, sensor-location diagrams or vehicle examples.",
+    "Application activity using pre-calibration scenarios. Learners review cases such as a vehicle with uneven ride height after suspension work, an off-centre steering wheel, ADAS warning messages after alignment, damaged se",
+    "Consolidation through group review of pre-check findings and decision-making. The tutor questions learners on why calibration readiness depends on mechanical condition and correct setup, and challenges any decisions that"
+  ],
+  "strictToolStoreMaintainHits": [],
+  "adasAlignmentSnippets": [
+    "S13, S26 | Scheduled at block end Topic Pre-calibration checks: alignment, ride height and sens",
+    "block end Topic Pre-calibration checks: alignment, ride height and sensor inputs Occupati",
+    "opic Pre-calibration checks: alignment, ride height and sensor inputs Occupational relevanc",
+    "tion checks: alignment, ride height and sensor inputs Occupational relevance: This ses",
+    "edge and practical judgement needed for pre-calibration checks: alignment, ride height and sens",
+    "ment needed for pre-calibration checks: alignment, ride height and sensor inputs. Followi",
+    " for pre-calibration checks: alignment, ride height and sensor inputs. Following technical ",
+    "tion checks: alignment, ride height and sensor inputs. Following technical information"
+  ],
+  "decision": "DROP_S4_B9_REINFORCEMENT",
+  "rationale": "W89 is alignment/sensor/ADAS pre-calibration teaching; no proven S4 tool/equipment store/maintain/calibrate content — drop valued S4@B9"
+}

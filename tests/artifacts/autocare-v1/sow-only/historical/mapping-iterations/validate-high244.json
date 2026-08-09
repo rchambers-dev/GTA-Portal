@@ -1,0 +1,2530 @@
+{
+  "perBlock": [
+    {
+      "block": 1,
+      "title": "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+      "K": 0,
+      "S": 0,
+      "B": 0,
+      "totalMappings": 0,
+      "uniqueKsbs": 0,
+      "codes": []
+    },
+    {
+      "block": 2,
+      "title": "Vehicle Inspection, Servicing and Customer Interaction",
+      "K": 18,
+      "S": 13,
+      "B": 4,
+      "totalMappings": 35,
+      "uniqueKsbs": 35,
+      "codes": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "K7",
+        "K8",
+        "K9",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K19",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "K30",
+        "K31",
+        "S10",
+        "S11",
+        "S13",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25"
+      ]
+    },
+    {
+      "block": 3,
+      "title": "Workshop Processes, Tools and Environmental Awareness",
+      "K": 8,
+      "S": 9,
+      "B": 4,
+      "totalMappings": 21,
+      "uniqueKsbs": 21,
+      "codes": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "K3",
+        "K4",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S1",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "block": 4,
+      "title": "Emerging Technology and Driveline Systems",
+      "K": 12,
+      "S": 12,
+      "B": 4,
+      "totalMappings": 28,
+      "uniqueKsbs": 28,
+      "codes": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "K3",
+        "K4",
+        "K8",
+        "K19",
+        "K21",
+        "K22",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S1",
+        "S6",
+        "S12",
+        "S14",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "block": 5,
+      "title": "Diagnostic Thinking and Complex Repair Activities",
+      "K": 8,
+      "S": 9,
+      "B": 4,
+      "totalMappings": 21,
+      "uniqueKsbs": 21,
+      "codes": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "K3",
+        "K4",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S1",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "block": 6,
+      "title": "Vehicle Systems Integration and Advanced Diagnostics",
+      "K": 11,
+      "S": 12,
+      "B": 4,
+      "totalMappings": 27,
+      "uniqueKsbs": 27,
+      "codes": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "K3",
+        "K4",
+        "K8",
+        "K21",
+        "K22",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S1",
+        "S6",
+        "S12",
+        "S14",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "block": 7,
+      "title": "Advanced Workshop Practice and Technical Communication",
+      "K": 8,
+      "S": 9,
+      "B": 4,
+      "totalMappings": 21,
+      "uniqueKsbs": 21,
+      "codes": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "K3",
+        "K4",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S1",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "block": 8,
+      "title": "Advanced Diagnostics and Workshop Organisation",
+      "K": 8,
+      "S": 9,
+      "B": 4,
+      "totalMappings": 21,
+      "uniqueKsbs": 21,
+      "codes": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "K3",
+        "K4",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "S1",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "block": 9,
+      "title": "Emerging Technologies, Electric Vehicles and Hydrogen Awareness",
+      "K": 24,
+      "S": 12,
+      "B": 4,
+      "totalMappings": 40,
+      "uniqueKsbs": 40,
+      "codes": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "K2",
+        "K3",
+        "K4",
+        "K5",
+        "K6",
+        "K8",
+        "K9",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K17",
+        "K18",
+        "K19",
+        "K21",
+        "K22",
+        "K23",
+        "K24",
+        "K25",
+        "K26",
+        "K29",
+        "S1",
+        "S5",
+        "S6",
+        "S7",
+        "S12",
+        "S14",
+        "S16",
+        "S17",
+        "S19",
+        "S22",
+        "S23",
+        "S24"
+      ]
+    },
+    {
+      "block": 10,
+      "title": "Final Consolidation, Corrective Learning and EPA Readiness Training",
+      "K": 15,
+      "S": 11,
+      "B": 4,
+      "totalMappings": 30,
+      "uniqueKsbs": 30,
+      "codes": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "K1",
+        "K7",
+        "K8",
+        "K19",
+        "K24",
+        "K25",
+        "K26",
+        "K27",
+        "K28",
+        "K29",
+        "K30",
+        "K31",
+        "K32",
+        "K33",
+        "K34",
+        "S6",
+        "S7",
+        "S8",
+        "S10",
+        "S11",
+        "S13",
+        "S16",
+        "S20",
+        "S22",
+        "S23",
+        "S24"
+      ]
+    }
+  ],
+  "programme": {
+    "totalMappings": 244,
+    "uniqueKsbsCovered": 58,
+    "officialCatalogueSize": 64,
+    "uniqueByType": {
+      "behaviour": 5,
+      "knowledge": 33,
+      "skill": 20
+    },
+    "averageBlocksPerKsb": 4.21,
+    "maxBlocksForAnyKsb": 9,
+    "unmappedOfficial": [
+      "K20",
+      "S2",
+      "S3",
+      "S4",
+      "S9",
+      "S15"
+    ]
+  },
+  "heavyRepeat": [
+    {
+      "ksbCode": "B1",
+      "type": "behaviour",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Put health and safety first.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 6,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "B3",
+      "type": "behaviour",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Respond and adapt to changing work demands.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 6,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 5,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 5,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 5,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 6,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 5,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 5,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 6,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "B5",
+      "type": "behaviour",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Support an inclusive workplace, for example, being respectful of different views.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 5,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K25",
+      "type": "knowledge",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Business operation considerations: efficiency, customer satisfaction, competitiveness, minimising risks to operation, and ethical issues.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K26",
+      "type": "knowledge",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Vehicle parts costings and procurement: customer, organisation and vehicle needs.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K29",
+      "type": "knowledge",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Principles of sales processes.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S16",
+      "type": "skill",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Provide quotation of cost and order automotive parts, products, and consumables applicable to the vehicle.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S22",
+      "type": "skill",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Communicate in writing, for example with internal and external customers, colleagues, and managers.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S23",
+      "type": "skill",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Use information and digital technology systems. Comply with GDPR and cyber security.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S24",
+      "type": "skill",
+      "blockCount": 9,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Complete and record learning and development activities.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K24",
+      "type": "knowledge",
+      "blockCount": 8,
+      "blocks": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "description": "Principles of customer care: pre and post vehicle customer service, identifying customer and vehicle needs, how to handle challenging conversations.",
+      "mappingRows": [
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K27",
+      "type": "knowledge",
+      "blockCount": 8,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10
+      ],
+      "description": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K28",
+      "type": "knowledge",
+      "blockCount": 8,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10
+      ],
+      "description": "Principles of customer sales and financial compliance: Financial conduct authority (FCA), payment card industry (PCI) requirements.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S17",
+      "type": "skill",
+      "blockCount": 8,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "description": "Apply procedures for stock and parts storage: ordering, checking and stock rotation.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S19",
+      "type": "skill",
+      "blockCount": 8,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "description": "Apply team working principles.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S20",
+      "type": "skill",
+      "blockCount": 8,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10
+      ],
+      "description": "Comply with equity, diversity, and inclusion guidance.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "B2",
+      "type": "behaviour",
+      "blockCount": 7,
+      "blocks": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "description": "Consider the impact on the environment when using resources and carrying out work.",
+      "mappingRows": [
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 5,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K3",
+      "type": "knowledge",
+      "blockCount": 7,
+      "blocks": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "description": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER).",
+      "mappingRows": [
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K4",
+      "type": "knowledge",
+      "blockCount": 7,
+      "blocks": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "description": "Environment and sustainability guidance relevant to the occupation and autocare technician's role and responsibilities. Recycling, reuse, and safe disposal of waste.",
+      "mappingRows": [
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 3,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S1",
+      "type": "skill",
+      "blockCount": 7,
+      "blocks": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "description": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance.",
+      "mappingRows": [
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S18",
+      "type": "skill",
+      "blockCount": 7,
+      "blocks": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "description": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "K8",
+      "type": "knowledge",
+      "blockCount": 5,
+      "blocks": [
+        2,
+        4,
+        6,
+        9,
+        10
+      ],
+      "description": "Vehicle service records, owner's manuals, and warranties. Purpose and use.",
+      "mappingRows": [
+        {
+          "block": 2,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "High",
+          "sessionEvidenceCount": 4,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "High",
+          "sessionEvidenceCount": 2,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    }
+  ],
+  "unmappedDetail": [
+    {
+      "ksbCode": "K20",
+      "type": "knowledge",
+      "description": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters.",
+      "inHigh": false,
+      "mediumMappings": [
+        {
+          "block": 6,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 9,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 10,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        }
+      ],
+      "anyRecommended": [
+        {
+          "block": 6,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 9,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S2",
+      "type": "skill",
+      "description": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards.",
+      "inHigh": false,
+      "mediumMappings": [
+        {
+          "block": 2,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 3,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 4,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 5,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 6,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 7,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 8,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 10,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        }
+      ],
+      "anyRecommended": [
+        {
+          "block": 2,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 3,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S3",
+      "type": "skill",
+      "description": "Maintain and restore the work area during and on completion of the activity.",
+      "inHigh": false,
+      "mediumMappings": [
+        {
+          "block": 3,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 4,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 5,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 6,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 7,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 8,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 10,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        }
+      ],
+      "anyRecommended": [
+        {
+          "block": 3,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S4",
+      "type": "skill",
+      "description": "Store, maintain, including calibration checks, and return tools and equipment to storage.",
+      "inHigh": false,
+      "mediumMappings": [
+        {
+          "block": 3,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 4,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 5,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 6,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 7,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 8,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        },
+        {
+          "block": 10,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        }
+      ],
+      "anyRecommended": [
+        {
+          "block": 3,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 4,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 5,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 6,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 7,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 8,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        },
+        {
+          "block": 10,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    },
+    {
+      "ksbCode": "S9",
+      "type": "skill",
+      "description": "Remove, repair and replace vehicle tyre and balance wheel assemblies on car, car derived van or light goods vehicle. For example, ultra-low profile, directional, asymmetric, run-flat tyres.",
+      "inHigh": false,
+      "mediumMappings": [],
+      "anyRecommended": []
+    },
+    {
+      "ksbCode": "S15",
+      "type": "skill",
+      "description": "Apply customer service principles and organisational customer care practices. For example, identifying customer and vehicle needs, resolve low level customer complaints, make recommendations to customers based on results of inspection, maintenance, or repair of vehicles,  customer payment transactions and organisational sales processes.",
+      "inHigh": false,
+      "mediumMappings": [
+        {
+          "block": 10,
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null,
+          "confidence": "Medium"
+        }
+      ],
+      "anyRecommended": [
+        {
+          "block": 10,
+          "confidence": "Medium",
+          "sessionEvidenceCount": 1,
+          "focusWeekCount": null,
+          "weeks": null
+        }
+      ]
+    }
+  ],
+  "overmapFlags": [
+    {
+      "block": 1,
+      "uniqueKsbs": 0,
+      "totalMappings": 0,
+      "cleanMasterBroad": 0,
+      "pctOfCatalogue": 0.0,
+      "note": null
+    },
+    {
+      "block": 2,
+      "uniqueKsbs": 35,
+      "totalMappings": 35,
+      "cleanMasterBroad": 49,
+      "pctOfCatalogue": 54.7,
+      "note": null
+    },
+    {
+      "block": 3,
+      "uniqueKsbs": 21,
+      "totalMappings": 21,
+      "cleanMasterBroad": 61,
+      "pctOfCatalogue": 32.8,
+      "note": null
+    },
+    {
+      "block": 4,
+      "uniqueKsbs": 28,
+      "totalMappings": 28,
+      "cleanMasterBroad": 57,
+      "pctOfCatalogue": 43.8,
+      "note": null
+    },
+    {
+      "block": 5,
+      "uniqueKsbs": 21,
+      "totalMappings": 21,
+      "cleanMasterBroad": 61,
+      "pctOfCatalogue": 32.8,
+      "note": null
+    },
+    {
+      "block": 6,
+      "uniqueKsbs": 27,
+      "totalMappings": 27,
+      "cleanMasterBroad": 61,
+      "pctOfCatalogue": 42.2,
+      "note": null
+    },
+    {
+      "block": 7,
+      "uniqueKsbs": 21,
+      "totalMappings": 21,
+      "cleanMasterBroad": 61,
+      "pctOfCatalogue": 32.8,
+      "note": null
+    },
+    {
+      "block": 8,
+      "uniqueKsbs": 21,
+      "totalMappings": 21,
+      "cleanMasterBroad": 61,
+      "pctOfCatalogue": 32.8,
+      "note": null
+    },
+    {
+      "block": 9,
+      "uniqueKsbs": 40,
+      "totalMappings": 40,
+      "cleanMasterBroad": 49,
+      "pctOfCatalogue": 62.5,
+      "note": null
+    },
+    {
+      "block": 10,
+      "uniqueKsbs": 30,
+      "totalMappings": 30,
+      "cleanMasterBroad": 63,
+      "pctOfCatalogue": 46.9,
+      "note": null
+    }
+  ],
+  "block1Unmapped": true
+}

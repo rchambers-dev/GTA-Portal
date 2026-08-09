@@ -6,14 +6,11 @@ export { TutorCeaSignOffScreen } from "./screens/TutorCeaSignOffScreen";
 export { TutorCeaTaskReviewScreen } from "./screens/TutorCeaTaskReviewScreen";
 export { TutorCeaReviewRoute } from "./screens/TutorCeaReviewRoute";
 export { ManagementApprenticeRplScreen } from "./screens/ManagementApprenticeRplScreen";
+export { ManagementApprenticeTnpScreen } from "./screens/ManagementApprenticeTnpScreen";
 export { ManagementApprenticeBragScreen } from "./screens/ManagementApprenticeBragScreen";
 export { ManagementTaskViewScreen } from "./screens/ManagementTaskViewScreen";
 export { CourseBuilderScreen } from "./screens/CourseBuilderScreen";
 export { AUTOCARE_BLOCKS, AUTOCARE_STANDARD } from "./domain/autocare-blocks";
-export {
-  GTA_BLOCK_PACKS,
-  resolveBlockPack,
-} from "./domain/gta-block-shells";
 export { AUTOCARE_PRACTICAL_TASKS } from "./domain/autocare-tasks";
 export {
   ST0499_KSB_CATALOG,

@@ -143,6 +143,7 @@ export async function GET() {
     standardVersion: delivery.standardVersion,
     deliverySpine: delivery.deliverySpine,
     cohortName: delivery.cohortName,
+    gtaProgrammeVersionId: delivery.gtaProgrammeVersionId,
   };
 
   return NextResponse.json({

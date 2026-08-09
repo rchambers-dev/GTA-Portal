@@ -1,13 +1,15 @@
 /**
  * Per-apprentice block RPL (K/S/B %) — management funding adjustments.
- * Does not change apprentice-facing cohort week display (no fast-track UI).
+ * Invalid percentages are rejected (never silently clamped).
  */
 
 import {
-  clampRplPct,
   emptyBlockRpl,
   type BlockRplInput,
 } from "./rpl-funding-calc";
+import {
+  validateLearnerBlockRplPercents,
+} from "@/features/programme-definition/domain/rpl-formulas";
 
 type Snapshot = {
   version: 1;
@@ -53,6 +55,17 @@ function emit() {
   for (const listener of listeners) listener();
 }
 
+function readStored(raw: BlockRplInput | undefined): BlockRplInput {
+  if (!raw) return emptyBlockRpl();
+  const check = validateLearnerBlockRplPercents(raw);
+  if (!check.ok) return emptyBlockRpl();
+  return {
+    knowledgePct: raw.knowledgePct,
+    skillsPct: raw.skillsPct,
+    behavioursPct: raw.behavioursPct,
+  };
+}
+
 export function subscribeApprenticeRplStore(listener: () => void): () => void {
   listeners.add(listener);
   return () => listeners.delete(listener);
@@ -69,40 +82,43 @@ export function getApprenticeRplServerSnapshot(): Snapshot {
 
 export function getApprenticeBlockRpl(
   apprenticeId: string,
-  blockId: number,
+  blockId: string | number,
 ): BlockRplInput {
   ensureHydrated();
-  return (
-    snapshot.byApprentice[apprenticeId]?.[String(blockId)] ?? emptyBlockRpl()
+  return readStored(
+    snapshot.byApprentice[apprenticeId]?.[String(blockId)],
   );
 }
 
 export function getAllApprenticeBlockRpl(
   apprenticeId: string,
-): Record<number, BlockRplInput> {
+): Record<string, BlockRplInput> {
   ensureHydrated();
   const raw = snapshot.byApprentice[apprenticeId] ?? {};
-  const out: Record<number, BlockRplInput> = {};
+  const out: Record<string, BlockRplInput> = {};
   for (const [key, value] of Object.entries(raw)) {
-    out[Number(key)] = {
-      knowledgePct: clampRplPct(value.knowledgePct),
-      skillsPct: clampRplPct(value.skillsPct),
-      behavioursPct: clampRplPct(value.behavioursPct),
-    };
+    out[key] = readStored(value);
   }
   return out;
 }
 
+/**
+ * Persist learner RPL %. Rejects invalid values (non-finite or outside 0–100).
+ */
 export function setApprenticeBlockRpl(
   apprenticeId: string,
-  blockId: number,
+  blockId: string | number,
   input: BlockRplInput,
-): void {
+): { ok: true } | { ok: false; error: string } {
   ensureHydrated();
+  const check = validateLearnerBlockRplPercents(input);
+  if (!check.ok) {
+    return { ok: false, error: check.message };
+  }
   const nextInput: BlockRplInput = {
-    knowledgePct: clampRplPct(input.knowledgePct),
-    skillsPct: clampRplPct(input.skillsPct),
-    behavioursPct: clampRplPct(input.behavioursPct),
+    knowledgePct: input.knowledgePct,
+    skillsPct: input.skillsPct,
+    behavioursPct: input.behavioursPct,
   };
   const apprentice = { ...(snapshot.byApprentice[apprenticeId] ?? {}) };
   apprentice[String(blockId)] = nextInput;
@@ -112,6 +128,7 @@ export function setApprenticeBlockRpl(
   };
   persist(snapshot);
   emit();
+  return { ok: true };
 }
 
 export function resetApprenticeBlockRpl(apprenticeId: string): void {

@@ -14,7 +14,9 @@
     "db:migrate": "node scripts/run-migration.mjs",
     "db:seed:autocare-forms": "node --experimental-strip-types scripts/seed-autocare-course-forms.ts",
     "db:generate:autocare-forms-sql": "node --experimental-strip-types scripts/generate-autocare-forms-sql.ts",
-    "probe:skills-england": "node --env-file=.env.local skillsengland/probe.mjs"
+    "probe:skills-england": "node --env-file=.env.local skillsengland/probe.mjs",
+    "eval:autocare-v1-curriculum-ai": "node scripts/run-golden-eval.mjs",
+    "eval:autocare-v1-curriculum-ai:portal": "node scripts/run-golden-eval.mjs --portal_ai"
   },
   "dependencies": {
     "@giphy/js-fetch-api": "^5.8.0",

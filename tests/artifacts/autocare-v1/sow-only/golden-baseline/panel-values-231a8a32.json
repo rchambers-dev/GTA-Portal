@@ -1,0 +1,46 @@
+{
+  "programmeVersionId": "231a8a32-d876-4312-a178-960d19dcf938",
+  "panel": {
+    "officialRequirement": 64,
+    "approvedPrimariesDb": "15 / 64",
+    "reviewedCurriculumGaps": 14,
+    "notYetResolvedReviewed": 35,
+    "duplicatePrimaries": 0,
+    "nonBlockPrimaries": 0,
+    "gatewayEpaMappings": 0,
+    "publicationBlocked": true
+  },
+  "gapCodesStillNotApproved": [
+    "B5",
+    "K1",
+    "K13",
+    "K18",
+    "K2",
+    "K20",
+    "K31",
+    "K34",
+    "K7",
+    "S11",
+    "S20",
+    "S23",
+    "S25",
+    "S7"
+  ],
+  "approvedCodes": [
+    "K12",
+    "K21",
+    "K23",
+    "K24",
+    "K29",
+    "K30",
+    "S1",
+    "S12",
+    "S13",
+    "S14",
+    "S15",
+    "S19",
+    "S2",
+    "S3",
+    "S4"
+  ]
+}

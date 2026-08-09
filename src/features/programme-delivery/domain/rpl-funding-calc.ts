@@ -1,13 +1,12 @@
 /**
- * Funding / RPL calculator for Autocare blocks (management only).
+ * Funding / RPL calendar helpers for Autocare delivery (management only).
  *
- * GTA does not fast-track delivery. These figures adjust planned OTJ hours and
- * a funding-compliant expected finish for Jon — apprentices keep cohort weeks.
+ * Weighted K/S/B + cap maths is NOT implemented here — that lives exclusively in
+ * runWeightedKsbCapV1 (frozen weighted_ksb_cap_v1). This module adapts Autocare
+ * delivery defaults (10% steppers, round-1 hours) onto that runner, then builds
+ * funding calendar / indicative band helpers around the result.
  *
- * Formula (matches live MBB Autocare weights):
- *   aplFactor = (0.30×K + 0.50×S + 0.20×B) / 100
- *   deduction = min(otj × maxPct, otj × aplFactor)
- *   adjusted  = otj − deduction
+ * GTA does not fast-track delivery. Apprentices keep cohort weeks.
  */
 
 import {
@@ -19,6 +18,10 @@ import {
   formatDisplayDate,
   startOfUtcDay,
 } from "@/features/apprentice-lifecycle/domain/programme-week";
+import {
+  runWeightedKsbCapV1,
+  type WeightedKsbCapParams,
+} from "@/features/programme-definition/domain/rpl-formulas";
 
 export const RPL_WEIGHT_K = 0.3;
 export const RPL_WEIGHT_S = 0.5;
@@ -34,6 +37,17 @@ export const TRAINING_HOURS_PER_DAY = 6;
  * 1 training day/week: (7×52) / 46.4 ≈ 7.84 → round per session index.
  */
 export const DAYS_PER_SESSION_STEP = (7 * 52) / 46.4;
+
+/** Autocare frozen params for the canonical weighted_ksb_cap_v1 runner. */
+export const LEGACY_AUTOCAR_WEIGHTED_PARAMS: WeightedKsbCapParams = {
+  includeAplK: true,
+  includeAplS: true,
+  includeAplB: true,
+  aplWeightK: RPL_WEIGHT_K,
+  aplWeightS: RPL_WEIGHT_S,
+  aplWeightB: RPL_WEIGHT_B,
+  aplMaxFraction: RPL_MAX_DEDUCTION,
+};
 
 export type BlockRplInput = {
   knowledgePct: number;
@@ -81,29 +95,37 @@ export function clampRplPct(value: number): number {
   return Math.min(100, Math.max(0, stepped));
 }
 
+/**
+ * Thin adapter: Autocare 10% steppers → canonical runWeightedKsbCapV1.
+ */
 export function aplFactorFromKsb(input: BlockRplInput): number {
-  const k = clampRplPct(input.knowledgePct);
-  const s = clampRplPct(input.skillsPct);
-  const b = clampRplPct(input.behavioursPct);
-  return (RPL_WEIGHT_K * k + RPL_WEIGHT_S * s + RPL_WEIGHT_B * b) / 100;
+  return runWeightedKsbCapV1({
+    blockOtjHours: 0,
+    priorKPercent: clampRplPct(input.knowledgePct),
+    priorSPercent: clampRplPct(input.skillsPct),
+    priorBPercent: clampRplPct(input.behavioursPct),
+    params: LEGACY_AUTOCAR_WEIGHTED_PARAMS,
+  }).aplFactor;
 }
 
+/**
+ * Thin adapter: round delivery hours to 1dp after canonical weighted runner.
+ */
 export function adjustBlockOtj(
   plannedOtjHours: number,
   input: BlockRplInput,
 ): { aplFactor: number; deductionHours: number; adjustedOtjHours: number } {
-  const aplFactor = aplFactorFromKsb(input);
-  if (plannedOtjHours <= 0) {
-    return { aplFactor, deductionHours: 0, adjustedOtjHours: 0 };
-  }
-  const uncapped = plannedOtjHours * aplFactor;
-  const capped = plannedOtjHours * RPL_MAX_DEDUCTION;
-  const deductionHours = Math.min(uncapped, capped);
-  const adjustedOtjHours = Math.max(0, plannedOtjHours - deductionHours);
+  const result = runWeightedKsbCapV1({
+    blockOtjHours: plannedOtjHours,
+    priorKPercent: clampRplPct(input.knowledgePct),
+    priorSPercent: clampRplPct(input.skillsPct),
+    priorBPercent: clampRplPct(input.behavioursPct),
+    params: LEGACY_AUTOCAR_WEIGHTED_PARAMS,
+  });
   return {
-    aplFactor,
-    deductionHours: round1(deductionHours),
-    adjustedOtjHours: round1(adjustedOtjHours),
+    aplFactor: result.aplFactor,
+    deductionHours: round1(result.deductionHours),
+    adjustedOtjHours: round1(result.adjustedOtjHours),
   };
 }
 

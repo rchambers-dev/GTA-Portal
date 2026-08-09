@@ -207,7 +207,7 @@ export function apprenticeBlockRagLabel(
 }
 
 export function blockCohortWindowDates(
-  block: ProgrammeBlockDef,
+  block: Pick<ProgrammeBlockDef, "weekStart" | "weekEnd">,
   cohortStartIso: string,
 ): { startIso: string; endIso: string } | null {
   if (block.weekStart == null || block.weekEnd == null) return null;

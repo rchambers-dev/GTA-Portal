@@ -190,6 +190,16 @@ export const AI_ACCESS_CONTAINERS: Record<AiFeatureKey, AiAccessContainer> = {
     maxContextChars: 8_000,
     allowFreeformUserText: true,
   },
+  "programme.baseline_curriculum_analysis": {
+    feature: "programme.baseline_curriculum_analysis",
+    purpose:
+      "Analyse official KSB requirements against current approved curriculum evidence only. Recommend Primary/gap/distributed/ambiguous classifications. Never persist mappings. Never use proposed amendments or golden labels as answers.",
+    allowedScopes: ["programme.curriculum"],
+    allowedActions: ["text.suggest"],
+    allowedWorkspaces: ["management", "staff", "quality"],
+    maxContextChars: 24_000,
+    allowFreeformUserText: true,
+  },
 };
 
 export function getAiAccessContainer(feature: AiFeatureKey): AiAccessContainer {

@@ -11,6 +11,11 @@ import type {
   SpineItem,
 } from "./types";
 import { LEARNING_INTENTS } from "./types";
+import {
+  DEFAULT_CURRICULUM_VALUE,
+  assertCurriculumValue,
+  normalizeCurriculumValue,
+} from "./rpl-formulas/block-curriculum-value";
 
 export function isLearningIntent(value: unknown): value is LearningIntent {
   return (
@@ -98,6 +103,8 @@ export function createBlockKsbMapping(args: {
   learningIntent: LearningIntent;
   mappingSource: MappingSource;
   createdBy: string;
+  /** Defaults to 1.0 when omitted. */
+  curriculumValue?: number;
   existing?: BlockKsbMapping[];
   spineItems?: SpineItem[];
 } & MappingProvenanceInput): BlockKsbMapping[] {
@@ -108,6 +115,10 @@ export function createBlockKsbMapping(args: {
   const code = args.ksbCode.trim().toUpperCase();
   const now = new Date().toISOString();
   const existing = args.existing ?? [];
+  const curriculumValue =
+    args.curriculumValue == null
+      ? DEFAULT_CURRICULUM_VALUE
+      : assertCurriculumValue(args.curriculumValue);
 
   if (findMapping(existing, args.blockId, code)) {
     return existing;
@@ -128,6 +139,7 @@ export function createBlockKsbMapping(args: {
     ksbCode: code,
     isPrimary: args.isPrimary,
     learningIntent: args.learningIntent,
+    curriculumValue,
     mappingSource: args.mappingSource,
     recommendationProvider: args.recommendationProvider ?? null,
     recommendationFeature: args.recommendationFeature ?? null,
@@ -151,6 +163,7 @@ export function updateBlockKsbMapping(
       BlockKsbMapping,
       | "isPrimary"
       | "learningIntent"
+      | "curriculumValue"
       | "mappingSource"
       | "recommendationProvider"
       | "recommendationFeature"
@@ -164,6 +177,10 @@ export function updateBlockKsbMapping(
   const now = new Date().toISOString();
   const target = mappings.find((m) => m.id === mappingId);
   if (!target) return mappings;
+
+  if (patch.curriculumValue !== undefined) {
+    assertCurriculumValue(patch.curriculumValue);
+  }
 
   let next = mappings.map((m) =>
     m.id === mappingId ? { ...m, ...patch, updatedAt: now } : m,
@@ -261,6 +278,9 @@ export function migrateAssignedCodesToMappings(
     return existing.map((m) => ({
       ...emptyProvenance(),
       ...m,
+      curriculumValue: normalizeCurriculumValue(
+        (m as BlockKsbMapping).curriculumValue,
+      ),
       recommendationProvider: m.recommendationProvider ?? null,
       recommendationFeature: m.recommendationFeature ?? null,
       recommendedIntent: m.recommendedIntent ?? null,
@@ -283,6 +303,7 @@ export function migrateAssignedCodesToMappings(
         ksbCode: code,
         isPrimary: false,
         learningIntent: "practise",
+        curriculumValue: DEFAULT_CURRICULUM_VALUE,
         mappingSource: "imported",
         ...emptyProvenance(),
         createdBy,
@@ -292,6 +313,36 @@ export function migrateAssignedCodesToMappings(
     }
   }
   return out;
+}
+
+/** Describe curriculum-value edits for the activity log. */
+export function describeCurriculumValueChanges(
+  before: BlockKsbMapping[],
+  after: BlockKsbMapping[],
+  spineItems: SpineItem[],
+): string[] {
+  const title = (blockId: string) => {
+    const item = spineItems.find((i) => i.id === blockId);
+    if (!item) return blockId.slice(0, 8);
+    const n = item.metadata?.blockNumber;
+    return typeof n === "number"
+      ? `Block ${n} — ${item.title}`
+      : item.title;
+  };
+
+  const beforeById = new Map(before.map((m) => [m.id, m]));
+  const lines: string[] = [];
+  for (const m of after) {
+    const prev = beforeById.get(m.id);
+    if (!prev) continue;
+    const from = normalizeCurriculumValue(prev.curriculumValue);
+    const to = normalizeCurriculumValue(m.curriculumValue);
+    if (from === to) continue;
+    lines.push(
+      `${m.ksbCode} curriculum value changed from ${from} to ${to} in ${title(m.blockId)}`,
+    );
+  }
+  return lines;
 }
 
 export function stripLegacyAssignedCodes(

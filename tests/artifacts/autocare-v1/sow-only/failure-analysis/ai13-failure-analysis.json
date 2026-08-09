@@ -1,0 +1,5779 @@
+{
+  "at": "2026-08-09T22:07:36.233Z",
+  "sourceEval": ".tmp-autocare-v1-ai1-golden-eval-portal_ai.json",
+  "ai1BenchmarkPromptVersion": "baseline-curriculum-analysis@1.4",
+  "disagreementCount": 39,
+  "retrievalVsJudgement": {
+    "RETRIEVAL_MISS": 3,
+    "JUDGEMENT_MISS": 29,
+    "N_A_gap_or_non_primary": 7,
+    "note": "RETRIEVAL_MISS = golden Primary block not in top-N candidates. JUDGEMENT_MISS = golden Primary block present but model selected another. N_A for golden gaps/distributed where there is no correct Primary block."
+  },
+  "failureClassCounts": {
+    "correct_coverage_wrong_primary_block": 29,
+    "chose_reinforcement_over_first_substantive_teaching": 5,
+    "later_specialist_consolidation_over_earlier_teaching": 5,
+    "lexical_false_friend": 5,
+    "insufficient_evidence": 14,
+    "genuine_distributed_skill": 0,
+    "genuine_ambiguity_near_tie": 14,
+    "curriculum_gap_incorrectly_forced_into_primary": 7,
+    "retrieval_failure": 3,
+    "evidence_ranking_failure": 3,
+    "model_judgement_failure": 36,
+    "golden_decision_potentially_evidence_sensitive": 5
+  },
+  "rows": [
+    {
+      "ksbCode": "K12",
+      "officialDescription": "Braking systems: purpose, function, and location of systems and components for inspection, removal and replacement: brake discs, brake pads, brake shoes, brake drum, hydraulic components, anti-lock braking systems, electronic stability programmes, brake pedal simulator, brake pipe and hoses, wheel bearings.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": 2,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 5.83,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 17,
+            "block": 2,
+            "topic": "Advanced Brake Diagnostics",
+            "score": 3.99,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "score": 3.12,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 43,
+            "block": 5,
+            "topic": "Complex repairs, time management and QA sign-off",
+            "score": 2.86,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 49,
+            "block": 5,
+            "topic": "Stock variance investigation and corrective action planning",
+            "score": 2.78,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 81,
+            "block": 9,
+            "topic": "Applied Awareness",
+            "score": 2.61,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.07,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 23,
+            "block": 3,
+            "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+            "score": 1.87,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 1.45,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 1.35,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          2,
+          3,
+          5,
+          9,
+          4
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S12",
+      "officialDescription": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": 2,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 74,
+            "block": 8,
+            "topic": "Alignment, ride height and geometry correlation",
+            "score": 7.72,
+            "rejected": false,
+            "reasons": [
+              "topic:alignment",
+              "topic:geometry",
+              "weak:toe",
+              "weak:camber",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 7.07,
+            "rejected": false,
+            "reasons": [
+              "weak:alignment",
+              "strong:geometry"
+            ]
+          },
+          {
+            "week": 34,
+            "block": 4,
+            "topic": "Steering geometry and advanced tyre diagnosis",
+            "score": 6.65,
+            "rejected": false,
+            "reasons": [
+              "strong:alignment",
+              "topic:geometry",
+              "weak:toe",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 18,
+            "block": 2,
+            "topic": "Wheel Alignment - Advanced",
+            "score": 5.52,
+            "rejected": false,
+            "reasons": [
+              "topic:alignment",
+              "weak:toe",
+              "weak:camber",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 44,
+            "block": 5,
+            "topic": "Suspension component replacement and alignment preparation",
+            "score": 3.93,
+            "rejected": false,
+            "reasons": [
+              "topic:alignment",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 89,
+            "block": 9,
+            "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+            "score": 2.82,
+            "rejected": false,
+            "reasons": [
+              "topic:alignment",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 7,
+            "block": 1,
+            "topic": "Multimeter Use, Electrical Measurement and Fabrication Quality",
+            "score": 2.24,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 106,
+            "block": 10,
+            "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+            "score": 1.8,
+            "rejected": false,
+            "reasons": [
+              "strong:alignment",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 42,
+            "block": 5,
+            "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+            "score": 1.68,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 22,
+            "block": 3,
+            "topic": "Routine servicing, inspection workflow and service schedules",
+            "score": 1.52,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          8,
+          1,
+          4,
+          2,
+          5,
+          9,
+          10,
+          3
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K29",
+      "officialDescription": "Principles of sales processes.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 3,
+      "aiPrimary": 2,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 78,
+            "block": 8,
+            "topic": "Quotations, authorisation chains and ethical upsell practice",
+            "score": 11.6,
+            "rejected": false,
+            "reasons": [
+              "weak:sales",
+              "topic:quotation",
+              "topic:upsell",
+              "topic:authorisation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 28,
+            "block": 3,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "score": 9.46,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:authorisation",
+              "topic:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 48,
+            "block": 5,
+            "topic": "Additional work identification and quote revision",
+            "score": 6.45,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "strong:authorisation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 38,
+            "block": 4,
+            "topic": "Quotations: labour, parts and value options",
+            "score": 6.02,
+            "rejected": false,
+            "reasons": [
+              "topic:quotation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 68,
+            "block": 7,
+            "topic": "Multi-line estimates and customer choice conversations",
+            "score": 5.92,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "weak:authorisation",
+              "topic:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 10,
+            "block": 1,
+            "topic": "Technical Documentation, Job Cards, Handover and Specialist Transition",
+            "score": 5.16,
+            "rejected": false,
+            "reasons": [
+              "strong:authorisation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 4.65,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 58,
+            "block": 6,
+            "topic": "Quote approval, consent and final documentation",
+            "score": 4.5,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 66,
+            "block": 7,
+            "topic": "Service recovery, complaint closure and records",
+            "score": 4.5,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 20,
+            "block": 2,
+            "topic": "Customer Dispute Resolution",
+            "score": 4.48,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          8,
+          3,
+          5,
+          4,
+          7,
+          1,
+          2,
+          6
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K30",
+      "officialDescription": "Team working principles.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 3,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "insufficient_evidence"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Model forced gap despite golden Primary coverage.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 22,
+            "block": 3,
+            "topic": "Routine servicing, inspection workflow and service schedules",
+            "score": 1.52,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 1.51,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "score": 1.5,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 1.5,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 33,
+            "block": 4,
+            "topic": "Driveline service, task allocation and team communication",
+            "score": 1.45,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 70,
+            "block": 7,
+            "topic": "Safe working with new vehicle systems",
+            "score": 1.3,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 73,
+            "block": 8,
+            "topic": "Repair planning, delegation and sign-off discipline",
+            "score": 1.3,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 1.25,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 12,
+            "block": 2,
+            "topic": "Electrical System Inspection",
+            "score": 1.24,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 1.22,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          3,
+          1,
+          4,
+          7,
+          8,
+          2
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S1",
+      "officialDescription": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 3,
+      "aiPrimary": 1,
+      "confidence": "high",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 15.31,
+            "rejected": false,
+            "reasons": [
+              "topic:safety",
+              "strong:hazard",
+              "strong:ppe"
+            ]
+          },
+          {
+            "week": 1,
+            "block": 1,
+            "topic": "Workshop Safety, Hazards, Housekeeping and Occupational Expectations",
+            "score": 10.94,
+            "rejected": false,
+            "reasons": [
+              "topic:safety",
+              "topic:hazard",
+              "strong:ppe",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 10.55,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "topic:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 30,
+            "block": 3,
+            "topic": "Environmental risk, spill response and emergency preparedness",
+            "score": 9.9,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 9.72,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 8.8,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 47,
+            "block": 5,
+            "topic": "Battery handling, waste segregation and PPE discipline",
+            "score": 8.16,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "topic:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 67,
+            "block": 7,
+            "topic": "Workshop flow, layout and housekeeping",
+            "score": 7.44,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "weak:hazard",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 50,
+            "block": 5,
+            "topic": "Risk assessment refresh and safe systems of work",
+            "score": 7.24,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 40,
+            "block": 4,
+            "topic": "Fire safety, first response and incident reporting",
+            "score": 6.86,
+            "rejected": false,
+            "reasons": [
+              "topic:safety",
+              "strong:ppe",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          4,
+          3,
+          8,
+          5,
+          7
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S2",
+      "officialDescription": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": 3,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 3.2,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 7,
+            "block": 1,
+            "topic": "Multimeter Use, Electrical Measurement and Fabrication Quality",
+            "score": 2.8,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 2.79,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 2.76,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 50,
+            "block": 5,
+            "topic": "Risk assessment refresh and safe systems of work",
+            "score": 2.19,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 30,
+            "block": 3,
+            "topic": "Environmental risk, spill response and emergency preparedness",
+            "score": 2.09,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 53,
+            "block": 6,
+            "topic": "Workshop productivity, task sequencing and team support",
+            "score": 1.88,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 57,
+            "block": 6,
+            "topic": "Safe lifting, jacking and vehicle support",
+            "score": 1.86,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 76,
+            "block": 8,
+            "topic": "Documentation for handover and audit trail completeness",
+            "score": 1.86,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 67,
+            "block": 7,
+            "topic": "Workshop flow, layout and housekeeping",
+            "score": 1.78,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          8,
+          3,
+          5,
+          6,
+          7
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S3",
+      "officialDescription": "Maintain and restore the work area during and on completion of the activity.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": 3,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.64,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 6,
+            "block": 1,
+            "topic": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+            "score": 2.61,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 2.44,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 1.96,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 50,
+            "block": 5,
+            "topic": "Risk assessment refresh and safe systems of work",
+            "score": 1.91,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 57,
+            "block": 6,
+            "topic": "Safe lifting, jacking and vehicle support",
+            "score": 1.86,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 59,
+            "block": 6,
+            "topic": "Order tracking, back orders and customer impact",
+            "score": 1.86,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 32,
+            "block": 4,
+            "topic": "Intro",
+            "score": 1.76,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 23,
+            "block": 3,
+            "topic": "Fast-fit repairs, bay discipline and effective handoffs",
+            "score": 1.74,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 36,
+            "block": 4,
+            "topic": "Job-card accuracy, escalation routes and quality gatekeeping",
+            "score": 1.73,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          3,
+          8,
+          5,
+          6,
+          4
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S19",
+      "officialDescription": "Apply team working principles.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 3,
+      "aiPrimary": null,
+      "confidence": "high",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "insufficient_evidence"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Model forced gap despite golden Primary coverage.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 22,
+            "block": 3,
+            "topic": "Routine servicing, inspection workflow and service schedules",
+            "score": 1.84,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 1.8,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 1.7,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 70,
+            "block": 7,
+            "topic": "Safe working with new vehicle systems",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 33,
+            "block": 4,
+            "topic": "Driveline service, task allocation and team communication",
+            "score": 1.55,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 1,
+            "block": 1,
+            "topic": "Workshop Safety, Hazards, Housekeeping and Occupational Expectations",
+            "score": 1.55,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 1.53,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 73,
+            "block": 8,
+            "topic": "Repair planning, delegation and sign-off discipline",
+            "score": 1.4,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 1.4,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 42,
+            "block": 5,
+            "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+            "score": 1.39,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          3,
+          1,
+          7,
+          4,
+          8,
+          5
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S4",
+      "officialDescription": "Store, maintain, including calibration checks, and return tools and equipment to storage.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 4,
+      "aiPrimary": 1,
+      "confidence": "high",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 6,
+            "block": 1,
+            "topic": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+            "score": 24.84,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:tool use",
+              "topic:safe tool",
+              "strong:housekeeping"
+            ]
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 21.25,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:tool use",
+              "strong:safe tool",
+              "strong:calibration"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 12.44,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:housekeeping",
+              "topic:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 10.23,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "topic:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 67,
+            "block": 7,
+            "topic": "Workshop flow, layout and housekeeping",
+            "score": 9.86,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 9.6,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 47,
+            "block": 5,
+            "topic": "Battery handling, waste segregation and PPE discipline",
+            "score": 9.16,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 57,
+            "block": 6,
+            "topic": "Safe lifting, jacking and vehicle support",
+            "score": 8.8,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 8.77,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 8.3,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:calibration",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          3,
+          8,
+          7,
+          4,
+          5,
+          6,
+          2
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K21",
+      "officialDescription": "Awareness of electrified vehicle technologies and principles of operation: condition monitoring of high voltage batteries and onboard chargers.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 6,
+      "aiPrimary": 9,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "chose_reinforcement_over_first_substantive_teaching",
+        "later_specialist_consolidation_over_earlier_teaching",
+        "genuine_ambiguity_near_tie",
+        "lexical_false_friend"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Later block B9 preferred over earlier golden B6. AI week 81 later than golden week 51. Both golden and AI blocks retrieved — close call should often be ambiguous. Lexical/adjacency pattern: B6 vs consolidation/specialist.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 6.71,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation"
+            ]
+          },
+          {
+            "week": 54,
+            "block": 6,
+            "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+            "score": 5.67,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "topic:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 3,
+            "block": 1,
+            "topic": "Hybrid and High-Voltage Vehicle Awareness",
+            "score": 5.36,
+            "rejected": false,
+            "reasons": [
+              "weak:electrified",
+              "weak:isolation",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 32,
+            "block": 4,
+            "topic": "Intro",
+            "score": 4.33,
+            "rejected": false,
+            "reasons": [
+              "weak:high voltage",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 82,
+            "block": 9,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "score": 3.91,
+            "rejected": false,
+            "reasons": [
+              "topic:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 92,
+            "block": 9,
+            "topic": "non-cert",
+            "score": 3.85,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 80,
+            "block": 8,
+            "topic": "Emergency response, near misses and environmental safety",
+            "score": 2.76,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 12,
+            "block": 2,
+            "topic": "Electrical System Inspection",
+            "score": 2.16,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 52,
+            "block": 6,
+            "topic": "Air-conditioning and climate-control checks",
+            "score": 1.7,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 1.69,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          6,
+          4,
+          9,
+          8,
+          2
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K23",
+      "officialDescription": "Safe working procedures for electrified vehicles. High voltage systems, safe isolation.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 6,
+      "aiPrimary": 9,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "chose_reinforcement_over_first_substantive_teaching",
+        "later_specialist_consolidation_over_earlier_teaching",
+        "genuine_ambiguity_near_tie",
+        "lexical_false_friend"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Later block B9 preferred over earlier golden B6. AI week 81 later than golden week 51. Both golden and AI blocks retrieved — close call should often be ambiguous. Lexical/adjacency pattern: B6 vs consolidation/specialist.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 7.28,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation"
+            ]
+          },
+          {
+            "week": 54,
+            "block": 6,
+            "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+            "score": 6.42,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "topic:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 3,
+            "block": 1,
+            "topic": "Hybrid and High-Voltage Vehicle Awareness",
+            "score": 5.71,
+            "rejected": false,
+            "reasons": [
+              "weak:electrified",
+              "weak:isolation",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 82,
+            "block": 9,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "score": 4.37,
+            "rejected": false,
+            "reasons": [
+              "topic:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 32,
+            "block": 4,
+            "topic": "Intro",
+            "score": 3.93,
+            "rejected": false,
+            "reasons": [
+              "weak:high voltage",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 92,
+            "block": 9,
+            "topic": "non-cert",
+            "score": 3.85,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 80,
+            "block": 8,
+            "topic": "Emergency response, near misses and environmental safety",
+            "score": 3.6,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 70,
+            "block": 7,
+            "topic": "Safe working with new vehicle systems",
+            "score": 2.42,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 22,
+            "block": 3,
+            "topic": "Routine servicing, inspection workflow and service schedules",
+            "score": 2.17,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "score": 2.15,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          6,
+          9,
+          4,
+          8,
+          7,
+          3
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S13",
+      "officialDescription": "Apply safe working practices and procedures to isolate electrified vehicles for maintenance.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": 6,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 54,
+            "block": 6,
+            "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+            "score": 5.96,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "topic:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 5.58,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation"
+            ]
+          },
+          {
+            "week": 3,
+            "block": 1,
+            "topic": "Hybrid and High-Voltage Vehicle Awareness",
+            "score": 4.89,
+            "rejected": false,
+            "reasons": [
+              "weak:electrified",
+              "weak:isolation",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 82,
+            "block": 9,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "score": 4.19,
+            "rejected": false,
+            "reasons": [
+              "topic:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 32,
+            "block": 4,
+            "topic": "Intro",
+            "score": 3.71,
+            "rejected": false,
+            "reasons": [
+              "weak:high voltage",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 92,
+            "block": 9,
+            "topic": "non-cert",
+            "score": 3.38,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "strong:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 80,
+            "block": 8,
+            "topic": "Emergency response, near misses and environmental safety",
+            "score": 3.32,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 22,
+            "block": 3,
+            "topic": "Routine servicing, inspection workflow and service schedules",
+            "score": 2.61,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 2.12,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 1.94,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          6,
+          1,
+          9,
+          4,
+          8,
+          3
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S14",
+      "officialDescription": "Record vehicle service maintenance, parts replacement, or repair.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 6,
+      "aiPrimary": 3,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 38,
+            "block": 4,
+            "topic": "Quotations: labour, parts and value options",
+            "score": 9.96,
+            "rejected": false,
+            "reasons": [
+              "topic:quotation",
+              "strong:estimate",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 35,
+            "block": 4,
+            "topic": "Warranty parts, returns and supplier escalation",
+            "score": 9.59,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 25,
+            "block": 3,
+            "topic": "Parts identification, catalogue use and alternative part selection",
+            "score": 9.02,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 28,
+            "block": 3,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "score": 8.9,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:estimate",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 45,
+            "block": 5,
+            "topic": "VIN lookup, technical data and parts availability checks",
+            "score": 8.53,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 68,
+            "block": 7,
+            "topic": "Multi-line estimates and customer choice conversations",
+            "score": 7.94,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:estimate",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 55,
+            "block": 6,
+            "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+            "score": 7.84,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 49,
+            "block": 5,
+            "topic": "Stock variance investigation and corrective action planning",
+            "score": 7.79,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "topic:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 65,
+            "block": 7,
+            "topic": "Supplier performance, cost control and escalation",
+            "score": 7.66,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 75,
+            "block": 8,
+            "topic": "Specialist parts, alternatives and warranty evidence",
+            "score": 7.66,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          4,
+          3,
+          5,
+          7,
+          6,
+          8
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "B3",
+      "officialDescription": "Respond and adapt to changing work demands.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 6,
+      "aiPrimary": null,
+      "confidence": "high",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "insufficient_evidence"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Model forced gap despite golden Primary coverage.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.07,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 6,
+            "block": 1,
+            "topic": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+            "score": 2.05,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 59,
+            "block": 6,
+            "topic": "Order tracking, back orders and customer impact",
+            "score": 1.3,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 68,
+            "block": 7,
+            "topic": "Multi-line estimates and customer choice conversations",
+            "score": 1.3,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 78,
+            "block": 8,
+            "topic": "Quotations, authorisation chains and ethical upsell practice",
+            "score": 1.3,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 81,
+            "block": 9,
+            "topic": "Applied Awareness",
+            "score": 1.3,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 1.25,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 38,
+            "block": 4,
+            "topic": "Quotations: labour, parts and value options",
+            "score": 1.22,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 20,
+            "block": 2,
+            "topic": "Customer Dispute Resolution",
+            "score": 1.2,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 1.17,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          6,
+          7,
+          8,
+          9,
+          2,
+          4,
+          3
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "B4",
+      "officialDescription": "Seek learning and development opportunities, continual professional development.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 10,
+      "aiPrimary": 1,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 6,
+            "block": 1,
+            "topic": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+            "score": 6.1,
+            "rejected": false,
+            "reasons": [
+              "strong:development"
+            ]
+          },
+          {
+            "week": 100,
+            "block": 10,
+            "topic": "Portfolio-Based Reflective Learning and Evidence Improvement",
+            "score": 4.5,
+            "rejected": false,
+            "reasons": [
+              "topic:portfolio",
+              "topic:reflective",
+              "strong:development",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 107,
+            "block": 10,
+            "topic": "Duty 5 Skills Development and EPA Readiness Practice - Parts Identification and Sourcing",
+            "score": 2.14,
+            "rejected": false,
+            "reasons": [
+              "topic:development",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 9,
+            "block": 1,
+            "topic": "Targeted Occupational Recap, Gap Teaching and First Aid",
+            "score": 1.84,
+            "rejected": false,
+            "reasons": [
+              "weak:portfolio",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 92,
+            "block": 9,
+            "topic": "non-cert",
+            "score": 1.79,
+            "rejected": false,
+            "reasons": [
+              "strong:reflective",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 1.25,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 21,
+            "block": 3,
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "score": 1.2,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 28,
+            "block": 3,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "score": 1.16,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 13,
+            "block": 2,
+            "topic": "Engine Repairs",
+            "score": 1.14,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 35,
+            "block": 4,
+            "topic": "Warranty parts, returns and supplier escalation",
+            "score": 1.13,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          10,
+          9,
+          2,
+          3,
+          4
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 19
+      }
+    },
+    {
+      "ksbCode": "K3",
+      "officialDescription": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER).",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 1,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "insufficient_evidence"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Model forced gap despite golden Primary coverage.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 18.9,
+            "rejected": false,
+            "reasons": [
+              "topic:safety",
+              "strong:hazard",
+              "strong:ppe"
+            ]
+          },
+          {
+            "week": 1,
+            "block": 1,
+            "topic": "Workshop Safety, Hazards, Housekeeping and Occupational Expectations",
+            "score": 13.32,
+            "rejected": false,
+            "reasons": [
+              "topic:safety",
+              "topic:hazard",
+              "strong:ppe",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 12.57,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "topic:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 11.94,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 30,
+            "block": 3,
+            "topic": "Environmental risk, spill response and emergency preparedness",
+            "score": 11.79,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 10.48,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 47,
+            "block": 5,
+            "topic": "Battery handling, waste segregation and PPE discipline",
+            "score": 10,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "topic:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 67,
+            "block": 7,
+            "topic": "Workshop flow, layout and housekeeping",
+            "score": 9.11,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "weak:hazard",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 50,
+            "block": 5,
+            "topic": "Risk assessment refresh and safe systems of work",
+            "score": 8.96,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:hazard",
+              "strong:ppe",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 57,
+            "block": 6,
+            "topic": "Safe lifting, jacking and vehicle support",
+            "score": 8.74,
+            "rejected": false,
+            "reasons": [
+              "strong:safety",
+              "strong:ppe",
+              "strong:coshh",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          4,
+          3,
+          8,
+          5,
+          7,
+          6
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K5",
+      "officialDescription": "Tools and equipment used in automotive industry. Purpose and operation.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 1,
+      "aiPrimary": 3,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "chose_reinforcement_over_first_substantive_teaching",
+        "later_specialist_consolidation_over_earlier_teaching",
+        "genuine_ambiguity_near_tie",
+        "lexical_false_friend"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Later block B3 preferred over earlier golden B1. AI week 21 later than golden week 1. Both golden and AI blocks retrieved — close call should often be ambiguous. Lexical/adjacency pattern: foundation vs later H&S/communication adjacency.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 6,
+            "block": 1,
+            "topic": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+            "score": 24.28,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:tool use",
+              "topic:safe tool",
+              "strong:housekeeping"
+            ]
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 20.13,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:tool use",
+              "strong:safe tool",
+              "strong:calibration"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 11.8,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:housekeeping",
+              "topic:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 67,
+            "block": 7,
+            "topic": "Workshop flow, layout and housekeeping",
+            "score": 9.3,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 9.3,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "topic:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 9.09,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 47,
+            "block": 5,
+            "topic": "Battery handling, waste segregation and PPE discipline",
+            "score": 8.58,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 8.27,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 57,
+            "block": 6,
+            "topic": "Safe lifting, jacking and vehicle support",
+            "score": 8.25,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 7.96,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:calibration",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          3,
+          7,
+          8,
+          4,
+          5,
+          6,
+          2
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K9",
+      "officialDescription": "Tyres: legislation, replacement, repair, and technical information including EU tyre labelling, tyre pressure monitoring systems (TPMS), sidewall markings, homologated fitments relating to cars, car derived vans and light goods vehicles.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 7,
+      "aiPrimary": 2,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 9.61,
+            "rejected": false,
+            "reasons": [
+              "topic:tyre",
+              "strong:tpms",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 64,
+            "block": 7,
+            "topic": "Tyre and TPMS service integration",
+            "score": 8.93,
+            "rejected": false,
+            "reasons": [
+              "topic:tyre",
+              "topic:tpms",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "score": 8.13,
+            "rejected": false,
+            "reasons": [
+              "topic:tyre",
+              "strong:tpms",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 34,
+            "block": 4,
+            "topic": "Steering geometry and advanced tyre diagnosis",
+            "score": 8.09,
+            "rejected": false,
+            "reasons": [
+              "topic:tyre",
+              "strong:tpms",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 44,
+            "block": 5,
+            "topic": "Suspension component replacement and alignment preparation",
+            "score": 6.51,
+            "rejected": false,
+            "reasons": [
+              "strong:tyre",
+              "strong:tpms",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 18,
+            "block": 2,
+            "topic": "Wheel Alignment - Advanced",
+            "score": 6.43,
+            "rejected": false,
+            "reasons": [
+              "strong:tyre",
+              "strong:balance",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 74,
+            "block": 8,
+            "topic": "Alignment, ride height and geometry correlation",
+            "score": 5.99,
+            "rejected": false,
+            "reasons": [
+              "strong:tyre",
+              "strong:tpms",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 89,
+            "block": 9,
+            "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+            "score": 4.11,
+            "rejected": false,
+            "reasons": [
+              "strong:tyre",
+              "strong:tpms",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 81,
+            "block": 9,
+            "topic": "Applied Awareness",
+            "score": 3.69,
+            "rejected": false,
+            "reasons": [
+              "strong:tyre",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 106,
+            "block": 10,
+            "topic": "Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components",
+            "score": 3.5,
+            "rejected": false,
+            "reasons": [
+              "strong:tyre",
+              "strong:tpms",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          2,
+          7,
+          3,
+          4,
+          5,
+          8,
+          9,
+          10
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K11",
+      "officialDescription": "Suspension systems: purpose, function, and location of systems and components for inspection, removal and replacement. Macpherson strut, double wishbone, ball joints, suspension arms, spring types, including leaf and coil, dampers and shock absorbers, air or hydraulic suspension, subframes.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 5,
+      "aiPrimary": 4,
+      "confidence": "low",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 44,
+            "block": 5,
+            "topic": "Suspension component replacement and alignment preparation",
+            "score": 5.51,
+            "rejected": false,
+            "reasons": [
+              "topic:suspension",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 34,
+            "block": 4,
+            "topic": "Steering geometry and advanced tyre diagnosis",
+            "score": 3.97,
+            "rejected": false,
+            "reasons": [
+              "strong:suspension",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 43,
+            "block": 5,
+            "topic": "Complex repairs, time management and QA sign-off",
+            "score": 3.81,
+            "rejected": false,
+            "reasons": [
+              "strong:suspension",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 74,
+            "block": 8,
+            "topic": "Alignment, ride height and geometry correlation",
+            "score": 3.6,
+            "rejected": false,
+            "reasons": [
+              "strong:suspension",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.64,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 89,
+            "block": 9,
+            "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+            "score": 2.59,
+            "rejected": false,
+            "reasons": [
+              "strong:suspension",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 6,
+            "block": 1,
+            "topic": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+            "score": 1.89,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 104,
+            "block": 10,
+            "topic": "Conduct vehicle inspections and routine maintenance work",
+            "score": 1.8,
+            "rejected": false,
+            "reasons": [
+              "strong:suspension",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 110,
+            "block": 10,
+            "topic": "Final Skills Consolidation and Developmental Feedback",
+            "score": 1.8,
+            "rejected": false,
+            "reasons": [
+              "strong:suspension",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 1.35,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          5,
+          4,
+          8,
+          1,
+          9,
+          10,
+          2
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K22",
+      "officialDescription": "Awareness of hydrogen powered vehicle technologies and principles of operation: storage and condition monitoring of fuel cells.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": 9,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 6.35,
+            "rejected": false,
+            "reasons": [
+              "strong:hydrogen"
+            ]
+          },
+          {
+            "week": 93,
+            "block": 9,
+            "topic": "Intro",
+            "score": 3.91,
+            "rejected": false,
+            "reasons": [
+              "strong:hydrogen",
+              "strong:fuel cell",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 94,
+            "block": 9,
+            "topic": "Emerging Technology - Hydrogen Systems Safety and Application",
+            "score": 3.09,
+            "rejected": false,
+            "reasons": [
+              "topic:hydrogen",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 1.81,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 32,
+            "block": 4,
+            "topic": "Intro",
+            "score": 1.76,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 52,
+            "block": 6,
+            "topic": "Air-conditioning and climate-control checks",
+            "score": 1.7,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 1.7,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 1.69,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 79,
+            "block": 8,
+            "topic": "Inventory accuracy, obsolescence review and safe disposal",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          9,
+          4,
+          6,
+          2,
+          8
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 14
+      }
+    },
+    {
+      "ksbCode": "K26",
+      "officialDescription": "Vehicle parts costings and procurement: customer, organisation and vehicle needs.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 2,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "RETRIEVAL_MISS",
+      "failureClasses": [
+        "retrieval_failure",
+        "evidence_ranking_failure",
+        "insufficient_evidence"
+      ],
+      "notes": "Golden Primary block absent from top-N retrieval candidates. Model forced gap despite golden Primary coverage. Likely driven by retrieval miss.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 12.43,
+            "rejected": false,
+            "reasons": [
+              "strong:stock",
+              "topic:parts",
+              "topic:parts storage",
+              "topic:goods-in",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 29,
+            "block": 3,
+            "topic": "Stock rotation, reorder points and traceability",
+            "score": 10.61,
+            "rejected": false,
+            "reasons": [
+              "topic:stock",
+              "topic:stock rotation",
+              "topic:reorder",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 35,
+            "block": 4,
+            "topic": "Warranty parts, returns and supplier escalation",
+            "score": 9.48,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 25,
+            "block": 3,
+            "topic": "Parts identification, catalogue use and alternative part selection",
+            "score": 8.7,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 45,
+            "block": 5,
+            "topic": "VIN lookup, technical data and parts availability checks",
+            "score": 7.94,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 65,
+            "block": 7,
+            "topic": "Supplier performance, cost control and escalation",
+            "score": 7.84,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 49,
+            "block": 5,
+            "topic": "Stock variance investigation and corrective action planning",
+            "score": 7.79,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "topic:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 55,
+            "block": 6,
+            "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+            "score": 7.56,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 68,
+            "block": 7,
+            "topic": "Multi-line estimates and customer choice conversations",
+            "score": 7.56,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:estimate",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 75,
+            "block": 8,
+            "topic": "Specialist parts, alternatives and warranty evidence",
+            "score": 7.56,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          4,
+          3,
+          5,
+          7,
+          6,
+          8
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K27",
+      "officialDescription": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 2,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "RETRIEVAL_MISS",
+      "failureClasses": [
+        "retrieval_failure",
+        "evidence_ranking_failure",
+        "insufficient_evidence"
+      ],
+      "notes": "Golden Primary block absent from top-N retrieval candidates. Model forced gap despite golden Primary coverage. Likely driven by retrieval miss.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 12.62,
+            "rejected": false,
+            "reasons": [
+              "strong:stock",
+              "topic:parts",
+              "topic:parts storage",
+              "topic:goods-in",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 29,
+            "block": 3,
+            "topic": "Stock rotation, reorder points and traceability",
+            "score": 10.93,
+            "rejected": false,
+            "reasons": [
+              "topic:stock",
+              "topic:stock rotation",
+              "topic:reorder",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 35,
+            "block": 4,
+            "topic": "Warranty parts, returns and supplier escalation",
+            "score": 9.48,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 25,
+            "block": 3,
+            "topic": "Parts identification, catalogue use and alternative part selection",
+            "score": 8.7,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 45,
+            "block": 5,
+            "topic": "VIN lookup, technical data and parts availability checks",
+            "score": 7.94,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 49,
+            "block": 5,
+            "topic": "Stock variance investigation and corrective action planning",
+            "score": 7.89,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "topic:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 55,
+            "block": 6,
+            "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+            "score": 7.56,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 65,
+            "block": 7,
+            "topic": "Supplier performance, cost control and escalation",
+            "score": 7.56,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 75,
+            "block": 8,
+            "topic": "Specialist parts, alternatives and warranty evidence",
+            "score": 7.56,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 68,
+            "block": 7,
+            "topic": "Multi-line estimates and customer choice conversations",
+            "score": 7.01,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:estimate",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          4,
+          3,
+          5,
+          6,
+          7,
+          8
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S5",
+      "officialDescription": "Access vehicle technical data to inform inspections and make judgements on wear and serviceability.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 1,
+      "aiPrimary": 2,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "chose_reinforcement_over_first_substantive_teaching",
+        "later_specialist_consolidation_over_earlier_teaching",
+        "genuine_ambiguity_near_tie",
+        "lexical_false_friend"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Later block B2 preferred over earlier golden B1. Both golden and AI blocks retrieved — close call should often be ambiguous. Lexical/adjacency pattern: foundation vs B2.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 3.75,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.64,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 45,
+            "block": 5,
+            "topic": "VIN lookup, technical data and parts availability checks",
+            "score": 2.25,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 13,
+            "block": 2,
+            "topic": "Engine Repairs",
+            "score": 1.91,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 18,
+            "block": 2,
+            "topic": "Wheel Alignment - Advanced",
+            "score": 1.87,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "score": 1.83,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 30,
+            "block": 3,
+            "topic": "Environmental risk, spill response and emergency preparedness",
+            "score": 1.78,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 34,
+            "block": 4,
+            "topic": "Steering geometry and advanced tyre diagnosis",
+            "score": 1.75,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 35,
+            "block": 4,
+            "topic": "Warranty parts, returns and supplier escalation",
+            "score": 1.74,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 67,
+            "block": 7,
+            "topic": "Workshop flow, layout and housekeeping",
+            "score": 1.68,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          5,
+          2,
+          3,
+          4,
+          7
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S6",
+      "officialDescription": "Comply with environmental and sustainability procedures, regulations, standards, and guidance. Segregate resources for reuse, recycling, and disposal.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 3,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "insufficient_evidence"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Model forced gap despite golden Primary coverage.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 30,
+            "block": 3,
+            "topic": "Environmental risk, spill response and emergency preparedness",
+            "score": 10.32,
+            "rejected": false,
+            "reasons": [
+              "topic:environment",
+              "topic:spill",
+              "strong:waste",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 80,
+            "block": 8,
+            "topic": "Emergency response, near misses and environmental safety",
+            "score": 7.84,
+            "rejected": false,
+            "reasons": [
+              "topic:environment",
+              "strong:spill",
+              "strong:waste",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 60,
+            "block": 6,
+            "topic": "Environmental controls, waste streams and site safety",
+            "score": 7.16,
+            "rejected": false,
+            "reasons": [
+              "topic:environment",
+              "topic:waste",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 47,
+            "block": 5,
+            "topic": "Battery handling, waste segregation and PPE discipline",
+            "score": 6.06,
+            "rejected": false,
+            "reasons": [
+              "strong:environment",
+              "topic:waste",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 86,
+            "block": 9,
+            "topic": "Workshop compliance deep dive: documentation and waste control",
+            "score": 5.65,
+            "rejected": false,
+            "reasons": [
+              "strong:environment",
+              "strong:spill",
+              "topic:waste",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 3.57,
+            "rejected": false,
+            "reasons": [
+              "strong:environment",
+              "weak:spill",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 40,
+            "block": 4,
+            "topic": "Fire safety, first response and incident reporting",
+            "score": 3.57,
+            "rejected": false,
+            "reasons": [
+              "strong:environment",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 50,
+            "block": 5,
+            "topic": "Risk assessment refresh and safe systems of work",
+            "score": 3.4,
+            "rejected": false,
+            "reasons": [
+              "strong:environment",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 70,
+            "block": 7,
+            "topic": "Safe working with new vehicle systems",
+            "score": 3.32,
+            "rejected": false,
+            "reasons": [
+              "strong:environment",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 67,
+            "block": 7,
+            "topic": "Workshop flow, layout and housekeeping",
+            "score": 3.04,
+            "rejected": false,
+            "reasons": [
+              "strong:waste",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          3,
+          8,
+          6,
+          5,
+          9,
+          4,
+          7
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S17",
+      "officialDescription": "Apply procedures for stock and parts storage: ordering, checking and stock rotation.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": 2,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "RETRIEVAL_MISS",
+      "failureClasses": [
+        "retrieval_failure",
+        "evidence_ranking_failure"
+      ],
+      "notes": "Golden Primary block absent from top-N retrieval candidates.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 13.63,
+            "rejected": false,
+            "reasons": [
+              "strong:stock",
+              "topic:parts",
+              "topic:parts storage",
+              "topic:goods-in",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 29,
+            "block": 3,
+            "topic": "Stock rotation, reorder points and traceability",
+            "score": 11.67,
+            "rejected": false,
+            "reasons": [
+              "topic:stock",
+              "topic:stock rotation",
+              "topic:reorder",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 35,
+            "block": 4,
+            "topic": "Warranty parts, returns and supplier escalation",
+            "score": 10.71,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 25,
+            "block": 3,
+            "topic": "Parts identification, catalogue use and alternative part selection",
+            "score": 9.77,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 45,
+            "block": 5,
+            "topic": "VIN lookup, technical data and parts availability checks",
+            "score": 8.92,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 75,
+            "block": 8,
+            "topic": "Specialist parts, alternatives and warranty evidence",
+            "score": 8.68,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 55,
+            "block": 6,
+            "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+            "score": 8.5,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 65,
+            "block": 7,
+            "topic": "Supplier performance, cost control and escalation",
+            "score": 8.5,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 49,
+            "block": 5,
+            "topic": "Stock variance investigation and corrective action planning",
+            "score": 8.47,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "topic:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 78,
+            "block": 8,
+            "topic": "Quotations, authorisation chains and ethical upsell practice",
+            "score": 7.84,
+            "rejected": false,
+            "reasons": [
+              "topic:quotation",
+              "strong:estimate",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          4,
+          3,
+          5,
+          8,
+          6,
+          7
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S18",
+      "officialDescription": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 8,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "insufficient_evidence",
+        "golden_decision_potentially_evidence_sensitive"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Model forced gap despite golden Primary coverage. Golden label was human/content-verified or evidence-sensitive.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 78,
+            "block": 8,
+            "topic": "Quotations, authorisation chains and ethical upsell practice",
+            "score": 11.6,
+            "rejected": false,
+            "reasons": [
+              "weak:sales",
+              "topic:quotation",
+              "topic:upsell",
+              "topic:authorisation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 28,
+            "block": 3,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "score": 9.26,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:authorisation",
+              "topic:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 48,
+            "block": 5,
+            "topic": "Additional work identification and quote revision",
+            "score": 6.26,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "strong:authorisation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 38,
+            "block": 4,
+            "topic": "Quotations: labour, parts and value options",
+            "score": 5.82,
+            "rejected": false,
+            "reasons": [
+              "topic:quotation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 68,
+            "block": 7,
+            "topic": "Multi-line estimates and customer choice conversations",
+            "score": 5.74,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "weak:authorisation",
+              "topic:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 10,
+            "block": 1,
+            "topic": "Technical Documentation, Job Cards, Handover and Specialist Transition",
+            "score": 5.16,
+            "rejected": false,
+            "reasons": [
+              "strong:authorisation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 66,
+            "block": 7,
+            "topic": "Service recovery, complaint closure and records",
+            "score": 4.51,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 4.43,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 58,
+            "block": 6,
+            "topic": "Quote approval, consent and final documentation",
+            "score": 4.31,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "strong:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 20,
+            "block": 2,
+            "topic": "Customer Dispute Resolution",
+            "score": 4.27,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          8,
+          3,
+          5,
+          4,
+          7,
+          1,
+          2,
+          6
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S22",
+      "officialDescription": "Communicate in writing, for example with internal and external customers, colleagues, and managers.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 1,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "insufficient_evidence"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Model forced gap despite golden Primary coverage.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 10,
+            "block": 1,
+            "topic": "Technical Documentation, Job Cards, Handover and Specialist Transition",
+            "score": 18.34,
+            "rejected": false,
+            "reasons": [
+              "strong:customer",
+              "topic:handover",
+              "weak:communication",
+              "topic:documentation",
+              "topic:job card",
+              "strong:record",
+              "strong:written",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 41,
+            "block": 5,
+            "topic": "Technical handover and managing customer expectations on diagnostic work",
+            "score": 18.21,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "topic:handover",
+              "strong:communication",
+              "strong:role-play",
+              "strong:documentation",
+              "strong:job card",
+              "strong:record",
+              "strong:written"
+            ]
+          },
+          {
+            "week": 26,
+            "block": 3,
+            "topic": "Workshop procedures, documentation control and handover discipline",
+            "score": 17.18,
+            "rejected": false,
+            "reasons": [
+              "strong:customer",
+              "topic:handover",
+              "strong:communication",
+              "topic:documentation",
+              "strong:job card",
+              "strong:record",
+              "strong:written",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 16,
+            "block": 2,
+            "topic": "Duties 1 / 2: Intake plus Inspection",
+            "score": 15.74,
+            "rejected": false,
+            "reasons": [
+              "strong:customer",
+              "strong:communication",
+              "strong:role-play",
+              "strong:documentation",
+              "strong:job card",
+              "strong:record",
+              "strong:written",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 31,
+            "block": 4,
+            "topic": "Customer updates, ETA management and expectation setting",
+            "score": 15.62,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "strong:communication",
+              "strong:role-play",
+              "strong:documentation",
+              "strong:job card",
+              "strong:record",
+              "strong:written",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 21,
+            "block": 3,
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "score": 15.09,
+            "rejected": false,
+            "reasons": [
+              "strong:customer",
+              "strong:communication",
+              "strong:role-play",
+              "strong:documentation",
+              "strong:job card",
+              "strong:record",
+              "strong:written",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 82,
+            "block": 9,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "score": 15,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "topic:handover",
+              "strong:communication",
+              "strong:role-play",
+              "strong:documentation",
+              "strong:record",
+              "strong:written",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 14.9,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "strong:communication",
+              "strong:role-play",
+              "strong:documentation",
+              "strong:record",
+              "strong:written",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 66,
+            "block": 7,
+            "topic": "Service recovery, complaint closure and records",
+            "score": 14.32,
+            "rejected": false,
+            "reasons": [
+              "strong:customer",
+              "strong:handover",
+              "weak:communication",
+              "strong:role-play",
+              "strong:documentation",
+              "strong:job card",
+              "topic:record",
+              "strong:written"
+            ]
+          },
+          {
+            "week": 84,
+            "block": 9,
+            "topic": "Customer Journey and Service Adviser Day",
+            "score": 13.95,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "strong:handover",
+              "strong:communication",
+              "strong:role-play",
+              "strong:documentation",
+              "strong:record",
+              "strong:written",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          5,
+          3,
+          2,
+          4,
+          9,
+          7
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K16",
+      "officialDescription": "Maintenance and replacement of low voltage batteries, starting and charging systems.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 2,
+      "aiPrimary": 1,
+      "confidence": "high",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 7,
+            "block": 1,
+            "topic": "Multimeter Use, Electrical Measurement and Fabrication Quality",
+            "score": 11.66,
+            "rejected": false,
+            "reasons": [
+              "topic:electrical",
+              "strong:battery"
+            ]
+          },
+          {
+            "week": 12,
+            "block": 2,
+            "topic": "Electrical System Inspection",
+            "score": 9.11,
+            "rejected": false,
+            "reasons": [
+              "topic:electrical",
+              "weak:battery",
+              "weak:alternator",
+              "weak:starter",
+              "strong:charging",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 5.56,
+            "rejected": false,
+            "reasons": [
+              "strong:starter"
+            ]
+          },
+          {
+            "week": 42,
+            "block": 5,
+            "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+            "score": 4.36,
+            "rejected": false,
+            "reasons": [
+              "topic:electrical",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 54,
+            "block": 6,
+            "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+            "score": 4.11,
+            "rejected": false,
+            "reasons": [
+              "topic:charging",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 82,
+            "block": 9,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "score": 4.09,
+            "rejected": false,
+            "reasons": [
+              "topic:charging",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 47,
+            "block": 5,
+            "topic": "Battery handling, waste segregation and PPE discipline",
+            "score": 3.97,
+            "rejected": false,
+            "reasons": [
+              "topic:battery",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 55,
+            "block": 6,
+            "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+            "score": 3.81,
+            "rejected": false,
+            "reasons": [
+              "topic:electrical",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 92,
+            "block": 9,
+            "topic": "non-cert",
+            "score": 3.64,
+            "rejected": false,
+            "reasons": [
+              "strong:battery",
+              "strong:charging",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 102,
+            "block": 10,
+            "topic": "skills-led",
+            "score": 3.25,
+            "rejected": false,
+            "reasons": [
+              "strong:electrical",
+              "strong:battery",
+              "strong:charging",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          2,
+          5,
+          6,
+          9,
+          10
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K32",
+      "officialDescription": "Verbal communication techniques. Giving and receiving information. Matching style to audience.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": 5,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "golden_decision_potentially_evidence_sensitive"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Golden label was human/content-verified or evidence-sensitive.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 41,
+            "block": 5,
+            "topic": "Technical handover and managing customer expectations on diagnostic work",
+            "score": 11.08,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "topic:handover",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 82,
+            "block": 9,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "score": 10.35,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "topic:handover",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 84,
+            "block": 9,
+            "topic": "Customer Journey and Service Adviser Day",
+            "score": 9.86,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "strong:handover",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 9.23,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 26,
+            "block": 3,
+            "topic": "Workshop procedures, documentation control and handover discipline",
+            "score": 8.66,
+            "rejected": false,
+            "reasons": [
+              "strong:customer",
+              "topic:handover",
+              "strong:communication",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 28,
+            "block": 3,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "score": 8.59,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 31,
+            "block": 4,
+            "topic": "Customer updates, ETA management and expectation setting",
+            "score": 8.47,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 10,
+            "block": 1,
+            "topic": "Technical Documentation, Job Cards, Handover and Specialist Transition",
+            "score": 8.06,
+            "rejected": false,
+            "reasons": [
+              "strong:customer",
+              "topic:handover",
+              "weak:communication",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 16,
+            "block": 2,
+            "topic": "Duties 1 / 2: Intake plus Inspection",
+            "score": 7.78,
+            "rejected": false,
+            "reasons": [
+              "strong:customer",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 51,
+            "block": 6,
+            "topic": "Customer interaction during longer diagnostic jobs",
+            "score": 7.72,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          5,
+          9,
+          2,
+          3,
+          4,
+          1,
+          6
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "S21",
+      "officialDescription": "Communicate with others verbally, for example customers, suppliers, and colleagues.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "curriculum_gap",
+      "goldenPrimary": 5,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden Primary not classified as primary_candidate",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "insufficient_evidence",
+        "golden_decision_potentially_evidence_sensitive"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Model forced gap despite golden Primary coverage. Golden label was human/content-verified or evidence-sensitive.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 28,
+            "block": 3,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "score": 15.38,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:estimate",
+              "strong:parts",
+              "topic:customer",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 38,
+            "block": 4,
+            "topic": "Quotations: labour, parts and value options",
+            "score": 14.5,
+            "rejected": false,
+            "reasons": [
+              "topic:quotation",
+              "strong:estimate",
+              "topic:parts",
+              "strong:customer",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 35,
+            "block": 4,
+            "topic": "Warranty parts, returns and supplier escalation",
+            "score": 12.69,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "topic:parts",
+              "strong:customer",
+              "strong:communication",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 25,
+            "block": 3,
+            "topic": "Parts identification, catalogue use and alternative part selection",
+            "score": 12.05,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "strong:customer",
+              "strong:communication",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 82,
+            "block": 9,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "score": 11.53,
+            "rejected": false,
+            "reasons": [
+              "strong:estimate",
+              "topic:customer",
+              "topic:handover",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 68,
+            "block": 7,
+            "topic": "Multi-line estimates and customer choice conversations",
+            "score": 11.53,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:estimate",
+              "strong:parts",
+              "topic:customer",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 45,
+            "block": 5,
+            "topic": "VIN lookup, technical data and parts availability checks",
+            "score": 11,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "strong:customer",
+              "strong:communication",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 41,
+            "block": 5,
+            "topic": "Technical handover and managing customer expectations on diagnostic work",
+            "score": 10.78,
+            "rejected": false,
+            "reasons": [
+              "topic:customer",
+              "topic:handover",
+              "strong:communication",
+              "strong:role-play",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 15,
+            "block": 2,
+            "topic": "Supplier Liaison",
+            "score": 10.49,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:parts",
+              "strong:customer",
+              "strong:communication",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 55,
+            "block": 6,
+            "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+            "score": 10.48,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "strong:customer",
+              "strong:communication",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          3,
+          4,
+          9,
+          7,
+          5,
+          2,
+          6
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K6",
+      "officialDescription": "Maintenance and storage methods for tools and equipment, including calibration checks.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 1,
+      "aiPrimary": 3,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "chose_reinforcement_over_first_substantive_teaching",
+        "later_specialist_consolidation_over_earlier_teaching",
+        "genuine_ambiguity_near_tie",
+        "lexical_false_friend",
+        "golden_decision_potentially_evidence_sensitive"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Later block B3 preferred over earlier golden B1. AI week 21 later than golden week 1. Both golden and AI blocks retrieved — close call should often be ambiguous. Lexical/adjacency pattern: foundation vs later H&S/communication adjacency. Golden label was human/content-verified or evidence-sensitive.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 6,
+            "block": 1,
+            "topic": "Fasteners, Technical Drawings, Fabrication and Safe Tool Use",
+            "score": 25.03,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:tool use",
+              "topic:safe tool",
+              "strong:housekeeping"
+            ]
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 21.25,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:tool use",
+              "strong:safe tool",
+              "strong:calibration"
+            ]
+          },
+          {
+            "week": 27,
+            "block": 3,
+            "topic": "Housekeeping, 5S routines and safe storage control",
+            "score": 12.76,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:housekeeping",
+              "topic:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 67,
+            "block": 7,
+            "topic": "Workshop flow, layout and housekeeping",
+            "score": 10.14,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 10.14,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "topic:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 37,
+            "block": 4,
+            "topic": "COSHH awareness, workshop cleanliness and tool control",
+            "score": 9.9,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 47,
+            "block": 5,
+            "topic": "Battery handling, waste segregation and PPE discipline",
+            "score": 9.45,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 57,
+            "block": 6,
+            "topic": "Safe lifting, jacking and vehicle support",
+            "score": 9.08,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:housekeeping",
+              "strong:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 9.07,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "topic:storage",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 8.63,
+            "rejected": false,
+            "reasons": [
+              "strong:tools",
+              "strong:equipment",
+              "strong:calibration",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          3,
+          7,
+          8,
+          4,
+          5,
+          6,
+          2
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K25",
+      "officialDescription": "Business operation considerations: efficiency, customer satisfaction, competitiveness, minimising risks to operation, and ethical issues.",
+      "goldenClassification": "primary_candidate",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": 6,
+      "aiPrimary": 2,
+      "confidence": "medium",
+      "evalReason": "Primary block mismatch",
+      "missType": "JUDGEMENT_MISS",
+      "failureClasses": [
+        "model_judgement_failure",
+        "correct_coverage_wrong_primary_block",
+        "genuine_ambiguity_near_tie",
+        "golden_decision_potentially_evidence_sensitive"
+      ],
+      "notes": "Golden Primary block was in retrieved set but not selected. Both golden and AI blocks retrieved — close call should often be ambiguous. Golden label was human/content-verified or evidence-sensitive.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 20,
+            "block": 2,
+            "topic": "Customer Dispute Resolution",
+            "score": 2.97,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 2.85,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 26,
+            "block": 3,
+            "topic": "Workshop procedures, documentation control and handover discipline",
+            "score": 2.77,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 32,
+            "block": 4,
+            "topic": "Intro",
+            "score": 2.7,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 25,
+            "block": 3,
+            "topic": "Parts identification, catalogue use and alternative part selection",
+            "score": 2.68,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 43,
+            "block": 5,
+            "topic": "Complex repairs, time management and QA sign-off",
+            "score": 2.56,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 2.52,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 48,
+            "block": 5,
+            "topic": "Additional work identification and quote revision",
+            "score": 2.5,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 52,
+            "block": 6,
+            "topic": "Air-conditioning and climate-control checks",
+            "score": 2.45,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 64,
+            "block": 7,
+            "topic": "Tyre and TPMS service integration",
+            "score": 2.33,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "goldenBlockInTopN": true,
+        "goldenBlockSessionCount": 10
+      }
+    },
+    {
+      "ksbCode": "K1",
+      "officialDescription": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels.",
+      "goldenClassification": "curriculum_gap",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": null,
+      "aiPrimary": 1,
+      "confidence": "medium",
+      "evalReason": "Golden gap not classified as curriculum_gap",
+      "missType": "N_A",
+      "failureClasses": [
+        "curriculum_gap_incorrectly_forced_into_primary",
+        "model_judgement_failure",
+        "insufficient_evidence"
+      ],
+      "notes": "Partial/adjacent evidence treated as ownership.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.83,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 7,
+            "block": 1,
+            "topic": "Multimeter Use, Electrical Measurement and Fabrication Quality",
+            "score": 2.24,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 11,
+            "block": 2,
+            "topic": "Customer Service Scenarios",
+            "score": 1.59,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 16,
+            "block": 2,
+            "topic": "Duties 1 / 2: Intake plus Inspection",
+            "score": 1.56,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 21,
+            "block": 3,
+            "topic": "Service reception, booking diagnostics and first impressions",
+            "score": 1.52,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 40,
+            "block": 4,
+            "topic": "Fire safety, first response and incident reporting",
+            "score": 1.5,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 28,
+            "block": 3,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "score": 1.48,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 31,
+            "block": 4,
+            "topic": "Customer updates, ETA management and expectation setting",
+            "score": 1.46,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 80,
+            "block": 8,
+            "topic": "Emergency response, near misses and environmental safety",
+            "score": 1.4,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 41,
+            "block": 5,
+            "topic": "Technical handover and managing customer expectations on diagnostic work",
+            "score": 1.39,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          2,
+          3,
+          4,
+          8,
+          5
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 0
+      }
+    },
+    {
+      "ksbCode": "K2",
+      "officialDescription": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability.",
+      "goldenClassification": "curriculum_gap",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": null,
+      "aiPrimary": 2,
+      "confidence": "medium",
+      "evalReason": "Golden gap not classified as curriculum_gap",
+      "missType": "N_A",
+      "failureClasses": [
+        "curriculum_gap_incorrectly_forced_into_primary",
+        "model_judgement_failure",
+        "insufficient_evidence"
+      ],
+      "notes": "Partial/adjacent evidence treated as ownership.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 3.38,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.07,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 22,
+            "block": 3,
+            "topic": "Routine servicing, inspection workflow and service schedules",
+            "score": 2.07,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 44,
+            "block": 5,
+            "topic": "Suspension component replacement and alignment preparation",
+            "score": 1.96,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 45,
+            "block": 5,
+            "topic": "VIN lookup, technical data and parts availability checks",
+            "score": 1.95,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 25,
+            "block": 3,
+            "topic": "Parts identification, catalogue use and alternative part selection",
+            "score": 1.93,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 15,
+            "block": 2,
+            "topic": "Supplier Liaison",
+            "score": 1.9,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 18,
+            "block": 2,
+            "topic": "Wheel Alignment - Advanced",
+            "score": 1.87,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 75,
+            "block": 8,
+            "topic": "Specialist parts, alternatives and warranty evidence",
+            "score": 1.86,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          3,
+          5,
+          2,
+          8
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 0
+      }
+    },
+    {
+      "ksbCode": "K7",
+      "officialDescription": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement.",
+      "goldenClassification": "curriculum_gap",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": null,
+      "aiPrimary": 2,
+      "confidence": "medium",
+      "evalReason": "Golden gap not classified as curriculum_gap",
+      "missType": "N_A",
+      "failureClasses": [
+        "curriculum_gap_incorrectly_forced_into_primary",
+        "model_judgement_failure",
+        "insufficient_evidence"
+      ],
+      "notes": "Partial/adjacent evidence treated as ownership.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.64,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 2.26,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 1.69,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 44,
+            "block": 5,
+            "topic": "Suspension component replacement and alignment preparation",
+            "score": 1.67,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 46,
+            "block": 5,
+            "topic": "Complaint prevention through process discipline and record quality",
+            "score": 1.65,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 22,
+            "block": 3,
+            "topic": "Routine servicing, inspection workflow and service schedules",
+            "score": 1.63,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 12,
+            "block": 2,
+            "topic": "Electrical System Inspection",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 56,
+            "block": 6,
+            "topic": "Record keeping, compliance checks and audit readiness",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 64,
+            "block": 7,
+            "topic": "Tyre and TPMS service integration",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 66,
+            "block": 7,
+            "topic": "Service recovery, complaint closure and records",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          2,
+          5,
+          3,
+          6,
+          7
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 0
+      }
+    },
+    {
+      "ksbCode": "S7",
+      "officialDescription": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle.",
+      "goldenClassification": "curriculum_gap",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": null,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden gap not classified as curriculum_gap",
+      "missType": "N_A",
+      "failureClasses": [
+        "curriculum_gap_incorrectly_forced_into_primary",
+        "model_judgement_failure"
+      ],
+      "notes": "",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 3.2,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 5,
+            "block": 1,
+            "topic": "Measurement, Technical Information and Tolerances",
+            "score": 3.02,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 22,
+            "block": 3,
+            "topic": "Routine servicing, inspection workflow and service schedules",
+            "score": 2.61,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 44,
+            "block": 5,
+            "topic": "Suspension component replacement and alignment preparation",
+            "score": 2.36,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 17,
+            "block": 2,
+            "topic": "Advanced Brake Diagnostics",
+            "score": 2.33,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 42,
+            "block": 5,
+            "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+            "score": 2.28,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "score": 2.26,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 2.14,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 75,
+            "block": 8,
+            "topic": "Specialist parts, alternatives and warranty evidence",
+            "score": 2.14,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 77,
+            "block": 8,
+            "topic": "Quality, cleanliness and equipment care routines",
+            "score": 2.14,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          3,
+          5,
+          2,
+          8
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 0
+      }
+    },
+    {
+      "ksbCode": "S11",
+      "officialDescription": "Apply state-of-health condition monitoring tests to high voltage batteries and chargers for electrified cars, car derived vans, or light goods vehicles.",
+      "goldenClassification": "curriculum_gap",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": null,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden gap not classified as curriculum_gap",
+      "missType": "N_A",
+      "failureClasses": [
+        "curriculum_gap_incorrectly_forced_into_primary",
+        "model_judgement_failure"
+      ],
+      "notes": "",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 6.71,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation"
+            ]
+          },
+          {
+            "week": 54,
+            "block": 6,
+            "topic": "Emerging Technology - EV Service, Charging and Safety Procedures",
+            "score": 5.39,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "topic:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 82,
+            "block": 9,
+            "topic": "Emerging Technology - EV Customer Handover, Charging and Application",
+            "score": 3.63,
+            "rejected": false,
+            "reasons": [
+              "topic:ev",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 80,
+            "block": 8,
+            "topic": "Emergency response, near misses and environmental safety",
+            "score": 2.76,
+            "rejected": false,
+            "reasons": [
+              "strong:isolation",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 42,
+            "block": 5,
+            "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+            "score": 2.08,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 8,
+            "block": 1,
+            "topic": "Tools and Safety Consolidation, Basic Circuits and Relay Awareness",
+            "score": 2.07,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 12,
+            "block": 2,
+            "topic": "Electrical System Inspection",
+            "score": 2.04,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 14,
+            "block": 2,
+            "topic": "Tyre Pressure Monitoring Systems",
+            "score": 1.69,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 24,
+            "block": 3,
+            "topic": "Brake wear checks, tyre condition and wheel security",
+            "score": 1.62,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 39,
+            "block": 4,
+            "topic": "Goods-in checks, parts storage and consumables control",
+            "score": 1.51,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          6,
+          9,
+          8,
+          5,
+          2,
+          3,
+          4
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 0
+      }
+    },
+    {
+      "ksbCode": "S25",
+      "officialDescription": "Apply procedures to check and replace fluids, and filtration parts.",
+      "goldenClassification": "curriculum_gap",
+      "aiClassification": "primary_candidate",
+      "goldenPrimary": null,
+      "aiPrimary": 3,
+      "confidence": "medium",
+      "evalReason": "Golden gap not classified as curriculum_gap",
+      "missType": "N_A",
+      "failureClasses": [
+        "curriculum_gap_incorrectly_forced_into_primary",
+        "model_judgement_failure",
+        "insufficient_evidence"
+      ],
+      "notes": "Partial/adjacent evidence treated as ownership.",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 35,
+            "block": 4,
+            "topic": "Warranty parts, returns and supplier escalation",
+            "score": 10.2,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 38,
+            "block": 4,
+            "topic": "Quotations: labour, parts and value options",
+            "score": 10.06,
+            "rejected": false,
+            "reasons": [
+              "topic:quotation",
+              "strong:estimate",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 25,
+            "block": 3,
+            "topic": "Parts identification, catalogue use and alternative part selection",
+            "score": 9.13,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 28,
+            "block": 3,
+            "topic": "Estimates, authorisation and customer approval skills",
+            "score": 9.01,
+            "rejected": false,
+            "reasons": [
+              "strong:quotation",
+              "topic:estimate",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 45,
+            "block": 5,
+            "topic": "VIN lookup, technical data and parts availability checks",
+            "score": 8.34,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 49,
+            "block": 5,
+            "topic": "Stock variance investigation and corrective action planning",
+            "score": 8.18,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "topic:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 75,
+            "block": 8,
+            "topic": "Specialist parts, alternatives and warranty evidence",
+            "score": 8.12,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 78,
+            "block": 8,
+            "topic": "Quotations, authorisation chains and ethical upsell practice",
+            "score": 8.12,
+            "rejected": false,
+            "reasons": [
+              "topic:quotation",
+              "strong:estimate",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 55,
+            "block": 6,
+            "topic": "Technical parts sourcing for electrical and diagnostic repairs",
+            "score": 7.94,
+            "rejected": false,
+            "reasons": [
+              "strong:supplier",
+              "strong:stock",
+              "topic:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 65,
+            "block": 7,
+            "topic": "Supplier performance, cost control and escalation",
+            "score": 7.94,
+            "rejected": false,
+            "reasons": [
+              "topic:supplier",
+              "strong:stock",
+              "strong:parts",
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          4,
+          3,
+          5,
+          8,
+          6,
+          7
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 0
+      }
+    },
+    {
+      "ksbCode": "K10",
+      "officialDescription": "Steering systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Mechanical, hydraulic and electric power assisted steering.",
+      "goldenClassification": "curriculum_gap",
+      "aiClassification": "ambiguous",
+      "goldenPrimary": null,
+      "aiPrimary": null,
+      "confidence": "medium",
+      "evalReason": "Golden gap not classified as curriculum_gap",
+      "missType": "N_A",
+      "failureClasses": [
+        "curriculum_gap_incorrectly_forced_into_primary",
+        "model_judgement_failure"
+      ],
+      "notes": "",
+      "retrieval": {
+        "topN": [
+          {
+            "week": 4,
+            "block": 1,
+            "topic": "Fire Safety, Battery Awareness and Basic Electrical Safety",
+            "score": 2.64,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 7,
+            "block": 1,
+            "topic": "Multimeter Use, Electrical Measurement and Fabrication Quality",
+            "score": 2.24,
+            "rejected": false,
+            "reasons": []
+          },
+          {
+            "week": 17,
+            "block": 2,
+            "topic": "Advanced Brake Diagnostics",
+            "score": 1.78,
+            "rejected": false,
+            "reasons": [
+              "weak:hydraulic",
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 34,
+            "block": 4,
+            "topic": "Steering geometry and advanced tyre diagnosis",
+            "score": 1.75,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 12,
+            "block": 2,
+            "topic": "Electrical System Inspection",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 74,
+            "block": 8,
+            "topic": "Alignment, ride height and geometry correlation",
+            "score": 1.58,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 42,
+            "block": 5,
+            "topic": "Electrical fault finding, basic scope of tests and confirmation checks",
+            "score": 1.39,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 43,
+            "block": 5,
+            "topic": "Complex repairs, time management and QA sign-off",
+            "score": 1.38,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 64,
+            "block": 7,
+            "topic": "Tyre and TPMS service integration",
+            "score": 1.3,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          },
+          {
+            "week": 89,
+            "block": 9,
+            "topic": "Pre-calibration checks: alignment, ride height and sensor inputs",
+            "score": 1.21,
+            "rejected": false,
+            "reasons": [
+              "demote:reinforcement/consolidation"
+            ]
+          }
+        ],
+        "blocksInTopN": [
+          1,
+          2,
+          4,
+          8,
+          5,
+          7,
+          9
+        ],
+        "goldenBlockInTopN": false,
+        "goldenBlockSessionCount": 0
+      }
+    }
+  ],
+  "baselineFrozen": {
+    "approvedPrimaries": 45,
+    "reviewedGaps": 18,
+    "distributedSkillReviews": 1,
+    "unresolved": 0,
+    "structuredOtjHours": 611.5
+  }
+}
