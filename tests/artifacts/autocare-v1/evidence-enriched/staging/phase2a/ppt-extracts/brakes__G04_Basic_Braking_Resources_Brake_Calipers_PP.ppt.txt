@@ -1,0 +1,314 @@
+SOURCE: G04 Basic Braking\Resources\Brake Calipers PP.ppt
+HASH: 14c073c3be452629d31a493afadfa7433d5a0e0902353fa2517ba8e3ea947979
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+Level 3 Auto-CareBrake Calipers
+
+===== SLIDE 2 =====
+Lesson Aims:Explore the components involved in the operation of a drum brakeExplore the components involved in the operation of a disc brakeObserve the correct procedure to inspect and service braking system componentsLesson Objectives:Recall two advantage of disc brakes over drum brakesMemorise three tools used to measure braking system components Demonstrate two methods to measure both disc and drum brakes for serviceabilityExplain the meaning of self-servo action
+
+===== SLIDE 3 =====
+In this presentation you will:
+
+Brake Callipers
+
+examine the construction of fixed and floating callipers
+
+Next >
+
+consider some of the maintenance requirements of brake callipers
+
+===== SLIDE 4 =====
+Introduction
+
+Brake callipers are part of the disc brake assembly.
+
+They contain pistons that use hydraulic pressure to press brake pads against the disc.
+
+Next >
+
+Callipers are used on most modern vehicles.
+
+Piston
+
+Calliper
+
+Ventilated disc
+
+Pads
+
+Flexible pipe
+
+===== SLIDE 5 =====
+Calliper Types
+
+There are two basic types of callipers:
+
+Next >
+
+Typically the calliper assembly is bolted to the wheel spindle (steering knuckle) or the rear axle housing.
+
+Fasteddy760
+
+Fixed Calliper
+
+Floating Calliper
+
+Fixed
+
+Floating
+
+===== SLIDE 6 =====
+Fixed Callipers
+
+The position of the calliper is fixed in relation to the brake disc.
+
+When pressure is released the seals return to their original shape, forcing the pistons back to their starting positions.
+
+As hydraulic pressure is applied, the pistons are forced inwards against the disc, deforming the seals around them.
+
+Next >
+
+A typical calliper assembly has two pistons, one on each side of the disc.
+
+Piston
+
+Piston seal
+
+Calliper
+
+Disc
+
+===== SLIDE 7 =====
+Fixed Callipers
+
+In a twin piston calliper, each piston has itsown brake pad.
+
+Some other types are fitted with four pistons.
+
+Some types of brake callipers are fitted with three pistons.
+
+Next >
+
+Three Piston
+
+Four Piston
+
+Pad
+
+Piston
+
+Pistons (dust caps removed)
+
+Piston (under dust cap)
+
+===== SLIDE 8 =====
+Floating Callipers
+
+The calliper assembly moves transversely on a spindle above the brake disc.
+
+When the brakes are applied, the piston is pushed in one direction and the calliper assembly in the other.
+
+A typical calliper assembly contains one piston and two brake pads.
+
+Next >
+
+Piston seal
+
+Calliper assembly
+
+Brake disc
+
+Brake fluid
+
+Piston
+
+The calliper assembly acts as a clamp, applying equal force to both pads.
+
+Pad
+
+===== SLIDE 9 =====
+Calliper Body Construction
+
+The calliper body is machined to accept chromium plated steel pistons.
+
+Next >
+
+It has drillings through it where the brake fluid is fed to the cylinder housing.
+
+Rubber bush
+
+Piston dust boot
+
+Piston seal
+
+Cylinder housing
+
+Fluid inlet
+
+Piston
+
+Guide pin bolt
+
+Pin dust boot
+
+Inboard pad
+
+Outboard pad
+
+Calliper carrierbracket
+
+Pad support plate
+
+Calliper andcylinder housing
+
+Ventilated disc
+
+===== SLIDE 10 =====
+Calliper Pistons
+
+The piston is normally a close fit in the cylinder.
+
+Next >
+
+A dust boot prevents brake dust or road salts becoming trapped between the piston and cylinder.
+
+This could damage or seize the components.
+
+Piston
+
+Dust boot
+
+Cylinder
+
+===== SLIDE 11 =====
+Rear Brake Callipers
+
+The design of brake callipers mounted on rear wheels is slightly different from those of the front.
+
+Nearly all rear brake callipers are of the single piston floating design.
+
+Rear callipers are smaller than front callipers because the rear brakes do not have to generate as much braking force.
+
+Next >
+
+Front Calliper
+
+Rear Calliper
+
+===== SLIDE 12 =====
+Question 1
+
+What is the difference between floating and fixed callipers?
+
+A)	A floating calliper can move across the disc to give even braking pressure and pad wear.
+
+B)	A fixed calliper only has one piston.
+
+C)	A floating calliper is dependent on the disc to release the pads after braking.
+
+D)	A fixed calliper is attached to the disc.
+
+Next >
+
+===== SLIDE 13 =====
+Question 1
+
+What is the difference between floating and fixed callipers?
+
+A)	A floating calliper can move across the disc to give even braking pressure and pad wear.
+
+B)	A fixed calliper only has one piston.
+
+C)	A floating calliper is dependent on the disc to release the pads after braking.
+
+D)	A fixed calliper is attached to the disc.
+
+Next >
+
+A floating calliper moves on a spindle above the disc and has pistons on only one side, while a fixed calliper has pistons on either side of the disc.
+
+===== SLIDE 14 =====
+Piston Seals
+
+The calliper piston moves against the square cross-section seal.
+
+Next >
+
+As the brakes are applied and the piston extends, this ring is deformed.
+
+When the brakes are released, the ring pushes the piston back in and returns to its original shape.
+
+This provides a running clearance for the pads, preventing the brake pads from binding on the disc.
+
+===== SLIDE 15 =====
+Calliper Maintenance
+
+Two common types of problems associated with brake callipers are:
+
+Next >
+
+External brake fluid leaks, shown by brake fluid on the calliper housing, disc, piston, or dust boot.
+
+Sticking pistons, shown by a brake that will not apply or release.
+
+A leaking or sticking calliper must be overhauled or replaced.
+
+Piston
+
+Dust boot
+
+Calliper housing
+
+===== SLIDE 16 =====
+Calliper Piston Maintenance
+
+After inspection, a faulty calliper piston can be removed using compressed air.
+
+Next >
+
+All piston parts should be cleaned in a non-petroleum cleaner and blown dry.
+
+Usually, most pistons only require new seals and dust boots for a successful overhaul.
+
+Sometimes, it may be  necessary to replace the piston or the whole calliper if the cylinder bore has been damaged.
+
+Piston
+
+Dust boot
+
+Piston seal
+
+===== SLIDE 17 =====
+A)	Brake pedal
+
+B)	Brake disc
+
+C)	Calliper piston seal
+
+D)	Return spring in the master cylinder
+
+Question 2
+
+Next >
+
+Which component acts as a return spring to prevent the brake pads binding on the disc when no fluid pressure is applied?
+
+===== SLIDE 18 =====
+Question 2
+
+When pressure is applied, the piston seal is deformed. When the pressure is released, the deformed seal pushes the piston back.
+
+Next >
+
+A)	Brake pedal
+
+B)	Brake disc
+
+C)	Calliper piston seal
+
+D)	Return spring in the master cylinder
+
+Which component acts as a return spring to prevent the brake pads binding on the disc when no fluid pressure is applied?
+

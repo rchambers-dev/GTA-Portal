@@ -1,0 +1,2265 @@
+{
+  "K9": {
+    "catalogue": [
+      {
+        "id": "res_lp_5ad392e7e654",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_014_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 2,
+        "week": 14,
+        "matched": [
+          "tyre pressure monitoring"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 14 Lesson Plan Tyre Pressure Monitoring Systems | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 14 | Block 2 Block title Vehicle Inspection, Servicing and Customer Interaction Month / period Months 3-5 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 2 | Week 14 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11,",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_ca80733bd5d0",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_064_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 7,
+        "week": 64,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 64 Lesson Plan Tyre and TPMS service integration | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 64 | Block 7 Block title Advanced Workshop Practice and Technical Communication Month / period Months 15-18 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 7 | Week 64 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_b58e0adc803a",
+        "file": "Block_2_Task_4_TPMS_and_Tyre_Service_v2.0.pdf",
+        "group": null,
+        "block": 2,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "TASK 4: TPMS, TYRE PRESSURE AND CUSTOMER DOCUMENTATION Autocare Technician Level 2 | Block 2 | v2.0 TIME 45 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 11-20 Your task A vehicle has arrived with a tyre pressure warning lamp illuminated. You must inspect tyre condition and pressures, identify the TPMS type where possible, carry out a reset/relearn where appropriate and record customer-facing findings. What you must do 1 Prepare the vehicle and confirm the TPMS warning concern. 2 Check tyre pressures and inspect tyre condition. 3 Identify TPMS",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_0e9b7ab8404b",
+        "file": "README_Task_List_v2.0.txt",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "AUTOCARE TECHNICIAN LEVEL 2 PRACTICAL TASKS BLOCKS 1 TO 10 | TASKS 3 AND 4 | VERSION 2.0 CONTENTS Block 1 - Task 3: Vehicle Safety Inspection and Workshop Preparation - Task 4: Basic Brake and Tyre Condition Check Block 2 - Task 3: Battery and Charging System Inspection - Task 4: TPMS, Tyre Pressure and Customer Documentation Block 3 - Task 3: Interim Service, Inspection and Documentation - Task 4: Environmental Spill Response and Waste Control Block 4 - Task 3: Front Wheel Alignment and Steering Geometry Checks - Task 4: EV/Hybrid Component Location and Safety Awareness Bl",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_1_2_1",
+        "file": "CEA 2.1 APPRENTICE INSTRUCTIONS Hybrid.docx",
+        "group": "G2",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_1",
+        "file": "CEA 3.1 APPRENTICE INSTRUCTIONS Tyres R & I.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_2",
+        "file": "CEA 3.2 APPRENTICE INSTRUCTIONS Puncture.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms",
+          "tyre pressure monitoring"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_3",
+        "file": "CEA 3.3 APPRENTICE INSTRUCTIONS TPMS.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_4",
+        "file": "CEA 3.4 APPRENTICE INSTRUCTIONS Balance 4 wheels.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_5",
+        "file": "CEA 3.5 APPRENTICE INSTRUCTIONS run flat.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_4_1",
+        "file": "CEA 4.1 APPRENTICE INSTRUCTIONS front pads & discs.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_4_2",
+        "file": "CEA 4.2 APPRENTICE INSTRUCTIONS rear shoes & drums.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_4_2b",
+        "file": "CEA 4.2b APPRENTICE INSTRUCTIONS rear wheel cylinder and bleed.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_4_3",
+        "file": "CEA 4.3 APPRENTICE INSTRUCTIONS replace brake fluid.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "tpms"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": []
+  },
+  "K14": {
+    "catalogue": [
+      {
+        "id": "res_lm_da4a93c2da80_51",
+        "file": "Heating and ventilation Plan 18.pptx",
+        "group": "G6",
+        "block": null,
+        "week": null,
+        "matched": [
+          "heating and ventilation"
+        ],
+        "excerpt": "Auto Care Apprenticeships Heating and Ventilation style.visibility Lesson Aims Introduction to cabin heating systems. Recognise heating system faults. What equipment is required to test heating systems . style.visibility Lesson Objectives Be able to identify at least 2 heating system components. Be able to name at least 1 symptom and cause of a heating system fault. Be able to name at least 1 piece of heating system test equipment and how to use it. style.visibility Heater Control All cars are equipped with a passenger compartment heater which is designed to utilize heat fr",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_9270686b121d_110",
+        "file": "Group 13 AC Systoms Lesson 1.docx",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Identify Air Conditioning Components Construction & Layout of AC systems The function and operation of AC systems 0 0 Identify Air Conditioning Components Construction & Layout of AC systems The function and operation of AC systems Lesson Objectives -8626 56527 Display AC system components and their basic construction Describe the function of these components Verbal Question & Answer Summarise the set and Set Electronic/ Paper ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_b30479c74664_111",
+        "file": "Group 13 AC Systoms Lesson 2.docx",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning",
+          "refrigerant",
+          "fluorinated"
+        ],
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Key principles of AC systems Properties of Fluorinated gases Envoironmental issues with AC gases (namely R134a& R1234YF) 0 0 Key principles of AC systems Properties of Fluorinated gases Envoironmental issues with AC gases (namely R134a& R1234YF) Lesson Objectives -8626 56527 Describe the key principles of light vehicle air conditioning systems - Discuss Describe Types – Uses and properties of Fluorinated gases Outline the types",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_f60343a91e10_112",
+        "file": "Group 13 AC Systoms Lesson 3.docx",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Legislation & Regulations – when handling air conditioning systems Main requirements of EC regulation 842/2006 and Directive see the Links at the bottom of the page Envoironmental issues with AC gases (namely R134a& R1234YF) 0 0 Legislation & Regulations – when handling air conditioning systems Main requirements of EC regulation 842/2006 and Directive see the Links at the bottom of the page Envoironmental issues with AC gases (",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_529836b280a3_113",
+        "file": "Group 13 AC Systoms Lesson 4.docx",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Name the PPE required to be used when handling AC gases & systems Tools and Equipment used for the maintenance of AC Systems/ Components Safe handling methods used for storage and transporting of AC gas cylinders 0 0 Name the PPE required to be used when handling AC gases & systems Tools and Equipment used for the maintenance of AC Systems/ Components Safe handling methods used for storage and transporting of AC gas cylinders L",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_88b13e63ee5a_114",
+        "file": "Group 13 AC Systoms Lesson 5.docx",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Servicing light vehicle AC systems Health and safety – Leak testing – Charging and Evacuating Technical information and Removal and replacement – Disposing of waste material 0 0 Servicing light vehicle AC systems Health and safety – Leak testing – Charging and Evacuating Technical information and Removal and replacement – Disposing of waste material Lesson Objectives -8626 56527 Identify and describe the H & safety needs when r",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_566480533983_115",
+        "file": "AC Course Questions.doc",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_7d543a844bfb_116",
+        "file": "Air Conditioning revised.ppt",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_prac_a9fd893baee0",
+        "file": "Block_6_Task_4_Air_Conditioning_Climate_Check_v2.0.pdf",
+        "group": null,
+        "block": 6,
+        "week": null,
+        "matched": [
+          "air conditioning",
+          "refrigerant"
+        ],
+        "excerpt": "TASK 4: AIR CONDITIONING AND CLIMATE-CONTROL CHECKS Autocare Technician Level 2 | Block 6 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 51-60 Your task A customer reports poor cabin cooling or demisting. You must complete non-invasive air-conditioning/climate-control checks, record visible findings and identify when F-gas or specialist referral is required. What you must do 1 Prepare the vehicle and confirm the customer concern. 2 Carry out visible and functional checks as instructed. 3 Record refrigerant type/quantity informati",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_2_13_1",
+        "file": "CEA 13.1 APPRENTICE INSTRUCTIONS condenser.docx",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_2_13_2",
+        "file": "CEA 13.2 APPRENTICE INSTRUCTIONS expansion valve.docx",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_2_13_3",
+        "file": "CEA 13.3 APPRENTICE INSTRUCTIONS compressor.docx",
+        "group": "G13",
+        "block": null,
+        "week": null,
+        "matched": [
+          "air conditioning"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": []
+  },
+  "K15": {
+    "catalogue": [
+      {
+        "id": "res_lm_d58f4f3ab78a_54",
+        "file": "Lesson Plan 22 - Introduction to Electrical Systems.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "Lesson Plan 2 2 Introduction to Electrical Systems Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to electrical systems 0 0 Introduction to electrical systems Lesson Aims Lesson Aims -635 41911 Discuss basic electrical principles – electron flow Discuss electrical principles – voltage, current, resistance, power Discuss electrical circuits and applications 0 0 Discuss basic electrical principles – electron flow Discuss electrical principles – voltage, current, resistance, power Discuss electrical circuits and applications Lesson Objectives center 28575 For lea",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_466bab823d76_55",
+        "file": "Lesson Plan 23 - Introduction to Electrical Systems - Batteries.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "Lesson Plan 2 3 Introduction to Electrical Systems - Batteries Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to vehicle batteries 0 0 Introduction to vehicle batteries Lesson Aims Lesson Aims -635 41911 Discuss basic principles of batteries – basic chemistry, design and electron flow Discuss electrical principles – voltage, current, Discuss battery size, capacity and applications 0 0 Discuss basic principles of batteries – basic chemistry, design and electron flow Discuss electrical principles – voltage, current, Discuss battery size, capacity and application",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_2ca8ded587ac_56",
+        "file": "Lesson Plan 24 - Introduction to Electrical Systems - Starting and Charging.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "Lesson Plan 2 4 Introduction to Electrical Systems – Starting and Charging Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to vehicle starting and charging systems 0 0 Introduction to vehicle starting and charging systems Lesson Aims Lesson Aims -635 41911 Discuss basic principles of starting and charging Discuss electrical principles – voltage, current and voltage drop Overview battery size, capacity and applications relating to starting/charging 0 0 Discuss basic principles of starting and charging Discuss electrical principles – voltage, current and voltage ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_0349c1397a1c_57",
+        "file": "Batteries.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_277e84194c5f_58",
+        "file": "Batteries.pptx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "alternator",
+          "starter motor",
+          "charging systems"
+        ],
+        "excerpt": "In this presentation you will: Batteries explore battery operating principles Next > identify battery construction = electrons Load style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility Introduction The electrical systems on a vehicle require electrical power so that they can function. When an engine is stationary, electrical power is provided by a battery. When an engine is running, electrical power is provided by an alternator. Next > The starter motor turns to start an engine. This requires the largest amount of power, so g",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_e78a4ed3d652_59",
+        "file": "Charging Systems.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_eb016735391c_60",
+        "file": "Features of Hybrid Vehicles.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_e7921a6bc84c_61",
+        "file": "Fuel Cells.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_674b62b99ade_62",
+        "file": "Range Extenders.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_063b872ce1c7_63",
+        "file": "Safety in High Voltage Vehicles.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_53fca2d9a338_64",
+        "file": "Starting Systems.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_cdf93a50039d_65",
+        "file": "Starting_and_Charging_Initial_Assessment_Level2 (1).docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "Level 2 Automotive: Starting and Charging Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State why PPE such as gloves and eye protection should be worn when working on batteries. 2. Explain why the negative terminal should always be disconnected first when removing a battery. 3. Describe why hydrogen gas is dangerous when charging or jump starting a battery. 4. Explain how to avoid short circuits or sparks when working near battery terminals. 5. Describe how lead-aci",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_e612e22cf0c5_66",
+        "file": "Starting_and_Charging_Initial_Assessment_Marking_Sheet_with_Answers.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starting and charging",
+          "charging systems"
+        ],
+        "excerpt": "Starting and Charging Systems Initial Knowledge Assessment – Marking Sheet with Typical Answers (30 Questions) Learner Name: ________________________________ Date: ________________________________ Assessor Name: _______________________________ Signature: ____________________________ Question Number Typical Answer / Guidance Mark (1 per question) Assessor Comments 1 1. Protects skin and eyes from acid, sparks, and corrosion from battery terminals. 2 2. Disconnecting the negative first prevents short circuits to ground when tools contact the chassis. 3 3. Hydrogen gas is expl",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_1_7_1",
+        "file": "CEA 7.1 APPRENTICE INSTRUCTIONS Starter.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starter motor"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_7_2",
+        "file": "CEA 7.2 APPRENTICE INSTRUCTIONS Alternator.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "alternator",
+          "starter motor"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": [
+      {
+        "id": "gw_db7111449f77",
+        "file": "Autocare GW2 practice exam 2.docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "alternator"
+        ],
+        "excerpt": "Welcome to your practice IMI GW2 under pinning knowledge assessment.\n You have 70 minutes to answer 4 6 multiple choice questions.\n Good Luck\n 1. If the front road wheel is set to tilt inwards at the top it has a:\n a) negative castor\n b) positive camber\n c) negative camber\n d) positive castor\n 2. After rectifying an engine fault you need to road test the customer's vehicle. Before you start the\n test it is essential that you:\n a) check the vehicle's tyre pressures, oil level and windscreen washer fluid\n b) complete the job card with all details concerning the vehicle repair",
+        "extract": "EXTRACTED"
+      }
+    ]
+  },
+  "K16": {
+    "catalogue": [
+      {
+        "id": "res_lm_d58f4f3ab78a_54",
+        "file": "Lesson Plan 22 - Introduction to Electrical Systems.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "Lesson Plan 2 2 Introduction to Electrical Systems Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to electrical systems 0 0 Introduction to electrical systems Lesson Aims Lesson Aims -635 41911 Discuss basic electrical principles – electron flow Discuss electrical principles – voltage, current, resistance, power Discuss electrical circuits and applications 0 0 Discuss basic electrical principles – electron flow Discuss electrical principles – voltage, current, resistance, power Discuss electrical circuits and applications Lesson Objectives center 28575 For lea",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_466bab823d76_55",
+        "file": "Lesson Plan 23 - Introduction to Electrical Systems - Batteries.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "Lesson Plan 2 3 Introduction to Electrical Systems - Batteries Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to vehicle batteries 0 0 Introduction to vehicle batteries Lesson Aims Lesson Aims -635 41911 Discuss basic principles of batteries – basic chemistry, design and electron flow Discuss electrical principles – voltage, current, Discuss battery size, capacity and applications 0 0 Discuss basic principles of batteries – basic chemistry, design and electron flow Discuss electrical principles – voltage, current, Discuss battery size, capacity and application",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_2ca8ded587ac_56",
+        "file": "Lesson Plan 24 - Introduction to Electrical Systems - Starting and Charging.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "Lesson Plan 2 4 Introduction to Electrical Systems – Starting and Charging Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to vehicle starting and charging systems 0 0 Introduction to vehicle starting and charging systems Lesson Aims Lesson Aims -635 41911 Discuss basic principles of starting and charging Discuss electrical principles – voltage, current and voltage drop Overview battery size, capacity and applications relating to starting/charging 0 0 Discuss basic principles of starting and charging Discuss electrical principles – voltage, current and voltage ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_0349c1397a1c_57",
+        "file": "Batteries.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_277e84194c5f_58",
+        "file": "Batteries.pptx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starter motor",
+          "alternator",
+          "charging system"
+        ],
+        "excerpt": "In this presentation you will: Batteries explore battery operating principles Next > identify battery construction = electrons Load style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility Introduction The electrical systems on a vehicle require electrical power so that they can function. When an engine is stationary, electrical power is provided by a battery. When an engine is running, electrical power is provided by an alternator. Next > The starter motor turns to start an engine. This requires the largest amount of power, so g",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_e78a4ed3d652_59",
+        "file": "Charging Systems.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_eb016735391c_60",
+        "file": "Features of Hybrid Vehicles.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_e7921a6bc84c_61",
+        "file": "Fuel Cells.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_674b62b99ade_62",
+        "file": "Range Extenders.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_063b872ce1c7_63",
+        "file": "Safety in High Voltage Vehicles.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_53fca2d9a338_64",
+        "file": "Starting Systems.ppt",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system",
+          "starting system"
+        ],
+        "excerpt": "",
+        "extract": "CONTENT_EXTRACTION_REQUIRED"
+      },
+      {
+        "id": "res_lm_cdf93a50039d_65",
+        "file": "Starting_and_Charging_Initial_Assessment_Level2 (1).docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "Level 2 Automotive: Starting and Charging Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State why PPE such as gloves and eye protection should be worn when working on batteries. 2. Explain why the negative terminal should always be disconnected first when removing a battery. 3. Describe why hydrogen gas is dangerous when charging or jump starting a battery. 4. Explain how to avoid short circuits or sparks when working near battery terminals. 5. Describe how lead-aci",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_e612e22cf0c5_66",
+        "file": "Starting_and_Charging_Initial_Assessment_Marking_Sheet_with_Answers.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system"
+        ],
+        "excerpt": "Starting and Charging Systems Initial Knowledge Assessment – Marking Sheet with Typical Answers (30 Questions) Learner Name: ________________________________ Date: ________________________________ Assessor Name: _______________________________ Signature: ____________________________ Question Number Typical Answer / Guidance Mark (1 per question) Assessor Comments 1 1. Protects skin and eyes from acid, sparks, and corrosion from battery terminals. 2 2. Disconnecting the negative first prevents short circuits to ground when tools contact the chassis. 3 3. Hydrogen gas is expl",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_139a816c6d1e",
+        "file": "Block_2_Task_3_Battery_and_Charging_Check_v2.0.pdf",
+        "group": null,
+        "block": 2,
+        "week": null,
+        "matched": [
+          "charging system",
+          "battery and charging"
+        ],
+        "excerpt": "TASK 3: BATTERY AND CHARGING SYSTEM INSPECTION Autocare Technician Level 2 | Block 2 | v2.0 TIME 45 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 11-20 Your task A customer reports slow cranking and intermittent starting concerns. You must carry out basic battery and charging system checks, record results and explain whether further work is required. What you must do 1 Prepare the vehicle and confirm the complaint with the assessor/workplace mentor. 2 Inspect battery security, terminals and visible condition. 3 Measure battery voltage and char",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_0e9b7ab8404b",
+        "file": "README_Task_List_v2.0.txt",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "charging system",
+          "battery and charging"
+        ],
+        "excerpt": "AUTOCARE TECHNICIAN LEVEL 2 PRACTICAL TASKS BLOCKS 1 TO 10 | TASKS 3 AND 4 | VERSION 2.0 CONTENTS Block 1 - Task 3: Vehicle Safety Inspection and Workshop Preparation - Task 4: Basic Brake and Tyre Condition Check Block 2 - Task 3: Battery and Charging System Inspection - Task 4: TPMS, Tyre Pressure and Customer Documentation Block 3 - Task 3: Interim Service, Inspection and Documentation - Task 4: Environmental Spill Response and Waste Control Block 4 - Task 3: Front Wheel Alignment and Steering Geometry Checks - Task 4: EV/Hybrid Component Location and Safety Awareness Bl",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_1_7_1",
+        "file": "CEA 7.1 APPRENTICE INSTRUCTIONS Starter.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starter motor"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_7_2",
+        "file": "CEA 7.2 APPRENTICE INSTRUCTIONS Alternator.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "starter motor",
+          "alternator"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_7_3",
+        "file": "CEA 7.3 APPRENTICE INSTRUCTIONS  Battery.docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "replace battery"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": [
+      {
+        "id": "gw_db7111449f77",
+        "file": "Autocare GW2 practice exam 2.docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "alternator"
+        ],
+        "excerpt": "Welcome to your practice IMI GW2 under pinning knowledge assessment.\n You have 70 minutes to answer 4 6 multiple choice questions.\n Good Luck\n 1. If the front road wheel is set to tilt inwards at the top it has a:\n a) negative castor\n b) positive camber\n c) negative camber\n d) positive castor\n 2. After rectifying an engine fault you need to road test the customer's vehicle. Before you start the\n test it is essential that you:\n a) check the vehicle's tyre pressures, oil level and windscreen washer fluid\n b) complete the job card with all details concerning the vehicle repair",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "gw_f0ceef633f24",
+        "file": "Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "replace battery",
+          "starting system",
+          "battery and charging"
+        ],
+        "excerpt": "PRACTICAL SUPPORT MATERIAL AND APPRENTICE ASSESSMENT SUMMARY\n\n Gateway 1\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP01\n\n A SSESSMENT SUMMARY\n Apprentice Name:\n\n Reg No:\n\n Gateway 1\n Gateway Component Assessment\n Tick Chosen\n Date Completed\n Assessor Pin\n Assessor Signature:\n Skills tests Group A (All skills test for group A must be completed)\n Remove and Replace Wheel s and T yres\n GW1AC01\n\n Remove and Replace Battery and Charging S ystem C omponents\n GW1AC02\n\n Carry out Front Wheel A lignment\n GW1AC03\n\n Remove and Replace Discs and P ads\n GW1AC04\n\n Online Kn",
+        "extract": "EXTRACTED"
+      }
+    ]
+  },
+  "K17": {
+    "catalogue": [
+      {
+        "id": "res_lm_5d8bcd0589f2_87",
+        "file": "Group 11 session 2 ADAS.docx",
+        "group": "G11",
+        "block": null,
+        "week": null,
+        "matched": [
+          "adas"
+        ],
+        "excerpt": "Lesson Plan 2 Trainer Name -10531 74930 0 0 Topic -8255 69586 Electronic steering A DAS systems 0 0 Electronic steering A DAS systems Lesson Aims Lesson Aims -635 32385 Identify h ow light vehicle electronic steering components interact with Advanced Driver Assistance Systems (ADAS) and what the basics of CANBUS is. Introduction to what ADAS is, the levels we have and typical systems found on cars. Identify c ommon faults associated with light vehicle electronic systems , components and associated health and safety . 0 0 Identify h ow light vehicle electronic steering compo",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_7656c297a800_88",
+        "file": "Group 11 session 3 4 wheel align.docx",
+        "group": "G11",
+        "block": null,
+        "week": null,
+        "matched": [
+          "adas"
+        ],
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Four-wheel alignment , measure and adjust 0 0 Four-wheel alignment , measure and adjust Lesson Aims Lesson Aims left 30593 To recap and understand Geometry terminology and what each does . Check fully familiar and confident with our equipment and typical reasons for referral on tasks. Re illiterate importance of pre checks, link into ADAS and liability. Workshop practical – 4 - wheel alignment assessment and aim for CEA standard . 0 0 To recap and understand Geometry terminology and what each does . Check fully fam",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_95f371942a77_98",
+        "file": "Session 2 ADAS Systems.pptx",
+        "group": "G11",
+        "block": null,
+        "week": null,
+        "matched": [
+          "adas"
+        ],
+        "excerpt": "ADAS Systems Next Advanced Driver-Assistance systems ( ADAS ) are one of the fastest-growing safety application areas due to the desire to reduce vehicle accidents and fatalities. style.visibility style.visibility Next > style.visibility ADAS Systems These systems use a camera & radar which need expert adjustment and calibration after various repairs have been completed. Many vehicles now have these advanced driver assist systems which require specialist attention to correctly adjust following even relatively simple procedures including wheel alignment / geometry check, sus",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_43f67c596f10",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_089_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 9,
+        "week": 89,
+        "matched": [
+          "pre-calibration"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 89 Lesson Plan Pre-calibration checks: alignment, ride height and sensor inputs | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 89 | Block 9 Block title Emerging Technologies, Electric Vehicles and Hydrogen Awareness Month / period Months 20-24 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 9 | Week 89 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 4 | B1, K10, K11, ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_126c9fbc1032",
+        "file": "Block_9_Task_4_ADAS_Pre_Calibration_Check_v2.0.pdf",
+        "group": null,
+        "block": 9,
+        "week": null,
+        "matched": [
+          "pre-calibration",
+          "adas"
+        ],
+        "excerpt": "TASK 4: ADAS PRE-CALIBRATION AND SENSOR AWARENESS CHECK Autocare Technician Level 2 | Block 9 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 81-94 Your task A vehicle has had alignment, tyre or body-related work and may require ADAS checks. You must complete non-invasive pre-calibration checks, record findings and identify whether specialist calibration referral is required. What you must do 1 Prepare the vehicle and identify visible ADAS features. 2 Carry out pre-checks for tyres, ride height, alignment and visible sensor damage",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_2_11_6",
+        "file": "CEA 11.6 APPRENTICE INSTRUCTIONS adas fault.docx",
+        "group": "G11",
+        "block": null,
+        "week": null,
+        "matched": [
+          "adas"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": []
+  },
+  "K19": {
+    "catalogue": [
+      {
+        "id": "res_lm_801be46beaa3_8",
+        "file": "Lesson Plan 3A - Steering Geometry.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "steering geometry"
+        ],
+        "excerpt": "Lesson Plan 3A Steering Geometry Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to steering geometry and wheel alignment. 0 0 Introduction to steering geometry and wheel alignment. Lesson Aims Lesson Aims -635 40005 An introduction to steering geometry , terms and inspection techniques . To discuss steering system components and their operation. To discuss front wheel alignment faults and adjustment. 0 0 An introduction to steering geometry , terms and inspection techniques . To discuss steering system components and their operation. To discuss front wheel ali",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_8fa749f780b7_99",
+        "file": "Sessions 3-4 Wheel alignment-18 slides 2020.pptx",
+        "group": "G11",
+        "block": null,
+        "week": null,
+        "matched": [
+          "camber",
+          "toe "
+        ],
+        "excerpt": "Wheel Alignment identify wheel alignment terms Next > In this presentation you will: style.visibility style.visibility style.visibility Introduction Wheels are the parts of the vehicle that make it turn in response to steering input. Next > They are also responsible for pulling (front wheel drive) or pushing (rear wheel drive) the vehicle along. It is therefore essential that they are aligned correctly. style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility Wheel Alignment Terms Here are some common wheel alignment terms: Next ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_a70ba19fb707_100",
+        "file": "Sessions 4-5 Geometry-26 slides 2020.pptx",
+        "group": "G11",
+        "block": null,
+        "week": null,
+        "matched": [
+          "camber",
+          "toe "
+        ],
+        "excerpt": "Geometry Fundamentals identify fundamental wheel alignment terms Next > In this presentation you will: style.visibility style.visibility style.visibility Introduction Wheels are the parts of the vehicle that make it turn in response to steering input. Next > They are also responsible for pulling (front wheel drive) or pushing (rear wheel drive) the vehicle along. It is therefore essential that they are aligned correctly. style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility Wheel Alignment Terms Here are some common wheel alig",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_c58ded1c80a7",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_034_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 4,
+        "week": 34,
+        "matched": [
+          "steering geometry"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 34 Lesson Plan Steering geometry and advanced tyre diagnosis | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 34 | Block 4 Block title Emerging Technology and Driveline Systems Month / period Months 8-10 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 4 | Week 34 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 4 | B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_3a8916c0651c",
+        "file": "Block_4_Task_3_Front_Wheel_Alignment_v2.0.pdf",
+        "group": null,
+        "block": 4,
+        "week": null,
+        "matched": [
+          "steering geometry"
+        ],
+        "excerpt": "TASK 3: FRONT WHEEL ALIGNMENT AND STEERING GEOMETRY CHECKS Autocare Technician Level 2 | Block 4 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 31-40 Your task A customer reports uneven tyre wear and the steering wheel is off-centre. You must carry out alignment pre-checks, record geometry readings and explain whether adjustment or further repair is required. What you must do 1 Prepare the vehicle and alignment equipment safely. 2 Carry out pre-checks including tyre pressure, tyre condition and suspension condition. 3 Measure ali",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_0e9b7ab8404b",
+        "file": "README_Task_List_v2.0.txt",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "steering geometry"
+        ],
+        "excerpt": "AUTOCARE TECHNICIAN LEVEL 2 PRACTICAL TASKS BLOCKS 1 TO 10 | TASKS 3 AND 4 | VERSION 2.0 CONTENTS Block 1 - Task 3: Vehicle Safety Inspection and Workshop Preparation - Task 4: Basic Brake and Tyre Condition Check Block 2 - Task 3: Battery and Charging System Inspection - Task 4: TPMS, Tyre Pressure and Customer Documentation Block 3 - Task 3: Interim Service, Inspection and Documentation - Task 4: Environmental Spill Response and Waste Control Block 4 - Task 3: Front Wheel Alignment and Steering Geometry Checks - Task 4: EV/Hybrid Component Location and Safety Awareness Bl",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_1_5_1",
+        "file": "CEA 5.1 APPRENTICE INSTRUCTIONS front wheel alignment.docx",
+        "group": "G5",
+        "block": null,
+        "week": null,
+        "matched": [
+          "camber",
+          "toe "
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_2_11_5",
+        "file": "CEA 11.5 APPRENTICE INSTRUCTIONS EPA Practice.docx",
+        "group": "G11",
+        "block": null,
+        "week": null,
+        "matched": [
+          "toe "
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": [
+      {
+        "id": "gw_db7111449f77",
+        "file": "Autocare GW2 practice exam 2.docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "camber"
+        ],
+        "excerpt": "Welcome to your practice IMI GW2 under pinning knowledge assessment.\n You have 70 minutes to answer 4 6 multiple choice questions.\n Good Luck\n 1. If the front road wheel is set to tilt inwards at the top it has a:\n a) negative castor\n b) positive camber\n c) negative camber\n d) positive castor\n 2. After rectifying an engine fault you need to road test the customer's vehicle. Before you start the\n test it is essential that you:\n a) check the vehicle's tyre pressures, oil level and windscreen washer fluid\n b) complete the job card with all details concerning the vehicle repair",
+        "extract": "EXTRACTED"
+      }
+    ]
+  },
+  "S4": {
+    "catalogue": [
+      {
+        "id": "res_lm_d1bbe6165db7_13",
+        "file": "Wheels_and_Tyres_Initial_Assessment_Level2.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "store"
+        ],
+        "excerpt": "-Level 2 Automotive: Wheels and Tyres Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State one reason why it is important to wear eye protection when working with tyres. 2. Explain why tyres must be deflated before removal from the rim. 3. Describe two safe working practices to follow when inflating tyres. 4. What should be done before lifting a vehicle to remove a wheel? 5. Explain how waste tyres should be stored and disposed of safely. Section 2 – Tools and Equipment 6. N",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_be902d1093ad_14",
+        "file": "Wheels_and_Tyres_Initial_Assessment_Marking_Sheet_with_Answers.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "store"
+        ],
+        "excerpt": "Wheels and Tyres Initial Knowledge Assessment – Marking Sheet with Typical Answers Learner Name: ________________________________ Date: ________________________________ Assessor Name: _______________________________ Signature: ____________________________ Question Number Typical Answer / Guidance Mark (1 per question) Assessor Comments 1 1. To prevent injury from flying debris, compressed air, or chemicals. 2 2. To avoid explosive release of pressure and possible injury. 3 3. Stand to the side, use a safety cage for HGV tyres, check correct pressure settings. 4 4. Apply han",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_c72a2760897a_53",
+        "file": "Lubrication Systems Plan 19.pptx",
+        "group": "G6",
+        "block": null,
+        "week": null,
+        "matched": [
+          "store"
+        ],
+        "excerpt": "Aims 1. Introduction to lubrication systems. 2. Recognising lubrication system faults. 3. What equipment is required to test lubrication systems. style.visibility Objectives 1. Be able to identify at least 2 lubrication system components. 2. Be able to name at least 1 symptom and cause of a lubrication system fault. 3. Be able to name at least 1 piece of lubrication system test equipment and how to use it. style.visibility Subject - Lubrication Systems style.visibility style.visibility style.visibility The Lubrication System The lubrication system stores, cleans, cools, and",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_cdf93a50039d_65",
+        "file": "Starting_and_Charging_Initial_Assessment_Level2 (1).docx",
+        "group": "G7",
+        "block": null,
+        "week": null,
+        "matched": [
+          "store"
+        ],
+        "excerpt": "Level 2 Automotive: Starting and Charging Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State why PPE such as gloves and eye protection should be worn when working on batteries. 2. Explain why the negative terminal should always be disconnected first when removing a battery. 3. Describe why hydrogen gas is dangerous when charging or jump starting a battery. 4. Explain how to avoid short circuits or sparks when working near battery terminals. 5. Describe how lead-aci",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_43f67c596f10",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_089_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 9,
+        "week": 89,
+        "matched": [
+          "calibration checks"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 89 Lesson Plan Pre-calibration checks: alignment, ride height and sensor inputs | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 89 | Block 9 Block title Emerging Technologies, Electric Vehicles and Hydrogen Awareness Month / period Months 20-24 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 9 | Week 89 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 4 | B1, K10, K11, ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_126c9fbc1032",
+        "file": "Block_9_Task_4_ADAS_Pre_Calibration_Check_v2.0.pdf",
+        "group": null,
+        "block": 9,
+        "week": null,
+        "matched": [
+          "calibration checks"
+        ],
+        "excerpt": "TASK 4: ADAS PRE-CALIBRATION AND SENSOR AWARENESS CHECK Autocare Technician Level 2 | Block 9 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 81-94 Your task A vehicle has had alignment, tyre or body-related work and may require ADAS checks. You must complete non-invasive pre-calibration checks, record findings and identify whether specialist calibration referral is required. What you must do 1 Prepare the vehicle and identify visible ADAS features. 2 Carry out pre-checks for tyres, ride height, alignment and visible sensor damage",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_2_Euro_Car_Parts_Car_Parts_Online_In_Store_FREE_UK_Delivery_url",
+        "file": "Euro Car Parts - Car Parts Online & In Store – FREE UK Delivery.url",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "store"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": []
+  },
+  "S8": {
+    "catalogue": [
+      {
+        "id": "res_lm_d8f95483aed1_97",
+        "file": "Session 1electronic steering.pptx",
+        "group": "G11",
+        "block": null,
+        "week": null,
+        "matched": [
+          "diagnostic equipment",
+          "diagnostic"
+        ],
+        "excerpt": "Electronic Steering Systems To be able to identify components of the electronic steering systems To be able to identify a selection of sensors and actuators for vehicle operation To be able to identify basic diagnostic equipment and faults Describe the operation and benefits of electronics in the steering system Aims and Objectives Next > style.visibility style.visibility style.visibility style.visibility style.visibility In this presentation you will: Electronic Steering Systems see how the amount of power steering assistance can be varied Next > see how electric power ste",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_4e5d5534a1f4",
+        "file": "01_Shared_Foundation_Skills_FS01-FS10_v1.2/Foundation_Skills_FS04_Week_4_Lesson_Plan_v1.2.docx",
+        "group": null,
+        "block": 1,
+        "week": 4,
+        "matched": [
+          "multimeter"
+        ],
+        "excerpt": "Foundation Skills FS04 - Week 4 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS04 | Foundation Skills Week 4 SOW reference Motor Vehicle Foundation Skills SOW v1.2 | FS04 | Week 4 Planned hours 5.00 eligible OTJ | 1.00 non-eligible | 1.00 breaks Topic Fire Safety, Battery Awareness and Basic Electrical Safety Occupational relevance: This session develops fire prevention, battery safety and basic electrical risk awareness. Applications include fuel and solvent risks, 12/24-volt systems, chargi",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_7561f4aaf78a",
+        "file": "01_Shared_Foundation_Skills_FS01-FS10_v1.2/Foundation_Skills_FS07_Week_7_Lesson_Plan_v1.2.docx",
+        "group": null,
+        "block": 1,
+        "week": 7,
+        "matched": [
+          "multimeter"
+        ],
+        "excerpt": "Foundation Skills FS07 - Week 7 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS07 | Foundation Skills Week 7 SOW reference Motor Vehicle Foundation Skills SOW v1.2 | FS07 | Week 7 Planned hours 4.00 eligible OTJ | 2.00 non-eligible | 1.00 breaks Topic Multimeter Use, Electrical Measurement and Fabrication Quality Occupational relevance: This session develops safe multimeter inspection and basic voltage/resistance measurement, interpretation of results, continued accurate fabrication and quali",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_d2ad96acd09a",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_017_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 2,
+        "week": 17,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 17 Lesson Plan Advanced Brake Diagnostics | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 17 | Block 2 Block title Vehicle Inspection, Servicing and Customer Interaction Month / period Months 3-5 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 2 | Week 17 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 3 | B3, B4, B5, K25, K30, K31, S20, S21, S25 Block review Scheduled",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_72e6fc21ec56",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_021_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 3,
+        "week": 21,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 21 Lesson Plan Service reception, booking diagnostics and first impressions | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 21 | Block 3 Block title Workshop Processes, Tools and Environmental Awareness Month / period Months 5-8 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 3 | Week 21 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 1 | B3, B5, K1, K24, K32, K33, K34",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_46a41d47fbab",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_041_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 41,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 41 Lesson Plan Technical handover and managing customer expectations on diagnostic work | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 41 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 41 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 1 | B3, B5, K1, K24, K32",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_99ed12e14c1d",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_042_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 42,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 42 Lesson Plan Electrical fault finding, basic scope of tests and confirmation checks | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 42 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 42 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 2 | B1, K10, K11, K12, K13",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_6cb32a35cc76",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_043_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 43,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 43 Lesson Plan Complex repairs, time management and QA sign-off | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 43 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 43 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 3 | B3, B4, B5, K25, K30, K31, S20, S21, S25 Blo",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_1d0504c49840",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_044_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 44,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 44 Lesson Plan Suspension component replacement and alignment preparation | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 44 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 44 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 4 | B1, K10, K11, K12, K13, K14, K15, ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_d0747f11a092",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_045_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 45,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 45 Lesson Plan VIN lookup, technical data and parts availability checks | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 45 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 45 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 5 | B3, K26, K27, K28, K29, S17, S18, S1",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_fbf762dcd1cc",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_046_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 46,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 46 Lesson Plan Complaint prevention through process discipline and record quality | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 46 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 46 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 6 | B3, B5, K25, K7, K8, S16, ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_77d5e661e4ea",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_047_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 47,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 47 Lesson Plan Battery handling, waste segregation and PPE discipline | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 47 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 47 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 7 | B1, B2, K3, K4, S1, S2, S3, S4 Block r",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_c18340b54581",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_048_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 48,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 48 Lesson Plan Additional work identification and quote revision | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 48 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 48 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 8 | K24, K25, K26, K29, S16, S17, S19, S22, S23",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_3e06d448ac9f",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_049_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 49,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 49 Lesson Plan Stock variance investigation and corrective action planning | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 49 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 49 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 9 | B3, K26, K27, K28, S17, S18, S19 ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_f3b351f4dba6",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_050_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 5,
+        "week": 50,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 50 Lesson Plan Risk assessment refresh and safe systems of work | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 50 | Block 5 Block title Diagnostic Thinking and Complex Repair Activities Month / period Months 10-13 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 5 | Week 50 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 10 | B1, B2, K21, K22, K23, K3, K4, S1, S6, S12,",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_eb746fb226f5",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_051_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 6,
+        "week": 51,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 51 Lesson Plan Customer interaction during longer diagnostic jobs | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 51 | Block 6 Block title Vehicle Systems Integration and Advanced Diagnostics Month / period Months 13-15 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 6 | Week 51 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 1 | B3, B5, K1, K24, K32, K33, K34, S16, S2",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_1_4_4",
+        "file": "CEA 4.4 APPRENTICE INSTRUCTIONS rear pads & discs.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_2_10_3",
+        "file": "CEA 10.3 APPRENTICE INSTRUCTIONS ABS output.docx",
+        "group": "G10",
+        "block": null,
+        "week": null,
+        "matched": [
+          "diagnostic"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": [
+      {
+        "id": "gw_e8cf0cff7a22",
+        "file": "Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "torque wrench"
+        ],
+        "excerpt": "ASSESSOR PRACTICAL SUPPORT MATERIAL\n\n Gateway 1\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP 01\n ASSESSOR INSTRUCTIONS\n Ref: GW1 AC01\n Remove and Replace Wheels and Tyres\n The purpose of t his document is to support the a ssessor in setting up the workstation and vehicle prior to the Apprentice ’s Gateway 1 practical assessment.\n\n You must pro vide the Apprentice with the Remove and Replace Wheels and T yres instructions and Apprentice Assess ment Record for them to complete . Apprentice s must complete the task and documentation fully to enable the a ssessor ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "gw_d91de30f5f63",
+        "file": "Autocare-AP01-GW2-Practical-Support-Material-Assessor.docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "torque wrench"
+        ],
+        "excerpt": "ASSESSOR PRACTICAL SUPPORT MATERIAL\n\n Gateway 2\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP0 1\n\n ASSESSOR INSTRUCTIONS\n Ref: GW 2 AC01\n Carry Out a Vehicle Safety Inspection\n This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 2 practical assessment.\n\n You must pro vide the Apprentice with the Carry Out a Vehicle Safety Inspection I nstructions and Apprentice Assess ment Record for them to complete . Apprentice s must complete the task and documentation fully to enable the asse",
+        "extract": "EXTRACTED"
+      }
+    ]
+  },
+  "S14": {
+    "catalogue": [
+      {
+        "id": "res_lm_b1d883cb4802_32",
+        "file": "Lesson Plan 13 - LV Suspension Systems Practical.docx",
+        "group": "G5",
+        "block": null,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "Lesson Plan 1 3 Light Vehicle Suspension Systems – Practical Assessment Trainer Name -10531 74930 0 0 Topic -8255 69586 L ight vehicle suspension systems – Practical Assessment 0 0 L ight vehicle suspension systems – Practical Assessment Lesson Aims Lesson Aims -635 41911 To overview suspension system components and system operation to reinforce previous sessions. To discuss required methods to carry out practical assessments and completion of documentation. 0 0 To overview suspension system components and system operation to reinforce previous sessions. To discuss required",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_fb5595390382_33",
+        "file": "Lesson Plan 14 - Light Vehicle Suspension Systems - Practical Assessment.docx",
+        "group": "G5",
+        "block": null,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "Lesson Plan 1 4 Light Vehicle Suspension Systems – Practical Assessment Trainer Name -10531 74930 0 0 Topic -8255 69586 L ight vehicle suspension systems – Practical Assessment 0 0 L ight vehicle suspension systems – Practical Assessment Lesson Aims Lesson Aims -635 41910 To overview m ethods required to carry out practical assessments and completion of documentation. Workshop practical assessment tasks under controlled conditions. 0 0 To overview m ethods required to carry out practical assessments and completion of documentation. Workshop practical assessment tasks under ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_5023a1ba3277_101",
+        "file": "Group 12 Exhausts and Emissions plan 1.docx",
+        "group": "G12",
+        "block": null,
+        "week": null,
+        "matched": [
+          "job card"
+        ],
+        "excerpt": "Lesson Plan 1 Trainer Name -10531 74930 0 0 Topic center 21590 E xhau s t and Emission Control systems 0 0 E xhau s t and Emission Control systems Lesson Aims Lesson Aims left 16510 Track evidence into E logbooks, complete a job card as req , embed functional skills. Introduction to Light vehicle exhaust system layouts , component names and emissions . Introduction to exhaust system component operation and inspection techniques . 0 0 Track evidence into E logbooks, complete a job card as req, embed functional skills. Introduction to Light vehicle exhaust system layouts , co",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lm_96a4ce625ceb_102",
+        "file": "Group 12 Exhausts and Emissions plan 2.docx",
+        "group": "G12",
+        "block": null,
+        "week": null,
+        "matched": [
+          "job card"
+        ],
+        "excerpt": "Lesson Plan 2 Trainer Name -10531 74930 0 0 Topic center 21590 E xhau s t and Emission Control systems 0 0 E xhau s t and Emission Control systems Lesson Aims Lesson Aims left 16510 Track evidence into E logbooks, complete a job card as req , embed functional skills. Introduction to SI Fuel injection systems, SPI and MPI layouts and basic components. Intro to meaning of AFR and the need for Rich/Lean conditions. 0 0 Track evidence into E logbooks, complete a job card as req , embed functional skills. Introduction to SI Fuel injection systems, SPI and MPI layouts and basic c",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_76cd8f807cd7",
+        "file": "01_Shared_Foundation_Skills_FS01-FS10_v1.2/Foundation_Skills_FS10_Week_10_Lesson_Plan_v1.2.docx",
+        "group": null,
+        "block": 1,
+        "week": 10,
+        "matched": [
+          "job card",
+          "documentation"
+        ],
+        "excerpt": "Foundation Skills FS10 - Week 10 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS10 | Foundation Skills Week 10 SOW reference Motor Vehicle Foundation Skills SOW v1.2 | FS10 | Week 10 Planned hours 5.00 eligible OTJ | 1.00 non-eligible | 1.00 breaks Topic Technical Documentation, Job Cards, Handover and Specialist Transition Occupational relevance: This session develops accurate technical records, job-card/report writing, handover communication and readiness to progress into specialist curricu",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_d43af81d50ff",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_026_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 3,
+        "week": 26,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 26 Lesson Plan Workshop procedures, documentation control and handover discipline | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 26 | Block 3 Block title Workshop Processes, Tools and Environmental Awareness Month / period Months 5-8 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 3 | Week 26 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 6 | B3, B5, K25, K7, K8, S16",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_2fe8e596e37e",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_058_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 6,
+        "week": 58,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 58 Lesson Plan Quote approval, consent and final documentation | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 58 | Block 6 Block title Vehicle Systems Integration and Advanced Diagnostics Month / period Months 13-15 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 6 | Week 58 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 8 | K24, K25, K26, K29, S16, S17, S19, S22, S2",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_541f1dec9a3f",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_076_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 8,
+        "week": 76,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 76 Lesson Plan Documentation for handover and audit trail completeness | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 76 | Block 8 Block title Advanced Diagnostics and Workshop Organisation Month / period Months 18-20 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 8 | Week 76 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 6 | B3, B5, K25, K7, K8, S16, S20, S22, S23,",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_3e82ad7ba5d4",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_086_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 9,
+        "week": 86,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 86 Lesson Plan Workshop compliance deep dive: documentation and waste control | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 86 | Block 9 Block title Emerging Technologies, Electric Vehicles and Hydrogen Awareness Month / period Months 20-24 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 9 | Week 86 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB focus Duty 10 | B1, B2, K21, K2",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_lp_5eebfe660265",
+        "file": "02_Specialist_Lesson_Plans/Autocare_L2_Week_108_Lesson_Plan_v4.4.docx",
+        "group": null,
+        "block": 10,
+        "week": 108,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "Autocare Technician Level 2 - Week 108 Lesson Plan Duty 6 Skills Development and EPA Readiness Practice - Procedures and Documentation | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 108 | Block 10 Block title Final Consolidation, Corrective Learning and EPA Readiness Training Month / period Months 24-29 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 10 | Week 108 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KSB f",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_cbe117bb9954",
+        "file": "Block_10_Task_3_EPA_Mock_Integrated_Inspection_v2.0.pdf",
+        "group": null,
+        "block": 10,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "TASK 3: EPA MOCK INTEGRATED PRACTICAL INSPECTION Autocare Technician Level 2 | Block 10 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 95-110 Your task As part of final readiness, you must complete an integrated practical inspection under mock assessment conditions. You will inspect, record evidence, explain findings and identify any further work or authorisation needed. What you must do 1 Prepare the vehicle and work area safely. 2 Complete the integrated inspection sequence set by the assessor/workplace mentor. 3 Record all tec",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_5bdc1a92f689",
+        "file": "Block_10_Task_4_Capstone_Practical_Task_v2.0.pdf",
+        "group": null,
+        "block": 10,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "TASK 4: CAPSTONE PRACTICAL TASK, QA AND PROFESSIONAL DISCUSSION EVIDENCE Autocare Technician Level 2 | Block 10 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 95-110 Your task You must complete a capstone practical task that brings together technical work, safe working, documentation, quality checks and professional explanation. The task should be agreed with the assessor/workplace mentor before starting. What you must do 1 Agree the capstone task scope with the assessor/workplace mentor. 2 Prepare the vehicle/rig, tools, technic",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_938cf7eba750",
+        "file": "Block_1_Task_3_Vehicle_Safety_Inspection_v2.0.pdf",
+        "group": null,
+        "block": 1,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "TASK 3: VEHICLE SAFETY INSPECTION AND WORKSHOP PREPARATION Autocare Technician Level 2 | Block 1 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 1-10 Your task A customer vehicle has arrived for an initial safety inspection. You must prepare the work area, use PPE correctly, complete a structured inspection and record any safety-related findings without carrying out repairs. What you must do 1 Ensure the working area is safe and the vehicle is correctly prepared before starting work. 2 Carry out external, under-bonnet, in-vehicle ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_f59376934078",
+        "file": "Block_1_Task_4_Basic_Braking_and_Tyre_Check_v2.0.pdf",
+        "group": null,
+        "block": 1,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "TASK 4: BASIC BRAKE AND TYRE CONDITION CHECK Autocare Technician Level 2 | Block 1 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 1-10 Your task A vehicle has been reported with possible tyre and brake wear during a basic workshop check. You must inspect visible brake and tyre components, record measurements and explain any customer recommendations. What you must do 1 Prepare the vehicle and work area safely. 2 Inspect tyre condition, tread depth, pressure and visible damage. 3 Inspect visible brake components and record conditio",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_139a816c6d1e",
+        "file": "Block_2_Task_3_Battery_and_Charging_Check_v2.0.pdf",
+        "group": null,
+        "block": 2,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "TASK 3: BATTERY AND CHARGING SYSTEM INSPECTION Autocare Technician Level 2 | Block 2 | v2.0 TIME 45 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 11-20 Your task A customer reports slow cranking and intermittent starting concerns. You must carry out basic battery and charging system checks, record results and explain whether further work is required. What you must do 1 Prepare the vehicle and confirm the complaint with the assessor/workplace mentor. 2 Inspect battery security, terminals and visible condition. 3 Measure battery voltage and char",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "res_prac_b58e0adc803a",
+        "file": "Block_2_Task_4_TPMS_and_Tyre_Service_v2.0.pdf",
+        "group": null,
+        "block": 2,
+        "week": null,
+        "matched": [
+          "documentation",
+          "record findings"
+        ],
+        "excerpt": "TASK 4: TPMS, TYRE PRESSURE AND CUSTOMER DOCUMENTATION Autocare Technician Level 2 | Block 2 | v2.0 TIME 45 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 11-20 Your task A vehicle has arrived with a tyre pressure warning lamp illuminated. You must inspect tyre condition and pressures, identify the TPMS type where possible, carry out a reset/relearn where appropriate and record customer-facing findings. What you must do 1 Prepare the vehicle and confirm the TPMS warning concern. 2 Check tyre pressures and inspect tyre condition. 3 Identify TPMS",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "cea": [
+      {
+        "id": "cea_1_2_1",
+        "file": "CEA 2.1 APPRENTICE INSTRUCTIONS Hybrid.docx",
+        "group": "G2",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_1",
+        "file": "CEA 3.1 APPRENTICE INSTRUCTIONS Tyres R & I.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_2",
+        "file": "CEA 3.2 APPRENTICE INSTRUCTIONS Puncture.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_3",
+        "file": "CEA 3.3 APPRENTICE INSTRUCTIONS TPMS.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_4",
+        "file": "CEA 3.4 APPRENTICE INSTRUCTIONS Balance 4 wheels.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_3_5",
+        "file": "CEA 3.5 APPRENTICE INSTRUCTIONS run flat.docx",
+        "group": "G3",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_4_1",
+        "file": "CEA 4.1 APPRENTICE INSTRUCTIONS front pads & discs.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_4_2",
+        "file": "CEA 4.2 APPRENTICE INSTRUCTIONS rear shoes & drums.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_4_2b",
+        "file": "CEA 4.2b APPRENTICE INSTRUCTIONS rear wheel cylinder and bleed.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "cea_1_4_3",
+        "file": "CEA 4.3 APPRENTICE INSTRUCTIONS replace brake fluid.docx",
+        "group": "G4",
+        "block": null,
+        "week": null,
+        "matched": [
+          "apprentice assessment record"
+        ],
+        "excerpt": "",
+        "extract": "EXTRACTED"
+      }
+    ],
+    "gateway": [
+      {
+        "id": "gw_db7111449f77",
+        "file": "Autocare GW2 practice exam 2.docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "job card"
+        ],
+        "excerpt": "Welcome to your practice IMI GW2 under pinning knowledge assessment.\n You have 70 minutes to answer 4 6 multiple choice questions.\n Good Luck\n 1. If the front road wheel is set to tilt inwards at the top it has a:\n a) negative castor\n b) positive camber\n c) negative camber\n d) positive castor\n 2. After rectifying an engine fault you need to road test the customer's vehicle. Before you start the\n test it is essential that you:\n a) check the vehicle's tyre pressures, oil level and windscreen washer fluid\n b) complete the job card with all details concerning the vehicle repair",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "gw_e8cf0cff7a22",
+        "file": "Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "ASSESSOR PRACTICAL SUPPORT MATERIAL\n\n Gateway 1\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP 01\n ASSESSOR INSTRUCTIONS\n Ref: GW1 AC01\n Remove and Replace Wheels and Tyres\n The purpose of t his document is to support the a ssessor in setting up the workstation and vehicle prior to the Apprentice ’s Gateway 1 practical assessment.\n\n You must pro vide the Apprentice with the Remove and Replace Wheels and T yres instructions and Apprentice Assess ment Record for them to complete . Apprentice s must complete the task and documentation fully to enable the a ssessor ",
+        "extract": "EXTRACTED"
+      },
+      {
+        "id": "gw_d91de30f5f63",
+        "file": "Autocare-AP01-GW2-Practical-Support-Material-Assessor.docx",
+        "group": null,
+        "block": null,
+        "week": null,
+        "matched": [
+          "documentation"
+        ],
+        "excerpt": "ASSESSOR PRACTICAL SUPPORT MATERIAL\n\n Gateway 2\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP0 1\n\n ASSESSOR INSTRUCTIONS\n Ref: GW 2 AC01\n Carry Out a Vehicle Safety Inspection\n This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 2 practical assessment.\n\n You must pro vide the Apprentice with the Carry Out a Vehicle Safety Inspection I nstructions and Apprentice Assess ment Record for them to complete . Apprentice s must complete the task and documentation fully to enable the asse",
+        "extract": "EXTRACTED"
+      }
+    ]
+  },
+  "_groups": {
+    "G3": [
+      {
+        "id": "res_lm_8b1b94878563_7",
+        "file": "Lesson Plan 2 - Wheels & Tyres.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 2 Wheels & Tyres Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to wheels and tyres including tyre removal and fitting . 0 0 Introduction to wheels and tyres including tyre r"
+      },
+      {
+        "id": "res_lm_801be46beaa3_8",
+        "file": "Lesson Plan 3A - Steering Geometry.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 3A Steering Geometry Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to steering geometry and wheel alignment. 0 0 Introduction to steering geometry and wheel alignment. Lesso"
+      },
+      {
+        "id": "res_lm_10e45332013b_9",
+        "file": "Tire Changing and Wheel Balancing.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_0117421614b4_10",
+        "file": "Tyre Inspection and Repair.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_9f5cb6fbb8f3_11",
+        "file": "Tyres.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_fc25d7deb5b7_12",
+        "file": "Wheel Alignment.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_d1bbe6165db7_13",
+        "file": "Wheels_and_Tyres_Initial_Assessment_Level2.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "-Level 2 Automotive: Wheels and Tyres Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State one reas"
+      },
+      {
+        "id": "res_lm_be902d1093ad_14",
+        "file": "Wheels_and_Tyres_Initial_Assessment_Marking_Sheet_with_Answers.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Wheels and Tyres Initial Knowledge Assessment – Marking Sheet with Typical Answers Learner Name: ________________________________ Date: ________________________________ Assessor Name: ________________"
+      }
+    ],
+    "G4": [
+      {
+        "id": "res_lm_700b98354b26_15",
+        "file": "Lesson Plan 4 - Introduction to Braking Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 4 Introduction to Braking Sy s tems – Disc Brakes Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle braking systems 0 0 Introduction to light vehicle braking sy"
+      },
+      {
+        "id": "res_lm_023bcd40b755_16",
+        "file": "Lesson Plan 5 - Introduction to Braking Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 5 Introduction to Braking Sy s tems – D rum Brakes Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle braking systems – Drum Brakes 0 0 Introduction to light veh"
+      },
+      {
+        "id": "res_lm_ba167ad46cb7_17",
+        "file": "Lesson Plan 6 - Introduction to Braking Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 6 Introduction to Braking Sy s tems – D rum Brakes Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle braking systems – Drum Brakes 0 0 Introduction to light veh"
+      },
+      {
+        "id": "res_lm_e83e3028f71a_18",
+        "file": "Lesson Plan 7 - Anti Lock Braking Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 7 Braking Sy s tems – Anti-Lock Braking Systems Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle braking systems – Anti Lock Braking Systems 0 0 Introduction t"
+      },
+      {
+        "id": "res_lm_14c073c3be45_19",
+        "file": "Brake Calipers PP.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_1c26257cccb1_20",
+        "file": "Brake Drums PP.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_81eac59f305f_21",
+        "file": "Brake Fluid.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_86a55328547f_22",
+        "file": "Brake Lines and Hoses.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_09ccf745db0e_23",
+        "file": "Braking_Systems_Initial_Assessment_Level2 (1).docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Level 2 Automotive: Braking Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State one reason"
+      },
+      {
+        "id": "res_lm_9cbb6a9e90e0_24",
+        "file": "Braking_Systems_Initial_Assessment_Marking_Sheet_with_Answers.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Braking Systems Initial Knowledge Assessment – Marking Sheet with Typical Answers Learner Name: ________________________________ Date: ________________________________ Assessor Name: _________________"
+      },
+      {
+        "id": "res_lm_23464e70dbc6_25",
+        "file": "Friction.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_bedd9d04d363_26",
+        "file": "Pressure Control Valves.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_563b08768807_27",
+        "file": "Sensors and Switches.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_3a89189e8265_28",
+        "file": "Wheel Speed Sensors.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      }
+    ],
+    "G5": [
+      {
+        "id": "res_lm_af0e9e7a9514_29",
+        "file": "Lesson Plan 10 - Introduction to power Steering.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 10 Introduction to Steering Systems – Power Assistance Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle Power Assisted steering 0 0 Introduction to light vehic"
+      },
+      {
+        "id": "res_lm_80670246c095_30",
+        "file": "Lesson Plan 11 - Review Suspension Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 11 Review Suspension Systems Trainer Name -10531 74930 0 0 Topic -8255 69586 Review of light vehicle suspension systems 0 0 Review of light vehicle suspension systems Lesson Aims Lesson Ai"
+      },
+      {
+        "id": "res_lm_b78a81a0dcc6_31",
+        "file": "Lesson Plan 12 - Light Vehicle Suspension Systems - Air Suspension.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 12 Light Vehicle Suspension Systems – Air Suspension Trainer Name -10531 74930 0 0 Topic -8255 69586 L ight vehicle suspension systems – Air suspension 0 0 L ight vehicle suspension system"
+      },
+      {
+        "id": "res_lm_b1d883cb4802_32",
+        "file": "Lesson Plan 13 - LV Suspension Systems Practical.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 1 3 Light Vehicle Suspension Systems – Practical Assessment Trainer Name -10531 74930 0 0 Topic -8255 69586 L ight vehicle suspension systems – Practical Assessment 0 0 L ight vehicle susp"
+      },
+      {
+        "id": "res_lm_fb5595390382_33",
+        "file": "Lesson Plan 14 - Light Vehicle Suspension Systems - Practical Assessment.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 1 4 Light Vehicle Suspension Systems – Practical Assessment Trainer Name -10531 74930 0 0 Topic -8255 69586 L ight vehicle suspension systems – Practical Assessment 0 0 L ight vehicle susp"
+      },
+      {
+        "id": "res_lm_9f9912c444d7_34",
+        "file": "Lesson Plan 8 - Introduction to Suspension Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 8 Introduction to Suspension Systems Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle suspension systems 0 0 Introduction to light vehicle suspension systems L"
+      },
+      {
+        "id": "res_lm_b5da6833f74c_35",
+        "file": "Lesson Plan 9 - Introduction to Steering Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 9 Introduction to Steering Systems Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle steering systems 0 0 Introduction to light vehicle steering systems Lesson "
+      },
+      {
+        "id": "res_lm_d21a939a9a13_36",
+        "file": "ACS Steering & suspension Assignment.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "ACS Steering & Suspension Assignment 1. State the name of the principle which relates to the front wheels of a vehicle turning through different angles when going round a corner. 2 . Name the steering"
+      },
+      {
+        "id": "res_lm_e76ad6ff34ed_37",
+        "file": "Air Suspension Systems.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_d9da0790afac_38",
+        "file": "Coil Springs.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_dd715a15145e_39",
+        "file": "Power Steering and EPS.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_944b5735a618_40",
+        "file": "Rear Wheel Drive Shafts.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_ac67a697c16a_41",
+        "file": "Suspension Systems ACS.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      }
+    ],
+    "G6": [
+      {
+        "id": "res_lm_4682b1598582_42",
+        "file": "Lesson Plan 16 - Introduction to Cooling Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 16 Introduction to Cooling Sy s tems Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle cooling systems 0 0 Introduction to light vehicle cooling systems Lesson "
+      },
+      {
+        "id": "res_lm_dc868a065759_43",
+        "file": "Lesson Plan 17 - Introduction to Cooling Systems - Testing.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 17 Introduction to Cooling Sy s tems - Testing Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle cooling systems 0 0 Introduction to light vehicle cooling syste"
+      },
+      {
+        "id": "res_lm_fa990159353c_44",
+        "file": "Lesson Plan 18 - Intro to Engines - Mechanical.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 1 8 Introduction to Engines – Mechanical Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to engine mechanical systems 0 0 Introduction to engine mechanical systems Lesson Aims"
+      },
+      {
+        "id": "res_lm_82acbb287ba4_45",
+        "file": "Lesson Plan 19 - Introduction to Engines - Mechanical.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 1 9 Introduction to Engines – Mechanical Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to engine mechanical systems 0 0 Introduction to engine mechanical systems Lesson Aims"
+      },
+      {
+        "id": "res_lm_cdc4155738ce_46",
+        "file": "Lesson Plan 20 - Introduction to Engines - Lubrication.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 20 Introduction to Engines – Lubrication Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to engine lubrication systems 0 0 Introduction to engine lubrication systems Lesson Ai"
+      },
+      {
+        "id": "res_lm_e5fdd3f23432_47",
+        "file": "Lesson Plan 21 - Introduction to Engines - Lubrication.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 2 1 Introduction to Engines – Lubrication Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to engine lubrication systems 0 0 Introduction to engine lubrication systems Lesson A"
+      },
+      {
+        "id": "res_lm_b14cd1cf8e89_48",
+        "file": "Cooling_and_Lubrication_Initial_AssessmenT.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Cooling and Lubrication Systems Initial Knowledge Assessment – Marking Sheet with Typical Answers (30 Questions) Learner Name: ________________________________ Date: ________________________________ A"
+      },
+      {
+        "id": "res_lm_47e9f3ac040e_49",
+        "file": "Cooling_and_Lubrication_Initial_Assessment_Level2_v2.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Level 2 Automotive: Cooling and Lubrication Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. "
+      },
+      {
+        "id": "res_lm_67b673b95c1a_50",
+        "file": "Engine Basics and 4 Stroke Cycle.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_da4a93c2da80_51",
+        "file": "Heating and ventilation Plan 18.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "Auto Care Apprenticeships Heating and Ventilation style.visibility Lesson Aims Introduction to cabin heating systems. Recognise heating system faults. What equipment is required to test heating system"
+      },
+      {
+        "id": "res_lm_eac9a3e5de42_52",
+        "file": "Lubrication Systems Plan 19.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_c72a2760897a_53",
+        "file": "Lubrication Systems Plan 19.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "Aims 1. Introduction to lubrication systems. 2. Recognising lubrication system faults. 3. What equipment is required to test lubrication systems. style.visibility Objectives 1. Be able to identify at "
+      }
+    ],
+    "G7": [
+      {
+        "id": "res_lm_d58f4f3ab78a_54",
+        "file": "Lesson Plan 22 - Introduction to Electrical Systems.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 2 2 Introduction to Electrical Systems Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to electrical systems 0 0 Introduction to electrical systems Lesson Aims Lesson Aims -63"
+      },
+      {
+        "id": "res_lm_466bab823d76_55",
+        "file": "Lesson Plan 23 - Introduction to Electrical Systems - Batteries.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 2 3 Introduction to Electrical Systems - Batteries Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to vehicle batteries 0 0 Introduction to vehicle batteries Lesson Aims Lesso"
+      },
+      {
+        "id": "res_lm_2ca8ded587ac_56",
+        "file": "Lesson Plan 24 - Introduction to Electrical Systems - Starting and Charging.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 2 4 Introduction to Electrical Systems – Starting and Charging Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to vehicle starting and charging systems 0 0 Introduction to veh"
+      },
+      {
+        "id": "res_lm_0349c1397a1c_57",
+        "file": "Batteries.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_277e84194c5f_58",
+        "file": "Batteries.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "In this presentation you will: Batteries explore battery operating principles Next > identify battery construction = electrons Load style.visibility style.visibility style.visibility style.visibility "
+      },
+      {
+        "id": "res_lm_e78a4ed3d652_59",
+        "file": "Charging Systems.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_eb016735391c_60",
+        "file": "Features of Hybrid Vehicles.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_e7921a6bc84c_61",
+        "file": "Fuel Cells.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_674b62b99ade_62",
+        "file": "Range Extenders.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_063b872ce1c7_63",
+        "file": "Safety in High Voltage Vehicles.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_53fca2d9a338_64",
+        "file": "Starting Systems.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_cdf93a50039d_65",
+        "file": "Starting_and_Charging_Initial_Assessment_Level2 (1).docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Level 2 Automotive: Starting and Charging Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. St"
+      },
+      {
+        "id": "res_lm_e612e22cf0c5_66",
+        "file": "Starting_and_Charging_Initial_Assessment_Marking_Sheet_with_Answers.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Starting and Charging Systems Initial Knowledge Assessment – Marking Sheet with Typical Answers (30 Questions) Learner Name: ________________________________ Date: ________________________________ Ass"
+      }
+    ],
+    "G11": [
+      {
+        "id": "res_lm_27c2c9882095_86",
+        "file": "Group 11 session 1 electronic steering.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Electronic steering systems 0 0 Electronic steering systems Lesson Aims Lesson Aims left 30593 To investigate the construction and operation"
+      },
+      {
+        "id": "res_lm_5d8bcd0589f2_87",
+        "file": "Group 11 session 2 ADAS.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan 2 Trainer Name -10531 74930 0 0 Topic -8255 69586 Electronic steering A DAS systems 0 0 Electronic steering A DAS systems Lesson Aims Lesson Aims -635 32385 Identify h ow light vehicle ele"
+      },
+      {
+        "id": "res_lm_7656c297a800_88",
+        "file": "Group 11 session 3 4 wheel align.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Four-wheel alignment , measure and adjust 0 0 Four-wheel alignment , measure and adjust Lesson Aims Lesson Aims left 30593 To recap and unde"
+      },
+      {
+        "id": "res_lm_fc0d73817b2b_89",
+        "file": "Group 11 session 4 Advanced steering ver 2.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Four-wheel alignment 0 0 Four-wheel alignment Lesson Aims Lesson Aims -635 32385 To overview basic wheel alignment and terminology D iscuss "
+      },
+      {
+        "id": "res_lm_ce0117e91fc9_90",
+        "file": "Group 11 session 5 Advanced steering and suspension ver 2.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Four - wheel alignment 0 0 Four - wheel alignment Lesson Aims Lesson Aims -635 32385 Understand the operation of light vehicle four - wheel "
+      },
+      {
+        "id": "res_lm_91491806d95b_91",
+        "file": "Group 11 Session 6.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Suspension systems overview & modern developments 0 0 Suspension systems overview & modern developments Lesson Aims Lesson Aims 0 35716 Revi"
+      },
+      {
+        "id": "res_lm_1dbc55565fc2_92",
+        "file": "Group 11 Session 7.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Self levelling suspension systems 0 0 Self levelling suspension systems Lesson Aims Lesson Aims 0 35716 Discuss light vehicle adaptive and s"
+      },
+      {
+        "id": "res_lm_2ea67bf9bf90_93",
+        "file": "Group 11 Session 8.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Adaptive suspension systems 0 0 Adaptive suspension systems Lesson Aims Lesson Aims -635 32384 Discuss light vehicle adaptive suspension and"
+      },
+      {
+        "id": "res_lm_7e619f10293c_94",
+        "file": "Group 11 Session 9.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Adaptive suspension systems 0 0 Adaptive suspension systems Lesson Aims Lesson Aims 0 35716 Discuss adaptive suspension sensors, ride height"
+      },
+      {
+        "id": "res_lm_b316b7696abb_95",
+        "file": "Electronic Steering Systems.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_6ff7769390a3_96",
+        "file": "Hydraulic Adaptive Suspension.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "Autocare Standards Level 2 ST0499/AP01 Hydraulic Adaptive Suspension style.visibility style.visibility style.visibility Aims and Objectives At the end of this presentation you should be able to: Have "
+      },
+      {
+        "id": "res_lm_d8f95483aed1_97",
+        "file": "Session 1electronic steering.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "Electronic Steering Systems To be able to identify components of the electronic steering systems To be able to identify a selection of sensors and actuators for vehicle operation To be able to identif"
+      },
+      {
+        "id": "res_lm_95f371942a77_98",
+        "file": "Session 2 ADAS Systems.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "ADAS Systems Next Advanced Driver-Assistance systems ( ADAS ) are one of the fastest-growing safety application areas due to the desire to reduce vehicle accidents and fatalities. style.visibility sty"
+      },
+      {
+        "id": "res_lm_8fa749f780b7_99",
+        "file": "Sessions 3-4 Wheel alignment-18 slides 2020.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "Wheel Alignment identify wheel alignment terms Next > In this presentation you will: style.visibility style.visibility style.visibility Introduction Wheels are the parts of the vehicle that make it tu"
+      },
+      {
+        "id": "res_lm_a70ba19fb707_100",
+        "file": "Sessions 4-5 Geometry-26 slides 2020.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "Geometry Fundamentals identify fundamental wheel alignment terms Next > In this presentation you will: style.visibility style.visibility style.visibility Introduction Wheels are the parts of the vehic"
+      }
+    ],
+    "G13": [
+      {
+        "id": "res_lm_9270686b121d_110",
+        "file": "Group 13 AC Systoms Lesson 1.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Identify Air Conditioning Components Construction &"
+      },
+      {
+        "id": "res_lm_b30479c74664_111",
+        "file": "Group 13 AC Systoms Lesson 2.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Key principles of AC systems Properties of Fluorina"
+      },
+      {
+        "id": "res_lm_f60343a91e10_112",
+        "file": "Group 13 AC Systoms Lesson 3.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Legislation & Regulations – when handling air condi"
+      },
+      {
+        "id": "res_lm_529836b280a3_113",
+        "file": "Group 13 AC Systoms Lesson 4.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Name the PPE required to be used when handling AC g"
+      },
+      {
+        "id": "res_lm_88b13e63ee5a_114",
+        "file": "Group 13 AC Systoms Lesson 5.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Air Conditioning Systems 0 0 Air Conditioning Systems Lesson Aims Lesson Aims -635 40005 Servicing light vehicle AC systems Health and safet"
+      },
+      {
+        "id": "res_lm_566480533983_115",
+        "file": "AC Course Questions.doc",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_7d543a844bfb_116",
+        "file": "Air Conditioning revised.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      }
+    ],
+    "G14": [
+      {
+        "id": "res_lm_6e6c9e8174f3_117",
+        "file": "Group 14 Session 1.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 J ulie S aynor 0 0 J ulie S aynor Topic -8255 69586 VEHICLE SAFETY INSPECTION 0 0 VEHICLE SAFETY INSPECTION Lesson Aims Lesson Aims -635 32385 Introduction for le"
+      },
+      {
+        "id": "res_lm_6423d6fb3e1d_118",
+        "file": "Group 14 Session 2.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 J ulie S aynor neil oakland 0 0 J ulie S aynor neil oakland Topic -8255 69586 VEHICLE SAFETY INSPECTION Suspension systems overview & modern developments 0 0 VEHI"
+      },
+      {
+        "id": "res_lm_317be27fa403_119",
+        "file": "Group 14 Session 3.docx",
+        "extract": "EXTRACTED",
+        "excerpt": "Lesson Plan Trainer Name -10531 74930 J ulie S aynor 0 0 J ulie S aynor Topic -8255 69586 VEHICLE SAFETY INSPECTION 0 0 VEHICLE SAFETY INSPECTION Lesson Aims Lesson Aims -635 32385 Review previous lea"
+      },
+      {
+        "id": "res_lm_2f57c41b194c_120",
+        "file": "Major Service Routine.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "ACS Level 2 ST0499/AP01 Major Service Routine style.visibility style.visibility ppt_w ppt_h style.visibility Presentation Aim The aim of this presentation is to overview a major service routine in dep"
+      },
+      {
+        "id": "res_lm_e4d51014bed4_121",
+        "file": "Vehicle Care.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_263645b7861e_122",
+        "file": "Vehicle Inspection and Servicing.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "ACS Level 2 ST0499/AP01 Vehicle Inspection and Servicing style.visibility Presentation Aims The aim of this presentation is to overview the basic types of maintenance and inspection routines offered b"
+      },
+      {
+        "id": "res_lm_150aa5b0d611_123",
+        "file": "Vehicle Preparation.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_049aeee9cc31_124",
+        "file": "Vehicle Service History.ppt",
+        "extract": "CONTENT_EXTRACTION_REQUIRED",
+        "excerpt": ""
+      },
+      {
+        "id": "res_lm_a146beab76cd_125",
+        "file": "Vehicle Servicing.pptx",
+        "extract": "EXTRACTED",
+        "excerpt": "ACS Level 2 ST0499/AP01 Vehicle Servicing style.visibility Presentation aims The aim of this presentation is to overview what is carried out during servicing routines offered by garages as a recap of "
+      }
+    ]
+  }
+}

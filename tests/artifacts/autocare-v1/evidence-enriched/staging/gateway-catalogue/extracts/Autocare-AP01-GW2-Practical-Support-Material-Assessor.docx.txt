@@ -1,0 +1,296 @@
+ASSESSOR PRACTICAL SUPPORT MATERIAL
+
+ Gateway 2
+
+ Autocare Technician
+ Apprenticeship Standard
+
+ ST0499/AP0 1
+
+ ASSESSOR INSTRUCTIONS
+ Ref: GW 2 AC01
+ Carry Out a Vehicle Safety Inspection
+ This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 2 practical assessment.
+
+ You must pro vide the Apprentice with the Carry Out a Vehicle Safety Inspection I nstructions and Apprentice Assess ment Record for them to complete . Apprentice s must complete the task and documentation fully to enable the assessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 90 minutes.
+
+ Included in this document:
+ Workstation set- up requirements including tools and equipment
+ Vehicle set- up prior to assessment
+ List of faults to be applied to the vehicle prior to assessment
+ Assessor Record and comments sheet
+
+ Materials required at the workstation:
+ A Light Vehicle with 5 faults inserted from the Pre-installed fault list below
+ Relevant workshop manuals and technical equipment for the vehicle
+ General hand tools including torque wrench
+ Inspection light
+ Tyre tread depth gauge
+ Vehicle Safety Inspection Checklist
+ Vehicle Protective Equipment (VPE)
+ Personal Protection Equipment (PPE)
+ Apprentice ’s instructions
+ Assessor Instructions and Assessor Record
+
+ Workstation set- up required:
+ Vehicle to be positioned in the workshop in a suitable location
+ An assistant may be made available for the operation of the lights as required
+ Vehicle to have no known faults other than the faults selected from the pre-installed list and set by the assessor before the task
+
+ Vehicle must be set- up with 5 pre-installed faults to include one from each section:
+ E xterior lights
+ T yres
+ S teering and suspension
+ B rakes
+ I nterior
+ The approved faults are listed below.
+ F aults must be recorded onto the assessor record sheet prior to the A pprentice starting the assessment and be alternated for additional A pprentice s assessed throughout the day .
+
+ The A pprentice must:
+ Carry out a vehicle safety inspection as detailed in the Inspection Sheet provided by your assessor
+ Complete the Vehicle Safety Inspection Sheet, including all vehicle details and reporting any vehicle defects found during the safety inspection
+ Note: The Apprentice is not to repair any vehicle defects identified
+ Exterior lights
+ Indicator repeater inoperative
+ Brake lamp inoperative
+ Number plate lamp(s) inoperative
+ Rear fog light inoperative
+ Side lamp inoperative
+ Tyres
+ Flat spare tyre
+ Incorrect size wheel/tyre
+ Badly damaged or worn tyre
+ Incorrectly fitted rotational tyre
+ Missing wheel bolt / nut
+ Steering / Suspension
+ Leaking power steering fluid from an easily accessible hose e . g. reservoir
+ Track rod end insecure / bolt missing
+ Front Anti-roll bar bolt / fixing loose
+ Front lower suspension joint nut missing
+ Front suspension leg lower clamp nut missing
+ Snapped or incorrectly seated coil spring
+ Brakes
+ Leaking hydraulic component from either brake caliper , wheel cylinder or union
+ Twisted or kinked brake hose
+ Mounting bolt missing from front brake caliper
+ Brake servo pipe detached or split
+ Missing caliper anti rattle clip / spring
+ Interior
+ Horn inoperative
+ Hazard warning lights inoperative
+ ABS, traction or stability control warning light remaining illuminated
+ Windscreen wipers not successfully clearing the screen
+ Excessive hand-brake travel (must be obvious to the A pprentice )
+
+ A SSESSOR RECORD
+ Ref: GW 2AC01
+ Carry Out a Vehicle Safety Inspection
+ Apprentice Name:
+
+ Apprentice No.
+
+ Assessor Name:
+
+ Date:
+
+ Start T ime:
+
+ Completion T ime:
+
+ Note – All criteria require a Pass
+
+ Comments
+ Appropriate PPE and VPE used throughout
+
+ Logical sequence used to carry out task
+
+ Completed the task safely; considering self, others and environment
+
+ Care was taken not to cause damage to vehicle
+
+ Used the correct industry recognised methods to check components and systems
+
+ Technical data / manufacturer’s data interpreted correctly
+
+ All installed defects located – identified the five defects by description below
+
+ Record the faults place on the vehicle below :
+
+ 1.
+
+ 2.
+
+ 3.
+
+ 4.
+
+ 5.
+
+ Apprentice assessment record and inspection sheet completed accurately and clearly to allow others to interpret
+
+ Vehicle and work area presented correctly post task
+
+ Result (please tick one)
+ Pass
+ Refer
+
+ Assessor S ignature:
+
+ Assessor PIN:
+
+ ASSESSOR INSTRUCTIONS
+ Ref: GW2 AC02
+ Carry Out Four-Wheel Alignment
+ This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 2 practical assessment.
+
+ You must provide the Apprentice with the Carry Out Four-Wheel Alignment instructions and Apprentice Assessment Record. Apprentice s must complete the task and documentation fully to enable the assessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 90 minutes.
+
+ Included in this document :
+ Workstation set- up requirements including tools and equipment
+ Vehicle set- up prior to assessment
+ Assessor Record and comments sheet
+
+ Materials required at the workstation:
+ Light Vehicle
+ Relevant workshop manuals and technical equipment for the vehicle
+ General hand tools
+ Wheel alignment gauges
+ Replacement parts as required
+ Lifting equipment suitable for the vehicle
+ Inspection light
+ Vehicle Protective Equipment (VPE)
+ Personal Protection Equipment (PPE)
+ Apprentice ’s instructions
+ Assessor Instructions and Assessor Record
+ Workstation set- up required:
+ Vehicle must be positioned in a suitable location in the workshop but NOT raised off the ground.
+
+ The A pprentice must:
+ C arry out all vehicle pre - checks
+ Z ero the alignment gauges and fit to the vehicle unaided
+ O btain the correct technical data, measure and compare vehicle wheel alignment
+ L ower vehicle to the ground and clean work area , returning all tools and equipment
+
+ ASSESSOR RECORD
+ Ref: GW2AC02
+ Carry Out Four-Wheel Alignment
+ Apprentice Name:
+ Apprentice No.
+ Assessor Name:
+
+ Date:
+
+ Start T ime:
+
+ Completion T ime:
+
+ Note – All criteria require a Pass
+
+ Comments
+ Appropriate PPE and VPE used throughout
+
+ Logical sequence used to carry out task
+
+ Completed the task safely; considering self, others and environment
+
+ Care was taken not to cause damage to vehicle
+
+ Used the correct industry recognised methods when carrying out pre-checks
+
+ Technical data / manufacturer’s data interpreted correctly
+
+ Front wheel alignment was measured correctly
+
+ Apprentice assessment record completed accurately and clearly to allow others to interpret
+
+ Vehicle and work area presented correctly post task
+
+ Result (please tick one)
+ Pass
+ Refer
+
+ Assessor S ignature:
+
+ Assessor PIN:
+
+ ASSESSOR INSTRUCTIONS
+ Ref: GW2AC03
+ Emissions Related Fault
+ This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 2 practical assessment.
+
+ You must provide the Apprentice with the Emissions Related Fault instructions and Apprentice Assessment Record. Apprentice s must complete the task and documentation fully to enable the assessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 9 0 minutes.
+
+ Included in this document :
+ Workstation set- up requirements including tools and equipment
+ Vehicle set- up prior to assessment
+ Assessor Record and comments sheet
+
+ Materials required at the workstation:
+ Light Vehicle
+ Relevant workshop manuals and technical equipment for the vehicle
+ General hand tools
+ Emission testing equipment
+ Diagnostic scan tool with live data capability
+ Vehicle Protective Equipment (VPE)
+ Personal Protection Equipment (PPE)
+ Apprentice ’s instructions
+ Assessor Instructions and Assessor Record
+
+ Workstation set- up required:
+ Vehicle must be positioned in a suitable location in the workshop NOT raised off the ground.
+
+ Vehicle to be set with a fault that causes the vehicle emissions to fall outside of manufacturer’s specifications. This fault should be set so that the component or the signal to/ from the component is interrupted causing the component not to function. This must not be a disconnected connector or made obvious to the A pprentice .
+
+ The A pprentice must:
+ R aise the vehicle off the ground and stabilise
+ C arry out an inspection of the vehicle emissions and interpret t he results against manufacturer ’s specification
+ U se diagnostic equipment to retrieve faults codes and investigate the operation of suspected faulty components
+ U se live data to confirm the fault, this does not need to be rectified
+ R eplace parts following manufacturer’s instructions, bolts to be torqued to 50% of specified figure
+ L ower vehicle to the ground and clean work area , returning all tools and equipment
+
+ ASSESSOR RECORD
+ Ref: GW2AC03
+ E missions Related Fault
+ Apprentice Name:
+ Apprentice No.
+ Assessor Name:
+
+ Date:
+
+ Start T ime:
+
+ Completion T ime:
+
+ Note – All criteria require a Pass
+
+ Comments
+ Appropriate PPE and VPE used throughout
+
+ Logical sequence used to carry out task
+
+ Completed the task safely; considering self, others and environment
+
+ Care was taken not to cause damage to vehicle
+
+ Emissions measured and results interpreted correctly
+
+ Used the correct industry recognised methods to assess condition against manufacturer’s specification
+
+ Technical data / manufacturer’s data interpreted correctly
+
+ Live data used to verify the fault
+
+ Fault communicated correctly to assessor with recommendations for repair
+
+ Apprentice assessment record completed accurately and clearly to allow others to interpret
+
+ Vehicle and work area presented correctly post task
+
+ Result (please tick one)
+ Pass
+ Refer
+
+ Assessor S ignature:
+
+ Assessor PIN:

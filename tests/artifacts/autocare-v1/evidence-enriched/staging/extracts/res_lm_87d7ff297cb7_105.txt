@@ -1,0 +1,77 @@
+Lesson Plan 5
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Exhausts and Emission Control systems
+ 0 0 Exhausts and Emission Control systems
+
+ Lesson Aims
+
+ Lesson Aims
+ 0 35716 Learn the procedure for emissions testing and how to ensure accurate results are achieved.
+ Compare emission test methods used for different vehicles includi ng petrol and diesel engines.
+ Develop practical skills in workshop required for safe inspection and testing of emissions .
+ 0 0 Learn the procedure for emissions testing and how to ensure accurate results are achieved.
+ Compare emission test methods used for different vehicles includi ng petrol and diesel engines.
+ Develop practical skills in workshop required for safe inspection and testing of emissions .
+
+ Lesson Objectives
+ -8626 56527 Be able to locate and identify emissions test data for vehicle/rig using a service manual/tech data .
+ Be able to carry out and emissions test safely in the workshop.
+ Be able to identify 1 cause of high HC emissions and High CO readings.
+ 0 0 Be able to locate and identify emissions test data for vehicle/rig using a service manual/tech data .
+ Be able to carry out and emissions test safely in the workshop.
+ Be able to identify 1 cause of high HC emissions and High CO readings.
+
+ Engagement
+ -10795 57989 Using a blend of power point, you tube videos and practical demonstrations and exercises in the workshop.
+ 0 0 Using a blend of power point, you tube videos and practical demonstrations and exercises in the workshop.
+
+ Stick ability
+ -8255 131445 Use live vehicle or rig where they can run up and test emissions in the workshop.
+ Videos on youtube . Practical tasks carried out in the workshop and safe use of tools/equipment .
+ 0 0 Use live vehicle or rig where they can run up and test emissions in the workshop.
+ Videos on youtube . Practical tasks carried out in the workshop and safe use of tools/equipment .
+
+ Assessment for learning (AFL)
+ -10795 95250 Initial assessment via Q&A in morning, Summative after session 2 via Q&A, Observation of practical tasks, verbal Q&A at end of day vs outcomes.
+ 0 0 Initial assessment via Q&A in morning, Summative after session 2 via Q&A, Observation of practical tasks, verbal Q&A at end of day vs outcomes.
+
+ Key words
+ 0 48260 Catalyst, Particulates, Carbon monoxide/dioxide, Hydrocarbons , Emissions
+ 0 0 Catalyst, Particulates, Carbon monoxide/dioxide, Hydrocarbons , Emissions
+
+ Differentiation
+ -6350 63500 Use a wide variety of delivery methods, encourage equality and divers ity and incorporate tasks of varied difficulty.
+ 0 0 Use a wide variety of delivery methods, encourage equality and divers ity and incorporate tasks of varied difficulty.
+
+ Session 1
+ -25400 121920 Review Logbooks, OTJ Logs and evidence. F skills as required. Review action plans and carry out initial assessment via Q&A on todays topic. Recap E missions data and systems from last week .
+ 0 0 Review Logbooks, OTJ Logs and evidence. F skills as required. Review action plans and carry out initial assessment via Q&A on todays topic. Recap E missions data and systems from last week .
+
+ -19685 179070 Continue looking at Euro standards and what that means. Mot regs and Implications if faulty. Look at types of test equipment available and vehicle tech data plates. Procedures for a test including health and safety.
+
+ 0 0 Continue looking at Euro standards and what that means. Mot regs and Implications if faulty. Look at types of test equipment available and vehicle tech data plates. Procedures for a test including health and safety.
+
+ Session 2
+
+ -19685 193040 Continue above. Look at why vehicles can fail emissions tests. Look at live data on a vehicle and embed F skills Maths using data/manuals and readings . Review of procedure and equipment. Discuss practical task for next session.
+ 0 0 Continue above. Look at why vehicles can fail emissions tests. Look at live data on a vehicle and embed F skills Maths using data/manuals and readings . Review of procedure and equipment. Discuss practical task for next session.
+ Session 3
+
+ center 178435 Carry out an emissions test and discuss results. Compare to data in manual. Assess individual ability during practical and use verbal Q&A during. Review outcomes and todays session. What could we do better in the future? Look at next weeks session.
+ 0 0 Carry out an emissions test and discuss results. Compare to data in manual. Assess individual ability during practical and use verbal Q&A during. Review outcomes and todays session. What could we do better in the future? Look at next weeks session.
+ Session 4
+
+ Challenge
+ -17145 90805 Identifying key differences between SI and CI engines/systems. Verbal Q&A to check knowledge, practical skills tests. Review vs outcomes and discuss next weeks session. Terminology used.
+ 0 0 Identifying key differences between SI and CI engines/systems. Verbal Q&A to check knowledge, practical skills tests. Review vs outcomes and discuss next weeks session. Terminology used.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

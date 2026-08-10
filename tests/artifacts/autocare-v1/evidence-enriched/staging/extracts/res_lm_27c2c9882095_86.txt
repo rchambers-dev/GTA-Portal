@@ -1,0 +1,95 @@
+Lesson Plan
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Electronic steering systems
+ 0 0 Electronic steering systems
+
+ Lesson Aims
+
+ Lesson Aims
+ left 30593 To investigate the construction and operation of light vehicle electronic steering system s .
+ To investigate different vehicle electronic steering system layouts and pro/cons of each .
+ To the investigate function and operation of light vehicle electronic system components and discuss all associated health and safety with modern systems.
+
+ 0 0 To investigate the construction and operation of light vehicle electronic steering system s .
+ To investigate different vehicle electronic steering system layouts and pro/cons of each .
+ To the investigate function and operation of light vehicle electronic system components and discuss all associated health and safety with modern systems.
+
+ Lesson Objectives
+ -9028 57175 To be able to identify at least two components of the electronic steering systems
+ Name 2 sensor s used for EPS vehicle s to allow steering to operate correctly
+ Demonstrate how to use basic diagnostic equipment and describe faults two typical faults
+ Describe the operation and benefits of electronics in the steering system (state two advantages)
+
+ 0 0 To be able to identify at least two components of the electronic steering systems
+ Name 2 sensor s used for EPS vehicle s to allow steering to operate correctly
+ Demonstrate how to use basic diagnostic equipment and describe faults two typical faults
+ Describe the operation and benefits of electronics in the steering system (state two advantages)
+
+ Engagement
+ -10795 57989 PowerPoint
+ Visual components
+ Workshop vehicles for inspection and repair
+ Diagnostic equipment and electrical measuring equipment
+
+ 0 0 PowerPoint
+ Visual components
+ Workshop vehicles for inspection and repair
+ Diagnostic equipment and electrical measuring equipment
+
+ Stick ability
+ center 32385 All leaners will demonstrate the correct ways to l ocate and inspect at least two components
+ Watch YouTube video
+ Remove and refit components , and identify any risks
+
+ 0 0 All leaners will demonstrate the correct ways to l ocate and inspect at least two components
+ Watch YouTube video
+ Remove and refit components , and identify any risks
+
+ Assessment for learning (AFL)
+ center 38100 Initial assessment will be questions and answers to establish the current level of understanding amongst the group. Regular formative assessment by the means of q uestio ns and answer s (identification of components and locations) via power point and workshop practical . Access to Moodle and study programmes for long term memory retention. Summative assessment will be in the form of questions/quiz where all learners take part.
+
+ 0 0 Initial assessment will be questions and answers to establish the current level of understanding amongst the group. Regular formative assessment by the means of q uestio ns and answer s (identification of components and locations) via power point and workshop practical . Access to Moodle and study programmes for long term memory retention. Summative assessment will be in the form of questions/quiz where all learners take part.
+
+ Key words
+ 0 48260 P.A.S., Calibration, angle sensors, servotronic power steering , example; servo means to assist , current draw – amount of power required – measured in watts.
+ 0 0 P.A.S., Calibration, angle sensors, servotronic power steering , example; servo means to assist , current draw – amount of power required – measured in watts.
+
+ Differentiation
+ -4502 62111 Engagement will provide a number of different resources (classroom theory and workshop practical) to enable differentiation. Identify individual learners need from individual learning plan (ILA) Push more advanced learners with more complex tasks or questions.
+
+ 0 0 Engagement will provide a number of different resources (classroom theory and workshop practical) to enable differentiation. Identify individual learners need from individual learning plan (ILA) Push more advanced learners with more complex tasks or questions.
+
+ Session 1
+ -27135 121015 Brain warmers, Update OTJ hours log. Review and sign job cards / upload to Log book . Introduce learners to the aims and objectives for the day. Are Contact Sheets back? Carryout initial assessment using Q&A based on Hydraulic and EPS systems. Establish where knowledge is at prior to starting.
+ 0 0 Brain warmers, Update OTJ hours log. Review and sign job cards / upload to Log book . Introduce learners to the aims and objectives for the day. Are Contact Sheets back? Carryout initial assessment using Q&A based on Hydraulic and EPS systems. Establish where knowledge is at prior to starting.
+
+ Session 2
+ -27135 124963 Recap of basic Hydraulic and Electro-hydraulic steering parts, typical design differences and locations. Service requirements and checks. Speed sensitive systems. Move into EPS. I dentify the difference and purpose of electronic steering systems. Torque and angle sensors and motor/belt/gear type actuator setups. Look at design differences. Discuss and state two advantages of EPS over older hydro systems. Suggest using some YouTube videos here.
+
+ 0 0 Recap of basic Hydraulic and Electro-hydraulic steering parts, typical design differences and locations. Service requirements and checks. Speed sensitive systems. Move into EPS. I dentify the difference and purpose of electronic steering systems. Torque and angle sensors and motor/belt/gear type actuator setups. Look at design differences. Discuss and state two advantages of EPS over older hydro systems. Suggest using some YouTube videos here.
+
+ Session 3
+ -9028 71900 Continue above. Identify why may need to calibrate angle sensors. Look at different voltage checks and function tests on the Toyota EPS rig. Bear in mind only Lv 2. Can be good to use multi-meter and scope here. If possible, could do a steering angle reset but use youtube to watch examples. Explain importance and liability at work when doing alignment. ADAS could fail? AWD turns off etc as lots of systems are now linked in. Self drive and parking vehicles ?
+
+ 0 0 Continue above. Identify why may need to calibrate angle sensors. Look at different voltage checks and function tests on the Toyota EPS rig. Bear in mind only Lv 2. Can be good to use multi-meter and scope here. If possible, could do a steering angle reset but use youtube to watch examples. Explain importance and liability at work when doing alignment. ADAS could fail? AWD turns off etc as lots of systems are now linked in. Self drive and parking vehicles ?
+
+ Session 4
+ -18082 82209 Finalise sessions, discuss and i dentify the main advantages of electronic steering systems and state one of your conclusions , example, no need for fluids, pipes, or pumps. The ability for adaptation to carryout other functions (workshop equipment) . If been on rig, tidy up. Check if outcomes are met and if more confident than in morning? Discuss next weeks session.
+
+ 0 0 Finalise sessions, discuss and i dentify the main advantages of electronic steering systems and state one of your conclusions , example, no need for fluids, pipes, or pumps. The ability for adaptation to carryout other functions (workshop equipment) . If been on rig, tidy up. Check if outcomes are met and if more confident than in morning? Discuss next weeks session.
+
+ Challenge
+ -18082 93156 For more advanced learners- learners are expected to identify self-parking vehicles , identifying familiar and common faults & symptoms . Calibrate a sensor, use test equipment on rig. Use E logbook to self study .
+
+ 0 0 For more advanced learners- learners are expected to identify self-parking vehicles , identifying familiar and common faults & symptoms . Calibrate a sensor, use test equipment on rig. Use E logbook to self study .
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

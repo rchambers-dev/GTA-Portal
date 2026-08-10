@@ -1,0 +1,86 @@
+TASK 3: ELECTRICAL DIAGNOSTIC TESTING
+AND EVIDENCE RECORDING
+Autocare Technician Level 2 | Block 6 | v2.0
+TIME
+60 minutes
+EVIDENCE
+Practical | Knowledge | Documentation
+PROGRAMME POINT
+Weeks 51-60
+Your task
+A vehicle has an electrical concern requiring structured testing. You must carry out safe electrical checks, record
+values and explain whether the evidence confirms the fault or requires further diagnosis.
+What you must do
+1 Confirm the reported electrical concern with the assessor/workplace mentor.
+2 Prepare the vehicle/rig and select safe test points.
+3 Carry out the electrical tests instructed by the assessor/workplace mentor.
+4 Record results and compare with expected values.
+5 Explain whether the evidence confirms the fault and reinstate the workstation.
+What good evidence looks like
+SAFE SETUP
+Suitable PPE, a prepared work area and controlled vehicle or
+equipment.
+CORRECT METHOD
+A logical sequence using the relevant procedure and technical
+information.
+ACCURATE EVIDENCE
+Actual readings, findings and actions recorded clearly and
+precisely.
+SOUND DECISIONS
+Appropriate recommendations, referral or authorisation
+supported by evidence.
+You will need
+• Light vehicle or electrical training rig
+• Multimeter and test leads
+• Manufacturer wiring or technical information
+• Battery support/PPE as required
+• Apprentice Assessment Record
+SOW ALIGNMENT
+Block 6 - Systems Integration and Advanced Diagnostics
+Duties: 1-10 KSB evidence focus: K12-K19, S8-S15, B1, B2
+Task reference: Block_6_Task_3_Electrical_Diagnostic_Check
+Block_6_Task_3_Electrical_Diagnostic_Check | v2.0 Page 1 of 3
+TASK 3: ELECTRICAL DIAGNOSTIC TESTING AND EVIDENCE RECORDING
+Practical record
+Apprentice, location and vehicle details
+Apprentice name Date
+TASK COMPLETED AT APPRENTICE'S WORKPLACE TRAINING CENTRE
+Vehicle make Model
+Registration Mileage
+Engine size / type VIN / chassis number
+Measurements and technical checks
+Battery voltage Test point voltage
+Voltage drop Continuity result
+Resistance reading Fuse/relay checked
+Relevant DTCs Confirmed fault/evidence
+Special tools, equipment or calibration requirements
+Task evidence
+PPE and precautions used Safety-critical findings and immediate action
+Work completed, findings and recommendations
+Knowledge check
+1. Why should testing follow a logical sequence? 2. What safety precautions apply when using a
+multimeter?
+Block_6_Task_3_Electrical_Diagnostic_Check | v2.0 Page 2 of 3
+TASK 3: ELECTRICAL DIAGNOSTIC TESTING AND EVIDENCE RECORDING
+Knowledge check and assessment decision
+Knowledge check - continued
+3. (a) What can excessive voltage drop indicate? (b) Why is it important to record actual values rather than
+just pass/fail?
+4. How would you avoid damaging an electrical circuit?
+5. (a) When should a wiring diagram or technical data be used? (b) What further action is needed if the test
+does not confirm the fault?
+Assessor/Workplace Mentor observation
+Use a structured electrical testing process. Carry out voltage, continuity or resistance checks safely.
+Record test results and compare with expected values. Explain findings using evidence rather than assumption.
+Complete diagnostic documentation accurately.
+Assessor/Workplace Mentor observation notes
+Decision and feedback
+Decision - select one
+PASS REFER
+Evidence reference
+Feedback and action required
+Sign-off
+Signatures confirm that this is the apprentice's own work and that the evidence and decision are accurate.
+Apprentice name Assessor/Workplace Mentor name PIN (if applicable)
+Apprentice signature Assessor/Workplace Mentor signature Date
+Block_6_Task_3_Electrical_Diagnostic_Check | v2.0 Page 3 of 3

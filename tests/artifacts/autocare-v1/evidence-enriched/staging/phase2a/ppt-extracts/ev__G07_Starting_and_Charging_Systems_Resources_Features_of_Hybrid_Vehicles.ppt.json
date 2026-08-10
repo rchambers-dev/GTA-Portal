@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "ev",
+    "priority":  1,
+    "whySelected":  "Hybrid awareness — G7 variant compare",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt",
+    "relativePath":  "G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt",
+    "sourceFilename":  "Features of Hybrid Vehicles.ppt",
+    "exists":  true,
+    "contentHashSha256":  "eb016735391c91cb0db90eef2fa47e969af3f701381503d9056a65408f4650b6",
+    "byteLength":  10166272,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  16,
+    "extractedCharCount":  7012,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G07_Starting_and_Charging_Systems_Resources_Features_of_Hybrid_Vehicles.ppt.txt",
+    "extractedAt":  "2026-08-10T13:32:46.2974461+01:00"
+}

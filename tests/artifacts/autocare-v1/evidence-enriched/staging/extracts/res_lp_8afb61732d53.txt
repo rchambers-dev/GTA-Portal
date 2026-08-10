@@ -1,0 +1,116 @@
+Foundation Skills FS08 - Week 8 Lesson Plan
+ Trainer
+
+ Cohort / date
+
+ Programme / pathway
+ Shared Motor Vehicle Foundation Skills | all mapped routes
+ Session / week
+ FS08 | Foundation Skills Week 8
+ SOW reference
+ Motor Vehicle Foundation Skills SOW v1.2 | FS08 | Week 8
+ Planned hours
+ 4.50 eligible OTJ | 1.50 non-eligible | 1.00 breaks
+ Topic
+ Tools and Safety Consolidation, Basic Circuits and Relay Awareness
+ Occupational relevance: This session consolidates health and safety and tool knowledge, then develops basic series/parallel circuit and relay awareness. The learning supports electrical understanding in service pathways and safe recognition of electrical controls, interlocks and components in bodyshop and refinishing environments.
+ Lesson aims
+ • Consolidate health, safety, tools and equipment knowledge.
+ • Understand the difference between simple series and parallel circuits.
+ • Build and test a low-voltage circuit safely, including relay awareness.
+ By the end, apprentices should be able to
+ • Explain series and parallel circuit characteristics.
+ • Draw and build a simple low-voltage circuit from a diagram.
+ • Identify basic relay purpose and terminal information.
+ • Use a multimeter to complete and record a safe circuit check.
+ How learning will be checked
+ • Start: Retrieval questions and short H&S/tools recap before formal tests.
+ • During: Circuit-diagram questioning, observed build and troubleshooting.
+ • End: Working circuit, measurement record and corrected written explanation.
+ Simple impact measure
+ • Compare the starting-point response with the completed end task.
+ • Record: Not yet secure / Developing / Secure.
+ • Set one follow-up action only where further support or stretch is needed.
+ Standard day: 09:00-16:00 | 4 hours 30 minutes eligible OTJ | 1 hour 30 minutes non-eligible activity | 1 hour of breaks
+ Time / status
+ Tutor and apprentice activity
+ Checks and support
+ Resources / evidence
+ 09:00-09:30
+ Non-eligible
+ MME, OTJ record support and essential programme administration.
+ Record separately from OTJ.
+ MME/OTJ records.
+ 09:30-10:00
+ 0.50 OTJ
+ Occupational recap of health and safety, tools/equipment condition, multimeter use and battery safety.
+ Rapid questioning and correction.
+ Recap cards; tools/equipment examples.
+ 10:00-10:30
+ Non-eligible
+ Formal H&S or tools phase test where scheduled.
+ Formal testing is excluded from OTJ.
+ Phase test and record.
+ 10:30-10:45
+ Break
+ Scheduled morning break.
+ Excluded from OTJ.
+ -
+ 10:45-12:15
+ 1.50 OTJ
+ Teach current path, series/parallel concepts, circuit symbols, basic components and relay purpose. Link examples to lighting/vehicle circuits, 12/24V systems, workshop equipment and booth interlocks.
+ Learners draw circuits on whiteboard before completing sheets.
+ Foundation Session 8 materials; diagrams; components; relay; pathway examples.
+ 12:15-12:45
+ Lunch
+ Scheduled lunch.
+ Excluded from OTJ.
+ -
+ 12:45-14:15
+ 1.50 OTJ
+ Build simple low-voltage series/parallel circuits in pairs. Test voltage/resistance as appropriate and record results.
+ Observe safe build, teamwork and measurement. Support with component map.
+ Circuit boards; low-voltage supply; components; multimeters; circuit sheets.
+ 14:15-14:30
+ Break
+ Scheduled afternoon break.
+ Excluded from OTJ.
+ -
+ 14:30-15:30
+ 1.00 OTJ
+ Introduce relay circuit, build or simulate it, troubleshoot one planned fault and complete a technical write-up.
+ Question relay function and safe fault-finding sequence.
+ Relay board; diagram; fault cards; result sheet.
+ 15:30-16:00
+ Non-eligible
+ Second formal phase test, marking/recording or assessment administration where required.
+ Formal testing and administration are excluded from OTJ.
+ Phase test/assessment records.
+ Workplace follow-up
+ • Find one relay, circuit protection device or electrical control relevant to the workplace.
+ • Explain its purpose and the safe boundary for apprentice involvement.
+ Trainer preparation
+ • Check circuit boards, low-voltage supplies, relays and multimeters.
+ • Prepare phase tests separately from learning records.
+ • Select pathway examples for the cohort.
+ Post-lesson impact: What can apprentices now identify, explain or complete that they could not do at the start?
+
+ Follow-up: Who needs additional support or stretch, what is the next action and when will it be reviewed?
+
+ Abbreviations and terms used
+ Abbreviation
+ Meaning
+ Abbreviation
+ Meaning
+ AFL
+ Assessment for Learning - checks used to inform teaching and next steps.
+ OTJ / OTJT
+ Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties.
+ MME
+ Mood, Motivation and Energy - the 0-10 morning check.
+ PPE
+ Personal Protective Equipment.
+ KSB
+ Knowledge, Skills and Behaviours.
+ SOW
+ Scheme of Work - the document that sequences programme delivery.

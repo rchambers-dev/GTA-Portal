@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "ev",
+    "priority":  1,
+    "whySelected":  "HV safe working — G2 placement",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt",
+    "relativePath":  "G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt",
+    "sourceFilename":  "Safety in High Voltage Vehicles.ppt",
+    "exists":  true,
+    "contentHashSha256":  "288abfbed6323d2838680cf54e0e6e9db0e30e423a6f3986de58d2b848f57ab5",
+    "byteLength":  4510208,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  18,
+    "extractedCharCount":  6419,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G02_Electric_Hybrid_Awareness_Resources_Safety_in_High_Voltage_Vehicles.ppt.txt",
+    "extractedAt":  "2026-08-10T13:32:17.6065761+01:00"
+}

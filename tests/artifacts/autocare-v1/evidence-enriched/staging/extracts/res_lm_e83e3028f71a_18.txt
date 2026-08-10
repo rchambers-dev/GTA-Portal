@@ -1,0 +1,91 @@
+Lesson Plan 7
+ Braking Sy s tems – Anti-Lock Braking Systems
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Introduction to light vehicle braking systems – Anti Lock Braking Systems
+ 0 0 Introduction to light vehicle braking systems – Anti Lock Braking Systems
+
+ Lesson Aims
+
+ Lesson Aims
+ -635 41911 To discuss ABS systems , components and system operation .
+ Identify ABS system components
+ Checking of ABS system and sensors.
+ 0 0 To discuss ABS systems , components and system operation .
+ Identify ABS system components
+ Checking of ABS system and sensors.
+
+ Lesson Objectives
+ center 28575 For learners to identify and describe the operation of at least 3 ABS system components .
+ For learners to check the operation of the ABS warning lamp on a live vehicle .
+ For learners to check the function of an ABS sensor by checking with electrical measuring equipment.
+ 0 0 For learners to identify and describe the operation of at least 3 ABS system components .
+ For learners to check the operation of the ABS warning lamp on a live vehicle .
+ For learners to check the function of an ABS sensor by checking with electrical measuring equipment.
+
+ Engagement
+ -10160 60326 Power point, white board, individual and group discussion, cars and demonstration rigs in the workshop , measuring tools, s ources of manufacturer data.
+ 0 0 Power point, white board, individual and group discussion, cars and demonstration rigs in the workshop , measuring tools, s ources of manufacturer data.
+
+ Stick ability
+ -36830 36195 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ 0 0 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ Assessment for learning (AFL)
+ -10795 95250 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ 0 0 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ Key words
+ 0 48260 Friction, Skidding, Pressure, Air Gaps
+ 0 0 Friction, Skidding, Pressure, Air Gaps
+
+ Differentiation
+ -10160 60325 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ 0 0 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ Session 1
+ -29210 124459 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ 0 0 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ Session 2
+ -29210 120650 Class theory session to discuss ABS braking systems including system components and their operation.
+ Overview and discussion of equipment needed for ABS sensor tests and methods of testing sensors.
+
+ 0 0 Class theory session to discuss ABS braking systems including system components and their operation.
+ Overview and discussion of equipment needed for ABS sensor tests and methods of testing sensors.
+
+ Session 3
+ -19685 109220 Workshop practical tasks using live cars and demonstration rigs
+ Identification of ABS system components.
+ Checking of ABS warning lamp for correct operation and ABS sensor operation including measurement of output using simple test equipment ( multimeters )
+ 0 0 Workshop practical tasks using live cars and demonstration rigs
+ Identification of ABS system components.
+ Checking of ABS warning lamp for correct operation and ABS sensor operation including measurement of output using simple test equipment ( multimeters )
+
+ Session 4
+ -17145 83185 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+ 0 0 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+
+ Challenge
+ -19685 88900 Learners to be encouraged to use independent and shared ideas removal and refitting methods.
+ Learners to work in dependently to demonstrate measuring techniques.
+ 0 0 Learners to be encouraged to use independent and shared ideas removal and refitting methods.
+ Learners to work in dependently to demonstrate measuring techniques.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

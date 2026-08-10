@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "brakes",
+    "priority":  1,
+    "whySelected":  "Basic brake component teaching",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Brake Drums PP.ppt",
+    "relativePath":  "G04 Basic Braking\\Resources\\Brake Drums PP.ppt",
+    "sourceFilename":  "Brake Drums PP.ppt",
+    "exists":  true,
+    "contentHashSha256":  "1c26257cccb17fefa8de28aa113e85cba9b6a4b5511cbf06e330d711fa0556aa",
+    "byteLength":  5785088,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  16,
+    "extractedCharCount":  4844,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G04_Basic_Braking_Resources_Brake_Drums_PP.ppt.txt",
+    "extractedAt":  "2026-08-10T13:31:42.0343406+01:00"
+}

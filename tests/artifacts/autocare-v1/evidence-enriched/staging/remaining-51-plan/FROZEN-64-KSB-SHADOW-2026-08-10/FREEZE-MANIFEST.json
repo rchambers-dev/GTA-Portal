@@ -1,0 +1,95 @@
+{
+  "frozenAt": "2026-08-10",
+  "status": "FROZEN_SHADOW_CANDIDATE_FOR_HUMAN_RATIFICATION",
+  "mutatesProgrammeTruth": false,
+  "note": "Copies only. Originals left in place and not overwritten by this pack.",
+  "artifacts": [
+    {
+      "label": "complete-report",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\COMPLETE-64-KSB-SHADOW-ASSURANCE-REPORT.md",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\COMPLETE-64-KSB-SHADOW-ASSURANCE-REPORT.md"
+    },
+    {
+      "label": "complete-summary",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\COMPLETE-64-KSB-SHADOW-SUMMARY.json",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\COMPLETE-64-KSB-SHADOW-SUMMARY.json"
+    },
+    {
+      "label": "batch-r51-1/shadow-batch-r51-1.json",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-1\\shadow-batch-r51-1.json",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-1\\shadow-batch-r51-1.json"
+    },
+    {
+      "label": "batch-r51-2/shadow-batch-r51-2.json",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-2\\shadow-batch-r51-2.json",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-2\\shadow-batch-r51-2.json"
+    },
+    {
+      "label": "batch-r51-3/shadow-batch-r51-3.json",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-3\\shadow-batch-r51-3.json",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-3\\shadow-batch-r51-3.json"
+    },
+    {
+      "label": "batch-r51-4/shadow-batch-r51-4.json",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-4\\shadow-batch-r51-4.json",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-4\\shadow-batch-r51-4.json"
+    },
+    {
+      "label": "batch-r51-5/shadow-batch-r51-5.json",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-5\\shadow-batch-r51-5.json",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-5\\shadow-batch-r51-5.json"
+    },
+    {
+      "label": "batch-r51-1/RATIFICATION.md",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-1\\RATIFICATION.md",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-1\\RATIFICATION.md"
+    },
+    {
+      "label": "batch-r51-2/RATIFICATION.md",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-2\\RATIFICATION.md",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-2\\RATIFICATION.md"
+    },
+    {
+      "label": "batch-r51-3/RATIFICATION.md",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-3\\RATIFICATION.md",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-3\\RATIFICATION.md"
+    },
+    {
+      "label": "batch-r51-4/RATIFICATION.md",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-4\\RATIFICATION.md",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-4\\RATIFICATION.md"
+    },
+    {
+      "label": "batch-r51-5/RATIFICATION.md",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\batch-r51-5\\RATIFICATION.md",
+      "to": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\remaining-51-plan\\FROZEN-64-KSB-SHADOW-2026-08-10\\batch-r51-5\\RATIFICATION.md"
+    },
+    {
+      "label": "pilot/shadow-golden-b-pilot-6ksb.json",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\shadow-golden-b-pilot-6ksb.json"
+    },
+    {
+      "label": "tranche2/shadow-tranche-2.json",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\tranche2\\shadow-tranche-2.json"
+    },
+    {
+      "label": "tranche2/golden-a-vs-tranche-2.md",
+      "status": "COPIED",
+      "from": "tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\tranche2\\golden-a-vs-tranche-2.md"
+    }
+  ]
+}

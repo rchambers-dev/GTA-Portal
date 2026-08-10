@@ -1,0 +1,324 @@
+In this presentation you will: 
+ Batteries 
+ explore battery operating principles 
+ Next > 
+ identify battery construction 
+ = electrons 
+ Load 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Introduction 
+ The electrical systems on a vehicle require electrical power so that they can function. 
+ When an engine is stationary, electrical power is provided by a battery. 
+ When an engine is running, electrical power is provided by an alternator. 
+ Next > 
+ The starter motor turns to start an engine. This requires the largest amount of power, so good battery maintenance is essential. 
+ A Lead Acid Battery 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+A lead acid battery cell is a container where chemical energy is converted to electrical energy and vice versa. 
+ Positive and negative plates containing the active materials are immersed in the liquid, known as an electrolyte. 
+ Lead Acid Battery Cell 
+ Next > 
+ The plates are kept apart by a separator. 
+ Cell 
+ Electrolyte 
+ Wire 
+ Positive plate 
+ Separator 
+ Negative plate 
+ Wire 
+ Within the cell are active materials and a chemical liquid. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Battery Cell Chemistry 
+ Next > 
+ In a lead acid battery cell, the electrolyte is a mixture of sulfuric acid (H 2 SO 4 ) and water. 
+ The positive plate contains lead peroxide (PbO 2 ). 
+ The negative plate contains porous, spongy lead (Pb). 
+ Electrolyte: sulphuric acid (H 2 SO 4 ) + water 
+ Porous lead 
+ plate (Pb) 
+ Lead peroxide 
+ plate (PbO 2 ) 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Battery Cell – Discharging 
+ Next > 
+ When a load is connected across the plates, a chemical reaction causes electricity to flow around the circuit. 
+ Sulfate ions in the electrolyte combine with both plates to form lead sulfate, releasing electrons from the negative plate terminal. 
+ Oxygen from the positive plate combines with hydrogen in the electrolyte, forming water. 
+ = electrons 
+ Load 
+ As the current flows, the electrolyte and current become weaker until the battery is fully discharged. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Battery Cell – Charging 
+ Next > 
+ Sulfate ions leave both plates and combine with the hydrogen in the water to re-form sulfuric acid. 
+ Oxygen, released by the water in the electrolyte, combines with the lead in the positive plate to re-form lead peroxide. 
+ When a DC voltage higher than the battery voltage is connected across the plates, current flows into it. 
+ = electrons 
+ The negative plate turns back to a spongy lead. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Question 1 
+ When is the most electrical power required from a vehicle’s battery? 
+ A) When the headlamps are turned on 
+ B) When the engine is started 
+ C) When the horn is used 
+ D) When the vehicle is stationary 
+ Next > 
+ style.visibility
+
+Question 1 
+ When is the most electrical power required from a vehicle’s battery? 
+ A) When the headlamps are turned on 
+ B) When the engine is started 
+ C) When the horn is used 
+ D) When the vehicle is stationary 
+ Next > 
+ style.visibility ppt_w ppt_h style.rotation style.visibility
+
+Question 2 
+ What does the positive plate of a car battery cell contain? 
+ A) Lead 
+ B) Lead sulfate 
+ C) Lead peroxide 
+ D) Lead nitrate 
+ Next > 
+ style.visibility
+
+Question 2 
+ What does the positive plate of a car battery cell contain? 
+ A) Lead 
+ B) Lead sulfate 
+ C) Lead peroxide 
+ D) Lead nitrate 
+ Next > 
+ style.visibility ppt_w ppt_h style.rotation style.visibility
+
+The plates are made with a grid connecting structure. They conduct electricity between the active material and the lead straps. 
+ To provide the required cell voltage, positive and negative plates are placed alternately and joined by lead straps to form groups. 
+ Battery Cell Construction 
+ Next > 
+ Separators stop the plates from touching and causing short circuits. 
+ 
+ 
+ 
+ 
+ Straps/connectors 
+ Separators 
+ Grid 
+ Positive plates 
+ 
+ 
+ Negative plates 
+ 
+ 
+ Typically, 7, 9, 11 or 13 plates make up a cell. 
+ The separators are porous, so the electrolyte can flow. 
+ Battery Cell 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Battery Cells 
+ Next > 
+ The cells are connected together in series by lead connectors, or straps. 
+ Each cell produces about 2 V, so a 12 V battery has six cells. 
+ The straps at the end cells are constructed as part of the battery terminals. 
+ A cell divider separates each cell and the complete assembly is housed in a strong plastic case. 
+ Battery terminals 
+ Lead connector 
+ Cell 
+ Case 
+ Cell divider 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Engine and alternator not running 
+ Engine and alternator running 
+ + 
+ - 
+ Battery Charging 
+ Next > 
+ When the engine and alternator are not running battery power is used to power the load. 
+ When the engine is running, the alternator supplies electrical power to the load and charges the battery. 
+ Load 
+ 12-13 V 
+ Battery 
+ Alternator pulley 
+ 
+ 
+ Alternator 
+ The terminal voltage of the battery is typically 12-13 V (trucks 24-25v) but this will drop as the battery discharges. 
+ 13-15 V 
+ The output of the car alternator is 13-15 V, but on its trucks 27-28v. 
+ ALT 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Question 3 
+ What is the main energy change that occurs when a battery is discharging? 
+ Next > 
+ A) Electrical energy changes to chemical energy 
+ B) Potential energy changes to kinetic energy 
+ C) Chemical energy changes to electrical energy 
+ D) Chemical energy changes to heat and light energy 
+ style.visibility
+
+Question 3 
+ Next > 
+ What is the main energy change that occurs when a battery is discharging? 
+ A) Electrical energy changes to chemical energy 
+ B) Potential energy changes to kinetic energy 
+ C) Chemical energy changes to electrical energy 
+ D) Chemical energy changes to heat and light energy 
+ style.visibility ppt_w ppt_h style.rotation style.visibility
+
+Battery Capacity Ratings 
+ Next > 
+ The amp hour rating shows how much current the battery can produce for an industry standard of 20 hours at 27 °C, with the battery voltage above 10.5 V. 
+ This is an example of a label showing typical rating values used to indicate battery power. 
+ {21E4AEA4-8DFA-4A89-87EB-49C32662AFE0} HEAVY 
+ DUTY 
+ DIN 
+ EQUIV 
+ AMP 
+ HOUR 
+ CCA 
+ SAE 
+ OTHER 
+ EQUIV 
+ IEC 
+ RESERVE 
+ CAPACITY 
+ CCA 
+ DIN 
+ .44 AH 
+ 085 
+ 62 MINS 
+ 54317 
+ 370 
+ 245 
+ 210 
+ AMPS 
+ AMPS 
+ AMPS 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Battery Capacity Ratings 
+ Next > 
+ The cold cranking amps (CCA) rating shows how much current is provided by the battery for an industry standard of 30 seconds at -18 °C while the battery voltage remains above 7.2 V. 
+ The reserve capacity is the amount of time the battery can supply an industry standard of 25 A at 27 °C before the individual cell voltages drop below 1.7 V. 
+ {21E4AEA4-8DFA-4A89-87EB-49C32662AFE0} HEAVY 
+ DUTY 
+ DIN 
+ EQUIV 
+ AMP 
+ HOUR 
+ CCA 
+ SAE 
+ OTHER 
+ EQUIV 
+ IEC 
+ RESERVE 
+ CAPACITY 
+ CCA 
+ DIN 
+ 085 
+ 62 MINS 
+ 54317 
+ 370 
+ 245 
+ 210 
+ AMPS 
+ AMPS 
+ AMPS 
+ .44 AH 
+ 
+ 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+The Battery Case 
+ Most often the case is made of polypropylene (plastic) or a hard rubber compound. 
+ Next > 
+ It is light, strong, and molded with thin walls and cell dividers. The number of cell dividers determine how many cells the battery has. 
+ Ribs are molded into the bottom of each cell cavity to collect sediment that sheds from the plates as they gradually deteriorate. 
+ 
+ Ribs 
+ 
+ Cell dividers 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+The Battery Case 
+ A molded cover is sealed to the top of the case. 
+ Next > 
+ Openings are provided above each cell in low-maintenance batteries. They are fitted with screw-in plugs or snap-in caps. 
+ They allow the level of the electrolyte to be topped-up. 
+ 
+ Molded cover 
+ 
+ Screw-in plugs in openings 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Battery Terminals 
+ Next > 
+ A battery has a positive and a negative terminal for cable connections. 
+ The most common types of terminals are post terminals, side terminals, and lug, or ‘L’ terminals. 
+ Post terminal 
+ Side terminal 
+ The positive terminal is usually bigger than the negative terminal. 
+ Lug, or L terminal 
+ Positive terminal 
+ Negative terminal 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Battery Cables 
+ Next > 
+ Battery cables carry large currents and are very thick. 
+ Cable end 
+ A cable is connected to a battery terminal using a cable end. 
+ They should be kept as short as possible to ease routing. 
+ Cable 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Maintenance Free Batteries 
+ Maintenance free batteries are sealed for life. They do not require topping up with electrolyte. 
+ Next > 
+ The colour of the built-in, relative density indicator indicates the state of the battery’s charge. 
+ At the top of the battery, a reservoir collects the evaporated water that is created by the chemical reaction. 
+ 
+ 
+ State of Battery 
+ Indicator Colour 
+ 
+ 
+ 
+ Fully charged 
+ Requires charging 
+ Electrolyte is too low, replace battery 
+ The water is returned to the main reservoir as the battery cools. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Nickel Metal Hydride Batteries 
+ Next > 
+ The nickel metal hydride (NiMH) rechargeable battery has generally replaced the nickel-cadmium (NiCd) battery. 
+ It suffers less from the ‘memory effect’ problem than NiCd batteries. 
+ NiMH batteries have a lower internal resistance than non-rechargeable batteries, making them ideal for high current applications. 
+ They are relatively cheap to produce and easy to recharge but lose 20 % of charge a month. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Lithium-ion Batteries 
+ During charging, the temperature of early lithium-ion batteries could rise high enough to release dangerous gases. 
+ Next > 
+ For this reason, the lithium used in modern batteries is combined with other elements, such as cobalt. 
+ A typical lithium-ion battery cell is rated at 3.6 V, which is three times more than a NiMH cell (1.2 V). 
+ style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Summary 
+ In this presentation you have seen: 
+ how batteries operate 
+ how batteries are constructed 
+ End 
+ style.visibility style.visibility style.visibility style.visibility

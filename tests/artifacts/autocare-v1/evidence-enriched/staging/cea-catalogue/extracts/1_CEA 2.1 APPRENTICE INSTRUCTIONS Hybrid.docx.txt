@@ -1,0 +1,68 @@
+APPRENTICE INSTRUCTIONS
+ Ref: 2.1
+ Locating electric/hybrid vehicle components (30mins)
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment .
+ To demonstrate your knowledge and ability to isolate a HV system.
+ To demonstrate your knowledge and ability to locate and explain the operation of HV components .
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition .
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment .
+
+ Materials you need at the workstation:
+ Hybrid/Electric Light vehicle
+ VPE for task
+ PPE for task
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task .
+ Apprentice Assessment Record sheet
+ Scenario:
+ You are required to carry out the isolation of the HV system of the vehicle.
+ You need to locate and explain the operation of components on the vehicle.
+ You are required to re-insta te the HV system of the vehicle.
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctly prepared before starting work .
+ Carry out an isolation of the HV system correctly .
+ Locate and explain the operation of any component your assessor requires.
+ Re-instate the HV system.
+ Test for correct operation
+ Reinstate the vehicle and workstation to a pre -assessment condition .
+
+ A PPRENTICE A SSESSMENT RECORD
+ Ref: 2.1
+ Locating electric/hybrid vehicle components
+ Vehicle Model:
+ Vehicle Make:
+ Vehicle Reg:
+ Mileage:
+ Engine Size:
+ Chassis Number:
+ Brief description of the work carried out and any further recommendations:
+
+ PPE worn and special precautions taken
+ Fill out boxes below from tech data and delete as required :
+
+ HV Battery Voltage
+ ac/dc
+
+ Traction Motor Voltage
+ ac/dc
+
+ Auxiliary 12v Battery Voltage
+ ac/dc
+ Why must the vehicle be safely powered down prior to working on the vehicle?
+
+ Special tools including any required calibration:
+
+ Assessor to insert 2 -3 suitable questions to stretch and extend thinking (optional):
+
+ Apprentice Name:
+ Apprentice Signature:
+ Assessor Signature:
+ Assessor Pin:
+ Date:
+ Feedback:
+
+ Result:
+ Pass
+ Refer

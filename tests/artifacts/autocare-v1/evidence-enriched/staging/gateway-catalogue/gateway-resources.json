@@ -1,0 +1,420 @@
+[
+  {
+    "id": "gw_ef36375dc80b",
+    "filename": "Autocare GW1 practice paper.docx",
+    "relativePath": "Autocare GW1 practice paper.docx",
+    "source": {
+      "zipOrPath": "Downloads/Autocare GW1 practice paper.docx"
+    },
+    "sha256": "ef36375dc80bd9d3158455ddd1a3ad3295b10c4ccc42578b5a4b25ae393bd2b6",
+    "bytes": 52989,
+    "fileType": ".docx",
+    "extractionStatus": "EXTRACTED",
+    "extractionReason": null,
+    "documentLabels": [
+      "knowledge_assessment",
+      "Gateway_readiness",
+      "EPA_preparation_practice",
+      "GW1"
+    ],
+    "audienceRole": "APPRENTICE_OR_SHARED_PAPER",
+    "pairKey": "gw1_knowledge_practice",
+    "gatewayStage": "GW1",
+    "explicitKsbReferences": [],
+    "inferredTopicKsbs": [
+      "S9",
+      "K10",
+      "K12",
+      "K21",
+      "K23",
+      "K6",
+      "K8"
+    ],
+    "highlights": {
+      "openingSnippet": "An apprentice sees something that they feel is a major H&S hazard, they should: | Let someone else report by phone, when they notice it. | Report this verbally to their supervisor immediately. | Leave the cleaner a note so they can sort when they come into the workshop. | Carry on working in order t",
+      "durationMention": "10 mins",
+      "sectionLabels": [],
+      "mentionsIsolation": false,
+      "mentionsTyreBalance": false,
+      "mentionsTyreRemove": true,
+      "mentionsSteer": true,
+      "mentionsEps": false,
+      "mentionsHydraulicPas": false,
+      "mentionsHv": true,
+      "mentionsPassRefer": false,
+      "mentionsMarkScheme": false,
+      "questionCountHint": 1,
+      "charCount": 10940
+    },
+    "relationshipAxes": {
+      "TEACHES": false,
+      "PRACTISES": false,
+      "ASSESSES": true,
+      "RECORDS_EVIDENCE": false,
+      "GATEWAY_READINESS": true,
+      "EPA_PREP": true
+    },
+    "chainPlacement": {
+      "officialStandard": "INFERRED_CONTEXT_ST0499",
+      "duty": "UNKNOWN",
+      "ksb": "INFERRED_TOPIC",
+      "group": "NOT_ESTABLISHED",
+      "block": "NOT_ESTABLISHED",
+      "weekSession": "NOT_ESTABLISHED",
+      "teachingMaterial": "NOT_THIS_LAYER",
+      "practice": "NOT_THIS_LAYER",
+      "ceaPracticalAssessment": "RELATED_BUT_DISTINCT_FROM_GROUP_CEA",
+      "knowledgeAssessment": "THIS_LAYER",
+      "workplaceApplication": "NOT_THIS_LAYER",
+      "gatewayReadiness": "THIS_LAYER",
+      "epa": "PREPARATION_ONLY_NOT_LIVE_EPA"
+    },
+    "textPreview": "An apprentice sees something that they feel is a major H&S hazard, they should:\n Let someone else report by phone, when they notice it.\n Report this verbally to their supervisor immediately.\n Leave the cleaner a note so they can sort when they come into the workshop.\n Carry on working in order to get the customers job done, as it’s not their problem.\n\n What electrical component is indicated by this illustration:\n Light emitting diode\n Photodiode\n Diode\n Zener diode\n\n What is the best description given for ending the working day to ensure that effective housekeeping practices are followed:\n Leave cleaning up until there is no work in as this is an economical use of time.\n Clean up the work area, making sure that all waste is correctly disposed of.\n Only clean up and spills as other waste is not as important to safety.\n Leave hand tools and equipment out on the job to save time in the morning.\n\n Please identify three components from the hydraulic braking system that can be found in the engine bay: ( just put the letters on your sheet near Q4)\n Brake disc\n Brake drum\n Park brake lever\n Wheel cylinder\n Master cylinder\n Servo\n Caliper\n Brake fluid reservoir.\n\n You have noticed that ther"
+  },
+  {
+    "id": "gw_db7111449f77",
+    "filename": "Autocare GW2 practice exam 2.docx",
+    "relativePath": "Autocare GW2 practice exam 2.docx",
+    "source": {
+      "zipOrPath": "Downloads/Autocare GW2 practice exam 2.docx"
+    },
+    "sha256": "db7111449f77686c3157f8e6c8455ae50017601e593cfe3112bf830995b25cb8",
+    "bytes": 167164,
+    "fileType": ".docx",
+    "extractionStatus": "EXTRACTED",
+    "extractionReason": null,
+    "documentLabels": [
+      "knowledge_assessment",
+      "Gateway_readiness",
+      "EPA_preparation_practice",
+      "GW2"
+    ],
+    "audienceRole": "APPRENTICE_OR_SHARED_PAPER",
+    "pairKey": "gw2_knowledge_practice",
+    "gatewayStage": "GW2",
+    "explicitKsbReferences": [],
+    "inferredTopicKsbs": [
+      "S9",
+      "K10",
+      "K12",
+      "K6",
+      "K8",
+      "S10"
+    ],
+    "highlights": {
+      "openingSnippet": "Welcome to your practice IMI GW2 under pinning knowledge assessment. | You have 70 minutes to answer 4 6 multiple choice questions. | Good Luck | 1. If the front road wheel is set to tilt inwards at the top it has a: | a) negative castor | b) positive camber | c) negative camber | d) positive castor",
+      "durationMention": "70 minutes",
+      "sectionLabels": [],
+      "mentionsIsolation": false,
+      "mentionsTyreBalance": true,
+      "mentionsTyreRemove": false,
+      "mentionsSteer": true,
+      "mentionsEps": false,
+      "mentionsHydraulicPas": true,
+      "mentionsHv": false,
+      "mentionsPassRefer": true,
+      "mentionsMarkScheme": true,
+      "questionCountHint": 51,
+      "charCount": 12115
+    },
+    "relationshipAxes": {
+      "TEACHES": false,
+      "PRACTISES": false,
+      "ASSESSES": true,
+      "RECORDS_EVIDENCE": true,
+      "GATEWAY_READINESS": true,
+      "EPA_PREP": true
+    },
+    "chainPlacement": {
+      "officialStandard": "INFERRED_CONTEXT_ST0499",
+      "duty": "UNKNOWN",
+      "ksb": "INFERRED_TOPIC",
+      "group": "NOT_ESTABLISHED",
+      "block": "NOT_ESTABLISHED",
+      "weekSession": "NOT_ESTABLISHED",
+      "teachingMaterial": "NOT_THIS_LAYER",
+      "practice": "NOT_THIS_LAYER",
+      "ceaPracticalAssessment": "RELATED_BUT_DISTINCT_FROM_GROUP_CEA",
+      "knowledgeAssessment": "THIS_LAYER",
+      "workplaceApplication": "NOT_THIS_LAYER",
+      "gatewayReadiness": "THIS_LAYER",
+      "epa": "PREPARATION_ONLY_NOT_LIVE_EPA"
+    },
+    "textPreview": "Welcome to your practice IMI GW2 under pinning knowledge assessment.\n You have 70 minutes to answer 4 6 multiple choice questions.\n Good Luck\n 1. If the front road wheel is set to tilt inwards at the top it has a:\n a) negative castor\n b) positive camber\n c) negative camber\n d) positive castor\n 2. After rectifying an engine fault you need to road test the customer's vehicle. Before you start the\n test it is essential that you:\n a) check the vehicle's tyre pressures, oil level and windscreen washer fluid\n b) complete the job card with all details concerning the vehicle repair\n c) ensure your work bay is tidy and all tools have been put away\n d) check that you hold the correct driver's license for the vehicle\n 3. During a vehicle inspection you discover that the tread on the front tyres is 'feathering'. This\n probably indicates that:\n a) the wheel alignment is incorrect\n b) the tyre pressures are incorrect\n c) the swivel pin inclination is wrong\n d) the power steering is defective\n 4. What component is located at the Arrow on the photo.\n 690880 300466 711393 137077 0 0 3263885 6187\n a) Motor\n b) Torque Sensor\n c) Rack\n d) Trackrod\n 5. The regulated voltage of an alternator is stated a"
+  },
+  {
+    "id": "gw_f0ceef633f24",
+    "filename": "Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+    "relativePath": "onedrive_zip/Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+    "source": {
+      "zipOrPath": "Downloads/OneDrive_1_10-08-2026.zip"
+    },
+    "sha256": "f0ceef633f24009bf4354f48845b8ba6f0f75e989502a507712ac1e4f4e63f3d",
+    "bytes": 127508,
+    "fileType": ".docx",
+    "extractionStatus": "EXTRACTED",
+    "extractionReason": null,
+    "documentLabels": [
+      "GW1"
+    ],
+    "audienceRole": "APPRENTICE",
+    "pairKey": "autocare-ap01-gw1-practical-support-material",
+    "gatewayStage": "GW1",
+    "explicitKsbReferences": [],
+    "inferredTopicKsbs": [
+      "S9",
+      "K12",
+      "K21",
+      "K23",
+      "S10"
+    ],
+    "highlights": {
+      "openingSnippet": "PRACTICAL SUPPORT MATERIAL AND APPRENTICE ASSESSMENT SUMMARY | Gateway 1 | Autocare Technician | Apprenticeship Standard | ST0499/AP01 | A SSESSMENT SUMMARY | Apprentice Name: | Reg No:",
+      "durationMention": null,
+      "sectionLabels": [
+        "Scenario"
+      ],
+      "mentionsIsolation": false,
+      "mentionsTyreBalance": true,
+      "mentionsTyreRemove": true,
+      "mentionsSteer": false,
+      "mentionsEps": false,
+      "mentionsHydraulicPas": false,
+      "mentionsHv": false,
+      "mentionsPassRefer": false,
+      "mentionsMarkScheme": false,
+      "questionCountHint": 0,
+      "charCount": 10745
+    },
+    "relationshipAxes": {
+      "TEACHES": false,
+      "PRACTISES": false,
+      "ASSESSES": false,
+      "RECORDS_EVIDENCE": true,
+      "GATEWAY_READINESS": false,
+      "EPA_PREP": false
+    },
+    "chainPlacement": {
+      "officialStandard": "INFERRED_CONTEXT_ST0499",
+      "duty": "UNKNOWN",
+      "ksb": "INFERRED_TOPIC",
+      "group": "NOT_ESTABLISHED",
+      "block": "NOT_ESTABLISHED",
+      "weekSession": "NOT_ESTABLISHED",
+      "teachingMaterial": "NOT_THIS_LAYER",
+      "practice": "NOT_THIS_LAYER",
+      "ceaPracticalAssessment": "RELATED_BUT_DISTINCT_FROM_GROUP_CEA",
+      "knowledgeAssessment": "NOT_THIS_LAYER",
+      "workplaceApplication": "NOT_THIS_LAYER",
+      "gatewayReadiness": "THIS_LAYER",
+      "epa": "NOT_LIVE_EPA"
+    },
+    "textPreview": "PRACTICAL SUPPORT MATERIAL AND APPRENTICE ASSESSMENT SUMMARY\n\n Gateway 1\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP01\n\n A SSESSMENT SUMMARY\n Apprentice Name:\n\n Reg No:\n\n Gateway 1\n Gateway Component Assessment\n Tick Chosen\n Date Completed\n Assessor Pin\n Assessor Signature:\n Skills tests Group A (All skills test for group A must be completed)\n Remove and Replace Wheel s and T yres\n GW1AC01\n\n Remove and Replace Battery and Charging S ystem C omponents\n GW1AC02\n\n Carry out Front Wheel A lignment\n GW1AC03\n\n Remove and Replace Discs and P ads\n GW1AC04\n\n Online Knowledge Test\n Result\n\n ST0499-AP01GW1K\n\n Declaration:\n I confirm that all learning outcomes have been met, all assessments have been completed in full and that the A pprentice has completed all requirements for Gateway 1\n\n Assessor Name:\n (Please Print)\n\n Assessor P in :\n\n Assessor Signature:\n\n Date:\n\n Internal Q Assurer Name: (Please Print)\n\n Internal Quality Assurer P in :\n\n Internal Quality Assurer Signature:\n\n Date:\n\n Table of Contents\n\n TOC \\o \"1-1\" \\h \\z \\u GW1AC01 Remove and Replace Wheels and T yres PAGEREF _Toc516732112 \\h 5\n\n GW1AC02 Remove and Replace Battery Charging and Starting System C omponents PA",
+    "pairedWith": "gw_e8cf0cff7a22"
+  },
+  {
+    "id": "gw_e8cf0cff7a22",
+    "filename": "Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx",
+    "relativePath": "onedrive_zip/Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx",
+    "source": {
+      "zipOrPath": "Downloads/OneDrive_1_10-08-2026.zip"
+    },
+    "sha256": "e8cf0cff7a22aa7832e7653460b0a095bfa6d632cd0da227419edc10825c8f86",
+    "bytes": 116228,
+    "fileType": ".docx",
+    "extractionStatus": "EXTRACTED",
+    "extractionReason": null,
+    "documentLabels": [
+      "GW1"
+    ],
+    "audienceRole": "ASSESSOR",
+    "pairKey": "autocare-ap01-gw1-practical-support-material",
+    "gatewayStage": "GW1",
+    "explicitKsbReferences": [],
+    "inferredTopicKsbs": [
+      "S9",
+      "K12",
+      "K21",
+      "S10"
+    ],
+    "highlights": {
+      "openingSnippet": "ASSESSOR PRACTICAL SUPPORT MATERIAL | Gateway 1 | Autocare Technician | Apprenticeship Standard | ST0499/AP 01 | ASSESSOR INSTRUCTIONS | Ref: GW1 AC01 | Remove and Replace Wheels and Tyres",
+      "durationMention": "90 minutes",
+      "sectionLabels": [],
+      "mentionsIsolation": false,
+      "mentionsTyreBalance": true,
+      "mentionsTyreRemove": true,
+      "mentionsSteer": false,
+      "mentionsEps": false,
+      "mentionsHydraulicPas": false,
+      "mentionsHv": false,
+      "mentionsPassRefer": true,
+      "mentionsMarkScheme": false,
+      "questionCountHint": 0,
+      "charCount": 10771
+    },
+    "relationshipAxes": {
+      "TEACHES": false,
+      "PRACTISES": false,
+      "ASSESSES": false,
+      "RECORDS_EVIDENCE": true,
+      "GATEWAY_READINESS": false,
+      "EPA_PREP": false
+    },
+    "chainPlacement": {
+      "officialStandard": "INFERRED_CONTEXT_ST0499",
+      "duty": "UNKNOWN",
+      "ksb": "INFERRED_TOPIC",
+      "group": "NOT_ESTABLISHED",
+      "block": "NOT_ESTABLISHED",
+      "weekSession": "NOT_ESTABLISHED",
+      "teachingMaterial": "NOT_THIS_LAYER",
+      "practice": "NOT_THIS_LAYER",
+      "ceaPracticalAssessment": "RELATED_BUT_DISTINCT_FROM_GROUP_CEA",
+      "knowledgeAssessment": "NOT_THIS_LAYER",
+      "workplaceApplication": "NOT_THIS_LAYER",
+      "gatewayReadiness": "THIS_LAYER",
+      "epa": "NOT_LIVE_EPA"
+    },
+    "textPreview": "ASSESSOR PRACTICAL SUPPORT MATERIAL\n\n Gateway 1\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP 01\n ASSESSOR INSTRUCTIONS\n Ref: GW1 AC01\n Remove and Replace Wheels and Tyres\n The purpose of t his document is to support the a ssessor in setting up the workstation and vehicle prior to the Apprentice ’s Gateway 1 practical assessment.\n\n You must pro vide the Apprentice with the Remove and Replace Wheels and T yres instructions and Apprentice Assess ment Record for them to complete . Apprentice s must complete the task and documentation fully to enable the a ssessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 90 minutes.\n\n Included in this document :\n • Workstation set- up requirements including tools and equipment\n • Vehicle set- up prior to assessment\n • Assessor Record and comments sheet\n\n Materials required at the workstation:\n • Light Vehicle\n • Relevant workshop manuals and technical equipment for the vehicle\n • General hand tools including torque wrench , tread depth gauge and tyre pressure gauge\n • Replacement parts as required\n • Lifting equipment suitable for the vehicle\n • Tyre removal and balancing equipment\n ",
+    "pairedWith": "gw_f0ceef633f24"
+  },
+  {
+    "id": "gw_650cf2e40c5a",
+    "filename": "Autocare-AP01-GW2-Practical-Support-Material-Apprentice.docx",
+    "relativePath": "onedrive_zip/Autocare-AP01-GW2-Practical-Support-Material-Apprentice.docx",
+    "source": {
+      "zipOrPath": "Downloads/OneDrive_1_10-08-2026.zip"
+    },
+    "sha256": "650cf2e40c5abce611bd77017a6de7510c9dc162e1a8a6e46b4b86a16045dbe5",
+    "bytes": 119744,
+    "fileType": ".docx",
+    "extractionStatus": "EXTRACTED",
+    "extractionReason": null,
+    "documentLabels": [
+      "GW2"
+    ],
+    "audienceRole": "APPRENTICE",
+    "pairKey": "autocare-ap01-gw2-practical-support-material",
+    "gatewayStage": "GW2",
+    "explicitKsbReferences": [],
+    "inferredTopicKsbs": [
+      "S9",
+      "K10",
+      "K12",
+      "K23",
+      "K6",
+      "S10"
+    ],
+    "highlights": {
+      "openingSnippet": "PRACTICAL SUPPORT MATERIAL AND APPRENTICE ASSESSMENT SUMMARY | Gateway 2 | Autocare Technician | Apprenticeship Standard | ST0499/AP01 | A SSESSMENT SUMMARY | Apprentice Name: | Reg No:",
+      "durationMention": null,
+      "sectionLabels": [
+        "Scenario"
+      ],
+      "mentionsIsolation": false,
+      "mentionsTyreBalance": false,
+      "mentionsTyreRemove": false,
+      "mentionsSteer": true,
+      "mentionsEps": false,
+      "mentionsHydraulicPas": false,
+      "mentionsHv": false,
+      "mentionsPassRefer": false,
+      "mentionsMarkScheme": false,
+      "questionCountHint": 23,
+      "charCount": 8812
+    },
+    "relationshipAxes": {
+      "TEACHES": false,
+      "PRACTISES": false,
+      "ASSESSES": false,
+      "RECORDS_EVIDENCE": true,
+      "GATEWAY_READINESS": false,
+      "EPA_PREP": false
+    },
+    "chainPlacement": {
+      "officialStandard": "INFERRED_CONTEXT_ST0499",
+      "duty": "UNKNOWN",
+      "ksb": "INFERRED_TOPIC",
+      "group": "NOT_ESTABLISHED",
+      "block": "NOT_ESTABLISHED",
+      "weekSession": "NOT_ESTABLISHED",
+      "teachingMaterial": "NOT_THIS_LAYER",
+      "practice": "NOT_THIS_LAYER",
+      "ceaPracticalAssessment": "RELATED_BUT_DISTINCT_FROM_GROUP_CEA",
+      "knowledgeAssessment": "NOT_THIS_LAYER",
+      "workplaceApplication": "NOT_THIS_LAYER",
+      "gatewayReadiness": "THIS_LAYER",
+      "epa": "NOT_LIVE_EPA"
+    },
+    "textPreview": "PRACTICAL SUPPORT MATERIAL AND APPRENTICE ASSESSMENT SUMMARY\n\n Gateway 2\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP01\n\n A SSESSMENT SUMMARY\n Apprentice Name:\n\n Reg No:\n\n Gateway 2\n Gateway Component Assessment\n Tick Chosen\n Date Completed\n Assessor Pin\n Assessor Signature:\n Skills tests Group A (All skills test for group A must be completed)\n Vehicle Safety Inspection\n GW2 AC01\n\n Carry out Four-Wheel Alignment\n GW2 AC02\n\n Emissions Related F ault\n GW2 AC03\n\n Online Knowledge Test\n Result\n\n ST0499-AP01GW2K\n\n Declaration:\n I confirm that all learning outcomes have been met, all assessments have been completed in full and that the A pprentice has complete d all requirements for Gateway 2\n\n Assessor Name:\n (Please Print)\n\n Assessor P in :\n\n Assessor Signature:\n\n Date:\n\n Internal Quality Assurer Name: (Please Print)\n\n Internal Quality Assurer P in :\n\n Internal Quality Assurer Signature:\n\n Date:\n\n Table of Contents\n\n TOC \\o \"1-1\" \\h \\z \\u GW2AC01 Carry Out a Vehicle Safety Inspection PAGEREF _Toc516749985 \\h 4\n\n GW2AC02 Carry out Four-Wheel Alignment PAGEREF _Toc516749987 \\h 6\n\n GW2AC03 Diagnose an Emissions R elated F ault PAGEREF _Toc516749989 \\h 8\n\n APPRENTICE INSTRUCT",
+    "pairedWith": "gw_d91de30f5f63"
+  },
+  {
+    "id": "gw_d91de30f5f63",
+    "filename": "Autocare-AP01-GW2-Practical-Support-Material-Assessor.docx",
+    "relativePath": "onedrive_zip/Autocare-AP01-GW2-Practical-Support-Material-Assessor.docx",
+    "source": {
+      "zipOrPath": "Downloads/OneDrive_1_10-08-2026.zip"
+    },
+    "sha256": "d91de30f5f63b581549bbfa8aab882314c8673fb69120184b6bb287330efff7f",
+    "bytes": 108927,
+    "fileType": ".docx",
+    "extractionStatus": "EXTRACTED",
+    "extractionReason": null,
+    "documentLabels": [
+      "GW2"
+    ],
+    "audienceRole": "ASSESSOR",
+    "pairKey": "autocare-ap01-gw2-practical-support-material",
+    "gatewayStage": "GW2",
+    "explicitKsbReferences": [],
+    "inferredTopicKsbs": [
+      "S9",
+      "K10",
+      "K12",
+      "S10"
+    ],
+    "highlights": {
+      "openingSnippet": "ASSESSOR PRACTICAL SUPPORT MATERIAL | Gateway 2 | Autocare Technician | Apprenticeship Standard | ST0499/AP0 1 | ASSESSOR INSTRUCTIONS | Ref: GW 2 AC01 | Carry Out a Vehicle Safety Inspection",
+      "durationMention": "90 minutes",
+      "sectionLabels": [],
+      "mentionsIsolation": false,
+      "mentionsTyreBalance": false,
+      "mentionsTyreRemove": false,
+      "mentionsSteer": true,
+      "mentionsEps": false,
+      "mentionsHydraulicPas": false,
+      "mentionsHv": false,
+      "mentionsPassRefer": true,
+      "mentionsMarkScheme": false,
+      "questionCountHint": 5,
+      "charCount": 9878
+    },
+    "relationshipAxes": {
+      "TEACHES": false,
+      "PRACTISES": false,
+      "ASSESSES": false,
+      "RECORDS_EVIDENCE": true,
+      "GATEWAY_READINESS": false,
+      "EPA_PREP": false
+    },
+    "chainPlacement": {
+      "officialStandard": "INFERRED_CONTEXT_ST0499",
+      "duty": "UNKNOWN",
+      "ksb": "INFERRED_TOPIC",
+      "group": "NOT_ESTABLISHED",
+      "block": "NOT_ESTABLISHED",
+      "weekSession": "NOT_ESTABLISHED",
+      "teachingMaterial": "NOT_THIS_LAYER",
+      "practice": "NOT_THIS_LAYER",
+      "ceaPracticalAssessment": "RELATED_BUT_DISTINCT_FROM_GROUP_CEA",
+      "knowledgeAssessment": "NOT_THIS_LAYER",
+      "workplaceApplication": "NOT_THIS_LAYER",
+      "gatewayReadiness": "THIS_LAYER",
+      "epa": "NOT_LIVE_EPA"
+    },
+    "textPreview": "ASSESSOR PRACTICAL SUPPORT MATERIAL\n\n Gateway 2\n\n Autocare Technician\n Apprenticeship Standard\n\n ST0499/AP0 1\n\n ASSESSOR INSTRUCTIONS\n Ref: GW 2 AC01\n Carry Out a Vehicle Safety Inspection\n This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 2 practical assessment.\n\n You must pro vide the Apprentice with the Carry Out a Vehicle Safety Inspection I nstructions and Apprentice Assess ment Record for them to complete . Apprentice s must complete the task and documentation fully to enable the assessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 90 minutes.\n\n Included in this document:\n Workstation set- up requirements including tools and equipment\n Vehicle set- up prior to assessment\n List of faults to be applied to the vehicle prior to assessment\n Assessor Record and comments sheet\n\n Materials required at the workstation:\n A Light Vehicle with 5 faults inserted from the Pre-installed fault list below\n Relevant workshop manuals and technical equipment for the vehicle\n General hand tools including torque wrench\n Inspection light\n Tyre tread depth gauge\n",
+    "pairedWith": "gw_650cf2e40c5a"
+  }
+]

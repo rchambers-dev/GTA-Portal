@@ -1,0 +1,77 @@
+Lesson Plan 4
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Exhausts and Emission Control systems
+ 0 0 Exhausts and Emission Control systems
+
+ Lesson Aims
+
+ Lesson Aims
+ 0 35716 Look deeper into Emissions control system components and how they operate.
+ Intro to Euro 4, 5 and 6 Emissions standards, perform comparisons and how standards are achieved.
+ Intro to closed/open loop emissions control and operation.
+ 0 0 Look deeper into Emissions control system components and how they operate.
+ Intro to Euro 4, 5 and 6 Emissions standards, perform comparisons and how standards are achieved.
+ Intro to closed/open loop emissions control and operation.
+
+ Lesson Objectives
+ -8626 56527 Be able to state the basic meaning of the terms Open and Closed loop operation.
+ Be able to state the dates that Euro 5 and Euro 6 emission legislation came into use.
+ Be able to state what harmful emission is reduced by each exhaust component (Oxidising Cat, EGR valve, SCR Cat)
+ 0 0 Be able to state the basic meaning of the terms Open and Closed loop operation.
+ Be able to state the dates that Euro 5 and Euro 6 emission legislation came into use.
+ Be able to state what harmful emission is reduced by each exhaust component (Oxidising Cat, EGR valve, SCR Cat)
+
+ Engagement
+ -10795 57989 Using a blend of power point, you tube videos and practical demonstrations and exercises in the workshop. Testing of oxygen sensor s and looking at live engine data .
+ 0 0 Using a blend of power point, you tube videos and practical demonstrations and exercises in the workshop. Testing of oxygen sensor s and looking at live engine data .
+
+ Stick ability
+ -8255 131445 Use Cosworth or similar rig where they can run up an engine. (smell it, hear it, feel it) Look at Live data snap shots and discuss what data means.
+ 0 0 Use Cosworth or similar rig where they can run up an engine. (smell it, hear it, feel it) Look at Live data snap shots and discuss what data means.
+
+ Assessment for learning (AFL)
+ -10795 95250 Initial assessment via verbal Q&A. Observation of practical tasks, verbal Q&A at end and look if outcomes have been met. Ask w hat would they might do differently next time in workshop .
+ 0 0 Initial assessment via verbal Q&A. Observation of practical tasks, verbal Q&A at end and look if outcomes have been met. Ask w hat would they might do differently next time in workshop .
+
+ Key words
+ 0 48260 Catalyst, Particulates, Selective, Reduction , emissions .
+ 0 0 Catalyst, Particulates, Selective, Reduction , emissions .
+
+ Differentiation
+ -6350 63500 Use a wide variety of delivery methods, encourage equality and divers ity and incorporate tasks of varied difficulty.
+ 0 0 Use a wide variety of delivery methods, encourage equality and divers ity and incorporate tasks of varied difficulty.
+
+ Session 1
+ -25400 121920 Review of OTJ logs, F skills support as req. Review of action plans and carry out verbal Q&A to initially assess. Recap last week into the components used in emissions control systems.
+ 0 0 Review of OTJ logs, F skills support as req. Review of action plans and carry out verbal Q&A to initially assess. Recap last week into the components used in emissions control systems.
+
+ -38735 188595 Continue above looking at how emissions are managed and gas composition . Look at open vs closed loop and discuss how achieved. Discuss live data in workshop from sensors. Use workshop to help identify components and assess current understanding.
+
+ 0 0 Continue above looking at how emissions are managed and gas composition . Look at open vs closed loop and discuss how achieved. Discuss live data in workshop from sensors. Use workshop to help identify components and assess current understanding.
+
+ Session 2
+
+ Session 3
+ -17145 107950 Look at Emissions legislation and data. Look at what rigs/vehicles we have at GTA and how they fit into each category. (help re embed Session 1 and 2) Regulation Table to embed F skills Maths.
+ 0 0 Look at Emissions legislation and data. Look at what rigs/vehicles we have at GTA and how they fit into each category. (help re embed Session 1 and 2) Regulation Table to embed F skills Maths.
+
+ Session 4
+ -635 17780 Use the workshop to carry out practical tasks and demonstrations. Cosworth rig or Ford rig and look at mapping/AFR in relation to O2 sensor readings. Remove/refit a n oxygen sensor safely . Review of outcomes and discuss next weeks session.
+ 0 0 Use the workshop to carry out practical tasks and demonstrations. Cosworth rig or Ford rig and look at mapping/AFR in relation to O2 sensor readings. Remove/refit a n oxygen sensor safely . Review of outcomes and discuss next weeks session.
+
+ Challenge
+ -17145 90805 Linking vehicles to Euro emissions data and evaluating live engine sensor readings.
+ Practical task to carry out safely and correctly.
+ 0 0 Linking vehicles to Euro emissions data and evaluating live engine sensor readings.
+ Practical task to carry out safely and correctly.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

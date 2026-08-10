@@ -1,0 +1,551 @@
+{
+  "generatedAt": "2026-08-10T13:01:29.733Z",
+  "status": "SHADOW_ONLY",
+  "mutatesProgrammeTruth": false,
+  "goldenAFrozen": true,
+  "tranche": [
+    "S9",
+    "K10",
+    "K12",
+    "K21",
+    "K23",
+    "S13"
+  ],
+  "note": "Limited Golden B methodology pilot. Not trusted Golden B. Not persisted Primaries/gaps.",
+  "dossiers": {
+    "S9": {
+      "A_officialRequirement": "Remove, repair and replace vehicle tyre and balance wheel assemblies on car, car derived van or light goods vehicle. For example, ultra-low profile, directional, asymmetric, run-flat tyres.",
+      "B_inferredTeachingRequirements": {
+        "knowledgeConcepts": [
+          "Tyre/wheel construction and bead/rim relationship",
+          "Safe dismount/mount and reinflation rules",
+          "Balance theory (static/dynamic; on/off-car)",
+          "Repairability limits (tread vs sidewall; standards such as BS159)",
+          "Special tyre types awareness (directional, run-flat, etc.)"
+        ],
+        "actionsSkills": [
+          "Dismount tyre from rim",
+          "Repair where authorised",
+          "Mount/refit tyre",
+          "Balance wheel/tyre assembly",
+          "Torque wheel fixings / safe workshop practice"
+        ],
+        "breadth": "Official example specials; legal/serviceability adjacency with K6",
+        "practicalExpectations": "Learner performs remove/refit/balance (not inspection-only)",
+        "behaviourExpectations": "Safe working; PPE; follow manufacturer/procedure"
+      },
+      "C_goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "primary": null,
+        "rationale": "No Primary-eligible strip/remove/replace/balance practical on SOW-visible evidence (W14 TPMS-only; W64 inspection integration; W106 late consolidation).",
+        "advisoryOnly": {
+          "proposedPrimaryBlock": 7,
+          "week": 64
+        }
+      },
+      "D_liveEvidence": {
+        "sowIntent": "SOW-visible tyre service/TPMS/inspection; no SOW-defensible strip/balance Primary in Golden A review",
+        "lessonPlans": "G3 LP2 aims include tyre removal and fitting; Tyres.ppt workshop activity language",
+        "teachingMaterials": "Tire Changing and Wheel Balancing.ppt (EXTRACTED); Tyre Inspection and Repair.ppt (EXTRACTED); Tyres.ppt (EXTRACTED)",
+        "learnerTaskPractical": "Group workshop activity (machine remove/refit/balance stated). Block B1 T4 condition check; B2 T4 TPMS/pressure/condition — NOT strip/balance assessed practical",
+        "assessmentEvidence": "G3 initial knowledge assessment + marking sheet (remove-from-rim, balancer, BS159 repair). In-deck checks. Block Tasks 3–4 lack strip/balance assessment",
+        "supportingReviewImpact": "B2 skills/impact records supporting only",
+        "groupToBlockRouting": "G3 D→B2/B3; supporting later Blocks (Transition Guide)"
+      },
+      "E_coverageQuality": "CONFIRMED STRONG",
+      "F_practicalApplicationStatus": "PARTIAL / incomplete visibility — teaching activity confirmed; Block assessed strip/balance not in Tasks 3–4 pack",
+      "G_assessmentStatus": "PARTIAL — knowledge assessment confirmed; practical competence assessment incomplete in supplied Block pack",
+      "H_structuralOwnership": "UNMAPPED",
+      "I_goldenAToShadowB": "MATERIAL CHANGE CANDIDATE: Golden A 'curriculum gap' → shadow: teaching confirmed; residual practice/assessment/ownership issues. Evidence-visibility problem vs true absence.",
+      "J_proposedGoldenBDirection": "CHANGE",
+      "J_directionClarification": "CHANGE the classification away from simple curriculum gap. Do NOT force Primary assignment yet — ownership remains UNDER REVIEW / STRUCTURAL MAPPING GAP.",
+      "K_whatIsGood": "Literal teaching of remove, repair, replace/refit, balance now content-verified; knowledge assessment explicit",
+      "L_whatIsWeak": "Block-era assessed strip/balance practical missing; special-type breadth partial; Group resource→week unjoined",
+      "M_whatIsMissing": "Tasks 1–2; assessed strip/balance practical/CEA/observation; defensible one-Primary decision",
+      "N_recommendedImprovement": "Add/confirm Block assessed tyre strip/balance practical; then human Primary decision preferring first substantive teaching/application home (candidate B2) without inventing from advisory B7 alone",
+      "O_confidence": "HIGH on teaching; MEDIUM on practice/assessment completeness; LOW on forced Primary",
+      "taxonomyIssues": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A SOW-only)",
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP",
+        "STRUCTURAL_MAPPING_GAP"
+      ],
+      "s9SpecialReview": {
+        "supportsTaughtButPracticeAssessmentIncomplete": true,
+        "supportsTaughtAndStructurallyUnmapped": true,
+        "enoughToProposeLikelyOwner": "NOT YET — B2 is leading candidate only",
+        "stillInsufficientToAssignOwnership": true,
+        "likelyOwnerCandidates": [
+          {
+            "block": 2,
+            "role": "leading candidate — G3 direct + tyre service practical adjacency",
+            "basis": "INFERRED_MEDIUM"
+          },
+          {
+            "block": 3,
+            "role": "workshop-process adjacency via routing",
+            "basis": "INFERRED_LOW"
+          },
+          {
+            "block": 7,
+            "role": "Golden A advisory host only",
+            "basis": "ADVISORY_NOT_TRUTH"
+          }
+        ]
+      },
+      "notPersisted": true
+    },
+    "K10": {
+      "A_officialRequirement": "Steering systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Mechanical, hydraulic and electric power assisted steering.",
+      "B_inferredTeachingRequirements": {
+        "knowledgeConcepts": [
+          "Mechanical steering layouts (e.g. box vs rack/pinion)",
+          "Hydraulic PAS components/operation",
+          "EPS/EPAS principles, sensors, layouts",
+          "Component location for inspect/remove/replace"
+        ],
+        "actionsSkills": [
+          "Identify systems/components",
+          "Inspect/report condition",
+          "Remove/refit specified steering components where appropriate"
+        ],
+        "breadth": "Mechanical + hydraulic + electric assist",
+        "practicalExpectations": "Inspect and remove/refit practice on relevant components",
+        "behaviourExpectations": "Safe lifting/support; follow torque/alignment requirements"
+      },
+      "C_goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "primary": null,
+        "rationale": "No original session teaches steering systems (mechanical/hydraulic/EPAS) purpose/function/location for inspection/removal/replacement. Geometry/tyre-wear adjacency insufficient.",
+        "advisoryOnly": {
+          "proposedPrimaryBlock": 4,
+          "week": 34
+        }
+      },
+      "D_liveEvidence": {
+        "sowIntent": "Golden A found no SOW-defensible steering-systems Primary home",
+        "lessonPlans": "G5 LP9 steering systems (rack/box, components, remove/refit TRE); G5 LP10 hydraulic+electric PAS inspect/report; G11 electronic steering sessions",
+        "teachingMaterials": "Power Steering and EPS.ppt (EXTRACTED); Electronic Steering Systems.ppt (EXTRACTED)",
+        "learnerTaskPractical": "LP9 workshop remove/refit; Block 7 Task 3 steering component replacement; Block 4 Task 3 alignment/geometry (reinforcement/adjacent)",
+        "assessmentEvidence": "B7 Task 3 practical assessment form; ACS steering & suspension assignment (geometry-heavy — partial for K10); LP objectives",
+        "supportingReviewImpact": "Block reviews supporting only",
+        "groupToBlockRouting": "G5 D→B4/B5; G11 D→B4/B5/B7–B9 (Transition Guide)"
+      },
+      "E_coverageQuality": "CONFIRMED STRONG",
+      "F_practicalApplicationStatus": "CONFIRMED (Group workshop + B7 Task 3)",
+      "G_assessmentStatus": "PARTIAL (practical form strong; dedicated knowledge breadth assessment mixed)",
+      "H_structuralOwnership": "AMBIGUOUS",
+      "I_goldenAToShadowB": "MATERIAL CHANGE CANDIDATE: Golden A gap → teaching+practice confirmed; ownership unresolved between early teaching (B4/B5) and later application (B7).",
+      "J_proposedGoldenBDirection": "CHANGE",
+      "J_directionClarification": "CHANGE classification away from curriculum gap. Do NOT auto-Primary to B7 (strongest practical). Prefer first substantive teaching home logic → likely B4 or B5 pending human review.",
+      "K_whatIsGood": "Mechanical/hydraulic/EPS teaching stacked; clear inspect and remove/refit application",
+      "L_whatIsWeak": "Ownership ambiguity early teaching vs later practical; assignment overweight geometry/suspension",
+      "M_whatIsMissing": "Human Primary decision; optional dedicated K10 knowledge assessment artefact",
+      "N_recommendedImprovement": "Assign Primary to first substantive steering-systems teaching Block (candidate B4 per guide/advisory) and mark B7 as practice reinforcement — after human confirmation",
+      "O_confidence": "HIGH on teaching/practice; MEDIUM on exact Primary block",
+      "taxonomyIssues": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "STRUCTURAL_MAPPING_GAP",
+        "ASSESSMENT_GAP"
+      ],
+      "k10SpecialReview": {
+        "firstSubstantiveTeachingHome": "G5 LP9/LP10 → likely B4/B5",
+        "laterPracticalHome": "B7 Task 3",
+        "ruleApplied": "Prefer first substantive teaching over later strongest practical for Primary candidacy",
+        "doNotChooseByStrongestPracticalAlone": true,
+        "forcedPrimary": false
+      },
+      "notPersisted": true
+    },
+    "K12": {
+      "A_officialRequirement": "Braking systems: purpose, function, and location of systems and components for inspection, removal and replacement: brake discs, brake pads, brake shoes, brake drum, hydraulic components, anti-lock braking systems, electronic stability programmes, brake pedal simulator, brake pipe and hoses, wheel bearings.",
+      "B_inferredTeachingRequirements": {
+        "knowledgeConcepts": [
+          "Foundation brake components (disc/drum/hydraulics)",
+          "ABS/ESP purpose and components",
+          "Inspection criteria and replacement principles"
+        ],
+        "actionsSkills": [
+          "Inspect/measure/replace foundation brakes",
+          "Recognise ABS/ESP and related sensors",
+          "Diagnose/investigate ABS warnings at advanced stage"
+        ],
+        "breadth": "Full component list in official wording",
+        "practicalExpectations": "Inspection and replacement practice; later diagnostics",
+        "behaviourExpectations": "Safe working; torque/specs; evidence recording"
+      },
+      "C_goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 2,
+        "rationale": "Advanced Brake Diagnostics strongest primary; B3 wear checks = reinforcement"
+      },
+      "D_liveEvidence": {
+        "sowIntent": "Brake wear/inspection and advanced diagnostics across programme",
+        "lessonPlans": "G4 basic braking LPs; G10 advanced braking LPs; Block plans with brake topics",
+        "teachingMaterials": "G4 Calipers/Drums/Lines PPTs (EXTRACTED); G4/G10 Wheel Speed Sensors variants; G10 ABS + Stability PPTs (EXTRACTED)",
+        "learnerTaskPractical": "B1 T4 basic brake/tyre check; B5 T3 brake inspection/measurement/replacement; B8 T3 ABS wheel-speed diagnostic",
+        "assessmentEvidence": "Block Task practical forms; G4 initial assessment + marking sheet",
+        "supportingReviewImpact": "Block skills/impact supporting",
+        "groupToBlockRouting": "G4 D→B2/B3; G10 D→B5–B8"
+      },
+      "E_coverageQuality": "CONFIRMED STRONG",
+      "F_practicalApplicationStatus": "CONFIRMED — progression basic check → replacement → ABS diagnostic",
+      "G_assessmentStatus": "ADEQUATE for progression model (practical forms present)",
+      "H_structuralOwnership": "CLEAR",
+      "I_goldenAToShadowB": "KEEP control case: richer corpus confirms early Primary @ B2 still coherent; later ABS/ESP = reinforcement/specialist — do not remap Primary to B8 just because advanced practical is strong.",
+      "J_proposedGoldenBDirection": "KEEP",
+      "K_whatIsGood": "Clear basic→advanced ladder; Primary not swallowed by later reinforcement",
+      "L_whatIsWeak": "G4 vs G10 WSS modified variants create dual-placement noise; exhaustive official component checklist not fully swept item-by-item",
+      "M_whatIsMissing": "Optional component-by-component coverage matrix for brake pedal simulator etc.",
+      "N_recommendedImprovement": "Keep K12@B2; tag ABS/ESP/WSS as advanced reinforcement; resolve G4/G10 WSS variant versioning",
+      "O_confidence": "HIGH",
+      "taxonomyIssues": [],
+      "k12SpecialReview": {
+        "richerProgressionVisible": true,
+        "stillHoldsB2Primary": true,
+        "falseRemapRiskIfUsingLaterPracticalAlone": "Would wrongly move Primary to B5/B8",
+        "controlCase": true
+      },
+      "notPersisted": true
+    },
+    "K21": {
+      "A_officialRequirement": "Electric and hybrid vehicles: service, charging and safety procedures relevant to the Autocare technician role (wording as used in Golden A / programme fixtures).",
+      "B_inferredTeachingRequirements": {
+        "knowledgeConcepts": [
+          "Hybrid/EV architecture awareness",
+          "Charging types/customer implications",
+          "Service/safety boundaries for Autocare role"
+        ],
+        "actionsSkills": [
+          "Identify EV/hybrid components safely",
+          "Apply service/charging safety procedures at appropriate level",
+          "Customer handover communication where relevant"
+        ],
+        "breadth": "Role-appropriate service/charging/safety — not full HV technician scope",
+        "practicalExpectations": "Awareness and procedure application practicals",
+        "behaviourExpectations": "Respect HV boundaries; do not exceed competence"
+      },
+      "C_goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 6,
+        "rationale": "First dedicated EV service/charging/safety teaching; B9 specialist reinforcement"
+      },
+      "D_liveEvidence": {
+        "sowIntent": "EV service/charging/safety teaching home at B6 with B9 reinforcement",
+        "lessonPlans": "Block plans in B4/B6/B9 ranges; Group G2 EV awareness LPs",
+        "teachingMaterials": "Features of Hybrid Vehicles.ppt (G2=G7 content copy); Safety in HV; charging mentions in isolation decks",
+        "learnerTaskPractical": "B4 T4 EV/hybrid component location & safety awareness; B9 T3 customer handover/charging awareness; B2 T3 battery/charging check (LV adjacency)",
+        "assessmentEvidence": "Block Task practical forms; MV13 Group2 locating components CEA tracker item",
+        "supportingReviewImpact": "B4/B6/B9 skills/impact supporting",
+        "groupToBlockRouting": "G2 D→B4/B9; dual G7 placement of identical hybrid decks = conflicting provenance noise"
+      },
+      "E_coverageQuality": "ADEQUATE",
+      "F_practicalApplicationStatus": "ADEQUATE for awareness/service-safety application at Autocare level",
+      "G_assessmentStatus": "PARTIAL/ADEQUATE — practical awareness forms; deep service assessment not fully inventoried",
+      "H_structuralOwnership": "CLEAR",
+      "I_goldenAToShadowB": "KEEP B6 Primary. Richer corpus adds awareness decks and B4/B9 practicals as reinforcement/earlier exposure — do not remapping Primary to B4/B9.",
+      "J_proposedGoldenBDirection": "KEEP",
+      "K_whatIsGood": "Clear first dedicated service/charging/safety home retained; reinforcement path visible",
+      "L_whatIsWeak": "G2/G7 duplicate filing; awareness materials can look like Primary if over-weighted",
+      "M_whatIsMissing": "Optional richer dedicated B6 service lesson extract sweep (beyond pilot)",
+      "N_recommendedImprovement": "Keep K21@B6; mark B4/B9 as awareness/application reinforcement",
+      "O_confidence": "HIGH",
+      "taxonomyIssues": [
+        "EVIDENCE_VISIBILITY_GAP only as previously unread PPT copies — not a mapping failure"
+      ],
+      "notPersisted": true
+    },
+    "K23": {
+      "A_officialRequirement": "High voltage vehicle systems: safe working / isolation-related expectations relevant to Autocare technician role (as used for Golden A Primary rationale).",
+      "B_inferredTeachingRequirements": {
+        "knowledgeConcepts": [
+          "HV hazards",
+          "PPE and buffer zones",
+          "Disable/service plug concepts",
+          "Qualification/responsibility boundaries"
+        ],
+        "actionsSkills": [
+          "Apply HV safe working procedures",
+          "Recognise when isolation rules apply",
+          "Use appropriate PPE and verification mindset"
+        ],
+        "breadth": "Safe working procedures — distinct from full authorised live HV repair",
+        "practicalExpectations": "Procedure drills / awareness practicals within role",
+        "behaviourExpectations": "Never exceed authorised competence; respect live-work prohibition"
+      },
+      "C_goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 6,
+        "rationale": "Strongest HV safe working/isolation match; B9 reinforces later"
+      },
+      "D_liveEvidence": {
+        "sowIntent": "HV safe working Primary @ B6",
+        "lessonPlans": "G2 EV awareness plans; Block B4/B6/B9 intent",
+        "teachingMaterials": "Safety in High Voltage Vehicles.ppt (EXTRACTED; G2=G7 text-identical copies); Working on High Voltage Vehicles.ppt (EXTRACTED) — isolate/safeguard/verify rules",
+        "learnerTaskPractical": "B4 T4 safety awareness; not a full HV isolation competence assessment",
+        "assessmentEvidence": "In-deck questions; Block awareness tasks; MV13 locating components",
+        "supportingReviewImpact": "Supporting only",
+        "groupToBlockRouting": "G2 D→B4/B9; copies under G7 create CONFLICTING filing"
+      },
+      "E_coverageQuality": "CONFIRMED STRONG (for safe-working teaching)",
+      "F_practicalApplicationStatus": "PARTIAL — awareness/safety practicals; not deep competence assessment",
+      "G_assessmentStatus": "PARTIAL",
+      "H_structuralOwnership": "CLEAR",
+      "I_goldenAToShadowB": "KEEP K23@B6. Richer corpus strengthens teaching confidence for safe working; does not justify moving Primary to B4/B9. Distinguish from S13 competence.",
+      "J_proposedGoldenBDirection": "KEEP",
+      "K_whatIsGood": "Substantial HV safety procedure teaching verified",
+      "L_whatIsWeak": "Dual G2/G7 copies; practice/assessment thinner than teaching",
+      "M_whatIsMissing": "Stronger assessed safe-working observation/CEA if used live",
+      "N_recommendedImprovement": "Keep Primary; improve evidence capture of assessed HV safety behaviours",
+      "O_confidence": "HIGH on teaching/keep; MEDIUM on assessment completeness",
+      "taxonomyIssues": [
+        "ASSESSMENT_GAP",
+        "PRACTICE_GAP"
+      ],
+      "notPersisted": true
+    },
+    "S13": {
+      "A_officialRequirement": "Isolate high voltage electric vehicle systems for maintenance (practical skill — Golden A Primary rationale: practical home for EV isolation).",
+      "B_inferredTeachingRequirements": {
+        "knowledgeConcepts": [
+          "When isolation is required",
+          "Service plug / battery switch / ignition key control",
+          "Residual energy / verification not live",
+          "Who is authorised at which skill levels"
+        ],
+        "actionsSkills": [
+          "Perform authorised isolation sequence",
+          "Safeguard against reconnection",
+          "Verify not live before work",
+          "Record/communicate status"
+        ],
+        "breadth": "Practical competence, not awareness alone",
+        "practicalExpectations": "Learner performs (or is assessed performing) isolation under control",
+        "behaviourExpectations": "Strict boundary respect; no unauthorised live work"
+      },
+      "C_goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 6,
+        "rationale": "Primary practical home for EV isolation for maintenance; B9 reinforcement"
+      },
+      "D_liveEvidence": {
+        "sowIntent": "Isolation practical Primary @ B6",
+        "lessonPlans": "Group/Block EV sessions",
+        "teachingMaterials": "Working on HV PPT teaches isolation RULES (isolate/safeguard/verify) — TEACHING, not automatically assessed performance",
+        "learnerTaskPractical": "NOT FOUND as assessed isolation competence practical in Tasks 3–4. B4 T4 = component location & safety awareness. B9 T3 = customer handover/charging awareness.",
+        "assessmentEvidence": "Teaching quizzes; no dedicated S13 isolation assessment artefact found in corpus search",
+        "supportingReviewImpact": "Supporting only",
+        "groupToBlockRouting": "G2→B4/B9 awareness routing; Primary remains B6 structurally"
+      },
+      "E_coverageQuality": "PARTIAL / WEAK (for full skill competence) — teaching of rules CONFIRMED; assessed competence UNPROVEN",
+      "F_practicalApplicationStatus": "PARTIAL / UNPROVEN for learner-performed isolation — do not equate rules teaching with S13 competence",
+      "G_assessmentStatus": "GAP / INCOMPLETE VISIBILITY for assessed isolation competence",
+      "H_structuralOwnership": "CLEAR",
+      "I_goldenAToShadowB": "KEEP structural Primary @ B6, but REVIEW evidence strength: richer corpus confirms isolation-rules teaching while exposing PRACTICE/ASSESSMENT insufficiency for S13 competence. Not a remap case.",
+      "J_proposedGoldenBDirection": "REVIEW",
+      "J_directionClarification": "REVIEW = keep ownership, escalate evidence-strength / practice / assessment concerns. Not KEEP-as-fully-adequate; not CHANGE Primary.",
+      "K_whatIsGood": "Clear procedure teaching of isolation steps and authorisation levels",
+      "L_whatIsWeak": "Awareness practicals mistaken for isolation competence; missing assessed isolation artefact",
+      "M_whatIsMissing": "Assessed S13 isolation practical/CEA/observation evidence",
+      "N_recommendedImprovement": "Add/confirm assessed isolation competence activity at B6 (within role limits); keep B4/B9 as awareness reinforcement only",
+      "O_confidence": "HIGH that rules≠competence distinction holds; MEDIUM on whether live centre assessment exists off-corpus",
+      "taxonomyIssues": [
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP",
+        "TEACHING_DEPTH_GAP (competence vs rules)"
+      ],
+      "evSpecialReview": {
+        "awareness": "present",
+        "operatingPrinciples": "present (hybrid features)",
+        "safeWorkingProcedures": "present (K23-linked)",
+        "isolationRules": "present",
+        "practicalIsolationCompetence": "not evidenced in supplied assessed practicals",
+        "assessment": "insufficient for S13 competence claim"
+      },
+      "notPersisted": true
+    }
+  },
+  "comparisonTable": [
+    {
+      "ksb": "S9",
+      "goldenA": "REVIEWED_CURRICULUM_GAP",
+      "shadowCoverage": "CONFIRMED STRONG",
+      "practice": "PARTIAL / incomplete visibility — teaching activity confirmed; Block assessed strip/balance not in Tasks 3–4 pack",
+      "assessment": "PARTIAL — knowledge assessment confirmed; practical competence assessment incomplete in supplied Block pack",
+      "ownership": "UNMAPPED",
+      "direction": "CHANGE",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A SOW-only)",
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP",
+        "STRUCTURAL_MAPPING_GAP"
+      ]
+    },
+    {
+      "ksb": "K10",
+      "goldenA": "REVIEWED_CURRICULUM_GAP",
+      "shadowCoverage": "CONFIRMED STRONG",
+      "practice": "CONFIRMED (Group workshop + B7 Task 3)",
+      "assessment": "PARTIAL (practical form strong; dedicated knowledge breadth assessment mixed)",
+      "ownership": "AMBIGUOUS",
+      "direction": "CHANGE",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "STRUCTURAL_MAPPING_GAP",
+        "ASSESSMENT_GAP"
+      ]
+    },
+    {
+      "ksb": "K12",
+      "goldenA": "APPROVED_PRIMARY@B2",
+      "shadowCoverage": "CONFIRMED STRONG",
+      "practice": "CONFIRMED — progression basic check → replacement → ABS diagnostic",
+      "assessment": "ADEQUATE for progression model (practical forms present)",
+      "ownership": "CLEAR",
+      "direction": "KEEP",
+      "taxonomy": []
+    },
+    {
+      "ksb": "K21",
+      "goldenA": "APPROVED_PRIMARY@B6",
+      "shadowCoverage": "ADEQUATE",
+      "practice": "ADEQUATE for awareness/service-safety application at Autocare level",
+      "assessment": "PARTIAL/ADEQUATE — practical awareness forms; deep service assessment not fully inventoried",
+      "ownership": "CLEAR",
+      "direction": "KEEP",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP only as previously unread PPT copies — not a mapping failure"
+      ]
+    },
+    {
+      "ksb": "K23",
+      "goldenA": "APPROVED_PRIMARY@B6",
+      "shadowCoverage": "CONFIRMED STRONG (for safe-working teaching)",
+      "practice": "PARTIAL — awareness/safety practicals; not deep competence assessment",
+      "assessment": "PARTIAL",
+      "ownership": "CLEAR",
+      "direction": "KEEP",
+      "taxonomy": [
+        "ASSESSMENT_GAP",
+        "PRACTICE_GAP"
+      ]
+    },
+    {
+      "ksb": "S13",
+      "goldenA": "APPROVED_PRIMARY@B6",
+      "shadowCoverage": "PARTIAL / WEAK (for full skill competence) — teaching of rules CONFIRMED; assessed competence UNPROVEN",
+      "practice": "PARTIAL / UNPROVEN for learner-performed isolation — do not equate rules teaching with S13 competence",
+      "assessment": "GAP / INCOMPLETE VISIBILITY for assessed isolation competence",
+      "ownership": "CLEAR",
+      "direction": "REVIEW",
+      "taxonomy": [
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP",
+        "TEACHING_DEPTH_GAP (competence vs rules)"
+      ]
+    }
+  ],
+  "issueTaxonomyByKsb": {
+    "S9": [
+      "EVIDENCE_VISIBILITY_GAP (relative to Golden A SOW-only)",
+      "PRACTICE_GAP",
+      "ASSESSMENT_GAP",
+      "STRUCTURAL_MAPPING_GAP"
+    ],
+    "K10": [
+      "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+      "STRUCTURAL_MAPPING_GAP",
+      "ASSESSMENT_GAP"
+    ],
+    "K12": [],
+    "K21": [
+      "EVIDENCE_VISIBILITY_GAP only as previously unread PPT copies — not a mapping failure"
+    ],
+    "K23": [
+      "ASSESSMENT_GAP",
+      "PRACTICE_GAP"
+    ],
+    "S13": [
+      "PRACTICE_GAP",
+      "ASSESSMENT_GAP",
+      "TEACHING_DEPTH_GAP (competence vs rules)"
+    ]
+  },
+  "productValidation": {
+    "betterThanSimpleMappedGap": true,
+    "separatesMissingTeachingFromMissingEvidence": true,
+    "distinguishesTeachingPracticeAssessment": true,
+    "preventsFalseRemapFromLaterReinforcement": true,
+    "identifiesTaughtButUnaccounted": true,
+    "makesSenseToCurriculumLeadership": true,
+    "narrative": "Multi-axis dossiers (especially S9/K10/S13) produce director-readable distinctions: teaching confirmed vs practice/assessment incomplete vs ownership unresolved vs keep-control cases. Simple mapped/gap would have both under- and over-corrected."
+  },
+  "scaleReadiness": {
+    "readyToScaleAll64": false,
+    "readyForLimitedHumanReviewedExpansion": true,
+    "blockersToTrustedGoldenB": [
+      "Human ratification of shadow directions",
+      "S9/K10 ownership decisions after optional evidence from Jon",
+      "S13 assessed isolation artefact confirmation",
+      "No programme-truth write path until trust criteria agreed"
+    ],
+    "methodologyViable": true
+  },
+  "askJon": [
+    "Confirm Block Task 1/2 status (exist elsewhere vs retired in v2.0)",
+    "Provide assessed tyre strip/balance practical/CEA/observation if used live (S9)",
+    "Confirm whether Primary for steering should follow first teaching (B4/B5) vs later application (B7) — human call",
+    "Confirm whether apprentices perform assessed HV isolation (S13) or awareness only",
+    "Anonymised job card / CEA examples for tyre + steering + HV safety if available"
+  ],
+  "recommendedNextStep": "Human review board for the six shadow dossiers. Ratify KEEP cases (K12/K21/K23). Hold S9/K10 as CHANGE-classification without Primary write until ownership vote. Hold S13 as REVIEW (keep Primary, strengthen practice/assessment evidence). Only then open next limited Golden B tranche — still not all 64, still not auto-persist.",
+  "ownershipFindings": {
+    "clearKeep": [
+      "K12@B2",
+      "K21@B6",
+      "K23@B6"
+    ],
+    "clearButReviewStrength": [
+      "S13@B6 (ownership clear; competence evidence weak)"
+    ],
+    "unmappedOrAmbiguous": [
+      "S9 UNMAPPED",
+      "K10 AMBIGUOUS (B4/B5 vs B7)"
+    ],
+    "doNotForcePrimary": [
+      "S9",
+      "K10"
+    ],
+    "falseRemapGuards": [
+      "K12: do not move Primary to B5/B8 because replacement/ABS practicals are strong",
+      "K21/K23: do not move Primary to B4/B9 because awareness decks/practicals appear earlier/later",
+      "K10: do not assign Primary solely to B7 strongest practical"
+    ]
+  },
+  "teachingPracticeAssessmentFindings": {
+    "taughtButPreviouslyInvisible": [
+      "S9",
+      "K10"
+    ],
+    "taughtWithStrongPractice": [
+      "K10",
+      "K12"
+    ],
+    "taughtWithWeakAssessedPractice": [
+      "S9",
+      "S13"
+    ],
+    "keepControlCases": [
+      "K12",
+      "K21",
+      "K23"
+    ]
+  },
+  "evidenceVisibilityFindings": [
+    "S9 and K10 Golden A gaps were largely SOW-visibility failures, not true absence of teaching.",
+    "Legacy PPT unread historically created false curriculum-gap risk.",
+    "Block Tasks 1–2 absent from pack remains a real visibility/completeness limit.",
+    "CEA/job-card templates still referenced more than supplied as artefacts.",
+    "G2/G7 identical EV decks and G4/G10 WSS variants are corpus integrity findings."
+  ]
+}

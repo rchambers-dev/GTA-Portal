@@ -1,0 +1,313 @@
+ASSESSOR PRACTICAL SUPPORT MATERIAL
+
+ Gateway 1
+
+ Autocare Technician
+ Apprenticeship Standard
+
+ ST0499/AP 01
+ ASSESSOR INSTRUCTIONS
+ Ref: GW1 AC01
+ Remove and Replace Wheels and Tyres
+ The purpose of t his document is to support the a ssessor in setting up the workstation and vehicle prior to the Apprentice ’s Gateway 1 practical assessment.
+
+ You must pro vide the Apprentice with the Remove and Replace Wheels and T yres instructions and Apprentice Assess ment Record for them to complete . Apprentice s must complete the task and documentation fully to enable the a ssessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 90 minutes.
+
+ Included in this document :
+ • Workstation set- up requirements including tools and equipment
+ • Vehicle set- up prior to assessment
+ • Assessor Record and comments sheet
+
+ Materials required at the workstation:
+ • Light Vehicle
+ • Relevant workshop manuals and technical equipment for the vehicle
+ • General hand tools including torque wrench , tread depth gauge and tyre pressure gauge
+ • Replacement parts as required
+ • Lifting equipment suitable for the vehicle
+ • Tyre removal and balancing equipment
+ • Inspection light
+ • Vehicle P rotec tive Equipment (VPE)
+ • Personal Protection Equipment (PPE)
+ • Apprentice ’s instructions
+ • Assessor Instructions and Assessor Record
+
+ Workstation set- up required:
+ Vehicle must be positioned in a suitable location in the workshop but NOT raised off the ground.
+ Vehicle to be set with one or more tyres incorrectly inflated.
+
+ The A pprentice must:
+ • R aise the vehicle off the ground and stabilise
+ • I nspect all wheels and tyres for faults
+ • R emove both front wheels and tyres
+ • R eplace both front tyres, balance and replace back on to the vehicle
+ • R eplace parts following manufacturer’s instructions, bolts to be torqued to 50% of specified figure
+ • L ower vehicle to the ground and clean work area , returning all tools and equipment
+
+ A SSESSOR RECORD
+ Ref: GW1AC01
+ Remove and Replace Wheels and Tyres
+ Apprentice Name:
+ Apprentice No :
+ Assessor Name:
+
+ Date:
+
+ Start T ime:
+
+ Completion T ime:
+
+ Note: All criteria require a Pass
+
+ Comments
+ Appropriate PPE and VPE used throughout
+
+ Logical sequence used to carry out task
+
+ Completed the task safely; considering self, others and environment
+
+ Care was taken not to cause damage to vehicle
+
+ Used the correct industry recognised methods to assess condition against manufacturer’s specification
+
+ Technical data / manufacturer’s data interpreted correctly
+
+ The components were removed and replaced correctly following manufacturer and industry methods and procedures
+
+ Apprentice assessment record completed accurately and clearly to allow others to interpret
+
+ Vehicle and work station presented correctly post inspection
+
+ Result (please tick one)
+ Pass
+ Refer
+
+ Assessor S ignature:
+
+ Assessor PIN:
+
+ ASSESSOR INSTRUCTIONS
+ Ref: GW1AC02
+ Remove and Replace Battery Charging and Starting System C omponents
+ This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 1 practical assessment.
+
+ You must provide the Apprentice with the Remove and Replace Battery Charging and Starting System Components instructions and Apprentice Assessment Record. Apprentice s must complete the task and documentation fully to enable the assessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 120 minutes.
+
+ Included in this document :
+ • Workstation set- up requirements including tools and equipment
+ • Vehicle set- up prior to assessment
+ • Assessor Record and comments sheet
+
+ Materials required at the workstation:
+ • Light Vehicle
+ • Relevant workshop manuals and technical equipment for the vehicle
+ • General hand tools including torque wrench and multimeter
+ • Replacement parts as required
+ • Lifting equipment suitable for the vehicle
+ • Inspection light
+ • Vehicle Protective Equipment (VPE)
+ • Personal Protection Equipment (PPE)
+ • Apprentice ’s instructions
+ • Assessor Instructions and Assessor Record
+
+ Workstation set- up required:
+ Vehicle must be positioned in a suitable location in the workshop but NOT raised off the ground.
+ The A pprentice must:
+ • M easure battery voltage, battery cranking voltage, starter solenoid volt drop and battery charging rate
+ • R emove and replace the 12V battery
+ • R emove and replace the alternator and starter motor
+ • R eplace parts following manufacturer’s instructions, bolts to be torqued to 50% of specified figure
+ • L ower vehicle to the ground and clean work station, returning all tools and equipment
+
+ A SSESSOR RECORD
+ Ref: GW1AC02
+ Remove and Replace Battery Charging and Starting System Components
+ Apprentice Name:
+ Apprentice No:
+ Assessor Name:
+
+ Date:
+
+ Start T ime:
+
+ Completion T ime:
+
+ Note: All criteria require a Pass
+
+ Comments
+ Appropriate PPE and VPE used throughout
+
+ Logical sequence used to carry out task
+
+ Completed the task safely; considering self, others and environment
+
+ Care was taken not to cause damage to vehicle
+
+ Used the correct industry recognised methods to assess condition against manufacturer’s specification
+
+ Technical data / manufacturer’s data interpreted correctly
+
+ The components were removed and replaced correctly following manufacturer and industry methods and procedures.
+
+ Apprentice assessment record completed accurately and clearly to allow others to interpret
+
+ Vehicle and work area presented correctly post task
+
+ Result (please tick one)
+ Pass
+ Refer
+
+ Assessor S ignature:
+
+ Assessor PIN:
+
+ ASSESSOR INSTRUCTIONS
+ Ref: GW1AC03
+ Carry Out Front Wheel Alignment
+ This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 1 practical assessment.
+
+ You must provide the Apprentice with the Carry Out Front Wheel Alignment instructions and Apprentice Assessment Record. Apprentice s must complete the task and documentation fully to enable the assessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 90 minutes.
+
+ Included in this document :
+ • Workstation set- up requirements including tools and equipment
+ • Vehicle set- up prior to assessment
+ • Assessor Record and comments sheet
+
+ Materials required at the workstation:
+ • Light Vehicle
+ • Relevant workshop manuals and technical equipment for the vehicle
+ • General hand tools
+ • Wheel alignment gauges
+ • Replacement parts as required
+ • Lifting equipment suitable for the vehicle
+ • Inspection light
+ • Vehicle Protective Equipment (VPE)
+ • Personal Protection Equipment (PPE)
+ • Apprentice ’s instructions
+ • Assessor Instructions and Assessor Record
+
+ Workstation set- up required:
+ Vehicle must be positioned in a suitable location in the workshop but NOT raised off the ground
+ The A pprentice must:
+ • C arry out all vehicle pre checks
+ • Z ero the alignment gauges and fit to the vehicle unaided
+ • O btain the correct technical data, measure and compare vehicle wheel alignment (front toe)
+ • A djust wheel alignment to with manufacturer’s settings
+ • L ower vehicle to the ground and clean work area , returning all tools and equipment
+
+ A SSESSOR RECORD
+ Ref: GW1AC03
+ Carry Out Front Wheel Alignment
+ Apprentice Name:
+ Apprentice No :
+ Assessor Name:
+
+ Date:
+
+ Start T ime:
+
+ Completion T ime:
+
+ Note: All criteria require a Pass
+
+ Comments
+ Appropriate PPE and VPE used throughout
+
+ Logical sequence used to carry out task
+
+ Completed the task safely; considering self, others and environment
+
+ Care was taken not to cause damage to vehicle
+
+ Used the correct industry recognised methods when carrying out pre-checks
+
+ Technical data / manufacturer’s data interpreted correctly
+
+ Front wheel alignment was measured and adjusted correctly
+
+ Apprentice assessment record completed accurately and clearly to allow others to interpret
+
+ Vehicle and work area presented correctly post task
+
+ Result (please tick one)
+ Pass
+ Refer
+
+ Assessor S ignature:
+
+ Assessor PIN:
+
+ ASSESSOR INSTRUCTIONS
+ Ref: GW1AC02
+ Remove and Replace Brake Discs and Pads
+ This purpose of this document is to support the assessor in setting up the workstation and vehicle prior to the A pprentice ’s Gateway 1 practical assessment.
+
+ You must provide the Apprentice with the Remove and Replace B rake discs and Pads instructions and Apprentice Assessment Record. Apprentice s must complete the task and documentation fully to enable the assessor to make a judgement on competency; this task is graded pass or refer and there is a time limit of 60 minutes.
+
+ Included in this document :
+ • Workstation set- up requirements including tools and equipment
+ • Vehicle set- up prior to assessment
+ • Assessor Record and comments sheet
+
+ Materials required at the workstation:
+ • Light Vehicle
+ • Relevant workshop manuals and technical equipment for the vehicle
+ • General hand tools including torque wrench, vernier , micromet er and DTI gauge
+ • Replacement parts as required
+ • Lifting equipment suitable for the vehicle
+ • Inspection light
+ • Vehicle Protective Equipment (VPE)
+ • Personal Protection Equipment (PPE)
+ • Apprentice ’s instructions
+ • Assessor Instructions and Assessor Record
+
+ Workstation set up required:
+ Vehicle must be positioned in a suitable location in the workshop but NOT raised off the ground.
+ The A pprentice must:
+ • R aise the vehicle off the ground and stabilise
+ • C arry measurements of disc thickness and run out
+ • R emove and replace a set of front brake discs and pads
+ • M easure brake fluid boiling point
+ • R eplace parts following manufacturer’s instructions, bolts to be torqued to 50% of specified figure
+ • L ower vehicle to the ground and clean work area , returning all tools and equipment
+
+ A SSESSOR RECORD
+ Ref: GW1AC02
+ Remove and Replace B rake Discs and Pads
+ Apprentice Name:
+ Apprentice No :
+ Assessor Name:
+
+ Date:
+
+ Start T ime:
+
+ Completion T ime:
+
+ Note: A ll criteria requires a Pass
+
+ Comments
+ Appropriate PPE and VPE used throughout
+
+ Logical sequence used to carry out task
+
+ Completed the task safely; considering self, others and environment
+
+ Care was taken not to cause damage to vehicle
+
+ Used the correct industry recognised methods to assess condition against manufacturer’s specification
+
+ Technical data / manufacturer’s data interpreted correctly
+
+ The components were removed and replaced correctly following manufacturer and industry methods and procedures
+
+ Apprentice assessment record completed accurately and clearly to allow others to interpret
+
+ Vehicle and work area presented correctly post task
+
+ Result (please tick one)
+ Pass
+ Refer
+
+ Assessor S ignature:
+
+ Assessor PIN:

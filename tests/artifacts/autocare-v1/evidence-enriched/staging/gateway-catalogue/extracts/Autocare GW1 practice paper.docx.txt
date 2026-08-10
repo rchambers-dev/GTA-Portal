@@ -1,0 +1,270 @@
+An apprentice sees something that they feel is a major H&S hazard, they should:
+ Let someone else report by phone, when they notice it.
+ Report this verbally to their supervisor immediately.
+ Leave the cleaner a note so they can sort when they come into the workshop.
+ Carry on working in order to get the customers job done, as it’s not their problem.
+
+ What electrical component is indicated by this illustration:
+ Light emitting diode
+ Photodiode
+ Diode
+ Zener diode
+
+ What is the best description given for ending the working day to ensure that effective housekeeping practices are followed:
+ Leave cleaning up until there is no work in as this is an economical use of time.
+ Clean up the work area, making sure that all waste is correctly disposed of.
+ Only clean up and spills as other waste is not as important to safety.
+ Leave hand tools and equipment out on the job to save time in the morning.
+
+ Please identify three components from the hydraulic braking system that can be found in the engine bay: ( just put the letters on your sheet near Q4)
+ Brake disc
+ Brake drum
+ Park brake lever
+ Wheel cylinder
+ Master cylinder
+ Servo
+ Caliper
+ Brake fluid reservoir.
+
+ You have noticed that there is a small split in an outer C.V joint boot on a front drive shaft and there is no noise from the shaft. What would you recommend?
+ There is no need to report as it’s a small hole
+ Just replace the boot as its still full of grease
+ Clean and repack the joint with grease and replace the CV boot
+ It is only a small hole so will be fine, just advise the customer to recheck next service
+
+ What is the best way of developing positive working relationships with customers?
+ Avoid direct eye contact, whilst speaking in a none technical way
+ Be formal and polite, checking that you understand their needs
+ Make them a drink before dealing with any formal requests
+ Use their first name and adopt a friendly informal initial approach.
+
+ Where is a typical antiroll bar link mounted to:
+ The strut tower
+ The suspension leg or lower arm
+ The chassis leg
+ The suspension damper
+
+ W hat is the correct adjustment procedure for drum brakes prior to adjusting the handbrake cables:
+ fit the rear wheels
+ bleed the brakes
+ lower the car to the ground
+ adjust the rear brakes after resetting automatic adjusters
+
+ It is a H&S requirement that any electrical workshop equipment that is used in the workplace should be:
+ Suitably maintained in a safe condition
+ Locked in a steel cabinet overnight
+ Only used by specified staff
+ Tested every 6 months for faults
+
+ Why may a manufacturer specify a reduction gear type starter motor?
+ Reduce size, weight and power consumption but increase torque output
+ Reduce the engine resistance to starting when cold
+ To increase torque, power and speed of the engine assembly
+ To turn the engine over faster and more often (taxis)
+
+ What is meant by the term CCA in relation to a battery:
+ The amount of amps available after driving for 10 mins on a cold day
+ A measure of the current drawn by a starter under speci fic conditions
+ The current drawn during starting
+ A measure of a battery’s ability to supply current under specific conditions
+
+ What should be disconnected first when replacing a battery
+ The earth terminal
+ The live lead
+ The alternator power supply
+ The battery clamp
+
+ What controls the speed of a viscous fan:
+ The pressure relief valve
+ The viscosity of the fluid at different temps
+ The electric motor driving the fan
+ The radiator thermostat
+
+ In an air cooled engine what method of heat transfer is used to dissipate heat from the cylinder head:
+ Advection
+ Convection
+ Radiation
+ Combustion.
+
+ What is the advantage of the cooling system being pressurised:
+ The rise in pressure causes a corresponding rise in boiling point
+ To create a faster flow of coolant so that less coolant is needed
+ The pressure causes antifreeze to mix in with the water
+ The pressure acts as a partial seal against the combustion gasses to help the head gasket seal
+
+ What is the main advantage of a mini-block spring over a normal straight coil spring on suspension:
+ They can be compressed further without the coils hitting each other
+ They give a softer ride quality
+ They are cheaper to produce than conventional coil springs
+ They look better than conventional coil springs
+
+ What colour are mandatory signs:
+ Blue
+ White
+ Red
+ Yellow
+
+ What type of fire extinguisher is labelled blue?
+ Powder
+ Foam
+ Water
+ CO2.
+
+ What 2 valve mechanisms are fitted into a radiator pressure cap on an expansion type system:
+ Vacuum and pressure
+ Vacuum and temperature
+ Temperature and pressure
+ Vacuum and fluid level
+
+ What colour are prohibition signs:
+ Blue
+ White
+ Red
+ Yellow
+ Why must we ensure torque wrenches are calibrated, ideally every 6 months?
+ To ensure that they operate correctly and are accurate.
+ To make sure they click nicely
+ Because snap on make more money from doing this
+ So that customers can be charged more money and increase company profit
+
+ What colour is the insulation used on High Voltage cables for Hybrid and Electric Vehicles?
+
+ Red.
+ Orange.
+ Pink.
+ Blue.
+
+ The legal limit for a car tyre tread depth is:
+
+ a. 1mm across 75% of the tyre width.
+ b. 1mm across 100% of the tyre width.
+ c. 1.6mm across 75% of the tyre centre width.
+ d. 1.6mm across 100% of the tyre width.
+
+ You would check a brake disc with a DTI gauge for:
+ Thickness
+ Wear
+ Run out
+ Cracks
+
+ In relation to steering geometry “camber” angle is:
+
+ The tilt of the swivel axis when viewed from front.
+ The tilt of the swivel axis when viewed from side.
+ The tilt of the wheel from the vertical when viewed from the front.
+ The tilt of the wheel from the vertical when viewed from the side.
+
+ A technician has been asked to provide a list of the main health & safety legislation with regards to common hand powered tools in an automotive environment. Which one of the following lists of regulations would be the most relevant?
+ Provision and use of work equipment. Electricity at work. Abrasive wheels
+ Display screen equipment. Manual handling operations. Noise at work
+ Safe working loads. Working at heights. Provision & of work equipment
+ Power presses. Provision and use of work equipment. Pressure systems
+
+ The main purpose of a suspension damper is to:
+ Maintain vehicle height under load
+ Absorb the kinetic energy of the spring
+ Allow for excess load
+ Limit the maximum travel of the suspension
+
+ 28. Brake fluid is hygroscopic which absorbs moisture but also:
+ lowers the boiling point
+ raises the boiling point
+ lowers the viscosity
+ raises the viscosity
+
+ Heat generated in the engine is transferred through the cylinder walls using which method?
+ Expansion
+ Radiation
+ Convection
+ Conduction
+
+ What is the purpose of the rectifier in an alternator?
+ Convert ac to dc
+ Convert dc to ac
+ Limit the output voltage
+ Control the current output
+
+ How are most Alloy wheels manufactured to make them both cheap and light weight ?
+ Forging and then welded/where if necessary
+ Cast and then machined where necessary
+ 3d printing and then machining
+ Fabricated and rolled from sheet aluminium
+
+ You notice a small oil spillage on the floor. What is the best method to deal with it?
+ Sweep it up with a large broom
+ Apply some absorbent granules, then sweep up and put in correct bin.
+ Leave it for the cleaner to do.
+ Use a full tin of brake cleaner and tissue s .
+
+ What is the purpose of the engine’s thermos tat?
+ To regulate the coolant flow to the radiator, allowing for quick warm up, but adequate cooling when the engine up to operating temperature.
+ To increase the coolant flow though the radiator for quicker warm up.
+ To send a signal to the instrument panel for the temperature gauge .
+ To speed up the flow of coolant from the water pump.
+
+ What is the purpose of the engine water pump .
+ To aid in the flow of coolant around the system.
+ To regulate the engine temperature.
+ To help to engine warm up faster .
+ To increase the pressure in the cooling system.
+
+ Which of the following is correct in relation to light vehicle tyres?
+ Radial ply tyres have softer sidewalls than cross plies .
+ Radial ply tyres have stiffer sidewalls than cross plies .
+ Cross ply tyres have softer sidewalls than radial plies .
+ Cross ply tyres have cords than run at 90 degrees to the bead .
+ What is the purpose of the drop well in a wheel rim?
+ To make it easier to remove/replace tyres as it allows the bead to drop into i t increasing the clearance.
+ To allow a space for the tyre to drop into if it deflates, preventing it from being damaged.
+ To make it easier to manufacture the wheel and save weight .
+ To make the wheel stronger than a conventional wheel rim.
+
+ What is the purpose of the plastic insert the hub mounting face on some alloy wheels?
+ So that different inserts can be fitted for wheels with a different pitch circle diameter.
+ To centralise the wheel more accurately than using the wheel mounting holes.
+ To stop the wheel from sticking to the bolt holes.
+ To make the wheel lighter than a conventional wheel.
+
+ Why do we have to be careful with the large magnetic fields produced by hybrid and electric vehicle motors?
+ Interruption with immobiliser systems.
+ Interference with pacemakers.
+ They can trigger fire alarms
+ Mobile phones can be damaged by them.
+
+ What are the advantages of a higher capacity battery than standard?
+ Reduces the load on the alternator when starting
+ It provides more than 12v for better starting
+ Reduces loads on the starter motor when cold
+ More reliable starting in very cold conditions and will maintain loads for longer.
+ 40. Reducing the warm up cycle in an engine by closing the thermostat will help prevent :
+ a. Chemical breakdown of the coolant
+ Aeriation of the coolant
+ The engine stalling on take off
+ Excessive engine wear
+ 41. What creates the pressure in a cooling system?
+ Auxiliary belt driven water pump
+ Heat transference from the combustion chamber to the coolant
+ Heat transference from the engine oil to the coolant
+ Blow back exhaust gases escaping from the crank case
+ 42. Which component connects a track rod to the suspension upright or hub?
+ King pin swivel joint
+ Drop arm
+ Ball joint/track rod end
+ Roll bar
+ 43. What component allows movement between the subframe and chassis?
+ Earth strap
+ Flexible rubber bushes
+ Swivel joints
+ Rose joints
+
+ 44. What process is used to make most alloy wheels?
+ Casting then machining as needed
+ Machined inner and outer then brazed together
+ Forging and welded where needed
+ Forging and then machining where needed
+
+ 45. Which of the following best describes a negative offset wheel?
+ The wheel mounting surface is nearer to the inside of the wheel than the outside
+ The wheel mounting surface is nearer to the outside of the wheel than the outside
+ The wheel has a deeper dish on the outside than inside
+ The wheel mounting surface is not offset i.e the centre of the rim is central to the spokes.

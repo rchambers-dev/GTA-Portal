@@ -1,0 +1,66 @@
+APPRENTICE INSTRUCTIONS
+ Ref: 10 . 3
+ Check output from ABS wheel speed sensor ( 45 mins)
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment .
+ To demonstrate your knowledge and ability to work on ABS system s .
+ To demonstrate your knowledge and ability to locate and explain the operation of ABS components .
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition .
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment .
+
+ Materials you need at the workstation:
+ Light vehicle or rig .
+ VPE for task
+ PPE for task
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task .
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to read the fault codes on a vehicle and then check output from the ABS sensor . ( Assessor to insert suitable fault . )
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctly prepared before starting work .
+ Check and record the fault codes in the ABS system.
+ Check output from the ABS sensor using either a M ulti meter , Diagnostic tool or S cope .
+ Explain finding s to your assessor and correctly record on your sheet.
+ Reinstate the vehicle and workstation to pre -assessment condition .
+
+ A PPRENTICE A SSESSMENT RECORD
+ Ref: 10 . 3
+ Check output from ABS wheel speed sensor
+ Vehicle Model:
+ Vehicle Make:
+ Vehicle Reg:
+ Mileage:
+ Engine Size:
+ Chassis Number:
+ Brief description of the work carried out and any further recommendations:
+
+ PPE worn and special precautions taken
+ Please complete the following:
+
+ Type of ABS sensor
+
+ Type of wave form
+
+ Special tools including any required calibration:
+ Please answer the following questions:
+
+ Please state 3 possible causes of a weak or poor signal from the sensor?
+
+ State why if possible, an osc illoscope may provide better information?
+
+ What effect may an ABS sensor fault have on other vehicle systems?
+
+ Apprentice Name:
+ Apprentice Signature:
+ Assessor Signature:
+ Assessor Pin:
+ Date:
+ Feedback:
+
+ Result:
+ Pass
+ Refer

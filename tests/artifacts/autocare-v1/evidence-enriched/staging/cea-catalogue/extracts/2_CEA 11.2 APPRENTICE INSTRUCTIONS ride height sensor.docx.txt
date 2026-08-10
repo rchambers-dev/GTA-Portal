@@ -1,0 +1,69 @@
+APPRENTICE INSTRUCTIONS
+ Ref: 11. 2
+ Replace suspension ride height sensor (60mins)
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment .
+ To demonstrate your knowledge and ability to work on suspension system.
+ To demonstrate your knowledge and ability to locate and explain the operation of a ride height sensor .
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition .
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment .
+
+ Materials you need at the workstation:
+ Light vehicle .
+ VPE for task
+ PPE for task
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task .
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to remove and refit the ride height sensor your assessor instructs you to change, as reported during a vehicle safety inspection. (May use Scania truck or HID light rig)
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctly prepared before starting work.
+ Remove and refit the ride height sensor from either vehicle or rig .
+ Explain operation in basic terms to assessor .
+ Tighten all components to 50% (half) of the torque setting specified ensuring you record the CORRECT settings in the Apprentice Assessment Record sheet
+ Reinstate the vehicle and workstation to a pre -assessment condition .
+
+ A PPRENTICE A SSESSMENT RECORD
+ Ref: 11.2
+ Replace suspension ride height sensor
+ Vehicle Model:
+ Vehicle Make:
+ Vehicle Reg:
+ Mileage:
+ Engine Size:
+ Chassis Number:
+ Brief description of the work carried out and any further recommendations:
+
+ PPE worn and special precautions taken
+ Please complete the following (if required)
+
+ DTC code (if available)
+
+ Ride height settings (if required)
+
+ Torque Settings:
+ Special tools including any required calibration:
+ Please answer the following:
+
+ State what a sensor may be used for on a vehicle with HID lighting?
+
+ What are the 2 main advantages of Air Suspension over mechanical systems?
+
+ What safety precautions should you be aware of to avoid damage to yourself and the vehicle when jacking up a vehicle with air suspension?
+
+ What procedure must always be carried out after a height sensor is replaced?
+
+ Apprentice Name:
+ Apprentice Signature:
+ Assessor Signature:
+ Assessor Pin:
+ Date:
+ Feedback:
+
+ Result:
+ Pass
+ Refer

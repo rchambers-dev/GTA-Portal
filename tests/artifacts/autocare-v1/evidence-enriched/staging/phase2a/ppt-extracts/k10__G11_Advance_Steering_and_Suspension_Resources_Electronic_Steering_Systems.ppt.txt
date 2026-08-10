@@ -1,0 +1,343 @@
+SOURCE: G11 Advance Steering and Suspension\Resources\Electronic Steering Systems.ppt
+HASH: b316b7696abb29751d19dc029594e9df005ca754bdf0a22075c3b6bba138d6af
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Electronic Steering Systems
+
+see how the amount of power steering assistance can be varied
+
+Next >
+
+see how electric power steering systems work
+
+===== SLIDE 2 =====
+Introduction
+
+Modern vehicles are increasingly making use of electronics to improve the steering system.
+
+Next >
+
+Hydraulic power steering can be given a level of assistance that varies with vehicle speed.
+
+Electric assistance is also being used instead of hydraulics.
+
+Some systems can even vary the steering ratio electrically.
+
+===== SLIDE 3 =====
+Servotronic Power Steering
+
+Most hydraulic power steering systems offer a constant level of assistance.
+
+At low speeds there is more assistance to make maneuvering  easier.
+
+Servotronic systems can vary the amount of assistance according to the speed of the vehicle.
+
+Next >
+
+At high speeds there is less assistance, so the vehicle is more stable.
+
+Vehicle speed
+
+Steering assistance
+
+Normal
+
+Servotronic
+
+Less chance of inadvertent steering input by the driver
+
+Less effort required when parking
+
+thienzieyung
+
+===== SLIDE 4 =====
+Servotronic Operation
+
+At low speeds the ECU keeps the solenoid valve shut to maximize the hydraulic pressure for steering assistance.
+
+Servotronic adds an ECU-controlled  solenoid valve to the hydraulic power steering control valve.
+
+Next >
+
+As speed builds, the ECU uses a PWM signal to gradually open the solenoid. This makes the pressurized fluid bypass the control valve.
+
+Power steering pump
+
+Control valve
+
+High pressure fluid lines
+
+ECU
+
+Solenoid valve
+
+Vehicle speed input
+
+Signal with pulse width modulation (PWM)
+
+===== SLIDE 5 =====
+Variable Ratio Steering
+
+These systems use an ECU-controlled actuator in the steering column.
+
+At low vehicle speeds, a given steering wheel input makes the vehicle turn more tightly. This improves maneuverability.
+
+Next >
+
+At higher vehicle speeds, a given steering wheel input makes the vehicle turn less. This makes the vehicle more stable.
+
+30°
+
+30° steering wheel rotation
+
+Low speed:37° pinion rotation
+
+High speed:23° pinion rotation
+
+It can electrically vary the gear ratio between the input and output shafts.
+
+ECU
+
+Vehicle speed input
+
+ZF Active Steering actuator:gear ratio variation between 0.75:1 and 1.25:1
+
+===== SLIDE 6 =====
+A)	At higher speeds, pressurized fluid bypasses the control valve
+
+B)	At higher speeds, the solenoid valve closes
+
+C)	The ECU controls the power steering pump output pressure
+
+D)	When the vehicle is stationary, the solenoid valve is fully open
+
+Question 1
+
+Next >
+
+Which one of these options describes the operation of a Servotronic power steering system?
+
+===== SLIDE 7 =====
+A)	At higher speeds, pressurized fluid bypasses the control valve
+
+B)	At higher speeds, the solenoid valve closes
+
+C)	The ECU controls the power steering pump output pressure
+
+D)	When the vehicle is stationary, the solenoid valve is fully open
+
+Question 1
+
+The ECU gradually opens the solenoid valve as speed rises.
+
+Next >
+
+Which one of these options describes the operation of a Servotronic power steering system?
+
+===== SLIDE 8 =====
+Electric Power Steering (EPS)
+
+Hydraulic power steering systems are heavy, absorb engine power, and are prone to leaks.
+
+An electric motor assists the steering but only when required. This increases fuel economy because it is not constantly absorbing engine power.
+
+Many modern vehicles use electric power steering (EPS) because it is lighter, quicker to manufacture, and easier to maintain.
+
+Next >
+
+Electric power steering assembly
+
+Hydraulic power steering pump
+
+Hydraulic power steering reservoir
+
+===== SLIDE 9 =====
+Electric Power Steering Layouts
+
+There are four options for the position of the EPS motor assembly:
+
+Next >
+
+On the upper steering column
+
+On the pinion shaft
+
+On a second pinion, driving a second setof teeth on the rack
+
+On the steering rack housing, driving the rack through a worm and nut
+
+===== SLIDE 10 =====
+Power Steering Motor Drive
+
+Column assist and pinion assist layouts use a reduction gearbox with a worm gear on the motor shaft.
+
+If the motor is mounted on the rack housing, a belt takes the drive from the motor to a worm and nut on the steering rack.
+
+The high rotational speed of an electric motor needs to be reduced in order to drive a steering system.
+
+Next >
+
+Motor shaft is at 90° to the pinion shaft
+
+Motor shaft is parallel to the steering rack
+
+===== SLIDE 11 =====
+Steering Torque Sensor
+
+The steering torque sensor is mounted at the bottom of the steering column.
+
+As steering torque is applied, the input and output shafts twist relative to each other.
+
+The input shaft and output shaft are connected by a thinner, flexible shaft.
+
+Next >
+
+Cross section
+
+From steering column
+
+Output shaft
+
+To steering pinion
+
+Input shaft
+
+Thinner shaft
+
+Torque Sensor
+
+The amount of twist is limited by splines as a backup in case the thinner shaft fails.
+
+===== SLIDE 12 =====
+Torque Sensor Operation
+
+A circular, hollow electromagnet is fixed to the output shaft.
+
+It has alternate north and south poles around the inside circumference.
+
+A circular Hall Effect sensor sits inside it, attached to the input shaft.
+
+Next >
+
+Output shaft
+
+Input shaft
+
+Thinner shaft
+
+The sensor detects changes in the magnetic field when the input shaft twists relative to the output shaft.
+
+Circular electromagnet
+
+Hall Effect sensor
+
+===== SLIDE 13 =====
+Self-Centering
+
+The geometry of a vehicle steering system makes it naturally self-center ‘hands off’ after turning a corner.
+
+A disadvantage of electric power steering is that it will not readily do this.
+
+Next >
+
+The resistance caused by the gearing means it takes a large amount of force from the steering mechanism to make the motor turn.
+
+===== SLIDE 14 =====
+Self-Centering with EPS
+
+The ECU calculates the amount of centering power required, based on several factors:
+
+Instead, the system powers the steering back to the center.
+
+Steering torque input
+
+Steering angle from center
+
+Rate of change of steering angle
+
+Vehicle speed
+
+Power Assistance
+
+Power Return
+
+Next >
+
+===== SLIDE 15 =====
+Electric Power Steering Operation
+
+Although the feedback force is artificial, the ECU is programmed to replicate the feel of conventional steering.
+
+Next >
+
+The limitation is the inertia of the motor when it has to switch between spinning one way and spinning the other.
+
+On some vehicles the steering ECU has different programs, such as a ‘city’ mode that requires less steering effort.
+
+===== SLIDE 16 =====
+Automatic Parallel Parking
+
+Although the EPS motor is designed to add to the driver’s steering input, it can also work on its own.
+
+EPS systems have also made it easier to develop fully autonomous ‘driverless’ vehicles.
+
+Some modern cars are equipped with a system for automatic parallel parking without steering input from the driver.
+
+Next >
+
+They use sensors to work out the proximity of other objects.
+
+Electric power steering assembly
+
+Autonomous ‘hands free’ driving
+
+Steve Jurvetson
+
+Automatic parallel parking
+
+===== SLIDE 17 =====
+A)	A separate hydraulic system is used for centering the steering
+
+B)	The driver has to manually turn the steering wheel back to the center
+
+C)	The steering will self-center without power as a result of its geometry
+
+D)	The motor powers the steering back to the ‘straight ahead’ position
+
+Question 2
+
+Next >
+
+On a vehicle with electric power steering, what happens after turning a corner?
+
+===== SLIDE 18 =====
+A)	A separate hydraulic system is used for centering the steering
+
+B)	The driver has to manually turn the steering wheel back to the center
+
+C)	The steering will self-center without power as a result of its geometry
+
+D)	The motor powers the steering back to the ‘straight ahead’ position
+
+Question 2
+
+The ECU has to calculate how much centering effort to apply.
+
+Next >
+
+On a vehicle with electric power steering, what happens after turning a corner?
+
+===== SLIDE 19 =====
+Summary
+
+how the amount of power steering assistance can be varied
+
+In this presentation you have seen:
+
+how electric power steering systems work
+
+End
+

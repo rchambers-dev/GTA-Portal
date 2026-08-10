@@ -1,0 +1,143 @@
+{
+  "generatedAt": "2026-08-10T13:54:18.014Z",
+  "stagingOnly": true,
+  "mutatesProgrammeTruth": false,
+  "ratifiedPilotUnchanged": true,
+  "byGroup": {
+    "G2": [
+      "cea_1_2_1"
+    ],
+    "G3": [
+      "cea_1_3_1",
+      "cea_1_3_2",
+      "cea_1_3_3",
+      "cea_1_3_4",
+      "cea_1_3_5"
+    ],
+    "G4": [
+      "cea_1_4_1",
+      "cea_1_4_2",
+      "cea_1_4_2b",
+      "cea_1_4_3",
+      "cea_1_4_4",
+      "cea_1_4_5",
+      "cea_1_4_6"
+    ],
+    "G5": [
+      "cea_1_5_1",
+      "cea_1_5_2",
+      "cea_1_5_3",
+      "cea_1_5_4",
+      "cea_1_5_5",
+      "cea_1_5_6",
+      "cea_1_5_7"
+    ],
+    "G6": [
+      "cea_1_6_1",
+      "cea_1_6_2",
+      "cea_1_6_3",
+      "cea_1_6_4",
+      "cea_1_6_5"
+    ],
+    "G7": [
+      "cea_1_7_1",
+      "cea_1_7_2",
+      "cea_1_7_3"
+    ],
+    "G10": [
+      "cea_2_10_1",
+      "cea_2_10_2",
+      "cea_2_10_3"
+    ],
+    "G11": [
+      "cea_2_11_1",
+      "cea_2_11_2",
+      "cea_2_11_3",
+      "cea_2_11_4",
+      "cea_2_11_5",
+      "cea_2_11_5",
+      "cea_2_11_6"
+    ],
+    "G12": [
+      "cea_2_12_1",
+      "cea_2_12_2",
+      "cea_2_12_3",
+      "cea_2_12_4",
+      "cea_2_12_5"
+    ],
+    "G13": [
+      "cea_2_13_1",
+      "cea_2_13_2",
+      "cea_2_13_3"
+    ],
+    "G14": [
+      "cea_2_14_0",
+      "cea_2_14_1",
+      "cea_2_14_2",
+      "cea_2_14_3",
+      "cea_2_14_4"
+    ],
+    "G8": [
+      "cea_2_8_1"
+    ],
+    "G9": [
+      "cea_2_9_1"
+    ],
+    "OTHER": [
+      "cea_2_CEA_C1_Service_Schedule_Generic_docx",
+      "cea_2_CEA_Proforma_Invoice_Template_docx",
+      "cea_2_Euro_Car_Parts_Car_Parts_Online_In_Store_FREE_UK_Delivery_url",
+      "cea_2_Repair_Estimate_Template_xlsx"
+    ]
+  },
+  "counts": {
+    "filesTotal": 57,
+    "docx": 55,
+    "extractedOk": 56,
+    "controlledAssessmentTasks": 53,
+    "supportingTemplates": 4,
+    "tyreCluster": 5,
+    "steeringCluster": 14,
+    "hybridCluster": 1,
+    "brakesCluster": 10,
+    "s9HitDocs": [
+      "CEA 3.1 APPRENTICE INSTRUCTIONS Tyres R & I.docx",
+      "CEA 3.2 APPRENTICE INSTRUCTIONS Puncture.docx",
+      "CEA 3.3 APPRENTICE INSTRUCTIONS TPMS.docx",
+      "CEA 3.4 APPRENTICE INSTRUCTIONS Balance 4 wheels.docx",
+      "CEA 3.5 APPRENTICE INSTRUCTIONS run flat.docx",
+      "CEA 4.2b APPRENTICE INSTRUCTIONS rear wheel cylinder and bleed.docx",
+      "CEA 4.5 APPRENTICE INSTRUCTIONS disc run-out.docx",
+      "CEA 5.1 APPRENTICE INSTRUCTIONS front wheel alignment.docx",
+      "CEA 5.3 APPRENTICE INSTRUCTIONS bottom ball joint.docx",
+      "CEA 10.1 APPRENTICE INSTRUCTIONS ABS wss.docx",
+      "CEA 10.2 APPRENTICE INSTRUCTIONS ABS reluctor ring.docx",
+      "CEA 10.3 APPRENTICE INSTRUCTIONS ABS output.docx",
+      "CEA 11.1 APPRENTICE INSTRUCTIONS traction control.docx",
+      "CEA 11.4 APPRENTICE INSTRUCTIONS front tyre wear.docx",
+      "CEA 11.5 APPRENTICE INSTRUCTIONS EPA Practice.docx",
+      "CEA 11.5 APPRENTICE INSTRUCTIONS rear tyre wear.docx",
+      "CEA 14.0 APPRENTICE INSTRUCTIONS inspection.docx",
+      "CEA 9.1 APPRENTICE INSTRUCTIONS sourcing parts.docx",
+      "CEA C1 Service Schedule Generic.docx"
+    ],
+    "k10HitDocs": [
+      "CEA 5.1 APPRENTICE INSTRUCTIONS front wheel alignment.docx",
+      "CEA 5.2 APPRENTICE INSTRUCTIONS track rod end.docx",
+      "CEA 5.3 APPRENTICE INSTRUCTIONS bottom ball joint.docx",
+      "CEA 5.4 APPRENTICE INSTRUCTIONS front strut.docx",
+      "CEA 5.5 APPRENTICE INSTRUCTIONS rear damper.docx",
+      "CEA 5.6 APPRENTICE INSTRUCTIONS power steering pump.docx",
+      "CEA 5.7 APPRENTICE INSTRUCTIONS power steering rack.docx",
+      "CEA 11.4 APPRENTICE INSTRUCTIONS front tyre wear.docx",
+      "CEA 11.5 APPRENTICE INSTRUCTIONS EPA Practice.docx",
+      "CEA 11.6 APPRENTICE INSTRUCTIONS adas fault.docx",
+      "CEA 14.0 APPRENTICE INSTRUCTIONS inspection.docx",
+      "CEA C1 Service Schedule Generic.docx"
+    ],
+    "s13HitDocs": [
+      "CEA 2.1 APPRENTICE INSTRUCTIONS Hybrid.docx"
+    ]
+  },
+  "classifiedMeaningOfCEA": "In these packs, CEA document titles/bodies are controlled centre practical assessment tasks: APPRENTICE INSTRUCTIONS + APPRENTICE ASSESSMENT RECORD with Pass/Refer and assessor sign-off. Numbering follows Group.task (e.g. CEA 3.1 under Wheels and Tyres). Not workplace job cards; not Block Task 1/2 PDFs."
+}

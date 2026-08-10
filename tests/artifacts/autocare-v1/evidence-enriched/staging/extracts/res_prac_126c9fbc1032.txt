@@ -1,0 +1,85 @@
+TASK 4: ADAS PRE-CALIBRATION AND
+SENSOR AWARENESS CHECK
+Autocare Technician Level 2 | Block 9 | v2.0
+TIME
+60 minutes
+EVIDENCE
+Practical | Knowledge | Documentation
+PROGRAMME POINT
+Weeks 81-94
+Your task
+A vehicle has had alignment, tyre or body-related work and may require ADAS checks. You must complete
+non-invasive pre-calibration checks, record findings and identify whether specialist calibration referral is required.
+What you must do
+1 Prepare the vehicle and identify visible ADAS features.
+2 Carry out pre-checks for tyres, ride height, alignment and visible sensor damage.
+3 Record findings and compare with available guidance.
+4 Decide whether the vehicle is suitable for calibration or requires correction/referral.
+5 Explain the outcome to the assessor/workplace mentor and complete documentation.
+What good evidence looks like
+SAFE SETUP
+Suitable PPE, a prepared work area and controlled vehicle or
+equipment.
+CORRECT METHOD
+A logical sequence using the relevant procedure and technical
+information.
+ACCURATE EVIDENCE
+Actual readings, findings and actions recorded clearly and
+precisely.
+SOUND DECISIONS
+Appropriate recommendations, referral or authorisation
+supported by evidence.
+You will need
+• Light vehicle or ADAS case-study pack
+• Manufacturer guidance or sample calibration report
+• Tyre pressure gauge/alignment data where available
+• PPE and Apprentice Assessment Record
+SOW ALIGNMENT
+Block 9 - Emerging Technology, EV and Hydrogen
+Duties: 1, 2, 4, 5, 8, 10 KSB evidence focus: K18-K23, S10-S15, B1, B2
+Task reference: Block_9_Task_4_ADAS_Pre_Calibration_Check
+Block_9_Task_4_ADAS_Pre_Calibration_Check | v2.0 Page 1 of 3
+TASK 4: ADAS PRE-CALIBRATION AND SENSOR AWARENESS CHECK
+Practical record
+Apprentice, location and vehicle details
+Apprentice name Date
+TASK COMPLETED AT APPRENTICE'S WORKPLACE TRAINING CENTRE
+Vehicle make Model
+Registration Mileage
+Engine size / type VIN / chassis number
+Measurements and technical checks
+ADAS features identified Tyre pressures
+Ride height observation Alignment status
+Sensor
+damage/obstruction Warning message/DTC
+Calibration referral yes/no Customer advice
+Special tools, equipment or calibration requirements
+Task evidence
+PPE and precautions used Safety-critical findings and immediate action
+Work completed, findings and recommendations
+Knowledge check
+1. Why can alignment affect ADAS calibration? 2. What visible ADAS sensors may be fitted to a
+vehicle?
+Block_9_Task_4_ADAS_Pre_Calibration_Check | v2.0 Page 2 of 3
+TASK 4: ADAS PRE-CALIBRATION AND SENSOR AWARENESS CHECK
+Knowledge check and assessment decision
+Knowledge check - continued
+3. (a) Why is calibration specialist work? (b) What pre-checks should be completed before referral?
+4. What risks exist if ADAS faults are ignored?
+5. (a) How would you explain calibration referral to a customer? (b) What evidence should be included in the
+job record?
+Assessor/Workplace Mentor observation
+Identify visible ADAS sensor locations and affected systems. Carry out non-invasive pre-calibration checks.
+Record tyre, ride height and alignment-related evidence. Recognise when specialist calibration is required.
+Explain safety implications and referral needs.
+Assessor/Workplace Mentor observation notes
+Decision and feedback
+Decision - select one
+PASS REFER
+Evidence reference
+Feedback and action required
+Sign-off
+Signatures confirm that this is the apprentice's own work and that the evidence and decision are accurate.
+Apprentice name Assessor/Workplace Mentor name PIN (if applicable)
+Apprentice signature Assessor/Workplace Mentor signature Date
+Block_9_Task_4_ADAS_Pre_Calibration_Check | v2.0 Page 3 of 3

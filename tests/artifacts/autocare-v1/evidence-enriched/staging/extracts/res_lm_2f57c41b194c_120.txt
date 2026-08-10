@@ -1,0 +1,151 @@
+ACS Level 2 ST0499/AP01 
+ Major Service Routine 
+ style.visibility style.visibility ppt_w ppt_h style.visibility
+
+Presentation Aim The aim of this presentation is to overview a major service routine in depth to outline the procedures to be followed as a recap of previously learned knowledge. On completion of this presentation you should be able to: Describe what is done at each stage of a major service. Adapt your learning from this presentation to demonstrate your capabilities to carry out a major service. State the relevance of safe practice and the importance of good workshop practice when carrying out a major service. 
+ style.visibility
+
+Overview This presentation covers the procedures generally followed during a major service of a light vehicle. Specific areas of a service are shown in depth to show the procedures you could use and the things that are checked and adjusted. The procedure begins with the vehicle being brought to the garage by the customer with a request for a major service. A job sheet is issued detailing the work to be done. For the purposes of this presentation we will discuss the routine for a major service. Whilst interim services and short inspections are not covered in this presentation, the methods adopted in a workshop are virtually the same. 
+ style.visibility
+
+Let’s begin Before any service is carried out, ensure to have to hand all the relevant equipment and tools required for the job. Have the latest issues of the manufacturer’s service data so that all the settings and adjustments will be accurate and to the latest specification. As with any job on a motor vehicle, use the appropriate protective equipment to safeguard yourself from injury and the vehicle from damage and becoming dirty. Have all the necessary parts required for the job or place an order with your supplier so the parts can be delivered quickly. Ensure your work area is clean and tidy before and after the job . 
+ style.visibility
+
+Let’s get a service sheet and get started! 
+ style.visibility style.visibility ppt_w ppt_h
+
+Bodywork Check Look round the vehicle and look for dents, scratches, windscreen cracks and damage to wheels etc. If any damage is found, note it on the service sheet. It is good practice if possible to look round the vehicle while the customer is there before taking the vehicle into the workshop because it will prevent the possibility of being blamed for any damage whilst the vehicle is in your care. 
+ style.visibility style.visibility
+
+Interior & Operating Systems With the vehicle in the workshop, carry out a check of the vehicle interior and operating systems. Inside the vehicle, the seats and seatbelts are checked for security and correct operation. The doors, boot and bonnet are also checked for internal operation. The operating systems consist of: All lights, horn, front and rear wipers & washers, heater and air conditioning (if fitted). As each section of the service is completed, it is good practice to tick the appropriate box on the service sheet to ensure that nothing is forgotten. Don’t check the operation of the radio or other device unless it is part of the service. Customers always notice when their radio settings have been altered. 
+ 
+ style.visibility
+
+Lighting Operations Check the operation of all the lights. Ask an assistant to help if necessary . 
+ style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Exterior & Operating Systems Starting from one side and working all the way around the vehicle, check the doors, boot and bonnet operation including their locks, then lubricate carefully if required. The wiper blades should be checked and if necessary adjust the spray pattern of the washers and adjust the headlamp beam alignment. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Under the Vehicle The next stage of the service is to safely raise the vehicle to a convenient working height on a suitable ramp. The engine oil is drained and the oil filter removed. If part of the service, the gearbox and axle oils are drained also. It is preferable to drain the engine oil when the engine is at its operating temperature. This ensures that the oil is thin and as much as possible will be drained. When the oils are drained, the drain plugs must be replaced and correctly tightened. BEWARE – engine oil at operating temperature is hot and drain plugs are sometimes forgotten and left loose – the consequences are usually disastrous! A word about flushing agents. Some garages offer engine flushing treatments before draining the oil. Despite the sound reasoning behind flushing an engine to keep it internally clean, it is only sometimes beneficial if used from when the vehicle was new. On an old engine it can loosen debris and carbons to block oilways which is obviously not beneficial. 
+ style.visibility
+
+Under the Vehicle Whilst or after the oil(s) are drained, the underneath of the vehicle can be inspected. All accessible parts of the suspension, steering, exhaust, fuel and brake system should be checked for condition and security. Where accessible a pry-bar type tool should be used to check the condition of joints and bushes etc. 
+ style.visibility style.visibility
+
+Under the Vehicle When satisfied that all the components under the vehicle have been checked, remember to recheck that the oil drain plug is tight. If the gearbox and axle oils have been checked and topped up or renewed, ensure the level and drain plugs have also been tightened. Finally fit the new oil filte r, not forgetting to lubricate the sealing ring with new oil before fitting the filter. 
+ 
+ Any spilled oil under the vehicle and on the workshop floor should be cleaned off then the vehicle can be lowered slightly for the next stage of the service. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility
+
+Wheels & Tyres Starting at one wheel and working around the vehicle in a logical sequence, remove the wheels to gain access to the brakes. All the wheels and tyres (not forgetting the spare) should be checked for damage, condition and tread wear. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Wheels & Tyres The tyre tread depths and pressures should be checked and the pressures set to the correct figure as stated in the vehicle manufacturer’s service data. Occasionally a vehicle will have a sticker on the inside of a door frame detailing the tyre sizes and pressures. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Brakes Unless it is specifically stated in the service documentation or requested by the customer, it is not the usual practice to completely dismantle the brakes. It is the usual practice to remove the brake pads on disc brakes and remove brake drums to inspect the brake shoes and handbrake assembly. It is good practice to remove the brake fluid reservoir cap and surround the reservoir with a cloth to avoid fluid spilling onto the vehicle during brake servicing. It is important to check that the brakes are operating correctly, that there are no seized components or fluid leaks, and that the brake linings have sufficient friction linings. It can sometimes be difficult to estimate the wear left on brake linings until the next service. If in any doubt that the linings may wear out before the next service is due, it should be reported on the service sheet and to the customer specifically for safety. If a brake bleeding procedure is to be done as part of the service it can be done after the brakes have been serviced and before the wheels are refitted. 
+ style.visibility
+
+Brakes 
+ style.visibility style.visibility ppt_w ppt_h
+
+Disc Brakes With the brakes fully accessible, the brake pads should be removed from the caliper so the caliper , disc and pads can be properly cleaned and checked. Specifically look for: Irregular wear patterns on the disc and pads. Damage and/or cracking to the disc surface. Signs of caliper seizure and fluid leakage. Friction material detaching from steel backplates. Friction material contaminated by leaking brake fluid. Using the correct tool, push the caliper pistons back into their housings to ensure they are free. Apply a small amount of brake anti-seize or copper based grease to the areas where the pad backplates contact the calipers and pistons – NOT THE FRICTION LININGS - and refit the pads. Ensure everything is correctly refitted and secure before refitting the wheel . 
+ style.visibility
+
+Disc Brakes With the brake pads accessible, all the components of the disc brake can be easily inspected and cleaned. Because disc brake mechanisms are self adjusting, there is no requirement to adjust the brake after rebuilding. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Drum Brakes To service drum brakes, the drum should be removed to access the brake shoes and internal mechanism. Once accessed, the drum, brake shoes, operating mechanism and handbrake mechanism can be fully cleaned and inspected. Specifically look for: Irregular wear patterns on the drum and shoes. Damage and/or cracking to the drum surface. Signs of wheel cylinder and operating mechanism seizure. Evidence of fluid leakage from wheel cylinders. Friction material detaching from shoe backplates. Friction material contaminated by leaking brake fluid. A good practice is to move the brake shoes assembly back and forth on their respective backplate to ensure that the wheel cylinder pistons are free to move and that the shoe operating mechanism is free. 
+ style.visibility
+
+Drum Brakes Another good practice is to remove the shoe retainers to the brake backplate so that the shoes pull out slightly from the backplate under their own spring tension. By doing this the small areas where the shoes contact the backplate can be lubricated to ensure the shoes are completely free to move then refit the shoe retainers. Regarding lubrication, ONLY proprietary brake anti-seize or copper based grease should be used to lubricate the operating mechanisms (including the handbrake cable) and behind the brake shoes. NEVER use oil from an oil can and if a lubrication spray is used to free off seized linkages ensure that the spray pattern is controlled and that it does not come into contact with the friction linings. When the brakes have been cleaned, inspected and correctly lubricated, the shoes should be adjusted. 
+ style.visibility
+
+Drum Brakes Dependant upon the design of the brake system, the brake shoes will be adjusted with the brake drum either on or off. Determine which method is correct and follow. The adjustment type will either be automatic with the drum fitted (self adjusting as the friction linings wear down) or manual with the drum removed, then refitted to ensure the shoes are not tight (binding) onto the drum. Note: If it is noted that the brake drum has a wear lip to the edge that made it difficult to remove, it is good practice to measure the drum internally to check that its wear limit has not been reached and if OK to carefully grind or file away some of the lip to make the drum easier to refit . 
+ style.visibility
+
+Drum Brakes With the brake accessible, all the components of the drum brake can be easily inspected and cleaned. Drum brake mechanisms need to be adjusted before the drum is refitted. This shoe layout is of the manual adjuster type. The adjuster being at the bottom of the brake shoes. 
+ 
+ style.visibility style.visibility ppt_w ppt_h style.visibility
+
+Brake Fluid Change Vehicle manufacturers generally suggest that brake fluid is changed every two years. This is because brake fluid is HYGROSCOPIC and absorbs moisture. This can cause the brakes over a period of time to lose their efficiency. If a brake fluid change is part of the service procedure, it is easier to do after the brakes have been inspected and rebuilt, also while the wheels are still removed. Whichever method of brake bleeding is adopted, ensure that only new fluid from a sealed container is used and that the bleed screws are securely tightened after bleeding. After the procedure, ensure that all spilt fluid is cleaned especially from the vehicle itself because brake fluid damages vehicle paintwork. 
+ style.visibility
+
+Brake Cleaners Before leaving this section on brakes, it is important to recognise why brakes need to be cleaned. Since the manufacture of brake linings made from asbestos was made illegal, modern brake linings give off significantly more dust as they wear. This dust, although supposedly not as dangerous as asbestos can still irritate the breathing and the skin. For this reason NEVER, use a compressed air line to clean out brakes. Always use a proprietary aerosol or squeeze bottle type solvent (but take care because the solvent is a heavy vapour). A safer option though is to use a water detergent based ’brake bath’ clea ner. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Suspension and Steering When the wheels are fitted, there may be areas of the suspension and steering that were previously inaccessible. Now is a good opportunity to check all areas of the suspension and steering whilst the wheels are removed. 
+ Things to look for: 
+ Damage to suspension and steering components. 
+ Wear in ball joints, rubber bushes and wheel bearings – Note - a small amount of ‘free play’ is permissible in certain types of bearing. 
+ Broken springs and leaking shock absorbers. 
+ Rubber sealing gaiters split and leaking lubricant. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility
+
+Refit Wheels Whilst refitting the wheels the tyres and wheels can be thoroughly inspected if not already done. Refit the wheels and wheel fixings then lower the ramp and vehicle to the ground. Source the wheel fixing torque setting from the vehicle manufacturer’s data and tighten the fixings to the setting using a torque wrench. 
+ style.visibility style.visibility
+
+Under the Bonnet Servicing the items under the bonnet is essentially a case of topping up fluid levels, renewing the replaceable components, and in some cases, carrying out minor adjustments. To begin, the fluid levels should be checked and topped to their respective levels using the correct and appropriate fluids. 
+ Screenwash : 
+ Use only clean water and an appropriate percentage of screenwash additive. NEVER use antifreeze. It is harmful to vehicle paintwork. 
+ style.visibility style.visibility style.visibility ppt_w ppt_h
+
+Under the Bonnet Coolant: Check the coolant level and antifreeze strength with an appropriate antifreeze tester . 
+ Ensure that the coolant level is between the ‘min’ & ‘max’ marks and that the antifreeze strength is correct. Top up the system as necessary with a solution of new antifreeze and clean water. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h style.visibility
+
+Under the Bonnet Brake fluid: After the brakes have been serviced, the brake pedal should be operated several times to ensure that the brakes operate correctly. As part of a brake bleeding procedure or a top up, only new, clean fluid to the correct specification should be used. Top up the fluid level to but not over the ‘max’ mark on the fluid reservoir . 
+ style.visibility style.visibility ppt_w ppt_h
+
+Under the Bonnet Power Steering: Most modern vehicles are equipped with power steering. If the system is the hydraulic type, check and top up the power steering fluid reservoir up to, but not over, the ‘max’ on the reservoir or fluid dipstick. If the fluid is overfilled then it may spill out as the steering is operated. Ensure to use the correct grade of fluid. NOT engine oil or brake fluid. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Under the Bonnet Battery: Most modern vehicles are fitted with ‘sealed for life’ batteries that require no maintenance. For older batteries with screw tops to the cells, the screw tops should be removed and the electrolyte level checked. The level should be just above the lead battery plates. If topping up is required, top up with clean de-ionised water. Smear a small amount of petroleum jelly (Vaseline) on the battery terminals to prevent electrostatic corrosion. Take care with battery electrolyte – it contains sulphuric acid – wear safety goggles and gloves to avoid acid burns . 
+ style.visibility style.visibility ppt_w ppt_h
+
+Under the Bonnet Engine oil: Locate and remove the oil level dipstick from its tube then remove the oil filler cap. Using the correct grade and type of oil for the engine, refill the oil and make regular checks with the oil level dipstick. When the oil is up to the ‘max’ mark on the dipstick, replace the dipstick and filler cap. Start the engine and allow it to run at its idle speed. During this time, ensure that the oil pressure light on the instrument panel goes out, and look under the vehicle for signs of oil leaks. If all is OK, stop the engine and allow the oil level to settle for a few minutes. After this time, recheck the oil level and top up to but not over the ‘max’ mark on the dipstick. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Under the Bonnet A word about oil levels: It is important neither to under fill nor overfill an engine with oil. If there is insufficient oil in the engine then the internal components may become starved, overheat and wear prematurely. In an overfull engine, oil under pressure can leak out of gaskets and seals. In modern engines, any excess oil being burnt during combustion can damage catalytic converters and DPF units rendering them ineffective . 
+ style.visibility style.visibility ppt_w ppt_h
+
+Other Replaceable Parts Air filters: To keep an engine running efficiently it is important to have clean air to mix with the fuel during the combustion process. Modern air filters are made from dense paper ‘concertina’ shapes moulded into rubber surrounds. It is not practical to clean such an air filter, so it should be replaced at the recommended interval and the housing it fits into cleaned of dirt and debri s. 
+ style.visibility style.visibility
+
+Other Replaceable Parts Pollen filter: Not all vehicles are equipped with a pollen filter. The fitment is usually confined to vehicles with air conditioning or climate control. Dependant upon the system design the pollen filter will be located either under the bonnet at the rear of the engine bay or inside the vehicle as part of the heater box assembly. As with an air filter, it is not practical to clean a pollen filter. The images show a dirty, and a clean pollen filter. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Other Replaceable Parts Fuel filter: Another vital link for clean burning combustion is clean fuel. Although modern fuels appear clean to the naked eye they can contain microscopic impurities that can clog and damage fuel systems. By changing the fuel filter at the recommended interval the carburation or fuel injection system remains clean and efficient. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Other Replaceable Parts Spark plugs: In a petrol engine, the final link in the combustion chain is the spark plug. Over a period of time the electrical spark ‘jumping’ the gap between the plug electrodes actually erodes part of the electrode away. This, combined with the build up of carbon around the plug leads to a gradual loss of efficiency. When the spark plugs are renewed, engine efficiency is, to a great extent, restored. When spark plugs are new ‘out of the box’ the electrodes already have a gap between them. Do not assume that this gap is correct. Wherever possible always check the electrode gap against the manufacturer’s recommendations with feeler gauges before fitting the new plugs. 
+ style.visibility
+
+Other Replaceable Parts Always check new plugs wherever possible with the correct size feeler gauge. 
+ style.visibility style.visibility style.visibility
+
+Drive Belts The drive belts of a modern engine are used to drive the auxiliary components such as the alternator, power steering pump, water pump and air conditioning. Most modern engines have a single belt known as a ‘serpentine belt’ driving all these components. Part of a serpentine arrangement is that it has a spring loaded self adjuster mechanism to maintain the correct belt tension. As a general rule of thumb though, to check the tension of a drive belt, find the longest running length of the belt and attempt to twist the belt by 90 degrees or press it so that it flexes. If the belt twists over this figure or flexes more than half an inch (13mm) then it requires adjusting to tighten it slightly. To check the condition of a drive belt, rotate the engine slowly by hand and visually check the belt for wear and damage. Excessively worn or/and damaged belts should be renewed . 
+ style.visibility
+
+Timing Belts & Valve Clearances Because of the complexity involved in checking and renewing timing belts and checking and adjusting valve clearances, these topics are not covered as part of this presentation. To maintain efficient operation of an engine it is important that these two items are regularly checked, and in particular, the timing belt, which must be renewed at NO LATER than the vehicle manufacturer’s specified renewal interval. Failure to neglect inspection and renewal of these items as recommended by the vehicle manufacturer usually ends in component failure, severe engine damage and very costly repair bills. 
+ style.visibility
+
+Emissions Testing When a vehicle has been fully serviced and the necessary parts replaced, the engine performance and efficiency should be restored to an ‘almost new’ condition. A way to confirm this is to check the exhaust emissions. This test gives a guide to the state of combustion of the engine and the exhaust emissions actually going out into the atmosphere. The test is more practical for petrol engine vehicles, although it can be beneficial for diesel engines to diagnose poor running faults. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Wheel Alignment As a check to confirm that all is well with the steering (and suspension), the wheel alignment is checked and adjusted if necessary to ensure that the vehicle runs straight on the road and that tyre wear is minimised. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Road Test When a vehicle has been serviced (or has had any significant or safety related work carried out), it is a usual practice to take the vehicle for a short road test. A road test covers approximately 2 to 3 miles and the vehicle is driven at normal LEGAL speeds for the area. During the test the functions of the steering, suspension, brakes and the engine should be checked however if a road test is not possible the vehicle brakes may be tested on a ‘rolling road’ type performance and brake tester . 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Disposal of Waste Most jobs carried out in a workshop generate waste materials in some form. Servicing generates waste components such as filters and general debris, also waste fluids. The majority of waste materials generated pose a risk to health and safety so must be disposed of correctly. It is against the law to dispose of workshop waste down drains and in general waste bins so all workshop waste, however generated must be disposed of legally, safely and correctly in accordance with COSHH. COSHH – Control of Substances Hazardous to Health. More information is available at https://www.hse.gov.uk/coshh 
+ style.visibility
+
+Finishing Off As a completion to any service, ensure that all the relevant boxes on the service sheet have been ticked to confirm that the job has been completed and that any defects and extra work required are also noted. 
+ Ensure that the details of the service have been entered on the relevant page of the vehicle service history book. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h style.visibility
+
+Summary and Objectives This presentation has covered the routine generally followed during a major service. Using the knowledge learned from this presentation, you should now be able to: State the method to take to carry out a thorough major service routine. Describe what to do at each stage of a major service. State the importance of safe and correct workshop practice to be taken also the importance of legislation relating to the disposal of waste materials. 
+ style.visibility

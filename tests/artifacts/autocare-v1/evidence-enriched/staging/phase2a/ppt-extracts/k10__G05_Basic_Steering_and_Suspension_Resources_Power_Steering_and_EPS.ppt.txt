@@ -1,0 +1,89 @@
+SOURCE: G05 Basic Steering and Suspension\Resources\Power Steering and EPS.ppt
+HASH: dd715a15145eb27a147adf66e7af2cee0ff47e8fa5676a965edc943ed7e5fb68
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+Power Steering Systems
+
+By Marc Hadfield
+
+===== SLIDE 2 =====
+The  Power Steering System
+
+Traditionally, the first power steering systems were Hydraulic.  They were powered by a pump driven by the engine. Whilst it’s a massive improvement over manual steering. It was far from perfect.  Can you name the main components on   a basic hydraulic p/s system and state 2 advantages of a power steering system?
+
+===== SLIDE 3 =====
+Hydraulic powersteering.
+
+===== SLIDE 4 =====
+Hydraulic pumpand belt
+
+reservoir
+
+Inner trackrod
+
+Pressure controlvalve
+
+Rack and pinion
+
+Universal joint
+
+Trackrod end
+
+Hydraulic powersteering.
+
+===== SLIDE 5 =====
+Hydraulic Power Steering SystemThis system is functional, but has design flaws:
+
+The pump needs power from the engine to drive it. We call this a Parasitic loss. It gives max flow/pressure to the steering system when its least needed.It gives the least flow/pressure when most needed. For example, Parking.Its bulky, prone to leaks and can lack feel. Maintenance is also required. Its no good for modern stop/start systems.
+
+===== SLIDE 6 =====
+Hydraulic power Steering System
+
+To try to rectify these short comings the system needed to be modified.This led to the introduction of the electro-hydraulic power steering system.
+
+===== SLIDE 7 =====
+Electro-Hydraulic Power Steering
+
+Electro-Hydraulic power steering uses an electric motor, instead of a belt driven pump. The rest of the system is similar to the previous setup.The motor can be controlled by an ECU. This means we can now vary the flow/pressure to suit all driving conditions.We switch off when not needed to save energy.
+
+===== SLIDE 8 =====
+Electro-Hydraulic Power Steering
+
+This precise control reduces power consumption from the engine. It reduces fuel consumption and emissions.More flexible fitment to a wider range of vehicles, no belts and pulleys required. Easier maintenance and reduced costs.Assistance can be momentarily increased to aid parking.
+
+===== SLIDE 9 =====
+Electro-Hydraulic Power Steering
+
+Technological advances and the need  for more safety critical items have seen this relatively new concept overhauled by a totally electrically operated steering system. We call this EPS. https://www.youtube.com/watch?v=_dqieiuXsr8
+
+===== SLIDE 10 =====
+Electric Power Steering
+
+This new concept has many advantages over the previous designs.
+
+===== SLIDE 11 =====
+Electric Power Steering
+
+Reduces power consumption even further. (3%+ fuel savings in tests)Its lighter, more compact and increases “feel” for the driver.ECU controlled and can be programmed to provide different levels of assistance. (speed sensitive)Fails safe with slightly increased input level from driver.
+
+===== SLIDE 12 =====
+Electric Power Steering
+
+Can integrate with other systems via CAN. -Electronic Stability Programmes and Self Park Systems.Supplies assistance when needed most such as parking, yet gives increased feel on motorways. It can still provide power assistance with the engine turned off. Great for modern hybrid and is perfect for use on full electric vehicles. The only real disadvantage is cost “if” a fault occurs in the later life of a vehicle.
+
+===== SLIDE 13 =====
+Electric Power Steering
+
+EPS is fully ECU controlled. Driver effort is sensed using a torque sensor thats mounted on the column. The ECU looks at this data, along with the road/engine speed via CAN data line. It then supplies varying electrical current to a DC motor. The motor provides the level of assistance required to the column or rack via a small gearbox. The electrical polarity is reversed by the ECU to enable the motor to rotate left and right. Some systems may use angle sensors.
+
+===== SLIDE 14 =====
+Electric Power Steering
+
+Basic system overview (Column type).
+
+===== SLIDE 15 =====
+Power Steering Faults
+
+What could cause heavy steering?What causes noisy power steering?How do you bleed hydraulic systems?Name 2 types of steering sensor?How does speed sensitive steering work?How does EPS change motor direction?State 2 advantages of Power steering?
+

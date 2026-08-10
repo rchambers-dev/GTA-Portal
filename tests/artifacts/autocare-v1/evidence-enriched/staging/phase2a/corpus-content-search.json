@@ -1,0 +1,695 @@
+{
+  "scannedFiles": 463,
+  "summary": {
+    "task1or2": {
+      "count": 6,
+      "samples": [
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G08 Customer Service and Sales/Resources/GROUP EIGHT  Task Sheet 1.docx",
+          "source": ".docx",
+          "snippet": "TOMER SERVICE NEEDS / STOCK CONTROL e-learning task sheet - Task 1 Instructions: Choose a vehicle from GTA workshop or the car park outside and note its registration number. Task 1: Using the Internet"
+        },
+        {
+          "file": ".tmp-live/mv13.docx",
+          "source": ".docx",
+          "snippet": "tests: Test 1______% Test 2______% Test 3______% 0-6 Months Task 1: Health and safety practices in vehicle maintenance Task 2 : Using mechanical measuring equipment Task 3 : Using electrical measuring"
+        },
+        {
+          "file": ".tmp-live/prac/README_Task_List_v2.0.txt",
+          "source": ".txt",
+          "snippet": "- No overlapping form widgets, clipped fields or stale v1.0/Task 1/Task 2 wording. - Text fields, radio buttons and checkboxes tested for visible form appearances."
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lm_ceb8402d6d74_73.txt",
+          "source": ".txt",
+          "snippet": "MER SERVICE NEEDS / STOCK CONTROL e-learning task sheet - Task 1 Instructions: Choose a vehicle from GTA workshop or the car park outside and note its registration number. Task 1: Using the Int"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_mv13_tracking_ca25ba9aaad8.txt",
+          "source": ".txt",
+          "snippet": "sts: Test 1______% Test 2______% Test 3______% 0-6 Months Task 1: Health and safety practices in vehicle maintenance Task 2 : Using mechanical measuring equipment Task 3 : Using electrical measu"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_prac_0e9b7ab8404b.txt",
+          "source": ".txt",
+          "snippet": "- No overlapping form widgets, clipped fields or stale v1.0/Task 1/Task 2 wording. - Text fields, radio buttons and checkboxes tested for visible form appearances."
+        }
+      ]
+    },
+    "cea": {
+      "count": 6,
+      "samples": [
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G11 Advance Steering and Suspension/Group 11 session 3 4 wheel align.docx",
+          "source": ".docx",
+          "snippet": "shop practical – 4 - wheel alignment assessment and aim for CEA standard . 0 0 To recap and understand Geometry terminology and what each does . Check fully familiar and confident with our equipment a"
+        },
+        {
+          "file": ".tmp-live/guide.docx",
+          "source": ".docx",
+          "snippet": "oing curriculum Group-based SOW v1.1 | 14 training Groups | CEA model Receiving curriculum Block-based SOW v4.4 | Blocks 1–10 training | Blocks 11–12 gateway/EPA Planned programme 112 calendar weeks |"
+        },
+        {
+          "file": ".tmp-live/mv13.docx",
+          "source": ".docx",
+          "snippet": "and Hybrid Awareness Minimum 1 of 1 task are required under CEA conditions Attempt No. E/N Pass Date Group knowledge test ______% Task 1: Locating electric/hybrid vehicle components 1 2 CEA Equality a"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lm_7656c297a800_88.txt",
+          "source": ".txt",
+          "snippet": "shop practical – 4 - wheel alignment assessment and aim for CEA standard . 0 0 To recap and understand Geometry terminology and what each does . Check fully familiar and confident with our equipmen"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_mv13_tracking_ca25ba9aaad8.txt",
+          "source": ".txt",
+          "snippet": "nd Hybrid Awareness Minimum 1 of 1 task are required under CEA conditions Attempt No. E/N Pass Date Group knowledge test ______% Task 1: Locating electric/hybrid vehicle components 1 2 CEA E"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_transition_guide_438fe3c119df.txt",
+          "source": ".txt",
+          "snippet": "ing curriculum Group-based SOW v1.1 | 14 training Groups | CEA model Receiving curriculum Block-based SOW v4.4 | Blocks 1–10 training | Blocks 11–12 gateway/EPA Planned programme 112 calendar wee"
+        }
+      ]
+    },
+    "jobcard": {
+      "count": 248,
+      "samples": [
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G03 Wheels and Tyres/Lesson Plan 2 - Wheels & Tyres.docx",
+          "source": ".docx",
+          "snippet": "TJ logs and add 10 hours . Complete Brain warmer . Intro to job card creation and 251 sheet. A ssessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G11 Advance Steering and Suspension/Group 11 session 1 electronic steering.docx",
+          "source": ".docx",
+          "snippet": "121015 Brain warmers, Update OTJ hours log. Review and sign job cards / upload to Log book . Introduce learners to the aims and objectives for the day. Are Contact Sheets back? Carryout initial assess"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G11 Advance Steering and Suspension/Group 11 session 2 ADAS.docx",
+          "source": ".docx",
+          "snippet": "0 % OT J log hours. Complete brain warmers. Review and sign job cards as required and upload. Check action plans are current/signed . Introduce learners to the aims and objectives for the day. Brief l"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G11 Advance Steering and Suspension/Group 11 session 3 4 wheel align.docx",
+          "source": ".docx",
+          "snippet": "warmers. Work on extra evidence checklist. Review and sign job cards. Introduce learners to the aims and objectives for the day. Recap of last week. 0 0 Review and update 20% OTJT hours log. Brain wa"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G11 Advance Steering and Suspension/Group 11 session 4 Advanced steering ver 2.docx",
+          "source": ".docx",
+          "snippet": "00 121920 Review and update OTJT hours log. Review and sign job cards. Introduce learners to the aims and objectives for the day. 0 0 Review and update OTJT hours log. Review and sign job cards. Intro"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G11 Advance Steering and Suspension/Group 11 session 5 Advanced steering and suspension ver 2.docx",
+          "source": ".docx",
+          "snippet": "00 121920 Review and update OTJT hours log. Review and sign job cards. Introduce learners to the aims and objectives for the day. 0 0 Review and update OTJT hours log. Review and sign job cards. Intro"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G12 Exhaust and Emissions/Group 12 Exhausts and Emissions plan 1.docx",
+          "source": ".docx",
+          "snippet": "Aims left 16510 Track evidence into E logbooks, complete a job card as req , embed functional skills. Introduction to Light vehicle exhaust system layouts , component names and emissions . Introducti"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G12 Exhaust and Emissions/Group 12 Exhausts and Emissions plan 2.docx",
+          "source": ".docx",
+          "snippet": "Aims left 16510 Track evidence into E logbooks, complete a job card as req , embed functional skills. Introduction to SI Fuel injection systems, SPI and MPI layouts and basic components. Intro to mea"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G14 Vehicle Inspection/Group 14 Session 1.docx",
+          "source": ".docx",
+          "snippet": "ogs and evidence. F unctional skills as required. Completed job cards. 0 0 Register. Review Logbooks, OTJ Logs and evidence. F unctional skills as required. Completed job cards. Session 2 -29210 12255"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G14 Vehicle Inspection/Group 14 Session 2.docx",
+          "source": ".docx",
+          "snippet": "Logs and evidence. Functional skills as required. Completed job cards. 0 0 Register. Review Logbooks, OTJ Logs and evidence. Functional skills as required. Completed job cards. Session 2 -29210 47625"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G14 Vehicle Inspection/Group 14 Session 3.docx",
+          "source": ".docx",
+          "snippet": "Logs and evidence. Functional skills as required. Completed job cards. 0 0 Register. Review Logbooks, OTJ Logs and evidence. Functional skills as required. Completed job cards. -29210 151129 Introduct"
+        },
+        {
+          "file": ".tmp-live/guide.docx",
+          "source": ".docx",
+          "snippet": "eeks delivered, CEA attempts and results, knowledge checks, job cards, e-logbook evidence, employer evidence and actual OTJ at the transfer date. Tutor/assessor 2 Map evidence to Blocks Use Sections 4"
+        },
+        {
+          "file": ".tmp-live/lir/Block_10_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "nfirm concerns; updates; parts; measurements; calculations; job cards; handover. B BEHAVIOUR Area 5 Work safely, independently and professionally with others. Workplace examples: Own quality; manage t"
+        },
+        {
+          "file": ".tmp-live/lir/Block_1_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "Workplace examples: Multimeter use; battery/circuit checks; job cards; defect reports; handovers. B BEHAVIOUR Area 5 Put safety, housekeeping and care of equipment first. Workplace examples: Follow co"
+        },
+        {
+          "file": ".tmp-live/lir/Block_2_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "ask, your role and result Evidence references - for example job card, task, observation, photo, feedback or portfolio reference Which area changed most, and why? What still needs practice, support or"
+        },
+        {
+          "file": ".tmp-live/lir/Block_3_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "ace risks. Workplace examples: Source/store parts; complete job cards; gain approval; manage waste and spills. B BEHAVIOUR Area 5 Maintain an organised, safe and environmentally responsible workplace."
+        },
+        {
+          "file": ".tmp-live/lir/Block_4_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "ntify hazards; control/referral; updates; estimates; parts; job cards; QA. B BEHAVIOUR Area 5 Prioritise safety and stop or refer work beyond authority. Workplace examples: Control the area; follow pr"
+        },
+        {
+          "file": ".tmp-live/lir/Block_5_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "ask, your role and result Evidence references - for example job card, task, observation, photo, feedback or portfolio reference Which area changed most, and why? What still needs practice, support or"
+        },
+        {
+          "file": ".tmp-live/lir/Block_6_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "ask, your role and result Evidence references - for example job card, task, observation, photo, feedback or portfolio reference Which area changed most, and why? What still needs practice, support or"
+        },
+        {
+          "file": ".tmp-live/lir/Block_7_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "lex work. Workplace examples: Technical updates; estimates; job cards; road-test feedback; suppliers; workshop flow. B BEHAVIOUR Area 5 Take ownership of safe, accurate and high-quality work. Workplac"
+        }
+      ]
+    },
+    "observation": {
+      "count": 22,
+      "samples": [
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS01_Week_1_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "correct reporting route. Hazard record; learner reflection; tutor observation notes; workplace action slip. 15:00-16:00 Non-eligible Foundation Skills programme overview, contact-sheet completion, gro"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS02_Week_2_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "ions from FS01 and a tool-condition sorting task. • During: Tutor observation, questioning and correction during demonstrations and practical work. • End: Completed risk assessment/tool check and verb"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS09_Week_9_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "e. Targeted practical/theory resources; improvement record; observation sheet. 12:15-12:45 Lunch Scheduled lunch. Excluded from OTJ. - 12:45-14:15 Non-eligible Emergency First Aid in the Workplace qua"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_015_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "re options, check compatibility and confirm specifications. Tutor observation used to assess accuracy, attention to detail and correct selection processes. Observe process and safe working. Support wi"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_021_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "tion, identify concerns and complete booking documentation. Tutor observation used to assess questioning techniques, accuracy of information and professionalism. Observe process and safe working. Supp"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_023_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "and focus on speed without compromising safety or quality. Tutor observation used to assess technique and efficiency. Observe process and safe working. Support with staged checklist. Stretch: justify"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_025_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "e systems to confirm correct components and specifications. Tutor observation used to assess accuracy and attention to detail. Observe process and safe working. Support with staged checklist. Stretch:"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_026_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "uracies could impact workshop operations or customer trust. Tutor observation used to assess attention to detail and understanding of documentation standards. Observe process and safe working. Support"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_027_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "h as organising tools, cleaning areas and improving layout. Tutor observation used to assess safe working and application of principles. Observe process and safe working. Support with staged checklist"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_028_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "stimate labour time, select parts and produce a total cost. Tutor observation used to assess accuracy and understanding of pricing structure. Observe process and safe working. Support with staged chec"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_034_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "s. Evidence generated through completed inspection reports, tutor observation and questioning responses. Exit check and feedback. Confirm evidence action. Stretch: explain improvement and transfer to"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_05b8c7ba4d4b.txt",
+          "source": ".txt",
+          "snippet": "re options, check compatibility and confirm specifications. Tutor observation used to assess accuracy, attention to detail and correct selection processes. Observe process and safe working. Support w"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_5792e033a5a0.txt",
+          "source": ".txt",
+          "snippet": ". Targeted practical/theory resources; improvement record; observation sheet. 12:15-12:45 Lunch Scheduled lunch. Excluded from OTJ. - 12:45-14:15 Non-eligible Emergency First Aid in the Workp"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_72e6fc21ec56.txt",
+          "source": ".txt",
+          "snippet": "tion, identify concerns and complete booking documentation. Tutor observation used to assess questioning techniques, accuracy of information and professionalism. Observe process and safe working. Sup"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_8f67680b4ed9.txt",
+          "source": ".txt",
+          "snippet": "orrect reporting route. Hazard record; learner reflection; tutor observation notes; workplace action slip. 15:00-16:00 Non-eligible Foundation Skills programme overview, contact-sheet completion,"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_982a0c0a6c64.txt",
+          "source": ".txt",
+          "snippet": "stimate labour time, select parts and produce a total cost. Tutor observation used to assess accuracy and understanding of pricing structure. Observe process and safe working. Support with staged che"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_a1de2dadb565.txt",
+          "source": ".txt",
+          "snippet": "ons from FS01 and a tool-condition sorting task. • During: Tutor observation, questioning and correction during demonstrations and practical work. • End: Completed risk assessment/tool check and ver"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_b406b1cd2527.txt",
+          "source": ".txt",
+          "snippet": "e systems to confirm correct components and specifications. Tutor observation used to assess accuracy and attention to detail. Observe process and safe working. Support with staged checklist. Stretch"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_c58ded1c80a7.txt",
+          "source": ".txt",
+          "snippet": "s. Evidence generated through completed inspection reports, tutor observation and questioning responses. Exit check and feedback. Confirm evidence action. Stretch: explain improvement and transfer to"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_d43af81d50ff.txt",
+          "source": ".txt",
+          "snippet": "uracies could impact workshop operations or customer trust. Tutor observation used to assess attention to detail and understanding of documentation standards. Observe process and safe working. Suppor"
+        }
+      ]
+    },
+    "tyreStrip": {
+      "count": 6,
+      "samples": [
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G03 Wheels and Tyres/Lesson Plan 2 - Wheels & Tyres.docx",
+          "source": ".docx",
+          "snippet": "v al and refitting of tyre s , discuss puncture repairs and wheel balanc ing. To discuss health and safety practice required when removing and fitting tyres . Ensure aware of safe jacking/support, SWL"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G03 Wheels and Tyres/Resources/Wheels_and_Tyres_Initial_Assessment_Marking_Sheet_with_Answers.docx",
+          "source": ".docx",
+          "snippet": "ed safely, and disposed of through licensed recycling. 6 6. Tyre changer, bead breaker, wheel balancer, or valve core tool. 7 7. It detects imbalance and adds weights to ensure smooth rotation. 8 8. A"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lm_8b1b94878563_7.txt",
+          "source": ".txt",
+          "snippet": "v al and refitting of tyre s , discuss puncture repairs and wheel balanc ing. To discuss health and safety practice required when removing and fitting tyres . Ensure aware of safe jacking/support, S"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lm_be902d1093ad_14.txt",
+          "source": ".txt",
+          "snippet": "safely, and disposed of through licensed recycling. 6 6. Tyre changer, bead breaker, wheel balancer, or valve core tool. 7 7. It detects imbalance and adds weights to ensure smooth rotation. 8"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/ppt-extracts/tyres__G03_Wheels_and_Tyres_Resources_Tire_Changing_and_Wheel_Balancing.ppt.txt",
+          "source": ".txt",
+          "snippet": "SOURCE: G03 Wheels and Tyres\\Resources\\Tire Changing and Wheel Balancing.ppt HASH: 10e45332013b1279de8e6a253ac6a7359353d62779824469563bbed3abc5d4ad METHOD: powerpoint_com_slidetext_v1 ===== SL"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/ppt-extracts/tyres__G03_Wheels_and_Tyres_Resources_Tyres.ppt.txt",
+          "source": ".txt",
+          "snippet": "hop: Identify a safe place to jack and support a vehicle.Remove and refit a tyre safely on our tyre machine as a group.Have a go at using the balancing machine as a group. End ===== SLIDE 19"
+        }
+      ]
+    },
+    "tyreRepairPrac": {
+      "count": 7,
+      "samples": [
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G03 Wheels and Tyres/Lesson Plan 2 - Wheels & Tyres.docx",
+          "source": ".docx",
+          "snippet": "es. To carry out remov al and refitting of tyre s , discuss puncture repairs and wheel balanc ing. To discuss health and safety practice required when removing and fitting tyres . Ensure aware of safe"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G03 Wheels and Tyres/Resources/Wheels_and_Tyres_Initial_Assessment_Level2.docx",
+          "source": ".docx",
+          "snippet": "ore refitting a new tyre? 13. Explain the correct method of puncture repair according to BS 159 standards. 14. Why must valves be replaced when fitting new tyres? 15. Describe the importance of wheel"
+        },
+        {
+          "file": ".tmp-live/mv13.docx",
+          "source": ".docx",
+          "snippet": "Task 1: Remove and install tyres 1 2 CEA Task 2: Carry out puncture repair 1 2 CEA Task 3: Replace a TPMS valve 1 2 CEA Task 4: Balance all four wheels 1 2 CEA Task 5: Repair run-flat tyre 1 2 CEA G"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lm_8b1b94878563_7.txt",
+          "source": ".txt",
+          "snippet": "s. To carry out remov al and refitting of tyre s , discuss puncture repairs and wheel balanc ing. To discuss health and safety practice required when removing and fitting tyres . Ensure aware of sa"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lm_d1bbe6165db7_13.txt",
+          "source": ".txt",
+          "snippet": "e refitting a new tyre? 13. Explain the correct method of puncture repair according to BS 159 standards. 14. Why must valves be replaced when fitting new tyres? 15. Describe the importance of wh"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_mv13_tracking_ca25ba9aaad8.txt",
+          "source": ".txt",
+          "snippet": "k 1: Remove and install tyres 1 2 CEA Task 2: Carry out puncture repair 1 2 CEA Task 3: Replace a TPMS valve 1 2 CEA Task 4: Balance all four wheels 1 2 CEA Task 5: Repair run-flat tyr"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/ppt-extracts/tyres__G03_Wheels_and_Tyres_Resources_Tyre_Inspection_and_Repair.ppt.txt",
+          "source": ".txt",
+          "snippet": "e wheel and tyre assembly may be damaged. Knowing how to repair a tyre is an important skill. Next > Repair Sean MacEntee Replace Charles Williams If the tyre fails to hold air af"
+        }
+      ]
+    },
+    "isolation": {
+      "count": 3,
+      "samples": [
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/ppt-extracts/ev__G02_Electric_Hybrid_Awareness_Resources_Safety_in_High_Voltage_Vehicles.ppt.txt",
+          "source": ".txt",
+          "snippet": "uire it to be disabled. Next > To do this, remove the service plug or open the safety switch. Wait five minutes for all energy storage devices, such as capacitors, to discharge. Use a mult"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/ppt-extracts/ev__G02_Electric_Hybrid_Awareness_Resources_Working_on_High_Voltage_Vehicles.ppt.txt",
+          "source": ".txt",
+          "snippet": "be judged, on an individual case basis. 1. Isolate 3. Verify that it is not live 2. Safeguard against reconnection 4. Earth and short circuit 5. Shroud and safeguard adjacent live parts"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/ppt-extracts/ev__G07_Starting_and_Charging_Systems_Resources_Safety_in_High_Voltage_Vehicles.ppt.txt",
+          "source": ".txt",
+          "snippet": "uire it to be disabled. Next > To do this, remove the service plug or open the safety switch. Wait five minutes for all energy storage devices, such as capacitors, to discharge. Use a mult"
+        }
+      ]
+    },
+    "stock": {
+      "count": 26,
+      "samples": [
+        {
+          "file": ".tmp-live/guide.docx",
+          "source": ".docx",
+          "snippet": "S S S S G8 Customer Service and Sales D D S S S D D S S G9 Stock Management S D S S S S D S S G10 Advanced Braking S S D D D D S G11 Advanced Steering and Suspension S D D D D D S G12 Exhaust and Emi"
+        },
+        {
+          "file": ".tmp-live/lir/Block_8_Learning_Impact_Record_v2.1.pdf",
+          "source": ".pdf",
+          "snippet": "es: Parts/warranty; estimates; authorisation; audit trails; inventory; safety; quality. S SKILL Area 3 Establish root cause and relate test results to vehicle condition. Workplace examples: Logical te"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_015_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "1.00 OTJ Tutor-led session covering supplier communication, parts sourcing processes and use of catalogues or digital systems. Explanation of how to identify correct parts using vehicle information su"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_039_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 39 Lesson Plan Goods-in checks, parts storage and consumables control | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group /"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_055_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 55 Lesson Plan Technical parts sourcing for electrical and diagnostic repairs | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / d"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_056_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "rs examine job cards, inspection sheets, complaint records, parts orders and handover notes to identify where information is missing, unclear or inconsistent. Observe process and safe working. Support"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_059_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "on customers and workshop planning. The tutor explains how parts orders move from request to supplier confirmation, delivery, goods-in, allocation to job and final fitting. Baseline questions; correc"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_065_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "ng supplier performance, cost control and escalation within parts sourcing. The tutor explains how supplier reliability affects workshop productivity, customer waiting times and repair quality. Baseli"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_075_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "09:30-10:30 1.00 OTJ Tutor-led session covering specialist parts sourcing, alternative component selection and the evidence required to support warranty decisions. Baseline questions; correct misconc"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_079_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 79 Lesson Plan Inventory accuracy, obsolescence review and safe disposal | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / grou"
+        },
+        {
+          "file": ".tmp-live/mv13.docx",
+          "source": ".docx",
+          "snippet": "ing with customer needs and relationships 1 2 CEA GROUP 9 : Stock Management Minimum 1 of 1 task are required under CEA conditions Group knowledge test ______% Task 1: Sourcing parts for servicing 1 2"
+        },
+        {
+          "file": ".tmp-live/sow.docx",
+          "source": ".docx",
+          "snippet": "gain authorisation before work starts. Duty 9 Contribute to stock management and safe storage of stock and consumables. Duty 10 Promote the safety of self, customers, colleagues and the environment. P"
+        },
+        {
+          "file": ".tmp-live/spr/Block_10_Skills_Progress_Review_v2.0.pdf",
+          "source": ".pdf",
+          "snippet": "uties. Workplace examples: Routine maintenance; components; parts sourcing; procedures; documentation. 4 Produce accurate evidence and reflect on performance. Workplace examples: Measurements; calcula"
+        },
+        {
+          "file": ".tmp-live/spr/Block_4_Skills_Progress_Review_v2.0.pdf",
+          "source": ".pdf",
+          "snippet": "ty parts, suppliers and stock controls. Workplace examples: Warranty returns; supplier escalation; goods-in checks; safe parts storage. 5 Apply quality, documentation and workshop-safety controls. Wor"
+        },
+        {
+          "file": ".tmp-live/spr/Block_8_Skills_Progress_Review_v2.0.pdf",
+          "source": ".pdf",
+          "snippet": "lete handover records. 5 Control specialist parts, quality, inventory and safety. Workplace examples: Warranty evidence; alternatives; equipment care; obsolescence; near-miss response. START: What can"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_05b8c7ba4d4b.txt",
+          "source": ".txt",
+          "snippet": ".00 OTJ Tutor-led session covering supplier communication, parts sourcing processes and use of catalogues or digital systems. Explanation of how to identify correct parts using vehicle information su"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_17e206e30d85.txt",
+          "source": ".txt",
+          "snippet": "ng supplier performance, cost control and escalation within parts sourcing. The tutor explains how supplier reliability affects workshop productivity, customer waiting times and repair quality. Basel"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_25bfc8d6c56b.txt",
+          "source": ".txt",
+          "snippet": "Autocare Technician Level 2 - Week 39 Lesson Plan Goods-in checks, parts storage and consumables control | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / grou"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_4bbe6042640a.txt",
+          "source": ".txt",
+          "snippet": "09:30-10:30 1.00 OTJ Tutor-led session covering specialist parts sourcing, alternative component selection and the evidence required to support warranty decisions. Baseline questions; correct miscon"
+        },
+        {
+          "file": "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts/res_lp_780e7e3d722b.txt",
+          "source": ".txt",
+          "snippet": "Autocare Technician Level 2 - Week 79 Lesson Plan Inventory accuracy, obsolescence review and safe disposal | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / g"
+        }
+      ]
+    },
+    "weekLink": {
+      "count": 274,
+      "samples": [
+        {
+          "file": ".tmp-live/guide.docx",
+          "source": ".docx",
+          "snippet": "0 training | Blocks 11–12 gateway/EPA Planned programme 112 calendar weeks | 113 sessions | 611.50 eligible OTJ Authority GTA SOW Design and RPL Adjustment Guide v1.7 Critical control. This is an on-p"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS01_Week_1_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS01 - Week 1 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS01"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS02_Week_2_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS02 - Week 2 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS02"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS03_Week_3_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS03 - Week 3 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS03"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS04_Week_4_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS04 - Week 4 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS04"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS05_Week_5_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS05 - Week 5 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS05"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS06_Week_6_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS06 - Week 6 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS06"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS07_Week_7_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS07 - Week 7 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS07"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS08_Week_8_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS08 - Week 8 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS08"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS09_Week_9_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS09 - Week 9 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS09"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS10_Week_10_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "Foundation Skills FS10 - Week 10 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS10"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_011_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 11 Lesson Plan Customer Service Scenarios | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Pr"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_012_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 12 Lesson Plan Electrical System Inspection | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_013_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 13 Lesson Plan Engine Repairs | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / st"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_014_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 14 Lesson Plan Tyre Pressure Monitoring Systems | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / d"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_015_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 15 Lesson Plan Supplier Liaison | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme /"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_016_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 16 Lesson Plan Duties 1 / 2: Intake plus Inspection | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_017_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 17 Lesson Plan Advanced Brake Diagnostics | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Pr"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_018_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 18 Lesson Plan Wheel Alignment - Advanced | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Pr"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_019_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "Autocare Technician Level 2 - Week 19 Lesson Plan Stock Auditing | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / st"
+        }
+      ]
+    },
+    "steering": {
+      "count": 69,
+      "samples": [
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G05 Basic Steering and Suspension/Lesson Plan 10 - Introduction to power Steering.docx",
+          "source": ".docx",
+          "snippet": "nitial instruction ) Key words 0 48260 Hydraulic, Pressure, EPAS, Speed Sensitive 0 0 Hydraulic, Pressure, EPAS, Speed Sensitive Differentiation -10160 60325 Engagement to use a variety of different m"
+        },
+        {
+          "file": "Desktop/Autocare Learning Materials/ACS L2 Lesson plans and resources/G11 Advance Steering and Suspension/Group 11 session 1 electronic steering.docx",
+          "source": ".docx",
+          "snippet": "of the electronic steering systems Name 2 sensor s used for EPS vehicle s to allow steering to operate correctly Demonstrate how to use basic diagnostic equipment and describe faults two typical fault"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS01_Week_1_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS02_Week_2_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS03_Week_3_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS04_Week_4_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS05_Week_5_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS06_Week_6_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS07_Week_7_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS08_Week_8_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS09_Week_9_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/01_Shared_Foundation_Skills_FS01-FS10_v1.2__Foundation_Skills_FS10_Week_10_Lesson_Plan_v1.2.docx",
+          "source": ".docx",
+          "snippet": "nt for Learning - checks used to inform teaching and next steps. OTJ / OTJT Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties. MME Moo"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_020_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "independence, workplace impact, evidence and agreed next steps. Trainer preparation and delivery control Check the work area, PPE/RPE, tools/equipment, technical information, learner support needs an"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_030_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "independence, workplace impact, evidence and agreed next steps. Trainer preparation and delivery control Check the work area, PPE/RPE, tools/equipment, technical information, learner support needs an"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_040_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "independence, workplace impact, evidence and agreed next steps. Trainer preparation and delivery control Check the work area, PPE/RPE, tools/equipment, technical information, learner support needs an"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_046_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "utor explains how poor process discipline leads to missed steps, incorrect repairs and customer dissatisfaction. Baseline questions; correct misconceptions. Support with visuals/glossary. Stretch: con"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_050_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "independence, workplace impact, evidence and agreed next steps. Trainer preparation and delivery control Check the work area, PPE/RPE, tools/equipment, technical information, learner support needs an"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_060_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": ", how environmental incidents should be reported and what steps should be taken to prevent recurrence. Exit check and feedback. Confirm evidence action. Stretch: explain improvement and transfer to th"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_061_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "ng vehicle concerns, clarifying symptoms, explaining next steps and managing expectations around inspection or diagnostic timescales. Observe process and safe working. Support with staged checklist. S"
+        },
+        {
+          "file": ".tmp-live/lp/02_Specialist_Lesson_Plans__Autocare_L2_Week_070_Lesson_Plan_v4.4.docx",
+          "source": ".docx",
+          "snippet": "independence, workplace impact, evidence and agreed next steps. Trainer preparation and delivery control Check the work area, PPE/RPE, tools/equipment, technical information, learner support needs an"
+        }
+      ]
+    }
+  }
+}

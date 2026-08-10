@@ -1,0 +1,354 @@
+PRACTICAL SUPPORT MATERIAL AND APPRENTICE ASSESSMENT SUMMARY
+
+ Gateway 2
+
+ Autocare Technician
+ Apprenticeship Standard
+
+ ST0499/AP01
+
+ A SSESSMENT SUMMARY
+ Apprentice Name:
+
+ Reg No:
+
+ Gateway 2
+ Gateway Component Assessment
+ Tick Chosen
+ Date Completed
+ Assessor Pin
+ Assessor Signature:
+ Skills tests Group A (All skills test for group A must be completed)
+ Vehicle Safety Inspection
+ GW2 AC01
+
+ Carry out Four-Wheel Alignment
+ GW2 AC02
+
+ Emissions Related F ault
+ GW2 AC03
+
+ Online Knowledge Test
+ Result
+
+ ST0499-AP01GW2K
+
+ Declaration:
+ I confirm that all learning outcomes have been met, all assessments have been completed in full and that the A pprentice has complete d all requirements for Gateway 2
+
+ Assessor Name:
+ (Please Print)
+
+ Assessor P in :
+
+ Assessor Signature:
+
+ Date:
+
+ Internal Quality Assurer Name: (Please Print)
+
+ Internal Quality Assurer P in :
+
+ Internal Quality Assurer Signature:
+
+ Date:
+
+ Table of Contents
+
+ TOC \o "1-1" \h \z \u GW2AC01 Carry Out a Vehicle Safety Inspection PAGEREF _Toc516749985 \h 4
+
+ GW2AC02 Carry out Four-Wheel Alignment PAGEREF _Toc516749987 \h 6
+
+ GW2AC03 Diagnose an Emissions R elated F ault PAGEREF _Toc516749989 \h 8
+
+ APPRENTICE INSTRUCTIONS
+ Ref: GW 2 AC01
+ Carry Out a Vehicle Safety Inspection
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment
+ To demonstrate a methodical procedure when carrying out a vehicle safety inspection
+ To demonstrate your knowledge and vehicle inspection techniques
+ To correctly complete a vehicle inspection sheet recording any vehicle or system defects identified
+ To correctly complete the Apprentice Assessment Record including details specific to the system inspected during your assessment
+
+ Materials you need at the workstation:
+ Light Vehicle
+ Vehicle Safety Inspection Checklist
+ General and specialist tools and equipment made available by your assessor relevant for the task
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to c onduct a safety inspection to ensure the vehicle is safe to use and meets with the minimum legal requirements
+
+ Ensure your working environment is safe and the vehicle is correctl y prepared before starting work
+
+ Carry out a vehicle safety inspection as detailed in the Inspection Sheet provided by your assessor
+
+ Complete the Vehicle Safety Inspection Sheet, including all vehicle details and reporting any vehicle defects fou nd during the safety inspection
+
+ Note: Do not repair any vehicle defects identified
+
+ VEHICLE SAFETY INSPECTION CHECKLIST
+ Vehicle Model:
+ Vehicle M ake:
+ Mileage:
+ Engine S ize:
+ Chassis Number:
+ Vehicle Checks
+
+ Observations / Recommendations
+ General vehicle condition
+ 1
+ Visual inspection of vehicle exterior paint and bodywork – Complete silhouette of vehicle
+
+ 2
+ General condition of vehicle e.g. corrosion
+
+ Access
+ 3
+ Operation of all doors including boot access
+
+ 4
+ Operation of bonnet release and security mechanism
+
+ 5
+ Check fuel cap security and condition
+
+ In vehicle checks
+ 6
+ Operation and integrity of door mirrors and rear view mirror
+
+ 7
+ Check security, condition and operation of seat belts
+
+ 8
+ Check windscreen for damage
+
+ 9
+ Operation, condition o f windscreen washers and wipers
+
+ 10
+ Operation of all exterior lamps, horns, and interior warning lights
+ (use of assistant may be required)
+
+ 11
+ Check security, condition and operation of handbrake
+
+ 12
+ Check operation of service brake
+
+ 13
+ Check security, free play and operation of steering mechanism
+
+ 14
+ Operation of power assisted steering
+
+ 15
+ Check battery security, condition and terminal integrity (NOT CHARGE)
+
+ 16
+ Visual check - Brake, fuel, clutch pipes, all fluid levels unions for chafing, corrosion, leaks
+
+ 17
+ Check fluid or oil leaks from engine and transmission system
+
+ Vehicle raised checks
+ 18
+ Check condition/ security of road wheels and tyres ( inc spare) – record details below
+
+ 19
+ Check condition of wheel bearings
+
+ 20
+ Visual check of suspension component condition
+
+ 21
+ Check brake component condition (where visible)
+
+ 22
+ Check exhaust system/fuel system for security and leakage
+
+ 23
+ Check external oil leaks from engine and transmission and final drive system
+
+ Additional comments (If required)
+
+ Apprentice N ame:
+ Apprentice S ignature:
+ Assessor S ignature :
+ Assessor Pin:
+ Date:
+
+ APPRENTICE INSTRUCTIONS
+ Ref: GW 2 AC0 2
+ Carry out Four-Wheel A lignment
+
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment
+ To demonstrate a methodical p rocedure when carrying out four- wheel alignment
+ To demonstrate your knowledge and ability to inspect vehicle systems for wear and damage
+ To demonstrate your knowledge and ability to carry out wheel alignment pre-checks
+ To demonstrate you knowledge and ab ility to measure and adjust four-wheel alignment
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment
+
+ Materials you need at the workstation:
+ Vehicle (not rig)
+ Wheel alignment equipment
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required carry out four- wheel alignment including pre-checks and adjustments.
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctl y prepared before starting work
+
+ Carry out four-wheel alignment pre-checks
+
+ Carry out four- wheel alignment comparing vehicle specification to manufacturer’s data. DO NOT ADJUST
+
+ Reinstate the vehicle and work area to a pre-assessment condition
+
+ Four-Wheel Alignment Report
+
+ RECORDED MEASUREMENTS
+ N/S/F
+
+ O/S/F
+ Camber
+
+ Camber
+ Caster
+
+ Total Front Toe
+
+ Caster
+ Toe
+
+ Toe
+ SAI
+
+ SAI
+
+ Thrust Line / Angle
+
+ N/S/R
+
+ O/S/R
+ Camber
+
+ Total Rear Toe
+
+ Camber
+ Toe
+
+ Toe
+ (Highlight clearly with a X any measurements that are outside of Manufacturer’s specifications)
+
+ MANUFACTURERS RECOMMENDED SETTINGS
+ N/S/F
+
+ O/S/F
+ Camber
+
+ Camber
+ Caster
+
+ Total Front Toe
+
+ Caster
+ Toe
+
+ Toe
+ SAI
+
+ SAI
+
+ Thrust Line / Angle
+
+ N/S/R
+
+ O/S/R
+ Camber
+
+ Total Rear Toe
+
+ Camber
+ Toe
+
+ Toe
+
+ APPRENTICE INSTRUCTIONS
+ Ref: GW 2 AC0 3
+ Emissions Related F ault
+
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment
+ To demonstrate a methodical procedure when carrying out your diagnosis
+ To demonstrate your knowledge and ability to use diagnostic equipment and live data
+ To demonstrate your knowledge and ability to use emission testing equipment and interpret results
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment
+
+ Materials you need at the workstation:
+ Vehicle (not rig)
+ Emission testing equipment
+ Diagnostic scan tool with live data capability
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to diagnose an emission system related fault using emission testing and diagnostic equipment.
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctl y prepared before starting work
+
+ Carry out a vehicle emissions test and interpret the results
+
+ Use a diagnostic tool to retrieve faults codes and observe live data to verify the fault
+
+ Report your findings and rec ommendations for repair to your assessor
+
+ Tighten all components to 50% (half) of the torque setting specified ensuring you record the CORRECT settings in the Apprentice Assessment Record sheet
+
+ Reinst ate the vehicle and work area to a pre-assessment condition
+
+ A PPRENTICE A SSESSMENT RECORD
+ Ref: GW2AC03
+ Diagnose an Emissions Related Fault
+ Vehicle Model:
+ Vehicle M ake:
+ Vehicle Reg:
+ Mileage:
+ Engine S ize:
+ Chassis Number:
+ Brief description of your diagnostic process:
+
+ Brief description of the testing methods used to verify the fault:
+ Fault identified and recommendations for repair:
+ PPE worn and special precautions taken
+ List all technical data required for task
+
+ Recorded
+ CO:
+ HC:
+ NoX :
+
+ Torque settings
+
+ Readings / test results
+
+ Fault codes retrieved:
+ Special tools including any required calibration :
+ Any additional comments :
+
+ Apprentice N ame:
+ Apprentice S ignature:
+ Assessor S ignature :
+ Assessor Pin:
+ Date:

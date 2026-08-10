@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "tyres",
+    "priority":  1,
+    "whySelected":  "S9 remove/replace/balance core teaching deck",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G03 Wheels and Tyres\\Resources\\Tire Changing and Wheel Balancing.ppt",
+    "relativePath":  "G03 Wheels and Tyres\\Resources\\Tire Changing and Wheel Balancing.ppt",
+    "sourceFilename":  "Tire Changing and Wheel Balancing.ppt",
+    "exists":  true,
+    "contentHashSha256":  "10e45332013b1279de8e6a253ac6a7359353d62779824469563bbed3abc5d4ad",
+    "byteLength":  10355200,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  20,
+    "extractedCharCount":  6662,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\tyres__G03_Wheels_and_Tyres_Resources_Tire_Changing_and_Wheel_Balancing.ppt.txt",
+    "extractedAt":  "2026-08-10T13:31:18.2040832+01:00"
+}

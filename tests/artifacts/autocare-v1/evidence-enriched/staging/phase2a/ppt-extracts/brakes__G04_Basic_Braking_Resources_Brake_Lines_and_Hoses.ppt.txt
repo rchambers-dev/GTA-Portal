@@ -1,0 +1,339 @@
+SOURCE: G04 Basic Braking\Resources\Brake Lines and Hoses.ppt
+HASH: 86a55328547f9a1b21fd1e28eeca3b7fe5c035a8de26d7e3fcced9f7b7511558
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Brake Lines and Hoses
+
+investigate the construction of brake fluid lines and hoses
+
+Next >
+
+find out how to diagnose and repair common brake problems
+
+Blocked hose
+
+===== SLIDE 2 =====
+Introduction
+
+Brake lines and hoses are an essential part of the brake system.
+
+Problems with lines and hoses can lead to total brake failure, so they must be well maintained.
+
+Next >
+
+Blocked hose
+
+===== SLIDE 3 =====
+Brake System
+
+From a safety point of view, the brake system is the most important system on a vehicle.
+
+Though it is often simple to replace brake lines, hoses and fittings, care must be taken to ensure they will function correctly.
+
+Next >
+
+===== SLIDE 4 =====
+Brake Diagnostics
+
+Many modern vehicles, particularly those with anti-lock brakes, have self-diagnostic capabilities.
+
+If the brake computer detects an abnormal condition in a hydraulic brake circuit, it will record this as a diagnostic trouble code.
+
+Next >
+
+The brake computer will also illuminate a brake warning lamp.
+
+Diagnostic Trouble Codes
+
+C1253
+
+Brake System
+
+Hydro-Booster Pump Motor relay
+
+C1256
+
+Accumulator Low Pressure
+
+Brake computer
+
+Electronic tool
+
+Anti-lock braking system
+
+These codes can be retrieved using an electronic tool.
+
+===== SLIDE 5 =====
+Hydraulic Circuit Defects
+
+The most common defects found in brake lines, hoses and fittings are leaks.
+
+Leaks can usually be detected by a visual inspection.
+
+Next >
+
+A leak from a line, hose or fitting MUST be corrected in order to prevent possible brake failure.
+
+===== SLIDE 6 =====
+Brake Line Construction
+
+Whenever possible, steel brake lines are used for the hydraulic system.
+
+Steel lines are resistant to corrosion, collision damage, and vibration.
+
+Next >
+
+They can withstand high hydraulic pressure and are relatively inexpensive.
+
+Corrosion resistant coating
+
+Inner steel layer
+
+Outer steel layer
+
+Double-lap flare
+
+===== SLIDE 7 =====
+Flexible Brake Hoses
+
+The wheel brake units move in relation to the rest of the vehicle.
+
+This means the connection between the wheel brake units and the body cannot be rigid.
+
+Next >
+
+Flexible hoses allow for the movement of the suspension.
+
+exfordy
+
+Flexible hose
+
+Wheel brake unit
+
+===== SLIDE 8 =====
+Flexible Brake Hose Construction
+
+Flexible hoses are usually made from rubber and synthetic fabric.
+
+Typically, two plies of natural rubber and braided fabric material are surrounded by a synthetic rubber outer sheath.
+
+Next >
+
+The braided material gives added resistance to internal pressure.
+
+The synthetic rubber outer sheath helps to reduce damage from atmospheric pollutants.
+
+Synthetic rubber outer sheath
+
+Braided  synthetic fabric
+
+Natural rubber
+
+Main hose
+
+===== SLIDE 9 =====
+Fasteddy760
+
+Flexible Brake Hose Construction
+
+Sometimes the fabric is replaced with braided steel for added resistance to hydraulic pressure.
+
+Hoses are also made with a braided steel outer sheath, which protects the hose from collision or abrasion damage.
+
+Next >
+
+Synthetic rubber outer sheath
+
+Braided  synthetic fabric
+
+Natural rubber
+
+Main hose
+
+Braided steel outer sheath
+
+===== SLIDE 10 =====
+Question 1
+
+Why are flexible hoses used in preference to steel brake lines in some areas of the braking system?
+
+A)	They do not rust
+
+B)	They allow for movement of components in relation to each other
+
+C)	They are good insulators, and so protect the brakes from electrical damage
+
+D)	All of the above
+
+Next >
+
+===== SLIDE 11 =====
+The flexible brake hoses link the brake lines to the brake assemblies on the wheels.
+
+Next >
+
+Question 1
+
+Why are flexible hoses used in preference to steel brake lines in some areas of the braking system?
+
+A)	They do not rust
+
+B)	They allow for movement of components in relation to each other
+
+C)	They are good insulators, and so protect the brakes from electrical damage
+
+D)	All of the above
+
+===== SLIDE 12 =====
+Brake Line Maintenance
+
+Steel brake lines can be damaged by road debris, or may clog internally.
+
+Should a steel line show signs of damage, especially kinking or crushing, it must be replaced.
+
+Next >
+
+Kinked pipe
+
+Crushed pipe
+
+===== SLIDE 13 =====
+Brake Line Clogging
+
+Brake line clogging cannot be confirmed by a visual inspection.
+
+Loosen, but do not remove, a fitting past the suspected clog point
+
+Use this procedure to diagnose a suspect brake line:
+
+Next >
+
+bsabarnowl
+
+Observe this fitting while an assistant presses the brake pedal
+
+If no fluid exits, or the flow of fluid is very slow, the line has a restriction
+
+===== SLIDE 14 =====
+Brake Hose Problems
+
+Flexible hoses can develop internal leaks, which will show up as swellings or bulges.
+
+You should also check flexible hoses for signs of road damage or cracking of the outer covering.
+
+Next >
+
+In both cases the hose should be replaced.
+
+===== SLIDE 15 =====
+Blocked Brake Hose
+
+When a hose swells internally, the restriction can cause the related wheel’s brake to apply slowly or, in extreme cases, not at all.
+
+When braking, the reduced pressure on one wheel will cause the vehicle to pull to the opposite side.
+
+Next >
+
+Blocked hose
+
+Pull direction
+
+Affected wheel
+
+===== SLIDE 16 =====
+Blocked Brake Hose
+
+The hose can also swell to the extent that it prevents fluid returning.
+
+This stops the cylinder or caliper pistons from returning when the brake pedal is released.
+
+Next >
+
+The vehicle will pull in one direction when the brakes are applied, and in the opposite direction when they are released.
+
+Swollen hose
+
+Pull direction
+
+===== SLIDE 17 =====
+Brake Fittings Maintenance
+
+Fittings are generally trouble-free, but they can be damaged by road debris or become clogged inside.
+
+If a fitting is damaged or leaking it should be replaced.
+
+Next >
+
+===== SLIDE 18 =====
+New Brake Lines
+
+A new brake line must closely match the length and shape of the old line.
+
+To fit properly, the new line must first be bent to shape. Then, if required, it should be cut and flared using appropriate tools.
+
+Next >
+
+To prevent kinks in the line, the proper tools must be used to make tight bends.
+
+Lever bender
+
+===== SLIDE 19 =====
+Fabricating Brake Lines
+
+Brake lines must be flared to ensure a leak-proof connection.
+
+Next >
+
+Double-Lap Flare
+
+ISO Flare
+
+There are two standard types of flares:
+
+A double-lap flare requires two steps to produce and uses a flaring bar and flaring yoke.
+
+An ISO flare requires a special tool that contains a tool body, collet, forming mandrel, clamping nut and forming screw.
+
+===== SLIDE 20 =====
+Replacing Hoses and Fittings
+
+Replacement hoses must match the old hose, be securely fitted, and be bled after being fitted.
+
+Some fittings are part of larger assemblies that must be entirely replaced if the fittings are defective.
+
+Next >
+
+Others can be replaced without affecting other parts, but the entire system must be bled after fitting.
+
+===== SLIDE 21 =====
+Question 2
+
+‘It is safe to make tight bends in brake lines by hand’Is this statement true or false?
+
+Next >
+
+===== SLIDE 22 =====
+Tight bends must be made with appropriate tools to prevent kinks forming.
+
+Next >
+
+Question 2
+
+False
+
+‘It is safe to make tight bends in brake lines by hand’Is this statement true or false?
+
+===== SLIDE 23 =====
+Summary
+
+how brake lines and hoses are constructed
+
+In this presentation you have seen:
+
+how some brake problems are diagnosed and repaired
+
+End
+

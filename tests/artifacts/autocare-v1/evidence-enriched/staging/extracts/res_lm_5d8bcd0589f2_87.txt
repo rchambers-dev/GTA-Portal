@@ -1,0 +1,100 @@
+Lesson Plan 2
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Electronic steering A DAS systems
+ 0 0 Electronic steering A DAS systems
+
+ Lesson Aims
+
+ Lesson Aims
+ -635 32385 Identify h ow light vehicle electronic steering components interact with Advanced Driver Assistance Systems (ADAS) and what the basics of CANBUS is.
+ Introduction to what ADAS is, the levels we have and typical systems found on cars.
+ Identify c ommon faults associated with light vehicle electronic systems , components and associated health and safety .
+
+ 0 0 Identify h ow light vehicle electronic steering components interact with Advanced Driver Assistance Systems (ADAS) and what the basics of CANBUS is.
+ Introduction to what ADAS is, the levels we have and typical systems found on cars.
+ Identify c ommon faults associated with light vehicle electronic systems , components and associated health and safety .
+
+ Lesson Objectives
+ -9028 57924 To be able to identify three components of the electronic steering systems
+ Explain the importance of angle sensor calibration after carrying out alignment
+ State the meaning of ADAS for vehicles and basics of the level scale
+ Explain in basic terms how an angle and torque sensor operate.
+
+ 0 0 To be able to identify three components of the electronic steering systems
+ Explain the importance of angle sensor calibration after carrying out alignment
+ State the meaning of ADAS for vehicles and basics of the level scale
+ Explain in basic terms how an angle and torque sensor operate.
+
+ Engagement
+ -10795 57989 PowerPoint
+ Visual components
+ Workshop vehicles for inspection and repair
+ Diagnostic equipment and electrical measuring equipment
+
+ 0 0 PowerPoint
+ Visual components
+ Workshop vehicles for inspection and repair
+ Diagnostic equipment and electrical measuring equipment
+
+ Stick ability
+ center 22860 All leaners will demonstrate the correct ways to locate and inspect at least two components
+ Watch YouTube video
+ Remove and refit components, and identify any risks
+
+ 0 0 All leaners will demonstrate the correct ways to locate and inspect at least two components
+ Watch YouTube video
+ Remove and refit components, and identify any risks
+
+ Assessment for learning (AFL)
+ -10160 93980 Initial assessment will be questions and answers to establish the current level of understanding amongst the group. Regular formative assessment by the means of q uestio ns and answer s (identification of components and locations) via power point and workshop practical. Access to Moodle and study programmes for long term memory retention. Summative assessment will be in the form of questions/quiz where all learners take part.
+
+ 0 0 Initial assessment will be questions and answers to establish the current level of understanding amongst the group. Regular formative assessment by the means of q uestio ns and answer s (identification of components and locations) via power point and workshop practical. Access to Moodle and study programmes for long term memory retention. Summative assessment will be in the form of questions/quiz where all learners take part.
+
+ Key words
+ 0 48260 ADSA, Radar, GPS , LIDAR (light detection and ranging). CANBUS
+ 0 0 ADSA, Radar, GPS , LIDAR (light detection and ranging). CANBUS
+
+ Differentiation
+ -6350 63500 Engagement will provide a number of different resources to enable differentiation. Identify individual learners need from individual learning plan (ILA)
+
+ 0 0 Engagement will provide a number of different resources to enable differentiation. Identify individual learners need from individual learning plan (ILA)
+
+ Session 1
+ -27135 120669 Review and update 20 % OT J log hours. Complete brain warmers. Review and sign job cards as required and upload. Check action plans are current/signed . Introduce learners to the aims and objectives for the day. Brief look at monthly Hot Topics , Prevent or Safeguarding. (aware of what they are) Check all can recall key points from last week and recap as needed. F-kills as required.
+
+ 0 0 Review and update 20 % OT J log hours. Complete brain warmers. Review and sign job cards as required and upload. Check action plans are current/signed . Introduce learners to the aims and objectives for the day. Brief look at monthly Hot Topics , Prevent or Safeguarding. (aware of what they are) Check all can recall key points from last week and recap as needed. F-kills as required.
+
+ Session 2
+ -27135 40445 Carry out initial assessments via verbal Q&A on ADAS, what it means and levels . Are they aware of what integration means? Have they heard of CANBUS? Once complete start session on ADAS and what the levels are. Group discussion about why ADAS makes vehicles safer but makes the job of mechanics more challenging . Use ADAS Power Point and YouTube. Also explain that there is some good resources on their IMI E logbooks.
+
+ 0 0 Carry out initial assessments via verbal Q&A on ADAS, what it means and levels . Are they aware of what integration means? Have they heard of CANBUS? Once complete start session on ADAS and what the levels are. Group discussion about why ADAS makes vehicles safer but makes the job of mechanics more challenging . Use ADAS Power Point and YouTube. Also explain that there is some good resources on their IMI E logbooks.
+
+ Session 3
+ center 101600 Continue above , also discuss very basics of CANBUS and why we require it. Identify the most important sensors used in ADAS for vehicle operation of ABS, ESP, Adaptive cruise , Collision Mitigation . State two purpose s and function s of ESP system and watch videos via you-tube to help embed.
+
+ 0 0 Continue above , also discuss very basics of CANBUS and why we require it. Identify the most important sensors used in ADAS for vehicle operation of ABS, ESP, Adaptive cruise , Collision Mitigation . State two purpose s and function s of ESP system and watch videos via you-tube to help embed.
+
+ Session 4
+ left 73660 Identify two main advantages ADAS systems . Example, self-steering , parking and braking in emergency situations. Learners coached and supported to identify main components and basic functions. Can again look at suitable rigs in workshop or videos as needed. Check if outcomes are met. Link into next weeks session.
+
+ .
+
+ 0 0 Identify two main advantages ADAS systems . Example, self-steering , parking and braking in emergency situations. Learners coached and supported to identify main components and basic functions. Can again look at suitable rigs in workshop or videos as needed. Check if outcomes are met. Link into next weeks session.
+
+ .
+
+ Challenge
+ -17145 90805 For more advanced learners- learners are expected to identify self-parking vehicles , identifying familiar and common faults & symptoms
+
+ 0 0 For more advanced learners- learners are expected to identify self-parking vehicles , identifying familiar and common faults & symptoms
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

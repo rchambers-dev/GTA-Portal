@@ -1,0 +1,352 @@
+{
+  "title": "AUTOCARE SHADOW BATCH R51-3 — NINE KSB FOUNDATION/H&S/WORKSHOP/BEHAVIOUR REVIEW",
+  "status": "SHADOW_ONLY_NOT_PROGRAMME_TRUTH",
+  "generatedAt": "2026-08-10",
+  "batch": "R51-3",
+  "mutatesProgrammeTruth": false,
+  "mutatesGoldenA": false,
+  "standardVersion": "ST0499 v1.3",
+  "ksbs": ["K3", "K4", "K5", "S1", "S2", "S3", "S5", "S6", "B1"],
+  "progress": {
+    "officialTotal": 64,
+    "previouslyAnalysed": 29,
+    "thisBatch": 9,
+    "richerEvidenceAnalysedAfterBatch": 38,
+    "remainingAfterBatch": 26
+  },
+  "methodologyDriftStopTriggered": false,
+  "dossiers": {
+    "K3": {
+      "officialRequirement": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER).",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K3-C1", "claim": "H&S awareness / impact on role + safe working procedures", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS01 workshop safety expectations, hazards, controls"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS01 hazard record; dynamic risk in FS02; embedded CEA safe-working objectives"] }, "assessment": { "status": "FORMATIVE_PLUS_EMBEDDED", "confidence": "EXPLICIT", "evidence": ["FS01 impact check; CEA Pass/Refer H&S objectives"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "KNOWLEDGE_CHECKS", "confidence": "EXPLICIT", "evidence": ["GW1 H&S hazard reporting item — not teaching home"] }, "structuralAccounting": { "status": "CLEAR_B1_FS01", "confidence": "EXPLICIT", "evidence": ["Week 1 EXPLICIT"] } },
+        { "id": "K3-C2", "claim": "Hazards and risks; safety signage; slips/trips/falls; housekeeping", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS01: hazards, safety signs, safe walkways, housekeeping"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS01 hazard identification task; B1 Task 3 prepare work area"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["FS01 safety-sign sort / hazard record"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] } },
+        { "id": "K3-C3", "claim": "Fire safety and extinguishers/safety equipment", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS04: fire triangle, classes, extinguisher types, alarms, evacuation; FS01 fire points"] }, "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS04 extinguisher matching / checklist"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["FS04 end checklist"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "FS04_WEEK4", "confidence": "EXPLICIT", "evidence": [] } },
+        { "id": "K3-C4", "claim": "PPE", "teaching": { "status": "PRESENT_EMBEDDED", "confidence": "EXPLICIT", "evidence": ["FS01–FS04 PPE contexts; system LPs require PPE"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["B1 Task 3 use PPE correctly; nearly all practicals"] }, "assessment": { "status": "EMBEDDED", "confidence": "EXPLICIT", "evidence": ["CEA safe-working objectives"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] } },
+        { "id": "K3-C5", "claim": "COSHH", "teaching": { "status": "BLOCK_INTENT_LATER", "confidence": "INFERRED_MEDIUM", "evidence": ["W37 EXPLICIT topic: COSHH awareness, workshop cleanliness and tool control — template aims; not first teaching home"] }, "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Spill/waste tasks handle hazardous fluids with PPE — COSHH named depth unverified in extract"] }, "assessment": { "status": "WEAK_NAMED", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "LATER_REINFORCE_NOT_PRIMARY", "confidence": "EXPLICIT_WEEK", "evidence": ["W37 Block 4 — do not steal Primary from FS01"] } },
+        { "id": "K3-C6", "claim": "Health and Safety at Work Act (named)", "teaching": { "status": "NOT_FOUND_BY_NAME", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No HASAWA-named teaching body in catalogue excerpts"] }, "practice": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNRESOLVED_COMPONENT", "confidence": "INFERRED_MEDIUM", "evidence": [] } },
+        { "id": "K3-C7", "claim": "Manual handling (named)", "teaching": { "status": "ADJACENCY_ONLY", "confidence": "INFERRED_MEDIUM", "evidence": ["FS02 lifting/supporting/SWL — related but not explicitly titled manual handling training"] }, "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["FS02 lifting/support dynamic risk assessment"] }, "assessment": { "status": "FORMATIVE_PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["FS02 end risk assessment"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "DEPTH_CONCERN", "confidence": "INFERRED_HIGH", "evidence": [] } },
+        { "id": "K3-C8", "claim": "LOLER", "teaching": { "status": "NOT_FOUND_BY_NAME", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["Lifting equipment taught as SWL/lifts in FS02 — LOLER regulation name absent"] }, "practice": { "status": "ADJACENT_LIFTING", "confidence": "INFERRED_MEDIUM", "evidence": ["FS02 lifting/support"] }, "assessment": { "status": "NOT_NAMED", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "TEACHING_DEPTH_OR_GAP", "confidence": "INFERRED_HIGH", "evidence": [] } },
+        { "id": "K3-C9", "claim": "PUWER", "teaching": { "status": "NOT_FOUND_BY_NAME", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["Tool/equipment safe use taught (FS02/FS08) — PUWER name absent"] }, "practice": { "status": "ADJACENT_EQUIPMENT_USE", "confidence": "INFERRED_MEDIUM", "evidence": ["FS02/FS08 tool safety"] }, "assessment": { "status": "NOT_NAMED", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "TEACHING_DEPTH_OR_GAP", "confidence": "INFERRED_HIGH", "evidence": [] } }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG_CORE_PARTIAL_NAMED_REGS",
+        "practice": "STRONG_EMBEDDED",
+        "assessment": "FORMATIVE_PLUS_EMBEDDED_CEA",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "CLEAR_B1_WITH_LATER_COSHH_REINFORCE"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "MOSTLY_COVERED_WITH_MATERIAL_NAMED_REG_GAPS",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "FS01 Week 1 (then FS02/FS04)",
+        "doNotStealFrom": ["W37 COSHH", "Gateway H&S MCQs"],
+        "forcePrimary": false,
+        "weekSession": "FS01 W1, FS02 W2, FS04 W4 EXPLICIT"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED on core H&S practice",
+        "TEACHING_DEPTH_GAP on LOLER / PUWER / HASAWA named requirements",
+        "POSSIBLE_TEACHING_DEPTH_GAP on manual handling naming",
+        "POSSIBLE_TEACHING_DEPTH_GAP on COSHH (later intent only in extract)"
+      ],
+      "shadowDirection": "KEEP_PRIMARY_B1_WITH_DEPTH_GAPS",
+      "confidenceOverall": "HIGH_ON_CORE_MEDIUM_ON_NAMED_REGS",
+      "goldenAComparedAfter": { "position": "PRIMARY_B1", "direction": "KEEP_WITH_DEPTH_FLAGS" }
+    },
+    "K4": {
+      "officialRequirement": "Environment and sustainability guidance relevant to the occupation and autocare technician's role and responsibilities. Recycling, reuse, and safe disposal of waste.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K4-C1", "claim": "Environment and sustainability guidance relevant to role", "teaching": { "status": "PRESENT", "confidence": "INFERRED_HIGH", "evidence": ["W30 EXPLICIT topic Environmental risk, spill response and emergency preparedness", "B3 Task 4 environmental controls explanation"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_prac_074615b60bfc B3 Task 4 Environmental Spill Response and Waste Control"] }, "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B3 Task 4 incident/environmental record + explain controls"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "CLEAR_B3", "confidence": "EXPLICIT", "evidence": ["Block 3 Task 4; W30 Week 30 EXPLICIT"] } },
+        { "id": "K4-C2", "claim": "Recycling / reuse / safe disposal of waste", "teaching": { "status": "PRESENT_PARTIAL", "confidence": "INFERRED_HIGH", "evidence": ["W47 topic: waste segregation; W60 environmental controls, waste streams; B3 Task 4 waste stream controls"] }, "practice": { "status": "STRONG_ON_DISPOSAL_SEGREGATION", "confidence": "EXPLICIT", "evidence": ["B3 Task 4 identify correct waste stream controls for fluids and contaminated materials"] }, "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B3 Task 4"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] } }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE",
+        "practice": "STRONG",
+        "assessment": "ADEQUATE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "CLEAR_B3"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "Block 3 environmental cluster (W30 / Task 4)",
+        "forcePrimary": false,
+        "weekSession": "W30 EXPLICIT; Task 4 Weeks 21-30 window"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on explicit 'reuse' / 'recycling' vocabulary vs waste-stream practice"
+      ],
+      "shadowDirection": "KEEP_PRIMARY_B3",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "KEEP" }
+    },
+    "K5": {
+      "officialRequirement": "Tools and equipment used in automotive industry. Purpose and operation.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K5-C1", "claim": "Identify tools/equipment and their purpose", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS02 pathway tools including autocare tyre/brake equipment; FS05 measuring tools; FS06 fasteners/tools"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS02 select and use tools; FS05 select measuring tools"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["FS02/FS05 checks"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "INCIDENTAL", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "CLEAR_B1_FS02", "confidence": "EXPLICIT", "evidence": ["Week 2 EXPLICIT"] } },
+        { "id": "K5-C2", "claim": "Operation of tools/equipment", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS02 use under supervision; FS05 operation of measuring tools; FS08 tools consolidation"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["Foundation practicals; workshop tasks"] }, "assessment": { "status": "EMBEDDED", "confidence": "INFERRED_HIGH", "evidence": ["Observation in FS and CEAs"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] } }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG",
+        "practice": "STRONG",
+        "assessment": "FORMATIVE_ADEQUATE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "CLEAR_B1"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "FS02 Week 2",
+        "doNotStealFrom": ["K6 calibration/maintenance distinction", "later specialist tooling"],
+        "forcePrimary": false,
+        "weekSession": "FS02 Week 2 EXPLICIT"
+      },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED"],
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B1", "direction": "KEEP" },
+      "antiDriftNote": "Tool mention alone not used — FS02 has purpose+selection+supervised use"
+    },
+    "S1": {
+      "officialRequirement": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance.",
+      "kind": "skills",
+      "components": [
+        { "id": "S1-C1", "claim": "Comply with H&S procedures in workplace/workshop activity", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS01/FS02 H&S responsibilities and conduct"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS01/FS02 observed practice; B1 Task 3 prepare area + PPE; every CEA safe-working objective"] }, "assessment": { "status": "STRONG_EMBEDDED", "confidence": "EXPLICIT", "evidence": ["CEA Pass/Refer requires safe working throughout"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_HIGH", "evidence": ["Gateway practicals require safe working — not Primary"] }, "structuralAccounting": { "status": "FIRST_HOME_B1_NOT_B3", "confidence": "EXPLICIT", "evidence": ["FS01 Week 1 first substantive"] } }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG",
+        "practice": "STRONG",
+        "assessment": "STRONG_EMBEDDED",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "OWNERSHIP_REVIEW_VS_GOLDEN_A_B3"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY_CANDIDATE_B1",
+        "firstSubstantiveTeachingHome": "Foundation Block 1 FS01/FS02",
+        "doNotStealFrom": ["Block 3 workshop-process intensives", "Gateway"],
+        "forcePrimary": false,
+        "weekSession": "FS01 W1 / FS02 W2 EXPLICIT",
+        "goldenAConflict": "Golden A Primary Block 3 appears later structural home; first substantive teaching is Block 1"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B3"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "CHANGE_OWNERSHIP" }
+    },
+    "S2": {
+      "officialRequirement": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards.",
+      "kind": "skills",
+      "components": [
+        { "id": "S2-C1", "claim": "Prepare working area (incl. slip/trip mitigation)", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS01 safe-work-area preparation, walkways, housekeeping"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["B1 Task 3: ensure working area is safe and vehicle correctly prepared", "Nearly all Block tasks step 1 prepare area"] }, "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["B1 Task 3; CEA preparation requirements"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_HIGH", "evidence": ["Gateway practicals require bay preparation"] }, "structuralAccounting": { "status": "FIRST_HOME_B1", "confidence": "EXPLICIT", "evidence": ["FS01; B1 Task 3"] } },
+        { "id": "S2-C2", "claim": "Prepare the vehicle before work", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS02 vehicle support/lifting readiness; B1 Task 3 vehicle prepared"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["B1 Task 3; subsequent practicals"] }, "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["Task/CEA preparation criteria"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_HIGH", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] } }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG",
+        "practice": "STRONG",
+        "assessment": "STRONG",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "OWNERSHIP_REVIEW_VS_GOLDEN_A_B3"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY_CANDIDATE_B1",
+        "firstSubstantiveTeachingHome": "FS01 + Block 1 Task 3",
+        "forcePrimary": false,
+        "goldenAConflict": "Golden A Primary Block 3; first substantive Block 1"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B3"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "CHANGE_OWNERSHIP" }
+    },
+    "S3": {
+      "officialRequirement": "Maintain and restore the work area during and on completion of the activity.",
+      "kind": "skills",
+      "components": [
+        { "id": "S3-C1", "claim": "Maintain work area during activity", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS01 housekeeping responsibilities; FS06 housekeeping"] }, "practice": { "status": "PRESENT", "confidence": "INFERRED_HIGH", "evidence": ["Housekeeping expectations during practicals"] }, "assessment": { "status": "EMBEDDED", "confidence": "INFERRED_MEDIUM", "evidence": ["Assessor observation of safe workspace"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "B1_FIRST", "confidence": "EXPLICIT", "evidence": ["FS01"] } },
+        { "id": "S3-C2", "claim": "Restore work area on completion", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS01 housekeeping; W27 EXPLICIT topic Housekeeping, 5S routines and safe storage control (later reinforce)"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA objectives reinstate vehicle/work area; practicals end restore"] }, "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA reinstate vehicle to pre-assessment condition"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] }, "structuralAccounting": { "status": "B1_FIRST_W27_REINFORCE", "confidence": "EXPLICIT", "evidence": ["W27 Week 27 EXPLICIT later"] } }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE_TO_STRONG",
+        "practice": "STRONG",
+        "assessment": "STRONG_EMBEDDED",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "OWNERSHIP_REVIEW_VS_GOLDEN_A_B3"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY_CANDIDATE_B1",
+        "firstSubstantiveTeachingHome": "FS01 housekeeping; W27 is later reinforcement (Block 3)",
+        "forcePrimary": false,
+        "goldenAConflict": "Golden A Primary Block 3 aligns with W27 intensify but not first teaching"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B3"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "CHANGE_OWNERSHIP" }
+    },
+    "S5": {
+      "officialRequirement": "Access vehicle technical data to inform inspections and make judgements on wear and serviceability.",
+      "kind": "skills",
+      "components": [
+        { "id": "S5-C1", "claim": "Access vehicle technical data", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS05 technical-data use; G8 LP27 access repair times from tech data; G14 manufacturers specifications"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS05 compare to specification; CEAs requiring tech data; B3 Task 3 technical information"] }, "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA tech-data requirements; FS05 measurement sheet vs spec"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_HIGH", "evidence": ["GW2AC01 / alignment gateways use tech data"] }, "structuralAccounting": { "status": "CLEAR_B1_FS05", "confidence": "EXPLICIT", "evidence": ["Week 5 EXPLICIT"] } },
+        { "id": "S5-C2", "claim": "Use data to judge wear and serviceability on inspection", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["G14 Session 3 serviceability reporting; FS05 tolerance/spec comparison; inspection LPs"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 14.0 inspection; B1 Task 3 safety inspection findings"] }, "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["Inspection CEAs Pass/Refer"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "STRONG_LATER", "confidence": "EXPLICIT", "evidence": ["GW2AC01"] }, "structuralAccounting": { "status": "OK_DO_NOT_STEAL_FROM_GATEWAY", "confidence": "EXPLICIT", "evidence": [] } }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG",
+        "practice": "STRONG",
+        "assessment": "STRONG",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "STRONG_NOT_OWNER",
+        "structuralAccounting": "CLEAR_B1"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "FS05 Week 5 (+ early inspection practice)",
+        "doNotStealFrom": ["GW2AC01", "later W45 VIN/tech-data intensives"],
+        "forcePrimary": false,
+        "weekSession": "FS05 Week 5 EXPLICIT"
+      },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED"],
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B1", "direction": "KEEP" }
+    },
+    "S6": {
+      "officialRequirement": "Comply with environmental and sustainability procedures, regulations, standards, and guidance. Segregate resources for reuse, recycling, and disposal.",
+      "kind": "skills",
+      "components": [
+        { "id": "S6-C1", "claim": "Comply with environmental/sustainability procedures", "teaching": { "status": "PRESENT", "confidence": "INFERRED_HIGH", "evidence": ["W30 environmental risk/spill topic intent; B3 Task 4 environmental controls"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["B3 Task 4 spill response and waste control"] }, "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B3 Task 4 record + explanation"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "CLEAR_B3", "confidence": "EXPLICIT", "evidence": [] } },
+        { "id": "S6-C2", "claim": "Segregate for reuse, recycling, disposal", "teaching": { "status": "PRESENT", "confidence": "INFERRED_HIGH", "evidence": ["W47 waste segregation topic; B3 Task 4 waste stream controls"] }, "practice": { "status": "STRONG_ON_SEGREGATION_DISPOSAL", "confidence": "EXPLICIT", "evidence": ["B3 Task 4 identify correct waste streams"] }, "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B3 Task 4"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] } }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE",
+        "practice": "STRONG",
+        "assessment": "ADEQUATE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "CLEAR_B3"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "Block 3 environmental cluster",
+        "forcePrimary": false,
+        "weekSession": "W30 EXPLICIT; Task 4 Weeks 21-30"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on explicit reuse/recycling pedagogy vs waste-stream practice"
+      ],
+      "shadowDirection": "KEEP_PRIMARY_B3",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "KEEP" }
+    },
+    "B1": {
+      "officialRequirement": "Put health and safety first.",
+      "kind": "behaviours",
+      "components": [
+        { "id": "B1-C1", "claim": "Prioritise health and safety in professional behaviour", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS01: safe and professional working expectations; professional workshop behaviours; individual responsibility"] }, "practice": { "status": "PRESENT_OBSERVED", "confidence": "EXPLICIT", "evidence": ["FS01 observation + corrective feedback during safety tasks; FS impact measure Not yet secure/Developing/Secure"] }, "assessment": { "status": "FORMATIVE_BEHAVIOUR_REFLECTION", "confidence": "EXPLICIT", "evidence": ["Block Learning Impact Records — KSB reflection with workplace mentor + GTA trainer", "Block Skills Progress Reviews — mentor-reviewed distance travelled"] }, "workplaceApplication": { "status": "MECHANISM_REFERENCED", "confidence": "INFERRED_HIGH", "evidence": ["Mentor fields on Learning Impact / Skills Progress; filled workplace examples not supplied"] }, "gatewayEpaSupport": { "status": "KNOWLEDGE_ADJACENCY_ONLY", "confidence": "INFERRED_LOW", "evidence": ["GW1 reporting item — not Primary behaviour teaching"] }, "structuralAccounting": { "status": "CLEAR_B1_FS", "confidence": "EXPLICIT", "evidence": ["FS01 Week 1"] } }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE_FOR_BEHAVIOUR",
+        "practice": "OBSERVED_IN_FOUNDATION",
+        "assessment": "REFLECTION_MENTOR_RECORDS_ADEQUATE",
+        "workplaceApplication": "MECHANISM_PRESENT_FILLED_EVIDENCE_UNSUPPLIED",
+        "gatewayEpaSupport": "NOT_OWNER",
+        "structuralAccounting": "CLEAR_B1"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_EVIDENCED_AS_BEHAVIOUR",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "FS01 professional H&S-first expectations",
+        "doNotStealFrom": ["Gateway MCQs", "later specialist practicals", "KSB tags"],
+        "forcePrimary": false,
+        "weekSession": "FS01 Week 1 EXPLICIT"
+      },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED"],
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidenceOverall": "MEDIUM_HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B1", "direction": "KEEP" },
+      "antiDriftNote": "Not failed for lack of CEA; not proven by B1 tags alone; behaviour-appropriate evidence used"
+    }
+  },
+  "relationshipEdges": [
+    { "id": "e_k3_teaches_fs01", "ksb": "K3", "type": "TEACHES", "from": "res_lp_8f67680b4ed9", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 1 },
+    { "id": "e_k3_teaches_fs02", "ksb": "K3", "type": "TEACHES", "from": "res_lp_a1de2dadb565", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 2 },
+    { "id": "e_k3_teaches_fs04", "ksb": "K3", "type": "TEACHES", "from": "res_lp_4e5d5534a1f4", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 4 },
+    { "id": "e_k3_reinforces_w37_coshh", "ksb": "K3", "type": "REINFORCES", "from": "res_lp_e9699651b4a8", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 4, "week": 37, "note": "COSHH topic intent — not Primary" },
+    { "id": "e_k3_knowledgechecks_gw1", "ksb": "K3", "type": "KNOWLEDGE_CHECKS", "from": "gw_ef36375dc80b", "basis": "EXPLICIT", "provenance": "GATEWAY", "block": null, "week": null },
+    { "id": "e_k4_teaches_w30", "ksb": "K4", "type": "TEACHES", "from": "res_lp_0629c196e9f9", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 3, "week": 30 },
+    { "id": "e_k4_practises_b3t4", "ksb": "K4", "type": "PRACTISES", "from": "res_prac_074615b60bfc", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null },
+    { "id": "e_k4_assesses_b3t4", "ksb": "K4", "type": "ASSESSES", "from": "res_prac_074615b60bfc", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null },
+    { "id": "e_k5_teaches_fs02", "ksb": "K5", "type": "TEACHES", "from": "res_lp_a1de2dadb565", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 2 },
+    { "id": "e_k5_practises_fs02", "ksb": "K5", "type": "PRACTISES", "from": "res_lp_a1de2dadb565", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 2 },
+    { "id": "e_k5_teaches_fs05", "ksb": "K5", "type": "TEACHES", "from": "res_lp_f311ff09e560", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 5 },
+    { "id": "e_s1_teaches_fs01", "ksb": "S1", "type": "TEACHES", "from": "res_lp_8f67680b4ed9", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 1 },
+    { "id": "e_s1_practises_b1t3", "ksb": "S1", "type": "PRACTISES", "from": "res_prac_938cf7eba750", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 1, "week": null },
+    { "id": "e_s2_teaches_fs01", "ksb": "S2", "type": "TEACHES", "from": "res_lp_8f67680b4ed9", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 1 },
+    { "id": "e_s2_practises_b1t3", "ksb": "S2", "type": "PRACTISES", "from": "res_prac_938cf7eba750", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 1, "week": null },
+    { "id": "e_s2_assesses_b1t3", "ksb": "S2", "type": "ASSESSES", "from": "res_prac_938cf7eba750", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 1, "week": null },
+    { "id": "e_s3_teaches_fs01", "ksb": "S3", "type": "TEACHES", "from": "res_lp_8f67680b4ed9", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 1 },
+    { "id": "e_s3_reinforces_w27", "ksb": "S3", "type": "REINFORCES", "from": "res_lp_f03ffcf4b0bf", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 3, "week": 27 },
+    { "id": "e_s5_teaches_fs05", "ksb": "S5", "type": "TEACHES", "from": "res_lp_f311ff09e560", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 5 },
+    { "id": "e_s5_practises_fs05", "ksb": "S5", "type": "PRACTISES", "from": "res_lp_f311ff09e560", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 5 },
+    { "id": "e_s5_teaches_g14", "ksb": "S5", "type": "TEACHES", "from": "res_lm_6e6c9e8174f3_117", "basis": "EXPLICIT", "provenance": "GROUP_G14", "block": null, "week": null },
+    { "id": "e_s5_prepares_gw2ac01", "ksb": "S5", "type": "PREPARES_FOR_GATEWAY", "from": "gw_650cf2e40c5a", "basis": "INFERRED_HIGH", "provenance": "GATEWAY", "block": null, "week": null },
+    { "id": "e_s6_practises_b3t4", "ksb": "S6", "type": "PRACTISES", "from": "res_prac_074615b60bfc", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null },
+    { "id": "e_s6_assesses_b3t4", "ksb": "S6", "type": "ASSESSES", "from": "res_prac_074615b60bfc", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null },
+    { "id": "e_s6_teaches_w30", "ksb": "S6", "type": "TEACHES", "from": "res_lp_0629c196e9f9", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 3, "week": 30 },
+    { "id": "e_b1_teaches_fs01", "ksb": "B1", "type": "TEACHES", "from": "res_lp_8f67680b4ed9", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 1 },
+    { "id": "e_b1_practises_fs01_obs", "ksb": "B1", "type": "PRACTISES", "from": "res_lp_8f67680b4ed9", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 1, "note": "Observed professional safety behaviour" },
+    { "id": "e_b1_records_lir", "ksb": "B1", "type": "RECORDS_EVIDENCE", "from": "res_lea_c686091b2483", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 1, "week": null, "note": "Behaviour reflection with mentor fields" },
+    { "id": "e_b1_records_spr", "ksb": "B1", "type": "RECORDS_EVIDENCE", "from": "res_ski_b6f8500110ad", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 1, "week": null }
+  ],
+  "relationshipCounts": {
+    "totalEdges": 29,
+    "byType": {
+      "TEACHES": 13,
+      "PRACTISES": 7,
+      "ASSESSES": 3,
+      "REINFORCES": 2,
+      "KNOWLEDGE_CHECKS": 1,
+      "PREPARES_FOR_GATEWAY": 1,
+      "RECORDS_EVIDENCE": 2
+    },
+    "byBasis": {
+      "EXPLICIT": 24,
+      "INFERRED_HIGH": 1,
+      "INFERRED_MEDIUM": 4
+    }
+  },
+  "conflictingOrUnresolvedNotes": [
+    "K3 LOLER/PUWER/HASAWA named teaching absent in excerpt scan",
+    "K3 manual handling only by lifting/SWL adjacency",
+    "S1/S2/S3 Golden A B3 conflicts with first-substantive B1 evidence",
+    "Reuse/recycling vocabulary thinner than waste-stream practice for K4/S6",
+    "No CONFLICTING EXPLICIT edge pairs",
+    "Filled mentor behaviour evidence bodies not supplied — mechanism present"
+  ]
+}

@@ -1,0 +1,498 @@
+{
+  "title": "AUTOCARE SHADOW BATCH R51-2 — EIGHT KSB COMMERCIAL/SOFT/DIGITAL REVIEW",
+  "status": "SHADOW_ONLY_NOT_PROGRAMME_TRUTH",
+  "generatedAt": "2026-08-10",
+  "batch": "R51-2",
+  "mutatesProgrammeTruth": false,
+  "mutatesGoldenA": false,
+  "mutatesPriorShadowBatches": false,
+  "standardVersion": "ST0499 v1.3",
+  "ksbs": ["K7", "K8", "K34", "S20", "S23", "K33", "S15", "S16"],
+  "progress": {
+    "officialTotal": 64,
+    "previouslyAnalysed": 21,
+    "thisBatch": 8,
+    "richerEvidenceAnalysedAfterBatch": 29,
+    "remainingAfterBatch": 35
+  },
+  "methodologyDriftStopTriggered": false,
+  "commercialSoftSkillRulesApplied": [
+    "No CEA workshop required where inappropriate",
+    "KSB tags are not teaching",
+    "Templates support but do not prove teaching",
+    "Block LP generic aims used as topic intent only; Group LP body preferred",
+    "Block 'Inclusion, support and stretch' is SEND scaffolding — NOT S20 EDI",
+    "Component-level non-binary coverage preserved (esp. K34/S23/K8)"
+  ],
+  "dossiers": {
+    "K7": {
+      "officialRequirement": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K7-C1",
+          "claim": "What workplace / technical instructions are and their purpose",
+          "teaching": { "status": "PRESENT_VIA_TECHNICAL_INFORMATION", "confidence": "INFERRED_HIGH", "evidence": ["FS05 EXPLICIT: technical information and tolerances — purpose/use of tech data", "G14 Session 1: inspection following manufacturers specifications", "G8 LP27: access repair times from tech data (Bosch)"] },
+          "practice": { "status": "EMBEDDED", "confidence": "EXPLICIT", "evidence": ["CEAs requiring manufacturer tech info / procedures across inspection and R&R", "B3 Task 3 identify technical information"] },
+          "assessment": { "status": "EMBEDDED_IN_INSTRUMENTS", "confidence": "INFERRED_HIGH", "evidence": ["Pass/Refer CEAs with tech-data requirements"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE_VIA_INSPECTION", "confidence": "INFERRED_MEDIUM", "evidence": ["GW2AC01 safety inspection uses tech data — not K7 teaching home"] },
+          "structuralAccounting": { "status": "MAPPABLE_NOT_NAMED_K7_MODULE", "confidence": "INFERRED_HIGH", "evidence": ["No lesson titled solely 'workplace instructions'; substance distributed"] }
+        },
+        {
+          "id": "K7-C2",
+          "claim": "Use of instructions for inspection, maintenance and replacement",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G14 manufacturers specifications for safety inspection", "W22 servicing/inspection workflow intent (topic title EXPLICIT; body template — not over-credited)"] },
+          "practice": { "status": "STRONG_EMBEDDED", "confidence": "EXPLICIT", "evidence": ["Inspection and R&R CEAs; interim/major service CEAs"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA family requiring procedure/tech info"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE_DISTRIBUTED",
+        "practice": "STRONG_EMBEDDED",
+        "assessment": "EMBEDDED_ADEQUATE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "SUBSTANCE_VISIBLE_NAMED_HOME_AMBIGUOUS"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED",
+        "status": "AMBIGUOUS_OR_DISTRIBUTED_NOT_FORCED",
+        "firstSubstantiveTeachingHome": "FS05 technical information and/or G14 manufacturer-instruction inspection teaching — Primary not forced",
+        "doNotStealFrom": ["Gateway inspection", "W11 KSB tag list"],
+        "forcePrimary": false,
+        "weekSession": "FS05 Week 5 EXPLICIT; G14 week UNRESOLVED"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A total gap)",
+        "POSSIBLE_STRUCTURAL_MAPPING_GAP (substance present without dedicated K7-labelled home)",
+        "GOOD / ADEQUATELY CONTROLLED on substance"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidenceOverall": "MEDIUM_HIGH",
+      "goldenAComparedAfter": { "position": "REVIEWED_CURRICULUM_GAP", "direction": "CHANGE" }
+    },
+    "K8": {
+      "officialRequirement": "Vehicle service records, owner's manuals, and warranties. Purpose and use.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K8-C1",
+          "claim": "Vehicle service records — purpose and use",
+          "teaching": { "status": "LIKELY_PRESENT_UNEXTRACTED", "confidence": "INFERRED_MEDIUM", "evidence": ["res_lm_049aeee9cc31_124 Vehicle Service History.ppt in G14 — CONTENT_EXTRACTION_REQUIRED (empty excerpt)", "G14 servicing/inspection cluster context"] },
+          "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Service documentation in B3 Task 3 / CEA service records tasks"] },
+          "assessment": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Service CEAs require documentation"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G14_CANDIDATE", "confidence": "INFERRED_MEDIUM", "evidence": ["Group provenance EXPLICIT for PPT path"] }
+        },
+        {
+          "id": "K8-C2",
+          "claim": "Owner's manuals — purpose and use",
+          "teaching": { "status": "NOT_FOUND", "confidence": "UNRESOLVED_TENDERING_GAP", "evidence": ["No LP/PPT excerpt teaching purpose/use of owner's manuals found"] },
+          "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_MEDIUM", "evidence": [] }
+        },
+        {
+          "id": "K8-C3",
+          "claim": "Warranties — purpose and use",
+          "teaching": { "status": "BLOCK_INTENT_PRESENT_GROUP_BODY_THIN", "confidence": "INFERRED_MEDIUM", "evidence": ["W35 EXPLICIT topic: Warranty parts, returns and supplier escalation (aims are template — topic intent only)", "W75 EXPLICIT topic: Specialist parts, alternatives and warranty evidence", "No extracted Group-era warranty purpose module found"] },
+          "practice": { "status": "INTENT_ACTIVITY_UNVERIFIED_IN_EXTRACT", "confidence": "INFERRED_LOW", "evidence": ["Block LP claims planned practical/scenario — activity body not independently verified beyond title"] },
+          "assessment": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "BLOCK_INTENT_MAPPED", "confidence": "EXPLICIT_ON_WEEK_TITLE", "evidence": ["W35 Block 4; W75 Block 8 — later weeks must not auto-steal Primary if earlier service-history teaching is first"] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "PARTIAL",
+        "practice": "PARTIAL",
+        "assessment": "WEAK_TO_PARTIAL",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "PARTIAL"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "PARTIAL_COVERAGE",
+        "status": "AMBIGUOUS_NOT_FORCED",
+        "firstSubstantiveTeachingHome": "Possibly G14 service-history teaching if PPT confirms; warranty later — do not invent Primary",
+        "forcePrimary": false,
+        "weekSession": "W35/W75 EXPLICIT weeks for warranty intent; G14 PPT week UNRESOLVED"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP (service-history PPT may have been invisible)",
+        "TEACHING_DEPTH_GAP / CURRICULUM_GAP on owner's manuals",
+        "POSSIBLE_TEACHING_DEPTH_GAP on warranties (intent without rich extracted body)"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidenceOverall": "MEDIUM",
+      "goldenAComparedAfter": { "position": "REVIEWED_CURRICULUM_GAP", "direction": "CHANGE_TO_PARTIAL" }
+    },
+    "K34": {
+      "officialRequirement": "Information and digital technology: email, collaboration packages, databases, equipment digital interfaces, management information systems, word processing, work sharing platforms, point of sale, GDPR, cyber security.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K34-C1", "claim": "Email", "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_SCAN", "evidence": [] }, "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_HIGH", "evidence": [] } },
+        { "id": "K34-C2", "claim": "Collaboration packages / work sharing platforms", "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_SCAN", "evidence": [] }, "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_HIGH", "evidence": [] } },
+        { "id": "K34-C3", "claim": "Databases / MIS", "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_SCAN", "evidence": [] }, "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_HIGH", "evidence": [] } },
+        { "id": "K34-C4", "claim": "Equipment digital interfaces", "teaching": { "status": "ADJACENCY_ONLY", "confidence": "INFERRED_LOW", "evidence": ["Workshop diagnostic/tech-data tools used in technical LPs — not taught as digital-interfaces knowledge domain"] }, "practice": { "status": "EMBEDDED_TECHNICAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Tech data access activities"] }, "assessment": { "status": "WEAK_FOR_K34", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "NOT_CREDITED_AS_FULL_COVERAGE", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] } },
+        { "id": "K34-C5", "claim": "Word processing", "teaching": { "status": "NOT_FOUND_AS_NAMED_TOPIC", "confidence": "INFERRED_LOW", "evidence": ["Documentation writing exists (FS10) but is not word-processing systems teaching"] }, "practice": { "status": "ADJACENT_DOCUMENTATION", "confidence": "INFERRED_LOW", "evidence": ["FS10 job cards"] }, "assessment": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "DO_NOT_COLLAPSE_INTO_K33", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] } },
+        { "id": "K34-C6", "claim": "Point of sale", "teaching": { "status": "NOT_FOUND_AS_POS_SYSTEMS", "confidence": "INFERRED_MEDIUM", "evidence": ["LP29 payment methods/processing — payments adjacency, NOT POS systems teaching"] }, "practice": { "status": "PAYMENT_ADJACENCY", "confidence": "INFERRED_MEDIUM", "evidence": ["LP29 payment fraud/processing objectives"] }, "assessment": { "status": "PARTIAL_IF_ANY", "confidence": "INFERRED_LOW", "evidence": ["LP29 oral/written checks on VAT/GDPR/payment"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNMAPPED_AS_POS", "confidence": "INFERRED_HIGH", "evidence": [] } },
+        { "id": "K34-C7", "claim": "GDPR", "teaching": { "status": "PRESENT_THIN", "confidence": "EXPLICIT", "evidence": ["G8 LP29 EXPLICIT aims: Understand VAT and GDPR terms and how it applies to payments; objective: State the meaning of VAT and GDPR"] }, "practice": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": ["Payment-context application only"] }, "assessment": { "status": "PARTIAL", "confidence": "EXPLICIT", "evidence": ["LP29 oral/written revision", "CEA 8.1 includes Data Protection Act implications questions (related, not branded GDPR)"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "G8_LP29", "confidence": "EXPLICIT_PROVENANCE", "evidence": ["GROUP_G8"] } },
+        { "id": "K34-C8", "claim": "Cyber security", "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_SCAN", "evidence": ["Payment fraud recognition is NOT cyber security teaching"] }, "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_HIGH", "evidence": [] } }
+      ],
+      "axisRollup": {
+        "teaching": "MOSTLY_GAP_WITH_GDPR_ISLAND",
+        "practice": "WEAK",
+        "assessment": "PARTIAL_ON_GDPR_DPA_ONLY",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "MOSTLY_UNMAPPED"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "PARTIAL_COVERAGE_MATERIAL_COMPONENTS_MISSING",
+        "status": "UNMAPPED_OR_DISTRIBUTED_THIN",
+        "forcePrimary": false,
+        "weekSession": "G8 LP29 week UNRESOLVED"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP only for GDPR fragment vs Golden A total gap",
+        "CURRICULUM_GAP on most digital components",
+        "TEACHING_DEPTH_GAP on GDPR (terms/payments only)",
+        "CURRICULUM_GAP on cyber security"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidenceOverall": "HIGH_ON_PARTIALITY",
+      "goldenAComparedAfter": { "position": "REVIEWED_CURRICULUM_GAP", "direction": "CHANGE_TO_PARTIAL_NOT_FULL_COVERAGE" }
+    },
+    "S20": {
+      "officialRequirement": "Comply with equity, diversity, and inclusion guidance.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S20-C1",
+          "claim": "Comply with EDI guidance in workplace behaviour/practice",
+          "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_SCAN", "evidence": ["No EDI compliance teaching body", "REJECTED: Block LP boilerplate 'Inclusion, support and stretch' = SEND scaffolding, not EDI skill teaching", "REJECTED: W11 KSB tag list mentioning S20"] },
+          "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_HIGH", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "ABSENT_IN_SUPPLIED_CORPUS",
+        "practice": "ABSENT",
+        "assessment": "ABSENT",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "ABSENT",
+        "structuralAccounting": "UNMAPPED"
+      },
+      "ownership": { "coverageJudgementFirst": "NOT_COVERED", "status": "UNMAPPED", "forcePrimary": false, "weekSession": "UNRESOLVED" },
+      "assuranceClassifications": [
+        "CURRICULUM_GAP",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP if off-pack EDI/induction pack exists (same family as K31/B5)"
+      ],
+      "shadowDirection": "KEEP_GAP",
+      "confidenceOverall": "HIGH_ON_ABSENCE_IN_SUPPLIED_CORPUS",
+      "goldenAComparedAfter": { "position": "REVIEWED_CURRICULUM_GAP", "direction": "KEEP" }
+    },
+    "S23": {
+      "officialRequirement": "Use information and digital technology systems. Comply with GDPR and cyber security.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S23-C1",
+          "claim": "Use information and digital technology systems",
+          "teaching": { "status": "PARTIAL_THIN", "confidence": "INFERRED_MEDIUM", "evidence": ["G8 LP27 tech-data system access (Bosch)", "Parts Task Help Sheet: book parts onto laptop spreadsheet", "No broad digital-systems curriculum matching K34 list"] },
+          "practice": { "status": "PARTIAL", "confidence": "EXPLICIT", "evidence": ["Parts Task Help Sheet laptop spreadsheet activity", "Tech data access demonstration objectives in LP27"] },
+          "assessment": { "status": "WEAK_TO_PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["LP27 oral/demo checks; no dedicated digital-systems CEA"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G8_PARTIAL", "confidence": "EXPLICIT_PROVENANCE", "evidence": ["GROUP_G8"] }
+        },
+        {
+          "id": "S23-C2",
+          "claim": "Comply with GDPR",
+          "teaching": { "status": "PRESENT_THIN", "confidence": "EXPLICIT", "evidence": ["G8 LP29 GDPR terms/application to payments"] },
+          "practice": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": ["Payment-context only"] },
+          "assessment": { "status": "PARTIAL", "confidence": "EXPLICIT", "evidence": ["LP29 state meaning of GDPR", "CEA 8.1 Data Protection Act questions"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G8_LP29", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "S23-C3",
+          "claim": "Comply with cyber security",
+          "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_SCAN", "evidence": ["Payment fraud ≠ cyber security compliance"] },
+          "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_HIGH", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "PARTIAL",
+        "practice": "PARTIAL",
+        "assessment": "PARTIAL",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "PARTIAL_G8"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "PARTIAL_COVERAGE",
+        "status": "LIKELY_MAPPABLE_NOT_FORCED",
+        "firstSubstantiveTeachingHome": "G8 digital/payment-data cluster — not forced as Primary for whole S23",
+        "forcePrimary": false,
+        "weekSession": "UNRESOLVED for Group"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP relative to Golden A total gap (GDPR/IT fragments)",
+        "PRACTICE_GAP / TEACHING_DEPTH_GAP on breadth of digital systems",
+        "CURRICULUM_GAP on cyber security"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidenceOverall": "HIGH_ON_PARTIALITY",
+      "goldenAComparedAfter": { "position": "REVIEWED_CURRICULUM_GAP", "direction": "CHANGE_TO_PARTIAL" }
+    },
+    "K33": {
+      "officialRequirement": "Written communication techniques electronic and paper. Autocare industry terminology.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K33-C1",
+          "claim": "Written communication techniques (electronic and paper)",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS10 EXPLICIT Week 10: technical documentation, job cards, report writing, handover communication", "W26 documentation control topic intent (template aims — supporting)"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS10 complete job card/report; compare strong/weak examples"] },
+          "assessment": { "status": "FORMATIVE_ADEQUATE", "confidence": "EXPLICIT", "evidence": ["FS10 end: completed improved job card/report"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": ["Job-card mechanism referenced programme-wide"] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": ["Gateway docs require written assessment records"] },
+          "structuralAccounting": { "status": "CLEAR_B1_FS10", "confidence": "EXPLICIT", "evidence": ["Week 10 EXPLICIT"] }
+        },
+        {
+          "id": "K33-C2",
+          "claim": "Autocare industry terminology",
+          "teaching": { "status": "PRESENT_DISTRIBUTED", "confidence": "EXPLICIT", "evidence": ["FS10: use suitable terminology; pathway examples include Autocare", "Domain LPs teach system terminology (e.g. geometry terminology) — supports industry vocab without being sole home"] },
+          "practice": { "status": "EMBEDDED", "confidence": "INFERRED_HIGH", "evidence": ["Job cards / technical records require correct terms"] },
+          "assessment": { "status": "EMBEDDED", "confidence": "INFERRED_MEDIUM", "evidence": ["FS10 and technical assessments"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "structuralAccounting": { "status": "FS10_PLUS_DOMAIN", "confidence": "INFERRED_HIGH", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE_TO_STRONG",
+        "practice": "ADEQUATE",
+        "assessment": "FORMATIVE_ADEQUATE_FOR_KNOWLEDGE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "CLEAR_PRIMARY_HOME_B1"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "FS10 Week 10 Foundation Skills",
+        "doNotStealFrom": ["Later W26/W76 documentation intensives as Primary"],
+        "forcePrimary": false,
+        "weekSession": "FS10 Week 10 EXPLICIT"
+      },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED"],
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B1", "direction": "KEEP" }
+    },
+    "S15": {
+      "officialRequirement": "Apply customer service principles and organisational customer care practices. For example, identifying customer and vehicle needs, resolve low level customer complaints, make recommendations to customers based on results of inspection, maintenance, or repair of vehicles, customer payment transactions and organisational sales processes.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S15-C1",
+          "claim": "Identify customer and vehicle needs",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP25: types of customers and individual needs; identify 3 different customers and how to assist"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["LP25 objectives; Effective Customer Service.pptm soft-skills discussion"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 8.1 deal with customer needs / build relationships (Pass/Refer, legislation+CS questions)"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G8_THEN_B2", "confidence": "EXPLICIT", "evidence": ["GROUP_G8; W11 Customer Service Scenarios Block 2 Week 11 EXPLICIT topic intent"] }
+        },
+        {
+          "id": "S15-C2",
+          "claim": "Resolve low-level customer complaints",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP27: communication methods to assess customer complaint/job requirements", "G8 LP28: deal with an unhappy customer (workshop task)"] },
+          "practice": { "status": "PRESENT_ROLEPLAY", "confidence": "EXPLICIT", "evidence": ["LP28 unhappy customer workshop task"] },
+          "assessment": { "status": "FORMATIVE_PLUS_CEA_PARTIAL", "confidence": "INFERRED_HIGH", "evidence": ["LP28 oral/workshop; CEA 8.1 adjacent"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": ["Later Block complaint LPs W46/W66 are REINFORCE — not Primary steal"] }
+        },
+        {
+          "id": "S15-C3",
+          "claim": "Make recommendations based on inspection/maintenance/repair results",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP27 product sales/promotional packages; Effective Customer Service soft skills"] },
+          "practice": { "status": "PRESENT", "confidence": "INFERRED_HIGH", "evidence": ["Sales package construction; recommendations embedded in service/inspection customer tasks"] },
+          "assessment": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["CEA customer needs; technical CEAs ask recommendations in places — not over-credited alone"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "S15-C4",
+          "claim": "Customer payment transactions",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP29 payment methods, correct processing, payment fraud"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["LP29 demonstrate payment processing objectives"] },
+          "assessment": { "status": "PRESENT_FORMATIVE", "confidence": "EXPLICIT", "evidence": ["LP29 oral/written revision"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G8_LP29", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "S15-C5",
+          "claim": "Organisational sales processes",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP27 sales packages; LP28 recap sales techniques"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["LP27/28 practical exercises"] },
+          "assessment": { "status": "FORMATIVE", "confidence": "INFERRED_HIGH", "evidence": ["Oral/written revision in G8 LPs"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG_MULTI_COMPONENT",
+        "practice": "STRONG_FOR_SOFT_SKILL_FORM",
+        "assessment": "ADEQUATE_CEA8_1_PLUS_FORMATIVE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK_NOT_OWNER",
+        "structuralAccounting": "CLEAR_G8_TO_B2"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED_COMPONENTWISE",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "G8 Customer Service and Sales LP25–29 cluster → Block 2 customer-interaction home aligns with Golden A B2",
+        "doNotStealFrom": ["Later complaint/service-recovery Block weeks", "Gateway"],
+        "forcePrimary": false,
+        "weekSession": "G8 weeks UNRESOLVED; W11 Block 2 Week 11 EXPLICIT for CS scenarios intent"
+      },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED"],
+      "shadowDirection": "KEEP_PRIMARY_B2",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B2", "direction": "KEEP" },
+      "antiDriftNote": "Not credited from a single role-play — five components each have G8 evidence"
+    },
+    "S16": {
+      "officialRequirement": "Provide quotation of cost and order automotive parts, products, and consumables applicable to the vehicle.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S16-C1",
+          "claim": "Provide quotation of cost",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP27 access repair times from tech data; construct sales packages", "W28 EXPLICIT topic Estimates, authorisation and customer approval", "W38 EXPLICIT topic Quotations: labour, parts and value options"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 Task Sheet 1: research suppliers and price service parts + labour units", "LP27 demonstrate cam-belt repair-time lookup"] },
+          "assessment": { "status": "FORMATIVE_PLUS_SUPPORT_TEMPLATE", "confidence": "INFERRED_HIGH", "evidence": ["Task Sheet learner activity", "Repair Estimate Template.xlsx SUPPORTS only — not proof of teaching alone"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G8_THEN_B3", "confidence": "EXPLICIT", "evidence": ["GROUP_G8; W28 Block 3 Week 28 EXPLICIT"] }
+        },
+        {
+          "id": "S16-C2",
+          "claim": "Order automotive parts/products/consumables applicable to the vehicle",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["Parts Task Help Sheet: book parts into system; check invoice vs parts", "G8 Task Sheet 1 supplier/parts identification"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["Parts Task Help Sheet Part 1–3 ordering/booking/checking prices"] },
+          "assessment": { "status": "FORMATIVE_OBSERVED", "confidence": "EXPLICIT", "evidence": ["Explain to assessor part issue and resolution"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G8", "confidence": "EXPLICIT_PROVENANCE", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE_TO_STRONG",
+        "practice": "STRONG_FOR_COMMERCIAL_SKILL",
+        "assessment": "FORMATIVE_ADEQUATE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK_NOT_OWNER",
+        "structuralAccounting": "CLEAR_EARLY_COMMERCIAL_HOME"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "G8 parts/quote tasks → Block 3 estimates (Golden A Primary B3 consistent); later W38 REINFORCES",
+        "doNotStealFrom": ["W38/W78 later quotation intensives as Primary"],
+        "forcePrimary": false,
+        "weekSession": "G8 UNRESOLVED; W28 Week 28 EXPLICIT for estimates intent"
+      },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED"],
+      "shadowDirection": "KEEP_PRIMARY_B3",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "KEEP" }
+    }
+  },
+  "relationshipEdges": [
+    { "id": "e_k7_teaches_fs05", "ksb": "K7", "type": "TEACHES", "from": "res_lp_f311ff09e560", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 5 },
+    { "id": "e_k7_teaches_g14", "ksb": "K7", "type": "TEACHES", "from": "res_lm_6e6c9e8174f3_117", "basis": "EXPLICIT", "provenance": "GROUP_G14", "block": null, "week": null },
+    { "id": "e_k7_teaches_g8_lp27", "ksb": "K7", "type": "TEACHES", "from": "res_lm_353a299f7c42_69", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_k7_practises_b3t3", "ksb": "K7", "type": "PRACTISES", "from": "res_prac_fdc47cc819f4", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null },
+    { "id": "e_k8_teaches_svchist_ppt", "ksb": "K8", "type": "TEACHES", "from": "res_lm_049aeee9cc31_124", "basis": "INFERRED_MEDIUM", "provenance": "GROUP_G14", "block": null, "week": null, "note": "Binary ppt unextracted" },
+    { "id": "e_k8_teaches_w35_intent", "ksb": "K8", "type": "TEACHES", "from": "res_lp_d13169cfe267", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 4, "week": 35, "note": "Topic intent; template body" },
+    { "id": "e_k8_reinforces_w75", "ksb": "K8", "type": "REINFORCES", "from": "res_lp_4bbe6042640a", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 8, "week": 75 },
+    { "id": "e_k34_teaches_gdpr_lp29", "ksb": "K34", "type": "TEACHES", "from": "res_lm_fbce4cddc854_71", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null, "component": "K34-C7" },
+    { "id": "e_k34_knowledgechecks_cea81", "ksb": "K34", "type": "KNOWLEDGE_CHECKS", "from": "cea_2_8_1", "basis": "INFERRED_HIGH", "provenance": "CEA_G8", "block": null, "week": null, "note": "Data Protection Act questions — related to GDPR component" },
+    { "id": "e_s23_teaches_lp29_gdpr", "ksb": "S23", "type": "TEACHES", "from": "res_lm_fbce4cddc854_71", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s23_practises_parts_it", "ksb": "S23", "type": "PRACTISES", "from": "res_lm_b7c4d87f7f6d_74", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s23_teaches_lp27_techdata", "ksb": "S23", "type": "TEACHES", "from": "res_lm_353a299f7c42_69", "basis": "INFERRED_HIGH", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s23_assesses_cea81_dpa", "ksb": "S23", "type": "ASSESSES", "from": "cea_2_8_1", "basis": "INFERRED_HIGH", "provenance": "CEA_G8", "block": null, "week": null },
+    { "id": "e_k33_teaches_fs10", "ksb": "K33", "type": "TEACHES", "from": "res_lp_76cd8f807cd7", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 10 },
+    { "id": "e_k33_practises_fs10", "ksb": "K33", "type": "PRACTISES", "from": "res_lp_76cd8f807cd7", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 10 },
+    { "id": "e_s15_teaches_lp25", "ksb": "S15", "type": "TEACHES", "from": "res_lm_3ee3ae715686_67", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s15_teaches_lp26", "ksb": "S15", "type": "TEACHES", "from": "res_lm_8c4ef71e5a8d_68", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s15_teaches_lp27", "ksb": "S15", "type": "TEACHES", "from": "res_lm_353a299f7c42_69", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s15_practises_lp28", "ksb": "S15", "type": "PRACTISES", "from": "res_lm_41f79b0608fd_70", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s15_teaches_lp29_pay", "ksb": "S15", "type": "TEACHES", "from": "res_lm_fbce4cddc854_71", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s15_teaches_ecs_pptm", "ksb": "S15", "type": "TEACHES", "from": "res_lm_2616f5623cf1_72", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s15_assesses_cea81", "ksb": "S15", "type": "ASSESSES", "from": "cea_2_8_1", "basis": "EXPLICIT", "provenance": "CEA_G8", "block": null, "week": null },
+    { "id": "e_s15_reinforces_w11", "ksb": "S15", "type": "REINFORCES", "from": "res_lp_16fe848ac370", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 2, "week": 11, "note": "Topic intent; tags ignored" },
+    { "id": "e_s16_practises_tasksheet", "ksb": "S16", "type": "PRACTISES", "from": "res_lm_ceb8402d6d74_73", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s16_practises_parts_help", "ksb": "S16", "type": "PRACTISES", "from": "res_lm_b7c4d87f7f6d_74", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s16_teaches_lp27", "ksb": "S16", "type": "TEACHES", "from": "res_lm_353a299f7c42_69", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s16_teaches_w28_intent", "ksb": "S16", "type": "TEACHES", "from": "res_lp_982a0c0a6c64", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 3, "week": 28, "note": "Topic intent EXPLICIT; body template" },
+    { "id": "e_s16_reinforces_w38", "ksb": "S16", "type": "REINFORCES", "from": "res_lp_cac878c2dce9", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 4, "week": 38 },
+    { "id": "e_s16_supports_estimate_tmpl", "ksb": "S16", "type": "SUPPORTS", "from": "cea_2_Repair_Estimate_Template_xlsx", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null, "note": "Template only — not teaching proof" }
+  ],
+  "relationshipCounts": {
+    "totalEdges": 29,
+    "byType": {
+      "TEACHES": 16,
+      "PRACTISES": 6,
+      "ASSESSES": 2,
+      "REINFORCES": 3,
+      "SUPPORTS": 1,
+      "KNOWLEDGE_CHECKS": 1,
+      "PREPARES_FOR_GATEWAY": 0,
+      "ROUTING": 0,
+      "RECORDS_EVIDENCE": 0
+    },
+    "byBasis": {
+      "EXPLICIT": 20,
+      "INFERRED_HIGH": 3,
+      "INFERRED_MEDIUM": 6,
+      "INFERRED_LOW": 0,
+      "CONFLICTING": 0,
+      "UNRESOLVED": 0
+    }
+  },
+  "conflictingOrUnresolvedNotes": [
+    "K8 owner's manuals UNRESOLVED/absent",
+    "K8 Vehicle Service History.ppt unextracted",
+    "K34/S23 cyber security absent",
+    "K34 most digital components absent",
+    "S20 EDI absent in supplied corpus",
+    "Group weeks for G8 generally UNRESOLVED",
+    "No CONFLICTING EXPLICIT-vs-EXPLICIT edges",
+    "Block LP KSB tag lists deliberately unused as coverage evidence"
+  ]
+}

@@ -1,0 +1,89 @@
+TASK 3: EV/HYBRID CUSTOMER HANDOVER
+AND CHARGING AWARENESS
+Autocare Technician Level 2 | Block 9 | v2.0
+TIME
+60 minutes
+EVIDENCE
+Practical | Knowledge | Documentation
+PROGRAMME POINT
+Weeks 81-94
+Your task
+A customer asks for advice after an EV/hybrid service or warning message. You must complete non-invasive
+checks, prepare a customer handover explanation and identify safe referral points.
+What you must do
+1 Confirm the customer concern and check available vehicle information.
+2 Identify visible EV/hybrid components, warning labels and charging information.
+3 Record any non-invasive observations or advisory notes.
+4 Prepare a customer handover explanation including limitations.
+5 Explain referral requirements and complete documentation.
+What good evidence looks like
+SAFE SETUP
+Suitable PPE, a prepared work area and controlled vehicle or
+equipment.
+CORRECT METHOD
+A logical sequence using the relevant procedure and technical
+information.
+ACCURATE EVIDENCE
+Actual readings, findings and actions recorded clearly and
+precisely.
+SOUND DECISIONS
+Appropriate recommendations, referral or authorisation
+supported by evidence.
+You will need
+• EV/hybrid vehicle, rig or case-study pack
+• Charging information or customer FAQ sheet
+• Manufacturer safety information
+• HV awareness PPE where appropriate
+• Apprentice Assessment Record
+SOW ALIGNMENT
+Block 9 - Emerging Technology, EV and Hydrogen
+Duties: 1, 2, 4, 5, 8, 10 KSB evidence focus: K18-K23, S10-S15, B1, B2
+Task reference: Block_9_Task_3_EV_Customer_Handover
+Block_9_Task_3_EV_Customer_Handover | v2.0 Page 1 of 3
+TASK 3: EV/HYBRID CUSTOMER HANDOVER AND CHARGING AWARENESS
+Practical record
+Apprentice, location and vehicle details
+Apprentice name Date
+TASK COMPLETED AT APPRENTICE'S WORKPLACE TRAINING CENTRE
+Vehicle make Model
+Registration Mileage
+Engine size / type VIN / chassis number
+Measurements and technical checks
+Vehicle/system type Warning message
+Charging connector/type Visible safety labels
+Customer concern Checks completed
+Referral required Customer advice
+summary
+Special tools, equipment or calibration requirements
+Task evidence
+PPE and precautions used Safety-critical findings and immediate action
+Work completed, findings and recommendations
+Knowledge check
+1. What information should be included in an EV
+customer handover?
+2. Why must high-voltage components not be
+disturbed at this level?
+Block_9_Task_3_EV_Customer_Handover | v2.0 Page 2 of 3
+TASK 3: EV/HYBRID CUSTOMER HANDOVER AND CHARGING AWARENESS
+Knowledge check and assessment decision
+Knowledge check - continued
+3. (a) What customer concerns are common with EV range or charging? (b) How should limitations of the
+inspection be explained?
+4. What evidence should be recorded for referral?
+5. (a) Why is accurate customer communication important with emerging technologies? (b) How would you
+respond if the customer asks for work beyond your competence?
+Assessor/Workplace Mentor observation
+Carry out safe EV/hybrid awareness checks. Record charging or warning information without invasive HV work.
+Explain customer guidance in plain English. Identify when specialist referral is required.
+Document safe limitations and next steps.
+Assessor/Workplace Mentor observation notes
+Decision and feedback
+Decision - select one
+PASS REFER
+Evidence reference
+Feedback and action required
+Sign-off
+Signatures confirm that this is the apprentice's own work and that the evidence and decision are accurate.
+Apprentice name Assessor/Workplace Mentor name PIN (if applicable)
+Apprentice signature Assessor/Workplace Mentor signature Date
+Block_9_Task_3_EV_Customer_Handover | v2.0 Page 3 of 3

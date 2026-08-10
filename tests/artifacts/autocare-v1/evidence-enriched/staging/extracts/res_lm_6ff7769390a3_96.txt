@@ -1,0 +1,63 @@
+Autocare Standards Level 2 ST0499/AP01 
+ Hydraulic Adaptive Suspension 
+ 
+ style.visibility style.visibility style.visibility
+
+Aims and Objectives At the end of this presentation you should be able to: Have some awareness of the concept of hydraulic adaptive suspension Understand the safety benefits of hydraulic adaptive suspension Identify the components in a hydraulic adaptive suspension system Understand the operation of hydraulic adaptive suspension systems 
+ style.visibility
+
+System Overview Hydraulic adaptive suspension (or Active suspension as it is sometimes known) is generally fitted to high level high performance cars. As opposed to ‘conventional’ independent suspension, hydraulic adaptive suspension allows adjustment the suspension to suit different road conditions and driving styles. Being able to do this is beneficial to overall safety for the driver, the vehicle and its occupants, and also offers more efficient running, minimising wear on suspension components and tyres. 
+ style.visibility
+
+How does it work? There are two systems of hydraulic adaptive suspension. The first having hydraulic dampers fitted with electric solenoids which control the damper pistons and thereby the rate at which the hydraulic fluid passes through valves inside the pistons and damper. The second system features magnetorheological damping where the hydraulic fluid contains fine metal particles. The fluid changes viscosity when magnetic solenoids in the damper are energised. Whichever dampers are fitted the system is controlled by a master electronic control unit with height sensors and driver selectable controls for the suspension settings. 
+ style.visibility
+
+Basic Layout The Electronic Control Unit (ECU) is powered from the vehicle battery to solenoids on each of the dampers (shock absorbers), height sensors and selectable switches inside the vehicle. The vehicle driver is able to select the initial ride characteristics via the switches and the ECU adjusts the dampers to suit the chosen settings. For safety, the settings are generally only allowed to be changed by the driver when the vehicle is stationary. 
+ style.visibility style.visibility
+
+System Components – ECU The ECU is programmed with the basic settings for the hydraulic dampers relating to the ride height and driving characteristics of the vehicle. As a particular suspension mode is selected, the ECU signals solenoid actuators on the dampers to act accordingly to automatically adjust the damping settings of each unit. 
+ style.visibility style.visibility
+
+System Components – Electronic Dampers This type is the most economic and basic type of active suspension dampers. They consist of a solenoid valve connected to the ECU. The ECU signals the damper to adjust the rate at which the internal pistons rise and fall, altering the flow of the hydraulic fluid inside the shock absorber, therefore changing the damping characteristics of the suspension setup. 
+ style.visibility style.visibility
+
+System Components – Magnetorheological Dampers The operation of a magnetorheologic damper is very similar to that of a conventional hydraulic damper. The difference being that the hydraulic fluid of a magnetorheologic damper is charged with fine magnetic particles and the damper piston features an electromagnet. As the damper settings are changed, the electromagnet alters in strength to adjust the viscosity and therefore flow of the hydraulic fluid. 
+ style.visibility style.visibility
+
+System Components – Height Sensors Height sensors are fitted between the vehicle underbody and each damper unit. The sensors are connected to the ECU and send signals back to the ECU relative to the suspension operation of the vehicle. The ECU is then able to signal the dampers to make minute operational adjustments to their settings whilst the vehicle is being driven. 
+ style.visibility style.visibility
+
+System Components – Selector Switches A series of switches inside the vehicle allow the driver to choose the initial settings for the suspension. The settings generally range from: Sport – stiff suspension setting Comfort – Normal (conventional) setting Eco Mode – soft suspension setting. Some systems also features an ‘off’ setting whereby the suspension will revert back to a conventional hydraulic mode. 
+ style.visibility style.visibility
+
+Learning Recap #1 
+ True or false: The suspension settings of a vehicle fitted with adaptive suspension can be generally changed by the vehicle driver whilst the vehicle is in motion? 
+ FALSE 
+ 
+ As a safety feature the suspension settings can generally only changed by the driver when the vehicle is stationary. 
+ style.visibility style.visibility style.visibility
+
+System Operation Active suspension uses an onboard system to control the vertical movement of the vehicle's wheels relative to the chassis or vehicle body rather than passive suspension (conventional suspension) provided by springs and dampers where the suspension movement is determined entirely by the action of the vehicle on the road surface. Active suspensions allow the vehicle driver and control unit to automatically adjust the shock absorber (damper) firmness to match changing road or dynamic conditions thereby improving vehicle handling and safety. 
+ style.visibility
+
+Handling benefits As a vehicle travels along a road the suspension is designed to move up and down to account for differences in the road surface. By doing this, the vehicle body should remain reasonably stable. With alternating driving conditions such as accelerating, braking and cornering, a vehicle is subjected to movement where the body either dips at the front or rear, or rolls from side to side. These conditions are brought about by torque related forces which cannot be avoided so whilst conventional suspension may not be able to cope with such conditions, adaptive suspension can be initially set by the driver, then continually adjusted by the ECU signals to maintain vehicle stability which in turn improves safety and comfort for the vehicle occupants. 
+ style.visibility
+
+Safety benefits Depending on the extent of dynamic forces imposed on a vehicle during acceleration, braking and cornering, there is the potential for the vehicle to become out of control during high speed manoeuvres. Whilst UK roads have strict speed limits, there is always the temptation to take a high performance vehicle ‘over the limit’ so even though a high percentage of vehicle accidents are caused by excessive speed, driver error and loss of control, adaptive suspension is no substitute for careful and sensible driving. A vehicle fitted with adaptive suspension though has at least some benefit that is can be initially set and continually monitored to achieve the safest conditions in which the vehicle is being driven. 
+ style.visibility
+
+Video The following video shows the Mercedes AMG electronic adaptive suspension in operation .
+
+Learning Recap #2 What component has overall control of an adaptive suspension system? 
+ The damper solenoids 
+ The Electronic Control Unit 
+ The driver settings switches 
+ The ride height sensors 
+ a 
+ The damper solenoids control the fluid flow inside the dampers 
+ The driver settings switches set the initial mode of operation 
+ The ride height sensors send signals to the ECU of how the suspension is operating 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Summary This brief presentation has shown the basic concept of hydraulic adaptive suspension. You should now have sufficient knowledge to identify if a vehicle is, or is not fitted with adaptive suspension by looking at the component parts. You should also have a basic idea of how hydraulic adaptive suspension works and its benefits towards improved vehicle control and safety. 
+ style.visibility

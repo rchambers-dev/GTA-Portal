@@ -1,0 +1,59 @@
+01302 832831
+ Rands Land Ind Est
+
+ Doncaster
+ admin@doncastergta.co.uk
+ DN3 3DY
+ -412750 -488080 PROFORMA
+ INVOICE
+ 0 0 PROFORMA
+ INVOICE
+ 2977116 -595423 0 -552450 -584229 0 0
+ BILL TO
+
+ Name:
+ Invoice Number:
+
+ Street:
+ Date:
+
+ City :
+ Customer ID:
+
+ Phone:
+ -387985 143510 Doncaster GTA
+ 0 0 Doncaster GTA
+ 4697730 856955 ESTIMATE TOTAL:
+ 0 0 ESTIMATE TOTAL:
+
+ 4753610 243840 £
+ 0 0 £
+ -553085 -264795 0 0
+
+ PRODUCTS
+ Quantity
+ Description
+ Unit Price
+ Amount
+
+ Estimated. Shipping
+
+ Total Products
+
+ LABO U R @ £45/hour
+ Hour
+ Description
+ £ / Hour
+ Amount
+
+ 45
+
+ Payment is due within 14 days.
+ Total Labo u r
+
+ Comments or Special Instructions:
+ Subtotal
+
+ VAT 20%
+
+ TOTAL

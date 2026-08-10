@@ -1,0 +1,447 @@
+SOURCE: G10 Advanced Braking\Resources\Anti-Lock Brake Systems.ppt
+HASH: d2fd77e61892d21c279085aa3cbed8504431a21b0ea49490703f5b875dfb7245
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Anti-Lock Brake Systems
+
+identify the function and operation of anti-lock brake systems
+
+Next >
+
+===== SLIDE 2 =====
+Introduction
+
+The anti-lock brake system (ABS) is an electronic safety system.
+
+The ABS system prevents the brakes from locking the wheels, which would make the vehicle skid.
+
+Next >
+
+It uses information from sensors to control the hydraulic action of the brakes.
+
+===== SLIDE 3 =====
+Hydraulic
+
+Electric
+
+Anti-Lock Brake System Layout
+
+This diagram shows the locations of the components of a typical anti-lock brake system. In this example, the ABS ECU is mounted separately from the hydraulic control unit.
+
+ABS electronic control unit (ABS ECU)
+
+Wheel speed sensor and tone wheel
+
+Next >
+
+Hydraulic control unit
+
+Master cylinder
+
+Brake booster
+
+Brake unit
+
+===== SLIDE 4 =====
+ABS Electronic and Hydraulic Components
+
+This is a different type of diagram showing the components of another typical anti-lock brake system. In this example, the ABS ECU and the hydraulic control unit are combined.
+
+The ABS ECU processes information from electronic sensors to control hydraulic and electronic actuators.
+
+Next >
+
+Speed sensors –front left and right
+
+Speed sensors –rear left and right
+
+Brake light sensor
+
+Other signals
+
+Electro-hydraulic pump
+
+Solenoid valves
+
+ABS
+
+ABS warning light
+
+Brake warning light
+
+CAN bus and diagnostics
+
+ABS ECU
+
+===== SLIDE 5 =====
+Wheel Speed Sensors and Tone Wheels
+
+The wheel speed sensor measures the speed of rotation of each wheel.
+
+Active(Hall Effect) sensors or inductive sensors may be used depending on the system.Hall sensors need a supply of current to work and create a digital square wave. Inductive sensors don’t need a power supply and create an AC sign wave.
+
+Next >
+
+CV joint
+
+InductiveSensor
+
+Tone wheel teeth
+
+===== SLIDE 6 =====
+Inductive Wheel Speed Sensor and Tone Wheel Operation
+
+The frequency and amplitude of the AC signal changes as the speed of the wheel changes.
+
+The tone wheel cuts the magnetic field of the inductive speed sensor.
+
+Next >
+
+This produces an AC voltage at the sensor output, which is sent to the ABS ECU.
+
+===== SLIDE 7 =====
+ABS ECU
+
+The ABS ECU tests the system operation and monitors the system during driving.
+
+It has four function areas:
+
+Next >
+
+An input amplifier processes the wheel speed signals
+
+A computer unit calculates the control signals
+
+A power stage drives the solenoid valves
+
+A monitoring circuit detects faults in the ABS system
+
+Solenoid valves
+
+Safety relay
+
+Warning lamp
+
+Output circuits
+
+LSI circuits
+
+Voltage stabilizer
+
+Battery
+
+Wheel speed sensors
+
+===== SLIDE 8 =====
+ABS Warning Lamp
+
+A warning lamp is used to warn the driver if the ABS system is not functioning correctly.
+
+Voltage relays are used to deliver reliable and constant voltage to the electronic components of the system.
+
+Next >
+
+===== SLIDE 9 =====
+Question 1
+
+Which ABS device reads signals from the wheel sensors?
+
+A)	The hydraulic control unit
+
+B)	The ABS ECU
+
+C)	The wheel speed sensor ring
+
+D)	The master cylinder
+
+Next >
+
+===== SLIDE 10 =====
+Question 1
+
+Which ABS device reads signals from the wheel sensors?
+
+A)	The hydraulic control unit
+
+B)	The ABS ECU
+
+C)	The wheel speed sensor ring
+
+D)	The master cylinder
+
+Next >
+
+The tone wheel cuts the magnetic field of the speed sensor. This produces an AC voltage at the sensor output, which is sent to the ABS ECU.
+
+===== SLIDE 11 =====
+The Hydraulic Control Unit
+
+The HCU contains solenoid operated valves that are controlled by the ABS ECU.
+
+Each brake unit has an inlet valve and an outlet valve.
+
+The valves are used to control the hydraulic pressure at each brake unit.
+
+Next >
+
+To pump and motor supply relay
+
+To ECU
+
+4 × output ports to brake calipers
+
+Pump and motor
+
+Solenoids
+
+Control valve
+
+Hydraulic Control Unit (HCU)
+
+===== SLIDE 12 =====
+Hydraulic System Variations
+
+There are many different types of ABS systems, each designed to use hydraulic control channels and wheel sensor circuits in various combinations.
+
+The hydraulic pressure at each front brake unit is independently controlled by the ABS ECU.
+
+An early front-rear split, three-channel hydraulic system had one rear and two front sensors.
+
+Next >
+
+Common hydraulic pressure is applied to each rear brake unit.
+
+3 hydraulic channels (front-rear split)
+
+3 wheel sensors (2 front, 1 rear)
+
+Master cylinder and reservoir
+
+===== SLIDE 13 =====
+Hydraulic System Variations
+
+A more modern, diagonal- split, four-channel system has two front and two rear wheel speed sensors.
+
+The wheel sensor that detects the lowest adhesion level is the one that determines the braking force.
+
+The hydraulic pressure at all four brake units is independently controlled by the ABS ECU.
+
+Next >
+
+Master cylinder and reservoir
+
+4 wheel sensors (2 front, 2 rear)
+
+4 hydraulic channels (diagonal-split)
+
+===== SLIDE 14 =====
+Question 2
+
+How many wheel speed sensors does a typical four-channel hydraulic system have?
+
+A)	1
+
+B)	2
+
+C)	3
+
+D)	4
+
+Next >
+
+===== SLIDE 15 =====
+Question 2
+
+How many wheel speed sensors does a typical four-channel hydraulic system have?
+
+A)	1
+
+B)	2
+
+C)	3
+
+D)	4
+
+Next >
+
+A four-channel hydraulic system will have four wheel speed sensors; one for each channel.
+
+===== SLIDE 16 =====
+The ABS Hydraulic Cycle
+
+The ABS ECU controls the four stages of an ABS hydraulic cycle:
+
+Next >
+
+Normal – the brake system functions without ABS operation
+
+Isolate – the first phase of the ABS cycle, which isolates pressure
+
+Release – the second phase of the ABS cycle, which releases pressure
+
+Increase – the third phase of the ABS cycle, which increases pressure
+
+To pump and motor supply relay
+
+To ECU
+
+4 × output ports to brake calipers
+
+Pump and motor
+
+Solenoids
+
+Control valve
+
+===== SLIDE 17 =====
+Normal Braking
+
+Under normal braking conditions, the inlet valves are open and the outlet valves are closed.
+
+Pressurized hydraulic fluid from the master cylinder passes directly to the brake units when the brake pedal is pressed.
+
+Next >
+
+Right front wheel
+
+Left front wheel
+
+Right rear wheel
+
+Left rear wheel
+
+===== SLIDE 18 =====
+Pressure Isolate (Hold)
+
+If the ABS ECU detects that a wheel is starting to lock up, it will close the inlet valve to the brake unit so the pressure supplied to it cannot increase.
+
+In this example, the inlet valve to the left front wheel has closed.
+
+Next >
+
+Right front wheel
+
+Left front wheel
+
+Right rear wheel
+
+Left rear wheel
+
+===== SLIDE 19 =====
+Pressure Release (Dump)
+
+If the wheel remains in the unstable slip zone and wheel lock is still likely, the ABS ECU opens the outlet valve at the brake unit to reduce the hydraulic pressure.
+
+In this example, the outlet valve to the left front wheel has opened.
+
+Next >
+
+Right front wheel
+
+Left front wheel
+
+Right rear wheel
+
+Left rear wheel
+
+===== SLIDE 20 =====
+Pressure Increase (Build)
+
+If the wheel begins to accelerate above the speed of the other wheels, the ABS ECU increases the hydraulic pressure at the brake unit.
+
+In this example, the outlet valve to the left front wheel has closed, the inlet valve has opened, and the hydraulic pump is running.
+
+Next >
+
+Right front wheel
+
+Left front wheel
+
+Right rear wheel
+
+Left rear wheel
+
+===== SLIDE 21 =====
+Pressure Increase (Build)
+
+Next >
+
+The brake pedal may rise during this ABS cycle.
+
+As the ABS cycle repeats several times a second, the pedal will feel like it is oscillating.
+
+Right front wheel
+
+Left front wheel
+
+Right rear wheel
+
+Left rear wheel
+
+===== SLIDE 22 =====
+Fail Safe Mode
+
+The brake system must still function if the power to the ABS system fails.
+
+With the power off, the inlet valves are always open and the outlet valves are always closed.
+
+Next >
+
+In this mode, pressurized hydraulic fluid from the master cylinder passes directly to the brake units when the brake pedal is pressed.
+
+Fail safe
+
+Right front wheel
+
+Left front wheel
+
+Right rear wheel
+
+Left rear wheel
+
+===== SLIDE 23 =====
+A)	Inlet open, outlet open
+
+B)	Inlet open, outlet closed
+
+C)	Inlet closed, outlet open
+
+D)	Inlet closed, outlet closed
+
+Question 3
+
+Next >
+
+The ABS ECU is operating the hydraulic valves of the left front wheel during an ABS hydraulic cycle.What is the status of the left front inlet and outlet valves during the pressure isolate phase of the ABS cycle?
+
+===== SLIDE 24 =====
+A)	Inlet open, outlet open
+
+B)	Inlet open, outlet closed
+
+C)	Inlet closed, outlet open
+
+D)	Inlet closed, outlet closed
+
+Question 3
+
+Next >
+
+During the pressure isolate phase of the ABS cycle, both the inlet and outlet valves will be closed.
+
+The ABS ECU is operating the hydraulic valves of the left front wheel during an ABS hydraulic cycle.What is the status of the left front inlet and outlet valves during the pressure isolate phase of the ABS cycle?
+
+===== SLIDE 25 =====
+Summary
+
+the function and components of an anti-lock brake system
+
+In this presentation you have seen:
+
+the ABS hydraulic cycle
+
+End
+

@@ -1,0 +1,2403 @@
+{
+  "status": "PLAN_ONLY_NOT_EXECUTED",
+  "standardVersion": "ST0499 v1.3",
+  "generatedAt": "2026-08-10T14:35:30.840Z",
+  "methodology": "TRACEABILITY_METHODOLOGY_APPROVED",
+  "reviewedLocked": [
+    "S9",
+    "K10",
+    "K12",
+    "K21",
+    "K23",
+    "S13",
+    "K13",
+    "S7",
+    "S10",
+    "S11",
+    "B5",
+    "K28",
+    "K11"
+  ],
+  "count": 51,
+  "distribution": {
+    "knowledge": 27,
+    "skills": 20,
+    "behaviours": 4
+  },
+  "proposedBatches": {
+    "R51-1": [
+      "K18",
+      "K2",
+      "K20",
+      "S25",
+      "K1",
+      "K31",
+      "K6",
+      "S12"
+    ],
+    "R51-2": [
+      "K7",
+      "K8",
+      "K34",
+      "S20",
+      "S23",
+      "K33",
+      "S15",
+      "S16"
+    ],
+    "R51-3": [
+      "K3",
+      "K4",
+      "K5",
+      "S1",
+      "S2",
+      "S3",
+      "S5",
+      "S6",
+      "B1"
+    ],
+    "R51-4": [
+      "K9",
+      "K14",
+      "K15",
+      "K16",
+      "K17",
+      "K19",
+      "S4",
+      "S8",
+      "S14"
+    ],
+    "R51-5": [
+      "K22",
+      "K24",
+      "K25",
+      "K26",
+      "K27",
+      "K29",
+      "K30",
+      "K32",
+      "S17",
+      "S18",
+      "S19",
+      "S21",
+      "S22",
+      "S24",
+      "B2",
+      "B3",
+      "B4"
+    ]
+  },
+  "manifests": [
+    {
+      "ksbCode": "B1",
+      "kind": "behaviours",
+      "officialWording": "Put health and safety first.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 1,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 1,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "h_and_s",
+        "behaviour"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "learning_impact_records",
+        "skills_progress_reviews"
+      ],
+      "knownUncertainties": [
+        "Must not fail solely for lacking workshop CEA"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Behaviour-appropriate evidence bar (not CEA-required)"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "B2",
+      "kind": "behaviours",
+      "officialWording": "Consider the impact on the environment when using resources and carrying out work.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "behaviour"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "learning_impact_records",
+        "skills_progress_reviews"
+      ],
+      "knownUncertainties": [
+        "Must not fail solely for lacking workshop CEA"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Behaviour-appropriate evidence bar (not CEA-required)"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "B3",
+      "kind": "behaviours",
+      "officialWording": "Respond and adapt to changing work demands.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 6,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 6,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "behaviour"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "learning_impact_records",
+        "skills_progress_reviews"
+      ],
+      "knownUncertainties": [
+        "Must not fail solely for lacking workshop CEA"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Behaviour-appropriate evidence bar (not CEA-required)"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "B4",
+      "kind": "behaviours",
+      "officialWording": "Seek learning and development opportunities, continual professional development.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 10,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 10,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "behaviour"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "learning_impact_records",
+        "skills_progress_reviews"
+      ],
+      "knownUncertainties": [
+        "Must not fail solely for lacking workshop CEA"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Behaviour-appropriate evidence bar (not CEA-required)"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K1",
+      "kind": "knowledge",
+      "officialWording": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-1",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-1",
+      "shadowArtifact": "batch-r51-1/shadow-batch-r51-1.json"
+    },
+    {
+      "ksbCode": "K2",
+      "kind": "knowledge",
+      "officialWording": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-1",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-1",
+      "shadowArtifact": "batch-r51-1/shadow-batch-r51-1.json"
+    },
+    {
+      "ksbCode": "K3",
+      "kind": "knowledge",
+      "officialWording": "Awareness of health and safety regulations, standards, and guidance and impact on role. Safe working procedures, Control of Substances Hazardous to Health (COSHH). Fire safety. Good housekeeping. Hazards and risks. Health and Safety at Work Act. Manual handling. Personal Protective Equipment (PPE). Safety equipment: guards, fire extinguishers. Safety signage. Slips, trips, and falls. Lifting operations and lifting equipment regulations (LOLER), Provision and use of work equipment regulations (PUWER).",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 1,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 1,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "h_and_s",
+        "tools_equipment"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "K4",
+      "kind": "knowledge",
+      "officialWording": "Environment and sustainability guidance relevant to the occupation and autocare technician's role and responsibilities. Recycling, reuse, and safe disposal of waste.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "K5",
+      "kind": "knowledge",
+      "officialWording": "Tools and equipment used in automotive industry. Purpose and operation.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 1,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 1,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "tools_equipment"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "K6",
+      "kind": "knowledge",
+      "officialWording": "Maintenance and storage methods for tools and equipment, including calibration checks.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 1,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 1,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "tools_equipment"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-1",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-1",
+      "shadowArtifact": "batch-r51-1/shadow-batch-r51-1.json"
+    },
+    {
+      "ksbCode": "K7",
+      "kind": "knowledge",
+      "officialWording": "Workplace instructions. Purpose and use for inspection, maintenance, and replacement.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-2",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-2",
+      "shadowArtifact": "batch-r51-2/shadow-batch-r51-2.json"
+    },
+    {
+      "ksbCode": "K8",
+      "kind": "knowledge",
+      "officialWording": "Vehicle service records, owner's manuals, and warranties. Purpose and use.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-2",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-2",
+      "shadowArtifact": "batch-r51-2/shadow-batch-r51-2.json"
+    },
+    {
+      "ksbCode": "K9",
+      "kind": "knowledge",
+      "officialWording": "Tyres: legislation, replacement, repair, and technical information including EU tyre labelling, tyre pressure monitoring systems (TPMS), sidewall markings, homologated fitments relating to cars, car derived vans and light goods vehicles.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 7,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 7,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "extracted_legacy_ppt"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "K14",
+      "kind": "knowledge",
+      "officialWording": "Vehicle heating, ventilation, and air conditioning systems (HVAC): purpose, function and location of systems including climate control systems for inspection, maintenance, and replacement: refrigerants, coolants, blower motors, valves, heat exchangers, pipes and hoses.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 6,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 6,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "K15",
+      "kind": "knowledge",
+      "officialWording": "Low voltage batteries: purpose, function, and location of low voltage batteries, starting and charging systems: auxiliary battery, starter motor, alternator, e-machine.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "extracted_legacy_ppt"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "K16",
+      "kind": "knowledge",
+      "officialWording": "Maintenance and replacement of low voltage batteries, starting and charging systems.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "extracted_legacy_ppt"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "K17",
+      "kind": "knowledge",
+      "officialWording": "Awareness of advanced driver-assistance systems (ADAS) and impact of repair work: static and dynamic calibration methods, calibration equipment.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 9,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 9,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "tools_equipment",
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "extracted_legacy_ppt"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "K18",
+      "kind": "knowledge",
+      "officialWording": "Advanced driver-assistance systems (ADAS) levels of autonomy: passive and active advanced driver assistance systems.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "extracted_legacy_ppt"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-1",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-1",
+      "shadowArtifact": "batch-r51-1/shadow-batch-r51-1.json"
+    },
+    {
+      "ksbCode": "K19",
+      "kind": "knowledge",
+      "officialWording": "Four-wheel geometry principles including wheel alignment, Ackermann principle, alignment principles, toe, camber, thrust angle, adjustment types and methods.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "extracted_legacy_ppt"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "K20",
+      "kind": "knowledge",
+      "officialWording": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "extracted_legacy_ppt"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-1",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-1",
+      "shadowArtifact": "batch-r51-1/shadow-batch-r51-1.json"
+    },
+    {
+      "ksbCode": "K22",
+      "kind": "knowledge",
+      "officialWording": "Awareness of hydrogen powered vehicle technologies and principles of operation: storage and condition monitoring of fuel cells.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 9,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 9,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "extracted_legacy_ppt"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K24",
+      "kind": "knowledge",
+      "officialWording": "Principles of customer care: pre and post vehicle customer service, identifying customer and vehicle needs, how to handle challenging conversations.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K25",
+      "kind": "knowledge",
+      "officialWording": "Business operation considerations: efficiency, customer satisfaction, competitiveness, minimising risks to operation, and ethical issues.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 6,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 6,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K26",
+      "kind": "knowledge",
+      "officialWording": "Vehicle parts costings and procurement: customer, organisation and vehicle needs.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K27",
+      "kind": "knowledge",
+      "officialWording": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K29",
+      "kind": "knowledge",
+      "officialWording": "Principles of sales processes.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K30",
+      "kind": "knowledge",
+      "officialWording": "Team working principles.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K31",
+      "kind": "knowledge",
+      "officialWording": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "edi_professional"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "induction_pastoral_offpack_if_any",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "May live off-pack / pastoral — distinguish curriculum gap vs evidence visibility"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-1",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-1",
+      "shadowArtifact": "batch-r51-1/shadow-batch-r51-1.json"
+    },
+    {
+      "ksbCode": "K32",
+      "kind": "knowledge",
+      "officialWording": "Verbal communication techniques. Giving and receiving information. Matching style to audience.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 5,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 5,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "K33",
+      "kind": "knowledge",
+      "officialWording": "Written communication techniques electronic and paper. Autocare industry terminology.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 1,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 1,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-2",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-2",
+      "shadowArtifact": "batch-r51-2/shadow-batch-r51-2.json"
+    },
+    {
+      "ksbCode": "K34",
+      "kind": "knowledge",
+      "officialWording": "Information and digital technology: email, collaboration packages, databases, equipment digital interfaces, management information systems, word processing, work sharing platforms, point of sale, GDPR, cyber security.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "tools_equipment",
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "teaching_ppt_pptx",
+        "extracted_legacy_ppt",
+        "gateway_knowledge"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-2",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-2",
+      "shadowArtifact": "batch-r51-2/shadow-batch-r51-2.json"
+    },
+    {
+      "ksbCode": "S1",
+      "kind": "skills",
+      "officialWording": "Comply with health and safety procedures in the workplace in compliance with regulations, standards, and guidance.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "h_and_s"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "S2",
+      "kind": "skills",
+      "officialWording": "Prepare the vehicle and working area before the work activity. For example, remove or mitigate slip and trip hazards.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "S3",
+      "kind": "skills",
+      "officialWording": "Maintain and restore the work area during and on completion of the activity.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "S4",
+      "kind": "skills",
+      "officialWording": "Store, maintain, including calibration checks, and return tools and equipment to storage.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 4,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 4,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "tools_equipment"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "S5",
+      "kind": "skills",
+      "officialWording": "Access vehicle technical data to inform inspections and make judgements on wear and serviceability.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 1,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 1,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "S6",
+      "kind": "skills",
+      "officialWording": "Comply with environmental and sustainability procedures, regulations, standards, and guidance. Segregate resources for reuse, recycling, and disposal.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-3",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-3",
+      "shadowArtifact": "batch-r51-3/shadow-batch-r51-3.json"
+    },
+    {
+      "ksbCode": "S8",
+      "kind": "skills",
+      "officialWording": "Select and use tools and equipment, mechanical and electrical measuring tools, and diagnostic equipment.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 1,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 1,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "tools_equipment"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "S12",
+      "kind": "skills",
+      "officialWording": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "technical_systems"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-1",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-1",
+      "shadowArtifact": "batch-r51-1/shadow-batch-r51-1.json"
+    },
+    {
+      "ksbCode": "S14",
+      "kind": "skills",
+      "officialWording": "Record vehicle service maintenance, parts replacement, or repair.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 6,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 6,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-4",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-4",
+      "shadowPath": "batch-r51-4/shadow-batch-r51-4.json"
+    },
+    {
+      "ksbCode": "S15",
+      "kind": "skills",
+      "officialWording": "Apply customer service principles and organisational customer care practices. For example, identifying customer and vehicle needs, resolve low level customer complaints, make recommendations to customers based on results of inspection, maintenance, or repair of vehicles, customer payment transactions and organisational sales processes.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-2",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-2",
+      "shadowArtifact": "batch-r51-2/shadow-batch-r51-2.json"
+    },
+    {
+      "ksbCode": "S16",
+      "kind": "skills",
+      "officialWording": "Provide quotation of cost and order automotive parts, products, and consumables applicable to the vehicle.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-2",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-2",
+      "shadowArtifact": "batch-r51-2/shadow-batch-r51-2.json"
+    },
+    {
+      "ksbCode": "S17",
+      "kind": "skills",
+      "officialWording": "Apply procedures for stock and parts storage: ordering, checking and stock rotation.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 2,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 2,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "S18",
+      "kind": "skills",
+      "officialWording": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 8,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 8,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "S19",
+      "kind": "skills",
+      "officialWording": "Apply team working principles.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 3,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 3,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "S20",
+      "kind": "skills",
+      "officialWording": "Comply with equity, diversity, and inclusion guidance.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "edi_professional"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "induction_pastoral_offpack_if_any",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "May live off-pack / pastoral — distinguish curriculum gap vs evidence visibility"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-2",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-2",
+      "shadowArtifact": "batch-r51-2/shadow-batch-r51-2.json"
+    },
+    {
+      "ksbCode": "S21",
+      "kind": "skills",
+      "officialWording": "Communicate with others verbally, for example customers, suppliers, and colleagues.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 5,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 5,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "S22",
+      "kind": "skills",
+      "officialWording": "Communicate in writing, for example with internal and external customers, colleagues, and managers.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 1,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 1,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "S23",
+      "kind": "skills",
+      "officialWording": "Use information and digital technology systems. Comply with GDPR and cyber security.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-2",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-2",
+      "shadowArtifact": "batch-r51-2/shadow-batch-r51-2.json"
+    },
+    {
+      "ksbCode": "S24",
+      "kind": "skills",
+      "officialWording": "Complete and record learning and development activities.",
+      "dutyRelationship": null,
+      "goldenAPosition": "PRIMARY",
+      "goldenAPrimaryBlock": 10,
+      "knownBlockRelationships": [
+        {
+          "type": "GOLDEN_A_PRIMARY_CONTROL_ONLY",
+          "blockNumber": 10,
+          "note": "Comparison/control only — not shadow evidence"
+        }
+      ],
+      "likelyEvidenceDomains": [
+        "general_programme"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "cea_practical",
+        "block_practical_tasks_3_4",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-5",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-5",
+      "shadowPath": "batch-r51-5/shadow-batch-r51-5.json"
+    },
+    {
+      "ksbCode": "S25",
+      "kind": "skills",
+      "officialWording": "Apply procedures to check and replace fluids, and filtration parts.",
+      "dutyRelationship": null,
+      "goldenAPosition": "REVIEWED_GAP",
+      "goldenAPrimaryBlock": null,
+      "knownBlockRelationships": [],
+      "likelyEvidenceDomains": [
+        "technical_systems",
+        "commercial_soft_digital"
+      ],
+      "likelyGroupProvenance": "mixed_group_and_block_expected",
+      "relevantEvidenceTypesExpected": [
+        "official_ksb_wording",
+        "current_sow",
+        "block_structure",
+        "transition_guide",
+        "group_lesson_plans",
+        "teaching_ppt_pptx",
+        "block_practical_tasks_3_4",
+        "cea_practical",
+        "gateway_practical_support",
+        "gateway_knowledge",
+        "teaching_doc_pdf",
+        "skills_progress_reviews",
+        "workplace_job_card_mechanism"
+      ],
+      "knownUncertainties": [
+        "Soft/commercial content may be thinner in workshop corpus"
+      ],
+      "proposedAssuranceChecks": [
+        "Decompose into requirement components",
+        "Search Group LPs + Block LPs + resource excerpts (not filename alone)",
+        "Separate TEACHES / PRACTISES / ASSESSES / REINFORCES / SUPPORTS",
+        "Week/session only if proven; else UNRESOLVED",
+        "Compare Golden A last; never use as evidence",
+        "Primary candidacy = first substantive teaching; no steal from later reinforcement/Gateway",
+        "Skill requires stronger application evidence than knowledge alone"
+      ],
+      "componentDecompositionStatus": "PENDING_ANALYSIS",
+      "components": [],
+      "proposedBatch": "R51-1",
+      "analysisStatus": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+      "shadowBatch": "R51-1",
+      "shadowArtifact": "batch-r51-1/shadow-batch-r51-1.json"
+    }
+  ],
+  "lastUpdated": "2026-08-10TR51-1",
+  "batchR51_1Status": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+  "batchR51_2Status": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+  "progressNote": "38/64 after R51-3 pending human review",
+  "batchR51_3Status": "SHADOW_COMPLETE_AWAITING_HUMAN_REVIEW",
+  "lastShadowBatch": "R51-5",
+  "richerEvidenceAnalysedAfterR514": 47,
+  "remainingAfterR514": 17,
+  "richerEvidenceAnalysedAfterR515": 64,
+  "remainingAfterR515": 0,
+  "completeShadowReport": "COMPLETE-64-KSB-SHADOW-ASSURANCE-REPORT.md"
+}

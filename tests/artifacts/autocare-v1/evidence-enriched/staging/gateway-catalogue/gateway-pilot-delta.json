@@ -1,0 +1,79 @@
+{
+  "status": "SHADOW_DELTA_ONLY",
+  "mutatesRatifiedPilot": false,
+  "mutatesProgrammeTruth": false,
+  "generatedAt": "2026-08-10",
+  "newEvidenceSummary": {
+    "gw1Practical": ["GW1AC01 tyres R&R+balance", "GW1AC02 battery/charging/starting", "GW1AC03 front alignment", "GW1AC04 discs/pads"],
+    "gw2Practical": ["GW2AC01 safety inspection", "GW2AC02 four-wheel alignment", "GW2AC03 emissions fault"],
+    "knowledgePractice": ["GW1 practice MCQs", "GW2 practice exam 2 (46 MCQ)"],
+    "notFoundInGatewayPack": ["HV isolation practical", "EPS/EPAS remove/refit practical", "completed learner scripts", "live online GW1K/GW2K item banks"]
+  },
+  "KSBs": {
+    "S9": {
+      "oldEvidencePosition": "CEA 3.x closed assessed tyre strip/balance artefact gap; practice/assessment PARTIAL→stronger; ownership UNMAPPED; direction CHANGE",
+      "newEvidence": "GW1AC01 explicitly requires inspect wheels/tyres, remove/replace both front wheels, remove/replace and balance both front tyres; assessor Pass/Refer criteria; tyre machine/balancer required. GW2AC01 inspects tyre defects only (not strip). Knowledge papers include tyre law/construction/bead questions.",
+      "effectOnTeaching": "NONE",
+      "effectOnPractice": "STRENGTHEN — Gateway summative practical now confirms strip/balance performance expectation",
+      "effectOnAssessment": "STRENGTHEN — formal Gateway Pass/Refer competence judgement for tyre R&R+balance",
+      "effectOnOwnership": "NONE — still no Block Primary forced; Gateway is programme-gateway layer not Block home",
+      "humanReReviewWarranted": true,
+      "reasonForReReviewFlag": "Evidence-strength for practice/assessment axes materially higher than when pilot ratified; direction CHANGE still coherent; ownership still open"
+    },
+    "K10": {
+      "oldEvidencePosition": "Teaching+CEA hydraulic/mechanical R&R confirmed; EPS not in CEA; ownership AMBIGUOUS; direction CHANGE",
+      "newEvidence": "GW1AC03/GW2AC02 are alignment (geometry) not steering-systems R&R. GW2AC01 may include leaking PAS hose as seeded inspection fault. GW2 knowledge includes hydraulic PAS pressure limiter + geometry + photo item with Torque Sensor option (EPS-adjacent recognition only). No Gateway practical for EPS/EPAS remove/refit.",
+      "effectOnTeaching": "NONE",
+      "effectOnPractice": "MILD — inspection/alignment adjacent; does not replace CEA 5.6/5.7 R&R",
+      "effectOnAssessment": "MILD knowledge; no EPS competence practical added",
+      "effectOnOwnership": "NONE — still will not resolve B4/B5 vs B7",
+      "humanReReviewWarranted": false,
+      "reasonForReReviewFlag": "Incremental only; does not resolve EPS practical or Primary ownership"
+    },
+    "K12": {
+      "oldEvidencePosition": "KEEP B2 control",
+      "newEvidence": "GW1AC04 discs/pads R&R; GW2AC01 brake fault seeding; knowledge brake items",
+      "effectOnTeaching": "NONE",
+      "effectOnPractice": "SUPPORTING",
+      "effectOnAssessment": "SUPPORTING",
+      "effectOnOwnership": "NONE — KEEP holds",
+      "humanReReviewWarranted": false,
+      "notes": "Control reinforced"
+    },
+    "K21": {
+      "oldEvidencePosition": "KEEP B6",
+      "newEvidence": "GW1 knowledge practice: HV cable insulation colour; hybrid/EV magnetic fields caution. GW1AC02 is 12V battery/charging/starting — not HV EV service Primary evidence.",
+      "effectOnTeaching": "NONE",
+      "effectOnPractice": "NONE material for EV service/charging role",
+      "effectOnAssessment": "MILD awareness knowledge only",
+      "effectOnOwnership": "NONE — KEEP",
+      "humanReReviewWarranted": false
+    },
+    "K23": {
+      "oldEvidencePosition": "KEEP B6; practice/assessment PARTIAL; CEA 2.1 strengthened isolation-procedure assessment template",
+      "newEvidence": "GW1 knowledge HV cable colour + hybrid magnetic fields. No Gateway practical HV safe-working isolation task found.",
+      "effectOnTeaching": "NONE",
+      "effectOnPractice": "NONE from Gateway practicals",
+      "effectOnAssessment": "MILD knowledge only",
+      "effectOnOwnership": "NONE",
+      "humanReReviewWarranted": false,
+      "notes": "CEA 2.1 remains stronger practical/assessment artefact than Gateway for K23/S13 procedural competence"
+    },
+    "S13": {
+      "oldEvidencePosition": "REVIEW — rules taught; CEA 2.1 requires isolation; completed competence unproven",
+      "newEvidence": "No Gateway document requires apprentice to isolate an HV system. Awareness/knowledge items only.",
+      "effectOnTeaching": "NONE",
+      "effectOnPractice": "NONE from Gateway",
+      "effectOnAssessment": "NONE for isolation competence",
+      "effectOnOwnership": "NONE",
+      "humanReReviewWarranted": false,
+      "strictNote": "Hybrid/EV knowledge questions ≠ assessed HV isolation competence"
+    }
+  },
+  "overallPilotReReviewRecommendation": {
+    "reopenNow": false,
+    "reopenAfterTranche2Optional": true,
+    "suggestedScopeIfReopened": "Evidence-strength upgrades only — especially S9 practice/assessment axes after CEA+GW1AC01. Do not auto-assign Primaries.",
+    "preserveUntilHumanApproval": true
+  }
+}

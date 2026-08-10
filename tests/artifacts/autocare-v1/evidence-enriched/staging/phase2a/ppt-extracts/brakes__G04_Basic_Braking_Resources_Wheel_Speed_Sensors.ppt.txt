@@ -1,0 +1,368 @@
+SOURCE: G04 Basic Braking\Resources\Wheel Speed Sensors.ppt
+HASH: 3a89189e8265a2acabcb4f0f08b29ba4031f96880f1003f991787952777ad0ce
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Wheel Speed Sensors
+
+identify the operation of wheel speed sensors
+
+Next >
+
+Wheel speed sensor
+
+Tone wheel
+
+===== SLIDE 2 =====
+Introduction
+
+The ABS ECU monitors the output signal from a wheel speed sensor to determine the speed of a road wheel.
+
+Next >
+
+Metal housing
+
+Wires to ABS ECU
+
+Mount hole
+
+It uses this information to calculate the degree of slip between the wheel and road.
+
+The Hall Effect sensor is commonly used and has magnets to detect wheel speed.
+
+Wheel Speed Sensor
+
+===== SLIDE 3 =====
+Wheel Speed Sensor Function
+
+A wheel speed sensor detects the speed of rotation of a wheel.
+
+The sensor is positioned close to the tone wheel with an air gap in between.
+
+It works in conjunction with a toothed tone wheel that is fitted to the hub or CV joint or axle.
+
+Next >
+
+CV joint
+
+Wheel speed sensor
+
+Tone wheel
+
+===== SLIDE 4 =====
+Inductive Wheel Speed Sensor Construction
+
+A typical inductive sensor contains an internal coil or winding that is wound around a permanent magnet.
+
+As the tone wheel rotates, each passing tooth causes a rapid change in the magnetic field that induces an AC voltage in the coil.
+
+This produces a magnetic field around the coil.
+
+Next >
+
+The frequency and amplitude of the AC voltage signal varies in relation to the speed of the wheel.
+
+Inductive sensor output signal
+
+Inductive sensor
+
+Magnet
+
+Coil
+
+Iron core
+
+===== SLIDE 5 =====
+15 mph
+
+60 mph
+
+Time
+
+Voltage
+
+(constant distance)
+
+Inductive Wheel Speed Sensor Output Signals
+
+The faster the tone wheel spins, the greater the frequency and amplitude of the signal.
+
+The closer the coil is to the tone wheel, the greater the amplitude of the signal.
+
+Next >
+
+The exact shape of the output signal will depend on the sensor design.
+
+4 mm
+
+1 mm
+
+(constant speed)
+
+===== SLIDE 6 =====
+Question 1
+
+What happens to the frequency of the AC output signal that is produced by an inductive sensor?
+
+A)	It increases when the tone wheel speed decreases.
+
+B)	It decreases when the tone wheel speed increases.
+
+C)	It increases when the tone wheel speed increases.
+
+D)	It remains unchanged with the tone wheel speed change.
+
+Next >
+
+===== SLIDE 7 =====
+Next >
+
+Question 1
+
+What happens to the frequency of the AC output signal that is produced by an inductive sensor?
+
+A)	It increases when the tone wheel speed decreases.
+
+B)	It decreases when the tone wheel speed increases.
+
+C)	It increases when the tone wheel speed increases.
+
+D)	It remains unchanged with the tone wheel speed change.
+
+===== SLIDE 8 =====
+Anti-lock Brake ECU
+
+The AC output signal from the sensor is sent to the ABS ECU; it uses the information to calculate the degree of slip between the wheels and the road surface.
+
+If this is the case, the ECU intervenes to prevent the wheels from locking by holding or reducing hydraulic pressure to the affected brake units.
+
+On an ABS system, this is used to determine if any of the wheels are about to lock (negative wheel slip).
+
+Next >
+
+ABS ECU
+
+Tone wheel
+
+AC output signal
+
+Inductive sensor
+
+Amp
+
+Digital waveform
+
+Power supply
+
+Input Circuit
+
+Processing Circuit
+
+Output Circuit
+
+CPU
+
+===== SLIDE 9 =====
+Traction Control ECU
+
+On a traction control system, the sensor signal is used to determine if any of the wheels are about to spin (positive wheel slip).
+
+If this does not reduce positive wheel slip, the ECU will reduce engine power by taking control of the throttle valve or reducing the number of firing cylinders.
+
+The TCS ECU prevents the wheels from spinning by holding or increasing hydraulic pressure to the affected brake units.
+
+Next >
+
+TCS ECU
+
+Tone wheel
+
+AC output signal
+
+Inductive sensor
+
+Amp
+
+Digital waveform
+
+Power supply
+
+Input Circuit
+
+Processing Circuit
+
+Output Circuit
+
+CPU
+
+===== SLIDE 10 =====
+Question 2
+
+“On a traction control system, the wheel speed sensor signal is used to determine if any of the wheels are about to lock.” Is this statement true or false?
+
+Next >
+
+===== SLIDE 11 =====
+Next >
+
+Question 2
+
+“On a traction control system, the wheel speed sensor signal is used to determine if any of the wheels are about to lock.” Is this statement true or false?
+
+False
+
+The statement is false. On a traction control system, the wheel speed sensor is used to determine if any of the wheels are about to spin.
+
+===== SLIDE 12 =====
+Inductive Wheel Speed Sensor Practical Example
+
+The wheel speed sensor connects to the ABS ECU using two wires, which are twisted pairs and/or screened.
+
+The tone wheel is mounted on a rotating shaft.
+
+The wheel speed sensor is positioned close to the tone wheel.
+
+Next >
+
+An air gap between the sensor and the tone wheel is adjusted to give a valid AC output for all wheel speeds.
+
+Air gap
+
+ABS sensor
+
+Wire to ABS ECU
+
+Tone wheel
+
+===== SLIDE 13 =====
+Hall Effect Wheel Speed Sensors
+
+The Hall Effect sensor is designed to detect the presence of a magnetic field.
+
+The magnetic field penetrates the sensor and the tone wheel.
+
+A typical sensor uses a magnet and tone wheel arrangement.
+
+Next >
+
+Tone wheel
+
+Hall Effect sensor
+
+Magnet
+
+Magnetic field
+
+===== SLIDE 14 =====
+Hall Effect Wheel Speed Sensor Operation
+
+As the tone wheel rotates, it disrupts the magnetic field detected by the Hall Effect sensor.
+
+The frequency of the digital signal depends on the speed of the tone wheel while the amplitude of the signal remains constant.
+
+The sensor produces a corresponding digital output that changes between + 5 V and 0 V.
+
+Next >
+
+This system is capable of detecting zero wheel speed.
+
+ABS ECU
+
+Digital Output Signal
+
+===== SLIDE 15 =====
+Question 3
+
+Technician A says a Hall Effect sensor produces an AC output signal. Technician B says an inductive sensor produces a digital output signal.
+
+A)	Technician A only
+
+B)	Technician B only
+
+C)	Both Technician A and Technician B
+
+D)	Neither Technician A nor Technician B
+
+Next >
+
+Who is correct?
+
+===== SLIDE 16 =====
+Next >
+
+Question 3
+
+Technician A says a Hall Effect sensor produces an AC output signal. Technician B says an inductive sensor produces a digital output signal.
+
+Who is correct?
+
+A)	Technician A only
+
+B)	Technician B only
+
+C)	Both Technician A and Technician B
+
+D)	Neither Technician A nor Technician B
+
+===== SLIDE 17 =====
+Magnetic Encoder Ring Systems
+
+On some systems, the tone wheel is constructed using magnets with alternating poles arranged in a ring.
+
+The sensing system contains two Hall Effect sensors that produce signals that are out of phase.
+
+As the tone wheel rotates, the sensing system detects alternating north and south magnetic fields.
+
+Next >
+
+This allows the system to detect zero wheel speed and direction of rotation.
+
+Wheel Bearing Seal Tone Wheel
+
+Magnets
+
+Hall Effect sensing system
+
+Digital Output Signal
+
+===== SLIDE 18 =====
+Wheel Speed Sensor Testing
+
+The ABS ECU tests the resistance of each inductive type wheel speed sensor circuit when the ignition is first switched on.
+
+A wiring short will typically show up as a very low resistance.
+
+The resistance of a typical sensor is 1,000 ohms.
+
+Next >
+
+A broken wire or open circuit sensor will show up as a high resistance.
+
+Coil Resistance of Working Inductive Sensor
+
+Short Circuit Resistance
+
+Open Circuit Resistance
+
+===== SLIDE 19 =====
+Wheel Speed Sensor Testing
+
+The ABS ECU tests the output signal from each wheel speed sensor circuit when the vehicle reaches 12 to 15 mph.
+
+A faulty wheel speed sensor will cause the ABS ECU to illuminate the ABS warning indicator and store a diagnostic trouble code.
+
+Next >
+
+Output Signal from Working Inductive Sensor
+
+===== SLIDE 20 =====
+Summary
+
+the function and operation of different types of wheel speed sensors
+
+In this presentation you have seen:
+
+End
+

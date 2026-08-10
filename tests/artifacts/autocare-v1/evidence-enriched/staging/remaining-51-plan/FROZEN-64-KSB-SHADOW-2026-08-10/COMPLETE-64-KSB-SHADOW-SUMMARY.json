@@ -1,0 +1,815 @@
+{
+  "status": "SHADOW_ONLY_NOT_PROGRAMME_TRUTH",
+  "generatedAt": "2026-08-10",
+  "richerEvidenceAnalysed": 64,
+  "directionTotals": {
+    "KEEP": 23,
+    "KEEP_GAP": 9,
+    "CHANGE_CLASSIFICATION": 14,
+    "CHANGE_OWNERSHIP": 16,
+    "DISTRIBUTED": 1,
+    "REVIEW": 1
+  },
+  "taxonomyTotals": {
+    "GOOD": 38,
+    "CURRICULUM_GAP": 22,
+    "TEACHING_DEPTH_GAP": 32,
+    "PRACTICE_GAP": 9,
+    "ASSESSMENT_GAP": 7,
+    "EVIDENCE_VISIBILITY_GAP": 25,
+    "STRUCTURAL_MAPPING_GAP": 23,
+    "DISTRIBUTED_OWNERSHIP": 6
+  },
+  "rows": [
+    {
+      "code": "B1",
+      "kind": "behaviours",
+      "goldenAPrimaryBlock": 1,
+      "batch": "R51-3",
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidence": "MEDIUM_HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "B2",
+      "kind": "behaviours",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-5",
+      "shadowDirection": "KEEP_PRIMARY_B3",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "B3",
+      "kind": "behaviours",
+      "goldenAPrimaryBlock": 6,
+      "batch": "R51-5",
+      "shadowDirection": "KEEP_GAP",
+      "confidence": "HIGH_ON_INSUFFICIENCY",
+      "taxonomy": [
+        "CURRICULUM_GAP / TEACHING_DEPTH_GAP on deliberate adapt-to-demand behaviour",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP",
+        "DISTRIBUTED / OWNERSHIP ISSUE"
+      ]
+    },
+    {
+      "code": "B4",
+      "kind": "behaviours",
+      "goldenAPrimaryBlock": 10,
+      "batch": "R51-5",
+      "shadowDirection": "KEEP_PRIMARY_B10_WITH_DEPTH",
+      "confidence": "MEDIUM",
+      "taxonomy": [
+        "GOOD / ADEQUATE on recording/reflection mechanism",
+        "TEACHING_DEPTH_GAP on seeking CPD opportunities pedagogy",
+        "EVIDENCE_VISIBILITY_GAP on filled mentor examples"
+      ]
+    },
+    {
+      "code": "B5",
+      "kind": "behaviours",
+      "goldenAPrimaryBlock": null,
+      "batch": "TRANCHE2",
+      "shadowDirection": "KEEP_AS_GAP",
+      "confidence": "HIGH_FOR_CORPUS_CONCLUSION",
+      "taxonomy": [
+        "CURRICULUM_GAP",
+        "EVIDENCE_VISIBILITY_GAP (possible off-pack pastoral materials only)",
+        "BEHAVIOUR_SOFT_SKILL_EVIDENCE_SCARCITY"
+      ]
+    },
+    {
+      "code": "K1",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-1",
+      "shadowDirection": "KEEP_GAP",
+      "confidence": "MEDIUM_HIGH_ON_GAP_GIVEN_CORPUS_SCAN",
+      "taxonomy": [
+        "CURRICULUM_GAP",
+        "TEACHING_DEPTH_GAP",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP if off-pack induction exists but was not supplied"
+      ]
+    },
+    {
+      "code": "K2",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-1",
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "NOT_A_SIMPLE_CURRICULUM_GAP"
+      ]
+    },
+    {
+      "code": "K3",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 1,
+      "batch": "R51-3",
+      "shadowDirection": "KEEP_PRIMARY_B1_WITH_DEPTH_GAPS",
+      "confidence": "HIGH_ON_CORE_MEDIUM_ON_NAMED_REGS",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED on core H&S practice",
+        "TEACHING_DEPTH_GAP on LOLER / PUWER / HASAWA named requirements",
+        "POSSIBLE_TEACHING_DEPTH_GAP on manual handling naming",
+        "POSSIBLE_TEACHING_DEPTH_GAP on COSHH (later intent only in extract)"
+      ]
+    },
+    {
+      "code": "K4",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-3",
+      "shadowDirection": "KEEP_PRIMARY_B3",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on explicit 'reuse' / 'recycling' vocabulary vs waste-stream practice"
+      ]
+    },
+    {
+      "code": "K5",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 1,
+      "batch": "R51-3",
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "K6",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 1,
+      "batch": "R51-1",
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on storage methods wording"
+      ]
+    },
+    {
+      "code": "K7",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-2",
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidence": "MEDIUM_HIGH",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A total gap)",
+        "POSSIBLE_STRUCTURAL_MAPPING_GAP (substance present without dedicated K7-labelled home)",
+        "GOOD / ADEQUATELY CONTROLLED on substance"
+      ]
+    },
+    {
+      "code": "K8",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-2",
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidence": "MEDIUM",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (service-history PPT may have been invisible)",
+        "TEACHING_DEPTH_GAP / CURRICULUM_GAP on owner's manuals",
+        "POSSIBLE_TEACHING_DEPTH_GAP on warranties (intent without rich extracted body)"
+      ]
+    },
+    {
+      "code": "K9",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 7,
+      "batch": "R51-4",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_EARLY_G3_B2_WITH_DEPTH_GAPS",
+      "confidence": "HIGH_ON_OPERATIONAL_MEDIUM_ON_TECH_INFO_COMPONENTS",
+      "taxonomy": [
+        "GOOD / ADEQUATE on replacement/repair/TPMS",
+        "TEACHING_DEPTH_GAP / POSSIBLE_CURRICULUM_GAP on legislation, EU labelling, homologated fitments",
+        "EVIDENCE_VISIBILITY_GAP on Tyres.ppt (unextracted) for sidewall/legislation",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B7"
+      ]
+    },
+    {
+      "code": "K10",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "PILOT",
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidence": "HIGH on teaching/practice; MEDIUM on exact Primary block",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "STRUCTURAL_MAPPING_GAP",
+        "ASSESSMENT_GAP"
+      ]
+    },
+    {
+      "code": "K11",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 5,
+      "batch": "TRANCHE2",
+      "shadowDirection": "KEEP_B5",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD_ADEQUATELY_CONTROLLED"
+      ]
+    },
+    {
+      "code": "K12",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 2,
+      "batch": "PILOT",
+      "shadowDirection": "KEEP_PRIMARY",
+      "confidence": "HIGH",
+      "taxonomy": []
+    },
+    {
+      "code": "K13",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "TRANCHE2",
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "NOT_A_SIMPLE_CURRICULUM_GAP"
+      ]
+    },
+    {
+      "code": "K14",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 6,
+      "batch": "R51-4",
+      "shadowDirection": "KEEP_PRIMARY_B6",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on blower motors / full pipes-hoses / heat-exchanger naming breadth"
+      ]
+    },
+    {
+      "code": "K15",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-4",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_G7_CLUSTER_WITH_E_MACHINE_GAP",
+      "confidence": "HIGH_ON_CORE_HIGH_ON_E_MACHINE_ABSENCE",
+      "taxonomy": [
+        "GOOD / ADEQUATE on battery + starter + alternator",
+        "TEACHING_DEPTH_GAP / POSSIBLE_CURRICULUM_GAP on e-machine",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2",
+        "DISTRIBUTED / OWNERSHIP ISSUE if FS04 awareness mistaken for Primary"
+      ]
+    },
+    {
+      "code": "K16",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-4",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_G7_CLUSTER",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2"
+      ]
+    },
+    {
+      "code": "K17",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 9,
+      "batch": "R51-4",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_G11_WITH_DEPTH_ON_METHODS",
+      "confidence": "HIGH_ON_AWARENESS_MEDIUM_ON_METHODS",
+      "taxonomy": [
+        "GOOD / ADEQUATE on ADAS awareness + repair-impact",
+        "TEACHING_DEPTH_GAP on named static vs dynamic calibration methods",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B9"
+      ]
+    },
+    {
+      "code": "K18",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-1",
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidence": "HIGH_ON_TEACHING_OF_LEVELS_AIM_MEDIUM_ON_PASSIVE_ACTIVE_EQUIVALENCE",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A SOW-only gap)",
+        "POSSIBLE_TEACHING_DEPTH_GAP (confirm passive/active wording equals 'levels')"
+      ]
+    },
+    {
+      "code": "K19",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-4",
+      "shadowDirection": "KEEP_PRIMARY_B2_WITH_DEPTH_ON_ACKERMANN_THRUST",
+      "confidence": "HIGH_ON_CORE_MEDIUM_ON_NAMED_PRINCIPLES",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED on alignment/toe/camber/adjustment",
+        "TEACHING_DEPTH_GAP / POSSIBLE_EVIDENCE_VISIBILITY_GAP on Ackermann and thrust angle"
+      ]
+    },
+    {
+      "code": "K20",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-1",
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidence": "HIGH_ON_PARTIALITY_MEDIUM_ON_AIR_FILTER_ABSENCE",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (brake fluid/oil vs Golden A total gap)",
+        "TEACHING_DEPTH_GAP / CURRICULUM_GAP candidate on air filters",
+        "POSSIBLE_PRACTICE_GAP on air filters",
+        "POSSIBLE_ASSESSMENT_GAP on air filters"
+      ]
+    },
+    {
+      "code": "K21",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 6,
+      "batch": "PILOT",
+      "shadowDirection": "KEEP_PRIMARY",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP only as previously unread PPT copies — not a mapping failure"
+      ]
+    },
+    {
+      "code": "K22",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 9,
+      "batch": "R51-5",
+      "shadowDirection": "KEEP_PRIMARY_B9_WITH_DEPTH_AND_VISIBILITY",
+      "confidence": "MEDIUM",
+      "taxonomy": [
+        "GOOD / ADEQUATE only as high-level hydrogen awareness intent",
+        "TEACHING_DEPTH_GAP / POSSIBLE_CURRICULUM_GAP on fuel-cell storage & condition monitoring",
+        "EVIDENCE_VISIBILITY_GAP on Fuel Cells.ppt"
+      ]
+    },
+    {
+      "code": "K23",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 6,
+      "batch": "PILOT",
+      "shadowDirection": "KEEP_PRIMARY",
+      "confidence": "HIGH on teaching/keep; MEDIUM on assessment completeness",
+      "taxonomy": [
+        "ASSESSMENT_GAP",
+        "PRACTICE_GAP"
+      ]
+    },
+    {
+      "code": "K24",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-5",
+      "shadowDirection": "KEEP_PRIMARY_B2",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on explicit pre/post vehicle customer-service framing"
+      ]
+    },
+    {
+      "code": "K25",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 6,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL_DISTRIBUTED",
+      "confidence": "MEDIUM_HIGH",
+      "taxonomy": [
+        "CHANGE_CLASSIFICATION_TO_PARTIAL vs any total-gap assumption",
+        "TEACHING_DEPTH_GAP / CURRICULUM_GAP on efficiency, competitiveness, operational-risk components",
+        "STRUCTURAL_MAPPING_GAP / DISTRIBUTED"
+      ]
+    },
+    {
+      "code": "K26",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B3_WITH_G8",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2"
+      ]
+    },
+    {
+      "code": "K27",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B3",
+      "confidence": "MEDIUM_HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED on stock-process intent",
+        "POSSIBLE_TEACHING_DEPTH_GAP on full stock/resource management body beyond topic intent",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2"
+      ]
+    },
+    {
+      "code": "K28",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "TRANCHE2",
+      "shadowDirection": "KEEP_AS_GAP",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "CURRICULUM_GAP",
+        "TEACHING_DEPTH_GAP (payments≠FCA/PCI)"
+      ]
+    },
+    {
+      "code": "K29",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B2_G8_WITH_DEPTH",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATE on generic sales techniques",
+        "TEACHING_DEPTH_GAP on named sales-process models",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B3"
+      ]
+    },
+    {
+      "code": "K30",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-5",
+      "shadowDirection": "KEEP_GAP",
+      "confidence": "HIGH_ON_ABSENCE_OF_DELIBERATE_PRINCIPLES_TEACHING",
+      "taxonomy": [
+        "CURRICULUM_GAP / TEACHING_DEPTH_GAP on team-working principles",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP if off-pack pastoral team materials exist",
+        "DISTRIBUTED / OWNERSHIP ISSUE"
+      ]
+    },
+    {
+      "code": "K31",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-1",
+      "shadowDirection": "KEEP_GAP",
+      "confidence": "HIGH_ON_ABSENCE_IN_SUPPLIED_LIVE_CORPUS",
+      "taxonomy": [
+        "CURRICULUM_GAP",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP if EDI delivered only in unsupplied induction/pastoral packs"
+      ]
+    },
+    {
+      "code": "K32",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 5,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B2",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B5"
+      ]
+    },
+    {
+      "code": "K33",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": 1,
+      "batch": "R51-2",
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "K34",
+      "kind": "knowledge",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-2",
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidence": "HIGH_ON_PARTIALITY",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP only for GDPR fragment vs Golden A total gap",
+        "CURRICULUM_GAP on most digital components",
+        "TEACHING_DEPTH_GAP on GDPR (terms/payments only)",
+        "CURRICULUM_GAP on cyber security"
+      ]
+    },
+    {
+      "code": "S1",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-3",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B3"
+      ]
+    },
+    {
+      "code": "S2",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-3",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B3"
+      ]
+    },
+    {
+      "code": "S3",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-3",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B3"
+      ]
+    },
+    {
+      "code": "S4",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 4,
+      "batch": "R51-4",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP / PRACTICE DEPTH on explicit store/return-to-storage",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B4"
+      ]
+    },
+    {
+      "code": "S5",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 1,
+      "batch": "R51-3",
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "S6",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-3",
+      "shadowDirection": "KEEP_PRIMARY_B3",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on explicit reuse/recycling pedagogy vs waste-stream practice"
+      ]
+    },
+    {
+      "code": "S7",
+      "kind": "skills",
+      "goldenAPrimaryBlock": null,
+      "batch": "TRANCHE2",
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidence": "HIGH_ON_SKILL_PRACTICE_ASSESSMENT",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "NOT_A_SIMPLE_CURRICULUM_GAP",
+        "POSSIBLE_TEACHING_DEPTH_GAP_ON_K2_MANUFACTURER_SCHEDULES_ADJACENT"
+      ]
+    },
+    {
+      "code": "S8",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 1,
+      "batch": "R51-4",
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on dedicated diagnostic-equipment pedagogy breadth vs later distributed practice"
+      ]
+    },
+    {
+      "code": "S9",
+      "kind": "skills",
+      "goldenAPrimaryBlock": null,
+      "batch": "PILOT",
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidence": "HIGH on teaching; MEDIUM on practice/assessment completeness; LOW on forced Primary",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A SOW-only)",
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP",
+        "STRUCTURAL_MAPPING_GAP"
+      ]
+    },
+    {
+      "code": "S10",
+      "kind": "skills",
+      "goldenAPrimaryBlock": null,
+      "batch": "TRANCHE2",
+      "shadowDirection": "KEEP_DISTRIBUTED",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "DISTRIBUTED_SKILL_OWNERSHIP_ISSUE",
+        "NOT_A_CURRICULUM_GAP"
+      ]
+    },
+    {
+      "code": "S11",
+      "kind": "skills",
+      "goldenAPrimaryBlock": null,
+      "batch": "TRANCHE2",
+      "shadowDirection": "KEEP_AS_GAP_INSUFFICIENT_EVIDENCE_FOR_COVERAGE",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "CURRICULUM_GAP",
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP",
+        "TEACHING_DEPTH_GAP (awareness≠SoH competence)"
+      ]
+    },
+    {
+      "code": "S12",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-1",
+      "shadowDirection": "KEEP_PRIMARY_B2",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "S13",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 6,
+      "batch": "PILOT",
+      "shadowDirection": "REVIEW",
+      "confidence": "HIGH that rules≠competence distinction holds; MEDIUM on whether live centre assessment exists off-corpus",
+      "taxonomy": [
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP",
+        "TEACHING_DEPTH_GAP (competence vs rules)"
+      ]
+    },
+    {
+      "code": "S14",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 6,
+      "batch": "R51-4",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B6"
+      ]
+    },
+    {
+      "code": "S15",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-2",
+      "shadowDirection": "KEEP_PRIMARY_B2",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "S16",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-2",
+      "shadowDirection": "KEEP_PRIMARY_B3",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "S17",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 2,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B3",
+      "confidence": "MEDIUM_HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_PRACTICE_GAP on verified stock-rotation activity body",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2"
+      ]
+    },
+    {
+      "code": "S18",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 8,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL_AND_OWNERSHIP_TO_B2_G8",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "TEACHING_DEPTH_GAP / CURRICULUM_GAP on named sales-process methodologies",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B8",
+        "GOOD only on generic sales-package adjacency — not full S18"
+      ]
+    },
+    {
+      "code": "S19",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 3,
+      "batch": "R51-5",
+      "shadowDirection": "KEEP_GAP",
+      "confidence": "HIGH_ON_INSUFFICIENCY",
+      "taxonomy": [
+        "CURRICULUM_GAP / PRACTICE_GAP on deliberate team-working application evidence",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP"
+      ]
+    },
+    {
+      "code": "S20",
+      "kind": "skills",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-2",
+      "shadowDirection": "KEEP_GAP",
+      "confidence": "HIGH_ON_ABSENCE_IN_SUPPLIED_CORPUS",
+      "taxonomy": [
+        "CURRICULUM_GAP",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP if off-pack EDI/induction pack exists (same family as K31/B5)"
+      ]
+    },
+    {
+      "code": "S21",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 5,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B2",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on supplier-specific verbal communication",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B5"
+      ]
+    },
+    {
+      "code": "S22",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 1,
+      "batch": "R51-5",
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidence": "HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ]
+    },
+    {
+      "code": "S23",
+      "kind": "skills",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-2",
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidence": "HIGH_ON_PARTIALITY",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP relative to Golden A total gap (GDPR/IT fragments)",
+        "PRACTICE_GAP / TEACHING_DEPTH_GAP on breadth of digital systems",
+        "CURRICULUM_GAP on cyber security"
+      ]
+    },
+    {
+      "code": "S24",
+      "kind": "skills",
+      "goldenAPrimaryBlock": 10,
+      "batch": "R51-5",
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_EARLY_DISTRIBUTED_LIR_SPR",
+      "confidence": "MEDIUM_HIGH",
+      "taxonomy": [
+        "GOOD / ADEQUATELY CONTROLLED on mechanism",
+        "EVIDENCE_VISIBILITY_GAP on filled completed learner examples",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B10"
+      ]
+    },
+    {
+      "code": "S25",
+      "kind": "skills",
+      "goldenAPrimaryBlock": null,
+      "batch": "R51-1",
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidence": "HIGH_ON_PARTIALITY",
+      "taxonomy": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A total gap)",
+        "PRACTICE_GAP / ASSESSMENT_GAP residual on full filtration-parts set (esp. air filter)",
+        "TEACHING_DEPTH_GAP adjacent via K20-C3"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+Autocare Technician Level 2 - Week 92 Lesson Plan
+ non-cert | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4
+ Trainer
+
+ Cohort / group / date
+
+ Programme / standard
+ Autocare Technician Level 2 | ST0499 v1.3
+ Week / block
+ Week 92 | Block 9
+ Block title
+ Emerging Technologies, Electric Vehicles and Hydrogen Awareness
+ Month / period
+ Months 20-24
+ SOW reference
+ Autocare Technician Level 2 SOW v4.4 | Block 9 | Week 92
+ Planned time
+ 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks
+ Duty / KSB focus
+ Mapped occupational duties | S5, K2, K5, K6, K9, K10, B3
+ Block review
+ Scheduled at block end
+ Topic and intended learning
+ Lesson aims - Develop secure occupational knowledge and safe working practice for non-cert. - Connect the session to workplace quality, communication and customer/business impact. - Produce clear evidence that can be reviewed and improved.
+ By the end, apprentices should be able to - Explain the key principles, sequence, risks and controls for non-cert. - Complete the planned practical, scenario or documentation activity safely and accurately. - Record findings and justify decisions using technical information or workplace procedures.
+ How learning will be checked - Baseline and retrieval questions at the start. - Observation, questioning and review during activity. - Feedback, correction and an end-of-session impact check. - Formal assessment, gateway and EPA activity remain separate.
+ Inclusion, support and stretch - Use visual prompts, glossaries, staged checklists and model examples where needed. - Adjust access arrangements without lowering occupational expectations. - Stretch: justify alternatives, evaluate risk/quality and explain workplace impact.
+ RPL and individual training plan control - Deliver the full master plan unless an approved RPL adjustment changes the learner’s block plan. - Record only the eligible OTJ actually delivered. Omitted or shortened learning must agree with Excel and the portal.
+ Impact and follow-up - Identify what the apprentice can now explain or complete with greater confidence and independence. - Record one workplace application or evidence action. - Review progress against the block objectives and agree the next step.
+
+ Planned learning sequence
+ Time / status
+ Tutor and apprentice activity
+ Checks, support and stretch
+ Resources / evidence
+ 09:00-09:30 Non-eligible
+ MME and individual programme activity. Record separately from eligible OTJ.
+ Pastoral/administrative opening only. Do not count as eligible OTJ.
+ MME or programme record.
+ 09:30-10:30 1.00 OTJ
+ Detailed theory session refreshing hybrid and electric vehicle architecture at non-certification level. The tutor revisits key components including high-voltage battery packs, electric motors, inverters, DC-DC converters, onboard charging systems, orange cabling and low-voltage support systems.
+ Baseline questions; correct misconceptions. Support with visuals/glossary. Stretch: connect principles to workplace risk and quality.
+ Hybrid rig or vehicle; scan tools; HV PPE
+ 10:30-10:45 Break
+ Scheduled morning break.
+ Excluded from OTJ.
+ -
+ 10:45-12:15 1.50 OTJ
+ Structured practical or demonstration activity using a hybrid rig, EV training vehicle, scan tool outputs or manufacturer information.
+ Observe process and safe working. Support with staged checklist. Stretch: justify method and compare alternatives.
+ Hybrid rig or vehicle; scan tools; HV PPE
+ 12:15-12:45 Lunch
+ Scheduled lunch.
+ Excluded from OTJ.
+ -
+ 12:45-14:15 1.50 OTJ
+ Application activity where learners interpret hybrid or EV diagnostic scenarios. Scenarios may include reduced range, charging concerns, warning messages, non-start conditions, low-voltage battery issues or customer uncertainty around system behaviour.
+ Review output and reasoning. Support with model examples. Stretch: evaluate quality, efficiency and customer/business impact.
+ Hybrid rig or vehicle; scan tools; HV PPE
+ 14:15-14:30 Break
+ Scheduled afternoon break.
+ Excluded from OTJ.
+ -
+ 14:30-16:00 1.50 OTJ
+ Consolidation through data interpretation questions, tutor-led discussion and review of completed risk assessments or scan logs. Learners explain the difference between non-invasive diagnostic awareness and certified EV repair work.
+ Exit check and feedback. Confirm evidence action. Stretch: explain improvement and transfer to the workplace.
+ Evidence: Risk assessment; scan logs; isolation checklist; reflective notes
+ Workplace follow-up Apply one aspect of the session in the workplace and retain a job card, observation, photograph, mentor comment or other suitable evidence where available.
+ Trainer preparation and delivery control Check the work area, PPE/RPE, tools/equipment, technical information, learner support needs and evidence location. Confirm any approved RPL adjustment before delivery.
+ Assessment and exclusions Safety compliance check and data interpretation Q&A (formative practice with feedback; training only). Separate formal assessment: none.
+ Post-lesson impact What can apprentices now identify, explain or complete that they could not do confidently at the start? Who needs additional support or further stretch, and when will this be reviewed?

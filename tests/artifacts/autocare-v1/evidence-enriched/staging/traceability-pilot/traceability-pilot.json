@@ -1,0 +1,135 @@
+{
+  "title": "Autocare curriculum resource traceability pilot",
+  "status": "STAGING_PILOT_AWAITING_HUMAN_REVIEW",
+  "mutatesProgrammeTruth": false,
+  "fullCorpusMapped": false,
+  "pilotResourceCount": 34,
+  "note": "Representative resources only — not all 288. Folder-name inheritance alone rejected.",
+  "relationshipTypesUsed": [
+    "ROUTING",
+    "TEACHES",
+    "PRACTISES",
+    "ASSESSES",
+    "KNOWLEDGE_CHECKS",
+    "RECORDS_EVIDENCE",
+    "REINFORCES",
+    "SUPPORTS",
+    "PREPARES_FOR_GATEWAY",
+    "PRIMARY_TEACHING_CANDIDATE"
+  ],
+  "confidenceVocabulary": [
+    "EXPLICIT",
+    "INFERRED_HIGH",
+    "INFERRED_MEDIUM",
+    "INFERRED_LOW",
+    "CONFLICTING",
+    "UNRESOLVED"
+  ],
+  "resourcesInPilot": [
+    {"id": "res_lm_10e45332013b_9", "file": "Tire Changing and Wheel Balancing.ppt", "group": "G3"},
+    {"id": "res_lm_0117421614b4_10", "file": "Tyre Inspection and Repair.ppt", "group": "G3"},
+    {"id": "res_lm_9f5cb6fbb8f3_11", "file": "Tyres.ppt", "group": "G3"},
+    {"id": "res_lm_8b1b94878563_7", "file": "Lesson Plan 2 - Wheels & Tyres.docx", "group": "G3"},
+    {"id": "res_lm_dd715a15145e_39", "file": "Power Steering and EPS.ppt", "group": "G5"},
+    {"id": "res_lm_b316b7696abb_95", "file": "Electronic Steering Systems.ppt", "group": "G11"},
+    {"id": "res_lm_b5da6833f74c_35", "file": "Lesson Plan 9 - Introduction to Steering Systems.docx", "group": "G5"},
+    {"id": "res_lm_14c073c3be45_19", "file": "Brake Calipers PP.ppt", "group": "G4"},
+    {"id": "res_lm_1c26257cccb1_20", "file": "Brake Drums PP.ppt", "group": "G4"},
+    {"id": "res_lm_d2fd77e61892_82", "file": "Anti-Lock Brake Systems.ppt", "group": "G10"},
+    {"id": "res_lm_b956dd2a0014_1", "file": "Features of Hybrid Vehicles.ppt", "group": "G2"},
+    {"id": "res_lm_eb016735391c_60", "file": "Features of Hybrid Vehicles.ppt (G7 copy)", "group": "G7"},
+    {"id": "res_lm_288abfbed632_4", "file": "Safety in High Voltage Vehicles.ppt", "group": "G2"},
+    {"id": "res_lm_063b872ce1c7_63", "file": "Safety in High Voltage Vehicles.ppt (G7 copy)", "group": "G7"},
+    {"id": "res_lm_f401e434a502_6", "file": "Working on High Voltage Vehicles.ppt", "group": "G2"},
+    {"id": "res_lm_0e0b8ca75744_107", "file": "Cats, DPF, Lean-rich and SCR GTA session 3.ppt", "group": "G12"},
+    {"id": "res_lm_d9da0790afac_38", "file": "Coil Springs.ppt", "group": "G5"},
+    {"id": "res_lm_e76ad6ff34ed_37", "file": "Air Suspension Systems.ppt", "group": "G5"},
+    {"id": "res_lm_9f9912c444d7_34", "file": "Lesson Plan 8 - Introduction to Suspension Systems.docx", "group": "G5"},
+    {"file": "CEA 3.1/3.2/3.4/3.5 tyre cluster", "group": "G3", "pack": "cea"},
+    {"file": "CEA 5.2/5.6/5.7 steering cluster", "group": "G5", "pack": "cea"},
+    {"file": "CEA 4.x / 10.x brake cluster", "group": "G4/G10", "pack": "cea"},
+    {"file": "CEA 2.1 Hybrid isolation", "group": "G2", "pack": "cea"},
+    {"file": "CEA 12.x emissions cluster", "group": "G12", "pack": "cea"},
+    {"file": "CEA 5.3/5.4/5.5 suspension cluster", "group": "G5", "pack": "cea"},
+    {"file": "Block_2_Task_4_TPMS_and_Tyre_Service", "pack": "block_practical"},
+    {"file": "Block_5_Task_3_Brake_Inspection_and_Replacement", "pack": "block_practical"},
+    {"file": "Block_5_Task_4_Suspension_Component_Replacement", "pack": "block_practical"},
+    {"file": "Block_7_Task_3_Steering_Component_Replacement", "pack": "block_practical"},
+    {"file": "Block_8_Task_3_ABS_Wheel_Speed_Diagnostic", "pack": "block_practical"},
+    {"file": "Block_4_Task_4_EV_Hybrid_Component_Location", "pack": "block_practical"},
+    {"file": "GW1AC01 / GW1AC04 practical support", "pack": "gateway"},
+    {"file": "GW2AC03 emissions practical support", "pack": "gateway"},
+    {"file": "Transition Guide", "pack": "routing"}
+  ],
+  "edgeSummaryCounts": {
+    "EXPLICIT": 28,
+    "INFERRED_HIGH": 36,
+    "INFERRED_MEDIUM": 14,
+    "INFERRED_LOW": 4,
+    "CONFLICTING": 5,
+    "UNRESOLVED": 12,
+    "note": "Approximate counts across typed edges in CHAINS.md pilot; exact edge list expanded in human review if needed."
+  },
+  "resourceToGroup": {
+    "rule": "EXPLICIT from Group folder path for Learning Materials; preserved even when Block placement inferred",
+    "examples": [
+      "Tire Changing…ppt → G3 EXPLICIT",
+      "Power Steering and EPS.ppt → G5 EXPLICIT",
+      "Anti-Lock Brake Systems.ppt → G10 EXPLICIT",
+      "Features/Safety HV decks → G2 EXPLICIT and G7 EXPLICIT duplicates CONFLICTING filing"
+    ]
+  },
+  "resourceToBlock": {
+    "rule": "Never folder inheritance alone. Combine content match + Group LP + TG ROUTING + Block task compatibility.",
+    "examples": [
+      {"resource": "Tire Changing…ppt", "block": "B2 candidate", "basis": "INFERRED_HIGH content + G3 LP2 + TG G3→B2/B3 ROUTING"},
+      {"resource": "Brake Calipers.ppt", "block": "B2", "basis": "INFERRED_HIGH + TG G4→B2/B3 + K12 KEEP"},
+      {"resource": "ABS.ppt", "block": "B5–B8 reinforcement cluster", "basis": "INFERRED_HIGH + TG G10; NOT Primary B2"},
+      {"resource": "Cats/DPF/SCR.ppt", "block": "B5/B6/B7/B9 cluster", "basis": "INFERRED_MEDIUM content+TG; week UNRESOLVED"},
+      {"resource": "Coil Springs.ppt", "block": "B5", "basis": "INFERRED_HIGH + K11 KEEP"}
+    ]
+  },
+  "resourceToWeekSession": {
+    "rule": "Only where Block LP explicitly binds resource OR uniquely identifies session. Otherwise UNRESOLVED — Block-only preferred.",
+    "explicitWeekBindingsInPilot": 0,
+    "examplesUnresolvedWeek": [
+      "Tire Changing PPT → week UNRESOLVED",
+      "Cats/DPF/SCR PPT → week UNRESOLVED despite W47/W51/W52 topic adjacency INFERRED_MEDIUM",
+      "Coil Springs PPT → week UNRESOLVED"
+    ]
+  },
+  "resourceToKsbComponents": "See CHAINS.md component tables for S9/K10/K12/S13/K13/K11/S10",
+  "resourceToCeaPractical": "Content-overlap INFERRED_HIGH for same-system CEA clusters; EXPLICIT where task wording matches (e.g. CEA 2.1 isolate)",
+  "resourceToGateway": "EXPLICIT where GW task title matches competence; INFERRED_MEDIUM for knowledge adjacency; rejected where only topic-adjacent",
+  "conflictingUnresolved": [
+    {"issue": "G2 vs G7 identical HV/hybrid deck copies", "status": "CONFLICTING provenance"},
+    {"issue": "B2 T4 as S9 full practical", "status": "CONFLICTING if over-claimed — only SUPPORTS inspection/TPMS"},
+    {"issue": "B7 steering task as K10 Primary", "status": "CONFLICTING with first-teaching rule — mark REINFORCES/PRACTISES only"},
+    {"issue": "Exact week for Group PPTs", "status": "UNRESOLVED systematically"},
+    {"issue": "EPS assessed practical instrument", "status": "UNRESOLVED / WEAK"},
+    {"issue": "S10 single owner", "status": "UNRESOLVED by design — DISTRIBUTED"}
+  ],
+  "scaleReadiness": {
+    "readyForAutomaticFull288Mapping": false,
+    "readyForCuratedExpansionAfterHumanReview": true,
+    "blockingIssues": [
+      "Missing resource→week join table",
+      "Risk of TG over-weighting without content check",
+      "Duplicate Group filings",
+      "Partial PPT extraction coverage historically"
+    ]
+  },
+  "humanReviewQuestions": [
+    "Is teaching attached to correct KSB component?",
+    "Is Group→Block content-defensible?",
+    "Is week genuinely supported?",
+    "Does CEA/practical match teaching?",
+    "Does Gateway test same component?",
+    "Are relationship types separated?",
+    "Are EXPLICIT/INFERRED labels honest?",
+    "Is reinforcement blocked from Primary steal?",
+    "Does S10 stay distributed?",
+    "Are partial components visible?"
+  ],
+  "proposedNextStep": "Human review of CHAINS.md only. Do not expand corpus mapping, draft final schema, or start tranche 3 until review outcome."
+}

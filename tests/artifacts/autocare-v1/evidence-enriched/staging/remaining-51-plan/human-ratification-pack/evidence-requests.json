@@ -1,0 +1,554 @@
+{
+  "status": "SHADOW_ONLY",
+  "requests": [
+    {
+      "id": "ER-01",
+      "request": "Named EDI / inclusion teaching materials (not SEND “inclusion” scaffolding)",
+      "affects": [
+        "K1",
+        "K31",
+        "S20",
+        "B5"
+      ],
+      "why": "KEEP GAP currently; off-pack induction could change conclusion",
+      "current": "KEEP GAP",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-02",
+      "request": "FCA/PCI financial-compliance teaching beyond payments/VAT/GDPR",
+      "affects": [
+        "K28"
+      ],
+      "why": "Confirms whether K28 is curriculum gap or misframed payments adjacency",
+      "current": "KEEP GAP",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-03",
+      "request": "Battery State-of-Health (SoH) competence teaching/practice/assessment",
+      "affects": [
+        "S11"
+      ],
+      "why": "EV awareness must not be mistaken for SoH",
+      "current": "KEEP GAP",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-04",
+      "request": "HV isolation competence evidence (learner-performed / assessed)",
+      "affects": [
+        "S13"
+      ],
+      "why": "Rules teaching confirmed; assessed isolation competence unproven — REVIEW",
+      "current": "REVIEW",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-05",
+      "request": "Filled mentor Learning Impact / Skills Progress examples",
+      "affects": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "S24",
+        "K30",
+        "S19"
+      ],
+      "why": "Behaviour/soft-skill workplace axis currently mechanism-only",
+      "current": "Mechanism referenced; filled evidence unsourced",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-09",
+      "request": "Tyres.ppt extract — legislation / EU labelling / sidewall / homologation",
+      "affects": [
+        "K9"
+      ],
+      "why": "May convert depth/gap to visibility-resolved coverage",
+      "current": "CHANGE ownership early + depth/visibility",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-10",
+      "request": "Named e-machine teaching in LV starting/charging",
+      "affects": [
+        "K15"
+      ],
+      "why": "Material official component missing",
+      "current": "CHANGE → G7 + e-machine gap",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-15",
+      "request": "Fuel Cells.ppt / hydrogen LP body — storage & condition monitoring",
+      "affects": [
+        "K22"
+      ],
+      "why": "May resolve visibility vs genuine depth gap",
+      "current": "KEEP B9 + depth/visibility",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-20",
+      "request": "Dedicated business-operations teaching (efficiency, competitiveness, operational risk)",
+      "affects": [
+        "K25"
+      ],
+      "why": "Partial/distributed; CS/ethics fragments insufficient",
+      "current": "CHANGE → PARTIAL/DISTRIBUTED",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-21",
+      "request": "Named sales-process methods: show & tell, features & benefits, consultative, mini-closing/closing",
+      "affects": [
+        "K29",
+        "S18"
+      ],
+      "why": "Generic sales present; named methodologies absent",
+      "current": "Ownership change + PARTIAL/depth",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-22",
+      "request": "Deliberate team-working principles LP / observed teamwork assessment",
+      "affects": [
+        "K30",
+        "S19"
+      ],
+      "why": "KEEP GAP — mention/inference insufficient",
+      "current": "KEEP GAP",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-23",
+      "request": "Deliberate behaviour teaching/observation: adapt to changing work demands",
+      "affects": [
+        "B3"
+      ],
+      "why": "KEEP GAP; adaptive suspension rejected",
+      "current": "KEEP GAP",
+      "couldChange": true,
+      "priority": "HIGH"
+    },
+    {
+      "id": "ER-06",
+      "request": "Named LOLER / PUWER / HASAWA / manual-handling teaching body",
+      "affects": [
+        "K3",
+        "S1"
+      ],
+      "why": "Core H&S strong; named regs depth gaps",
+      "current": "KEEP B1 + depth",
+      "couldChange": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-07",
+      "request": "Deeper COSHH teaching body",
+      "affects": [
+        "K3"
+      ],
+      "why": "Later intent vs first-home depth",
+      "current": "KEEP B1 + depth",
+      "couldChange": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-08",
+      "request": "Explicit reuse/recycling teaching (vs waste-stream practice)",
+      "affects": [
+        "K4",
+        "S6"
+      ],
+      "why": "Depth wording vs strong spill/waste practice",
+      "current": "KEEP B3 + depth",
+      "couldChange": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-11",
+      "request": "ADAS static vs dynamic calibration methods + equipment teaching",
+      "affects": [
+        "K17"
+      ],
+      "why": "Awareness strong; named methods thin",
+      "current": "CHANGE → G11 + depth",
+      "couldChange": true,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-12",
+      "request": "Ackermann + thrust-angle teaching / Wheel Alignment.ppt extract",
+      "affects": [
+        "K19"
+      ],
+      "why": "Core geometry strong; named principles thin/unextracted",
+      "current": "KEEP B2 + depth/visibility",
+      "couldChange": true,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-16",
+      "request": "Vehicle Service History.ppt extract + owner’s manuals teaching",
+      "affects": [
+        "K8"
+      ],
+      "why": "PARTIAL; manuals currently not found",
+      "current": "CHANGE → PARTIAL",
+      "couldChange": true,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-17",
+      "request": "Cyber / POS / email / collaboration digital-systems teaching",
+      "affects": [
+        "K34",
+        "S23"
+      ],
+      "why": "Partial digital; breadth incomplete",
+      "current": "CHANGE → PARTIAL",
+      "couldChange": true,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-18",
+      "request": "Air-filter / full filtration teaching beyond fluids",
+      "affects": [
+        "K20",
+        "S25"
+      ],
+      "why": "Partial fluids-strong conclusion",
+      "current": "CHANGE → PARTIAL",
+      "couldChange": true,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-24",
+      "request": "Verified stock-rotation practical body beyond W29 topic title",
+      "affects": [
+        "K27",
+        "S17"
+      ],
+      "why": "Topic intent present; activity body verification thin",
+      "current": "CHANGE ownership B3 + practice depth",
+      "couldChange": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-26",
+      "request": "Seeking CPD opportunities pedagogy (beyond LIR/SPR recording)",
+      "affects": [
+        "B4",
+        "S24"
+      ],
+      "why": "Recording mechanism adequate; seeking behaviour thinner",
+      "current": "KEEP B10 / change S24 ownership + depth",
+      "couldChange": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "id": "ER-13",
+      "request": "Explicit store/return-to-storage checklist / demonstration",
+      "affects": [
+        "S4",
+        "K6"
+      ],
+      "why": "Maintain/calibration stronger than storage return wording",
+      "current": "KEEP/CHANGE ownership B1 + storage depth",
+      "couldChange": false,
+      "priority": "LOW"
+    },
+    {
+      "id": "ER-14",
+      "request": "HVAC blower motors / heat exchangers / pipes-hoses named teaching",
+      "affects": [
+        "K14"
+      ],
+      "why": "Close component-set depth on otherwise strong HVAC",
+      "current": "KEEP B6 + depth",
+      "couldChange": false,
+      "priority": "LOW"
+    },
+    {
+      "id": "ER-19",
+      "request": "ADAS passive/active deck confirmation (levels wording equivalence)",
+      "affects": [
+        "K18"
+      ],
+      "why": "Visibility/depth on passive-active equivalence",
+      "current": "CHANGE classification (visibility)",
+      "couldChange": false,
+      "priority": "LOW"
+    },
+    {
+      "id": "ER-25",
+      "request": "Explicit pre- and post-vehicle customer-service teaching framing",
+      "affects": [
+        "K24"
+      ],
+      "why": "Needs/challenging conversations strong; pre/post framing partial",
+      "current": "KEEP B2 + depth",
+      "couldChange": false,
+      "priority": "LOW"
+    }
+  ],
+  "rawBatchRequests": [
+    {
+      "id": "ER-R51-4-01",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K9"
+      ],
+      "request": "Extracted/annotated Tyres.ppt (or equivalent) showing named tyre legislation, EU labelling, sidewall markings, homologated fitments",
+      "batch": "R51-4"
+    },
+    {
+      "id": "ER-R51-4-02",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K15"
+      ],
+      "request": "Named e-machine teaching within LV batteries / starting / charging syllabus",
+      "batch": "R51-4"
+    },
+    {
+      "id": "ER-R51-4-03",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K17"
+      ],
+      "request": "Explicit static vs dynamic ADAS calibration methods and equipment teaching body",
+      "batch": "R51-4"
+    },
+    {
+      "id": "ER-R51-4-04",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K19"
+      ],
+      "request": "Extracted Wheel Alignment.ppt / geometry resource naming Ackermann principle and thrust angle",
+      "batch": "R51-4"
+    },
+    {
+      "id": "ER-R51-4-05",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "S4",
+        "K6"
+      ],
+      "request": "Explicit store / return-to-storage demonstration or checklist beyond housekeeping implication",
+      "batch": "R51-4"
+    },
+    {
+      "id": "ER-R51-4-06",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K14"
+      ],
+      "request": "Named blower-motor / heat-exchanger / pipes-hoses teaching to close HVAC component-set depth",
+      "batch": "R51-4"
+    },
+    {
+      "id": "R51-4-CF-7",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "named LOLER / PUWER / HASAWA / manual-handling teaching",
+      "batch": "R51-4",
+      "carryForward": true
+    },
+    {
+      "id": "R51-4-CF-8",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "deeper COSHH teaching body",
+      "batch": "R51-4",
+      "carryForward": true
+    },
+    {
+      "id": "R51-4-CF-9",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "explicit reuse/recycling teaching",
+      "batch": "R51-4",
+      "carryForward": true
+    },
+    {
+      "id": "R51-4-CF-10",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "completed mentor Learning Impact / Skills Progress examples",
+      "batch": "R51-4",
+      "carryForward": true
+    },
+    {
+      "id": "ER-R51-5-01",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K22"
+      ],
+      "request": "Extracted Fuel Cells.ppt / hydrogen LP body covering storage and condition monitoring of fuel cells",
+      "batch": "R51-5"
+    },
+    {
+      "id": "ER-R51-5-02",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K25"
+      ],
+      "request": "Dedicated business-operations teaching covering efficiency, competitiveness, minimising operational risks",
+      "batch": "R51-5"
+    },
+    {
+      "id": "ER-R51-5-03",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K29",
+        "S18"
+      ],
+      "request": "Named sales-process teaching/practice: show and tell, features and benefits, consultative selling, mini closing/closing",
+      "batch": "R51-5"
+    },
+    {
+      "id": "ER-R51-5-04",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K30",
+        "S19"
+      ],
+      "request": "Deliberate team-working principles LP / observed teamwork assessment criteria",
+      "batch": "R51-5"
+    },
+    {
+      "id": "ER-R51-5-05",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "B3"
+      ],
+      "request": "Deliberate behaviour teaching/observation of responding and adapting to changing work demands",
+      "batch": "R51-5"
+    },
+    {
+      "id": "ER-R51-5-06",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "B4",
+        "S24"
+      ],
+      "request": "Filled mentor Learning Impact / Skills Progress examples showing seeking CPD / completed L&D recording",
+      "batch": "R51-5"
+    },
+    {
+      "id": "ER-R51-5-07",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K27",
+        "S17"
+      ],
+      "request": "Verified stock-rotation practical body (beyond W29 topic title)",
+      "batch": "R51-5"
+    },
+    {
+      "id": "ER-R51-5-08",
+      "priority": "NON_BLOCKING",
+      "affects": [
+        "K24"
+      ],
+      "request": "Explicit pre- and post-vehicle customer-service teaching framing",
+      "batch": "R51-5"
+    },
+    {
+      "id": "R51-5-CF-19",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "Tyres.ppt extract — legislation / EU label / sidewall / homologation",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-20",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "Named e-machine teaching",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-21",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "Static vs dynamic ADAS calibration methods + equipment",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-22",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "Ackermann + thrust-angle teaching / Wheel Alignment.ppt",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-23",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "Explicit store/return-to-storage checklist",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-24",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "HVAC blower / heat exchanger / pipes-hoses teaching",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-25",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "LOLER / PUWER / HASAWA / manual handling",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-26",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "deeper COSHH",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-27",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "reuse/recycling",
+      "batch": "R51-5",
+      "carryForward": true
+    },
+    {
+      "id": "R51-5-CF-28",
+      "priority": "NON_BLOCKING",
+      "affects": [],
+      "request": "filled mentor LIR/SPR",
+      "batch": "R51-5",
+      "carryForward": true
+    }
+  ]
+}

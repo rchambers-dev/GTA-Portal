@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "ev",
+    "priority":  1,
+    "whySelected":  "Hybrid awareness depth — G2",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt",
+    "relativePath":  "G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt",
+    "sourceFilename":  "Features of Hybrid Vehicles.ppt",
+    "exists":  true,
+    "contentHashSha256":  "b956dd2a00140f66bee5813f27342993d71c1858b2b08829f904bae54fdaf085",
+    "byteLength":  10165248,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  16,
+    "extractedCharCount":  7008,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G02_Electric_Hybrid_Awareness_Resources_Features_of_Hybrid_Vehicles.ppt.txt",
+    "extractedAt":  "2026-08-10T13:32:37.8623937+01:00"
+}

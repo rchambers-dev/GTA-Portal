@@ -1,0 +1,77 @@
+Lesson Plan 3
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Exhausts and Emission Control systems
+ 0 0 Exhausts and Emission Control systems
+
+ Lesson Aims
+
+ Lesson Aims
+ 0 35716 Intro to engine management system components and operation.
+ Look at emission control systems used in vehicles including SCR, EGR, DPF, PPF and CAT.
+ Develop practical skills in workshop required for safe inspection, testing and R&R of components.
+ 0 0 Intro to engine management system components and operation.
+ Look at emission control systems used in vehicles including SCR, EGR, DPF, PPF and CAT.
+ Develop practical skills in workshop required for safe inspection, testing and R&R of components.
+
+ Lesson Objectives
+ -8626 56527 Be able to locate and identify at least 5 engine management components on a vehicle/rig.
+ Be able to state the meaning of the terms SCR, EGR, DPF, PPF and CAT.
+ Be able to safely remove/refit an exhaust system part on a vehicle.
+ 0 0 Be able to locate and identify at least 5 engine management components on a vehicle/rig.
+ Be able to state the meaning of the terms SCR, EGR, DPF, PPF and CAT.
+ Be able to safely remove/refit an exhaust system part on a vehicle.
+
+ Engagement
+ -10795 57989 Using a blend of power point, you tube videos and practical demonstrations and exercises in the workshop.
+ 0 0 Using a blend of power point, you tube videos and practical demonstrations and exercises in the workshop.
+
+ Stick ability
+ -8255 131445 Use Cosworth or similar rig where they can run up an engine. (smell it, hear it, feel it)
+ Videos on youtube . Practical tasks carried out in the workshop.
+ 0 0 Use Cosworth or similar rig where they can run up an engine. (smell it, hear it, feel it)
+ Videos on youtube. Practical tasks carried out in the workshop.
+
+ Assessment for learning (AFL)
+ -10795 95250 Initial assessment via Q&A in morning, Summative after session 2 via Q&A, Observation of practical tasks, verbal Q&A at end of day vs outcomes.
+ 0 0 Initial assessment via Q&A in morning, Summative after session 2 via Q&A, Observation of practical tasks, verbal Q&A at end of day vs outcomes.
+
+ Key words
+ 0 48260 Catalyst, Particulates, Selective, Reduction.
+ 0 0 Catalyst, Particulates, Selective, Reduction.
+
+ Differentiation
+ -6350 63500 Use a wide variety of delivery methods, encourage equality and divers ity and incorporate tasks of varied difficulty.
+ 0 0 Use a wide variety of delivery methods, encourage equality and divers ity and incorporate tasks of varied difficulty.
+
+ Session 1
+ -25400 121920 Review Logbooks, OTJ Logs and evidence. F skills as required. Review action plans and carry out initial assessment via Q&A on todays topic. Into to Engine management systems.
+ 0 0 Review Logbooks, OTJ Logs and evidence. F skills as required. Review action plans and carry out initial assessment via Q&A on todays topic. Into to Engine management systems.
+
+ -19685 179070 Continue looking at engine management systems, parts and operation. Differences between SI and CI systems and look 4 stroke on petrol vs diesel. Link into last weeks session. Discuss Euro standards and what that means. Mot regs and Implications if faulty.
+
+ 0 0 Continue looking at engine management systems, parts and operation. Differences between SI and CI systems and look 4 stroke on petrol vs diesel. Link into last weeks session. Discuss Euro standards and what that means. Mot regs and Implications if faulty.
+
+ Session 2
+
+ -19685 193040 Intro to emissions control system layouts, components, and operation. Use workshop vehicles and rig to aid identification and compare vehicles. DPF vs PPF and what basics of EGR (reduces/why) Look at pressures/temps/voltages to embed F skills Maths.
+ 0 0 Intro to emissions control system layouts, components, and operation. Use workshop vehicles and rig to aid identification and compare vehicles. DPF vs PPF and what basics of EGR (reduces/why) Look at pressures/temps/voltages to embed F skills Maths.
+ Session 3
+
+ center 178435 Remove and refit an exhaust system part or section on a vehicle in workshop. Assess individual ability during practical and use verbal Q&A during. Review outcomes and todays session. What could we do better in the future? Look at next weeks session.
+ 0 0 Remove and refit an exhaust system part or section on a vehicle in workshop. Assess individual ability during practical and use verbal Q&A during. Review outcomes and todays session. What could we do better in the future? Look at next weeks session.
+ Session 4
+
+ Challenge
+ -17145 90805 Identifying key differences between SI and CI engines/systems. Verbal Q&A to check knowledge, practical skills tests. Review vs outcomes and discuss next weeks session. Terminology used.
+ 0 0 Identifying key differences between SI and CI engines/systems. Verbal Q&A to check knowledge, practical skills tests. Review vs outcomes and discuss next weeks session. Terminology used.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

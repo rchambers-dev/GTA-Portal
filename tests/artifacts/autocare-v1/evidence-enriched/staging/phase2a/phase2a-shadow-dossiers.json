@@ -1,0 +1,361 @@
+{
+  "generatedAt": "2026-08-10T12:35:20.464Z",
+  "phase": "2a",
+  "analysisOnly": true,
+  "goldenAUnchanged": true,
+  "extraction": {
+    "method": "powerpoint_com_slidetext_v1",
+    "selectedCount": 15,
+    "success": 15,
+    "failed": 0,
+    "originalsPreserved": true,
+    "notes": "Text from shapes only; image-only content may be under-represented"
+  },
+  "criticalPpts": [
+    {
+      "theme": "tyres",
+      "file": "Tire Changing and Wheel Balancing.ppt",
+      "relativePath": "G03 Wheels and Tyres\\Resources\\Tire Changing and Wheel Balancing.ppt",
+      "why": "S9 remove/replace/balance core teaching deck",
+      "hash": "10e45332013b1279de8e6a253ac6a7359353d62779824469563bbed3abc5d4ad",
+      "status": "EXTRACTED",
+      "slides": 20,
+      "chars": 6662
+    },
+    {
+      "theme": "tyres",
+      "file": "Tyre Inspection and Repair.ppt",
+      "relativePath": "G03 Wheels and Tyres\\Resources\\Tyre Inspection and Repair.ppt",
+      "why": "S9 inspection/repair component",
+      "hash": "0117421614b4bcb369fbde69d8ab90bba93f68459025f6ae93649168aa695e16",
+      "status": "EXTRACTED",
+      "slides": 18,
+      "chars": 6685
+    },
+    {
+      "theme": "tyres",
+      "file": "Tyres.ppt",
+      "relativePath": "G03 Wheels and Tyres\\Resources\\Tyres.ppt",
+      "why": "Tyre knowledge/breadth (legislation, markings, types)",
+      "hash": "9f5cb6fbb8f37ff80234d32e84a1d976f39827727485beba4c63ea30fe7c10ea",
+      "status": "EXTRACTED",
+      "slides": 19,
+      "chars": 6285
+    },
+    {
+      "theme": "brakes",
+      "file": "Brake Calipers PP.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Brake Calipers PP.ppt",
+      "why": "Basic brake component teaching",
+      "hash": "14c073c3be452629d31a493afadfa7433d5a0e0902353fa2517ba8e3ea947979",
+      "status": "EXTRACTED",
+      "slides": 18,
+      "chars": 6857
+    },
+    {
+      "theme": "brakes",
+      "file": "Brake Drums PP.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Brake Drums PP.ppt",
+      "why": "Basic brake component teaching",
+      "hash": "1c26257cccb17fefa8de28aa113e85cba9b6a4b5511cbf06e330d711fa0556aa",
+      "status": "EXTRACTED",
+      "slides": 16,
+      "chars": 4844
+    },
+    {
+      "theme": "brakes",
+      "file": "Brake Lines and Hoses.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Brake Lines and Hoses.ppt",
+      "why": "Hydraulic circuit components (K12 breadth)",
+      "hash": "86a55328547f9a1b21fd1e28eeca3b7fe5c035a8de26d7e3fcced9f7b7511558",
+      "status": "EXTRACTED",
+      "slides": 23,
+      "chars": 7837
+    },
+    {
+      "theme": "brakes",
+      "file": "Wheel Speed Sensors.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Wheel Speed Sensors.ppt",
+      "why": "G4 placement of wheel-speed content (early vs advanced)",
+      "hash": "3a89189e8265a2acabcb4f0f08b29ba4031f96880f1003f991787952777ad0ce",
+      "status": "EXTRACTED",
+      "slides": 20,
+      "chars": 8206
+    },
+    {
+      "theme": "brakes",
+      "file": "Wheel Speed Sensors.ppt",
+      "relativePath": "G10 Advanced Braking\\Resources\\Wheel Speed Sensors.ppt",
+      "why": "G10 variant — compare to G4 for progression/ownership",
+      "hash": "7a3aee6d5543f24d74d766d78788a51ffcc2fde64799c0ed3dcfb6e9a369beda",
+      "status": "EXTRACTED",
+      "slides": 20,
+      "chars": 8352
+    },
+    {
+      "theme": "brakes",
+      "file": "Anti-Lock Brake Systems.ppt",
+      "relativePath": "G10 Advanced Braking\\Resources\\Anti-Lock Brake Systems.ppt",
+      "why": "Advanced ABS teaching",
+      "hash": "d2fd77e61892d21c279085aa3cbed8504431a21b0ea49490703f5b875dfb7245",
+      "status": "EXTRACTED",
+      "slides": 25,
+      "chars": 9521
+    },
+    {
+      "theme": "brakes",
+      "file": "Stability Control Systems.ppt",
+      "relativePath": "G10 Advanced Braking\\Resources\\Stability Control Systems.ppt",
+      "why": "ESP advanced reinforcement",
+      "hash": "1c9b92ef3681e61e54cdea4c278b96a047830bf3b8920305061ca77f8bedb1b7",
+      "status": "EXTRACTED",
+      "slides": 12,
+      "chars": 4445
+    },
+    {
+      "theme": "ev",
+      "file": "Safety in High Voltage Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "why": "HV safe working — G2 placement",
+      "hash": "288abfbed6323d2838680cf54e0e6e9db0e30e423a6f3986de58d2b848f57ab5",
+      "status": "EXTRACTED",
+      "slides": 18,
+      "chars": 6419
+    },
+    {
+      "theme": "ev",
+      "file": "Safety in High Voltage Vehicles.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "why": "HV safe working — G7 variant compare",
+      "hash": "063b872ce1c7fe6c9d2278082ed004e03b04a3a6e9625716cc63952901112f20",
+      "status": "EXTRACTED",
+      "slides": 18,
+      "chars": 6423
+    },
+    {
+      "theme": "ev",
+      "file": "Working on High Voltage Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Working on High Voltage Vehicles.ppt",
+      "why": "Potential isolation/working procedures vs awareness",
+      "hash": "f401e434a502352176a9d1f748cb20c58516de1b1a24e009ecbc8839c27db294",
+      "status": "EXTRACTED",
+      "slides": 17,
+      "chars": 5532
+    },
+    {
+      "theme": "ev",
+      "file": "Features of Hybrid Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt",
+      "why": "Hybrid awareness depth — G2",
+      "hash": "b956dd2a00140f66bee5813f27342993d71c1858b2b08829f904bae54fdaf085",
+      "status": "EXTRACTED",
+      "slides": 16,
+      "chars": 7008
+    },
+    {
+      "theme": "ev",
+      "file": "Features of Hybrid Vehicles.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt",
+      "why": "Hybrid awareness — G7 variant compare",
+      "hash": "eb016735391c91cb0db90eef2fa47e969af3f701381503d9056a65408f4650b6",
+      "status": "EXTRACTED",
+      "slides": 16,
+      "chars": 7012
+    }
+  ],
+  "variantFindings": {
+    "safetyHv_G2_vs_G7": {
+      "conclusion": "CONTENT_COPY",
+      "evidence": "Normalized extracted slide text identical (6219 chars). Binary SHA-256 differs (likely embedded media/metadata).",
+      "implication": "Same teaching asset placed in G2 and G7 — conflicting routing provenance, not different teaching depth"
+    },
+    "featuresHybrid_G2_vs_G7": {
+      "conclusion": "CONTENT_COPY",
+      "evidence": "Normalized extracted slide text identical (6812 chars). Binary hash differs.",
+      "implication": "Same awareness deck dual-filed"
+    },
+    "wheelSpeed_G4_vs_G10": {
+      "conclusion": "MODIFIED_VARIANT",
+      "evidence": "Normalized text differs early (prefix similarity ~0.057). G4 introduces Hall-effect first; G10 introduces inductive-then-Hall ordering — related but not identical decks.",
+      "implication": "Do not treat as one asset; progressive/duplicate teaching risk across basic vs advanced Groups"
+    }
+  },
+  "s9": {
+    "official": "Remove, repair and replace vehicle tyre and balance wheel assemblies on car, car derived van or light goods vehicle. For example, ultra-low profile, directional, asymmetric, run-flat tyres.",
+    "goldenA": {
+      "status": "REVIEWED_CURRICULUM_GAP",
+      "note": "No Primary-eligible strip/remove/replace/balance practical on SOW-visible evidence (W14/W64/W106 notes). Proposed amendment B7 advisory only.",
+      "related": "K6 tyre knowledge Primary B1 (knowledge ≠ S9 skill completion)"
+    },
+    "inferredRequirements": [
+      "Remove tyre from wheel/rim using appropriate equipment",
+      "Repair tyre where appropriate and authorised",
+      "Replace/refit tyre to rim and vehicle",
+      "Balance wheel/tyre assembly",
+      "Handle breadth incl. special tyre types where role requires (e.g. run-flat awareness)",
+      "Use safety procedures and technical information"
+    ],
+    "components": {
+      "removal_dismount": {
+        "classification": "CONFIRMED",
+        "teaching": [
+          "Tire Changing and Wheel Balancing.ppt slides 15-17: bead breaker, dismount procedures, tyre irons, turntable",
+          "Tyres.ppt slide 18 workshop activity: Remove and refit a tyre safely on tyre machine as a group",
+          "G3 Lesson Plan 2 (prior catalogue): aims include tyre removal and fitting"
+        ],
+        "practicalBlockEra": "PARTIAL — B1 Task 4 inspects tyre condition (not dismount). No Task 3/4 currently says strip tyre from rim.",
+        "assessment": "PARTIAL — G3 initial assessment/marking exist; in-PPT knowledge checks. Formal Block assessed strip not found in Tasks 3-4 pack."
+      },
+      "repair": {
+        "classification": "CONFIRMED",
+        "teaching": [
+          "Tyre Inspection and Repair.ppt: puncture size limits (6.4mm tread), no sidewall/shoulder repair, mushroom plug/patch, must remove tyre from wheel for internal inspection, speed-rating implications, run-flat discussion prompt"
+        ],
+        "practicalBlockEra": "UNPROVEN in Tasks 3-4 pack",
+        "assessment": "PARTIAL — deck contains check-for-learning; formal Block assessment task for repair not in supplied pack"
+      },
+      "replacement_refitting": {
+        "classification": "CONFIRMED",
+        "teaching": [
+          "Tire Changing PPT mount via drive head; safety on reinflation/bead seat",
+          "Tyres.ppt activity: remove and refit on machine",
+          "G3 LP2 removal and refitting aims"
+        ],
+        "practicalBlockEra": "UNPROVEN as formal Block Task 3/4 assessable strip/refit",
+        "assessment": "PARTIAL"
+      },
+      "balancing": {
+        "classification": "CONFIRMED",
+        "teaching": [
+          "Tire Changing PPT extensive balancing content: static/dynamic, on-car/off-car, weights, lug torque after",
+          "Tyres.ppt activity: Have a go at using the balancing machine as a group"
+        ],
+        "practicalBlockEra": "ABSENT in Tasks 3-4 filenames/extracted briefs (no balance task)",
+        "assessment": "PARTIAL — teaching checks in PPT; no Block Task 3/4 balance assessment found"
+      },
+      "special_tyre_breadth": {
+        "classification": "PARTIAL",
+        "teaching": [
+          "Tyres.ppt: directional care on rotation, space-saver, self-sealing, cross/radial",
+          "Repair PPT raises run-flat repair question (discussion)",
+          "Changing PPT notes care rotating directional tyres"
+        ],
+        "practicalBlockEra": "UNPROVEN for ULP/asymmetric/run-flat practical competence in Tasks 3-4",
+        "assessment": "UNPROVEN"
+      },
+      "tpms_pressure_inspection_adjacent": {
+        "classification": "CONFIRMED",
+        "note": "Supports K6/serviceability but insufficient alone for S9",
+        "teaching": [
+          "Block 2 Task 4 TPMS/pressure/condition/customer documentation extracted previously"
+        ]
+      }
+    },
+    "answers": {
+      "A_removal_taught": "YES — CONFIRMED in teaching materials (PPT + activity + Group LP)",
+      "B_repair_taught": "YES — CONFIRMED in Inspection and Repair PPT",
+      "C_replacement_refitting_taught": "YES — CONFIRMED",
+      "D_balancing_taught": "YES — CONFIRMED (major focus of Changing/Balancing PPT + workshop activity line)",
+      "E_additional_breadth": "PARTIAL — directional/space-saver/self-seal/run-flat discussion present; official example specials not fully practically evidenced",
+      "F_practical_learner_doing": "PARTIAL — teaching materials explicitly stage group machine remove/refit/balance activity; Block-era assessed Tasks 3-4 do not yet prove individual assessed strip/balance. Tasks 1-2 missing.",
+      "G_assessment_evidence": "PARTIAL — in-deck questions + G3 assessment sheets; Block formal practical assessment for full S9 not in Tasks 3-4 pack",
+      "H_strongest_structural_owner": "B2 (shadow) — routing G3 direct + Task 4 tyre service + customer docs; B1 foundation inspection/activity adjacency; Golden A advisory had proposed B7 (do not treat as truth)",
+      "I_reinforcement_blocks": "B3 workshop process; B8 tyre-wear root-cause task; B10 consolidation — reinforcement/application",
+      "J_reconsider_golden_A_gap": "YES — richer corpus justifies RECONSIDER / LIKELY CHANGE of S9 from gap toward Primary OR mapped-with-strong-teaching-but-assessment-gap; NOT auto-persist. Core teaching of remove/repair/replace/balance is now confirmed; remaining weakness is Block-era formal assessed practical completeness and special-type breadth."
+    },
+    "humanReviewFormat": {
+      "GOLDEN_A_POSITION": "S9 reviewed curriculum gap",
+      "CURRENT_RICHER_EVIDENCE": "Confirmed teaching decks + workshop activity language for remove/refit/balance/repair; Block TPMS/condition practicals; Group LP2",
+      "WHAT_GOLDEN_A_COULD_NOT_SEE": "Literal Group teaching materials and activity expectations outside SOW-only view",
+      "WHAT_IS_NOW_CONFIRMED": "Removal, repair, replacement/refitting, balancing taught in current live Group teaching resources",
+      "WHAT_REMAINS_UNPROVEN": "Individual Block-era assessed strip/balance competence; full special tyre example breadth; Tasks 1-2; resource→week joins",
+      "STRUCTURAL_PRIMARY_IMPLICATION": "Shadow strongest owner B2; do not write Primary yet",
+      "PRACTICAL_ASSESSMENT_IMPLICATION": "Teaching strong; Block Tasks 3-4 leave strip/balance assessment visibility gap",
+      "CONFIDENCE": "HIGH on teaching presence; MEDIUM on programme assessment completeness; HIGH that Golden A gap should be re-reviewed",
+      "PROPOSED_GOLDEN_B_DIRECTION": "LIKELY CHANGE (from gap) pending human review of assessment completeness — advisory only"
+    }
+  },
+  "brakes": {
+    "goldenA": {
+      "K12": "Primary B2 — Advanced Brake Diagnostics strongest primary; B3 wear reinforcement"
+    },
+    "findings": {
+      "basicTeaching": "CONFIRMED — Brake Calipers/Drums/Lines PPTs teach component purpose, inspection/replacement language at basic Group G4",
+      "inspectionReplacement": "CONFIRMED teaching + Block 5 Task 3 EXTRACTED: inspect, measure, remove/refit brake components",
+      "advancedDiagnosis": "CONFIRMED — ABS PPT + Stability Control + Block 8 Task 3 ABS wheel-speed diagnostic",
+      "progression": "Separable: G4 component knowledge → B5 replacement practical → G10/B8 ABS/ESP advanced. Advanced must not be mistaken for first ownership of basic brake systems knowledge.",
+      "wheelSpeedPlacement": "G4 and G10 both hold related WSS decks (MODIFIED_VARIANT). Advanced ABS content can appear early by folder (G4) — ownership ambiguity risk.",
+      "primaryImplication": "Supports keeping early substantive brake systems ownership conceptually early (Golden A B2) while treating ABS/ESP as later reinforcement/specialist — BUT G4 WSS deck shows advanced topics may be taught before B8. Shadow: KEEP K12 B2 unless human review finds stronger first home elsewhere; flag reinforcement-vs-primary risk."
+    },
+    "humanReviewFormat": {
+      "GOLDEN_A_POSITION": "K12 Primary B2",
+      "CURRENT_RICHER_EVIDENCE": "Layered basic component PPTs + replacement practical B5 + ABS diagnostic B8 + dual WSS decks",
+      "WHAT_GOLDEN_A_COULD_NOT_SEE": "Literal PPT depth and explicit B5/B8 practical briefs",
+      "WHAT_IS_NOW_CONFIRMED": "Basic and advanced brake teaching both exist; progression ladder is real",
+      "WHAT_REMAINS_UNPROVEN": "Whether B2 remains the best first Primary after sequencing all weeks; full K12 component list coverage item-by-item",
+      "STRUCTURAL_PRIMARY_IMPLICATION": "Shadow KEEP K12@B2; mark ABS/WSS as advanced reinforcement with G4 dual-placement conflict to review",
+      "PRACTICAL_ASSESSMENT_IMPLICATION": "Replacement and ABS diagnostics well evidenced in Tasks 3/4",
+      "CONFIDENCE": "HIGH on progression model; MEDIUM on exact Primary block optimality",
+      "PROPOSED_GOLDEN_B_DIRECTION": "KEEP (with dual-placement review note)"
+    }
+  },
+  "ev": {
+    "goldenA": {
+      "K21": "Primary B6 EV service/charging/safety",
+      "K23": "Primary B6 HV safe working/isolation match",
+      "S13": "Primary B6 EV isolation practical"
+    },
+    "layers": {
+      "awareness": "CONFIRMED — Features of Hybrid Vehicles (G2=G7 copy): hybrid principles/features",
+      "safeWorking": "CONFIRMED — Safety in HV Vehicles: PPE, HV cable behaviour, buffer zone, disable via service plug, wait, meter checks",
+      "isolation_procedure_teaching": "CONFIRMED as taught procedure/rules — Working on HV: Isolate / safeguard reconnection / verify not live; worker qualification levels",
+      "isolation_learner_practical_S13": "UNPROVEN / PARTIAL — teaching explains how isolation is done and who may do it; Block 4 Task 4 is component location and safety AWARENESS; Block 9 Task 3 is customer handover/charging awareness. Do NOT equate decks with assessed S13 practical competence.",
+      "charging_customer": "PARTIAL→CONFIRMED in Block 9 Task 3 / B2 battery-charging task adjacency; Features/Safety mention charging plugs in isolation steps"
+    },
+    "humanReviewFormat": {
+      "GOLDEN_A_POSITION": "K21/K23/S13 Primaries at B6; B9 reinforcement",
+      "CURRENT_RICHER_EVIDENCE": "Strong awareness + HV safety + isolation RULES teaching; dual G2/G7 copies; B4/B9 awareness practicals",
+      "WHAT_GOLDEN_A_COULD_NOT_SEE": "Full HV safety/isolation teaching decks and duplicate placements",
+      "WHAT_IS_NOW_CONFIRMED": "Awareness and safe-working teaching; isolation principles taught; G2/G7 Safety/Features are content copies",
+      "WHAT_REMAINS_UNPROVEN": "Apprentice-performed S13 isolation assessment/practical evidence in supplied Tasks 3-4",
+      "STRUCTURAL_PRIMARY_IMPLICATION": "Shadow KEEP B6 Primaries; B4/B9 remain awareness/application reinforcement — do not elevate awareness to S13 Primary",
+      "PRACTICAL_ASSESSMENT_IMPLICATION": "Awareness practicals present; isolation competence assessment still thin in this pack",
+      "CONFIDENCE": "HIGH on awareness/safety teaching; LOW-MEDIUM on S13 practical sufficiency",
+      "PROPOSED_GOLDEN_B_DIRECTION": "KEEP ownership; RECONSIDER only sufficiency/confidence notes for S13 evidence strength — not automatic remap"
+    }
+  },
+  "productModelLessons": [
+    {
+      "pattern": "previously_invisible_teaching",
+      "example": "S9 remove/balance taught in Group PPTs/activities outside SOW-only Golden A view"
+    },
+    {
+      "pattern": "mapped_but_weakly_evidenced_assessment",
+      "example": "S9 teaching confirmed but Block Tasks 3-4 lack strip/balance assessment"
+    },
+    {
+      "pattern": "teaching_present_not_structurally_accounted",
+      "example": "S9 gap while materials teach core skill"
+    },
+    {
+      "pattern": "reinforcement_resembling_primary_risk",
+      "example": "ABS/WSS advanced content also in G4 folder / B8 practical"
+    },
+    {
+      "pattern": "duplicate_variant_resource_problems",
+      "example": "G2/G7 identical HV/hybrid decks; G4/G10 modified WSS variants"
+    },
+    {
+      "pattern": "awareness_vs_competence",
+      "example": "HV isolation rules taught ≠ S13 performed isolation"
+    },
+    {
+      "pattern": "evidence_visibility_gap",
+      "example": "Legacy PPT unread ⇒ false gap risk; Tasks 1-2 absent ⇒ incomplete application visibility"
+    },
+    {
+      "pattern": "correctly_mapped_strongly_evidenced",
+      "example": "K12-related brake replacement/ABS ladder largely supports early Primary + later advanced reinforcement model"
+    }
+  ]
+}

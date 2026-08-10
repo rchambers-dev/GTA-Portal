@@ -1,0 +1,343 @@
+PRACTICAL SUPPORT MATERIAL AND APPRENTICE ASSESSMENT SUMMARY
+
+ Gateway 1
+
+ Autocare Technician
+ Apprenticeship Standard
+
+ ST0499/AP01
+
+ A SSESSMENT SUMMARY
+ Apprentice Name:
+
+ Reg No:
+
+ Gateway 1
+ Gateway Component Assessment
+ Tick Chosen
+ Date Completed
+ Assessor Pin
+ Assessor Signature:
+ Skills tests Group A (All skills test for group A must be completed)
+ Remove and Replace Wheel s and T yres
+ GW1AC01
+
+ Remove and Replace Battery and Charging S ystem C omponents
+ GW1AC02
+
+ Carry out Front Wheel A lignment
+ GW1AC03
+
+ Remove and Replace Discs and P ads
+ GW1AC04
+
+ Online Knowledge Test
+ Result
+
+ ST0499-AP01GW1K
+
+ Declaration:
+ I confirm that all learning outcomes have been met, all assessments have been completed in full and that the A pprentice has completed all requirements for Gateway 1
+
+ Assessor Name:
+ (Please Print)
+
+ Assessor P in :
+
+ Assessor Signature:
+
+ Date:
+
+ Internal Q Assurer Name: (Please Print)
+
+ Internal Quality Assurer P in :
+
+ Internal Quality Assurer Signature:
+
+ Date:
+
+ Table of Contents
+
+ TOC \o "1-1" \h \z \u GW1AC01 Remove and Replace Wheels and T yres PAGEREF _Toc516732112 \h 5
+
+ GW1AC02 Remove and Replace Battery Charging and Starting System C omponents PAGEREF _Toc516732114 \h 8
+
+ GW1AC03 Carry out Front W heel A lignment PAGEREF _Toc516732116 \h 11
+
+ GW1AC04 Remove and Replace Discs and P ads PAGEREF _Toc516732118 \h 13
+
+ APPRENTICE INSTRUCTIONS
+ Ref: GW1 AC01
+ Remove and Replace Wheel s and T yres
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment
+ To demonstrate a methodical procedure when carrying out removal and replacement of wheels and tyres
+ To demonstrate your knowledge and ability to inspect wheels and tyres
+ To demonstrate your knowledge and ability to measure tyre tread depth
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment
+
+ Materials you need at the workstation:
+ Light v ehicle (not rig)
+ Tyre removal and balancing equipment
+ Tyre pressure gauge
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to carry out a wheel and tyre inspection, remove balance and replace a set of front wheels and tyres .
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctl y prepared before starting work
+
+ Carry out a wheel and tyre inspecti on including measurements of tyre tread and pressure
+
+ Remove and replace both front wheels
+
+ Remove, replace and balance both front tyres
+
+ Tighten the wheel nuts to 50% (half) of the torque setting specified ensuring you record the CORRECT settings in the Apprentice Assessment Record sheet
+
+ Reinstate the vehicle and work station to a pre-assessment condition
+
+ A PPRENTICE A SSESSMENT RECORD
+ Ref: GW1 AC01
+ Remove and Replace Wheels and Tyres
+ Vehicle Model:
+ Vehicle M ake:
+ Vehicle Reg :
+ Mileage:
+ Engine S ize:
+ Chassis Number:
+ Brief description of the work carried out and any further recommendations:
+
+ PPE worn and special precautions taken
+ List all technical data required for task
+
+ Tread depth
+
+ Recorded t yre pressures
+
+ Recommended tyre pressures
+
+ Torque Settings :
+ Special tools including any required calibration :
+ Any additional comments :
+
+ Apprentice N ame:
+ Apprentice S ignature:
+ Assessor S ignature :
+ Assessor Pin:
+ Date:
+
+ APPRENTICE INSTRUCTIONS
+ Ref: GW1 AC02
+ Remove and Replace Battery Charging and Starting System C omponents
+
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment
+ To demonstrate a methodical procedure when carrying out removal and replacement of components
+ To demonstrate your knowledge and ability to inspect system components
+ To demonstrate your knowledge and ability to take electrical measurements
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment
+
+ Materials you need at the workstation:
+ Light Vehicle (not rig) with a 12V battery
+ Multimeter
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to inspect , remove and replace charging and starting system components .
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctl y prepared before starting work
+
+ Take measurements of battery voltage, battery cranking voltage, starter solenoid volt drop and battery charging rate
+
+ Remove and replace the battery
+
+ Remove and replace the alternator
+
+ Remove and replace the starter motor
+
+ Tighten all components to 50% (half) of the torque setting specified ensuring you record the CORRECT settings in the Apprentice Assessment Record sheet
+
+ Reinstate the vehicle and work station to a pre-assessment condition
+
+ A PPRENTICE ASSESSMENT RECORD
+ Ref: GW1 AC02
+ Remove and Replace Battery Charging and Starting S ystem C omponents
+ Vehicle Model:
+ Vehicle Make:
+ Vehicle Reg :
+ Mileage:
+ Engine S ize:
+ Chassis Number:
+ Brief description of the work carried out and any further recommendations.
+
+ PPE worn and special precautions taken
+ List all technical data required for task
+
+ Battery voltage
+
+ Battery charging voltage
+
+ Battery cranking voltage
+
+ Starter solenoid volt drop
+
+ Torque Settings :
+ Special tools including any required calibration :
+ Any additional comments :
+
+ Apprentice N ame:
+ Apprentice S ignature:
+ Assessor S ignature :
+ Assessor Pin:
+ Date:
+
+ APPRENTICE INSTRUCTIONS
+ Ref: GW1 AC03
+ Carry out Front W heel A lignment
+
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment
+ To demonstrate a methodical procedure when carrying out front wheel alignment
+ To demonstrate your knowledge and ability to inspect vehicle systems for wear and damage
+ To demonstrate your knowledge and ability to carry out wheel alignment pre-checks
+ To demonstrate you knowledge and ability to measure and adjust fron t wheel alignment (toe only)
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment
+
+ Materials you need at the workstation:
+ Light v ehicle (not rig)
+ Wheel alignment equipment
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required carry out front wheel alignment including pre-checks and adjustments.
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctl y prepared before starting work
+
+ Carry out wheel alignment pre-checks
+
+ Carry out front wheel alignment including adjustment
+
+ Tighten all components to 50% (half) of the torque setting specified ensuring you record the CORRECT settings in the Apprentice Assessment Record sheet
+
+ Reinstate the vehicle and work area to a pre-assessment condition
+
+ A PPRENTICE A SSESSMENT RECORD
+ Ref: GW1AC03
+ Carry out Front Wheel Alignment
+ Vehicle Model:
+ Vehicle M ake:
+ Vehicle Reg :
+ Mileage:
+ Engine S ize:
+ Chassis Number:
+ Brief description of the work carried out and any further recommendations.
+
+ PPE worn and special precautions taken
+ List all technical data required for task
+
+ Front Toe data
+
+ Front Toe measurement
+
+ Tyre pressures
+
+ Torque Settings :
+ Special tools including any required calibration :
+ Any additional comments :
+
+ Apprentice N ame:
+ Apprentice S ignature:
+ Assessor S ignature :
+ Assessor Pin:
+ Date:
+
+ APPRENTICE INSTRUCTIONS
+ Ref: GW1 AC04
+ Remove and Replace Discs and P ads
+
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment
+ To demonstrate a methodical procedure when carrying out removal and replacement of braking system components
+ To demonstrate your knowledge and ability to inspect braking system components
+ To demonstrate your knowledge and ability to measure braking system components
+ To demonstrate your knowledge and ability to remove and replace brake discs and pads
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment
+
+ Materials you need at the workstation:
+ Light v ehicle (not rig)
+ Replacement braking components as required
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to remove and replace worn front brake discs and pads as reported during a vehicle safety inspection.
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctl y prepared before starting work
+
+ Carry out a brake inspection including measurements of the front brake discs and pads
+
+ Remove and replace a set of front brake discs and pads
+
+ Measure brake fluid boiling point
+
+ Tighten all components to 50% (half) of the torque setting specified ensuring you record the CORRECT settings in the Apprentice Assessment Record sheet
+
+ Reinstate the vehicle and work area to a pre-assessment condition
+
+ A PPRENTICE ASSESSMENT RECORD
+ Ref: GW1 AC04
+ R emove and Replace Disc s and Pads
+ Vehicle Model:
+ Vehicle M ake:
+ Vehicle Reg :
+ Mileage:
+ Engine S ize:
+ Chassis Number:
+ Brief description of the work carried out and any further recommendations.
+
+ PPE worn and special precautions taken
+ List all technical data required for task
+
+ Brake disc recorded thickness
+
+ Brake disc minimum thickness
+
+ Brake disc recorded run out
+
+ Brake disc run out
+
+ Brake pad recorded thickness
+
+ Brake pad minimum thickness
+
+ Brake fluid boiling point
+
+ Torque Settings :
+ Special tools including any required calibration :
+ Any additional comments :
+
+ Apprentice N ame:
+ Apprentice S ignature:
+ Assessor S ignature :
+ Assessor Pin:
+ Date:

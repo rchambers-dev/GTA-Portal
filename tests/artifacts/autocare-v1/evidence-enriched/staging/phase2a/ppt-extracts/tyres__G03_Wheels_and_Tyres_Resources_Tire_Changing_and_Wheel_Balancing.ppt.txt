@@ -1,0 +1,310 @@
+SOURCE: G03 Wheels and Tyres\Resources\Tire Changing and Wheel Balancing.ppt
+HASH: 10e45332013b1279de8e6a253ac6a7359353d62779824469563bbed3abc5d4ad
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Tire Changing and Wheel Balancing
+
+identify tire and wheel runout
+
+Next >
+
+identify how to change a tire and balance a wheel and tire assembly
+
+===== SLIDE 2 =====
+Wheel and Tire Runout
+
+Runout causes vibration that can usually be felt through the steering wheel.
+
+Next >
+
+Tire runout is a lack of roundness of a tire.
+
+Wheel runout is caused by distortion of a wheel rim.
+
+===== SLIDE 3 =====
+Runout Causes
+
+Lateral runout is measured by placing a dial indicator against the sidewall or rim.
+
+Runout can be caused by a faulty wheel or tire, impact damage, or fatigue.
+
+Next >
+
+Runout results should be compared with specifications in the service manual.
+
+Radial runout is measured using a roller indicator on the tread or inside of the rim.
+
+A runout problem can be difficult to rectify.
+
+===== SLIDE 4 =====
+Wheel and Tire Balance
+
+When a wheel is out of balance, the tire vibrates up and down, and or side to side.
+
+Imbalance can be overcome by static or dynamic balance.
+
+The weight of the tire and wheel should be evenly distributed around the axis of rotation.
+
+Next >
+
+===== SLIDE 5 =====
+Question 1
+
+How should weight be distributed on a wheel and tire assembly?
+
+A)	Around the edge of the tire
+
+B)	At the center
+
+C)	Evenly around the axis of rotation
+
+D)	Mostly in the wheel
+
+Next >
+
+===== SLIDE 6 =====
+Question 1
+
+Next >
+
+How should weight be distributed on a wheel and tire assembly?
+
+A)	Around the edge of the tire
+
+B)	At the center
+
+C)	Evenly around the axis of rotation
+
+D)	Mostly in the wheel
+
+To ensure the wheel assembly rotates smoothly the weight should be evenly distributed around the axis of rotation.
+
+===== SLIDE 7 =====
+Wheel weights
+
+Balancing a Wheel and Tire Assembly
+
+A static balance identifies the heavy point of a wheel and tire assembly.
+
+A dynamic balance uses a wheel balancing machine to check a spinning wheel and tire assembly for vibration.
+
+Extra weight is placed directly opposite the heavy point to correct the problem.
+
+Next >
+
+The weights are then manually added to the wheel rim.
+
+The machine tells the operator the position and size of the correcting weights.
+
+Heavy point
+
+===== SLIDE 8 =====
+An on-car wheel balancer balances the whole hub assembly, brake rotors or drums, and lug nuts.
+
+For a standard axle, raise each wheel independently.
+
+On-car Wheel and Tire Balancing
+
+Next >
+
+With a limited-slip differential, both wheels must be raised and the opposite wheel removed.
+
+===== SLIDE 9 =====
+On-car Wheel and Tire Balancing
+
+Next >
+
+An operator must follow the procedures in the balancer handbook, and work safely at all times.
+
+Operator training and skill is very important for correct use of wheel balancers.
+
+===== SLIDE 10 =====
+Question 2
+
+An on-car balancer can balance extra parts of the wheel assembly. Which of the following can NOT be balanced by this system?
+
+A)	Lug nuts
+
+B)	Wheel hub
+
+C)	Brake rotors or drums
+
+D)	Differential
+
+Next >
+
+===== SLIDE 11 =====
+Question 2
+
+Next >
+
+An on-car balancer can balance extra parts of the wheel assembly. Which of the following can NOT be balanced by this system?
+
+A)	Lug nuts
+
+B)	Wheel hub
+
+C)	Brake rotors or drums
+
+D)	Differential
+
+The differential cannot be balanced by an on-car balancer.
+
+===== SLIDE 12 =====
+Off-car Wheel and Tire Balancing
+
+The wheel and tire assembly is removed from a vehicle and mounted on a balancing machine.
+
+The machine operator must follow set procedures, based on the machine type and shop safety rules.
+
+Next >
+
+Always spin the wheel and check the balance again after fitting the weights.
+
+Wheel balancing machines normally calculate the size and the place for the weights to be added.
+
+===== SLIDE 13 =====
+Tire Rotation
+
+Rotation evens out tire wear.
+
+5-wheel rotation (including spare)
+
+4-wheel rotation
+
+Next >
+
+Take care when rotating directional tires.
+
+Here are some rotation examples for non-directional tires:
+
+===== SLIDE 14 =====
+Lug Nut Torque
+
+The correct torque of wheel fixings is vital for all vehicles.
+
+Low torque may cause wheels to come off.
+
+Excessive torque canlead to distortionand vibration.
+
+Next >
+
+Lug nuts should be tightened in a diagonal pattern.
+
+Torque wrench
+
+===== SLIDE 15 =====
+Tire Changing Safety Precautions
+
+You must follow all safety precautions when changing a tire:
+
+Wear eye protection
+
+Remove the valve core before breaking the bead away from the rim
+
+Keep fingers clear when removing a tire from the wheel
+
+Next >
+
+Ensure that the rim is smooth and clean before re-fitting
+
+Lubricate the bead and rim with vegetable oil-soap solution(Never use engine oil or antifreeze)
+
+Never inflate a tire when it is lying on the floor. It can jump dangerously
+
+Stand clear when inflating. A loud “pop” will be heard as the beads seat
+
+Keep pressure below the maximum stated on the sidewall of the tire
+
+===== SLIDE 16 =====
+Mounting and Dismounting Tires
+
+Follow all safety precautions when using tire changers.
+
+Use a bead breaker to release the bead from the rim on both sides.
+
+Foot pedals are used to control and operate the tire changing machine.
+
+Next >
+
+Clamp the wheel rim on the turn-table.
+
+Bead breaker
+
+Foot pedals
+
+Turn-table
+
+Tire changer
+
+===== SLIDE 17 =====
+Mounting and Dismounting Tires
+
+Next >
+
+Locate the drive head on the wheel rim.
+
+Place a tire iron between the bead and the drive head and lever the bead over the wheel rim.
+
+Keep the tire iron in position while the table turns to remove the tire.
+
+Tire  irons
+
+Drive head
+
+Bead breaker
+
+Foot pedals
+
+Turn table
+
+Tire changer
+
+To mount the tire, the drive head rolls and pushes the bead over the rim as the table turns.
+
+===== SLIDE 18 =====
+Question 3
+
+What is used to mount the tire back on the wheel?
+
+A)	Drive head
+
+B)	Turntable clamp
+
+C)	Tire lever
+
+D)	Bead breaker
+
+Next >
+
+===== SLIDE 19 =====
+Question 3
+
+Next >
+
+What is used to mount the tire back on the wheel?
+
+A)	Drive head
+
+B)	Turntable clamp
+
+C)	Tire lever
+
+D)	Bead breaker
+
+The drive head is used to mount tires on rims.
+
+===== SLIDE 20 =====
+Summary
+
+the causes of wheel and tire runout
+
+In this presentation you have seen:
+
+procedures to change a tire and balance a wheel and tire assembly
+
+End
+

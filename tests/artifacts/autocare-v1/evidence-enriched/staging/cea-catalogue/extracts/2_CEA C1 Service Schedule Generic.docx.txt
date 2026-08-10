@@ -1,0 +1,90 @@
+Engine Area:
+ A service
+ B Service
+ C service
+ Renew Engine Oil and Filter
+ X
+ X
+ X
+ Renew Air filter /Cabin filter
+
+ X
+ X
+ Renew Spark Plugs
+
+ X
+ Renew Fuel Filter
+
+ X
+ Battery condition/security
+
+ Check
+ Check
+ Check Timing chain/ Aux belt s
+
+ Check
+ Check
+ Coolant check/renew
+ C heck
+ Check
+ Renew
+ Chassis Area:
+ Check/set tyre pressures including spare
+ X
+ X
+ X
+ Strip, clean and inspect brakes
+
+ Visual
+ Strip
+ Adjust handbrake mechanism
+
+ X
+ X
+ Check/ Renew Brake Fluid
+
+ Check
+ Renew
+ Check/Replace power steering fluid
+
+ Check
+ Renew
+ Inspect Steering and S uspension components
+
+ X
+ X
+ Inspect exhaust system
+
+ X
+ X
+ Chassis cleanliness and condition
+
+ X
+ X
+ Transmission and Driveline :
+ Check/Renew transmission oil
+
+ Check
+ Renew
+ Check mounting condition/security
+
+ Check
+ Check
+ Inspect hubs /bearings , axles and joints
+
+ X
+ X
+ Bodywork , Electrical and Interior
+ Inspect Paintwork, Panels and Interior Trim
+
+ X
+ X
+ Check wipers/washer operation and level
+ x
+ X
+ X
+ Check Electrical System Functionality including all lights/warning lamps/DTC Codes/Battery.
+
+ X
+ X
+ Additional Comments:

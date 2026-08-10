@@ -1,0 +1,323 @@
+SOURCE: G03 Wheels and Tyres\Resources\Tyres.ppt
+HASH: 9f5cb6fbb8f37ff80234d32e84a1d976f39827727485beba4c63ea30fe7c10ea
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+Tyres
+
+In this presentation you will:
+
+see how tyres are constructed and the problems they encounter
+
+Next >
+
+===== SLIDE 2 =====
+Introduction
+
+Tyres are the only part of a vehicle that make contact with the ground.
+
+They cushion the wheels from the road and provide grip and traction.
+
+Tyres are made of natural rubber or synthetic neoprene.
+
+Next >
+
+===== SLIDE 3 =====
+Tyre Parts
+
+Tyres have a number of key parts:
+
+The beads contain rings of steel wire
+
+Next >
+
+The tread is the part of the tyre in contact with the road
+
+Body plies are fabrics and cords wrapped around the beads
+
+Tread
+
+Beads
+
+Steel wire
+
+Body plies
+
+===== SLIDE 4 =====
+Tyre Parts
+
+The sidewall is the part of the tyre from the beads to the tread
+
+Next >
+
+The liner is a thin layer of rubber bonded inside the tyre
+
+Belts are used to  strengthen the body plies and the tread
+
+Liner
+
+Belts
+
+Sidewall
+
+===== SLIDE 5 =====
+Tyres are made of natural rubber or synthetic neoprene.
+
+Tyre Materials
+
+Tyre cords, which support the tread, are made of rayon, nylon, polyester, aramid, kevlar, or fibreglass.
+
+Steel cords are often used in the belt section to improve strength  and durability.
+
+The steel wire beads provide strength and stop the tyre coming off the rim.
+
+Next >
+
+Belt section
+
+Cords
+
+Steel wires
+
+===== SLIDE 6 =====
+Tyre Types
+
+Cross ply tyres are designed with criss-crossed sidewall plies, running diagonally from bead to bead.
+
+Radial tyres are designed with radial cords that run straight across the tyre, from bead to bead. So 90 degrees to the tread direction.
+
+Next >
+
+Steel wirebead
+
+Cross ply
+
+Radial ply
+
+For this reason they are also known as diagonal bias tyres.
+
+===== SLIDE 7 =====
+Tyre Specifications
+
+Next >
+
+P 205/55R16 89V
+
+The tyre specification is stated as a code on the side of the tyre.
+
+Width
+
+Height
+
+===== SLIDE 8 =====
+Tyre Specifications
+
+Next >
+
+Load indexExamples:33 – 354 kg40 – 581 kg50 – 1032 kg
+
+Width in mm
+
+Aspect ratio(height/width as %)
+
+TypeB – Bias-beltedD – Diagonal bias R – Radial
+
+Rim diameter in inches
+
+P 205/55R16 89V
+
+Speed ratingExamples:M – Up to 81 MPH V – Up to 150 MPHY – Up to 186 MPH
+
+The tyre specification is stated as a code on the side of the tyre. Can you also find the Week/Year it was made?
+
+Width
+
+Height
+
+TypeP – PassengerLT – Light truck
+
+===== SLIDE 9 =====
+Special Service Tyre or Space Saver
+
+This is a space-saver spare tyre; it is used to replace a flat tyre in an emergency.
+
+It is only for temporary use and should not be included when rotating tyres.
+
+Space savers have no hub caps or wheel covers.How far and how fast can you drive on a spacer saver?
+
+Speed and pressure restrictions apply when it is in use on the vehicle.
+
+Next >
+
+===== SLIDE 10 =====
+Special Tyre Features
+
+If a nail becomes embedded, the compound seals the hole from the inside as the nail is pulled out.
+
+Self-sealing tyres incorporate a sealing compound.
+
+When the tread wears to the same level as the wear indicators, the tyre needs replacing.
+
+Self-Sealing Tyre
+
+Wear indicator bars help determine when the tyres need replacing.
+
+Next >
+
+Nail
+
+Sealing compound
+
+Wear indicator bar
+
+===== SLIDE 11 =====
+Tubeless Tyres
+
+Due to cost and reliability, most vehicles are fitted with tubeless tyres.
+
+A tyre can be either a tube type or tubeless type construction.
+
+A tubeless tyre holds the air pressure in the wheel by sealing the tyre onto the rim around the circumference.
+
+The tubeless tyre is inflated by forcing air through a valve fitted to the wheel rim.
+
+Tyre case
+
+Valve stem
+
+Disc nave
+
+Rim with 15° taper
+
+Next >
+
+===== SLIDE 12 =====
+Tube Type Tyres
+
+Tube type tyres contain a tube which is placed between the tyre and the wheel rim.
+
+Tyre case
+
+Valve stem
+
+Disc nave
+
+Rim
+
+Lock ring
+
+Flap
+
+Loose flange
+
+Inner tube
+
+Next >
+
+The tube is inflated to support the vehicle’s weight and maintain the shape of the tyre.
+
+===== SLIDE 13 =====
+Tyre Wear
+
+Typical patterns include:
+
+Tyre wear is affected by a number of factors; the tyre carcass and the rubber surrounding it degrade over a period of time and the tread pattern wears down with use.
+
+Bald patches
+
+Wear on the outer edges
+
+Wear on the centre
+
+Feathering
+
+Wear only on one side
+
+Next >
+
+===== SLIDE 14 =====
+A)	small balls of rubber that form inside of a tubeless tyre.
+
+B)	parts of the tyre carcass that overlap each other at 90°.
+
+C)	part of the tyre tread.
+
+D)	bands of steel wire that hold the tyre onto the rim.
+
+Question 1
+
+Tyre beads are…
+
+Next >
+
+===== SLIDE 15 =====
+A)	small balls of rubber that form inside of a tubeless tyre.
+
+B)	parts of the tyre carcass that overlap each other at 90°.
+
+C)	part of the tyre tread.
+
+D)	bands of steel wire that hold the tyre onto the rim.
+
+Question 1
+
+Tyre beads are an integral part of the tyre structure. They are the part that hold the tyre on the rim.
+
+Tyre beads are…
+
+Next >
+
+===== SLIDE 16 =====
+Next >
+
+A)	 Up to 81 MPH
+
+B)	 Up to 150 MPH
+
+C)	Up to 186 MPH
+
+D)	Up to 220 MPH
+
+Question 2
+
+What is the speed rating of a tyre with the following specification: P 205/55R16 89Y?
+
+===== SLIDE 17 =====
+The letter Y specifies the speed rating. The maximum speed of this tyre is 186 MPH.
+
+Next >
+
+A)	 Up to 81 MPH
+
+B)	 Up to 150 MPH
+
+C)	Up to 186 MPH
+
+D)	Up to 220 MPH
+
+Question 2
+
+What is the speed rating of a tyre with the following specification: P 205/55R16 89Y?
+
+===== SLIDE 18 =====
+Activity time!
+
+Have a go at Inspecting a tyre, take note of all markings. Measure the tread depths.
+
+Get boots on and head into the workshop:
+
+Identify a safe place to jack and support a vehicle.Remove and refit a tyre safely on our tyre machine as a group.Have a go at using the balancing machine as a group.
+
+End
+
+===== SLIDE 19 =====
+Summary
+
+how tyres are constructed
+
+In this presentation you have seen:
+
+problems that can occur with tyres
+
+End
+

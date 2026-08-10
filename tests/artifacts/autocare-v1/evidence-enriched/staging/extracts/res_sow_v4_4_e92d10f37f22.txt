@@ -1,0 +1,1014 @@
+Autocare Technician Level 2 - Scheme of Work
+ ST0499 v1.3 | Landscape master | Foundation Skills, OTJ and equal-KSB RPL aligned
+ Clean Master v4.4 | August 2026
+ Standard
+ ST0499 v1.3
+ Level
+ 2
+ Typical apprenticeship duration
+ 30 months
+ Planned practical delivery
+ 112 calendar weeks | 113 planned sessions | practical training ends by Month 29
+ Published minimum OTJ
+ 605 hours
+ Planned eligible OTJ
+ 611.50 hours
+ Funding band maximum
+ £13,000
+ Planned headroom
+ 6.50 hours
+ Foundation Skills
+ Weeks 1-10 | controlled generic programme | 45.00 eligible hours
+ Gateway and EPA
+ Blocks 11-12 within Month 30 | zero eligible OTJ | included in apprenticeship duration
+ Programme planning statement Separate formal assessment hours identified in weekly entries are additional non-OTJ activity. They are not included in the 791.00 planned attendance hours and must be separately scheduled and recorded in the delivery calendar.
+ Weeks 1-10 use the controlled Motor Vehicle Foundation Skills SOW and FS01-FS10 lesson plans unchanged. The programme contains 113 learning sessions scheduled across 112 calendar weeks; Week 112 has two separately timetabled specialist sessions. At 46.4 available training weeks per year, the indicative practical duration is 28.97 months. Adding the controlled one-month gateway/EPA period gives 29.97 months, displayed as Month 30. The actual delivery calendar, exclusions and re-planned sessions must still be validated before approval. Gateway and EPA carry zero eligible OTJ hours.
+ Delivery-day model and OTJ classification
+ Time
+ Activity
+ Eligible OTJ
+ Treatment
+ 09:00-09:30
+ MME and individual programme activity
+ 0.00
+ Non-eligible
+ 09:30-10:30
+ Occupational learning session 1
+ 1.00
+ Eligible where mapped
+ 10:30-10:45
+ Morning break
+ 0.00
+ Excluded
+ 10:45-12:15
+ Occupational learning session 2
+ 1.50
+ Eligible where mapped
+ 12:15-12:45
+ Lunch
+ 0.00
+ Excluded
+ 12:45-14:15
+ Occupational learning session 3
+ 1.50
+ Eligible where mapped
+ 14:15-14:30
+ Afternoon break
+ 0.00
+ Excluded
+ 14:30-16:00
+ Occupational learning session 4
+ 1.50
+ Eligible where mapped
+ Programme block map and KSB teaching links
+ Block
+ Block name
+ Block summary and planned period
+ Linked KSBs
+ Eligible OTJ hours
+ Non-OTJ hours
+ 1
+ Motor Vehicle Foundation Skills - Shared Controlled Programme
+ Weeks 1-10 (Months 1-3). Use the central Foundation Skills SOW and FS01-FS10 lesson plans unchanged. Generic safety, tools, electrical awareness, measurement, technical information, documentation and professional practice.
+ Controlled Foundation Skills KSB cross-reference (central mapping)
+ 45.00
+ 15.00
+ 2
+ Vehicle Inspection, Servicing and Customer Interaction
+ Weeks 11-20 (Months 3-5). Vehicle intake, routine inspection, servicing, customer communication and reporting.
+ K2, K5-K16, K19, K20, K25-K34; S1, S2, S5, S7, S8, S10, S11, S13, S15-S26; B1-B5
+ 55.00
+ 5.00
+ 3
+ Workshop Processes, Tools and Environmental Awareness
+ Weeks 21-30 (Months 5-8). Workshop workflow, service/repair routines, parts, stock, waste and environmental controls.
+ K1-K16, K19-K34; S1-S8, S10-S26; B1-B5
+ 55.00
+ 5.00
+ 4
+ Emerging Technology and Driveline Systems
+ Weeks 31-40 (Months 8-10). Driveline, steering geometry, tyres, warranty, EV/hybrid introduction and quality controls.
+ K1-K16, K19, K21-K34; S1-S6, S10-S14, S16-S26; B1-B5
+ 55.00
+ 5.00
+ 5
+ Diagnostic Thinking and Complex Repair Activities
+ Weeks 41-50 (Months 10-13). Electrical testing, technical data, structured diagnosis, complex repair and verification.
+ K1-K16, K19-K34; S1-S8, S10-S26; B1-B5
+ 55.00
+ 5.00
+ 6
+ Vehicle Systems Integration and Advanced Diagnostics
+ Weeks 51-60 (Months 13-15). Integrated systems, climate control, EV awareness, diagnostic workflow and compliance.
+ K1-K16, K19-K34; S1-S8, S10-S26; B1-B5
+ 55.00
+ 5.00
+ 7
+ Advanced Workshop Practice and Technical Communication
+ Weeks 61-70 (Months 15-18). Advanced inspection/repair, quality assurance, customer updates and professional communication.
+ K1-K16, K19-K34; S1-S8, S10-S26; B1-B5
+ 55.00
+ 5.00
+ 8
+ Advanced Diagnostics and Workshop Organisation
+ Weeks 71-80 (Months 18-20). Root cause, repair planning, task organisation, documentation, quality and workshop control.
+ K1-K16, K19-K34; S1-S8, S10-S26; B1-B5
+ 55.00
+ 5.00
+ 9
+ Emerging Technologies, Electric Vehicles and Hydrogen Awareness
+ Weeks 81-94 (Months 20-24). EV/hybrid, charging, ADAS, oscilloscope awareness, hydrogen safety and referral boundaries.
+ K1-K17, K19, K21-K29; S1, S5-S7, S10-S14, S16-S20, S22-S24, S26; B1-B5
+ 77.00
+ 7.00
+ 10
+ Final Consolidation, Corrective Learning and EPA Readiness Training
+ Weeks 95-112 (Months 24-29; 19 sessions, including two sessions in Week 112). Capstone activity, KSB gap learning, evidence quality, mock activity and gateway readiness.
+ K1-K34; S1-S8, S10-S26; B1-B5
+ 104.50
+ 9.50
+ 11
+ Gateway Readiness and Confirmation
+ Month 30. Gateway confirmation, final evidence checks and EPA mobilisation. Practical training has ended and this block carries zero eligible OTJ.
+ Not applicable - gateway/EPA activity
+ 0.00
+ Not quantified
+ 12
+ End-Point Assessment
+ Month 30. Independent EPA activity within the planned apprenticeship end month. EPA is assessment and carries zero eligible OTJ.
+ Not applicable - gateway/EPA activity
+ 0.00
+ Not quantified
+ Programme totals
+ Measure
+ Planned position
+ Foundation Skills eligible OTJ
+ 45.00 hours
+ Specialist eligible OTJ
+ 566.50 hours
+ Total eligible OTJ
+ 611.50 hours
+ Non-eligible programme activity
+ 66.50 hours
+ Scheduled breaks
+ 113.00 hours
+ Total attendance
+ 791.00 hours
+ Practical duration
+ 112 calendar delivery weeks / 113 planned sessions / 28.97 indicative months | practical training ends by Month 29
+ Gateway and EPA period
+ One controlled month | Blocks 11-12 in Month 30 | planned apprenticeship end: end of Month 30
+ RPL and portal adjustment control
+ Equal-KSB OTJ unit value and adjustment method The authoritative primary-block allocation is held in the controlled Autocare ST0499 v1.3 RPL matrix for the applicable cohort; its filename and version must be recorded at programme approval and kept aligned with this SOW.
+ ST0499 v1.3 contains 64 unique published KSB codes: 34 knowledge, 25 skills and 5 behaviours. The equal planned OTJ unit value is 611.50 / 64 = 9.5546875 hours per KSB (store 9.5547; display 9.55). Each KSB is listed once in the controlled RPL matrix and assigned to one primary block. Raw block/group OTJ is the number of primary KSBs multiplied by the unrounded unit value. It is then converted to the approved delivery pattern; session rounding and final rebalancing can make the displayed timetabled hours differ from the raw equal-share figure. Foundation Skills retains its controlled variable-hour sessions. Weekly KSB references show teaching or reinforcement only and must not be counted again.
+ Portal field
+ Controlled baseline/source
+ Assessor or programme input
+ Calculated output
+ Published KSB count
+ ST0499 v1.3: K1-K34; S1-S8 and S10-S26; B1-B5
+ None after programme-master approval
+ 64 unique KSB assessment units
+ OTJ unit value per KSB
+ 611.50 planned eligible OTJ / 64 unique KSBs
+ None
+ 9.5546875 hours; store 9.5547 and display 9.55
+ Raw block/group OTJ
+ Primary KSB count x 9.5546875
+ Controlled primary KSB allocation
+ Equal-share raw hours before timetable conversion
+ Delivery conversion
+ Raw block/group OTJ / 5.50 eligible hours per specialist session
+ Apply approved session pattern; Foundation Skills retains controlled variable-hour sessions
+ Round at block/group level and rebalance the final delivery unit so programme OTJ remains 611.50
+ KSB RPL %
+ 0% baseline
+ Score each KSB in 10% increments; evidence and rationale required for every non-zero score
+ Training remaining % and recognised OTJ per KSB
+ Block/group totals
+ Primary KSBs assigned to the curriculum unit
+ No separate block/group RPL percentage
+ Recognised OTJ; adjusted OTJ; remaining specialist sessions/weeks
+ Programme totals
+ 611.50 planned OTJ; 605.00 published minimum
+ No separate programme RPL percentage
+ Programme RPL %; adjusted planned OTJ; adjusted minimum = MAX(605 - recognised OTJ, 187)
+ Funding
+ £13,000 maximum band; final TNP1/TNP2 inputs
+ Negotiated price and EPA price
+ Minimum price reduction = programme RPL % x 50%; RPL-adjusted funding cap and optional equal-share block allocation
+ Dates and duration
+ 112 calendar weeks; 113 sessions; one-month gateway/EPA period
+ Actual delivery calendar, closures and re-planned sessions
+ Scheduled/validated practical end; Month 30 apprenticeship end; calendar-feasibility status
+ Evidence and approval
+ Versioned learner KSB record
+ Evidence, rationale and assessor/employer/apprentice-provider approval
+ Approval audit and locked baseline
+ Duty clusters
+ Duty cluster
+ Delivery meaning
+ Duty 1
+ Communicate with customers, establish vehicle problems and confirm requirements.
+ Duty 2
+ Conduct vehicle inspections and routine maintenance work.
+ Duty 3
+ Work independently and as part of a team, contributing to business outcomes.
+ Duty 4
+ Inspect, repair and replace tyres and vehicle system components on cars, car-derived vans and light goods vehicles.
+ Duty 5
+ Identify and source vehicle components in line with workplace procedures.
+ Duty 6
+ Follow workplace instructions or procedures for vehicle maintenance or repair.
+ Duty 7
+ Maintain the workplace environment and follow good housekeeping practices.
+ Duty 8
+ Provide quotation information after inspection and gain authorisation before work starts.
+ Duty 9
+ Contribute to stock management and safe storage of stock and consumables.
+ Duty 10
+ Promote the safety of self, customers, colleagues and the environment.
+ Phase 1 - Foundation Skills, inspection and workshop processes - Weeks 1 to 30 (155.0 eligible OTJ hours)
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 1 | Week 1 (Month 1) | FS01: Workshop Safety, Hazards, Housekeeping and Occupational Expectations
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 4.50 hours
+ Use the controlled FS01 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS01 materials and equipment. Evidence: Hazard checklist; safe-work-area record; observation; workplace action.
+ Eligible OTJ 4.50h; non-eligible 1.50h; breaks 1.00h. Excluded/recorded separately: General onboarding, contact sheets, OTJ-log administration and unrelated online courses.
+ Block 1 | Week 2 (Month 1) | FS02: Health and Safety, Tools, Equipment and Safe Vehicle Support
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 5.00 hours
+ Use the controlled FS02 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS02 materials and equipment. Evidence: Dynamic risk assessment; tool inspection; practical observation; technical note.
+ Eligible OTJ 5.00h; non-eligible 1.00h; breaks 1.00h. Excluded/recorded separately: ERR/course tracking, routine administration and formal checks.
+ Block 1 | Week 3 (Month 1) | FS03: Hybrid and High-Voltage Vehicle Awareness
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 5.00 hours
+ Use the controlled FS03 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS03 materials and equipment. Evidence: EV identification; safe-approach checklist; scenario record; reflection.
+ Eligible OTJ 5.00h; non-eligible 1.00h; breaks 1.00h. Excluded/recorded separately: ERR/online-course administration and formal knowledge testing.
+ Block 1 | Week 4 (Month 2) | FS04: Fire Safety, Battery Awareness and Basic Electrical Safety
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 5.00 hours
+ Use the controlled FS04 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS04 materials and equipment. Evidence: Fire/battery checklist; multimeter record; observation.
+ Eligible OTJ 5.00h; non-eligible 1.00h; breaks 1.00h. Excluded/recorded separately: Online/ERR tracking and formal assessment.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 1 | Week 5 (Month 2) | FS05: Measurement, Technical Information and Tolerances
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 5.50 hours
+ Use the controlled FS05 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS05 materials and equipment. Evidence: Measurement sheet; calculations; technical-data annotation; observation.
+ Eligible OTJ 5.50h; non-eligible 0.50h; breaks 1.00h. Excluded/recorded separately: Routine 30-minute non-eligible period only.
+ Block 1 | Week 6 (Month 2) | FS06: Fasteners, Technical Drawings, Fabrication and Safe Tool Use
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 4.00 hours
+ Use the controlled FS06 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS06 materials and equipment. Evidence: Risk assessment; drawing/tolerance record; practical observation; technical write-up.
+ Eligible OTJ 4.00h; non-eligible 2.00h; breaks 1.00h. Excluded/recorded separately: Emergency First Aid qualification and administration.
+ Block 1 | Week 7 (Month 2) | FS07: Multimeter Use, Electrical Measurement and Fabrication Quality
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 4.00 hours
+ Use the controlled FS07 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS07 materials and equipment. Evidence: Electrical measurement sheet; quality record; observation; reflection.
+ Eligible OTJ 4.00h; non-eligible 2.00h; breaks 1.00h. Excluded/recorded separately: Emergency First Aid, phase testing and administration.
+ Block 1 | Week 8 (Month 3) | FS08: Tools and Safety Consolidation, Basic Circuits and Relay Awareness
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 4.50 hours
+ Use the controlled FS08 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS08 materials and equipment. Evidence: Circuit diagram; measurement record; troubleshooting notes; observation.
+ Eligible OTJ 4.50h; non-eligible 1.50h; breaks 1.00h. Excluded/recorded separately: Formal phase tests, marking and assessment administration.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 1 | Week 9 (Month 3) | FS09: Targeted Occupational Recap, Gap Teaching and First Aid
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 2.50 hours
+ Use the controlled FS09 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS09 materials and equipment. Evidence: Targeted learning record; corrected task evidence; improvement action.
+ Eligible OTJ 2.50h; non-eligible 3.50h; breaks 1.00h. Excluded/recorded separately: First Aid qualification, tests/resits, portfolio assembly and administration.
+ Block 1 | Week 10 (Month 3) | FS10: Technical Documentation, Job Cards, Handover and Specialist Transition
+ Controlled shared Foundation Skills mapping | Eligible OTJ: 5.00 hours
+ Use the controlled FS10 lesson plan and Foundation Skills SOW v1.2. Deliver the generic learning objectives, timings and activities without route-specific rewriting. Optional examples may be selected from the mixed cohort, but the planned content and eligible/non-eligible split remain unchanged.
+ Resources: controlled FS10 materials and equipment. Evidence: Completed job card/report; handover note; feedback record; transition action.
+ Eligible OTJ 5.00h; non-eligible 1.00h; breaks 1.00h. Excluded/recorded separately: ERR/portfolio assembly, certificate tracking and OTJ-log checking.
+ Block 2 Week 11 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Customer Service Scenarios)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session exploring different customer service scenarios including complaints, misunderstandings and service delays. 10:45-12:15 Structured role-play activities where learners handle realistic customer complaints, including incorrect work, delays and cost disputes. 12:45-14:15 Application linking complaint scenarios to documentation and evidence. 14:30-16:00 Consolidation through group discussion reviewing responses and identifying best practice.
+ Resources: Complaint forms; policy documents Evidence: Complaint records; response drafts
+ Observation and peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 2 Week 12 - Duty 2: Conduct vehicle inspections and routine maintenance work (Electrical System Inspection)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application diagnosing common electrical faults such as flat batteries, poor connections and charging issues. 14:30-16:00 Consolidation through questioning and review of test results. Short knowledge check to confirm understanding of system operation and fault identification.
+ Resources: Multimeters; testers; PPE Evidence: Test printouts; completed checklist; quiz result
+ Checklist scoring and quiz (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 2 Week 13 - Duty 3: Work independently and as part of a team, contributing to business outcomes (Engine Repairs)
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering engine mechanical components including pistons, crankshaft, camshaft, valves and timing systems. 10:45-12:15 Guided practical identification of engine components using training engines or vehicles. 12:45-14:15 Application activity analysing engine fault scenarios such as knocking noises, poor performance and visible leaks. 14:30-16:00 Consolidation through group discussion reviewing fault scenarios and common diagnostic errors.
+ Resources: Engine rigs; torque tools; PPE Evidence: Job card; torque sheet; photos
+ Observed practical and documentation check (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 2 Week 14 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components (Tyre Pressure Monitoring Systems)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Practical session identifying TPMS components on vehicles or demonstration rigs. 12:45-14:15 Application activity using realistic scenarios, with learners recording findings, explaining decisions and correcting errors. 14:30-16:00 Consolidation through questioning and recap of system operation and legal requirements.
+ Resources: TPMS tools; valves; scan tool; PPE Evidence: TPMS reports; sensor IDs; calibration proof
+ Timed observation and calibration record (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 2 Week 15 - Duty 5: Identify and source vehicle components in line with workplace procedures (Supplier Liaison)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session covering supplier communication, parts sourcing processes and use of catalogues or digital systems. 10:45-12:15 Practical activity where learners use catalogues or systems to identify and select parts for given vehicle scenarios. 12:45-14:15 Application activity managing supplier-related issues such as incorrect parts, damaged deliveries or delays. 14:30-16:00 Consolidation through discussion reviewing decisions made and common sourcing errors.
+ Resources: Supplier scripts; order forms Evidence: Call notes; order records; KPI sheet
+ Call role-play rubric and order accuracy review (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 2 Week 16 - Duties 1 / 2: Intake plus Inspection
+ K34, S1, S2, B2, K32, K33 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session linking customer communication to vehicle intake procedures. 10:45-12:15 Structured role-play activity where learners simulate vehicle intake, greeting customers, gathering information and recording concerns on job cards. 12:45-14:15 Application activity linking customer concerns to inspection planning. 14:30-16:00 Consolidation through discussion reviewing intake scenarios and inspection decisions.
+ Resources: Intake forms; inspection sheets Evidence: Signed intake; inspection report; summary sheet
+ Observation checklist against criteria (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 2 Week 17 - Duty 3: Work independently and as part of a team, contributing to business outcomes (Advanced Brake Diagnostics)
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Structured practical session identifying ABS components on training vehicles. 12:45-14:15 Application activity using realistic scenarios, with learners recording findings, explaining decisions and correcting errors. 14:30-16:00 Consolidation through group discussion reviewing diagnostic decisions and common errors.
+ Resources: ABS rigs; scan tools; PPE Evidence: Scan logs; repair sheet; test results
+ Timed observation and defect rectification check (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 2 Week 18 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components (Wheel Alignment - Advanced)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Demonstration and guided observation of alignment equipment showing how measurements are taken and interpreted. 12:45-14:15 Application activity using realistic scenarios, with learners recording findings, explaining decisions and correcting errors. 14:30-16:00 Consolidation through questioning and group discussion reviewing diagnostic decisions.
+ Resources: Alignment rig; balancer; PPE Evidence: Alignment reports; QA checklist
+ Observation and peer QA (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 2 Week 19 - Duty 5: Identify and source vehicle components in line with workplace procedures (Stock Auditing)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session explaining stock auditing processes including cycle counts, full stock checks and documentation requirements. 10:45-12:15 Practical activity conducting a structured stock check using sample or real stock. 12:45-14:15 Application activity investigating causes of identified discrepancies. 14:30-16:00 Consolidation through discussion reviewing audit findings and identifying improvements to stock control processes.
+ Resources: Audit sheets; stock system Evidence: Count sheets; variance log; action plan
+ Audit accuracy check and variance report (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 2 Week 20 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Customer Dispute Resolution)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Structured role-play activities where learners handle realistic dispute scenarios. 12:45-14:15 Application linking dispute scenarios to documentation and evidence. 14:30-16:00 Consolidation through group discussion reviewing approaches taken and identifying best practice.
+ Resources: Templates; policy documents Evidence: Dispute log; response letter; reflection
+ Observation and written response rubric (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 3 Week 21 - Duty 1: Communicate with customers establishing vehicle problems and their requirements (Service reception, booking diagnostics and first impressions)
+ B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session covering the role of service reception within workshop operations. 10:45-12:15 Structured role-play activity where learners simulate booking a vehicle into the workshop. 12:45-14:15 Application activity linking booking information to workshop workflow. 14:30-16:00 Consolidation through discussion reviewing workflow decisions and identifying common booking errors.
+ Resources: Intake forms; service scripts; customer scenarios; vehicle/job-card examples Evidence: Completed intake forms; communication notes; reflection log
+ Role-play observation and peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 3 Week 22 - Duty 2: Conduct vehicle inspections and routine maintenance work (Routine servicing, inspection workflow and service schedules)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Guided practical session carrying out routine service checks on training vehicles. 12:45-14:15 Application activity identifying additional faults during servicing. Learners assess findings and decide whether issues are advisory or safety-critical. 14:30-16:00 Consolidation through discussion reviewing inspection findings and decisions made.
+ Resources: Inspection rigs or vehicles; checklists; diagnostic aids; PPE Evidence: Inspection sheets; defect photos; annotated checklists
+ Checklist review and tutor questioning (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 3 Week 23 - Duty 3: Work independently and as part of a team, contributing to business outcomes (Fast-fit repairs, bay discipline and effective handoffs)
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session covering fast-fit repair environments including common tasks such as brakes, tyres and exhausts. 10:45-12:15 Practical activity carrying out fast-fit style tasks such as component removal and refitting (where appropriate). 12:45-14:15 Application activity linking efficiency to workshop productivity. Learners analyse scenarios where delays occur and identify improvements to workflow. 14:30-16:00 Consolidation through discussion reviewing performance and identifying best practice.
+ Resources: Workshop bay; tools; repair rigs/components; PPE; job sheets Evidence: Job cards; repair notes; QA checks; before/after photos
+ Observed practical and documentation check (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 3 Week 24 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components (Brake wear checks, tyre condition and wheel security)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering brake and tyre inspection standards including wear limits, legal requirements and safety implications. 10:45-12:15 Structured practical inspection of brake and tyre systems on training vehicles. 12:45-14:15 Application activity requiring learners to identify and prioritise defects as advisory or safety-critical. 14:30-16:00 Consolidation through discussion reviewing inspection decisions and highlighting correct judgement.
+ Resources: Tyre and alignment equipment; TPMS tools; gauges; PPE Evidence: Alignment or tyre inspection sheets; torque records; handover notes
+ Practical observation and peer QA (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 3 Week 25 - Duty 5: Identify and source vehicle components in line with workplace procedures (Parts identification, catalogue use and alternative part selection)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session covering advanced parts identification using catalogues, vehicle data and technical information. 10:45-12:15 Practical activity identifying and selecting parts for given vehicle scenarios. 12:45-14:15 Application activity linking parts selection to repair quality and customer satisfaction. 14:30-16:00 Consolidation through discussion reviewing decisions and common errors in parts selection.
+ Resources: Supplier catalogues; ordering system; stock records; parts references Evidence: Order records; supplier communication notes; discrepancy log
+ Accuracy review and scenario questioning (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 3 Week 26 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Workshop procedures, documentation control and handover discipline)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session covering workshop procedures including job card lifecycle from creation through to completion and sign-off. 10:45-12:15 Structured activity reviewing sample job cards and identifying errors or missing information. 12:45-14:15 Application activity using realistic scenarios, with learners recording findings, explaining decisions and correcting errors. 14:30-16:00 Consolidation through group discussion reviewing completed job cards and identifying best practice.
+ Resources: Complaint forms; policy documents; job cards; handover templates Evidence: Complaint records; written responses; handover forms; reflection
+ Role-play observation and written response rubric (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 3 Week 27 - Duty 7: Maintain the workplace environment and follow good housekeeping practices (Housekeeping, 5S routines and safe storage control)
+ B1, B2, K3, K4, S1, S2, S3, S4 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session introducing 5S principles including sort, set in order, shine, standardise and sustain. 10:45-12:15 Practical activity applying 5S principles within the workshop environment. 12:45-14:15 Application activity where learners evaluate how poor organisation affects workflow, safety and job completion times. 14:30-16:00 Consolidation through discussion reviewing improvements made and identifying ongoing actions.
+ Resources: Housekeeping checklists; COSHH information; storage labels; PPE Evidence: Housekeeping checks; safety records; workstation photos; reflection
+ Housekeeping and safety compliance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 3 Week 28 - Duty 8: Post inspection, provide customer quotation of the work required, before agreeing and commencing the work (Estimates, authorisation and customer approval skills)
+ K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session covering quotation processes including labour estimation, parts pricing and VAT calculations. 10:45-12:15 Practical activity where learners calculate basic quotations using given repair scenarios. 12:45-14:15 Application activity presenting quotations to simulated customers through role-play. 14:30-16:00 Consolidation through discussion reviewing quotation accuracy and communication effectiveness.
+ Resources: Estimate templates; labour guides; parts pricing; approval forms Evidence: Quotation documents; customer approval forms; labour/parts breakdowns
+ Quotation accuracy check and communication review (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 3 Week 29 - Duty 9: Contribute to stock management routines and safe storage of stock and consumables (Stock rotation, reorder points and traceability)
+ B3, K26, K27, K28, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Theory session covering stock control systems including manual and digital methods, traceability and importance of accurate stock records. 10:45-12:15 Practical activity managing stock within a controlled environment. Learners organise stock, check quantities and update records. 12:45-14:15 Application activity analysing stock issues such as missing items, incorrect deliveries or overstocking. 14:30-16:00 Consolidation through discussion reviewing stock control challenges and improvements.
+ Resources: Stock system; audit sheets; bins/labels; delivery paperwork Evidence: Stock reports; count sheets; variance notes; corrective action log
+ Stock accuracy and variance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 3 Week 30 - Duty 10: Promote the safety of themselves, customers, colleagues, and the environment (Environmental risk, spill response and emergency preparedness)
+ B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering environmental responsibilities within the automotive industry. 10:45-12:15 Structured practical activity identifying hazardous substances and waste streams within the workshop environment. 12:45-14:15 Application activity analysing environmental risk scenarios such as oil spills, incorrect waste disposal or poor storage practices. 14:30-16:00 Consolidation through group discussion reviewing risk scenarios and control measures.
+ Resources: Risk assessment templates; PPE; environmental guidance; emergency procedures Evidence: Risk assessments; incident logs; safety checklists; action notes
+ Safety compliance review and case discussion (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Phase 2 - Driveline, diagnostic thinking and systems integration - Weeks 31 to 60 (165.0 eligible OTJ hours)
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 4 Week 31 - Duty 1: Communicate with customers establishing vehicle problems and their requirements (Customer updates, ETA management and expectation setting)
+ B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering the importance of ongoing customer communication during repairs. 10:45-12:15 Structured role-play activity where learners provide customer updates based on evolving repair scenarios. 12:45-14:15 Application activity linking communication to documentation. 14:30-16:00 Consolidation through group discussion reviewing communication approaches and identifying best practice.
+ Resources: Intake forms; service scripts; customer scenarios; vehicle/job-card examples Evidence: Completed intake forms; communication notes; reflection log
+ Role-play observation and peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 4 Week 32 - Emerging Technology - Electric and Hybrid Vehicle Systems (Intro)
+ B1, B2, K2, K5, K6, K8, K19, K21, K22, S5, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Guided identification activity using visual aids, diagrams or demonstration vehicles to locate EV components. Learners discuss system layout and function. 12:45-14:15 Application activity comparing EV, hybrid and conventional vehicle systems. 14:30-16:00 Consolidation through questioning and recap of system operation and safety awareness. Tutor checks understanding of key components and risks.
+ Resources: EV or hybrid training rig; HV awareness PPE; component flashcards; safety guidance Evidence: Risk-awareness sheet; annotated system diagram; comparison notes
+ Safety questioning and comparison worksheet (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 4 Week 33 - Duty 3: Work independently and as part of a team, contributing to business outcomes (Driveline service, task allocation and team communication)
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering full driveline operation from engine output to wheel rotation. 10:45-12:15 Structured practical session inspecting driveline components on training vehicles or units. 12:45-14:15 Application activity diagnosing driveline faults using structured scenarios. 14:30-16:00 Consolidation through group discussion reviewing diagnostic decisions and challenging incorrect assumptions.
+ Resources: Workshop bay; tools; repair rigs/components; PPE; job sheets Evidence: Job cards; repair notes; QA checks; before/after photos
+ Observed practical and documentation check (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 4 Week 34 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components (Steering geometry and advanced tyre diagnosis)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session exploring advanced tyre wear patterns including feathering, cupping, one-sided wear and centre wear. 10:45-12:15 Structured practical inspection of tyres on training vehicles. 12:45-14:15 Application activity diagnosing tyre wear scenarios. 14:30-16:00 Consolidation through group discussion reviewing findings and challenging incorrect diagnoses.
+ Resources: Tyre and alignment equipment; TPMS tools; gauges; PPE Evidence: Alignment or tyre inspection sheets; torque records; handover notes
+ Practical observation and peer QA (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 4 Week 35 - Duty 5: Identify and source vehicle components in line with workplace procedures (Warranty parts, returns and supplier escalation)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity completing warranty claim documentation based on structured scenarios. 14:30-16:00 Consolidation through discussion reviewing warranty decisions and identifying common errors.
+ Resources: Supplier catalogues; ordering system; stock records; parts references Evidence: Order records; supplier communication notes; discrepancy log
+ Accuracy review and scenario questioning (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 4 Week 36 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Job-card accuracy, escalation routes and quality gatekeeping)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering quality control processes within the workshop. 10:45-12:15 Structured practical activity reviewing completed job cards and repair scenarios. 12:45-14:15 Application activity where learners carry out a simulated final check on a vehicle or repair scenario. 14:30-16:00 Consolidation through group discussion reviewing quality control decisions and identifying best practice.
+ Resources: Complaint forms; policy documents; job cards; handover templates Evidence: Complaint records; written responses; handover forms; reflection
+ Role-play observation and written response rubric (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 4 Week 37 - Duty 7: Maintain the workplace environment and follow good housekeeping practices (COSHH awareness, workshop cleanliness and tool control)
+ B1, B2, K3, K4, S1, S2, S3, S4 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering COSHH regulations and the safe handling of hazardous substances within the automotive workshop. 10:45-12:15 Structured practical activity identifying hazardous substances within the workshop. 12:45-14:15 Application activity analysing scenarios involving incorrect handling or exposure to hazardous substances. 14:30-16:00 Consolidation through discussion reviewing risks and control measures.
+ Resources: Housekeeping checklists; COSHH information; storage labels; PPE Evidence: Housekeeping checks; safety records; workstation photos; reflection
+ Housekeeping and safety compliance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 4 Week 38 - Duty 8: Post inspection, provide customer quotation of the work required, before agreeing and commencing the work (Quotations: labour, parts and value options)
+ K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering quotation processes in greater depth, including presenting multiple repair options to customers. 10:45-12:15 Practical activity developing quotations based on given repair scenarios. 12:45-14:15 Application activity presenting quotations through role-play scenarios. 14:30-16:00 Consolidation through discussion reviewing decisions made and identifying best practice.
+ Resources: Estimate templates; labour guides; parts pricing; approval forms Evidence: Quotation documents; customer approval forms; labour/parts breakdowns
+ Quotation accuracy check and communication review (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 4 Week 39 - Duty 9: Contribute to stock management routines and safe storage of stock and consumables (Goods-in checks, parts storage and consumables control)
+ B3, K26, K27, K28, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Structured practical activity receiving and checking parts deliveries. 12:45-14:15 Application activity investigating issues such as incorrect parts, missing items or damaged deliveries. 14:30-16:00 Consolidation through discussion reviewing common goods-in errors and improvements.
+ Resources: Stock system; audit sheets; bins/labels; delivery paperwork Evidence: Stock reports; count sheets; variance notes; corrective action log
+ Stock accuracy and variance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 4 Week 40 - Duty 10: Promote the safety of themselves, customers, colleagues, and the environment (Fire safety, first response and incident reporting)
+ B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering fire safety within the automotive workshop. 10:45-12:15 Practical activity identifying fire safety equipment within the workshop and reviewing emergency procedures. 12:45-14:15 Application activity analysing emergency scenarios such as fire outbreaks or incidents. 14:30-16:00 Consolidation through discussion reviewing emergency responses and reinforcing safe practice.
+ Resources: Risk assessment templates; PPE; environmental guidance; emergency procedures Evidence: Risk assessments; incident logs; safety checklists; action notes
+ Safety compliance review and case discussion (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 5 Week 41 - Duty 1: Communicate with customers establishing vehicle problems and their requirements (Technical handover and managing customer expectations on diagnostic work)
+ B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focusing on translating technical faults into clear customer explanations. 10:45-12:15 Structured role-play activity where learners explain technical faults to simulated customers based on given job scenarios. 12:45-14:15 Application activity linking communication to documentation. 14:30-16:00 Consolidation through discussion reviewing explanations and identifying strengths and weaknesses.
+ Resources: Intake forms; service scripts; customer scenarios; vehicle/job-card examples Evidence: Completed intake forms; communication notes; reflection log
+ Role-play observation and peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 5 Week 42 - Duty 2: Conduct vehicle inspections and routine maintenance work (Electrical fault finding, basic scope of tests and confirmation checks)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Practical activity using multimeters to carry out voltage, continuity and resistance tests on simple circuits or vehicle systems. 12:45-14:15 Application activity diagnosing electrical faults based on given scenarios such as non-start, intermittent faults or warning lights. 14:30-16:00 Consolidation through review of diagnostic decisions and discussion of common testing errors.
+ Resources: Inspection rigs or vehicles; checklists; diagnostic aids; PPE Evidence: Inspection sheets; defect photos; annotated checklists
+ Checklist review and tutor questioning (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 5 Week 43 - Duty 3: Work independently and as part of a team, contributing to business outcomes (Complex repairs, time management and QA sign-off)
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focusing on planning complex repair tasks. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity focusing on quality assurance. 14:30-16:00 Consolidation through group discussion reviewing repair plans and QA findings.
+ Resources: Workshop bay; tools; repair rigs/components; PPE; job sheets Evidence: Job cards; repair notes; QA checks; before/after photos
+ Observed practical and documentation check (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 5 Week 44 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components (Suspension component replacement and alignment preparation)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering suspension system operation and component replacement procedures. 10:45-12:15 Structured practical activity inspecting suspension components on training vehicles. 12:45-14:15 Application activity using realistic scenarios, with learners recording findings, explaining decisions and correcting errors. 14:30-16:00 Consolidation through discussion reviewing diagnostic decisions and reinforcing safe repair practices.
+ Resources: Tyre and alignment equipment; TPMS tools; gauges; PPE Evidence: Alignment or tyre inspection sheets; torque records; handover notes
+ Practical observation and peer QA (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 5 Week 45 - Duty 5: Identify and source vehicle components in line with workplace procedures (VIN lookup, technical data and parts availability checks)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering vehicle identification using VIN and manufacturer data systems. 10:45-12:15 Structured practical activity using VIN or registration data to access vehicle information through catalogues or digital systems. 12:45-14:15 Application activity linking technical data to repair scenarios. 14:30-16:00 Consolidation through discussion reviewing data use and highlighting common mistakes.
+ Resources: Supplier catalogues; ordering system; stock records; parts references Evidence: Order records; supplier communication notes; discrepancy log
+ Accuracy review and scenario questioning (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 5 Week 46 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Complaint prevention through process discipline and record quality)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focusing on the importance of following workplace procedures accurately to prevent complaints and rework. 10:45-12:15 Structured activity where learners are given workplace scenarios involving incomplete or poorly followed procedures. 12:45-14:15 Application activity where learners complete a maintenance or repair task using a fully structured process. 14:30-16:00 Consolidation through review of completed work and documentation.
+ Resources: Complaint forms; policy documents; job cards; handover templates Evidence: Complaint records; written responses; handover forms; reflection
+ Role-play observation and written response rubric (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 5 Week 47 - Duty 7: Maintain the workplace environment and follow good housekeeping practices (Battery handling, waste segregation and PPE discipline)
+ B1, B2, K3, K4, S1, S2, S3, S4 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering safe battery handling, workshop waste segregation and PPE discipline. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity using scenarios involving poor battery handling, incorrect waste disposal or failure to use PPE correctly. 14:30-16:00 Consolidation through group review of the workshop findings, completed records and corrective actions.
+ Resources: Housekeeping checklists; COSHH information; storage labels; PPE Evidence: Housekeeping checks; safety records; workstation photos; reflection
+ Housekeeping and safety compliance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 5 Week 48 - Duty 8: Post inspection, provide customer quotation of the work required, before agreeing and commencing the work (Additional work identification and quote revision)
+ K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering how additional work is identified after an initial inspection or once a repair has started. 10:45-12:15 Structured scenario activity where learners review inspection findings and identify additional work that was not part of the original job. 12:45-14:15 Application activity where learners complete a revised quotation and present it through a simulated customer authorisation conversation. 14:30-16:00 Consolidation through tutor review of quotation accuracy, customer explanation and authorisation records.
+ Resources: Estimate templates; labour guides; parts pricing; approval forms Evidence: Quotation documents; customer approval forms; labour/parts breakdowns
+ Quotation accuracy check and communication review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 5 Week 49 - Duty 9: Contribute to stock management routines and safe storage of stock and consumables (Stock variance investigation and corrective action planning)
+ B3, K26, K27, K28, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering stock variance investigation and why stock accuracy matters in a working automotive environment. 10:45-12:15 Structured practical activity where learners compare physical stock against recorded stock information. 12:45-14:15 Application activity where learners investigate stock variance scenarios and produce a corrective action plan. 14:30-16:00 Consolidation through group discussion of findings, corrective actions and how stock control supports workshop efficiency.
+ Resources: Stock system; audit sheets; bins/labels; delivery paperwork Evidence: Stock reports; count sheets; variance notes; corrective action log
+ Stock accuracy and variance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 5 Week 50 - Duty 10: Promote the safety of themselves, customers, colleagues, and the environment (Risk assessment refresh and safe systems of work)
+ B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session refreshing risk assessment principles and safe systems of work in the automotive workshop. 10:45-12:15 Structured workshop activity where learners inspect a task area or simulated job setup and identify hazards before work begins. 12:45-14:15 Application activity where learners complete a full risk assessment for a specific automotive task. 14:30-16:00 Consolidation through review of completed risk assessments and safe systems of work.
+ Resources: Risk assessment templates; PPE; environmental guidance; emergency procedures Evidence: Risk assessments; incident logs; safety checklists; action notes
+ Safety compliance review and case discussion (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 6 Week 51 - Duty 1: Communicate with customers establishing vehicle problems and their requirements (Customer interaction during longer diagnostic jobs)
+ B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Structured workshop activity using longer diagnostic job scenarios. 12:45-14:15 Application activity using realistic scenarios, with learners recording findings, explaining decisions and correcting errors. 14:30-16:00 Consolidation through tutor and peer review of customer updates, written notes and role-play performance.
+ Resources: Intake forms; service scripts; customer scenarios; vehicle/job-card examples Evidence: Completed intake forms; communication notes; reflection log
+ Role-play observation and peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 6 Week 52 - Duty 2: Conduct vehicle inspections and routine maintenance work (Air-conditioning and climate-control checks)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering the function of air-conditioning and climate-control systems at inspection and awareness level. 10:45-12:15 Guided practical inspection of visible air-conditioning and climate-control components using vehicles, rigs or diagrams where required. 12:45-14:15 Application activity using realistic scenarios, with learners recording findings, explaining decisions and correcting errors. 14:30-16:00 Consolidation through review of inspection sheets, scenario responses and tutor questioning.
+ Resources: Inspection rigs or vehicles; checklists; diagnostic aids; PPE Evidence: Inspection sheets; defect photos; annotated checklists
+ Checklist review and tutor questioning (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 6 Week 53 - Duty 3: Work independently and as part of a team, contributing to business outcomes (Workshop productivity, task sequencing and team support)
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Structured planning activity using realistic workshop scenarios involving several jobs running at the same time. 12:45-14:15 Application activity focused on teamwork, handover and continuity of work. 14:30-16:00 Consolidation through review of workflow decisions, task sequencing and handover quality.
+ Resources: Workshop bay; tools; repair rigs/components; PPE; job sheets Evidence: Job cards; repair notes; QA checks; before/after photos
+ Observed practical and documentation check (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 6 Week 54 - Emerging Technology - EV Service, Charging and Safety Procedures
+ B1, B2, B3, K6, K8, K19, K20, K21, K22, S5, S6, S7, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session introducing EV service, charging and safety procedures at awareness level. 10:45-12:15 Guided practical or demonstration activity using an EV training rig, vehicle, diagrams or manufacturer information. 12:45-14:15 Application activity using EV service and charging scenarios. 14:30-16:00 Consolidation through questioning and group review of EV safety decisions.
+ Resources: EV training rig or vehicle; charging equipment; HV PPE; customer information sheets Evidence: Isolation plan; customer advisory note; charging check record
+ Tutor review of safe process and customer explanation (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 6 Week 55 - Duty 5: Identify and source vehicle components in line with workplace procedures (Technical parts sourcing for electrical and diagnostic repairs)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focused on sourcing components for electrical and diagnostic repairs. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity where learners resolve realistic parts sourcing problems linked to diagnostic repairs. 14:30-16:00 Consolidation through tutor review of parts selection decisions and completed documentation.
+ Resources: Supplier catalogues; ordering system; stock records; parts references Evidence: Order records; supplier communication notes; discrepancy log
+ Accuracy review and scenario questioning (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 6 Week 56 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Record keeping, compliance checks and audit readiness)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering the purpose of accurate record keeping and how it supports compliance, quality assurance and audit readiness. 10:45-12:15 Structured review activity using sample workshop records that include deliberate errors or omissions. 12:45-14:15 Application activity where learners complete a full record set for a maintenance or repair scenario. 14:30-16:00 Consolidation through review of completed records and discussion of audit readiness.
+ Resources: Complaint forms; policy documents; job cards; handover templates Evidence: Complaint records; written responses; handover forms; reflection
+ Role-play observation and written response rubric (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 6 Week 57 - Duty 7: Maintain the workplace environment and follow good housekeeping practices (Safe lifting, jacking and vehicle support)
+ B1, B2, K3, K4, S1, S2, S3, S4 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 10:45-12:15 Structured practical demonstration where the tutor models safe lifting procedures step by step. 12:45-14:15 Application activity using lifting and support scenarios. 14:30-16:00 Consolidation through review of practical performance, checklists and risk assessments.
+ Resources: Housekeeping checklists; COSHH information; storage labels; PPE Evidence: Housekeeping checks; safety records; workstation photos; reflection
+ Housekeeping and safety compliance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 6 Week 58 - Duty 8: Post inspection, provide customer quotation of the work required, before agreeing and commencing the work (Quote approval, consent and final documentation)
+ K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering the full process of quote approval, customer consent and final documentation. 10:45-12:15 Structured quotation activity using completed inspection findings. 12:45-14:15 Application activity where learners carry out simulated customer approval conversations. 14:30-16:00 Consolidation through tutor review of quotation quality, approval records and role-play performance.
+ Resources: Estimate templates; labour guides; parts pricing; approval forms Evidence: Quotation documents; customer approval forms; labour/parts breakdowns
+ Quotation accuracy check and communication review (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 6 Week 59 - Duty 9: Contribute to stock management routines and safe storage of stock and consumables (Order tracking, back orders and customer impact)
+ B3, K26, K27, K28, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering order tracking, back orders and the effect of parts delays on customers and workshop planning. 10:45-12:15 Structured tracking activity using sample order records, supplier updates and job cards. 12:45-14:15 Application activity based on parts delay scenarios. 14:30-16:00 Consolidation through review of order tracking records, delay responses and communication quality.
+ Resources: Stock system; audit sheets; bins/labels; delivery paperwork Evidence: Stock reports; count sheets; variance notes; corrective action log
+ Stock accuracy and variance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 6 Week 60 - Duty 10: Promote the safety of themselves, customers, colleagues, and the environment (Environmental controls, waste streams and site safety)
+ B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering environmental controls and site safety within the automotive workshop. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity using realistic environmental and site safety scenarios. 14:30-16:00 Consolidation through group review of site findings, scenario responses and completed documentation.
+ Resources: Risk assessment templates; PPE; environmental guidance; emergency procedures Evidence: Risk assessments; incident logs; safety checklists; action notes
+ Safety compliance review and case discussion (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Phase 3 - Advanced practice and emerging technology - Weeks 61 to 94 (187.0 eligible OTJ hours)
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 7 Week 61 - Duty 1: Communicate with customers establishing vehicle problems and their requirements (Advanced service adviser communication and trust-building)
+ B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focused on advanced service adviser communication and how trust is built during customer interactions. 10:45-12:15 Structured role-play activity using realistic service adviser scenarios. 12:45-14:15 Application activity linking customer communication to workshop documentation and technical understanding. 14:30-16:00 Consolidation through tutor-led review of role-play performance and written records.
+ Resources: Intake forms; service scripts; customer scenarios; vehicle/job-card examples Evidence: Completed intake forms; communication notes; reflection log
+ Role-play observation and peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 7 Week 62 - Duty 2: Conduct vehicle inspections and routine maintenance work (Complex system inspection and defect prioritisation)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering complex system inspection and how technicians prioritise defects across more than one vehicle system. 10:45-12:15 Guided practical inspection activity using a vehicle, training rig or detailed inspection scenario. 12:45-14:15 Application activity where learners review inspection findings and prioritise defects. 14:30-16:00 Consolidation through group review of inspection records and prioritisation decisions.
+ Resources: Inspection rigs or vehicles; checklists; diagnostic aids; PPE Evidence: Inspection sheets; defect photos; annotated checklists
+ Checklist review and tutor questioning (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 7 Week 63 - Duty 3: Work independently and as part of a team, contributing to business outcomes (Engine management repairs and quality assurance)
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session introducing engine management repair principles and the importance of quality assurance during technical repair work. 10:45-12:15 Structured practical or demonstration activity using engine rigs, vehicles, scan data or component examples. 12:45-14:15 Application activity using engine management repair scenarios. 14:30-16:00 Consolidation through review of repair plans, QA checks and documentation quality.
+ Resources: Workshop bay; tools; repair rigs/components; PPE; job sheets Evidence: Job cards; repair notes; QA checks; before/after photos
+ Observed practical and documentation check (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 7 Week 64 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components (Tyre and TPMS service integration)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering how tyre service work and TPMS checks should be integrated rather than treated as separate tasks. 10:45-12:15 Structured practical inspection and service activity using tyres, wheels, TPMS tools and vehicle examples where available. 12:45-14:15 Application activity using tyre and TPMS service scenarios. 14:30-16:00 Consolidation through review of inspection sheets, TPMS findings and customer explanation notes.
+ Resources: Tyre and alignment equipment; TPMS tools; gauges; PPE Evidence: Alignment or tyre inspection sheets; torque records; handover notes
+ Practical observation and peer QA (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 7 Week 65 - Duty 5: Identify and source vehicle components in line with workplace procedures (Supplier performance, cost control and escalation)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering supplier performance, cost control and escalation within parts sourcing. 10:45-12:15 Structured activity using supplier and ordering scenarios. 12:45-14:15 Application activity where learners manage supplier escalation scenarios. 14:30-16:00 Consolidation through review of supplier decisions, cost-control reasoning and escalation records.
+ Resources: Supplier catalogues; ordering system; stock records; parts references Evidence: Order records; supplier communication notes; discrepancy log
+ Accuracy review and scenario questioning (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 7 Week 66 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Service recovery, complaint closure and records)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering service recovery and the importance of closing complaints professionally and accurately. 10:45-12:15 Structured role-play and document review activity using complaint scenarios linked to vehicle maintenance or repair. 12:45-14:15 Application activity where learners draft a written complaint response and closure record based on a given scenario. 14:30-16:00 Consolidation through group review of complaint responses, escalation decisions and closure records.
+ Resources: Complaint forms; policy documents; job cards; handover templates Evidence: Complaint records; written responses; handover forms; reflection
+ Role-play observation and written response rubric (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 7 Week 67 - Duty 7: Maintain the workplace environment and follow good housekeeping practices (Workshop flow, layout and housekeeping)
+ B1, B2, K3, K4, S1, S2, S3, S4 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session exploring how workshop layout, housekeeping and workflow affect safety, productivity and quality of work. 10:45-12:15 Structured practical activity where learners assess the workshop layout and housekeeping standards. 12:45-14:15 Application activity where learners propose improvements to workshop layout and housekeeping routines. 14:30-16:00 Consolidation through group review of workshop findings and proposed improvements.
+ Resources: Housekeeping checklists; COSHH information; storage labels; PPE Evidence: Housekeeping checks; safety records; workstation photos; reflection
+ Housekeeping and safety compliance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 7 Week 68 - Duty 8: Post inspection, provide customer quotation of the work required, before agreeing and commencing the work (Multi-line estimates and customer choice conversations)
+ K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering multi-line estimates and how to present several repair options clearly and ethically. 10:45-12:15 Structured estimate-building activity using inspection findings from realistic scenarios. 12:45-14:15 Application activity where learners practise customer choice conversations through role-play. 14:30-16:00 Consolidation through review of estimate quality, customer explanation and authorisation records.
+ Resources: Estimate templates; labour guides; parts pricing; approval forms Evidence: Quotation documents; customer approval forms; labour/parts breakdowns
+ Quotation accuracy check and communication review (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 7 Week 69 - Duty 9: Contribute to stock management routines and safe storage of stock and consumables (Consumables management and stock security)
+ B3, K26, K27, K28, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering management of workshop consumables and the importance of stock security. 10:45-12:15 Structured practical activity reviewing consumable storage and stock security arrangements. 12:45-14:15 Application activity where learners investigate consumables management scenarios. 14:30-16:00 Consolidation through discussion of findings and improvement actions.
+ Resources: Stock system; audit sheets; bins/labels; delivery paperwork Evidence: Stock reports; count sheets; variance notes; corrective action log
+ Stock accuracy and variance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 7 Week 70 - Duty 10: Promote the safety of themselves, customers, colleagues, and the environment (Safe working with new vehicle systems)
+ B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering safe working around newer vehicle systems and the importance of recognising limits of competence. 10:45-12:15 Structured workshop activity using case studies, vehicle examples, training rigs or system diagrams. 12:45-14:15 Application activity where learners analyse new-system safety scenarios. 14:30-16:00 Consolidation through group review of safety decisions, referral points and documentation.
+ Resources: Risk assessment templates; PPE; environmental guidance; emergency procedures Evidence: Risk assessments; incident logs; safety checklists; action notes
+ Safety compliance review and case discussion (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 8 Week 71 - Duty 1: Communicate with customers establishing vehicle problems and their requirements (Technical explanations for complex repairs and delays)
+ B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session focusing on how to explain complex repairs and delays to customers in a professional and understandable way. 10:45-12:15 Structured communication activity using realistic customer scenarios involving complex repairs and extended timescales. 12:45-14:15 Application activity where learners produce written customer communication records linked to the role-play scenarios. 14:30-16:00 Consolidation through review of communication examples, written updates and customer handling approaches.
+ Resources: Intake forms; service scripts; customer scenarios; vehicle/job-card examples Evidence: Completed intake forms; communication notes; reflection log
+ Role-play observation and peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 8 Week 72 - Duty 2: Conduct vehicle inspections and routine maintenance work (Advanced diagnostic process and confirmation of root cause)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session developing the advanced diagnostic process, with emphasis on confirming the root cause rather than only identifying symptoms. 10:45-12:15 Guided practical or scenario-based diagnostic activity using vehicles, training rigs or structured case studies. 12:45-14:15 Application activity where learners complete an advanced diagnostic record showing how they confirmed or ruled out possible causes. 14:30-16:00 Consolidation through group review of diagnostic pathways and root-cause decisions.
+ Resources: Inspection rigs or vehicles; checklists; diagnostic aids; PPE Evidence: Inspection sheets; defect photos; annotated checklists
+ Checklist review and tutor questioning (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 8 Week 73 - Duty 3: Work independently and as part of a team, contributing to business outcomes (Repair planning, delegation and sign-off discipline)
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session covering repair planning, delegation and the discipline needed to complete work to a professional standard. 10:45-12:15 Structured planning activity using realistic repair scenarios that require task sequencing and team coordination. 12:45-14:15 Application activity where learners complete a repair plan and sign-off process for a given scenario. 14:30-16:00 Consolidation through tutor review of repair plans, delegation decisions and sign-off documentation.
+ Resources: Workshop bay; tools; repair rigs/components; PPE; job sheets Evidence: Job cards; repair notes; QA checks; before/after photos
+ Observed practical and documentation check (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 8 Week 74 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components (Alignment, ride height and geometry correlation)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led technical session exploring the relationship between alignment, ride height and vehicle geometry. 10:45-12:15 Guided practical activity using alignment equipment, vehicle examples or alignment printouts. 12:45-14:15 Application activity using realistic scenarios, with learners recording findings, explaining decisions and correcting errors. 14:30-16:00 Consolidation through review of alignment findings, diagnostic reasoning and customer explanation.
+ Resources: Tyre and alignment equipment; TPMS tools; gauges; PPE Evidence: Alignment or tyre inspection sheets; torque records; handover notes
+ Practical observation and peer QA (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 8 Week 75 - Duty 5: Identify and source vehicle components in line with workplace procedures (Specialist parts, alternatives and warranty evidence)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session covering specialist parts sourcing, alternative component selection and the evidence required to support warranty decisions. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity where learners complete a parts sourcing and warranty evidence scenario. 14:30-16:00 Consolidation through review of sourcing decisions, warranty evidence and documentation quality.
+ Resources: Supplier catalogues; ordering system; stock records; parts references Evidence: Order records; supplier communication notes; discrepancy log
+ Accuracy review and scenario questioning (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 8 | Week 76 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Documentation for handover and audit trail completeness)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led session focusing on documentation for handover and complete audit trails. 10:45-12:15 Structured document review activity using handover packs and job records with deliberate gaps or inconsistencies. 12:45-14:15 Application activity where learners prepare a complete handover record for a maintenance or repair scenario. 14:30-16:00 Consolidation through tutor review of handover packs and audit-trail completeness.
+ Resources: Complaint forms; policy documents; job cards; handover templates Evidence: Complaint records; written responses; handover forms; reflection
+ Role-play observation and written response rubric (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 8 Week 77 - Duty 7: Maintain the workplace environment and follow good housekeeping practices (Quality, cleanliness and equipment care routines)
+ B1, B2, K3, K4, S1, S2, S3, S4 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering the relationship between workshop cleanliness, equipment care and repair quality. 10:45-12:15 Structured workshop activity where learners inspect tools, equipment and work areas against expected standards. 12:45-14:15 Application activity where learners complete a quality, cleanliness and equipment care routine for a work bay or specific task area. 14:30-16:00 Consolidation through group review of workshop findings, equipment care records and improvements made.
+ Resources: Housekeeping checklists; COSHH information; storage labels; PPE Evidence: Housekeeping checks; safety records; workstation photos; reflection
+ Housekeeping and safety compliance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 8 Week 78 - Duty 8: Post inspection, provide customer quotation of the work required, before agreeing and commencing the work (Quotations, authorisation chains and ethical upsell practice)
+ K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering quotation quality, authorisation chains and ethical practice when recommending additional work. 10:45-12:15 Structured quotation activity using inspection findings from realistic scenarios. 12:45-14:15 Application activity using customer conversation scenarios. 14:30-16:00 Consolidation through tutor review of quotation documents, authorisation records and role-play performance.
+ Resources: Estimate templates; labour guides; parts pricing; approval forms Evidence: Quotation documents; customer approval forms; labour/parts breakdowns
+ Quotation accuracy check and communication review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 8 Week 79 - Duty 9: Contribute to stock management routines and safe storage of stock and consumables (Inventory accuracy, obsolescence review and safe disposal)
+ B3, K26, K27, K28, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering inventory accuracy, obsolete stock and safe disposal processes. 10:45-12:15 Structured inventory review activity using stock records, sample parts or a controlled stock area. 12:45-14:15 Application activity where learners investigate stock issues involving obsolete items, inaccurate quantities or unsafe storage. 14:30-16:00 Consolidation through review of inventory findings and disposal decisions.
+ Resources: Stock system; audit sheets; bins/labels; delivery paperwork Evidence: Stock reports; count sheets; variance notes; corrective action log
+ Stock accuracy and variance review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 8 Week 80 - Duty 10: Promote the safety of themselves, customers, colleagues, and the environment (Emergency response, near misses and environmental safety)
+ B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering emergency response, near-miss reporting and environmental safety in the automotive workshop. 10:45-12:15 Structured workshop activity where learners review emergency arrangements and site safety controls. 12:45-14:15 Application activity using emergency and near-miss scenarios. 14:30-16:00 Consolidation through group review of scenario responses and incident documentation.
+ Resources: Risk assessment templates; PPE; environmental guidance; emergency procedures Evidence: Risk assessments; incident logs; safety checklists; action notes
+ Safety compliance review and case discussion (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 9 Week 81 - Emerging Technology - Electric and Hybrid Vehicle Systems (Applied Awareness)
+ B1, B2, K2, K5, K6, K8, K9, K10, K19, K22, S5, S6, S7, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session developing applied awareness of electric and hybrid vehicle systems. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity using applied EV and hybrid scenarios. 14:30-16:00 Consolidation through tutor questioning and review of applied safety decisions.
+ Resources: EV or hybrid training rig; labelled components; warning-code examples; HV PPE Evidence: Annotated component checklist; warning-note exercise; reflection log
+ Short quiz and tutor questioning (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 9 Week 82 - Emerging Technology - EV Customer Handover, Charging and Application
+ B3, B5, K1, K6, K8, K17, K24, K25, S6, S7, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focused on customer handover for electric and hybrid vehicles. 10:45-12:15 Structured role-play activity where learners practise customer handover conversations for EV and hybrid scenarios. 12:45-14:15 Application activity where learners create a written EV customer handover sheet or advisory note. 14:30-16:00 Consolidation through review of handover sheets, role-play performance and customer explanation quality.
+ Resources: Service scripts; handover templates; estimate sheets; example EV customer FAQs Evidence: Customer handover sheet; estimate example; communication notes
+ Role-play rubric and handover quality review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 9 Week 83 - Oscilloscope Diagnostics (Intro)
+ S5, K3, K11, K12, K13, K14, B4 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session introducing oscilloscope diagnostics at an introductory level. 10:45-12:15 Structured demonstration using an oscilloscope, training rig or sample waveforms. 12:45-14:15 Application activity where learners compare healthy and faulty waveform examples. 14:30-16:00 Consolidation through discussion of waveform interpretation and common beginner errors.
+ Resources: Oscilloscope; demo rigs; sample traces Evidence: Saved traces; annotated analysis; comparison notes
+ Trace interpretation exercise (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 9 Week 84 - Customer Journey and Service Adviser Day
+ S5, K4, K6, K15, K16, K17, B5 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session mapping the full customer journey from first contact through to vehicle collection. 10:45-12:15 Structured customer journey mapping activity where learners build a step-by-step process for a typical service or repair visit. 12:45-14:15 Application activity using role-play and written communication tasks. 14:30-16:00 Consolidation through review of journey maps, role-play performance and written customer documents.
+ Resources: Journey mapping templates; scripts; style guide Evidence: Role-play scripts; estimate or invoice examples; reflection notes
+ Observed role-plays and template quality review (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 9 Week 85 - Duty 6: Follow workplace instructions or procedures for vehicle maintenance or repair (Workshop quality checks and road-test feedback capture)
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering workshop quality checks and the purpose of road-test feedback within maintenance and repair procedures. 10:45-12:15 Structured activity using completed job cards, quality check examples and road-test feedback scenarios. 12:45-14:15 Application activity where learners complete a quality check and road-test feedback record for a simulated or practical repair scenario. 14:30-16:00 Consolidation through tutor review of quality check records and feedback notes.
+ Resources: Vehicles or rigs; job cards; quality-control checklists; road-test feedback templates; technical data Evidence: Completed quality check; road-test feedback record; defect/action notes; tutor feedback
+ Quality-check and road-test documentation review (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 9 Week 86 - Duty 10: Promote the safety of themselves, customers, colleagues, and the environment (Workshop compliance deep dive: documentation and waste control)
+ B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focusing on workshop compliance, with particular attention to documentation and waste control. 10:45-12:15 Structured compliance review activity where learners examine sample documentation and workshop waste arrangements. 12:45-14:15 Application activity using compliance case studies. 14:30-16:00 Consolidation through group review of compliance findings and corrective actions.
+ Resources: Risk assessment templates; PPE; environmental guidance; emergency procedures Evidence: Risk assessments; incident logs; safety checklists; action notes
+ Safety compliance review and case discussion (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 9 Week 87 - Duty 5: Identify and source vehicle components in line with workplace procedures (Supplier and stock optimisation for emerging technologies)
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering supplier and stock considerations for emerging vehicle technologies. 10:45-12:15 Structured sourcing activity using emerging technology parts scenarios. 12:45-14:15 Application activity where learners manage supplier and stock optimisation problems linked to emerging technology. 14:30-16:00 Consolidation through review of sourcing decisions, stock recommendations and supplier communication quality.
+ Resources: Supplier catalogues; ordering system; stock records; parts references Evidence: Order records; supplier communication notes; discrepancy log
+ Accuracy review and scenario questioning (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 9 Week 88 - Duty 8: Post inspection, provide customer quotation of the work required, before agreeing and commencing the work (Integrated inspection, quotation and consent scenario)
+ K24, K25, K26, K29, S16, S17, S19, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering how inspection findings are converted into a clear quotation and customer consent process. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity where learners carry out a simulated customer consent conversation based on the quotation produced. 14:30-16:00 Consolidation through tutor review of inspection interpretation, quotation quality and consent documentation.
+ Resources: Estimate templates; labour guides; parts pricing; approval forms Evidence: Quotation documents; customer approval forms; labour/parts breakdowns
+ Quotation accuracy check and communication review (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 9 Week 89 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components (Pre-calibration checks: alignment, ride height and sensor inputs)
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Guided practical inspection activity using alignment equipment, tyre and suspension checks, sensor-location diagrams or vehicle examples. 12:45-14:15 Application activity using pre-calibration scenarios. 14:30-16:00 Consolidation through group review of pre-check findings and decision-making.
+ Resources: Tyre and alignment equipment; TPMS tools; gauges; PPE Evidence: Alignment or tyre inspection sheets; torque records; handover notes
+ Practical observation and peer QA (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 9 Week 90 - Duty 10: Promote the safety of themselves, customers, colleagues, and the environment (Emerging technology readiness review and case studies)
+ B1, B2, K21, K22, K23, K3, K4, S1, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session reviewing safe working expectations for emerging vehicle technologies. 10:45-12:15 Structured case-study activity where learners review emerging technology scenarios drawn from realistic workshop situations. 12:45-14:15 Application activity where learners complete an emerging technology readiness review. 14:30-16:00 Consolidation through review of case-study responses and readiness action plans.
+ Resources: Risk assessment templates; PPE; environmental guidance; emergency procedures Evidence: Risk assessments; incident logs; safety checklists; action notes
+ Safety compliance review and case discussion (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 9 Week 91 - ADAS Awareness and Calibration Principles (non-invasive)
+ S6, K5, K1, K2, K3, K4, S16, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, B2 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session introducing Advanced Driver Assistance Systems at awareness level. 10:45-12:15 Structured awareness activity using an ADAS demo vehicle, diagrams, manufacturer guidance or sample calibration reports. 12:45-14:15 Application activity based on ADAS case studies. 14:30-16:00 Consolidation through tutor questioning, short quiz and review of case-study responses.
+ Resources: ADAS demo vehicle if available; manufacturer guidance; sample calibration reports Evidence: Case-study write-up; quiz result; reference sheet; ADAS component checklist
+ Short quiz and case-study write-up (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 9 Week 92 - Emerging Technology - Hybrid/EV Diagnostics Practice (non-cert)
+ S5, K2, K5, K6, K9, K10, B3 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session refreshing hybrid and electric vehicle architecture at non-certification level. 10:45-12:15 Structured practical or demonstration activity using a hybrid rig, EV training vehicle, scan tool outputs or manufacturer information. 12:45-14:15 Application activity where learners interpret hybrid or EV diagnostic scenarios. 14:30-16:00 Consolidation through data interpretation questions, tutor-led discussion and review of completed risk assessments or scan logs.
+ Resources: Hybrid rig or vehicle; scan tools; HV PPE Evidence: Risk assessment; scan logs; isolation checklist; reflective notes
+ Safety compliance check and data interpretation Q&A (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 9 Week 93 - Emerging Technology - Hydrogen Fuel Cell Systems (Intro)
+ B1, B2, K2, K5, K6, K8, K18, K19, K21, K22, S5, S6, S12, S14 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session introducing hydrogen fuel cell vehicle systems at awareness level. 10:45-12:15 Structured comparison activity using hydrogen system diagrams, component images, comparison charts and manufacturer or industry guidance. 12:45-14:15 Application activity using hydrogen fuel cell case studies. 14:30-16:00 Consolidation through review of annotated diagrams, EV versus hydrogen comparison sheets and reflective notes.
+ Resources: Hydrogen-system diagrams; comparison charts; safety guidance; demo components or images Evidence: Annotated system diagram; EV vs hydrogen comparison sheet; reflection log
+ Short quiz and comparison exercise (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 9 Week 94 - Emerging Technology - Hydrogen Systems Safety and Application
+ B1, B2, B5, K18, K19, K20, K21, K22, K23, S6, S7, S16, S22, S23 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focusing on hydrogen system safety and real-world application. 10:45-12:15 Structured case-study workshop using hydrogen safety guidance, service scripts, vehicle-use contexts and emergency-response templates. 12:45-14:15 Application activity where learners prepare a customer or internal advisory note linked to a hydrogen system scenario. 14:30-16:00 Consolidation through review of case notes, customer advisory sheets and emergency response checklists.
+ Resources: Hydrogen safety guidance; case studies; service scripts; emergency-response template Evidence: Case notes; customer advisory sheet; emergency response checklist
+ Case-study review and communication rubric (formative practice with feedback; training only). Separate formal assessment: none.
+ Phase 4 - Final consolidation and readiness - Weeks 95 to 112 (19 sessions; 104.5 eligible OTJ hours)
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 10 Week 95 - Environmental Compliance Deep Dive (F-gas context - no decanting)
+ B2, S7, K18, K19, K20, K21 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session covering environmental compliance with a focus on air-conditioning and F-gas awareness. 10:45-12:15 Structured activity where learners review compliance workflows and log templates linked to AC service documentation. 12:45-14:15 Application activity where learners walk through AC service documentation without carrying out refrigerant handling. 14:30-16:00 Consolidation through incident case reviews and discussion of lessons learned.
+ Resources: Compliance templates; AC unit (demo) Evidence: Compliance workflow document; log templates; case notes
+ Compliance workflow review (formative practice with feedback; training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 10 Week 96 - Embedded Maths and English in Workshop Tasks
+ B3, S6, S7, K23, K24, K25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session focused on how maths and English are naturally embedded within everyday workshop practice. 10:45-12:15 Structured activity where learners complete workshop-based calculation tasks using realistic job sheets and technical information. 12:45-14:15 Application activity where learners complete a combined maths and English workshop task. 14:30-16:00 Consolidation through review of calculation sheets, written job records and peer feedback.
+ Resources: Torque tools; example job sheets; style guide Evidence: Calculation sheet; final job sheet or estimate; peer review notes
+ Formative knowledge check and developmental writing feedback (training only; not a formal test). Separate formal assessment: none.
+ Block 10 Week 97 - Capstone Project Sprint 1 - Plan
+ B4, S7, K26, K27, K28, K29 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session introducing the capstone project planning stage. 10:45-12:15 Structured planning activity where learners select or are given a suitable capstone scenario. 12:45-14:15 Application activity where learners complete the formal project planning documentation. 14:30-16:00 Consolidation through individual project review and refinement.
+ Resources: Project brief template; risk forms Evidence: Project plan; risk assessment; method statement; QA plan
+ Plan quality review (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 10 Week 98 - Capstone Project Sprint 2 - Execute
+ S5, B5, S7, K30, K31, K32 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed start-of-session briefing revisiting the approved capstone plans from Week 97. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Continuation of the capstone task with focus on completion, quality checking and customer or workshop communication. 14:30-16:00 Consolidation through review of completed capstone evidence.
+ Resources: Workshop bay; tools; camera or tablet Evidence: Job card; photos; QA sheet; customer explanation notes
+ Observed practical and QA checklist (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 10 Week 99 - Capstone Showcase and Professional Discussion Practice
+ S6, S8, K33, K34, S1, S2 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session preparing learners to present their capstone project and practise professional discussion skills. 10:45-12:15 Structured showcase preparation activity where learners organise their capstone evidence into a clear sequence. 12:45-14:15 Application activity where learners deliver their capstone showcase and take part in professional discussion practice. 14:30-16:00 Consolidation through review of showcase performance and professional discussion responses.
+ Resources: Projector; rubric; recorder Evidence: Slides; PD notes; recorded showcase; feedback forms
+ Showcase rubric and PD practice feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 10 Week 100 - Portfolio-Based Reflective Learning and Evidence Improvement
+ S6, S8, S3, S4, S10 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led theory covering the stated theme, relevant system principles, safe working requirements and workplace application. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Targeted guided practice addresses gaps identified through reflection. 14:30-16:00 Tutor feedback, correction and consolidation.
+ Resources: Portfolio platform; checklist Evidence: Reflective assignments; revised technical explanations; targeted learning records; tutor feedback and action plan
+ Developmental review and feedback (training only). Separate formal assessment: 1.25 hours (scheduled and recorded separately; excluded from GLH, OTJ and the 791.00 planned attendance hours).
+ Block 10 Week 101 - Final Skills Consolidation and Professional Practice
+ S6, S11, S12, S13, S14, S15 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Tutor-led consolidation of safe working, customer communication, inspection planning, technical data use and professional behaviours. 10:45-12:15 Guided practical rehearsal using occupational tasks selected to address individual development needs. 12:45-14:15 Learners complete a second guided practice activity combining accurate documentation with technical explanation. 14:30-16:00 Reflection, feedback and final training targets.
+ Resources: EPA candidate guide; wellbeing resources Evidence: Skills development records; revised job documentation; tutor feedback; learner reflection and final training targets
+ Developmental observation and feedback (training only; no formal grading or competence decision). Separate formal assessment: none. EPA logistics and gateway administration are excluded from GLH/OTJ.
+ Block 10 Week 102 - Spiral Consolidation (skills-led)
+ S6, S7, K7, K8, K22, B1 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session introducing spiral consolidation as a structured revisit of key skills developed across the programme. 10:45-12:15 Structured practical activity using battery and charging rigs, multimeters, inspection forms or related workshop equipment. 12:45-14:15 Application activity linking technical practice to customer and workplace documentation. 14:30-16:00 Consolidation through peer feedback, tutor questioning and review of completed documentation.
+ Resources: Battery and charging rigs; multimeters; inspection forms; PPE Evidence: Inspection sheets; customer job card; annotated test results
+ Observation checklist and peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 10 Week 103 - Duty 1: Communicate with customers establishing vehicle problems and their requirements
+ B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session revisiting customer communication as a final consolidation of Duty 1. 10:45-12:15 Structured role-play activity where learners practise customer intake conversations using realistic vehicle concern scenarios. 12:45-14:15 Application activity where learners complete intake forms, job cards and communication notes based on the role-play scenarios. 14:30-16:00 Consolidation through review of role-play performance and completed customer documents.
+ Resources: Intake forms; scripts; vehicle rigs; PPE Evidence: Completed intake forms; communication notes; reflection log
+ Role-play rubric and peer observation (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 10 Week 104 - Duty 2: Conduct vehicle inspections and routine maintenance work
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session revisiting structured vehicle inspection and routine maintenance expectations. 10:45-12:15 Guided practical inspection activity using suspension rigs, vehicles or inspection checklists. 12:45-14:15 Application activity where learners complete inspection documentation and prioritise findings. 14:30-16:00 Consolidation through checklist scoring, mini viva and review of inspection records.
+ Resources: Suspension rigs; inspection checklists; PPE Evidence: Inspection sheets; defect photos; annotated checklists
+ Inspection checklist review and Q&A (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 10 Week 105 - Duty 3: Work independently and as part of a team, contributing to business outcomes
+ B3, B4, B5, K25, K30, K31, S20, S21, S25 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory session revisiting independent working, teamwork and contribution to business outcomes. 10:45-12:15 Structured practical activity using brake, cooling or other workshop rigs where available. 12:45-14:15 Application activity where learners complete a job card and communication note linked to the practical task. 14:30-16:00 Consolidation through feedback on practical performance, teamwork and documentation.
+ Resources: Brake or cooling rigs; tools; job sheets; PPE Evidence: Job card; photos of repair; communication notes
+ Observed practical with peer feedback (formative practice with feedback; training only). Separate formal assessment: none.
+ Block 10 Week 106 - Duty 4: Inspect, repair, and replace car, car derived van, or light goods vehicle tyres and vehicle systems components
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K9, S10, S11, S13, S26 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed theory and skills refresh session focused on tyre, wheel, alignment and related vehicle system component work. 10:45-12:15 Structured practical skills activity using tyres, wheels, alignment equipment, TPMS tools or vehicle system components where available. 12:45-14:15 Application activity using occupational skills scenarios linked to tyres and vehicle systems components. 14:30-16:00 Consolidation through review of inspection records, practical performance and verbal questioning.
+ Resources: Alignment rig; tyre equipment; checklists; PPE Evidence: Alignment printouts; tyre inspection sheets; handover notes
+ Observation checklist and peer QA (formative practice with feedback; training only). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 10 Week 107 - Duty 5 Skills Development and EPA Readiness Practice - Parts Identification and Sourcing
+ B3, K26, K27, K28, K29, S17, S18, S19 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed skills development and EPA readiness practice session focused on parts identification and sourcing. 10:45-12:15 Structured skills development activity where learners complete timed parts identification tasks. 12:45-14:15 Application activity where learners manage a more complex sourcing scenario under structured practice conditions. 14:30-16:00 Consolidation through developmental feedback against occupational standard expectations.
+ Resources: Ordering system; supplier catalogues; stock records Evidence: Order confirmations; supplier communication notes; discrepancy logs
+ Developmental accuracy check and role-play feedback (training only; no formal grading or competence decision). Separate formal assessment: none.
+ Block 10 Week 108 - Duty 6 Skills Development and EPA Readiness Practice - Procedures and Documentation
+ B3, B5, K25, K7, K8, S16, S20, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed skills development and EPA readiness practice session focused on following workplace instructions, procedures and documentation requirements. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Application activity using a procedural scenario involving customer concern, repair process, documentation and final handover. 14:30-16:00 Consolidation through tutor feedback against occupational standard expectations.
+ Resources: Complaint forms; templates; policy documents Evidence: Complaint logs; written responses; peer review notes
+ Developmental observation and written feedback (training only; no formal grading or competence decision). Separate formal assessment: none.
+ Block 10 Week 109 - Duty 1 Skills Development and EPA Readiness Practice - Customer Communication
+ B3, B5, K1, K24, K32, K33, K34, S16, S22, S23, S24 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Detailed skills development and EPA readiness practice session focused on customer communication and establishing vehicle concerns. 10:45-12:15 Structured customer communication practice where learners handle customer intake scenarios under structured practice conditions. 12:45-14:15 Application activity where learners complete job sheets, intake forms and communication notes based on the mock customer scenarios. 14:30-16:00 Consolidation through developmental feedback and reflection. Learners review their role-play performance, written records and verbal responses.
+ Resources: Service scripts; job sheets; role-play checklists Evidence: Completed job sheets; communication notes; reflection
+ Developmental role-play observation and feedback (training only; no formal grading or competence decision). Separate formal assessment: none.
+ Block 10 Week 110 - Final Skills Consolidation and Developmental Feedback
+ B1, K10, K11, K12, K13, K14, K15, K16, K19, K2, K20, K5, K6, K7, K8, K9, S10, S11, S13, S15, S2, S26, S5, S7, S8 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and individual programme activity; recorded separately. 09:30-10:30 Final skills consolidation briefing focused on safe, confident and methodical occupational practice. 10:45-12:15 Structured guided activity applying the stated theme through realistic workshop tasks, technical information and tutor feedback. 12:45-14:15 Continuation of final practical skills rehearsal with focus on completion, evidence quality and verbal justification. 14:30-16:00 Final consolidation and readiness review.
+ Resources: Electrical rigs; suspension systems; inspection forms; PPE Evidence: Inspection sheets; annotated diagrams; customer notes
+ Developmental checklist and professional questioning (training only; no formal grading, gateway decision or EPA activity). Separate formal assessment: none.
+
+ Block / Week / Theme
+ KSBs and OTJ
+ Learning sequence
+ Resources and evidence
+ Checks / exclusions
+ Block 10 / Week 111 - Integrated vehicle health check, diagnosis and customer report
+ K1-K34; S1-S8, S10-S26; B1-B5 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and programme administration. 09:30-10:30 Plan an integrated vehicle health check using technical data and customer information. 10:45-12:15 Complete inspection and diagnostic checks with coached correction. 12:45-14:15 Produce a clear report, quotation information and customer explanation. 14:30-16:00 QA review, feedback, correction and evidence upload.
+ Resources: Vehicle; inspection equipment; diagnostic tools; technical data; job cards; report templates. Evidence: Vehicle health check; diagnostic record; customer report; tutor feedback.
+ Formative observation, questioning, document review and coached correction. Formal assessment remains separate.
+ Block 10 / Week 112 (Session A) - Targeted KSB gap learning and corrective practical
+ K1-K34; S1-S8, S10-S26; B1-B5 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and programme administration. 09:30-10:30 Review the individual KSB gap analysis and agree the targeted learning plan. 10:45-12:15 Complete targeted practical development. 12:45-14:15 Repeat or extend the task with reduced support and improved documentation. 14:30-16:00 Feedback, reflection and evidence quality check.
+ Resources: Individual gap plan; relevant tools/vehicles; technical data; evidence checklist. Evidence: Updated gap plan; practical evidence; feedback record; corrected documentation.
+ Developmental observation and feedback. This is learning and corrective practice, not gateway or EPA.
+ Block 10 / Week 112 (Session B - additional scheduled day) - Final capstone, evidence quality and gateway readiness
+ K1-K34; S1-S8, S10-S26; B1-B5 Eligible OTJ: 5.50 hours
+ 09:00-09:30 Non-eligible: MME and programme administration. 09:30-10:30 Plan the final capstone scenario and identify quality/safety controls. 10:45-12:15 Complete the occupational task or integrated simulation. 12:45-14:15 Finalise job documentation, customer communication and evidence narrative. 14:30-16:00 Coached review, final corrective learning and readiness action plan.
+ Resources: Capstone brief; vehicle or simulation; technical data; portfolio tracker; readiness checklist. Evidence: Capstone evidence; portfolio tracker; final action plan; employer/tutor readiness evidence.
+ Formative capstone review with feedback. Gateway decision and EPA activity are separate and non-eligible.
+ Gateway and EPA blocks
+ Block
+ Stage
+ Planned period
+ Eligible OTJ
+ Outcome
+ Block 11
+ Gateway confirmation and EPA mobilisation
+ Month 30
+ 0.00
+ Practical training has ended. Confirm gateway requirements and mobilise EPA within the planned apprenticeship end month.
+ Block 12
+ End-Point Assessment
+ Month 30
+ 0.00
+ Independent EPA activity. The planned apprenticeship end is the end of this month.
+ Quality assurance and document control
+ Control
+ Position
+ Source standard
+ Autocare Technician ST0499 v1.3.
+ Official planning data
+ Typical apprenticeship duration 30 months; published minimum 605 hours; maximum funding band £13,000. The controlled SOW gateway/EPA period is one month and must be checked against the applicable assessment plan.
+ Planned SOW
+ 112 calendar delivery weeks; 113 planned learning sessions; 611.50 eligible OTJ; 6.50-hour headroom. Week 112 contains two separately timetabled specialist sessions.
+ Calendar feasibility
+ 112 / 46.4 x 12 = 28.97 indicative practical months; plus 1.00 gateway/EPA month = 29.97 months; displayed apprenticeship end Month 30. Actual dates remain the authoritative validation.
+ KSB and RPL control
+ 64 unique published KSBs are counted once in the controlled RPL matrix and assigned to one primary block. Equal OTJ unit value = 611.50 / 64 = 9.5546875 hours (store 9.5547; display 9.55). Raw block/group OTJ = primary KSB count x the unrounded unit value. Weekly repetitions are teaching/reinforcement links only. No manual KSB or block/group complexity weighting is permitted.
+ Funding control
+ Minimum price reduction = programme RPL % x 50%. The final negotiated price must not exceed the RPL-adjusted funding cap; TNP1 plus TNP2 must reconcile to the final price.
+ Review triggers
+ Change to the standard/EPA plan, funding-rule set, delivery calendar, KSB matrix, Foundation Skills pack, equipment or employer requirements.
+ Workbook and portal dependency
+ The associated Autocare RPL workbook, training plan and portal must use this 112-calendar-week / 113-session / 611.50-hour master, equal-KSB calculations and the Month 29 practical / Month 30 apprenticeship end points.
+ Guidance alignment
+ GTA SOW Design and RPL Adjustment Guide v1.6 | August 2026.
+ Version
+ v4.4 | August 2026

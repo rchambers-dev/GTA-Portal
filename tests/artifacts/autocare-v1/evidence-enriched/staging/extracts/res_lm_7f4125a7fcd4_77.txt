@@ -1,0 +1,84 @@
+Lesson Plan 10 WK2
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Advanced brake systems (ABS)
+ 0 0 Advanced brake systems (ABS)
+
+ Lesson Aims
+
+ Lesson Aims
+ 0 35716 H ow to correctly test ABS warning lamps.
+ How to test ABS systems.
+ Be aware of common faults in ABS systems
+ 0 0 H ow to correctly test ABS warning lamps.
+ H ow to test ABS systems .
+ Be aware of common faults in ABS systems
+
+ Lesson Objectives
+ -8626 56527 Show how to correctly test ABS lamp operation in workshop .
+ Show how to correctly test ABS systems in workshop .
+ Name 2 common faults and possible causes.
+ 0 0 Show how to c orrectly test ABS lamp operation in workshop .
+ Show how to c orrectly test ABS systems in workshop .
+ Name 2 common faults and possible causes .
+
+ Engagement
+ -10795 57989 Power point, white board, ABS rig & workshop cars
+
+ 0 0 Power point, white board, ABS rig & workshop cars
+
+ Stick ability
+ -8255 131445 Practical demonstrations to reinforce theoretical delivery in workshop.
+
+ 0 0 Practical demonstrations to reinforce theoretical delivery in workshop.
+
+ Assessment for learning (AFL)
+ -10795 95250 Verbal q uestioning and answering & identification of components
+
+ 0 0 Verbal q uestioning and answering & identification of components
+
+ Key words
+ 0 48260 Analog, digital, sine wave, square wave, halls, ECU & diagnose
+
+ 0 0 Analog, digital, sine wave, square wave, halls , ECU & diagnose
+
+ Differentiation
+ -6350 63500 Engagement will provide a number of different resources to enable differentiation .
+ Identify individual learners need from individual learning plan (ILA)
+
+ 0 0 Engagement will provide a number of different resources to enable differentiation .
+ Identify individual learners need from individual learning plan (ILA)
+
+ Session 1
+ -25400 121920 Quick verbal recap on last week. Power point presentation on testing ABS brake systems and components.
+ 0 0 Quick verbal recap on last week. Power point presentation on testing ABS brake systems and components.
+
+ Session 2
+ -25400 125095 Continue above and discuss workshop practical task on rig in workshop and live cars.
+
+ 0 0 Continue above and discuss workshop practical task on rig in workshop and live cars.
+
+ Session 3
+ -17145 107950 Workshop practical using live cars and include correct warning lamp and system testing.
+ 0 0 Workshop practical using live cars and include correct warning lamp and system testing .
+
+ Session 4
+ -17145 83185 Finish practical task and give feedback. Verbal Q&A session. Discuss today’s session.
+ 0 0 Finish practical task and give feedback. Verbal Q&A session. Discuss today’s session.
+
+ Challenge
+ -17145 90805 Learners to carry out independent research from various sources.
+ Learners to familiarise themselves with these systems on cars coming through their workshop.
+
+ 0 0 Learners to carry out independent research from various sources.
+ Learners to familiarise themselves with these systems on cars coming through their workshop.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

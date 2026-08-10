@@ -1,0 +1,66 @@
+Level 2 Automotive: Cooling and Lubrication Systems Initial Knowledge Assessment
+ Learner Name: ________________________________ Date: ________________________________
+ Section 1 – Health and Safety
+ 1. State one reason why it is important to wear gloves when handling coolant or engine oil.
+
+ 2. Explain why a cooling system should never be opened when the engine is hot.
+
+ 3. Describe two safe working practices to follow when draining coolant or oil from a vehicle.
+
+ 4. How should waste coolant and oil be disposed of safely and legally?
+
+ 5. Why is it important to clean up any spilled fluids immediately in the workshop?
+
+ Section 2 – Tools and Equipment
+ 6. Name two tools used to test a cooling system for leaks or pressure loss.
+
+ 7. Explain how a hydrometer or refractometer is used to test antifreeze strength.
+
+ 8. What instrument is used to measure oil pressure?
+
+ 9. Describe how a torque wrench should be used when refitting an oil drain plug or filter housing.
+
+ 10. Why must test equipment such as gauges and thermometers be regularly calibrated?
+
+ Section 3 – Components and Operation
+ 11. Describe the main function of the engine cooling system.
+
+ 12. Explain how the thermostat controls engine temperature.
+
+ 13. What is the role of the water pump in the cooling system?
+
+ 14. Name three common components found in an engine lubrication system.
+
+ 15. Explain the difference between mineral oil and synthetic oil.
+
+ 16. What does SAE stand for and what does it measure?
+
+ 17. State the three main purposes of antifreeze in a cooling system.
+
+ 18. Explain how heat is transferred from the engine to the atmosphere through the cooling system.
+
+ 19. Describe the flow of oil through a lubrication system from sump to engine components.
+
+ 20. Why is oil filtration important for engine performance and life?
+
+ Section 4 – Testing and Inspection
+ 21. Explain how to perform a cooling system pressure test safely.
+
+ 22. What could low oil pressure indicate during testing?
+
+ 23. Describe two signs that coolant contamination may be present in the lubrication system.
+
+ 24. What checks should be carried out after refilling a cooling system?
+
+ 25. Explain why the engine must be run and rechecked after coolant or oil replacement.
+
+ Section 5 – Advanced Testing and Fault Diagnosis
+ 26. State two possible causes and two signs of oil contamination in an engine.
+
+ 27. Explain why it is important to use the correct coolant type (e.g., OAT, HOAT, or IAT).
+
+ 28. Describe how a thermostat can be tested and when it should be replaced.
+
+ 29. Explain how to check electric cooling fan operation and temperature sensor function.
+
+ 30. List three common causes and three potential effects of engine overheating.

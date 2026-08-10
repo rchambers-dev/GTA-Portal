@@ -1,0 +1,18 @@
+﻿[
+    {
+        "relativePath":  "G05 Basic Steering and Suspension\\Resources\\Power Steering and EPS.ppt",
+        "hash":  "dd715a15145eb27a147adf66e7af2cee0ff47e8fa5676a965edc943ed7e5fb68",
+        "status":  "EXTRACTED",
+        "slides":  15,
+        "chars":  4344,
+        "path":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\k10__G05_Basic_Steering_and_Suspension_Resources_Power_Steering_and_EPS.ppt.txt"
+    },
+    {
+        "relativePath":  "G11 Advance Steering and Suspension\\Resources\\Electronic Steering Systems.ppt",
+        "hash":  "b316b7696abb29751d19dc029594e9df005ca754bdf0a22075c3b6bba138d6af",
+        "status":  "EXTRACTED",
+        "slides":  19,
+        "chars":  8607,
+        "path":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\k10__G11_Advance_Steering_and_Suspension_Resources_Electronic_Steering_Systems.ppt.txt"
+    }
+]

@@ -1,0 +1,312 @@
+SOURCE: G02 Electric Hybrid Awareness\Resources\Features of Hybrid Vehicles.ppt
+HASH: b956dd2a00140f66bee5813f27342993d71c1858b2b08829f904bae54fdaf085
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Features of Hybrid Vehicles
+
+explore some of the features of hybrid vehicles
+
+Next >
+
+===== SLIDE 2 =====
+Introduction
+
+Next >
+
+A hybrid vehicle contains two or more sources of power.  EEV means an Enhanced Environmentally Friendly Vehicle.
+
+Hybrid vehicles have several features designed to produce lower CO2 emissions and better fuel economy.
+
+Features of hybrid vehicles include stop-start technology, boosting, and regenerative braking.   What is a PHEV, as opposed to a HEV?4 main parts include the: Battery pack, Inverter unit, AC traction Motor and the Combustion Engine.
+
+Engine
+
+BatteryPack
+
+AC traction motor
+
+Invertor
+
+===== SLIDE 3 =====
+Engine
+
+Battery
+
+Advantages of Hybrid Vehicles             Why are some cables Orange?
+
+Next >
+
+There are several reasons why hybrid vehicles use less fuel and produce less emissions:
+
+The hybrid engine is smaller than a conventional engine.
+
+The engine switches off when the vehicle stops.
+
+The electric motor is solely used during inefficient parts of the drive cycle.
+
+Hybrid Engine
+
+Diesel Engine
+
+Stop-Start Technology
+
+Electric traction motor
+
+Generator
+
+===== SLIDE 4 =====
+Advantages of Hybrid Vehicles
+
+Next >
+
+They use regenerative braking to recover energy that is normally wasted during braking.
+
+They have complex microprocessor systems to ensure both power sources are working in the most efficient way.
+
+Hybrid vehicles have these advantages:
+
+Engine
+
+Battery
+
+Regenerativebraking system
+
+Electric traction motor
+
+Generator
+
+===== SLIDE 5 =====
+Disadvantages of Hybrid Vehicles
+
+Next >
+
+Hybrid vehicles have several disadvantages compared to conventional vehicles:
+
+They are more expensive to manufacture.
+
+They are heavier, because they contain a large battery pack and an electric motor.
+
+Engine
+
+Battery
+
+Regenerativebraking system
+
+quinet
+
+$
+
+Electric traction motor
+
+Generator
+
+Large Battery Pack
+
+Electric Motor
+
+===== SLIDE 6 =====
+Disadvantages of Hybrid Vehicles
+
+Next >
+
+Other disadvantages of hybrid vehicles:
+
+They are more complex, so they are often more difficult and expensive to repair.
+
+The battery pack has limited life, it is expensive to replace, and there are high voltage safety issues.
+
+Engine
+
+Battery
+
+Regenerativebraking system
+
+quinet
+
+$
+
+oskay
+
+Electric traction motor
+
+Generator
+
+===== SLIDE 7 =====
+Stop-Start Technology
+
+Next >
+
+Modern engines used in hybrid vehicles often have the alternator and the starter motor combined into a single compact unit.
+
+The engine stops when the vehicle stops, for example, at a red light.
+
+This reduces the amount of fuel used.
+
+In some vehicles the engine also stops during coasting and braking, reducing fuel use further.
+
+Raymond Brown
+
+===== SLIDE 8 =====
+Stop-Start Technology
+
+Next >
+
+The engine can be restarted by either releasing the brake, depressing the clutch, or depressing the accelerator.
+
+The battery power is used through the alternator/starter to re-start the engine.
+
+Over 40 % of new vehicles incorporate stop-start technology as an easy and cost effective way to make savings in both fuel use and emissions.
+
+Engine
+
+Battery
+
+Electric traction motor
+
+Generator
+
+===== SLIDE 9 =====
+Boosting
+
+Next >
+
+Both mild hybrids and full hybrids are able to boost the drive capability when accelerating or operating under load.
+
+Mild hybrids boost the conventional engine  with the electric motor.
+
+Full hybrids boost the electric motor with the conventional engine.
+
+In both cases, the microprocessor system determines the most efficient configuration for the conditions.
+
+Engine
+
+Battery
+
+Electric traction motor
+
+Generator
+
+===== SLIDE 10 =====
+Regenerative Braking
+
+Next >
+
+Conventional vehicles are fitted with hydraulic brakes.
+
+When the brakes are applied, the vehicle converts the kinetic energy to heat.
+
+This heat is wasted because it heats up the surrounding atmosphere.
+
+Hybrid and electric vehicles are fitted with regenerative brakes.
+
+Engine
+
+Battery
+
+Electric traction motor
+
+Generator
+
+Regenerativebraking system
+
+Hydraulic Brake System
+
+===== SLIDE 11 =====
+Regenerative Braking
+
+Next >
+
+Regenerative braking uses an electric motor as a generator to capture the kinetic energy, charge the battery, and slow the vehicle.
+
+The electric motor is reconfigured by the microprocessor to become a generator.
+
+In some vehicles, regenerative braking can also be activated when the gas pedal is released, or when a vehicle is traveling downhill.
+
+Engine
+
+Battery
+
+Electric traction motor
+
+Generator
+
+Regenerativebraking system
+
+The regen braking force is controlled by how hard you press the brake pedal transmitter.
+
+===== SLIDE 12 =====
+Question 1
+
+Next >
+
+A)	It recovers the potential energy of the vehicle to charge the battery
+
+B)	It is fitted to all new vehicles
+
+C)	It can recover energy when the vehicle is going downhill
+
+D)	The generator works as an electric motor during regenerative braking
+
+Which statement is true about regenerative braking?
+
+===== SLIDE 13 =====
+Question 1
+
+It is fitted to about 40 % of new vehicles to recover the kinetic energy of the vehicle, which can include when the vehicle is going downhill. An electric motor functions as a generator during the process.
+
+Next >
+
+A)	It recovers the potential energy of the vehicle to charge the battery
+
+B)	It is fitted to all new vehicles
+
+C)	It can recover energy when the vehicle is going downhill
+
+D)	The generator works as an electric motor during regenerative braking
+
+Which statement is true about regenerative braking?
+
+===== SLIDE 14 =====
+A)	Its electric motor is connected to an extra battery pack
+
+B)	The conventional engine cuts in to boost the electric motor
+
+C) The electric motor cuts in to boost the conventional motor
+
+Question 2
+
+Next >
+
+How does a full hybrid vehicle get a boost during acceleration?
+
+D) The full hybrid does not need to do anything to get a boost
+
+===== SLIDE 15 =====
+Question 2
+
+The full hybrid runs mainly on its electric motor and uses its conventional engine to boost the power when accelerating or operating under a load, such as going uphill.
+
+Next >
+
+A)	Its electric motor is connected to an extra battery pack
+
+B)	The conventional engine cuts in to boost the electric motor
+
+C) The electric motor cuts in to boost the conventional motor
+
+How does a full hybrid vehicle get a boost during acceleration?
+
+D) The full hybrid does not need to do anything to get a boost
+
+===== SLIDE 16 =====
+Summary
+
+some of the features of hybrid vehicles
+
+In this presentation you have seen:
+
+End
+

@@ -1,0 +1,238 @@
+SOURCE: G03 Wheels and Tyres\Resources\Tyre Inspection and Repair.ppt
+HASH: 0117421614b4bcb369fbde69d8ab90bba93f68459025f6ae93649168aa695e16
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Tyre Inspection and Repair
+
+identify the types of puncture damage to tyres
+
+Next >
+
+identify when to recommend repair or replacement
+
+===== SLIDE 2 =====
+Introduction
+
+A vehicle must not be driven with a flat tyre, otherwise the wheel and tyre assembly may be damaged.
+
+Knowing how to repair a tyre is an important skill.
+
+Next >
+
+Repair
+
+Sean MacEntee
+
+Replace
+
+Charles Williams
+
+If the tyre fails to hold air after it is pumped up, it must be repaired or replaced.
+
+Recognising when a tyre must be replaced is even more important.
+
+===== SLIDE 3 =====
+Almost any sharp object left on the road can cause a puncture.
+
+General guidelines allow the repair of punctures of up to 6.4 mm in diameter, in a tyre's tread area.
+
+Tyre Damage
+
+Next >
+
+6.4 mm
+
+
+
+û
+
+Larger tread punctures, and punctures to the shoulder and sidewall areas, should not be repaired. Ensure you follow BS159 for repairs!
+
+This includes punctures caused by small nails and screws.
+
+===== SLIDE 4 =====
+Next >
+
+The manufacturer has no control over the damage caused by a puncture or the quality of the repair.
+
+Speed Rating of Damaged Tyres
+
+The repaired tyre should therefore be treated as a non-speed rated tyre.
+
+If a speed rated tyre is repaired, the manufacturer will no longer confirm that it is capable of high speeds.
+
+When a tyre is punctured, its structure is compromised.
+
+===== SLIDE 5 =====
+Next >
+
+Continuing to drive on a tyre with a ‘slow’ leak may allow moisture to seep around the sharp object and into the tyre.
+
+This will make it less likely that the tyre can be repaired properly.
+
+‘Slow’ Punctures
+
+If moisture reaches the internal steel and fabric cords used to reinforce the tyre, it may cause rust and loss of strength.
+
+Sean MacEntee
+
+Rust
+
+===== SLIDE 6 =====
+Next >
+
+The damage the object caused as it punctured the tyre must be evaluated.
+
+An airtight seal of the tyre's inner liner must be re-established.
+
+Three Tyre Repair Considerations
+
+The path the object took through the tyre must be completely filled.
+
+A ‘mushroom’ shaped patch and plug combination repair is generally considered to be the best method of repairing punctured steel belted radial tyres.
+
+‘Mushroom’ patch and plug
+
+===== SLIDE 7 =====
+Class discussion time!Why should we re balance and not just mark the valve?What is BS159 and have we followed it?   (google it)If a run flat, should it be repaired?How old is the tyre?                   Is it safe to repair?What are the DVSA MOT manual guidelines on what is deemed road worthy or not? Have a look on the DVSA manual.
+
+===== SLIDE 8 =====
+A)	Fill the path the object took through the tyre
+
+B)	Ensure the stability of all the other tyres on the vehicle
+
+C)	Evaluate the damage the object has caused
+
+D)	Re-establish an airtight seal of the tyre’s inner liner
+
+Question 1
+
+Next >
+
+Which of the following steps is not a primary consideration when repairing a punctured tyre?
+
+===== SLIDE 9 =====
+A)	Fill the path the object took through the tyre
+
+B)	Ensure the stability of all the other tyres on the vehicle
+
+C)	Evaluate the damage the object has caused
+
+D)	Re-establish an airtight seal of the tyre’s inner liner
+
+Question 1
+
+Next >
+
+Which of the following steps is not a primary consideration when repairing a punctured tyre?
+
+The stability of the other tyres should be checked, as they may also have been damaged by road debris. However, the primary concern is to perform a thorough repair on the punctured tyre.
+
+===== SLIDE 10 =====
+Next >
+
+Before a repair is carried out, the tyre must be removed from its wheel for full inspection.
+
+Some objects that puncture a tyre may be long enough to cut the tyre's sidewall from the inside.
+
+Tyre Repair Guidelines
+
+Unless the inside of a tyre is inspected for hidden damage, there is a serious risk of repairing a weakened tyre.
+
+===== SLIDE 11 =====
+Next >
+
+Many different rubber compounds are used in a tyre.
+
+The inner liner uses a special rubber compound that has the ability to retain air.
+
+Tyre Repair Guidelines
+
+Once punctured it must be cleaned, buffed, cemented, patched, and coated, so it is once again able to retain air.
+
+Inner liner
+
+===== SLIDE 12 =====
+Next >
+
+To re-establish a watertight seal, the damaged area is ‘cleaned’ with a specially designed cutting drill.
+
+The drill removes rust, and sizes the area to accept the rubber stem of the ‘mushroom’ patch and plug.
+
+Tyre Repair Guidelines
+
+Cemented in place, the stem will bond with the tyre to help prevent external moisture from reaching the tyre's reinforcing cords.
+
+Stem
+
+===== SLIDE 13 =====
+A)	Increase the probability of performing an effective repair
+
+B)	Decrease the probability of performing an effective repair
+
+C)	Have no effect on performing an effective repair
+
+Question 2
+
+Next >
+
+Driving on a ‘slow’ puncture will do what?
+
+===== SLIDE 14 =====
+Question 2
+
+Next >
+
+Delaying the repair of a puncture will decrease the chance of making an effective repair, as additional damage may be caused.
+
+A)	Increase the probability of performing an effective repair
+
+B)	Decrease the probability of performing an effective repair
+
+C)	Have no effect on performing an effective repair
+
+Driving on a ‘slow’ puncture will do what?
+
+===== SLIDE 15 =====
+Next >
+
+Driving on an improperly repaired tyre is dangerous.
+
+If the vehicle is driven at high speeds, the tyre may suddenly fail, causing a loss of control.
+
+Tyre Failure
+
+The use of an inner tube as a substitute for a proper repair generates additional heat and should not be considered.
+
+It can further damage the tyre and allow its strength to deteriorate over time.
+
+===== SLIDE 16 =====
+Question 3
+
+Next >
+
+Would the manufacturer of a speed rated tyre guarantee the speed rating after a puncture repair has been performed on the tyre?Answer Yes or No.
+
+===== SLIDE 17 =====
+Question 3
+
+Next >
+
+Would the manufacturer of a speed rated tyre guarantee the speed rating after a puncture repair has been performed on the tyre?Answer Yes or No.
+
+No
+
+A repair to a speed rated tyre will void the guarantee, as the structure of the tyre has been compromised.
+
+===== SLIDE 18 =====
+Summary
+
+how to identify the types of puncture damage to tyres and recommend repair or replacement
+
+In this presentation you have seen:
+
+End
+

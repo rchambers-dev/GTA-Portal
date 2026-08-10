@@ -1,0 +1,318 @@
+{
+  "title": "AUTOCARE SHADOW BATCH R51-5 — FINAL 17 KSB COMMERCIAL / COMMUNICATION / BEHAVIOUR REVIEW",
+  "status": "SHADOW_ONLY_NOT_PROGRAMME_TRUTH",
+  "generatedAt": "2026-08-10",
+  "batch": "R51-5",
+  "mutatesProgrammeTruth": false,
+  "mutatesGoldenA": false,
+  "createsTrustedGoldenB": false,
+  "standardVersion": "ST0499 v1.3",
+  "ksbs": ["K22","K24","K25","K26","K27","K29","K30","K32","S17","S18","S19","S21","S22","S24","B2","B3","B4"],
+  "progress": {
+    "officialTotal": 64,
+    "previouslyAnalysed": 47,
+    "thisBatch": 17,
+    "richerEvidenceAnalysedAfterBatch": 64,
+    "remainingAfterBatch": 0
+  },
+  "r51_4LearningPreserved": [
+    "awareness ≠ full substantive teaching",
+    "practical competence ≠ proof of all underpinning theory",
+    "Gateway assessment cannot steal Primary ownership",
+    "later specialist reinforcement cannot automatically steal first substantive ownership",
+    "one subsystem cannot stand in for full official breadth",
+    "named technical components/methods must be evidenced explicitly where material"
+  ],
+  "methodologyDriftStopTriggered": false,
+  "dossiers": {
+    "K22": {
+      "officialRequirement": "Awareness of hydrogen powered vehicle technologies and principles of operation: storage and condition monitoring of fuel cells.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K22-C1", "claim": "Hydrogen powered vehicle technologies awareness / principles of operation", "teaching": { "status": "PRESENT_TOPIC_PLUS_RESOURCE", "confidence": "INFERRED_HIGH", "evidence": ["Block 9 title Emerging Technologies, Electric Vehicles and Hydrogen Awareness", "W94 EXPLICIT topic Hydrogen Systems Safety and Application", "Fuel Cells.ppt present in G2/G7 — empty excerpt EVIDENCE_VISIBILITY"] }, "practice": { "status": "AWARENESS_APPLICATION_THIN", "confidence": "INFERRED_MEDIUM", "evidence": ["B9 EV handover adjacent awareness — not hydrogen-specific competence"] }, "assessment": { "status": "WEAK_DEDICATED", "confidence": "INFERRED_LOW", "evidence": ["Block 9 LIR/SPR reflection mechanisms"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "CLEAR_B9", "confidence": "EXPLICIT", "evidence": ["Week 94 Block 9 EXPLICIT"] } },
+        { "id": "K22-C2", "claim": "Storage and condition monitoring of fuel cells (named)", "teaching": { "status": "NOT_FOUND_BY_NAME", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No 'storage' / 'condition monitoring' of fuel cells in extracted LP bodies; Fuel Cells.ppt unextracted"] }, "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "DEPTH_OR_VISIBILITY", "confidence": "INFERRED_HIGH", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "PARTIAL_AWARENESS", "practice": "WEAK", "assessment": "WEAK", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "CLEAR_B9" },
+      "ownership": { "coverageJudgementFirst": "PARTIAL", "status": "CLEAR_PRIMARY", "firstSubstantiveTeachingHome": "Block 9 hydrogen cluster (W94) + Fuel Cells.ppt if extract confirms", "forcePrimary": false, "weekSession": "W94 EXPLICIT Block 9" },
+      "assuranceClassifications": ["GOOD / ADEQUATE only as high-level hydrogen awareness intent", "TEACHING_DEPTH_GAP / POSSIBLE_CURRICULUM_GAP on fuel-cell storage & condition monitoring", "EVIDENCE_VISIBILITY_GAP on Fuel Cells.ppt"],
+      "shadowDirection": "KEEP_PRIMARY_B9_WITH_DEPTH_AND_VISIBILITY",
+      "confidenceOverall": "MEDIUM",
+      "goldenAComparedAfter": { "position": "PRIMARY_B9", "direction": "KEEP" }
+    },
+    "K24": {
+      "officialRequirement": "Principles of customer care: pre and post vehicle customer service, identifying customer and vehicle needs, how to handle challenging conversations.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K24-C1", "claim": "Identify customer and vehicle needs", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["G8 LP25 types of customers and individual needs"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["Companion S15 KEEP B2 practice"] }, "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 8.1 customer needs"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "G8_TO_B2", "confidence": "EXPLICIT", "evidence": ["W11 CS scenarios Block 2"] } },
+        { "id": "K24-C2", "claim": "Handle challenging conversations", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP28 deal with an unhappy customer workshop task; LP27 assess complaint/job requirements"] }, "practice": { "status": "PRESENT_ROLEPLAY", "confidence": "EXPLICIT", "evidence": ["LP28 role-play"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["Oral/workshop"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": ["Named phrase 'challenging conversations' absent — unhappy-customer is accepted adjacency, not over-claim"] } },
+        { "id": "K24-C3", "claim": "Pre and post vehicle customer service", "teaching": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["CS principles and handover contexts (B9 EV handover adjacent); dedicated pre/post vehicle customer-service pedagogy not named"] }, "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Customer documentation/handover tasks"] }, "assessment": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "DEPTH", "confidence": "INFERRED_MEDIUM", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "STRONG_CORE_PARTIAL_PRE_POST", "practice": "STRONG", "assessment": "ADEQUATE", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "CLEAR_B2" },
+      "ownership": { "coverageJudgementFirst": "ADEQUATELY_COVERED", "status": "CLEAR_PRIMARY", "firstSubstantiveTeachingHome": "G8 LP25–28 → Block 2", "forcePrimary": false },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED", "POSSIBLE_TEACHING_DEPTH_GAP on explicit pre/post vehicle customer-service framing"],
+      "shadowDirection": "KEEP_PRIMARY_B2",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B2", "direction": "KEEP" },
+      "antiDriftNote": "Not credited from generic CS wording alone — componentised vs S15 companion"
+    },
+    "K25": {
+      "officialRequirement": "Business operation considerations: efficiency, customer satisfaction, competitiveness, minimising risks to operation, and ethical issues.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K25-C1", "claim": "Customer satisfaction / CS contribution to business", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP25 how good customer service can help a business"] }, "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["CS scenarios"] }, "assessment": { "status": "FORMATIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "G8_EARLY", "confidence": "EXPLICIT", "evidence": [] } },
+        { "id": "K25-C2", "claim": "Ethical issues", "teaching": { "status": "BLOCK_TOPIC_INTENT", "confidence": "INFERRED_MEDIUM", "evidence": ["W78 EXPLICIT topic Quotations, authorisation chains and ethical upsell practice — template aims; later reinforce"] }, "practice": { "status": "INTENT_UNVERIFIED_BODY", "confidence": "INFERRED_LOW", "evidence": [] }, "assessment": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "LATER_B8_NOT_FULL_K25", "confidence": "EXPLICIT_WEEK", "evidence": ["Do not treat one ethical-upsell week as full business-operations breadth"] } },
+        { "id": "K25-C3", "claim": "Efficiency / competitiveness / minimising operational risks", "teaching": { "status": "NOT_FOUND_AS_DEDICATED_BODY", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No dedicated teaching of efficiency/competitiveness/operational-risk minimisation beyond CS/quote adjacency"] }, "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNMAPPED_COMPONENTS", "confidence": "INFERRED_HIGH", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "PARTIAL", "practice": "WEAK_TO_PARTIAL", "assessment": "WEAK", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "DISTRIBUTED_THIN" },
+      "ownership": { "coverageJudgementFirst": "PARTIAL", "status": "DISTRIBUTED_NOT_FORCED", "firstSubstantiveTeachingHome": "G8 LP25 business-benefit fragment; not full K25", "doNotStealFrom": ["W78 ethical upsell as Primary for whole K25", "KSB tags"], "forcePrimary": false, "goldenAConflict": "Golden A Primary B6 overstates structural home relative to thin/partial substance" },
+      "assuranceClassifications": ["CHANGE_CLASSIFICATION_TO_PARTIAL vs any total-gap assumption", "TEACHING_DEPTH_GAP / CURRICULUM_GAP on efficiency, competitiveness, operational-risk components", "STRUCTURAL_MAPPING_GAP / DISTRIBUTED"],
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL_DISTRIBUTED",
+      "confidenceOverall": "MEDIUM_HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B6", "direction": "CHANGE_CLASSIFICATION" }
+    },
+    "K26": {
+      "officialRequirement": "Vehicle parts costings and procurement: customer, organisation and vehicle needs.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K26-C1", "claim": "Parts costings against customer/organisation/vehicle needs", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["G8 LP27 repair times/sales packages", "G8 Task Sheet 1 supplier parts pricing for service"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["Task Sheet 1; companion S16 quote practice"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["Task Sheet / oral"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "G8_THEN_B3", "confidence": "EXPLICIT", "evidence": ["W28 estimates Block 3; W38 quotations reinforce"] } },
+        { "id": "K26-C2", "claim": "Procurement / parts sourcing principles", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["Parts Task Help Sheet booking/checking invoices vs system; Task Sheet dual-supplier compare"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["Parts Task Help Sheet Parts 1–3"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["Explain issues to assessor"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "OWNERSHIP_VS_GOLDEN_A_B2", "confidence": "EXPLICIT", "evidence": ["First substantive with S16 → Block 3 estimates home, not Block 2"] } }
+      ],
+      "axisRollup": { "teaching": "STRONG", "practice": "STRONG", "assessment": "FORMATIVE_ADEQUATE", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "OWNERSHIP_REVIEW_VS_B2" },
+      "ownership": { "coverageJudgementFirst": "STRONGLY_COVERED", "status": "CLEAR_PRIMARY_CANDIDATE_B3", "firstSubstantiveTeachingHome": "G8 parts/costings → W28 Block 3", "forcePrimary": false, "goldenAConflict": "Golden A Primary B2; first estimates/stock commercial intensify is Block 3 (aligns S16 KEEP B3)" },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED", "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2"],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B3_WITH_G8",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B2", "direction": "CHANGE_OWNERSHIP" }
+    },
+    "K27": {
+      "officialRequirement": "Materials, resources, and stock storage used in automotive industry. Stock and resource management processes.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K27-C1", "claim": "Stock / resource management processes (rotation, reorder, traceability)", "teaching": { "status": "PRESENT_TOPIC_INTENT", "confidence": "INFERRED_HIGH", "evidence": ["W29 EXPLICIT topic Stock rotation, reorder points and traceability"] }, "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["G8 Task Sheet labelled STOCK CONTROL (parts/supplier pricing) — adjacency, not full stock-process proof"] }, "assessment": { "status": "WEAK_DEDICATED", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "CLEAR_B3_W29", "confidence": "EXPLICIT", "evidence": ["Week 29 Block 3 — Golden A B2 conflict"] } },
+        { "id": "K27-C2", "claim": "Materials/resources/stock storage", "teaching": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Parts storage/booking via Parts Task Help Sheet; dedicated materials-storage theory thinner"] }, "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["Parts Task check in / book into system"] }, "assessment": { "status": "FORMATIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "ADEQUATE_TOPIC_PLUS_PARTIAL_BODY", "practice": "PARTIAL_TO_ADEQUATE", "assessment": "WEAK_TO_FORMATIVE", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "OWNERSHIP_REVIEW_VS_B2" },
+      "ownership": { "coverageJudgementFirst": "ADEQUATELY_COVERED_WITH_DEPTH_NOTE", "status": "CLEAR_PRIMARY_CANDIDATE_B3", "firstSubstantiveTeachingHome": "W29 Block 3 (+ G8 parts/stock control adjacency)", "forcePrimary": false, "goldenAConflict": "Golden A Primary B2; stock teaching week is Block 3" },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED on stock-process intent", "POSSIBLE_TEACHING_DEPTH_GAP on full stock/resource management body beyond topic intent", "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2"],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B3",
+      "confidenceOverall": "MEDIUM_HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B2", "direction": "CHANGE_OWNERSHIP" },
+      "antiDriftNote": "Parts-ordering adjacency ≠ full stock management; W87 later reinforce not Primary"
+    },
+    "K29": {
+      "officialRequirement": "Principles of sales processes.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K29-C1", "claim": "Sales process principles / sales techniques", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP27 construct product sales/promotional packages", "G8 LP28 recap sales techniques"] }, "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["LP27/28 exercises"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["Oral/written revision"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "G8_TO_B2_CLUSTER", "confidence": "EXPLICIT", "evidence": ["Golden A B3 later than G8 first teaching"] } },
+        { "id": "K29-C2", "claim": "Named process models (features & benefits / consultative / closing etc.)", "teaching": { "status": "NOT_FOUND_BY_NAME", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["features and benefits / consultative / mini closing / show and tell = 0 catalogue hits"] }, "practice": { "status": "NOT_FOUND_NAMED", "confidence": "UNRESOLVED", "evidence": [] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "DEPTH", "confidence": "INFERRED_HIGH", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "ADEQUATE_GENERIC_SALES_PARTIAL_NAMED", "practice": "ADEQUATE", "assessment": "FORMATIVE", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "OWNERSHIP_REVIEW_VS_B3" },
+      "ownership": { "coverageJudgementFirst": "PARTIAL_TO_ADEQUATE", "status": "CLEAR_PRIMARY_CANDIDATE_B2_G8", "firstSubstantiveTeachingHome": "G8 LP27–28", "forcePrimary": false, "goldenAConflict": "Golden A Primary B3; first sales teaching G8 → Block 2 CS/sales cluster" },
+      "assuranceClassifications": ["GOOD / ADEQUATE on generic sales techniques", "TEACHING_DEPTH_GAP on named sales-process models", "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B3"],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B2_G8_WITH_DEPTH",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "CHANGE_OWNERSHIP" }
+    },
+    "K30": {
+      "officialRequirement": "Team working principles.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K30-C1", "claim": "Team working principles (deliberate teaching)", "teaching": { "status": "THIN_MENTION_ONLY", "confidence": "EXPLICIT_METHODOLOGY", "evidence": ["FS06 occupational relevance lists teamwork — not a principles teaching body"] }, "practice": { "status": "EMBEDDED_INFERRED", "confidence": "INFERRED_MEDIUM", "evidence": ["Collaborative workshop practicals inferred — not accepted alone as principles teaching"] }, "assessment": { "status": "REFLECTION_MECHANISM", "confidence": "INFERRED_MEDIUM", "evidence": ["LIR/SPR may capture team behaviours — filled examples not supplied"] }, "workplaceApplication": { "status": "MECHANISM_REFERENCED", "confidence": "INFERRED_MEDIUM", "evidence": ["Mentor fields"] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNRESOLVED_HOME", "confidence": "INFERRED_HIGH", "evidence": ["Golden A B3 not evidenced as first deliberate teaching"] } }
+      ],
+      "axisRollup": { "teaching": "WEAK", "practice": "EMBEDDED_WEAK", "assessment": "MECHANISM_ONLY", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "UNRESOLVED" },
+      "ownership": { "coverageJudgementFirst": "INSUFFICIENT_FOR_FULL_COVERAGE", "status": "UNRESOLVED_NOT_FORCED", "firstSubstantiveTeachingHome": "Not established — FS06 mention insufficient", "forcePrimary": false },
+      "assuranceClassifications": ["CURRICULUM_GAP / TEACHING_DEPTH_GAP on team-working principles", "POSSIBLE_EVIDENCE_VISIBILITY_GAP if off-pack pastoral team materials exist", "DISTRIBUTED / OWNERSHIP ISSUE"],
+      "shadowDirection": "KEEP_GAP",
+      "confidenceOverall": "HIGH_ON_ABSENCE_OF_DELIBERATE_PRINCIPLES_TEACHING",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "CHANGE_CLASSIFICATION_TO_GAP" },
+      "antiDriftNote": "Tag/mention ≠ principles teaching; template mentor fields ≠ coverage"
+    },
+    "K32": {
+      "officialRequirement": "Verbal communication techniques. Giving and receiving information. Matching style to audience.",
+      "kind": "knowledge",
+      "components": [
+        { "id": "K32-C1", "claim": "Verbal communication techniques / giving and receiving information", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["G8 LP26 methods of communication; situations and best-suited methods; body language"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["LP26 objectives; LP28 customer conversations; Effective Customer Service soft skills"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["Oral Q&A"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "G8_TO_B2", "confidence": "EXPLICIT", "evidence": ["Golden A B5 later — ownership review"] } },
+        { "id": "K32-C2", "claim": "Matching style to audience", "teaching": { "status": "PRESENT_ADJACENT", "confidence": "INFERRED_HIGH", "evidence": ["LP26: communication methods best suited to different CS situations; Effective CS warns against mismatched register"] }, "practice": { "status": "PRESENT", "confidence": "INFERRED_HIGH", "evidence": ["Role-play adaptation"] }, "assessment": { "status": "FORMATIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": ["Literal phrase 'matching style' not required if substance evidenced"] } }
+      ],
+      "axisRollup": { "teaching": "STRONG", "practice": "STRONG", "assessment": "FORMATIVE_ADEQUATE", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "OWNERSHIP_REVIEW_VS_B5" },
+      "ownership": { "coverageJudgementFirst": "STRONGLY_COVERED", "status": "CLEAR_PRIMARY_CANDIDATE_B2", "firstSubstantiveTeachingHome": "G8 LP26", "forcePrimary": false, "goldenAConflict": "Golden A Primary B5; first substantive G8 → Block 2" },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED", "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B5"],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B2",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B5", "direction": "CHANGE_OWNERSHIP" }
+    },
+    "S17": {
+      "officialRequirement": "Apply procedures for stock and parts storage: ordering, checking and stock rotation.",
+      "kind": "skills",
+      "components": [
+        { "id": "S17-C1", "claim": "Ordering and checking parts/stock", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["Parts Task Help Sheet order/book/check; W29 stock topic"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["Parts Task Help Sheet; G8 Task Sheet"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["Assessor explanation"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "G8_B3", "confidence": "EXPLICIT", "evidence": [] } },
+        { "id": "S17-C2", "claim": "Stock rotation", "teaching": { "status": "PRESENT_TOPIC_INTENT", "confidence": "INFERRED_HIGH", "evidence": ["W29 EXPLICIT Stock rotation, reorder points and traceability"] }, "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Activity body template — practice not independently verified beyond topic"] }, "assessment": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "B3_NOT_B2", "confidence": "EXPLICIT", "evidence": ["Week 29 Block 3"] } }
+      ],
+      "axisRollup": { "teaching": "ADEQUATE", "practice": "ADEQUATE_ON_ORDER_CHECK_PARTIAL_ROTATION", "assessment": "FORMATIVE", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "OWNERSHIP_REVIEW_VS_B2" },
+      "ownership": { "coverageJudgementFirst": "ADEQUATELY_COVERED", "status": "CLEAR_PRIMARY_CANDIDATE_B3", "firstSubstantiveTeachingHome": "G8 parts procedures + W29", "forcePrimary": false, "goldenAConflict": "Golden A Primary B2; first stock-rotation intensify Block 3" },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED", "POSSIBLE_PRACTICE_GAP on verified stock-rotation activity body", "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2"],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B3",
+      "confidenceOverall": "MEDIUM_HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B2", "direction": "CHANGE_OWNERSHIP" }
+    },
+    "S18": {
+      "officialRequirement": "Apply organisational sales processes. For example, show and tell, features and benefits, consultative selling, mini closing and closing.",
+      "kind": "skills",
+      "components": [
+        { "id": "S18-C1", "claim": "Apply generic sales / promotional packaging practices", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G8 LP27 sales packages; LP28 sales techniques recap"] }, "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["LP27/28; companion S15 sales component"] }, "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "G8_EARLY_NOT_B8", "confidence": "EXPLICIT", "evidence": ["Golden A B8 is late reinforce at best"] } },
+        { "id": "S18-C2", "claim": "Named processes: show and tell / features and benefits / consultative / mini closing / closing", "teaching": { "status": "NOT_FOUND_BY_NAME", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["0 hits for named process terms in catalogue"] }, "practice": { "status": "NOT_FOUND_NAMED", "confidence": "UNRESOLVED", "evidence": ["One quotation/sales-package exercise ≠ full named-process competence"] }, "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "MATERIAL_NAMED_GAP", "confidence": "INFERRED_HIGH", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "PARTIAL", "practice": "PARTIAL", "assessment": "WEAK_ON_NAMED", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "OWNERSHIP_AND_DEPTH" },
+      "ownership": { "coverageJudgementFirst": "PARTIAL", "status": "PRIMARY_CANDIDATE_G8_B2_NOT_B8", "firstSubstantiveTeachingHome": "G8 sales cluster (not Block 8)", "forcePrimary": false, "goldenAConflict": "Golden A Primary B8 far later than first sales teaching" },
+      "assuranceClassifications": ["TEACHING_DEPTH_GAP / CURRICULUM_GAP on named sales-process methodologies", "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B8", "GOOD only on generic sales-package adjacency — not full S18"],
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL_AND_OWNERSHIP_TO_B2_G8",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B8", "direction": "CHANGE_OWNERSHIP_AND_CLASSIFICATION" },
+      "antiDriftNote": "One quotation/sales package ≠ features&benefits/consultative/closing competence"
+    },
+    "S19": {
+      "officialRequirement": "Apply team working principles.",
+      "kind": "skills",
+      "components": [
+        { "id": "S19-C1", "claim": "Apply team working in workshop activity", "teaching": { "status": "THIN", "confidence": "EXPLICIT_METHODOLOGY", "evidence": ["FS06 teamwork mention only"] }, "practice": { "status": "EMBEDDED_INFERRED", "confidence": "INFERRED_MEDIUM", "evidence": ["Paired/group practicals common — not deliberate S19 assessment"] }, "assessment": { "status": "REFLECTION_MECHANISM", "confidence": "INFERRED_MEDIUM", "evidence": ["LIR/SPR"] }, "workplaceApplication": { "status": "MECHANISM_REFERENCED", "confidence": "INFERRED_MEDIUM", "evidence": ["Mentor"] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNRESOLVED", "confidence": "INFERRED_HIGH", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "WEAK", "practice": "EMBEDDED_WEAK", "assessment": "MECHANISM_ONLY", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "UNRESOLVED" },
+      "ownership": { "coverageJudgementFirst": "INSUFFICIENT", "status": "UNRESOLVED_NOT_FORCED", "firstSubstantiveTeachingHome": "Not established", "forcePrimary": false },
+      "assuranceClassifications": ["CURRICULUM_GAP / PRACTICE_GAP on deliberate team-working application evidence", "POSSIBLE_EVIDENCE_VISIBILITY_GAP"],
+      "shadowDirection": "KEEP_GAP",
+      "confidenceOverall": "HIGH_ON_INSUFFICIENCY",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "CHANGE_CLASSIFICATION_TO_GAP" }
+    },
+    "S21": {
+      "officialRequirement": "Communicate with others verbally, for example customers, suppliers, and colleagues.",
+      "kind": "skills",
+      "components": [
+        { "id": "S21-C1", "claim": "Verbal communication with customers/colleagues", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["G8 LP26 communication methods; CS role-plays"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["LP28 unhappy customer; oral objectives across G8; companion K32"] }, "assessment": { "status": "FORMATIVE_PLUS_CEA_ORAL", "confidence": "EXPLICIT", "evidence": ["CEA oral components; G8 oral Q&A"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": ["Gateway discussion elements — not Primary"] }, "structuralAccounting": { "status": "G8_B2_NOT_B5", "confidence": "EXPLICIT", "evidence": [] } },
+        { "id": "S21-C2", "claim": "Verbal communication with suppliers", "teaching": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Parts/supplier tasks imply supplier dialogue — dedicated supplier communication pedagogy thinner"] }, "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Parts Task explain issue to assessor (proxy)"] }, "assessment": { "status": "PARTIAL", "confidence": "INFERRED_LOW", "evidence": [] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "DEPTH", "confidence": "INFERRED_MEDIUM", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "STRONG_CORE", "practice": "STRONG", "assessment": "ADEQUATE", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER", "structuralAccounting": "OWNERSHIP_REVIEW_VS_B5" },
+      "ownership": { "coverageJudgementFirst": "STRONGLY_COVERED", "status": "CLEAR_PRIMARY_CANDIDATE_B2", "firstSubstantiveTeachingHome": "G8 LP26", "forcePrimary": false, "goldenAConflict": "Golden A Primary B5; first teaching G8 → Block 2" },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED", "POSSIBLE_TEACHING_DEPTH_GAP on supplier-specific verbal communication", "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B5"],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B2",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B5", "direction": "CHANGE_OWNERSHIP" }
+    },
+    "S22": {
+      "officialRequirement": "Communicate in writing, for example with internal and external customers, colleagues, and managers.",
+      "kind": "skills",
+      "components": [
+        { "id": "S22-C1", "claim": "Written communication (job cards, reports, handover)", "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS10 technical documentation, job cards, handover — companion to ratified K33 KEEP B1 and S14 CHANGE→B1"] }, "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS10 practice; CEA records; documentation weeks"] }, "assessment": { "status": "STRONG_EMBEDDED", "confidence": "EXPLICIT", "evidence": ["CEA assessment records; FS10"] }, "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] }, "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "EXPLICIT", "evidence": ["GW documentation requirements"] }, "structuralAccounting": { "status": "CLEAR_B1_FS10", "confidence": "EXPLICIT", "evidence": ["Week 10"] } }
+      ],
+      "axisRollup": { "teaching": "STRONG", "practice": "STRONG", "assessment": "STRONG", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER", "structuralAccounting": "CLEAR_B1" },
+      "ownership": { "coverageJudgementFirst": "STRONGLY_COVERED", "status": "CLEAR_PRIMARY", "firstSubstantiveTeachingHome": "FS10 Week 10", "forcePrimary": false },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED"],
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B1", "direction": "KEEP" }
+    },
+    "S24": {
+      "officialRequirement": "Complete and record learning and development activities.",
+      "kind": "skills",
+      "components": [
+        { "id": "S24-C1", "claim": "Complete and record L&D via programme instruments", "teaching": { "status": "PRESENT_VIA_INSTRUMENT_DESIGN", "confidence": "INFERRED_HIGH", "evidence": ["Block Learning Impact Records and Skills Progress Reviews deliberately require apprentice completion with mentor/trainer — programme-wide from early blocks"] }, "practice": { "status": "PRESENT_MECHANISM", "confidence": "EXPLICIT", "evidence": ["LIR/SPR artefacts across Blocks 1–10"] }, "assessment": { "status": "FORMATIVE_REFLECTION", "confidence": "EXPLICIT", "evidence": ["Distance-travelled scoring / reflection fields"] }, "workplaceApplication": { "status": "MECHANISM_REFERENCED_FILLED_UNSUPPLIED", "confidence": "INFERRED_HIGH", "evidence": ["Workplace mentor fields — filled examples not supplied (carry-forward request)"] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "EARLY_MECHANISM_NOT_ONLY_B10", "confidence": "EXPLICIT", "evidence": ["Golden A B10 is end-block emphasise; first record activity starts early"] } }
+      ],
+      "axisRollup": { "teaching": "ADEQUATE_INSTRUMENTAL", "practice": "ADEQUATE_MECHANISM", "assessment": "ADEQUATE_REFLECTION", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "OWNERSHIP_REVIEW_VS_B10" },
+      "ownership": { "coverageJudgementFirst": "ADEQUATELY_EVIDENCED_AS_SOFT_SKILL", "status": "CLEAR_PRIMARY_CANDIDATE_EARLY_DISTRIBUTED", "firstSubstantiveTeachingHome": "Early-block LIR/SPR instruments (not only Block 10)", "forcePrimary": false, "goldenAConflict": "Golden A Primary B10 over-localises a programme-wide recording practice" },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED on mechanism", "EVIDENCE_VISIBILITY_GAP on filled completed learner examples", "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B10"],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_EARLY_DISTRIBUTED_LIR_SPR",
+      "confidenceOverall": "MEDIUM_HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B10", "direction": "CHANGE_OWNERSHIP" },
+      "antiDriftNote": "Template presence alone insufficient without deliberate use design — LIR/SPR are explicitly structured completion instruments"
+    },
+    "B2": {
+      "officialRequirement": "Consider the impact on the environment when using resources and carrying out work.",
+      "kind": "behaviours",
+      "components": [
+        { "id": "B2-C1", "claim": "Environmental-impact behaviour in work", "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["Companion K4/S6 Block 3 environmental cluster; W30 environmental risk intent"] }, "practice": { "status": "STRONG_OBSERVED", "confidence": "EXPLICIT", "evidence": ["B3 Task 4 spill/waste control"] }, "assessment": { "status": "REFLECTION_PLUS_TASK", "confidence": "EXPLICIT", "evidence": ["Task 4 explanation; Block 3 LIR/SPR environmental awareness framing"] }, "workplaceApplication": { "status": "MECHANISM_REFERENCED", "confidence": "INFERRED_HIGH", "evidence": ["Mentor fields — filled examples not supplied"] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "CLEAR_B3", "confidence": "EXPLICIT", "evidence": [] } }
+      ],
+      "axisRollup": { "teaching": "ADEQUATE_FOR_BEHAVIOUR", "practice": "STRONG", "assessment": "ADEQUATE", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "CLEAR_B3" },
+      "ownership": { "coverageJudgementFirst": "ADEQUATELY_EVIDENCED", "status": "CLEAR_PRIMARY", "firstSubstantiveTeachingHome": "Block 3 environmental cluster", "forcePrimary": false },
+      "assuranceClassifications": ["GOOD / ADEQUATELY CONTROLLED"],
+      "shadowDirection": "KEEP_PRIMARY_B3",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B3", "direction": "KEEP" },
+      "antiDriftNote": "No technical CEA required; behaviour evidenced via task + reflection"
+    },
+    "B3": {
+      "officialRequirement": "Respond and adapt to changing work demands.",
+      "kind": "behaviours",
+      "components": [
+        { "id": "B3-C1", "claim": "Adapt to changing work demands (behaviour)", "teaching": { "status": "WEAK_DEDICATED", "confidence": "EXPLICIT_METHODOLOGY", "evidence": ["No deliberate behaviour LP on adapting to changing demands", "W62 Complex system inspection and defect prioritisation — adjacency only", "G11 'adaptive suspension' is technical topic — REJECTED as evidence"] }, "practice": { "status": "INFERRED_EMBEDDED", "confidence": "INFERRED_LOW", "evidence": ["Workshop prioritisation / mixed job demands inferred — not deliberate B3 evidence"] }, "assessment": { "status": "REFLECTION_MECHANISM_ONLY", "confidence": "INFERRED_MEDIUM", "evidence": ["LIR/SPR may capture adaptability — not explicit B3 teaching"] }, "workplaceApplication": { "status": "MECHANISM_REFERENCED", "confidence": "INFERRED_MEDIUM", "evidence": ["Mentor — filled examples not supplied"] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "UNRESOLVED_VS_B6", "confidence": "INFERRED_HIGH", "evidence": ["Golden A B6 not evidenced as deliberate home"] } }
+      ],
+      "axisRollup": { "teaching": "WEAK", "practice": "WEAK", "assessment": "MECHANISM_ONLY", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "UNRESOLVED" },
+      "ownership": { "coverageJudgementFirst": "INSUFFICIENT", "status": "UNRESOLVED_NOT_FORCED", "firstSubstantiveTeachingHome": "Not established", "doNotStealFrom": ["Adaptive suspension technical teaching", "KSB tags"], "forcePrimary": false },
+      "assuranceClassifications": ["CURRICULUM_GAP / TEACHING_DEPTH_GAP on deliberate adapt-to-demand behaviour", "POSSIBLE_EVIDENCE_VISIBILITY_GAP", "DISTRIBUTED / OWNERSHIP ISSUE"],
+      "shadowDirection": "KEEP_GAP",
+      "confidenceOverall": "HIGH_ON_INSUFFICIENCY",
+      "goldenAComparedAfter": { "position": "PRIMARY_B6", "direction": "CHANGE_CLASSIFICATION_TO_GAP" },
+      "antiDriftNote": "STOP-risk avoided: rejected adaptive-suspension false positive as systematic drift candidate"
+    },
+    "B4": {
+      "officialRequirement": "Seek learning and development opportunities, continual professional development.",
+      "kind": "behaviours",
+      "components": [
+        { "id": "B4-C1", "claim": "Seek L&D / CPD behaviour", "teaching": { "status": "PARTIAL_INSTRUMENTAL", "confidence": "INFERRED_MEDIUM", "evidence": ["LIR/SPR programme design expects reflection on progress; FS09 gap teaching addresses identified gaps — seeking CPD pedagogy thin"] }, "practice": { "status": "MECHANISM_PRESENT", "confidence": "EXPLICIT", "evidence": ["Completing LIR/SPR across blocks"] }, "assessment": { "status": "REFLECTION", "confidence": "EXPLICIT", "evidence": ["Skills Progress distance travelled"] }, "workplaceApplication": { "status": "MECHANISM_REFERENCED_FILLED_UNSUPPLIED", "confidence": "INFERRED_HIGH", "evidence": ["Mentor — filled examples not supplied"] }, "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] }, "structuralAccounting": { "status": "B10_ENDPOINT_WITH_EARLY_MECHANISM", "confidence": "INFERRED_HIGH", "evidence": ["Golden A B10 = end emphasise; behaviour starts earlier via instruments"] } }
+      ],
+      "axisRollup": { "teaching": "PARTIAL", "practice": "ADEQUATE_MECHANISM", "assessment": "ADEQUATE_REFLECTION", "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED", "gatewayEpaSupport": "WEAK", "structuralAccounting": "KEEP_B10_WITH_EARLY_SUPPORT" },
+      "ownership": { "coverageJudgementFirst": "PARTIAL_TO_ADEQUATE", "status": "CLEAR_PRIMARY_B10_ENDPOINT", "firstSubstantiveTeachingHome": "Programme LIR/SPR from early blocks; Block 10 capstone reinforce", "forcePrimary": false },
+      "assuranceClassifications": ["GOOD / ADEQUATE on recording/reflection mechanism", "TEACHING_DEPTH_GAP on seeking CPD opportunities pedagogy", "EVIDENCE_VISIBILITY_GAP on filled mentor examples"],
+      "shadowDirection": "KEEP_PRIMARY_B10_WITH_DEPTH",
+      "confidenceOverall": "MEDIUM",
+      "goldenAComparedAfter": { "position": "PRIMARY_B10", "direction": "KEEP" }
+    }
+  },
+  "relationshipEdges": [
+    { "id": "e_k22_teaches_w94", "ksb": "K22", "type": "TEACHES", "from": "res_lp_cf7e2c9880da", "basis": "INFERRED_HIGH", "provenance": "BLOCK", "block": 9, "week": 94, "note": "Topic intent Hydrogen Systems Safety — body truncated" },
+    { "id": "e_k22_supports_fuel_cells_ppt", "ksb": "K22", "type": "SUPPORTS", "from": "res_lm_e7921a6bc84c_61", "basis": "INFERRED_LOW", "provenance": "GROUP_G7", "block": null, "week": null, "note": "Unextracted — visibility" },
+    { "id": "e_k24_teaches_lp25", "ksb": "K24", "type": "TEACHES", "from": "res_lm_3ee3ae715686_67", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_k24_practises_lp28", "ksb": "K24", "type": "PRACTISES", "from": "res_lm_41f79b0608fd_70", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_k25_teaches_lp25_business", "ksb": "K25", "type": "TEACHES", "from": "res_lm_3ee3ae715686_67", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null, "note": "CS helps business — partial only" },
+    { "id": "e_k25_reinforces_w78", "ksb": "K25", "type": "REINFORCES", "from": "res_lp_c62f0f655271", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 8, "week": 78 },
+    { "id": "e_k26_teaches_tasksheet", "ksb": "K26", "type": "TEACHES", "from": "res_lm_ceb8402d6d74_73", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_k26_practises_parts_help", "ksb": "K26", "type": "PRACTISES", "from": "res_lm_b7c4d87f7f6d_74", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_k26_reinforces_w28", "ksb": "K26", "type": "REINFORCES", "from": "res_lp_982a0c0a6c64", "basis": "INFERRED_HIGH", "provenance": "BLOCK", "block": 3, "week": 28 },
+    { "id": "e_k27_teaches_w29", "ksb": "K27", "type": "TEACHES", "from": "res_lp_290b0dd5d6dd", "basis": "INFERRED_HIGH", "provenance": "BLOCK", "block": 3, "week": 29 },
+    { "id": "e_k29_teaches_lp27", "ksb": "K29", "type": "TEACHES", "from": "res_lm_353a299f7c42_69", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_k29_teaches_lp28", "ksb": "K29", "type": "TEACHES", "from": "res_lm_41f79b0608fd_70", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_k30_supports_fs06", "ksb": "K30", "type": "SUPPORTS", "from": "res_lp_c67c9df7ff7b", "basis": "INFERRED_LOW", "provenance": "BLOCK_FS", "block": 1, "week": 6, "note": "Teamwork mention only — not principles teaching" },
+    { "id": "e_k32_teaches_lp26", "ksb": "K32", "type": "TEACHES", "from": "res_lm_8c4ef71e5a8d_68", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s17_practises_parts", "ksb": "S17", "type": "PRACTISES", "from": "res_lm_b7c4d87f7f6d_74", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s17_teaches_w29", "ksb": "S17", "type": "TEACHES", "from": "res_lp_290b0dd5d6dd", "basis": "INFERRED_HIGH", "provenance": "BLOCK", "block": 3, "week": 29 },
+    { "id": "e_s18_teaches_lp27", "ksb": "S18", "type": "TEACHES", "from": "res_lm_353a299f7c42_69", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null, "note": "Generic sales packages — not named process set" },
+    { "id": "e_s19_supports_fs06", "ksb": "S19", "type": "SUPPORTS", "from": "res_lp_c67c9df7ff7b", "basis": "INFERRED_LOW", "provenance": "BLOCK_FS", "block": 1, "week": 6 },
+    { "id": "e_s21_teaches_lp26", "ksb": "S21", "type": "TEACHES", "from": "res_lm_8c4ef71e5a8d_68", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s21_practises_lp28", "ksb": "S21", "type": "PRACTISES", "from": "res_lm_41f79b0608fd_70", "basis": "EXPLICIT", "provenance": "GROUP_G8", "block": null, "week": null },
+    { "id": "e_s22_teaches_fs10", "ksb": "S22", "type": "TEACHES", "from": "res_lp_76cd8f807cd7", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 10 },
+    { "id": "e_s24_practises_lir", "ksb": "S24", "type": "PRACTISES", "from": "res_lea_e03e157b1190", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null, "note": "Example LIR instrument — programme-wide pattern" },
+    { "id": "e_b2_practises_b3t4", "ksb": "B2", "type": "PRACTISES", "from": "res_prac_074615b60bfc", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null },
+    { "id": "e_b3_rejected_adaptive_suspension", "ksb": "B3", "type": "REJECTED_FALSE_POSITIVE", "from": "res_lm_2ea67bf9bf90_93", "basis": "EXPLICIT_METHODOLOGY", "provenance": "GROUP_G11", "block": null, "week": null, "note": "Technical adaptive suspension ≠ behaviour B3" },
+    { "id": "e_b4_practises_spr", "ksb": "B4", "type": "PRACTISES", "from": "res_ski_241db742c6a4", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null }
+  ],
+  "evidenceRequestsGenerated": [
+    { "id": "ER-R51-5-01", "priority": "NON_BLOCKING", "affects": ["K22"], "request": "Extracted Fuel Cells.ppt / hydrogen LP body covering storage and condition monitoring of fuel cells" },
+    { "id": "ER-R51-5-02", "priority": "NON_BLOCKING", "affects": ["K25"], "request": "Dedicated business-operations teaching covering efficiency, competitiveness, minimising operational risks" },
+    { "id": "ER-R51-5-03", "priority": "NON_BLOCKING", "affects": ["K29", "S18"], "request": "Named sales-process teaching/practice: show and tell, features and benefits, consultative selling, mini closing/closing" },
+    { "id": "ER-R51-5-04", "priority": "NON_BLOCKING", "affects": ["K30", "S19"], "request": "Deliberate team-working principles LP / observed teamwork assessment criteria" },
+    { "id": "ER-R51-5-05", "priority": "NON_BLOCKING", "affects": ["B3"], "request": "Deliberate behaviour teaching/observation of responding and adapting to changing work demands" },
+    { "id": "ER-R51-5-06", "priority": "NON_BLOCKING", "affects": ["B4", "S24"], "request": "Filled mentor Learning Impact / Skills Progress examples showing seeking CPD / completed L&D recording" },
+    { "id": "ER-R51-5-07", "priority": "NON_BLOCKING", "affects": ["K27", "S17"], "request": "Verified stock-rotation practical body (beyond W29 topic title)" },
+    { "id": "ER-R51-5-08", "priority": "NON_BLOCKING", "affects": ["K24"], "request": "Explicit pre- and post-vehicle customer-service teaching framing" }
+  ],
+  "carryForwardEvidenceRequests": [
+    "Tyres.ppt extract — legislation / EU label / sidewall / homologation",
+    "Named e-machine teaching",
+    "Static vs dynamic ADAS calibration methods + equipment",
+    "Ackermann + thrust-angle teaching / Wheel Alignment.ppt",
+    "Explicit store/return-to-storage checklist",
+    "HVAC blower / heat exchanger / pipes-hoses teaching",
+    "LOLER / PUWER / HASAWA / manual handling",
+    "deeper COSHH",
+    "reuse/recycling",
+    "filled mentor LIR/SPR"
+  ]
+}

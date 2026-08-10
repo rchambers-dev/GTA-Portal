@@ -1,0 +1,206 @@
+Wheel Alignment 
+ identify wheel alignment terms 
+ Next > 
+ In this presentation you will: 
+ 
+ style.visibility style.visibility style.visibility
+
+Introduction 
+ Wheels are the parts of the vehicle that make it turn in response to steering input. 
+ Next > 
+ They are also responsible for pulling (front wheel drive) or pushing (rear wheel drive) the vehicle along. 
+ It is therefore essential that they are aligned correctly. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Wheel Alignment Terms 
+ Here are some common wheel alignment terms: 
+ Next > 
+ Caster 
+ Camber 
+ Toe 
+ Steering axis inclination 
+ Tracking 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Directional Stability 
+ Next > 
+ When a vehicle is moving, it should be directionally stable. 
+ Shopping Cart Caster 
+ This means that if there is a steering input, it should automatically return to the straight-ahead position when released. 
+ Directional stability can be created by having the steering axis intersect the ground ahead of the wheel’s contact patch. 
+ 
+ Direction of movement 
+ Steering axis intersects with the ground here 
+ Center of contact patch 
+ A shopping cart caster is an example of this. 
+ Vehicle Cornering 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Caster 
+ Directional stability can be created by angling the steering axis back longitudinally. 
+ Next > 
+ Positive Caster 
+ It is called a positive caster angle, and is measured in degrees from the vertical. 
+ Steering axis intersects with the ground here 
+ Center of contact patch 
+ 
+ Front 
+ 
+ Caster angle 
+ This causes the steering axis to intersect the ground ahead of the wheel’s contact patch. 
+ Steering axis 
+ Negative caster is never used because the vehicle would be directionally unstable. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Camber 
+ Next > 
+ Negative camber is when the top of a wheel tilts inward. 
+ Positive camber is when the top of a wheel tilts outward. 
+ Negative Camber 
+ Positive Camber 
+ Camber is the inward or outward tilt of the wheel and tire assembly, relative to a vertical line: 
+ Vertical lines 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Camber 
+ Some types of suspension experience changes in camber through their range of vertical travel. 
+ Continual driving with significant amounts of camber will cause uneven tire wear on the outer or inner treads. 
+ Next > 
+ Uneven wear 
+ Swing Axle Suspension 
+ On some vehicles, the camber can be adjusted to change the vehicle’s driving characteristics. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Types of Toe 
+ Next > 
+ Toe is the angle that each front wheel makes with the longitudinal axis of the vehicle when the steering is at its central position. 
+ Ideally toe should be zero, but toe angles tend to change when the vehicle is moving due to dynamic forces. 
+ Vehicle manufacturers specify the correct toe for when the vehicle is stationary. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Toe In and Toe Out 
+ Next > 
+ When the vehicle is moving, road friction pushes the wheels back to zero toe. 
+ A rear wheel drive vehicle is usually set to have a slight toe-in. 
+ A front wheel drive vehicle is usually set to have a slight toe-out. 
+ When the vehicle is moving, drive forces pull the wheels to a zero-toe position. 
+ Toe-in angle 
+ Toe-out angle 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Question 1 
+ Which element of wheel alignment causes the wheels to tip inward at the top? 
+ A) Caster 
+ B) Camber 
+ C) Toe 
+ D) All of the above 
+ Next > 
+ style.visibility
+
+Next > 
+ Adjustments to camber can cause the wheels to tip in or out at the top. 
+ Question 1 
+ Which element of wheel alignment causes the wheels to tip inward at the top? 
+ A) Caster 
+ B) Camber 
+ C) Toe 
+ D) All of the above 
+ style.visibility ppt_w ppt_h style.rotation style.visibility style.visibility
+
+Steering Axis Inclination 
+ Steering axis inclination (SAI) is the lateral angle the steering axis makes with the vertical. 
+ SAI causes the front of the vehicle to lift up if there is a steering input in either direction. 
+ The line tilts inward when viewed from the front. On some vehicles it can be adjusted. 
+ Next > 
+ The weight of the vehicle makes it want to return to the straight-ahead position. This creates directional stability. 
+ Strut pivot 
+ Ball joint 
+ 
+ 
+ Vertical line 
+ Steering axis – strut pivot to ball joint 
+ Steering Axis Inclination – Small 
+ 
+ Steering Axis Inclination – Large 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility r style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Common Steering Center 
+ The inside ‘steered’ wheel prescribes a circle with a smaller radius, compared with the outer wheel. 
+ This means the steering must turn the inside wheel more than the outside wheel. 
+ Next > 
+ When turning, all the wheels should turn around a common center point. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ The center of the turn is always in line with the rear wheels 
+ 
+ Center point 
+ 39 ° 
+ 28 ° 
+ 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility r r style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility r r ppt_x ppt_y style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Ackermann Steering Geometry 
+ The correct steering geometry can be achieved by choosing the angles in the steering mechanism. 
+ This is known as Ackermann steering geometry. 
+ Next > 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Tie rod 
+ Steering arm 
+ Lines through the pivots of the steering arms should intersect at the center of the rear axle line. 
+ ppt_x ppt_y style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Tracking is the ability of the rear wheels to follow in the tracks of the front wheels. 
+ Tracking and Thrust Angle 
+ Next > 
+ This should be the same as the vehicle center line. 
+ Center line 
+ Thrust line 
+ A thrust line indicates the direction the rear wheels are pointing. 
+ If it is not, then a thrust angle exists that causes increased tire wear, low fuel economy, and poor handling. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Question 2 
+ Which wheel turns through a greater angle when a vehicle is turning a corner? 
+ A) The inside wheel 
+ B) The outside wheel 
+ C) Neither; both wheels turn through the same angle 
+ Next > 
+ style.visibility
+
+Next > 
+ It turns through a greater angle because it has a smaller turning circle radius. 
+ Question 2 
+ Which wheel turns through a greater angle when a vehicle is turning a corner? 
+ A) The inside wheel 
+ B) The outside wheel 
+ C) Neither; both wheels turn through the same angle 
+ style.visibility ppt_w ppt_h style.rotation style.visibility style.visibility
+
+Summary 
+ the terms associated with wheel alignment 
+ In this presentation you have seen: 
+ End 
+ style.visibility style.visibility style.visibility

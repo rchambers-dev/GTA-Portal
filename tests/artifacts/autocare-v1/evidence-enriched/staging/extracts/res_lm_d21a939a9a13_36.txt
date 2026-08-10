@@ -1,0 +1,53 @@
+ACS Steering & Suspension Assignment
+ 1. State the name of the principle which relates to the front wheels of a vehicle turning through different angles when going round a corner.
+
+ 2 . Name the steering angle;-
+ a. between the centre line and the vertical in diagram 1.
+ b . X in diagram 2.
+ 2286000 67310
+ 0 0
+
+ 114300 20955
+ 0 0
+
+ Diagram 1. Diagram 2.
+
+ right 145415
+ 0 0
+
+ 3 . State the most likely cause of both tyres on the front wheels of a vehicle ‘feathering off’ the inside edges of the front tyres .
+
+ 4 . What is the important thing to check with regard to the surface that a vehicle is standing on before carrying out four wheel alignment?
+
+ 5 . When turning a left hand corner, which steered wheel turns through the largest angle; the offside or nearside?
+ 6 . Name the type of suspension unit shown below and the components A and B .
+ 1143000 135890
+ 0 0
+
+ 2286000 3175 0 0 2857500 83820 A
+
+ 0 0 A
+
+ 3086100 420370 0 0 3657600 337185 B
+ 0 0 B
+
+ 7 . State two functions of a suspension damper.
+
+ 8 . State two types of suspension damper.
+
+ 9 . State four possible effects of worn suspension dampers.
+
+ 10 . Give one possible effect on the vehicle for the following suspension faults.
+ b. Excessive oil leaks from dampers
+
+ 11 . State the type of wear that may appear on a tyre if a damper was unserviceable on a vehicle.
+
+ 12 . On examination of a vehicle, it is found that the off side front damper is leaking badly.
+ What recommendation should be made to the customer?
+
+ 13 . What would the two tools shown below be used for when removing and refitting suspension components?
+
+ 2743200 49530
+ 0 0
+
+ a. b.

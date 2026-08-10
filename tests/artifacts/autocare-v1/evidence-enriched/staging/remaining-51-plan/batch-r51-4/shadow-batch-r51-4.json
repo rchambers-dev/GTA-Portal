@@ -1,0 +1,789 @@
+{
+  "title": "AUTOCARE SHADOW BATCH R51-4 — NINE KSB VEHICLE SYSTEMS / TOOLS / RECORDING REVIEW",
+  "status": "SHADOW_ONLY_NOT_PROGRAMME_TRUTH",
+  "generatedAt": "2026-08-10",
+  "batch": "R51-4",
+  "mutatesProgrammeTruth": false,
+  "mutatesGoldenA": false,
+  "standardVersion": "ST0499 v1.3",
+  "ksbs": ["K9", "K14", "K15", "K16", "K17", "K19", "S4", "S8", "S14"],
+  "progress": {
+    "officialTotal": 64,
+    "previouslyAnalysed": 38,
+    "thisBatch": 9,
+    "richerEvidenceAnalysedAfterBatch": 47,
+    "remainingAfterBatch": 17
+  },
+  "r51_3LearningPreserved": [
+    "Foundation Skills may own a KSB where it contains the first substantive teaching",
+    "Later specialist teaching must not steal ownership merely because it is more occupationally specific",
+    "Strong generic H&S evidence must not hide missing named regulatory components",
+    "Behaviour evidence can be supported without a technical CEA",
+    "Reuse/recycling wording remains a depth concern where waste-stream practice is stronger"
+  ],
+  "carryForwardNonBlockingEvidenceRequests": [
+    "named LOLER / PUWER / HASAWA / manual-handling teaching",
+    "deeper COSHH teaching body",
+    "explicit reuse/recycling teaching",
+    "completed mentor Learning Impact / Skills Progress examples"
+  ],
+  "methodologyDriftStopTriggered": false,
+  "dossiers": {
+    "K9": {
+      "officialRequirement": "Tyres: legislation, replacement, repair, and technical information including EU tyre labelling, tyre pressure monitoring systems (TPMS), sidewall markings, homologated fitments relating to cars, car derived vans and light goods vehicles.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K9-C1",
+          "claim": "Tyre construction / inspection / replacement knowledge",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_lm_8b1b94878563_7 G3 Lesson Plan 2 Wheels & Tyres: construction, inspection, R&R"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_3_1 Tyres R&I", "cea_1_3_4 Balance", "cea_1_3_5 run flat"] },
+          "assessment": { "status": "STRONG_CEA", "confidence": "EXPLICIT", "evidence": ["CEA 3.1–3.5 Pass/Refer"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "FIRST_HOME_G3_EARLY", "confidence": "EXPLICIT", "evidence": ["Group G3; Block 2 Task 4 reinforce"] }
+        },
+        {
+          "id": "K9-C2",
+          "claim": "Tyre repair (incl. puncture)",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G3 LP2 discuss puncture repairs"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_3_2 Puncture"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 3.2"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "OK_G3", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K9-C3",
+          "claim": "TPMS technical information / service",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["res_lp_5ad392e7e654 W14 Tyre Pressure Monitoring Systems EXPLICIT", "res_lp_ca80733bd5d0 W64 Tyre and TPMS service integration (later)"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_prac_b58e0adc803a Block 2 Task 4 TPMS and Tyre Service", "cea_1_3_3 TPMS"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 3.3; B2 Task 4"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "W14_B2_FIRST_W64_B7_REINFORCE", "confidence": "EXPLICIT", "evidence": ["Week 14 Block 2; Week 64 Block 7 reinforce — do not steal Primary to B7"] }
+        },
+        {
+          "id": "K9-C4",
+          "claim": "Tyre legislation",
+          "teaching": { "status": "NOT_FOUND_BY_NAME_IN_EXCERPTS", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No named tyre legislation teaching body in extracted LP/PPT text; Tyres.ppt present but largely unextracted"] },
+          "practice": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "DEPTH_OR_VISIBILITY", "confidence": "INFERRED_HIGH", "evidence": ["res_lm_9f5cb6fbb8f3_11 Tyres.ppt — EVIDENCE_VISIBILITY_GAP"] }
+        },
+        {
+          "id": "K9-C5",
+          "claim": "EU tyre labelling",
+          "teaching": { "status": "NOT_FOUND_IN_EXCERPTS", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No EU labelling / tyre label teaching found in catalogue excerpts"] },
+          "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "TEACHING_DEPTH_OR_GAP", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "K9-C6",
+          "claim": "Sidewall markings",
+          "teaching": { "status": "NOT_FOUND_IN_EXCERPTS", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["Construction/inspection taught; sidewall markings not named in LP2 excerpt; may sit in unextracted Tyres.ppt"] },
+          "practice": { "status": "POSSIBLE_EMBEDDED_INSPECTION", "confidence": "INFERRED_LOW", "evidence": ["Tyre inspection CEAs may imply reading tyre data — not accepted as proof of sidewall-teaching"] },
+          "assessment": { "status": "WEAK_NAMED", "confidence": "INFERRED_LOW", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "DEPTH_OR_VISIBILITY", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "K9-C7",
+          "claim": "Homologated fitments (cars / CDV / LGV)",
+          "teaching": { "status": "NOT_FOUND_IN_EXCERPTS", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No homologated fitment teaching found"] },
+          "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "TEACHING_DEPTH_OR_GAP", "confidence": "INFERRED_HIGH", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG_ON_R_R_REPAIR_TPMS_PARTIAL_ON_LEGISLATION_LABEL_SIDEWALL_HOMOLOG",
+        "practice": "STRONG_ON_OPERATIONAL_TYRE_TASKS",
+        "assessment": "STRONG_CEA_ON_OPERATIONAL",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "FIRST_HOME_G3_W14_NOT_B7"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "PARTIAL_COMPONENT_COVERAGE",
+        "status": "CLEAR_PRIMARY_CANDIDATE_EARLY_G3_B2",
+        "firstSubstantiveTeachingHome": "G3 Wheels & Tyres + W14 TPMS (Block 2)",
+        "doNotStealFrom": ["W64 Block 7 TPMS integration", "KSB tags on W64"],
+        "forcePrimary": false,
+        "weekSession": "G3 Group era; W14 EXPLICIT Block 2; W64 EXPLICIT Block 7 reinforce",
+        "goldenAConflict": "Golden A Primary Block 7 is later reinforce home for TPMS integration, not first substantive tyre knowledge"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATE on replacement/repair/TPMS",
+        "TEACHING_DEPTH_GAP / POSSIBLE_CURRICULUM_GAP on legislation, EU labelling, homologated fitments",
+        "EVIDENCE_VISIBILITY_GAP on Tyres.ppt (unextracted) for sidewall/legislation",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B7"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_EARLY_G3_B2_WITH_DEPTH_GAPS",
+      "confidenceOverall": "HIGH_ON_OPERATIONAL_MEDIUM_ON_TECH_INFO_COMPONENTS",
+      "goldenAComparedAfter": { "position": "PRIMARY_B7", "direction": "CHANGE_OWNERSHIP" },
+      "antiDriftNote": "Practical tyre R&R does not prove legislation/labelling/homologation teaching"
+    },
+    "K14": {
+      "officialRequirement": "Vehicle heating, ventilation, and air conditioning systems (HVAC): purpose, function and location of systems including climate control systems for inspection, maintenance, and replacement: refrigerants, coolants, blower motors, valves, heat exchangers, pipes and hoses.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K14-C1",
+          "claim": "AC/HVAC purpose, function, location / construction & layout",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_lm_9270686b121d_110 G13 AC Lesson 1: components, construction & layout, function and operation"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_2_13_1 condenser", "cea_2_13_2 expansion valve", "cea_2_13_3 compressor", "res_prac_a9fd893baee0 B6 Task 4 climate checks"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 13.1–13.3; AC Course Questions"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G13_THEN_B6", "confidence": "EXPLICIT", "evidence": ["G13 Group; Block 6 Task 4"] }
+        },
+        {
+          "id": "K14-C2",
+          "claim": "Heating / ventilation (cabin)",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["res_lm_da4a93c2da80_51 G6 Heating and ventilation Plan 18: introduction to cabin heating systems"] },
+          "practice": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["B6 Task 4 demisting/cooling checks — climate application"] },
+          "assessment": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G6_PLUS_G13", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K14-C3",
+          "claim": "Refrigerants / coolants",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["G13 Lesson 2: fluorinated gases R134a & R1234YF, environmental issues"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B6 Task 4 record refrigerant type/quantity; identify F-gas/specialist referral"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["AC questions; Task 4 documentation"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K14-C4",
+          "claim": "Valves / heat exchangers / pipes and hoses / blower motors",
+          "teaching": { "status": "PARTIAL_NAMED", "confidence": "INFERRED_HIGH", "evidence": ["CEA 13.2 expansion valve EXPLICIT component practice; condenser/compressor named; blower motors / heat exchangers / pipes-hoses not strongly named in LP excerpts"] },
+          "practice": { "status": "STRONG_ON_NAMED_COMPONENTS", "confidence": "EXPLICIT", "evidence": ["CEA 13.1–13.3"] },
+          "assessment": { "status": "STRONG_ON_NAMED", "confidence": "EXPLICIT", "evidence": ["CEA 13.x"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "DEPTH_ON_FULL_COMPONENT_SET", "confidence": "INFERRED_MEDIUM", "evidence": ["Do not treat condenser+compressor+expansion valve as whole official HVAC breadth alone"] }
+        },
+        {
+          "id": "K14-C5",
+          "claim": "Climate control systems (as distinct from basic AC)",
+          "teaching": { "status": "PRESENT_AS_CLIMATE_CONTEXT", "confidence": "INFERRED_MEDIUM", "evidence": ["B6 Task 4 titled Air Conditioning and Climate-Control Checks — application/inspection"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B6 Task 4"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B6 Task 4"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "B6_APPLICATION", "confidence": "EXPLICIT", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG_AC_ADEQUATE_HVAC_SET",
+        "practice": "STRONG",
+        "assessment": "STRONG",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "CLEAR_G13_B6"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED_WITH_COMPONENT_DEPTH_NOTE",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "G13 AC Lessons 1–5 (+ G6 heating)",
+        "blockRelationship": "Block 6 Task 4 reinforces/application; maps Golden A B6",
+        "forcePrimary": false,
+        "weekSession": "G13 Group; B6 Task Weeks 51-60 window"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on blower motors / full pipes-hoses / heat-exchanger naming breadth"
+      ],
+      "shadowDirection": "KEEP_PRIMARY_B6",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B6", "direction": "KEEP" },
+      "antiDriftNote": "One AC component CEA does not equal full HVAC breadth; heating kept separate from AC"
+    },
+    "K15": {
+      "officialRequirement": "Low voltage batteries: purpose, function, and location of low voltage batteries, starting and charging systems: auxiliary battery, starter motor, alternator, e-machine.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K15-C1",
+          "claim": "LV battery purpose / function / location (incl. auxiliary)",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_lm_466bab823d76_55 G7 LP23 batteries purpose/chemistry/capacity", "res_lm_277e84194c5f_58 Batteries.pptx operating principles"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["res_prac_139a816c6d1e B2 Task 3 Battery and Charging Check — inspection application"] },
+          "assessment": { "status": "FORMATIVE_KA", "confidence": "EXPLICIT", "evidence": ["Starting_and_Charging_Initial_Assessment"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE_LATER", "confidence": "EXPLICIT", "evidence": ["gw_f0ceef633f24 GW1 battery/charging practical support — not teaching home"] },
+          "structuralAccounting": { "status": "G7_FIRST_NOT_FS04", "confidence": "EXPLICIT", "evidence": ["FS04 battery awareness = AWARENESS ONLY — must not own"] }
+        },
+        {
+          "id": "K15-C2",
+          "claim": "Starting system purpose/function/location (starter motor)",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_lm_2ca8ded587ac_56 G7 LP24 starting and charging", "res_lm_53fca2d9a338_64 Starting Systems.ppt present"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_7_1 Starter R&R"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 7.1; Starting/Charging KA"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "structuralAccounting": { "status": "G7", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K15-C3",
+          "claim": "Charging system purpose/function/location (alternator)",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["G7 LP24; Batteries.pptx: power from alternator when running; Charging Systems.ppt present"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_7_2 Alternator"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 7.2; KA"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "KNOWLEDGE_CHECKS", "confidence": "EXPLICIT", "evidence": ["gw_db7111449f77 alternator item — not Primary"] },
+          "structuralAccounting": { "status": "G7", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K15-C4",
+          "claim": "e-machine (named LV starting/charging component)",
+          "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No 'e-machine' teaching found; hybrid/HV adjacent decks exist (Features of Hybrid / HV safety) but do not substitute for named e-machine starting/charging component"] },
+          "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "TEACHING_DEPTH_OR_GAP", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "K15-C5",
+          "claim": "Electrical / battery awareness (Foundation)",
+          "teaching": { "status": "AWARENESS_ONLY", "confidence": "EXPLICIT", "evidence": ["res_lp_4e5d5534a1f4 FS04 fire safety, battery awareness and basic electrical safety — NOT full K15"] },
+          "practice": { "status": "AWARENESS", "confidence": "EXPLICIT", "evidence": ["FS04 multimeter within defined limits"] },
+          "assessment": { "status": "FORMATIVE_AWARENESS", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "structuralAccounting": { "status": "MUST_NOT_OWN_PRIMARY", "confidence": "EXPLICIT", "evidence": ["Layer separation: AWARENESS ≠ TEACHING ≠ PRACTICE ≠ PRIMARY"] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG_CORE_MISSING_E_MACHINE",
+        "practice": "STRONG_ON_BATTERY_STARTER_ALTERNATOR",
+        "assessment": "STRONG_FORMATIVE_PLUS_CEA",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "G7_FIRST_NOT_B2_NOT_FS04"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "MOSTLY_COVERED_WITH_E_MACHINE_GAP",
+        "status": "CLEAR_PRIMARY_CANDIDATE_G7",
+        "firstSubstantiveTeachingHome": "G7 LP23/LP24 Batteries + Starting and Charging",
+        "doNotStealFrom": ["FS04 battery awareness", "B2 Task 3 inspection alone", "Gateway battery R&R", "hybrid/HV adjacency as e-machine"],
+        "forcePrimary": false,
+        "weekSession": "G7 Group era; B2 Task 3 = early inspection practice (not Primary theory)",
+        "goldenAConflict": "Golden A Primary Block 2 aligns with early battery inspection task but first substantive purpose/function/location teaching is G7 starting/charging cluster"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATE on battery + starter + alternator",
+        "TEACHING_DEPTH_GAP / POSSIBLE_CURRICULUM_GAP on e-machine",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2",
+        "DISTRIBUTED / OWNERSHIP ISSUE if FS04 awareness mistaken for Primary"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_G7_CLUSTER_WITH_E_MACHINE_GAP",
+      "confidenceOverall": "HIGH_ON_CORE_HIGH_ON_E_MACHINE_ABSENCE",
+      "goldenAComparedAfter": { "position": "PRIMARY_B2", "direction": "CHANGE_OWNERSHIP" },
+      "antiDriftNote": "Battery awareness ≠ full starting/charging; practical R&R ≠ automatic proof e-machine taught; Gateway not Primary"
+    },
+    "K16": {
+      "officialRequirement": "Maintenance and replacement of low voltage batteries, starting and charging systems.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "K16-C1",
+          "claim": "Maintain / replace LV battery",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G7 LP23 batteries; Batteries.pptx maintenance essential for starter"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_7_3 Battery R&R", "gw_f0ceef633f24 GW1 Remove and Replace Battery and Charging System Components — SUPPORT not Primary"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 7.3"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "STRONG_SUPPORT_NOT_OWNER", "confidence": "EXPLICIT", "evidence": ["GW1 battery/charging R&R"] },
+          "structuralAccounting": { "status": "G7_CEA_FIRST", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K16-C2",
+          "claim": "Maintain / replace starter / starting system components",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G7 LP24"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_7_1 Starter"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 7.1"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "structuralAccounting": { "status": "G7", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K16-C3",
+          "claim": "Maintain / replace charging system (alternator)",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G7 LP24; Charging Systems.ppt"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_7_2 Alternator"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 7.2"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "structuralAccounting": { "status": "G7", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K16-C4",
+          "claim": "Early Block 2 battery/charging inspection practice",
+          "teaching": { "status": "INSPECTION_APPLICATION", "confidence": "EXPLICIT", "evidence": ["res_prac_139a816c6d1e B2 Task 3 — checks, not full maintain/replace teach-home"] },
+          "practice": { "status": "PRESENT_EARLY", "confidence": "EXPLICIT", "evidence": ["B2 Task 3"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B2 Task 3"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "structuralAccounting": { "status": "DO_NOT_STEAL_PRIMARY_FROM_G7", "confidence": "EXPLICIT", "evidence": ["Early inspection ≠ first substantive maintain/replace teaching"] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE_SUPPORTING",
+        "practice": "STRONG",
+        "assessment": "STRONG",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "STRONG_NOT_OWNER",
+        "structuralAccounting": "G7_WITH_B2_EARLY_PRACTICE"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY_CANDIDATE_G7",
+        "firstSubstantiveTeachingHome": "G7 cluster with CEA 7.1–7.3 as first substantive maintain/replace practice",
+        "doNotStealFrom": ["FS04", "Gateway GW1", "B2 Task 3 as sole Primary"],
+        "forcePrimary": false,
+        "goldenAConflict": "Golden A Primary Block 2; shadow first substantive maintain/replace sits with G7 CEA cluster"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B2"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_G7_CLUSTER",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B2", "direction": "CHANGE_OWNERSHIP" },
+      "antiDriftNote": "Companion to K15; Gateway R&R does not own Primary"
+    },
+    "K17": {
+      "officialRequirement": "Awareness of advanced driver-assistance systems (ADAS) and impact of repair work: static and dynamic calibration methods, calibration equipment.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K17-C1",
+          "claim": "ADAS systems awareness",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_lm_5d8bcd0589f2_87 G11 session 2 ADAS", "res_lm_95f371942a77_98 Session 2 ADAS Systems.pptx"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["cea_2_11_6 ADAS fault"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 11.6"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "FIRST_HOME_G11", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K17-C2",
+          "claim": "Impact of repair work on ADAS / need for calibration after repairs",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["ADAS ppt: camera & radar need expert adjustment and calibration after various repairs; wheel alignment/geometry, suspension/steering replacement, accident repair"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["res_prac_126c9fbc1032 B9 Task 4 ADAS Pre-Calibration Check", "res_lp_43f67c596f10 W89"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B9 Task 4"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G11_TEACH_B9_PRACTICE", "confidence": "EXPLICIT", "evidence": ["B9 reinforces calibration readiness — does not steal first awareness teaching"] }
+        },
+        {
+          "id": "K17-C3",
+          "claim": "Static and dynamic calibration methods (named)",
+          "teaching": { "status": "NOT_FOUND_BY_NAME", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["Calibration need after repairs EXPLICIT; 'static' and 'dynamic' method naming not found in excerpts"] },
+          "practice": { "status": "PRE_CALIBRATION_ONLY", "confidence": "EXPLICIT", "evidence": ["B9 Task 4 pre-calibration checks — not full static/dynamic method teaching"] },
+          "assessment": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["B9 Task 4"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "TEACHING_DEPTH_GAP", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "K17-C4",
+          "claim": "Calibration equipment (awareness)",
+          "teaching": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["ADAS ppt refers to expert adjustment/calibration; dedicated equipment naming thin in excerpts"] },
+          "practice": { "status": "PRE_CAL_CHECKS", "confidence": "EXPLICIT", "evidence": ["B9 Task 4"] },
+          "assessment": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "DEPTH", "confidence": "INFERRED_MEDIUM", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG_AWARENESS_AND_REPAIR_IMPACT_PARTIAL_METHODS",
+        "practice": "ADEQUATE_PRE_CAL",
+        "assessment": "ADEQUATE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "G11_FIRST_B9_REINFORCE"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED_ON_AWARENESS_WITH_METHOD_DEPTH_GAP",
+        "status": "CLEAR_PRIMARY_CANDIDATE_G11",
+        "firstSubstantiveTeachingHome": "G11 ADAS session/PPT",
+        "doNotStealFrom": ["K18 autonomy levels (separate, already reviewed)", "B9 alone as Primary", "ADAS calibration ≠ tool calibration (S4/K6)"],
+        "forcePrimary": false,
+        "weekSession": "G11 Group; W89 / B9 Task 4 EXPLICIT later",
+        "goldenAConflict": "Golden A Primary Block 9 is reinforce/practice home; first awareness teaching is G11"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATE on ADAS awareness + repair-impact",
+        "TEACHING_DEPTH_GAP on named static vs dynamic calibration methods",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B9"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_G11_WITH_DEPTH_ON_METHODS",
+      "confidenceOverall": "HIGH_ON_AWARENESS_MEDIUM_ON_METHODS",
+      "goldenAComparedAfter": { "position": "PRIMARY_B9", "direction": "CHANGE_OWNERSHIP" },
+      "antiDriftNote": "Do not conflate with ratified K18; pre-cal practical ≠ full method teaching"
+    },
+    "K19": {
+      "officialRequirement": "Four-wheel geometry principles including wheel alignment, Ackermann principle, alignment principles, toe, camber, thrust angle, adjustment types and methods.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K19-C1",
+          "claim": "Wheel alignment / geometry principles (intro)",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_lm_801be46beaa3_8 G3 LP3A Steering Geometry", "res_lm_8fa749f780b7_99 / res_lm_a70ba19fb707_100 G11 geometry/alignment decks"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_5_1 front wheel alignment", "res_prac_3a8916c0651c B4 Task 3", "companion skill S12 previously KEEP B2"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 5.1"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "EXPLICIT", "evidence": ["GW2 camber item — not Primary"] },
+          "structuralAccounting": { "status": "CLEAR_EARLY_G3_TO_B2", "confidence": "EXPLICIT", "evidence": ["First teaching G3; Golden A B2 compatible"] }
+        },
+        {
+          "id": "K19-C2",
+          "claim": "Toe and camber",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["G11 alignment/geometry decks name camber and toe"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 5.1; B4 Task 3"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 5.1"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "EXPLICIT", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "K19-C3",
+          "claim": "Ackermann principle",
+          "teaching": { "status": "NOT_FOUND_IN_EXCERPTS", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No Ackermann in catalogue excerpts; Wheel Alignment.ppt unextracted"] },
+          "practice": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "DEPTH_OR_VISIBILITY", "confidence": "INFERRED_HIGH", "evidence": ["res_lm_fc25d7deb5b7_12 Wheel Alignment.ppt — EVIDENCE_VISIBILITY_GAP"] }
+        },
+        {
+          "id": "K19-C4",
+          "claim": "Thrust angle",
+          "teaching": { "status": "NOT_FOUND_IN_EXCERPTS", "confidence": "HIGH_ABSENCE_IN_EXCERPT_SCAN", "evidence": ["No thrust angle in extracted geometry decks"] },
+          "practice": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "TEACHING_DEPTH_OR_GAP", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "K19-C5",
+          "claim": "Adjustment types and methods",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G3 LP3A: front wheel alignment faults and adjustment"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 5.1; B4 Task 3"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 5.1"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG_CORE_PARTIAL_ACKERMANN_THRUST",
+        "practice": "STRONG",
+        "assessment": "STRONG",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "CLEAR_B2"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED_WITH_NAMED_PRINCIPLE_DEPTH",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "G3 LP3A Steering Geometry (early → Block 2)",
+        "doNotStealFrom": ["G11 reinforce decks", "Gateway geometry items", "S12 skill alone proving all knowledge components"],
+        "forcePrimary": false,
+        "weekSession": "G3 first; G11/B4 reinforce"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED on alignment/toe/camber/adjustment",
+        "TEACHING_DEPTH_GAP / POSSIBLE_EVIDENCE_VISIBILITY_GAP on Ackermann and thrust angle"
+      ],
+      "shadowDirection": "KEEP_PRIMARY_B2_WITH_DEPTH_ON_ACKERMANN_THRUST",
+      "confidenceOverall": "HIGH_ON_CORE_MEDIUM_ON_NAMED_PRINCIPLES",
+      "goldenAComparedAfter": { "position": "PRIMARY_B2", "direction": "KEEP" },
+      "antiDriftNote": "Companion to ratified S12 KEEP B2; practical alignment ≠ proof Ackermann taught"
+    },
+    "S4": {
+      "officialRequirement": "Store, maintain, including calibration checks, and return tools and equipment to storage.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S4-C1",
+          "claim": "Maintain tools/equipment (condition / remove from use)",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS02 pre-use inspection/selection; record equipment checks; remove from use when needed — companions ratified K6"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS02 tool-condition tasks; embedded workshop restore"] },
+          "assessment": { "status": "FORMATIVE", "confidence": "INFERRED_MEDIUM", "evidence": ["FS02 end tasks; observation"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "INCIDENTAL", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "FIRST_HOME_B1_FS02", "confidence": "EXPLICIT", "evidence": ["Week 2 EXPLICIT"] }
+        },
+        {
+          "id": "S4-C2",
+          "claim": "Calibration checks (tools/equipment)",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS02 equipment condition/calibration matter; FS05 calibration awareness EXPLICIT"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS05 zero/calibration checks demonstration"] },
+          "assessment": { "status": "FORMATIVE", "confidence": "INFERRED_MEDIUM", "evidence": ["FS05 measurement sheet"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "DO_NOT_CONFUSE_WITH_ADAS_CAL", "confidence": "EXPLICIT_METHODOLOGY", "evidence": ["W89/B9 ADAS pre-calibration is different meaning — not S4 Primary"] },
+          "structuralAccounting": { "status": "B1_FS_NOT_B9", "confidence": "EXPLICIT", "evidence": [] }
+        },
+        {
+          "id": "S4-C3",
+          "claim": "Store and return tools/equipment to storage",
+          "teaching": { "status": "THINNER", "confidence": "INFERRED_MEDIUM", "evidence": ["FS01/FS02 housekeeping and tool responsibility imply return-to-storage; dedicated storage-return pedagogy thinner (same residual as K6 storage)"] },
+          "practice": { "status": "EMBEDDED", "confidence": "INFERRED_MEDIUM", "evidence": ["Workshop restore/end-of-task tool return behaviours; CEA reinstate area"] },
+          "assessment": { "status": "EMBEDDED_WEAK_DEDICATED", "confidence": "INFERRED_LOW", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "B1_FIRST_STILL", "confidence": "INFERRED_HIGH", "evidence": ["Golden A B4 later — ownership review"] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE_WITH_STORAGE_DEPTH_NOTE",
+        "practice": "ADEQUATE_EMBEDDED",
+        "assessment": "FORMATIVE_ADEQUATE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "NOT_OWNER",
+        "structuralAccounting": "OWNERSHIP_REVIEW_VS_GOLDEN_A_B4"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED",
+        "status": "CLEAR_PRIMARY_CANDIDATE_B1",
+        "firstSubstantiveTeachingHome": "FS02 (+ FS05 calibration checks)",
+        "doNotStealFrom": ["ADAS pre-calibration B9", "Block 4 as first teaching home"],
+        "forcePrimary": false,
+        "goldenAConflict": "Golden A Primary Block 4; first substantive skill teaching is Block 1 FS02/FS05"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP / PRACTICE DEPTH on explicit store/return-to-storage",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B4"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B4", "direction": "CHANGE_OWNERSHIP" },
+      "antiDriftNote": "ADAS calibration ≠ tool calibration; companion skill to ratified K6 KEEP B1"
+    },
+    "S8": {
+      "officialRequirement": "Select and use tools and equipment, mechanical and electrical measuring tools, and diagnostic equipment.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S8-C1",
+          "claim": "Select and use tools and equipment",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS02 select, inspect and use tools/equipment"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS02; nearly all workshop practicals"] },
+          "assessment": { "status": "EMBEDDED", "confidence": "EXPLICIT", "evidence": ["FS02 observations; CEA safe tool use"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_HIGH", "evidence": ["GW torque wrench mentions — not Primary"] },
+          "structuralAccounting": { "status": "CLEAR_B1_FS02", "confidence": "EXPLICIT", "evidence": ["Week 2"] }
+        },
+        {
+          "id": "S8-C2",
+          "claim": "Mechanical measuring tools",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS05 measurement, units, tolerances"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS05 measurement tasks"] },
+          "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["FS05 measurement sheet"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "CLEAR_B1_FS05", "confidence": "EXPLICIT", "evidence": ["Week 5"] }
+        },
+        {
+          "id": "S8-C3",
+          "claim": "Electrical measuring tools",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS04 multimeter within limits; FS07 multimeter use, voltage/resistance measurement"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS07 measurement practice"] },
+          "assessment": { "status": "FORMATIVE", "confidence": "EXPLICIT", "evidence": ["FS07"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "CLEAR_B1_FS04_FS07", "confidence": "EXPLICIT", "evidence": ["Weeks 4 and 7"] }
+        },
+        {
+          "id": "S8-C4",
+          "claim": "Diagnostic equipment (select and use)",
+          "teaching": { "status": "PRESENT_LATER_PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Later Block diagnostic intensives (e.g. W42 electrical fault finding cluster); G11 electronic steering diagnostic equipment mention — reinforce / extend, not first foundation home"] },
+          "practice": { "status": "PRESENT_DISTRIBUTED", "confidence": "INFERRED_MEDIUM", "evidence": ["Diagnostic-themed weeks and CEA fault tasks — not treated as Primary steal from B1 select/use core"] },
+          "assessment": { "status": "PARTIAL_EMBEDDED", "confidence": "INFERRED_MEDIUM", "evidence": ["cea_2_10_3 ABS output; other fault CEAs"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "structuralAccounting": { "status": "CORE_B1_DIAGNOSTIC_REINFORCE_LATER", "confidence": "INFERRED_HIGH", "evidence": ["Do not credit every 'diagnostic' LP title as full S8 breadth"] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG_ON_TOOLS_MEASURING_PARTIAL_DIAGNOSTIC",
+        "practice": "STRONG",
+        "assessment": "ADEQUATE_TO_STRONG",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "CLEAR_B1"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_TO_STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "FS02/FS04/FS05/FS07 Block 1",
+        "doNotStealFrom": ["Later diagnostic weeks as Primary", "topic-title-only diagnostic LPs"],
+        "forcePrimary": false,
+        "weekSession": "FS02 W2; FS04 W4; FS05 W5; FS07 W7 EXPLICIT"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on dedicated diagnostic-equipment pedagogy breadth vs later distributed practice"
+      ],
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B1", "direction": "KEEP" },
+      "antiDriftNote": "Select/use tools ≠ tyre R&R; diagnostic LP titles not mass-credited"
+    },
+    "S14": {
+      "officialRequirement": "Record vehicle service maintenance, parts replacement, or repair.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S14-C1",
+          "claim": "Record service / maintenance / repair via job cards and technical documentation",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_lp_76cd8f807cd7 FS10 Week 10: Technical Documentation, Job Cards, Handover — EXPLICIT first home"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["FS10 job-card/report writing; G12 job-card embeds; suspension practical documentation"] },
+          "assessment": { "status": "STRONG_EMBEDDED", "confidence": "EXPLICIT", "evidence": ["CEA apprentice assessment records across systems; documentation weeks W26/W58/W76 reinforce"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "EXPLICIT", "evidence": ["GW materials require documentation/job cards — not Primary"] },
+          "structuralAccounting": { "status": "FIRST_HOME_B1_FS10_NOT_B6", "confidence": "EXPLICIT", "evidence": ["Week 10 EXPLICIT; W58 Block 6 later reinforce"] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG",
+        "practice": "STRONG",
+        "assessment": "STRONG_EMBEDDED",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "SUPPORTIVE_NOT_OWNER",
+        "structuralAccounting": "OWNERSHIP_REVIEW_VS_GOLDEN_A_B6"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY_CANDIDATE_B1",
+        "firstSubstantiveTeachingHome": "FS10 Week 10",
+        "doNotStealFrom": ["W58 Block 6 documentation intensify", "Gateway documentation requirements", "CEA record templates alone as teaching"],
+        "forcePrimary": false,
+        "weekSession": "FS10 Week 10 EXPLICIT",
+        "goldenAConflict": "Golden A Primary Block 6; first substantive recording teaching is Block 1 FS10"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "STRUCTURAL_MAPPING_GAP / OWNERSHIP ISSUE relative to Golden A B6"
+      ],
+      "shadowDirection": "CHANGE_OWNERSHIP_TO_B1_CANDIDATE",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": { "position": "PRIMARY_B6", "direction": "CHANGE_OWNERSHIP" },
+      "antiDriftNote": "Same first-teaching pattern as ratified S1–S3 CHANGE → B1"
+    }
+  },
+  "relationshipEdges": [
+    { "id": "e_k9_teaches_g3_lp2", "ksb": "K9", "type": "TEACHES", "from": "res_lm_8b1b94878563_7", "basis": "EXPLICIT", "provenance": "GROUP_G3", "block": null, "week": null },
+    { "id": "e_k9_teaches_w14_tpms", "ksb": "K9", "type": "TEACHES", "from": "res_lp_5ad392e7e654", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 2, "week": 14 },
+    { "id": "e_k9_practises_b2t4", "ksb": "K9", "type": "PRACTISES", "from": "res_prac_b58e0adc803a", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 2, "week": null },
+    { "id": "e_k9_assesses_cea_3_3", "ksb": "K9", "type": "ASSESSES", "from": "cea_1_3_3", "basis": "EXPLICIT", "provenance": "GROUP_G3", "block": null, "week": null },
+    { "id": "e_k9_reinforces_w64", "ksb": "K9", "type": "REINFORCES", "from": "res_lp_ca80733bd5d0", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 7, "week": 64, "note": "Later TPMS integration — not Primary" },
+    { "id": "e_k9_visibility_tyres_ppt", "ksb": "K9", "type": "SUPPORTS", "from": "res_lm_9f5cb6fbb8f3_11", "basis": "INFERRED_LOW", "provenance": "GROUP_G3", "block": null, "week": null, "note": "Unextracted — visibility gap candidate for legislation/sidewall" },
+
+    { "id": "e_k14_teaches_g13_l1", "ksb": "K14", "type": "TEACHES", "from": "res_lm_9270686b121d_110", "basis": "EXPLICIT", "provenance": "GROUP_G13", "block": null, "week": null },
+    { "id": "e_k14_teaches_g13_l2", "ksb": "K14", "type": "TEACHES", "from": "res_lm_b30479c74664_111", "basis": "EXPLICIT", "provenance": "GROUP_G13", "block": null, "week": null },
+    { "id": "e_k14_teaches_g6_hv", "ksb": "K14", "type": "TEACHES", "from": "res_lm_da4a93c2da80_51", "basis": "EXPLICIT", "provenance": "GROUP_G6", "block": null, "week": null },
+    { "id": "e_k14_practises_cea_13", "ksb": "K14", "type": "PRACTISES", "from": "cea_2_13_1", "basis": "EXPLICIT", "provenance": "GROUP_G13", "block": null, "week": null },
+    { "id": "e_k14_practises_b6t4", "ksb": "K14", "type": "PRACTISES", "from": "res_prac_a9fd893baee0", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 6, "week": null },
+    { "id": "e_k14_assesses_b6t4", "ksb": "K14", "type": "ASSESSES", "from": "res_prac_a9fd893baee0", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 6, "week": null },
+
+    { "id": "e_k15_awareness_fs04", "ksb": "K15", "type": "SUPPORTS", "from": "res_lp_4e5d5534a1f4", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 4, "note": "AWARENESS only — must not own Primary" },
+    { "id": "e_k15_teaches_lp23", "ksb": "K15", "type": "TEACHES", "from": "res_lm_466bab823d76_55", "basis": "EXPLICIT", "provenance": "GROUP_G7", "block": null, "week": null },
+    { "id": "e_k15_teaches_lp24", "ksb": "K15", "type": "TEACHES", "from": "res_lm_2ca8ded587ac_56", "basis": "EXPLICIT", "provenance": "GROUP_G7", "block": null, "week": null },
+    { "id": "e_k15_teaches_batteries_pptx", "ksb": "K15", "type": "TEACHES", "from": "res_lm_277e84194c5f_58", "basis": "EXPLICIT", "provenance": "GROUP_G7", "block": null, "week": null },
+    { "id": "e_k15_assesses_ka", "ksb": "K15", "type": "ASSESSES", "from": "res_lm_cdf93a50039d_65", "basis": "EXPLICIT", "provenance": "GROUP_G7", "block": null, "week": null },
+    { "id": "e_k15_practises_b2t3", "ksb": "K15", "type": "PRACTISES", "from": "res_prac_139a816c6d1e", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 2, "week": null, "note": "Early inspection — not Primary theory" },
+
+    { "id": "e_k16_practises_cea_7_1", "ksb": "K16", "type": "PRACTISES", "from": "cea_1_7_1", "basis": "EXPLICIT", "provenance": "GROUP_G7", "block": null, "week": null },
+    { "id": "e_k16_practises_cea_7_2", "ksb": "K16", "type": "PRACTISES", "from": "cea_1_7_2", "basis": "EXPLICIT", "provenance": "GROUP_G7", "block": null, "week": null },
+    { "id": "e_k16_practises_cea_7_3", "ksb": "K16", "type": "PRACTISES", "from": "cea_1_7_3", "basis": "EXPLICIT", "provenance": "GROUP_G7", "block": null, "week": null },
+    { "id": "e_k16_assesses_cea_7_3", "ksb": "K16", "type": "ASSESSES", "from": "cea_1_7_3", "basis": "EXPLICIT", "provenance": "GROUP_G7", "block": null, "week": null },
+    { "id": "e_k16_prepares_gw1", "ksb": "K16", "type": "PREPARES_FOR_GATEWAY", "from": "gw_f0ceef633f24", "basis": "EXPLICIT", "provenance": "GATEWAY", "block": null, "week": null },
+
+    { "id": "e_k17_teaches_g11_adas", "ksb": "K17", "type": "TEACHES", "from": "res_lm_95f371942a77_98", "basis": "EXPLICIT", "provenance": "GROUP_G11", "block": null, "week": null },
+    { "id": "e_k17_teaches_g11_lp", "ksb": "K17", "type": "TEACHES", "from": "res_lm_5d8bcd0589f2_87", "basis": "EXPLICIT", "provenance": "GROUP_G11", "block": null, "week": null },
+    { "id": "e_k17_practises_b9t4", "ksb": "K17", "type": "PRACTISES", "from": "res_prac_126c9fbc1032", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 9, "week": null },
+    { "id": "e_k17_reinforces_w89", "ksb": "K17", "type": "REINFORCES", "from": "res_lp_43f67c596f10", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 9, "week": 89 },
+
+    { "id": "e_k19_teaches_g3_lp3a", "ksb": "K19", "type": "TEACHES", "from": "res_lm_801be46beaa3_8", "basis": "EXPLICIT", "provenance": "GROUP_G3", "block": null, "week": null },
+    { "id": "e_k19_teaches_g11_geom", "ksb": "K19", "type": "REINFORCES", "from": "res_lm_a70ba19fb707_100", "basis": "EXPLICIT", "provenance": "GROUP_G11", "block": null, "week": null },
+    { "id": "e_k19_practises_cea_5_1", "ksb": "K19", "type": "PRACTISES", "from": "cea_1_5_1", "basis": "EXPLICIT", "provenance": "GROUP_G5", "block": null, "week": null },
+    { "id": "e_k19_assesses_cea_5_1", "ksb": "K19", "type": "ASSESSES", "from": "cea_1_5_1", "basis": "EXPLICIT", "provenance": "GROUP_G5", "block": null, "week": null },
+
+    { "id": "e_s4_teaches_fs02", "ksb": "S4", "type": "TEACHES", "from": "res_lp_a1de2dadb565", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 2 },
+    { "id": "e_s4_teaches_fs05", "ksb": "S4", "type": "TEACHES", "from": "res_lp_f311ff09e560", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 5 },
+    { "id": "e_s4_practises_fs02", "ksb": "S4", "type": "PRACTISES", "from": "res_lp_a1de2dadb565", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 2 },
+
+    { "id": "e_s8_teaches_fs02", "ksb": "S8", "type": "TEACHES", "from": "res_lp_a1de2dadb565", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 2 },
+    { "id": "e_s8_teaches_fs05", "ksb": "S8", "type": "TEACHES", "from": "res_lp_f311ff09e560", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 5 },
+    { "id": "e_s8_teaches_fs07", "ksb": "S8", "type": "TEACHES", "from": "res_lp_7561f4aaf78a", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 7 },
+    { "id": "e_s8_practises_fs07", "ksb": "S8", "type": "PRACTISES", "from": "res_lp_7561f4aaf78a", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 7 },
+    { "id": "e_s8_reinforces_w42", "ksb": "S8", "type": "REINFORCES", "from": "res_lp_99ed12e14c1d", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 5, "week": 42, "note": "Diagnostic intensives — reinforce not Primary steal" },
+
+    { "id": "e_s14_teaches_fs10", "ksb": "S14", "type": "TEACHES", "from": "res_lp_76cd8f807cd7", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 10 },
+    { "id": "e_s14_practises_fs10", "ksb": "S14", "type": "PRACTISES", "from": "res_lp_76cd8f807cd7", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 10 },
+    { "id": "e_s14_reinforces_w58", "ksb": "S14", "type": "REINFORCES", "from": "res_lp_2fe8e596e37e", "basis": "INFERRED_MEDIUM", "provenance": "BLOCK", "block": 6, "week": 58 },
+    { "id": "e_s14_prepares_gw_docs", "ksb": "S14", "type": "PREPARES_FOR_GATEWAY", "from": "gw_e8cf0cff7a22", "basis": "EXPLICIT", "provenance": "GATEWAY", "block": null, "week": null }
+  ],
+  "evidenceRequestsGenerated": [
+    {
+      "id": "ER-R51-4-01",
+      "priority": "NON_BLOCKING",
+      "affects": ["K9"],
+      "request": "Extracted/annotated Tyres.ppt (or equivalent) showing named tyre legislation, EU labelling, sidewall markings, homologated fitments"
+    },
+    {
+      "id": "ER-R51-4-02",
+      "priority": "NON_BLOCKING",
+      "affects": ["K15"],
+      "request": "Named e-machine teaching within LV batteries / starting / charging syllabus"
+    },
+    {
+      "id": "ER-R51-4-03",
+      "priority": "NON_BLOCKING",
+      "affects": ["K17"],
+      "request": "Explicit static vs dynamic ADAS calibration methods and equipment teaching body"
+    },
+    {
+      "id": "ER-R51-4-04",
+      "priority": "NON_BLOCKING",
+      "affects": ["K19"],
+      "request": "Extracted Wheel Alignment.ppt / geometry resource naming Ackermann principle and thrust angle"
+    },
+    {
+      "id": "ER-R51-4-05",
+      "priority": "NON_BLOCKING",
+      "affects": ["S4", "K6"],
+      "request": "Explicit store / return-to-storage demonstration or checklist beyond housekeeping implication"
+    },
+    {
+      "id": "ER-R51-4-06",
+      "priority": "NON_BLOCKING",
+      "affects": ["K14"],
+      "request": "Named blower-motor / heat-exchanger / pipes-hoses teaching to close HVAC component-set depth"
+    }
+  ],
+  "recommendedNextBatch": {
+    "batch": "R51-5",
+    "ksbs": ["K22", "K24", "K25", "K26", "K27", "K29", "K30", "K32", "S17", "S18", "S19", "S21", "S22", "S24", "B2", "B3", "B4"],
+    "note": "NOT EXECUTED — await human approval. Completes remaining 17 to 64/64."
+  }
+}

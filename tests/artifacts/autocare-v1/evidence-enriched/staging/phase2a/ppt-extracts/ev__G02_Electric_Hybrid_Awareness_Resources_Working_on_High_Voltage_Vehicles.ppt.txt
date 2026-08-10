@@ -1,0 +1,245 @@
+SOURCE: G02 Electric Hybrid Awareness\Resources\Working on High Voltage Vehicles.ppt
+HASH: f401e434a502352176a9d1f748cb20c58516de1b1a24e009ecbc8839c27db294
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Working on High Voltage Vehicles
+
+explore the rules governing who can work on high voltage vehicles and how they can do so safely
+
+Next >
+
+===== SLIDE 2 =====
+Introduction
+
+Next >
+
+There are very strict rules governing the work that can be done on high voltage (HV) electric vehicles.
+
+These are in place to assist the safety and health of the workforce.
+
+In general, work on the live parts of the electrical system is not permitted, and the live parts should be disabled before work is done on any part of the electrical system.
+
+===== SLIDE 3 =====
+Five Safety Rules
+
+These are the rules that should always be observed before work is started.
+
+Next >
+
+The first three rules apply to all work on HV systems. Rules four and five may apply, and have to be judged, on an individual case basis.
+
+1. Isolate
+
+3. Verify that it is not live
+
+2. Safeguard against reconnection
+
+4. Earth and short circuit
+
+5. Shroud and safeguard adjacent live parts
+
+===== SLIDE 4 =====
+Isolate
+
+Next >
+
+The actual instructions will be vehicle-specific but are likely to include the following:
+
+Switch off the ignition
+
+Withdraw the service plug
+
+Switch off the main battery switch
+
+Remove fuses
+
+Disconnect any charging plug
+
+Mulad
+
+===== SLIDE 5 =====
+Safeguard Against Reconnection
+
+Next >
+
+Safeguards will include:
+
+Remove the ignition key and prevent unauthorized access to it
+
+Store the service plug away from unauthorized access
+
+Lock or otherwise secure the battery switch to ensure it cannot be reconnected
+
+Follow any other manufacturer-specific recommendations
+
+===== SLIDE 6 =====
+Verify that it is not Live
+
+Next >
+
+Even with the HV disconnected, there can still be residual charges in the system, due to devices such as capacitors.
+
+These will discharge over time but, even after waiting fifteen minutes or so, the vehicle must be tested to ensure it is not still live.
+
+Multimeters, even marked to CAT III, should not be used for this task because they have had an unacceptably high rate    of accidents.
+
+===== SLIDE 7 =====
+Responsibility
+
+Next >
+
+However, the employer has the highest level of responsibility and is ultimately responsible for safety policy, organization, and facilities.
+
+Employers may appoint people to take responsibility.
+
+===== SLIDE 8 =====
+Employers Responsibilities
+
+Employers must produce risk assessments and define protective measures.
+
+Next >
+
+They must provide a suitable area in which to work on HV vehicles.
+
+They will also generate the work instructions for working on HV vehicles.
+
+Most importantly, they are responsible for ensuring the qualifications of the staff working on HV vehicles.
+
+dnak
+
+===== SLIDE 9 =====
+Staff Qualifications
+
+Next >
+
+Certain duties of the employer can be delegated to others within the company.
+
+The employer must ensure that their staff possess the necessary specialist and technical skills.
+
+They must also be physically and mentally suitable for any given task.
+
+NRMA New Cars
+
+===== SLIDE 10 =====
+Staff Qualifications
+
+Next >
+
+The rules identify three levels of worker for HV systems.
+
+The highest level is the responsible, skilled, electrical person.
+
+The next level is the skilled electrical person.
+
+The final level is the person who has received electrical instruction.
+
+Level 1
+
+Level 2
+
+Level 3
+
+===== SLIDE 11 =====
+Staff Qualifications
+
+Next >
+
+A business does not have to employ people at all these levels.
+
+However, an unskilled and untrained person cannot be used to work on HV systems.
+
+In service workshops, it is likely that there will be several skilled electrical persons.
+
+They will have suitable qualifications, experience of working on HV systems, and they will be familiar with the rules and regulations.
+
+===== SLIDE 12 =====
+Staff Qualifications
+
+Next >
+
+There may also be several electrically trained people gaining experience under supervision.
+
+They will only be performing set tasks and having their work monitored.
+
+There may be no responsible skilled person in a workshop environment.
+
+Official U.S. Navy Imagery
+
+victor1558
+
+===== SLIDE 13 =====
+Question 1
+
+Next >
+
+A)	Insulate
+
+B)	Isolate
+
+C)	Incapacitate
+
+D)	Inactivate
+
+What is the first of the five safety rules?
+
+===== SLIDE 14 =====
+Question 1
+
+The first stage is to isolate the high voltage source from the rest of the vehicle.
+
+Next >
+
+A)	Insulate
+
+B)	Isolate
+
+C)	Incapacitate
+
+D)	Inactivate
+
+What is the first of the five safety rules?
+
+===== SLIDE 15 =====
+A)	By qualification only
+
+B)	By experience only
+
+C)	By studying only
+
+Question 2
+
+Next >
+
+How does a person become skilled?
+
+D)	By qualification, experience, and studying
+
+===== SLIDE 16 =====
+Question 2
+
+A skilled person must be suitably qualified, experienced, and have studied the relevant legislation.
+
+Next >
+
+A)	By qualification only
+
+B)	By experience only
+
+C)	By studying only
+
+How does a person become skilled?
+
+D)	By qualification, experience, and studying
+
+===== SLIDE 17 =====
+Summary
+
+who can work on high voltage vehicles and how that work should be carried out safely
+
+In this presentation you have seen:
+
+End
+

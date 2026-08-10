@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "brakes",
+    "priority":  1,
+    "whySelected":  "G10 variant — compare to G4 for progression/ownership",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G10 Advanced Braking\\Resources\\Wheel Speed Sensors.ppt",
+    "relativePath":  "G10 Advanced Braking\\Resources\\Wheel Speed Sensors.ppt",
+    "sourceFilename":  "Wheel Speed Sensors.ppt",
+    "exists":  true,
+    "contentHashSha256":  "7a3aee6d5543f24d74d766d78788a51ffcc2fde64799c0ed3dcfb6e9a369beda",
+    "byteLength":  5985792,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  20,
+    "extractedCharCount":  8352,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G10_Advanced_Braking_Resources_Wheel_Speed_Sensors.ppt.txt",
+    "extractedAt":  "2026-08-10T13:31:59.6326693+01:00"
+}

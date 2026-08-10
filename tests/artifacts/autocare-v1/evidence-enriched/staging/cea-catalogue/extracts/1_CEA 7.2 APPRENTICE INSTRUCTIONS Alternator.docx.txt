@@ -1,0 +1,64 @@
+APPRENTICE INSTRUCTIONS
+ Ref: 7.2
+ Remove and Replace Alternator (40mins)
+
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment
+ To demonstrate a methodical procedure when carrying out removal and replacement of components
+ To demonstrate your knowledge and ability to inspect system components
+ To demonstrate your knowledge and ability to take electrical measurements
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment
+
+ Materials you need at the workstation:
+ Light Vehicle (not rig) with a 12V battery
+ Multi - meter
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to inspect, remove and replace the starter motor.
+
+ Complete the following tasks and note your results where indicated:
+
+ Ensure your working environment is safe and the vehicle is correctly prepared before starting work
+
+ Take measurements of battery voltage, alternator amperage output and alternator charging rate.
+
+ R emove and replace the alternator.
+
+ Tighten all components to 50% (half) of the torque setting specified ensuring you record the CORRECT settings in the Apprentice Assessment Record sheet
+
+ Reinstate the vehicle and wor k station to a pre-assessment condition
+
+ A PPRENTICE ASSESSMENT RECORD
+ Ref: 7.2
+ Remove and Replace the Alternator
+ Vehicle Model:
+ Vehicle Make:
+ Vehicle Reg:
+ Brief description of the work carried out and any further recommendations.
+
+ PPE worn and special precautions taken
+ List all technical data required for task
+
+ Battery voltage
+
+ Alternator amperage output.
+
+ Alternator charge rate
+
+ Torque Settings:
+ Special tools including any required calibration:
+
+ Apprentice Name:
+ Apprentice Signature:
+ Assessor Signature:
+ Assessor Pin:
+ Date:
+ Feedback:
+
+ Result:
+ Pass
+ Refer

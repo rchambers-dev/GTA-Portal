@@ -1,0 +1,294 @@
+SOURCE: G02 Electric Hybrid Awareness\Resources\Safety in High Voltage Vehicles.ppt
+HASH: 288abfbed6323d2838680cf54e0e6e9db0e30e423a6f3986de58d2b848f57ab5
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Safety in High Voltage Vehicles
+
+explore the safety procedures needed for high voltage vehicles
+
+Next >
+
+===== SLIDE 2 =====
+Introduction
+
+A technician that works on electric vehicles needs to be suitably qualified.
+
+Next >
+
+There are special procedures for working on high voltage electric vehicles.
+
+High voltage electricity is dangerous and can cause burns, shocks, sparks, explosions, and fire. It must be treated with respect.
+
+===== SLIDE 3 =====
+Protection Devices
+
+Electric cars contain 12 V circuits as well as high voltage systems.
+
+Next >
+
+These circuits are protected by traditional fuses and circuit breakers.
+
+High voltage circuits have different forms of protection.
+
+Frank Hebbert
+
+===== SLIDE 4 =====
+High Voltage Cables
+
+High voltage cables do not connect to the chassis ground.
+
+Next >
+
+An electronic control unit (ECU) monitors the ground fault monitor.
+
+Electronic circuits
+
+12V Battery
+
+Electric motors
+
+Ground fault monitor
+
+HV ECU
+
+HV battery
+
+Chassis ground
+
++
+
+-
+
+Under normal conditions, the current flowing to and from a component is the same.
+
+12 A
+
+===== SLIDE 5 =====
+Electronic circuits
+
+12V Battery
+
+Electric motors
+
+Ground fault monitor
+
+HV ECU
+
+HV battery
+
+Chassis ground
+
++
+
+-
+
+Ground Fault
+
+When a ground fault occurs, the current flowing to and from an HV component is different.
+
+Next >
+
+When the ground fault monitor detects a loss of energy (current imbalance), it signals the HV ECU to shut down the HV system.
+
+1 A
+
+12 A
+
+11 A
+
+===== SLIDE 6 =====
+Personal Protective Equipment - PPE
+
+Before any work with high voltage vehicles is carried out, it is important to have the correct PPE.
+
+Next >
+
+Insulating rubber gloves should be worn when working on HV systems.
+
+PPE should include a non-conductive face shield to protect against chemical splashes and debris caused by HV arcing.
+
+These offer protection up to 1000 V.
+
+===== SLIDE 7 =====
+Insulating Gloves
+
+Always check the insulating gloves before starting work.
+
+Next >
+
+If you think there may be a problem, blow into the glove and seal the air inside.
+
+Then press the glove to increase pressure inside the glove and check for air leaks.
+
+If a glove leaks, it should be discarded.
+
+===== SLIDE 8 =====
+Other PPE
+
+Rubber soled boots are recommended for working on HV systems.
+
+The rubber sole provides a high resistance, non-conductive barrier between the wearer and the ground.
+
+Next >
+
+Non-conductive footwear for work on HV systems
+
+Non-synthetic clothing  is recommended for working on HV systems.
+
+This is because synthetic clothing, such as nylon, could melt at high temperatures.
+
+Nylon
+
+Cotton
+
+===== SLIDE 9 =====
+A)	Through the ground fault monitor
+
+B)	Through the HV ECU
+
+C)	Through the secondary battery
+
+D)	They are not normally connected to chassis ground
+
+Question 1
+
+Next >
+
+How are the HV+ and HV– cables connected to chassis ground?
+
+===== SLIDE 10 =====
+Question 1
+
+They would only be connected to chassis ground if a fault occurred.
+
+Next >
+
+A)	Through the ground fault monitor
+
+B)	Through the HV ECU
+
+C)	Through the secondary battery
+
+D)	They are not normally connected to chassis ground
+
+How are the HV+ and HV– cables connected to chassis ground?
+
+===== SLIDE 11 =====
+Safety Precautions
+
+Next >
+
+There are certain safety precautions that can be taken before disabling the high voltage system:
+
+Create a high voltage buffer zone around the vehicle
+
+Place a sign on the roof to warn others of the high voltage hazard
+
+Position a suitable fire extinguisher in a nearby location
+
+===== SLIDE 12 =====
+Working on High Voltage Systems
+
+All tasks on the high voltage system require it to be disabled.
+
+Next >
+
+To do this, remove the service plug or open the safety switch.
+
+Wait five minutes for all energy storage devices, such as capacitors, to discharge.
+
+Use a multimeter, certified to 1000 V, to check there is no stored charge remaining.
+
+===== SLIDE 13 =====
+Testing for High Voltage Residue
+
+High voltage circuits do not use the chassis ground so readings must be taken directly at high voltage connections.
+
+Next >
+
+Readings may be taken at the high voltage relays that link the battery pack to the HV system.
+
+Readings may also be taken in the engine compartments between HV connections.
+
+HV connections
+
+===== SLIDE 14 =====
+Working on High Voltage Systems
+
+The work area should be dry and clear of debris.
+
+Next >
+
+There should be sufficient lighting to view the work area.
+
+The HV system should not be left unattended while it is exposed.
+
+Even when the battery pack is isolated from the HV circuits, it is still charged.
+
+dnak
+
+Clear floor
+
+There are other factors that need to be taken into consideration while working on high voltage systems.
+
+benok
+
+Sufficient lighting
+
+HV battery pack
+
+===== SLIDE 15 =====
+Working on High Voltage Systems
+
+Cleaning sprays should not be used on HV circuits because these may make the surrounding air conductive.
+
+Next >
+
+Reduce the risk of electric shock by using the one-hand rule when working on a HV circuit.
+
+Do not back-probe HV connectors because this will damage them.
+
+Working with one hand in your pocket
+
+===== SLIDE 16 =====
+A)	They are more fashionable than normal boots
+
+B)	They are more comfortable than normal boots
+
+C)	They are better insulators than normal boots
+
+D)	The leather is a better conductor than the leather in normal boots
+
+Question 2
+
+Next >
+
+Why are rubber soled boots recommended when working with high voltage systems?
+
+===== SLIDE 17 =====
+Question 2
+
+Next >
+
+A)	They are more fashionable than normal boots
+
+B)	They are more comfortable than normal boots
+
+C)	They are better insulators than normal boots
+
+D)	The leather is a better conductor than the leather in normal boots
+
+Why are rubber soled boots recommended when working with high voltage systems?
+
+===== SLIDE 18 =====
+Summary
+
+the safety procedures needed for high voltage vehicles
+
+In this presentation you have seen:
+
+End
+

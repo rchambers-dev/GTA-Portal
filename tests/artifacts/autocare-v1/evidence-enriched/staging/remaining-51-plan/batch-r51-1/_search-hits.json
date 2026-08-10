@@ -1,0 +1,1003 @@
+{
+  "K18": {
+    "catalogue": {
+      "label": "K18-cat",
+      "hitCountShown": 5,
+      "hits": [
+        {
+          "id": "res_lm_5d8bcd0589f2_87",
+          "title": "res_lm_5d8bcd0589f2_87",
+          "group": null,
+          "matched": [
+            "adas",
+            "driver assistance"
+          ],
+          "excerpt": "Lesson Plan 2 Trainer Name -10531 74930 0 0 Topic -8255 69586 Electronic steering A DAS systems 0 0 Electronic steering A DAS systems Lesson Aims Lesson Aims -635 32385 Identify h ow light vehicle electronic steering components interact with Advanced Driver Assistance Systems (ADAS) and what the basics of CANBUS is. Introduction to what ADAS is, the levels we have and typical systems found on cars. Identify c ommon faults associated with light vehicle electronic systems , components and associat",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_7656c297a800_88",
+          "title": "res_lm_7656c297a800_88",
+          "group": null,
+          "matched": [
+            "adas"
+          ],
+          "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Four-wheel alignment , measure and adjust 0 0 Four-wheel alignment , measure and adjust Lesson Aims Lesson Aims left 30593 To recap and understand Geometry terminology and what each does . Check fully familiar and confident with our equipment and typical reasons for referral on tasks. Re illiterate importance of pre checks, link into ADAS and liability. Workshop practical – 4 - wheel alignment assessment and aim for CEA standard . 0 0 T",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_2ea67bf9bf90_93",
+          "title": "res_lm_2ea67bf9bf90_93",
+          "group": null,
+          "matched": [
+            "driver assistance"
+          ],
+          "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Adaptive suspension systems 0 0 Adaptive suspension systems Lesson Aims Lesson Aims -635 32384 Discuss light vehicle adaptive suspension and the interaction with driver assistance systems Overview PPE and VPE used when removing and replacing components Discuss tools and equipment used during the removal and replacement of sensors, wires and c omponents hazards relating to working on light vehicle electrical systems 0 0 Discuss light veh",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_95f371942a77_98",
+          "title": "res_lm_95f371942a77_98",
+          "group": null,
+          "matched": [
+            "adas",
+            "driver-assistance"
+          ],
+          "excerpt": "ADAS Systems Next Advanced Driver-Assistance systems ( ADAS ) are one of the fastest-growing safety application areas due to the desire to reduce vehicle accidents and fatalities. style.visibility style.visibility Next > style.visibility ADAS Systems These systems use a camera & radar which need expert adjustment and calibration after various repairs have been completed. Many vehicles now have these advanced driver assist systems which require specialist attention to correctly adjust following e",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_126c9fbc1032",
+          "title": "res_prac_126c9fbc1032",
+          "group": null,
+          "matched": [
+            "adas"
+          ],
+          "excerpt": "TASK 4: ADAS PRE-CALIBRATION AND SENSOR AWARENESS CHECK Autocare Technician Level 2 | Block 9 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 81-94 Your task A vehicle has had alignment, tyre or body-related work and may require ADAS checks. You must complete non-invasive pre-calibration checks, record findings and identify whether specialist calibration referral is required. What you must do 1 Prepare the vehicle and identify visible ADAS features. 2 ",
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "cea": {
+      "label": "K18-cea",
+      "hitCountShown": 1,
+      "hits": [
+        {
+          "id": "cea_2_11_6",
+          "title": "cea_2_11_6",
+          "group": null,
+          "matched": [
+            "adas"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "gateway": {
+      "label": "K18-gw",
+      "hitCountShown": 0,
+      "hits": []
+    }
+  },
+  "K2": {
+    "catalogue": {
+      "label": "K2-cat",
+      "hitCountShown": 3,
+      "hits": [
+        {
+          "id": "res_lm_6e6c9e8174f3_117",
+          "title": "res_lm_6e6c9e8174f3_117",
+          "group": null,
+          "matched": [
+            "manufacturers specification"
+          ],
+          "excerpt": "Lesson Plan Trainer Name -10531 74930 J ulie S aynor 0 0 J ulie S aynor Topic -8255 69586 VEHICLE SAFETY INSPECTION 0 0 VEHICLE SAFETY INSPECTION Lesson Aims Lesson Aims -635 32385 Introduction for learners to vehicle safety inspections. Understand the correct procedure when completing a vehicle safety inspection following manufacturers specifications . 0 0 Introduction for learners to vehicle safety inspections. Understand the correct procedure when completing a vehicle safety inspection follow",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lp_54be5af2ca23",
+          "title": "res_lp_54be5af2ca23",
+          "group": null,
+          "matched": [
+            "service schedule"
+          ],
+          "excerpt": "Autocare Technician Level 2 - Week 22 Lesson Plan Routine servicing, inspection workflow and service schedules | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 22 | Block 3 Block title Workshop Processes, Tools and Environmental Awareness Month / period Months 5-8 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 3 | Week 22 Planned time 5.50 eligible OTJ | 0.50 non",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_fdc47cc819f4",
+          "title": "res_prac_fdc47cc819f4",
+          "group": null,
+          "matched": [
+            "service schedule"
+          ],
+          "excerpt": "TASK 3: INTERIM SERVICE, INSPECTION AND DOCUMENTATION Autocare Technician Level 2 | Block 3 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 21-30 Your task A vehicle is booked for an interim service. You must follow the service schedule, identify required service items, complete the inspection documentation and record any additional work requiring customer authorisation. What you must do 1 Prepare the vehicle and workstation safely. 2 Identify required",
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "cea": {
+      "label": "K2-cea",
+      "hitCountShown": 1,
+      "hits": [
+        {
+          "id": "cea_2_CEA_C1_Service_Schedule_Generic_docx",
+          "title": "cea_2_CEA_C1_Service_Schedule_Generic_docx",
+          "group": null,
+          "matched": [
+            "service schedule"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "gateway": {
+      "label": "K2-gw",
+      "hitCountShown": 0,
+      "hits": []
+    }
+  },
+  "K20": {
+    "catalogue": {
+      "label": "K20-cat",
+      "hitCountShown": 15,
+      "hits": [
+        {
+          "id": "res_lm_81eac59f305f_21",
+          "title": "res_lm_81eac59f305f_21",
+          "group": null,
+          "matched": [
+            "brake fluid"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_09ccf745db0e_23",
+          "title": "res_lm_09ccf745db0e_23",
+          "group": null,
+          "matched": [
+            "brake fluid"
+          ],
+          "excerpt": "Level 2 Automotive: Braking Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State one reason why it is important to wear eye protection when working on braking systems. 2. Explain why brake dust must never be blown out with compressed air. 3. Describe two safe working practices to follow when lifting or supporting a vehicle for brake inspection. 4. What should be done before removing a whe",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_9cbb6a9e90e0_24",
+          "title": "res_lm_9cbb6a9e90e0_24",
+          "group": null,
+          "matched": [
+            "brake fluid"
+          ],
+          "excerpt": "Braking Systems Initial Knowledge Assessment – Marking Sheet with Typical Answers Learner Name: ________________________________ Date: ________________________________ Assessor Name: _______________________________ Signature: ____________________________ Question Number Typical Answer / Guidance Mark (1 per question) Assessor Comments 1 Eye protection prevents injury from dust, rust, and brake fluid splashes. 2 Brake dust may contain asbestos; blowing it can cause inhalation risk. 3 Use axle sta",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_4682b1598582_42",
+          "title": "res_lm_4682b1598582_42",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Lesson Plan 16 Introduction to Cooling Sy s tems Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle cooling systems 0 0 Introduction to light vehicle cooling systems Lesson Aims Lesson Aims -635 41911 Introduction to vehicle cooling systems, overview of air (briefly) and liquid cooling Discuss procedures to correctly remove, check and replace cooling system components and relevant safety procedures. 0 0 Introduction to vehicle cooling systems, overview of air (briefly)",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_dc868a065759_43",
+          "title": "res_lm_dc868a065759_43",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Lesson Plan 17 Introduction to Cooling Sy s tems - Testing Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle cooling systems 0 0 Introduction to light vehicle cooling systems Lesson Aims Lesson Aims -635 41911 Review of vehicle cooling systems including components and operation of liquid cooling. Discuss procedures to correctly remove, test and replace cooling system components and relevant safety procedures. 0 0 Review of vehicle cooling systems including components ",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_fa990159353c_44",
+          "title": "res_lm_fa990159353c_44",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Lesson Plan 1 8 Introduction to Engines – Mechanical Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to engine mechanical systems 0 0 Introduction to engine mechanical systems Lesson Aims Lesson Aims -635 41911 Discuss basic engine types - inline, vee, flat Discuss the 4 stroke cycle and operation Discuss engine components, materials used in construction and operation. 0 0 Discuss basic engine types - inline, vee, flat Discuss the 4 stroke cycle and operation Discuss engine componen",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_82acbb287ba4_45",
+          "title": "res_lm_82acbb287ba4_45",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Lesson Plan 1 9 Introduction to Engines – Mechanical Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to engine mechanical systems 0 0 Introduction to engine mechanical systems Lesson Aims Lesson Aims -635 41910 Review engine mechanical from previous week session Review the 4 stroke cycle and operation Discuss cylinder head design and operation. Discuss valve timing and its effects on engine operation. 0 0 Review engine mechanical from previous week session Review the 4 stroke cycle ",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_cdc4155738ce_46",
+          "title": "res_lm_cdc4155738ce_46",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Lesson Plan 20 Introduction to Engines – Lubrication Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to engine lubrication systems 0 0 Introduction to engine lubrication systems Lesson Aims Lesson Aims -635 41911 Discuss basic engine lubrication requirements – wet and dry sump systems. Discuss how engines are lubricated, oil pumps and types of oil. Discuss engine components, materials used in lubrication systems 0 0 Discuss basic engine lubrication requirements – wet and dry sump sy",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_e5fdd3f23432_47",
+          "title": "res_lm_e5fdd3f23432_47",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Lesson Plan 2 1 Introduction to Engines – Lubrication Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to engine lubrication systems 0 0 Introduction to engine lubrication systems Lesson Aims Lesson Aims -635 41911 Review engine lubrication requirements – wet and dry sump systems. Review how engines are lubricated, oil pumps and types of oil. Discuss oil properties and viscosity 0 0 Review engine lubrication requirements – wet and dry sump systems. Review how engines are lubricated, ",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_b14cd1cf8e89_48",
+          "title": "res_lm_b14cd1cf8e89_48",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Cooling and Lubrication Systems Initial Knowledge Assessment – Marking Sheet with Typical Answers (30 Questions) Learner Name: ________________________________ Date: ________________________________ Assessor Name: _______________________________ Signature: ____________________________ Question Number Typical Answer / Guidance Mark (1 per question) Assessor Comments 1 1. To protect skin from irritation and absorption of chemicals in oil and coolant. 2 2. Hot coolant is under pressure and can caus",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_47e9f3ac040e_49",
+          "title": "res_lm_47e9f3ac040e_49",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Level 2 Automotive: Cooling and Lubrication Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State one reason why it is important to wear gloves when handling coolant or engine oil. 2. Explain why a cooling system should never be opened when the engine is hot. 3. Describe two safe working practices to follow when draining coolant or oil from a vehicle. 4. How should waste coolant and oil be",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_67b673b95c1a_50",
+          "title": "res_lm_67b673b95c1a_50",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_da4a93c2da80_51",
+          "title": "res_lm_da4a93c2da80_51",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Auto Care Apprenticeships Heating and Ventilation style.visibility Lesson Aims Introduction to cabin heating systems. Recognise heating system faults. What equipment is required to test heating systems . style.visibility Lesson Objectives Be able to identify at least 2 heating system components. Be able to name at least 1 symptom and cause of a heating system fault. Be able to name at least 1 piece of heating system test equipment and how to use it. style.visibility Heater Control All cars are e",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_eac9a3e5de42_52",
+          "title": "res_lm_eac9a3e5de42_52",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_c72a2760897a_53",
+          "title": "res_lm_c72a2760897a_53",
+          "group": null,
+          "matched": [
+            "lubricat"
+          ],
+          "excerpt": "Aims 1. Introduction to lubrication systems. 2. Recognising lubrication system faults. 3. What equipment is required to test lubrication systems. style.visibility Objectives 1. Be able to identify at least 2 lubrication system components. 2. Be able to name at least 1 symptom and cause of a lubrication system fault. 3. Be able to name at least 1 piece of lubrication system test equipment and how to use it. style.visibility Subject - Lubrication Systems style.visibility style.visibility style.vis",
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "cea": {
+      "label": "K20-cea",
+      "hitCountShown": 2,
+      "hits": [
+        {
+          "id": "cea_1_4_2b",
+          "title": "cea_1_4_2b",
+          "group": null,
+          "matched": [
+            "brake fluid"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_1_4_3",
+          "title": "cea_1_4_3",
+          "group": null,
+          "matched": [
+            "brake fluid"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "gateway": {
+      "label": "K20-gw",
+      "hitCountShown": 1,
+      "hits": [
+        {
+          "id": "gw_ef36375dc80b",
+          "title": "gw_ef36375dc80b",
+          "group": null,
+          "matched": [
+            "brake fluid"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    }
+  },
+  "S25": {
+    "catalogue": {
+      "label": "S25-cat",
+      "hitCountShown": 3,
+      "hits": [
+        {
+          "id": "res_lm_ceb8402d6d74_73",
+          "title": "res_lm_ceb8402d6d74_73",
+          "group": null,
+          "matched": [
+            "oil service",
+            "air filter"
+          ],
+          "excerpt": "GROUP S EIGHT and NINE CUSTOMER SERVICE NEEDS / STOCK CONTROL e-learning task sheet - Task 1 Instructions: Choose a vehicle from GTA workshop or the car park outside and note its registration number. Task 1: Using the Internet, carry out research and choose 2 different parts suppliers and list the price of the parts for a service, as detailed below. Job Details : Engine Oil Service A Make: Model: Engine: Reg No: Supplier 1 Supplier 2 Oil Filter and part no £ Oil Filter and part no £ Sump Plug an",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_fdc47cc819f4",
+          "title": "res_prac_fdc47cc819f4",
+          "group": null,
+          "matched": [
+            "interim service"
+          ],
+          "excerpt": "TASK 3: INTERIM SERVICE, INSPECTION AND DOCUMENTATION Autocare Technician Level 2 | Block 3 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 21-30 Your task A vehicle is booked for an interim service. You must follow the service schedule, identify required service items, complete the inspection documentation and record any additional work requiring customer authorisation. What you must do 1 Prepare the vehicle and workstation safely. 2 Identify required",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_0e9b7ab8404b",
+          "title": "res_prac_0e9b7ab8404b",
+          "group": null,
+          "matched": [
+            "interim service"
+          ],
+          "excerpt": "AUTOCARE TECHNICIAN LEVEL 2 PRACTICAL TASKS BLOCKS 1 TO 10 | TASKS 3 AND 4 | VERSION 2.0 CONTENTS Block 1 - Task 3: Vehicle Safety Inspection and Workshop Preparation - Task 4: Basic Brake and Tyre Condition Check Block 2 - Task 3: Battery and Charging System Inspection - Task 4: TPMS, Tyre Pressure and Customer Documentation Block 3 - Task 3: Interim Service, Inspection and Documentation - Task 4: Environmental Spill Response and Waste Control Block 4 - Task 3: Front Wheel Alignment and Steerin",
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "cea": {
+      "label": "S25-cea",
+      "hitCountShown": 3,
+      "hits": [
+        {
+          "id": "cea_1_4_3",
+          "title": "cea_1_4_3",
+          "group": null,
+          "matched": [
+            "replace brake fluid"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_2_14_1",
+          "title": "cea_2_14_1",
+          "group": null,
+          "matched": [
+            "oil service"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_2_14_2",
+          "title": "cea_2_14_2",
+          "group": null,
+          "matched": [
+            "interim service"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "gateway": {
+      "label": "S25-gw",
+      "hitCountShown": 0,
+      "hits": []
+    }
+  },
+  "K1": {
+    "catalogue": {
+      "label": "K1-cat",
+      "hitCountShown": 0,
+      "hits": []
+    },
+    "cea": {
+      "label": "K1-cea",
+      "hitCountShown": 0,
+      "hits": []
+    },
+    "gateway": {
+      "label": "K1-gw",
+      "hitCountShown": 0,
+      "hits": []
+    }
+  },
+  "K31": {
+    "catalogue": {
+      "label": "K31-cat",
+      "hitCountShown": 10,
+      "hits": [
+        {
+          "id": "res_lm_ba167ad46cb7_17",
+          "title": "res_lm_ba167ad46cb7_17",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "Lesson Plan 6 Introduction to Braking Sy s tems – D rum Brakes Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to light vehicle braking systems – Drum Brakes 0 0 Introduction to light vehicle braking systems – Drum Brakes Lesson Aims Lesson Aims -635 41911 To review drum brake systems and components from previous session learning . Overview procedures to correctly remove, check and replace drum brake systems including adjustment of shoes/cables, also bleeding of brakes and raising /",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_47e9f3ac040e_49",
+          "title": "res_lm_47e9f3ac040e_49",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "Level 2 Automotive: Cooling and Lubrication Systems Initial Knowledge Assessment Learner Name: ________________________________ Date: ________________________________ Section 1 – Health and Safety 1. State one reason why it is important to wear gloves when handling coolant or engine oil. 2. Explain why a cooling system should never be opened when the engine is hot. 3. Describe two safe working practices to follow when draining coolant or oil from a vehicle. 4. How should waste coolant and oil be",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lp_70e8cb3eeacc",
+          "title": "res_lp_70e8cb3eeacc",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "Controlled generic Foundation Skills lesson plans FS01-FS10 v1.2. Use unchanged for all mapped motor-vehicle apprenticeship routes. Route-specific relevance is evidenced through the cross-reference in the Foundation Skills SOW and the apprentice training plan; do not create separate route versions.",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lp_8e7730cb4cee",
+          "title": "res_lp_8e7730cb4cee",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "Calendar week,Session,Block,Block month start,Block month end,Plan type,Lesson plan,Filename,Controlled version 1,,1,1,1,Shared Foundation Skills,Foundation Skills FS01 - Week 1 Lesson Plan,Foundation_Skills_FS01_Week_1_Lesson_Plan_v1.2.docx,FS v1.2 2,,1,1,1,Shared Foundation Skills,Foundation Skills FS02 - Week 2 Lesson Plan,Foundation_Skills_FS02_Week_2_Lesson_Plan_v1.2.docx,FS v1.2 3,,1,1,1,Shared Foundation Skills,Foundation Skills FS03 - Week 3 Lesson Plan,Foundation_Skills_FS03_Week_3_Less",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lp_ffeb78b58471",
+          "title": "res_lp_ffeb78b58471",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "Autocare Technician Level 2 lesson-plan pack v4.4 Controlled source: Autocare Technician Level 2 SOW v4.4. Programme structure: 112 calendar delivery weeks and 113 planned learning sessions. Week 112 contains Session A and Session B on separately timetabled days. Eligible OTJ total: 611.50 hours. Weeks 1-10 use the controlled shared Foundation Skills FS01-FS10 v1.2 plans. Only editorial duration wording and common page geometry have been corrected; the controlled learning content, timings and OT",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_074615b60bfc",
+          "title": "res_prac_074615b60bfc",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "TASK 4: ENVIRONMENTAL SPILL RESPONSE AND WASTE CONTROL Autocare Technician Level 2 | Block 3 | v2.0 TIME 45 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 21-30 Your task During routine workshop activity, a fluid spill and several waste items are identified. You must make the area safe, identify waste streams, record the incident and explain how environmental controls prevent harm. What you must do 1 Assess the work area and identify immediate risks. 2 Select PPE an",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_0e9b7ab8404b",
+          "title": "res_prac_0e9b7ab8404b",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "AUTOCARE TECHNICIAN LEVEL 2 PRACTICAL TASKS BLOCKS 1 TO 10 | TASKS 3 AND 4 | VERSION 2.0 CONTENTS Block 1 - Task 3: Vehicle Safety Inspection and Workshop Preparation - Task 4: Basic Brake and Tyre Condition Check Block 2 - Task 3: Battery and Charging System Inspection - Task 4: TPMS, Tyre Pressure and Customer Documentation Block 3 - Task 3: Interim Service, Inspection and Documentation - Task 4: Environmental Spill Response and Waste Control Block 4 - Task 3: Front Wheel Alignment and Steerin",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_ski_628b6f89ddbf",
+          "title": "res_ski_628b6f89ddbf",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "AUTOCare Level 2 - Block Skills Progress Reviews v2.0 ======================================================== This pack contains one two-page, fillable PDF for each training block (Blocks 1-10). Use --- 1. At the start of the block, complete the record details, START scores and starting-point reflection on page 1. 2. Leave the END scores and page 2 blank until the block training and assessment have finished. 3. At the end, enter the END scores, compare them with the START scores and record evid",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lea_057d627b7052",
+          "title": "res_lea_057d627b7052",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": "AUTOCare Level 2 - Block Learning Impact Records v2.1 ========================================================= This pack contains one two-page, fillable PDF for each training block (Blocks 1-10). Use --- 1. At the start of the block, complete the record details, START scores and starting-point reflection on page 1. 2. Leave the END scores and page 2 blank until the block training and assessment have finished. 3. At the end, enter the END scores, compare them with the START scores and record evi",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_mv13_tracking_ca25ba9aaad8",
+          "title": "res_mv13_tracking_ca25ba9aaad8",
+          "group": null,
+          "matched": [
+            "diversity"
+          ],
+          "excerpt": "A utocare L evel 2 S tandard – ST0499 Learner Name: Tutor Name: Start Date: End Date: Y EAR 1 GROUP 1: Foundation Skills All task s are required E/N Pass Date Mile stone Group knowledge tests: Test 1______% Test 2______% Test 3______% 0-6 Months Task 1: Health and safety practices in vehicle maintenance Task 2 : Using mechanical measuring equipment Task 3 : Using electrical measuring equipment Task 4 : Using tools and equipment Task 5 : Fabrication task GROUP 2: Electric and Hybrid Awareness Min",
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "cea": {
+      "label": "K31-cea",
+      "hitCountShown": 0,
+      "hits": []
+    },
+    "gateway": {
+      "label": "K31-gw",
+      "hitCountShown": 1,
+      "hits": [
+        {
+          "id": "gw_ef36375dc80b",
+          "title": "gw_ef36375dc80b",
+          "group": null,
+          "matched": [
+            "edi"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    }
+  },
+  "K6": {
+    "catalogue": {
+      "label": "K6-cat",
+      "hitCountShown": 5,
+      "hits": [
+        {
+          "id": "res_lm_7e619f10293c_94",
+          "title": "res_lm_7e619f10293c_94",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Adaptive suspension systems 0 0 Adaptive suspension systems Lesson Aims Lesson Aims 0 35716 Discuss adaptive suspension sensors, ride heights and relevant measurements Overview the need for up to date testing equipment and calibration 0 0 Discuss adaptive suspension sensors, ride heights and relevant measurements Overview the need for up to date testing equipment and calibration Lesson Objectives -8626 56527 Have awareness of adaptive s",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_95f371942a77_98",
+          "title": "res_lm_95f371942a77_98",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": "ADAS Systems Next Advanced Driver-Assistance systems ( ADAS ) are one of the fastest-growing safety application areas due to the desire to reduce vehicle accidents and fatalities. style.visibility style.visibility Next > style.visibility ADAS Systems These systems use a camera & radar which need expert adjustment and calibration after various repairs have been completed. Many vehicles now have these advanced driver assist systems which require specialist attention to correctly adjust following e",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lp_f311ff09e560",
+          "title": "res_lp_f311ff09e560",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": "Foundation Skills FS05 - Week 5 Lesson Plan Trainer Cohort / date Programme / pathway Shared Motor Vehicle Foundation Skills | all mapped routes Session / week FS05 | Foundation Skills Week 5 SOW reference Motor Vehicle Foundation Skills SOW v1.2 | FS05 | Week 5 Planned hours 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Topic Measurement, Technical Information and Tolerances Occupational relevance: This session develops accurate measurement, units, calibration awareness, technical-data us",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lp_43f67c596f10",
+          "title": "res_lp_43f67c596f10",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": "Autocare Technician Level 2 - Week 89 Lesson Plan Pre-calibration checks: alignment, ride height and sensor inputs | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 89 | Block 9 Block title Emerging Technologies, Electric Vehicles and Hydrogen Awareness Month / period Months 20-24 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 9 | Week 89 Planned time 5.50 eligibl",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_126c9fbc1032",
+          "title": "res_prac_126c9fbc1032",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": "TASK 4: ADAS PRE-CALIBRATION AND SENSOR AWARENESS CHECK Autocare Technician Level 2 | Block 9 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 81-94 Your task A vehicle has had alignment, tyre or body-related work and may require ADAS checks. You must complete non-invasive pre-calibration checks, record findings and identify whether specialist calibration referral is required. What you must do 1 Prepare the vehicle and identify visible ADAS features. 2 ",
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "cea": {
+      "label": "K6-cea",
+      "hitCountShown": 7,
+      "hits": [
+        {
+          "id": "cea_1_2_1",
+          "title": "cea_1_2_1",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_1_3_1",
+          "title": "cea_1_3_1",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_1_3_2",
+          "title": "cea_1_3_2",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_1_3_3",
+          "title": "cea_1_3_3",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_1_3_4",
+          "title": "cea_1_3_4",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_1_3_5",
+          "title": "cea_1_3_5",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_2_10_3",
+          "title": "cea_2_10_3",
+          "group": null,
+          "matched": [
+            "calibration"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "gateway": {
+      "label": "K6-gw",
+      "hitCountShown": 2,
+      "hits": [
+        {
+          "id": "gw_e8cf0cff7a22",
+          "title": "gw_e8cf0cff7a22",
+          "group": null,
+          "matched": [
+            "torque wrench"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "gw_d91de30f5f63",
+          "title": "gw_d91de30f5f63",
+          "group": null,
+          "matched": [
+            "torque wrench"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    }
+  },
+  "S12": {
+    "catalogue": {
+      "label": "S12-cat",
+      "hitCountShown": 13,
+      "hits": [
+        {
+          "id": "res_lm_801be46beaa3_8",
+          "title": "res_lm_801be46beaa3_8",
+          "group": null,
+          "matched": [
+            "wheel alignment",
+            "steering geometry"
+          ],
+          "excerpt": "Lesson Plan 3A Steering Geometry Trainer Name -10531 74930 0 0 Topic -8255 69586 Introduction to steering geometry and wheel alignment. 0 0 Introduction to steering geometry and wheel alignment. Lesson Aims Lesson Aims -635 40005 An introduction to steering geometry , terms and inspection techniques . To discuss steering system components and their operation. To discuss front wheel alignment faults and adjustment. 0 0 An introduction to steering geometry , terms and inspection techniques . To di",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_fc25d7deb5b7_12",
+          "title": "res_lm_fc25d7deb5b7_12",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_d21a939a9a13_36",
+          "title": "res_lm_d21a939a9a13_36",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": "ACS Steering & Suspension Assignment 1. State the name of the principle which relates to the front wheels of a vehicle turning through different angles when going round a corner. 2 . Name the steering angle;- a. between the centre line and the vertical in diagram 1. b . X in diagram 2. 2286000 67310 0 0 114300 20955 0 0 Diagram 1. Diagram 2. right 145415 0 0 3 . State the most likely cause of both tyres on the front wheels of a vehicle ‘feathering off’ the inside edges of the front tyres . 4 . W",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_7656c297a800_88",
+          "title": "res_lm_7656c297a800_88",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Four-wheel alignment , measure and adjust 0 0 Four-wheel alignment , measure and adjust Lesson Aims Lesson Aims left 30593 To recap and understand Geometry terminology and what each does . Check fully familiar and confident with our equipment and typical reasons for referral on tasks. Re illiterate importance of pre checks, link into ADAS and liability. Workshop practical – 4 - wheel alignment assessment and aim for CEA standard . 0 0 T",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_fc0d73817b2b_89",
+          "title": "res_lm_fc0d73817b2b_89",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Four-wheel alignment 0 0 Four-wheel alignment Lesson Aims Lesson Aims -635 32385 To overview basic wheel alignment and terminology D iscuss and understand the need for correct wheel alignment & causes/effects of incorrect alignment Workshop practical – 4 - wheel alignment 0 0 To overview basic wheel alignment and terminology D iscuss and understand the need for correct wheel alignment & causes/effects of incorrect alignment Workshop pra",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_ce0117e91fc9_90",
+          "title": "res_lm_ce0117e91fc9_90",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": "Lesson Plan Trainer Name -10531 74930 0 0 Topic -8255 69586 Four - wheel alignment 0 0 Four - wheel alignment Lesson Aims Lesson Aims -635 32385 Understand the operation of light vehicle four - wheel alignment, common faults, terminology, technical data, handling faults and associated health and safety Evaluate the causes & effects of incorrect wheel alignment, pre-checks required (state at least two pre-checks) Workshop practical – remove & refit steering linkage components. Recall two lots of ",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_95f371942a77_98",
+          "title": "res_lm_95f371942a77_98",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": "ADAS Systems Next Advanced Driver-Assistance systems ( ADAS ) are one of the fastest-growing safety application areas due to the desire to reduce vehicle accidents and fatalities. style.visibility style.visibility Next > style.visibility ADAS Systems These systems use a camera & radar which need expert adjustment and calibration after various repairs have been completed. Many vehicles now have these advanced driver assist systems which require specialist attention to correctly adjust following e",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_8fa749f780b7_99",
+          "title": "res_lm_8fa749f780b7_99",
+          "group": null,
+          "matched": [
+            "wheel alignment",
+            "camber",
+            "toe "
+          ],
+          "excerpt": "Wheel Alignment identify wheel alignment terms Next > In this presentation you will: style.visibility style.visibility style.visibility Introduction Wheels are the parts of the vehicle that make it turn in response to steering input. Next > They are also responsible for pulling (front wheel drive) or pushing (rear wheel drive) the vehicle along. It is therefore essential that they are aligned correctly. style.visibility style.visibility style.visibility style.visibility style.visibility style.vi",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lm_a70ba19fb707_100",
+          "title": "res_lm_a70ba19fb707_100",
+          "group": null,
+          "matched": [
+            "wheel alignment",
+            "camber",
+            "toe "
+          ],
+          "excerpt": "Geometry Fundamentals identify fundamental wheel alignment terms Next > In this presentation you will: style.visibility style.visibility style.visibility Introduction Wheels are the parts of the vehicle that make it turn in response to steering input. Next > They are also responsible for pulling (front wheel drive) or pushing (rear wheel drive) the vehicle along. It is therefore essential that they are aligned correctly. style.visibility style.visibility style.visibility style.visibility style.v",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lp_b4a5050fe271",
+          "title": "res_lp_b4a5050fe271",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": "Autocare Technician Level 2 - Week 18 Lesson Plan Wheel Alignment - Advanced | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 18 | Block 2 Block title Vehicle Inspection, Servicing and Customer Interaction Month / period Months 3-5 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 2 | Week 18 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Duty / KS",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_lp_c58ded1c80a7",
+          "title": "res_lp_c58ded1c80a7",
+          "group": null,
+          "matched": [
+            "steering geometry"
+          ],
+          "excerpt": "Autocare Technician Level 2 - Week 34 Lesson Plan Steering geometry and advanced tyre diagnosis | 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks | v4.4 Trainer Cohort / group / date Programme / standard Autocare Technician Level 2 | ST0499 v1.3 Week / block Week 34 | Block 4 Block title Emerging Technology and Driveline Systems Month / period Months 8-10 SOW reference Autocare Technician Level 2 SOW v4.4 | Block 4 | Week 34 Planned time 5.50 eligible OTJ | 0.50 non-eligible | 1.00 breaks Du",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_3a8916c0651c",
+          "title": "res_prac_3a8916c0651c",
+          "group": null,
+          "matched": [
+            "wheel alignment",
+            "steering geometry"
+          ],
+          "excerpt": "TASK 3: FRONT WHEEL ALIGNMENT AND STEERING GEOMETRY CHECKS Autocare Technician Level 2 | Block 4 | v2.0 TIME 60 minutes EVIDENCE Practical | Knowledge | Documentation PROGRAMME POINT Weeks 31-40 Your task A customer reports uneven tyre wear and the steering wheel is off-centre. You must carry out alignment pre-checks, record geometry readings and explain whether adjustment or further repair is required. What you must do 1 Prepare the vehicle and alignment equipment safely. 2 Carry out pre-checks",
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "res_prac_0e9b7ab8404b",
+          "title": "res_prac_0e9b7ab8404b",
+          "group": null,
+          "matched": [
+            "wheel alignment",
+            "steering geometry"
+          ],
+          "excerpt": "AUTOCARE TECHNICIAN LEVEL 2 PRACTICAL TASKS BLOCKS 1 TO 10 | TASKS 3 AND 4 | VERSION 2.0 CONTENTS Block 1 - Task 3: Vehicle Safety Inspection and Workshop Preparation - Task 4: Basic Brake and Tyre Condition Check Block 2 - Task 3: Battery and Charging System Inspection - Task 4: TPMS, Tyre Pressure and Customer Documentation Block 3 - Task 3: Interim Service, Inspection and Documentation - Task 4: Environmental Spill Response and Waste Control Block 4 - Task 3: Front Wheel Alignment and Steerin",
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "cea": {
+      "label": "S12-cea",
+      "hitCountShown": 2,
+      "hits": [
+        {
+          "id": "cea_1_5_1",
+          "title": "cea_1_5_1",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "cea_2_11_5",
+          "title": "cea_2_11_5",
+          "group": null,
+          "matched": [
+            "wheel alignment",
+            "toe "
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    },
+    "gateway": {
+      "label": "S12-gw",
+      "hitCountShown": 2,
+      "hits": [
+        {
+          "id": "gw_db7111449f77",
+          "title": "gw_db7111449f77",
+          "group": null,
+          "matched": [
+            "wheel alignment",
+            "camber"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        },
+        {
+          "id": "gw_650cf2e40c5a",
+          "title": "gw_650cf2e40c5a",
+          "group": null,
+          "matched": [
+            "wheel alignment"
+          ],
+          "excerpt": null,
+          "pathExists": null,
+          "kind": null
+        }
+      ]
+    }
+  }
+}

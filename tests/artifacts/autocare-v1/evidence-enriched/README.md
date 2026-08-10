@@ -1,19 +1,17 @@
-# Autocare Track B — evidence-enriched (placeholder)
+# Autocare Track B — evidence-enriched
 
-**Status:** Empty / reserved.
+**Status:** Staging catalogue + sample evidence chains started. Golden B **not** decided.
 
-**Purpose:** Hold evaluation and review artifacts for:
+## Contents
 
-**AUTOCARE TRACK B / GOLDEN B — FULL CURRENT-CURRICULUM REVIEW**
-
-after the complete **current live** teaching-material corpus arrives
-(SOW + presentations + worksheets + learner tasks/practicals + relevant assessment).
+- `staging/` — live curriculum evidence catalogue and three shadow chains (Tyres / Brakes / EV).  
+  Regenerable analysis artefacts. **Do not treat as programme truth.**
 
 ## Rules
 
 1. Do **not** overwrite Track A (`../sow-only/`) or Golden A.
-2. Store Golden B decisions and AI “SOW + live curriculum” benchmarks separately.
+2. Store Golden B decisions separately when authorised.
 3. Keep an explicit A→B change log with evidence citations and reasons.
-4. Golden B may change prior Golden A conclusions where richer live delivery evidence warrants it.
+4. Corpus problems (empty G01/G09, missing Tasks 1–2, unextracted binary PPT, dual-era sessions) are assurance findings — retain them.
 
-Until Jon’s full pack is ingested, all frozen evaluation history belongs under `../sow-only/`.
+Until Golden B is authorised, all frozen SOW-only evaluation history remains under `../sow-only/`.

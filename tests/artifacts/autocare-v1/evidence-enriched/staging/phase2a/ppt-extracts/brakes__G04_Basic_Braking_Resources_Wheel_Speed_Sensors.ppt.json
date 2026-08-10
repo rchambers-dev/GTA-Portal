@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "brakes",
+    "priority":  1,
+    "whySelected":  "G4 placement of wheel-speed content (early vs advanced)",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Wheel Speed Sensors.ppt",
+    "relativePath":  "G04 Basic Braking\\Resources\\Wheel Speed Sensors.ppt",
+    "sourceFilename":  "Wheel Speed Sensors.ppt",
+    "exists":  true,
+    "contentHashSha256":  "3a89189e8265a2acabcb4f0f08b29ba4031f96880f1003f991787952777ad0ce",
+    "byteLength":  6041600,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  20,
+    "extractedCharCount":  8206,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G04_Basic_Braking_Resources_Wheel_Speed_Sensors.ppt.txt",
+    "extractedAt":  "2026-08-10T13:31:53.1590635+01:00"
+}

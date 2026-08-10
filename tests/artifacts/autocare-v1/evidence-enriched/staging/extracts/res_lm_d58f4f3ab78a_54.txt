@@ -1,0 +1,96 @@
+Lesson Plan 2 2
+ Introduction to Electrical Systems
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Introduction to electrical systems
+ 0 0 Introduction to electrical systems
+
+ Lesson Aims
+
+ Lesson Aims
+ -635 41911 Discuss basic electrical principles – electron flow
+ Discuss electrical principles – voltage, current, resistance, power
+ Discuss electrical circuits and applications
+ 0 0 Discuss basic electrical principles – electron flow
+ Discuss electrical principles – voltage, current, resistance, power
+ Discuss electrical circuits and applications
+
+ Lesson Objectives
+ center 28575 For learners to d escribe the basic principles of electron flow.
+ For learners to describe the differences between voltage, current, resistance and power.
+ For learners to identify the differences between and application of series and parallel circuits
+ Workshop practical for learners to identify different circuits on a vehicle
+ 0 0 For learners to d escribe the basic principles of electron flow.
+ For learners to describe the differences between voltage, current, resistance and power.
+ For learners to identify the differences between and application of series and parallel circuits
+ Workshop practical for learners to identify different circuits on a vehicle
+
+ Engagement
+ -10160 60326 Power point, white board, individual and group discussion, live vehicles in the workshop , tools and equipment as required
+ 0 0 Power point, white board, individual and group discussion, live vehicles in the workshop , tools and equipment as required
+
+ Stick ability
+ -36830 36195 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ 0 0 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ Assessment for learning (AFL)
+ -10795 95250 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ 0 0 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ Key words
+ 0 48260 Electrons, Potential Difference, Voltage, Current (Amperage) Resistance (Ohms) Power ( Wattage) Earth
+ 0 0 Electrons, Potential Difference, Voltage, Current (Amperage) Resistance (Ohms) Power (Wattage) Earth
+
+ Differentiation
+ -10160 60325 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ 0 0 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ Session 1
+ Session 1
+ -29210 124459 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ 0 0 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ Session 2
+ -29210 120650 Class theory session to discuss electrical principles including voltage, current, resistance, power and circuit application.
+ Description of vehicle circuit design and application in modern vehicles
+
+ 0 0 Class theory session to discuss electrical principles including voltage, current, resistance, power and circuit application.
+ Description of vehicle circuit design and application in modern vehicles
+
+ Session 3
+ -19685 107950 Workshop practical tasks using live vehicles.
+ Learners to identify different circuits in a live vehicle and state what type of circuit it is.
+ Learners to describe the effect of simple faults in circuits such as open circuits and bad earth.
+ Demonstration of the use of basic measuring tools ( multimeters ) to test system voltage.
+ 0 0 Workshop practical tasks using live vehicles.
+ Learners to identify different circuits in a live vehicle and state what type of circuit it is.
+ Learners to describe the effect of simple faults in circuits such as open circuits and bad earth.
+ Demonstration of the use of basic measuring tools ( multimeters ) to test system voltage.
+
+ Session 4
+ -17145 83185 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+ 0 0 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+
+ Challenge
+ -19685 88900 Learners to be encouraged to use independent and shared ideas removal and refitting methods.
+ Learners to work in dependently to demonstrate measuring techniques.
+ 0 0 Learners to be encouraged to use independent and shared ideas removal and refitting methods.
+ Learners to work in dependently to demonstrate measuring techniques.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

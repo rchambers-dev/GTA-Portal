@@ -1,0 +1,106 @@
+Foundation Skills FS07 - Week 7 Lesson Plan
+ Trainer
+
+ Cohort / date
+
+ Programme / pathway
+ Shared Motor Vehicle Foundation Skills | all mapped routes
+ Session / week
+ FS07 | Foundation Skills Week 7
+ SOW reference
+ Motor Vehicle Foundation Skills SOW v1.2 | FS07 | Week 7
+ Planned hours
+ 4.00 eligible OTJ | 2.00 non-eligible | 1.00 breaks
+ Topic
+ Multimeter Use, Electrical Measurement and Fabrication Quality
+ Occupational relevance: This session develops safe multimeter inspection and basic voltage/resistance measurement, interpretation of results, continued accurate fabrication and quality control. Examples include 12V light/autocare systems, 24V heavy systems, bodyshop electrical safety and paint-booth/equipment controls.
+ Lesson aims
+ • Develop safe basic multimeter function and calibration checks.
+ • Record and interpret simple voltage and resistance readings.
+ • Reinforce accurate practical work, tolerance, teamwork and quality.
+ By the end, apprentices should be able to
+ • Inspect and prepare a multimeter safely.
+ • Obtain and record simple voltage and resistance readings.
+ • Explain the limits of basic testing and when to escalate.
+ • Complete or quality-check the fabrication/equivalent task against tolerance.
+ How learning will be checked
+ • Start: Function/lead/range identification and safety questions.
+ • During: Observed measurement and quality checks with immediate feedback.
+ • End: Completed reading record and quality reflection.
+ Simple impact measure
+ • Compare the starting-point response with the completed end task.
+ • Record: Not yet secure / Developing / Secure.
+ • Set one follow-up action only where further support or stretch is needed.
+ Standard day: 09:00-16:00 | 4 hours eligible OTJ | 2 hours non-eligible activity | 1 hour of breaks
+ Time / status
+ Tutor and apprentice activity
+ Checks and support
+ Resources / evidence
+ 09:00-09:30
+ Non-eligible
+ MME, OTJ record support, recap and confirmation of First Aid/fabrication rotations.
+ Record separately from OTJ.
+ MME/OTJ records; rotation list.
+ 09:30-10:30
+ 1.00 OTJ
+ Teach multimeter purpose, inspection, leads, functions, range, polarity, calibration/zero checks and safe limitations. Compare pathway uses and emphasise that high-voltage testing is outside this basic session.
+ Question safe sequence and identify damaged-equipment actions.
+ Foundation Session 7 materials; multimeters; visual guide; pathway scenarios.
+ 10:30-10:45
+ Break
+ Scheduled morning break.
+ Excluded from OTJ.
+ -
+ 10:45-12:15
+ 1.50 OTJ
+ Guided basic electrical measurement using low-voltage battery and resistance components. Apprentices record results and explain whether readings are plausible.
+ Observe connections and function selection. Correct errors before energising.
+ Low-voltage battery/variable resistor/training board; multimeters; result sheet; PPE.
+ 12:15-12:45
+ Lunch
+ Scheduled lunch.
+ Excluded from OTJ.
+ -
+ 12:45-14:15
+ 1.50 OTJ
+ Fabrication continuation or equivalent quality task: measure to tolerance, identify defects, correct where possible, complete housekeeping and technical write-up.
+ Observe safe tools, accuracy and teamwork. Challenge with root-cause questions.
+ Fabrication tools/materials; drawing; measuring equipment; QA record.
+ 14:15-14:30
+ Break
+ Scheduled afternoon break.
+ Excluded from OTJ.
+ -
+ 14:30-16:00
+ Non-eligible
+ Emergency First Aid rotation, phase test or programme administration as scheduled. Baseline eligible hours exclude this period.
+ First Aid, formal tests and administration are excluded from OTJ.
+ First Aid/test/programme records.
+ Workplace follow-up
+ • Observe one approved electrical measurement or equipment check at work.
+ • Record the test purpose, safe boundary and how the result was communicated.
+ Trainer preparation
+ • Check low-voltage equipment and multimeter leads.
+ • Prepare fabrication/quality tasks and pathway examples.
+ • Confirm First Aid/test rotations and separate records.
+ Post-lesson impact: What can apprentices now identify, explain or complete that they could not do at the start?
+
+ Follow-up: Who needs additional support or stretch, what is the next action and when will it be reviewed?
+
+ Abbreviations and terms used
+ Abbreviation
+ Meaning
+ Abbreviation
+ Meaning
+ AFL
+ Assessment for Learning - checks used to inform teaching and next steps.
+ OTJ / OTJT
+ Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties.
+ MME
+ Mood, Motivation and Energy - the 0-10 morning check.
+ PPE
+ Personal Protective Equipment.
+ KSB
+ Knowledge, Skills and Behaviours.
+ SOW
+ Scheme of Work - the document that sequences programme delivery.

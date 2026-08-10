@@ -1,0 +1,343 @@
+{
+  "title": "AUTOCARE GOLDEN B PILOT — SIX KSB SHADOW REVIEW",
+  "status": "HUMAN-REVIEWED_SHADOW_PILOT",
+  "not": [
+    "PRODUCTION_PROGRAMME_TRUTH",
+    "AUTOCARE_GOLDEN_B_FULL_CURRENT_CURRICULUM_REVIEW"
+  ],
+  "ratifiedAt": "2026-08-10",
+  "mutatesProgrammeTruth": false,
+  "goldenAFrozen": true,
+  "primaryMappingsPersisted": false,
+  "gapChangesPersisted": false,
+  "otjChanged": false,
+  "aiOrV2Started": false,
+  "trancheExpanded": false,
+  "programme": {
+    "standard": "ST0499",
+    "name": "Autocare Technician",
+    "referenceBaseline": "Golden A (SOW-only) frozen"
+  },
+  "tranche": ["S9", "K10", "K12", "K21", "K23", "S13"],
+  "designPrinciple": {
+    "id": "multi-axis-programme-health",
+    "statement": "A KSB can be structurally mapped correctly while still having teaching-depth, practice, assessment, or evidence-visibility weaknesses. A KSB can be substantively taught while having no correct structural Primary. Programme health must not be reduced to one mapped/unmapped flag.",
+    "separableAxes": [
+      "TEACHING",
+      "PRACTICE",
+      "ASSESSMENT",
+      "STRUCTURAL_PRIMARY_OWNERSHIP",
+      "EVIDENCE_VISIBILITY"
+    ],
+    "issueTaxonomy": [
+      "CURRICULUM_GAP",
+      "TEACHING_DEPTH_GAP",
+      "PRACTICE_GAP",
+      "ASSESSMENT_GAP",
+      "EVIDENCE_VISIBILITY_GAP",
+      "STRUCTURAL_MAPPING_GAP"
+    ],
+    "visibilityRule": "Do not treat a document that has not been supplied as proof that teaching, practice or assessment does not exist."
+  },
+  "relatedStagingEvidence": {
+    "note": "Supporting extracts and pre-ratification analysis — staging only",
+    "paths": [
+      "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/",
+      "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/shadow-golden-b-pilot-6ksb.json",
+      "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/ppt-extracts/",
+      "tests/artifacts/autocare-v1/evidence-enriched/staging/phase2a/corpus-content-search.json"
+    ]
+  },
+  "decisions": {
+    "S9": {
+      "ksbCode": "S9",
+      "humanReviewed": true,
+      "goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "primary": null,
+        "rationale": "SOW-only review found no Primary-eligible strip/remove/replace/balance practical."
+      },
+      "shadowGoldenB": {
+        "teachingCoverage": "CONFIRMED_STRONG",
+        "practicalApplication": "PARTIAL_INCOMPLETE_VISIBILITY",
+        "assessment": "PARTIAL_INCOMPLETE_VISIBILITY",
+        "structuralOwnership": "UNMAPPED_UNDER_REVIEW",
+        "direction": "CHANGE_CLASSIFICATION",
+        "assignPrimary": false
+      },
+      "interpretation": "S9 is no longer defensibly described as a simple curriculum-teaching gap. Live curriculum teaches removal/dismount, repair, replacement/refitting and balancing. Residual issues are assessed practical visibility and final Primary ownership.",
+      "issueTaxonomy": [
+        "EVIDENCE_VISIBILITY_GAP",
+        "PRACTICE_GAP_VISIBILITY",
+        "ASSESSMENT_GAP_VISIBILITY",
+        "STRUCTURAL_MAPPING_GAP"
+      ],
+      "evidenceCitations": {
+        "lessonPlans": "G3 LP2 — tyre removal and fitting aims",
+        "teachingMaterials": [
+          "Tire Changing and Wheel Balancing.ppt (phase2a extract)",
+          "Tyre Inspection and Repair.ppt (phase2a extract)",
+          "Tyres.ppt (phase2a extract)"
+        ],
+        "assessment": "G3 initial knowledge assessment + marking sheet (remove-from-rim, balancer, BS159)",
+        "blockPracticalPack": "Tasks 3–4 show condition/TPMS checks — not strip/balance assessed practical",
+        "routing": "G3 D→B2/B3 (Transition Guide)"
+      },
+      "unresolvedDecisions": [
+        "Do not assign Primary yet",
+        "B2 leading candidate only — human ownership vote required"
+      ],
+      "confidence": {
+        "teaching": "HIGH",
+        "practiceAssessmentCompleteness": "MEDIUM",
+        "forcedPrimary": "LOW",
+        "ratificationOfDirection": "HIGH"
+      },
+      "rationaleEnoughToRatify": true,
+      "ratificationCaveat": "Direction CHANGE CLASSIFICATION is ratified. Primary assignment deliberately withheld — not a lack of evidence for teaching confirmation."
+    },
+    "K10": {
+      "ksbCode": "K10",
+      "humanReviewed": true,
+      "goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "primary": null,
+        "rationale": "SOW-only review found no original session teaching mechanical/hydraulic/EPAS steering systems for inspect/remove/replace."
+      },
+      "shadowGoldenB": {
+        "teachingCoverage": "CONFIRMED_STRONG",
+        "practicalApplication": "CONFIRMED",
+        "assessment": "PARTIAL",
+        "structuralOwnership": "AMBIGUOUS",
+        "direction": "CHANGE_CLASSIFICATION",
+        "assignPrimary": false
+      },
+      "interpretation": "K10 is clearly taught in the richer live corpus (mechanical, hydraulic PAS, EPS/EPAS). Later B7 practical must not automatically become Primary. Primary host under review between earlier substantive teaching homes.",
+      "issueTaxonomy": [
+        "EVIDENCE_VISIBILITY_GAP",
+        "STRUCTURAL_MAPPING_GAP",
+        "ASSESSMENT_GAP"
+      ],
+      "evidenceCitations": {
+        "lessonPlans": "G5 LP9 steering systems; G5 LP10 hydraulic+electric PAS; G11 electronic steering sessions",
+        "teachingMaterials": [
+          "Power Steering and EPS.ppt (phase2a extract)",
+          "Electronic Steering Systems.ppt (phase2a extract)"
+        ],
+        "practical": "LP9 workshop remove/refit; Block 7 Task 3 steering component replacement",
+        "adjacencyNotPrimaryProof": "Block 4 Task 3 alignment/geometry",
+        "routing": "G5 D→B4/B5; G11 supports later Blocks"
+      },
+      "unresolvedDecisions": [
+        "Do not assign Primary yet",
+        "Human decision: first substantive teaching (B4/B5) vs later application (B7)"
+      ],
+      "confidence": {
+        "teachingPractice": "HIGH",
+        "exactPrimaryBlock": "MEDIUM",
+        "ratificationOfDirection": "HIGH"
+      },
+      "rationaleEnoughToRatify": true,
+      "ratificationCaveat": "Direction CHANGE CLASSIFICATION is ratified. Ownership remains ambiguous by design."
+    },
+    "K12": {
+      "ksbCode": "K12",
+      "humanReviewed": true,
+      "goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 2,
+        "rationale": "Advanced Brake Diagnostics strongest primary; later wear/ABS as reinforcement in Golden A model."
+      },
+      "shadowGoldenB": {
+        "coverage": "CONFIRMED_STRONG",
+        "practice": "CONFIRMED",
+        "assessment": "ADEQUATE",
+        "ownership": "CLEAR",
+        "direction": "KEEP_B2",
+        "assignPrimary": "RETAIN_SHADOW_B2_ONLY"
+      },
+      "interpretation": "Richer evidence confirms basic → replacement → advanced ABS progression. Later B5/B8 activity is reinforcement/application and must not steal Primary.",
+      "issueTaxonomy": [],
+      "evidenceCitations": {
+        "teachingMaterials": "G4 basic brake PPTs; G10 ABS/Stability/WSS extracts",
+        "practicalProgression": "B1 T4 basic check → B5 T3 replacement → B8 T3 ABS diagnostic",
+        "routing": "G4 D→B2/B3; G10 D→B5–B8"
+      },
+      "unresolvedDecisions": [],
+      "confidence": {
+        "keep": "HIGH",
+        "ratificationOfDirection": "HIGH"
+      },
+      "rationaleEnoughToRatify": true,
+      "ratificationCaveat": null,
+      "controlCase": true
+    },
+    "K21": {
+      "ksbCode": "K21",
+      "humanReviewed": true,
+      "goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 6,
+        "rationale": "First dedicated EV service/charging/safety teaching; B9 specialist reinforcement."
+      },
+      "shadowGoldenB": {
+        "coverage": "CONFIRMED_STRONG",
+        "ownership": "CLEAR",
+        "direction": "KEEP_B6",
+        "assignPrimary": "RETAIN_SHADOW_B6_ONLY"
+      },
+      "interpretation": "Earlier awareness and later B9 reinforcement do not replace the first substantive service/safety home.",
+      "issueTaxonomy": [],
+      "evidenceCitations": {
+        "teachingMaterials": "Features of Hybrid Vehicles.ppt; Safety in HV decks (G2/G7 copies noted)",
+        "practical": "B4 T4 awareness; B9 T3 handover/charging awareness; B6 retained as service/safety home",
+        "routing": "G2 D→B4/B9"
+      },
+      "unresolvedDecisions": [],
+      "confidence": {
+        "keep": "HIGH",
+        "ratificationOfDirection": "HIGH"
+      },
+      "rationaleEnoughToRatify": true,
+      "ratificationCaveat": null
+    },
+    "K23": {
+      "ksbCode": "K23",
+      "humanReviewed": true,
+      "goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 6,
+        "rationale": "Strongest HV safe working/isolation match; B9 reinforces later."
+      },
+      "shadowGoldenB": {
+        "coverage": "CONFIRMED",
+        "practice": "PARTIAL",
+        "assessment": "PARTIAL",
+        "ownership": "CLEAR",
+        "direction": "KEEP_B6",
+        "assignPrimary": "RETAIN_SHADOW_B6_ONLY"
+      },
+      "interpretation": "Teaching of safe-working/isolation rules is confirmed. Thinner practice/assessment evidence is recorded separately from ownership.",
+      "issueTaxonomy": [
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP"
+      ],
+      "evidenceCitations": {
+        "teachingMaterials": [
+          "Safety in High Voltage Vehicles.ppt (phase2a extract)",
+          "Working on High Voltage Vehicles.ppt (phase2a extract)"
+        ],
+        "practical": "B4 T4 safety awareness — not deep HV competence assessment"
+      },
+      "unresolvedDecisions": [
+        "Strengthen or better-evidence assessed HV safe-working behaviours if used live"
+      ],
+      "confidence": {
+        "teachingAndKeep": "HIGH",
+        "assessmentCompleteness": "MEDIUM",
+        "ratificationOfDirection": "HIGH"
+      },
+      "rationaleEnoughToRatify": true,
+      "ratificationCaveat": "KEEP B6 ownership ratified; practice/assessment thinner is an open improvement theme, not a Primary challenge."
+    },
+    "S13": {
+      "ksbCode": "S13",
+      "humanReviewed": true,
+      "goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 6,
+        "rationale": "Primary practical home for EV isolation for maintenance; B9 reinforcement."
+      },
+      "shadowGoldenB": {
+        "teaching": "PARTIAL_RULES_TAUGHT",
+        "practicalCompetence": "UNPROVEN",
+        "assessment": "GAP_NOT_VISIBLE",
+        "ownership": "CLEAR_B6",
+        "direction": "REVIEW",
+        "assignPrimary": "RETAIN_SHADOW_B6_UNDER_REVIEW"
+      },
+      "interpretation": "Keep structural Primary for now in shadow review. Do not mistake 'safe isolation rules taught' for 'learner has demonstrated safe isolation competence'.",
+      "issueTaxonomy": [
+        "TEACHING_DEPTH_GAP",
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP"
+      ],
+      "evidenceCitations": {
+        "teachingMaterials": "Working on HV PPT — isolate/safeguard/verify RULES",
+        "blockPracticalPack": "Tasks 3–4: awareness/location/handover — no assessed isolation competence found",
+        "distinction": "rulesTaught !== assessedIsolationCompetence"
+      },
+      "unresolvedDecisions": [
+        "Confirm whether assessed HV isolation competence exists outside supplied pack"
+      ],
+      "confidence": {
+        "rulesVsCompetenceDistinction": "HIGH",
+        "whetherOffCorpusAssessmentExists": "MEDIUM",
+        "ratificationOfDirection": "HIGH"
+      },
+      "rationaleEnoughToRatify": true,
+      "ratificationCaveat": "REVIEW direction and rules≠competence distinction are ratified. Absolute claim that isolation is never assessed would over-reach without Jon confirmation — recorded as visibility/unproven, not proven absence."
+    }
+  },
+  "comparisonSummary": [
+    {
+      "ksb": "S9",
+      "goldenA": "REVIEWED_GAP",
+      "pilotB": "CHANGE_CLASSIFICATION",
+      "ownership": "UNMAPPED_UNDER_REVIEW"
+    },
+    {
+      "ksb": "K10",
+      "goldenA": "REVIEWED_GAP",
+      "pilotB": "CHANGE_CLASSIFICATION",
+      "ownership": "AMBIGUOUS"
+    },
+    {
+      "ksb": "K12",
+      "goldenA": "PRIMARY_B2",
+      "pilotB": "KEEP_B2",
+      "ownership": "CLEAR"
+    },
+    {
+      "ksb": "K21",
+      "goldenA": "PRIMARY_B6",
+      "pilotB": "KEEP_B6",
+      "ownership": "CLEAR"
+    },
+    {
+      "ksb": "K23",
+      "goldenA": "PRIMARY_B6",
+      "pilotB": "KEEP_B6",
+      "ownership": "CLEAR"
+    },
+    {
+      "ksb": "S13",
+      "goldenA": "PRIMARY_B6",
+      "pilotB": "REVIEW",
+      "ownership": "CLEAR_B6"
+    }
+  ],
+  "managementNarrativeCategories": {
+    "good": ["K12", "K21"],
+    "goodButEvidenceThinner": ["K23"],
+    "teachingExistsStructureIncomplete": ["S9", "K10"],
+    "structureRightCompetenceEvidenceWeak": ["S13"],
+    "overallScore": null
+  },
+  "openEvidenceRequests": [
+    "Task 1/2 status",
+    "Assessed tyre strip/balance evidence (S9)",
+    "Steering Primary human decision (K10)",
+    "Assessed HV isolation evidence (S13)",
+    "Anonymised job-card / CEA evidence",
+    "Resource→week mapping if one exists"
+  ],
+  "deferredNextStep": {
+    "whenReady": "Open another limited, deliberately patterned human-reviewed shadow tranche (not easiest KSBs only). Continue full live corpus and taxonomy validation.",
+    "startedNow": false
+  },
+  "futureProductRequirementRecordOnly": {
+    "implemented": false,
+    "summary": "After Autocare validation, Programme Builder should onboard other standards using the same evidence categories; longer term become curriculum-authoring source generating standardised GTA documents traceable OFFICIAL→KSB→BLOCK→SESSION→TEACHING→PRACTICE→ASSESSMENT→EVIDENCE."
+  }
+}

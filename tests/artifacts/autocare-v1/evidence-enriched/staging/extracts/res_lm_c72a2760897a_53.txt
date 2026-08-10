@@ -1,0 +1,320 @@
+Aims 1. Introduction to lubrication systems. 2. Recognising lubrication system faults. 3. What equipment is required to test lubrication systems. 
+ style.visibility
+
+Objectives 1. Be able to identify at least 2 lubrication system components. 2. Be able to name at least 1 symptom and cause of a lubrication system fault. 3. Be able to name at least 1 piece of lubrication system test equipment and how to use it. 
+ style.visibility
+
+Subject - Lubrication Systems 
+ style.visibility style.visibility style.visibility
+
+The Lubrication System 
+ The lubrication system stores, cleans, cools, and circulates oil to lubricate moving engine parts and bearings. 
+ Lubrication system parts include the oil pump, oil pan, oil cooler, oil filter, and oil galleries. 
+ 
+ style.visibility style.visibility
+
+Lubrication System Operation 
+ The reservoir of oil is held in the oil sump. 
+ Oil is drawn into the engine through a pickup and forced round the system by a pump 
+ The system pressure is regulated by a pressure relief valve. 
+ Particles are strained out by an oil filter. 
+ Oil is circulated through the cylinder head and the engine block using galleries. 
+ 
+ 
+ Oil Sump 
+ 
+ Pickup 
+ 
+ Pump 
+ 
+ Pressure relief valve 
+ 
+ Oil filter 
+ 
+ Oil galleries 
+ 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Lubrication System Components 
+ The oil sump holds the oil supply. It is bolted to the bottom of the engine block via a gasket seal. The dipstick measures the level of oil in the oil pan. 
+ The oil pump assembly and oil filter are mounted on the engine block. 
+ The oil pump draws oil out of the sump through the pickup tube. The drain plug is removed to change the oil. 
+ 
+ Oil sump 
+ 
+ Oil filter 
+ 
+ Dipstick 
+ 
+ Gasket seal 
+ 
+ Oil pump assembly 
+ 
+ Drain plug 
+ 
+ Pickup tube 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Learning Recap Question 1 
+ What is used to measure the level of oil in the oil sump? 
+ 
+ The oil filter 
+ The dipstick 
+ The drain plug 
+ The oil pump 
+ 
+ The dipstick has marks on it to show a visual level of the oil in the sump . 
+ style.visibility style.visibility style.visibility ppt_w ppt_h style.rotation style.visibility
+
+Pressurized oil is pumped to the upper parts of the engine. 
+ It splashes and drip-feeds down to the lower parts of the engine, returning surplus 
+ oil to the oil sump. 
+ Lubrication Methods 
+ Oil pump 
+ Pressure relief valve 
+ Timing gear 
+ Crank pin 
+ Rocker arm 
+ Camshaft valve stem 
+ Cylinder bore piston ring 
+ Crank journal 
+ Rocker arm shaft 
+ Oil jet 
+ (Spray hole) 
+ Oil galleries 
+ Oil pressure switch 
+ Oil filter 
+ Bypass valve 
+ 
+ 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Dry Sump System 
+ In a dry sump system, oil is stored in a separate storage tank and the oil sump is much smaller. 
+ This allows the engine to be mounted lower down, which is ideal for racing cars. 
+ A low-pressure ‘scavenge’ pump moves the oil from the sump to the tank. 
+ The scavenge pump is bigger than the pressure pump, to ensure the sump is not over-filled. 
+ 
+ 
+ Pressure pump 
+ Scavenge pump 
+ Oil strainer 
+ Oil pressure relief valve 
+ Oil sump 
+ Oil pressure switch 
+ Oil gallery 
+ Full flow oil filter 
+ Crankshaft 
+ Camshaft 
+ Overflow pipe 
+ Oil storage tank 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Crankshaft journal 
+ 
+ 
+ Bearing shell 
+ Pressurized oil film 
+ Shaft diameter 
+ Engine Oil 
+ Oil lubricates and cools the moving parts of an engine and reduces the formation of rust and corrosion. 
+ It also acts as barrier to reduce friction and wear. 
+ It is usually refined from petroleum or crude oil, but there are many synthetic (man made) oils available . 
+ For a rotating bearing, the shaft diameter is less than the bearing inner diameter to allow space for an oil film. 
+ 
+ 
+ 
+ 
+ Oil film 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Viscosity 
+ Viscosity is the flow rate of oil, measured using the Society of Automotive Engineers ratings SAE 10, 20, 30, 40, and 50 . 
+ Low viscosity oil flows more easily and is better for cold (starting) operation. 
+ High viscosity oil flows more slowly and is better when the engine is hot. 
+ Most modern oils are mixtures, having multi-viscosity or multigrade to cope with a wide range of engine temperatures. 
+ 
+ SAE 10 
+ SAE 30 
+ High viscosity 
+ Low viscosity 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Mineral, Synthetic and semi-synthetic oil 
+ 
+ Most motor oils are made from crude oil, with additives to improve certain properties. These are known as mineral oils. 
+ 
+ Synthetic oil is a lubricant consisting of chemical compounds that are artificially made. Synthetic lubricants can be manufactured using chemically modified petroleum components rather than whole crude oil but can also be synthesized from other raw materials. Synthetic oil is used as a substitute for petroleum-refined oils when operating in extreme temperature. 
+ 
+ Semi-synthetic oils are a mixture of mineral oil and synthetic oil, with no more than 30% synthetic oil, which are engineered to have many of the benefits of full synthetic oil without the cost. 
+ 
+ style.visibility
+
+The Oil Pump 
+ The oil pump is usually located on the bottom of the engine block. 
+ It is driven either from the crankshaft by a chain or the camshaft by a gear arrangement. 
+ The oil pump pressurizes and pumps oil to moving parts of the engine. 
+ The main two types of pump are rotor and gear. 
+ 
+ Vane 
+ Rotor-type 
+ Fixed Rate Pump 
+ Gear-type 
+ Fixed Rate Pump 
+ Low input pressure 
+ High output pressure 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Oil Galleries 
+ Passages through the engine block and cylinder head, called galleries, carry oil to all parts of the engine. 
+ This engine has the camshaft and many valve train components, all needing lubrication. 
+ Cylinders are lubricated to allow the pistons to move freely up and down. 
+ Galleries are used to carry oil to and from the oil filter. 
+ A large diameter tube joins the pickup to the oil pump. 
+ Galleries 
+ 
+ 
+ 
+ Camshaft 
+ Filter 
+ Large diameter tube 
+ 
+ Valve rocker 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+The Oil Filter 
+ Oil filters are used to strain the engine oil to remove abrasive particles. 
+ They are usually a ‘spin-on’ fitting with an O-ring seal to prevent leakage. 
+ The paper element traps small metal, rust, carbon, or dirt particles. 
+ 
+ 
+ 
+ 
+ 
+ 
+ O-ring seal 
+ Fixing thread and center hole 
+ Feed holes 
+ Paper element 
+ 
+ Internal View 
+ External View 
+ Direction of oil flow 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Oil Filter Housing 
+ There may be a separate housing that bolts to the engine block for mounting the oil filter. 
+ The low oil pressure switch may be mounted on this housing. 
+ Some vehicles have oil cooling, and a cooler adapter or heat exchanger may be attached here. 
+ The oil filter is fitted onto the bottom, allowing oil to flow through both cooler and filter. 
+ A heat shield may be used to keep engine heat away from the cooled oil. 
+ 
+ 
+ 
+ 
+ 
+ Bolts onto engine block 
+ Heat shield 
+ Oil cooler adapter 
+ Low oil pressure switch, connects to dash warning device 
+ 
+ Oil filter 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Learning Recap Question 2 
+ 
+ Where does the oil enter an oil filter? 
+ 
+ Through the O-ring seal 
+ Through the feed holes 
+ Through the center hole 
+ Through the paper element 
+ 
+ 
+ 
+ The oil enters the filter through the feed holes then passes through the paper element where debris is filtered out, the oil then exits the filter via the centre hole. 
+ style.visibility style.visibility style.visibility ppt_w ppt_h style.rotation style.visibility
+
+The Oil Cooler 
+ Oil coolers are sometimes used to control engine oil temperature. 
+ A heat exchanger similar to a radiator is used to transfer the heat to the outside air. 
+ Hoses and lines are usually connected to an adapter on the oil filter housing. 
+ Oil coolers are normally only used for heavy-duty applications, such as turbocharged engines or trailer towing vehicles. 
+ 
+ 
+ 
+ Oil cooler 
+ heat exchanger 
+ 
+ Hoses/lines 
+ 
+ style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Learning Recap Question 3 
+ 
+ If an oil cooler heat exchanger is fitted, where would its hoses normally directly connect to? 
+ The cylinder head 
+ The radiator 
+ The galleries 
+ The oil filter housing 
+ 
+ 
+ 
+ Oil is fed to the heat exchanger from the oil filter housing to give improved cooling to the oil before it enters the engine block. 
+ style.visibility style.visibility style.visibility ppt_w ppt_h style.rotation style.visibility
+
+Cleaning 
+ It is inevitable that small particles of metal will erode inside the engine. 
+ There is also carbon, water and acids produced by the combustion that will dilute the oil and cause deterioration. 
+ These are collected by the oil. 
+ The oil filter removes most of these from the oil but eventually the oil has to be changed. Used oil is carcinogenic, that means it can cause cancer, so protect your skin accordingly. 
+ style.visibility style.visibility
+
+Testing oil pressure 
+ 
+ First ensure that the engine is cool enough to work on. Apply the handbrake, chock the wheels and put the transmission in neutral or park. 
+ 
+ Now locate the oil pressure or temperature sender – situated in the engine block and often near the sump. 
+ 
+ Remove the switch and be prepared with an oil drip tray to catch any oil. 
+ 
+ style.visibility style.visibility
+
+Testing oil pressure 
+ 
+ An Oil Pressure Test Kit has a selection of adaptors to suit a variety of thread patterns, so find the one that matches your engine and fix this into the block where the oil pressure sender was removed. 
+ 
+ Now attach the oil pressure gauge to the adaptor and check the engine oil level before starting the vehicle and allowing it to reach operating temperature. 
+ 
+ style.visibility style.visibility
+
+Testing oil pressure 
+ 
+ Consult a service manual to determine what RPM the test should be performed at, and what pressure your engine should maintain. If necessary, have an assistant hold the engine at this RPM while you take a reading. 
+ 
+ A low reading could indicate a blocked oil filter, worn oil pump, restricted oil pickup - or simply a grade of oil that is too thin for the engine. A high reading could be due to a faulty pressure relief valve or other blockages. 
+ 
+ style.visibility style.visibility
+
+Testing oil pressure 
+ 
+ Once you have taken the reading, switch the engine off and allow it to cool before removing the oil pressure test gauge, and re-installing the oil pressure sensor. 
+ 
+ Top up the oil as necessary – and the job is complete. 
+ 
+ 
+ style.visibility style.visibility
+
+Summary 
+ 
+ In this presentation you have seen: 
+ 
+ lubrication system components, operation and testing. 
+ 
+ 
+ style.visibility

@@ -1,0 +1,74 @@
+Lesson Plan 2
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ center 21590 E xhau s t and Emission Control systems
+ 0 0 E xhau s t and Emission Control systems
+
+ Lesson Aims
+
+ Lesson Aims
+ left 16510 Track evidence into E logbooks, complete a job card as req , embed functional skills.
+ Introduction to SI Fuel injection systems, SPI and MPI layouts and basic components.
+ Intro to meaning of AFR and the need for Rich/Lean conditions.
+ 0 0 Track evidence into E logbooks, complete a job card as req , embed functional skills.
+ Introduction to SI Fuel injection systems, SPI and MPI layouts and basic components.
+ Intro to meaning of AFR and the need for Rich/Lean conditions.
+
+ Lesson Objectives
+ -10160 56516 Name 5 EFI system components and identify in the workshop.
+ State a difference between SPI/MPI and state an advantage of MPI
+ Explain the terms rich/lean and stoichiometric in relation to air fuel ratios.
+
+ 0 0 Name 5 EFI system components and identify in the workshop.
+ State a difference between SPI/MPI and state an advantage of MPI
+ Explain the terms rich/lean and stoichiometric in relation to air fuel ratios.
+
+ Engagement
+ -10795 57989 Using a blend of power point, you tube videos and practical demonstrations and exercises in the workshop.
+ 0 0 Using a blend of power point, you tube videos and practical demonstrations and exercises in the workshop.
+
+ Stick ability
+ -8255 131445 Use Cosworth or similar rig where they can run up an engine. (smell it, hear it, feel it) Look at AFR changes using mapping. Compare SPI and MPI rigs in works h op.
+ 0 0 Use Cosworth or similar rig where they can run up an engine. (smell it, hear it, feel it) Look at AFR changes using mapping. Compare SPI and MPI rigs in works h op.
+
+ Assessment for learning (AFL)
+ -10795 95250 Carry out initial assessment in morning, summative via Q&A and Observation of practical tasks . V erbal Q&A at end of day to check if outcomes are met.
+ 0 0 Carry out initial assessment in morning, summative via Q&A and Observation of practical tasks . V erbal Q&A at end of day to check if outcomes are met.
+
+ Key words
+ 0 48260 Multipoint, Stoichiometric, Ratio, Stratification, Atomisation.
+ 0 0 Multipoint, Stoichiometric, Ratio, Stratification, Atomisation.
+
+ Differentiation
+ -6350 63500 Use a wide variety of delivery methods, encourage equality and divers ity and incorporate tasks of varied difficulty.
+ 0 0 Use a wide variety of delivery methods, encourage equality and divers ity and incorporate tasks of varied difficulty.
+
+ Session 1
+ -25400 121920 Review Logbooks, OTJ Logs and evidence. F skills as required. Look at actions plans and intro to today’s session. Initial assessments on Basics of Fuel injection via verbal Q&A session.
+ 0 0 Review Logbooks, OTJ Logs and evidence. F skills as required. Look at actions plans and intro to today’s session. Initial assessments on Basics of Fuel injection via verbal Q&A session.
+
+ Session 2
+ -19685 27305 Intro to fuel injection systems and parts used. Basis of operation and discuss SPI and MPI layouts , advantages/disadvantages of each system . Basic faults that can occur and familiarise all common components.
+ 0 0 Intro to fuel injection systems and parts used. Basis of operation and discuss SPI and MPI layouts , advantages/disadvantages of each system . Basic faults that can occur and familiarise all common components.
+
+ Session 3
+ -19685 41274 Continue above and intro to basics of AFR’s , rich/lean and how achieved . Combustion by products and environmental implications. Look at operation using rigs and compare components from different rigs. Use Q&A session to assess progress from this morning.
+ 0 0 Continue above and intro to basics of AFR’s , rich/lean and how achieved . Combustion by products and environmental implications. Look at operation using rigs and compare components from different rigs. Use Q&A session to assess progress from this morning.
+
+ Session 4
+ -17145 83185 Use Cosworth or Ford rig to look at fuel ratios and emissions (10mins) . Remove an injector and test using injector tester if possible. Assess practical skills in workshop. Review outcomes.
+ 0 0 Use Cosworth or Ford rig to look at fuel ratios and emissions (10mins) . Remove an injector and test using injector tester if possible. Assess practical skills in workshop. Review outcomes.
+
+ Challenge
+ -17145 90805 Identifying key differences between SPI and MPI systems. V erbal Q&A to check knowledge, practical skills tests in workshop . Stretch knowledge of system operation if needed.
+ 0 0 Identifying key differences between SPI and MPI systems. V erbal Q&A to check knowledge, practical skills tests in workshop . Stretch knowledge of system operation if needed.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

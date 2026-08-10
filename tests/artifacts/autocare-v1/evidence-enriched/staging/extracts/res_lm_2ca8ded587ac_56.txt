@@ -1,0 +1,97 @@
+Lesson Plan 2 4
+ Introduction to Electrical Systems – Starting and Charging
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Introduction to vehicle starting and charging systems
+ 0 0 Introduction to vehicle starting and charging systems
+
+ Lesson Aims
+
+ Lesson Aims
+ -635 41911 Discuss basic principles of starting and charging
+ Discuss electrical principles – voltage, current and voltage drop
+ Overview battery size, capacity and applications relating to starting/charging
+ 0 0 Discuss basic principles of starting and charging
+ Discuss electrical principles – voltage, current and voltage drop
+ Overview battery size, capacity and applications relating to starting/charging
+
+ Lesson Objectives
+ center 28575 For learners to d escribe the basic principles of alternator charging
+ For learners to identify and describe voltage drop in starting and charging
+ Workshop practical for learners to identify on-vehicle battery charging and testing of alternators and starter motors.
+ 0 0 For learners to d escribe the basic principles of alternator charging
+ For learners to identify and describe voltage drop in starting and charging
+ Workshop practical for learners to identify on-vehicle battery charging and testing of alternators and starter motors.
+
+ Engagement
+ -10160 60326 Power point, white board, individual and group discussion, live vehicles in the workshop , tools and equipment as required
+ 0 0 Power point, white board, individual and group discussion, live vehicles in the workshop , tools and equipment as required
+
+ Stick ability
+ -36830 36195 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ 0 0 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ Assessment for learning (AFL)
+ -10795 95250 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ 0 0 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ Key words
+ 0 48260 Voltage drop, Charge rate
+ 0 0 Voltage drop, Charge rate
+
+ Differentiation
+ -10160 60325 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ 0 0 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ Session 1
+
+ Session 1
+ -29210 124459 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ 0 0 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ Session 2
+ -29210 120650 Class theory session to discuss the principles alternators and starter motors
+ Discussion of charging principles also voltage drop .
+ Discussion and demonstration of the use of electrical measuring tools for starting and charging.
+
+ 0 0 Class theory session to discuss the principles alternators and starter motors
+ Discussion of charging principles also voltage drop .
+ Discussion and demonstration of the use of electrical measuring tools for starting and charging.
+
+ Session 3
+ -19685 107949 Workshop practical tasks using live vehicles.
+ Learners to be able to check battery voltages at rest and whilst charging.
+ Learners to check alternator output voltage and explain the difference between alternator and battery charge voltage.
+ Learners to check battery and starter motor voltage at rest and whilst cranking and explain the differences in voltage.
+ 0 0 Workshop practical tasks using live vehicles.
+ Learners to be able to check battery voltages at rest and whilst charging.
+ Learners to check alternator output voltage and explain the difference between alternator and battery charge voltage.
+ Learners to check battery and starter motor voltage at rest and whilst cranking and explain the differences in voltage.
+
+ Session 4
+ -17145 83185 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+ 0 0 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+
+ Challenge
+ -19685 88900 Learners to be encouraged to use independent and shared ideas removal and refitting methods.
+ Learners to work in dependently to demonstrate measuring techniques.
+ 0 0 Learners to be encouraged to use independent and shared ideas removal and refitting methods.
+ Learners to work in dependently to demonstrate measuring techniques.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

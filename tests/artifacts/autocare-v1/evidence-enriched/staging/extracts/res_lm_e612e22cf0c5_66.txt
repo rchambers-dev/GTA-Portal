@@ -1,0 +1,103 @@
+Starting and Charging Systems Initial Knowledge Assessment – Marking Sheet with Typical Answers (30 Questions)
+ Learner Name: ________________________________ Date: ________________________________
+ Assessor Name: _______________________________ Signature: ____________________________
+
+ Question Number
+ Typical Answer / Guidance
+ Mark (1 per question)
+ Assessor Comments
+ 1
+ 1. Protects skin and eyes from acid, sparks, and corrosion from battery terminals.
+
+ 2
+ 2. Disconnecting the negative first prevents short circuits to ground when tools contact the chassis.
+
+ 3
+ 3. Hydrogen gas is explosive when mixed with air and can ignite from sparks or flames.
+
+ 4
+ 4. Keep metal tools clear of terminals, avoid bridging positive to earth, and cover terminals when possible.
+
+ 5
+ 5. Store upright in a cool area, neutralise spills, and recycle through approved facilities.
+
+ 6
+ 6. Set multimeter to correct range, measure across components, ensuring no live shorting or damage.
+
+ 7
+ 7. Checks the battery’s ability to hold voltage under load and indicates internal condition.
+
+ 8
+ 8. Measures current drawn by the starter motor to identify excessive resistance or internal faults.
+
+ 9
+ 9. Ensure both vehicles are off, connect positive leads first, then negative to a good earth point, and remove in reverse order.
+
+ 10
+ 10. Ensures accuracy of readings and safety during diagnostics.
+
+ 11
+ 11. Armature, solenoid, field coils, and drive pinion – all work together to crank the engine.
+
+ 12
+ 12. Current energises solenoid, engages pinion with flywheel, and rotates the engine until it runs.
+
+ 13
+ 13. Rotor (magnetic field), stator (produces AC), rectifier (converts to DC), regulator (controls voltage).
+
+ 14
+ 14. Regulator maintains constant voltage output by varying current to the rotor field coil.
+
+ 15
+ 15. Provides electrical energy for starting and stabilises system voltage when charging demand is high.
+
+ 16
+ 16. Alternator produces AC, rectified to DC, then sent to battery via main fuse and charge cable.
+
+ 17
+ 17. Maintains correct belt tension to prevent slippage and ensure efficient alternator operation.
+
+ 18
+ 18. Conventional claw-pole alternators and LIN-controlled smart alternators adjust output based on demand.
+
+ 19
+ 19. Lead plates in electrolyte (sulphuric acid) create chemical reaction generating voltage.
+
+ 20
+ 20. 12.6V = full charge, 12.2V = 50%, below 12V = discharged or faulty.
+
+ 21
+ 21. Connect tester, apply load for 10 seconds, observe voltage drop; low voltage = weak battery.
+
+ 22
+ 22. Measure output at battery terminals (13.8–14.5V normal); low = charging fault, high = regulator fault.
+
+ 23
+ 23. Use clamp meter to read cranking current; high draw = mechanical fault, low draw = electrical fault.
+
+ 24
+ 24. Measure voltage loss between terminals; more than 0.5V indicates excessive resistance.
+
+ 25
+ 25. Measure resistance between alternator housing and battery negative; should be near zero ohms.
+
+ 26
+ 26. Loose belt, poor connections, worn brushes, or failed diodes.
+
+ 27
+ 27. Check battery charge, connections, starter motor, and engine earths.
+
+ 28
+ 28. Connect ammeter in series with battery; normal drain <0.05A after modules sleep.
+
+ 29
+ 29. Turn ignition on; lamp should illuminate, then go out once charging starts; faults indicate wiring or regulator issues.
+
+ 30
+ 30. Verify voltage output, check belt alignment, confirm system warning light extinguishes after engine start.
+
+ Total Marks: __________ / 30 Result: ___________________
+ Assessor Feedback:
+
+ Learner Signature: ____________________________ Date: ___________________
+ Assessor Signature: ___________________________ Date: ___________________

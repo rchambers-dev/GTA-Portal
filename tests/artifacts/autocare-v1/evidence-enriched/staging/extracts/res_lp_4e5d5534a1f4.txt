@@ -1,0 +1,111 @@
+Foundation Skills FS04 - Week 4 Lesson Plan
+ Trainer
+
+ Cohort / date
+
+ Programme / pathway
+ Shared Motor Vehicle Foundation Skills | all mapped routes
+ Session / week
+ FS04 | Foundation Skills Week 4
+ SOW reference
+ Motor Vehicle Foundation Skills SOW v1.2 | FS04 | Week 4
+ Planned hours
+ 5.00 eligible OTJ | 1.00 non-eligible | 1.00 breaks
+ Topic
+ Fire Safety, Battery Awareness and Basic Electrical Safety
+ Occupational relevance: This session develops fire prevention, battery safety and basic electrical risk awareness. Applications include fuel and solvent risks, 12/24-volt systems, charging, welding equipment, spray-booth controls, workshop electrical tools and safe use of a multimeter within defined limits.
+ Lesson aims
+ • Recognise fire classes, common causes and suitable controls.
+ • Understand lead-acid, lithium and low-voltage battery hazards.
+ • Develop safe basic multimeter use and electrical-risk reporting.
+ By the end, apprentices should be able to
+ • Explain the fire triangle and identify suitable extinguisher types.
+ • Identify battery and charging hazards and required PPE/ventilation.
+ • Use a multimeter safely for a simple voltage or resistance measurement.
+ • State when electrical work must stop and be escalated.
+ How learning will be checked
+ • Start: Fire-sign/extinguisher matching and battery-hazard questions.
+ • During: Observation of safe set-up, measurement and response decisions.
+ • End: Fire/battery checklist, recorded reading and one escalation scenario.
+ Simple impact measure
+ • Compare the starting-point response with the completed end task.
+ • Record: Not yet secure / Developing / Secure.
+ • Set one follow-up action only where further support or stretch is needed.
+ Standard day: 09:00-16:00 | 5 hours eligible OTJ | 1 hour non-eligible activity | 1 hour of breaks
+ Time / status
+ Tutor and apprentice activity
+ Checks and support
+ Resources / evidence
+ 09:00-09:30
+ Non-eligible
+ MME, OTJ log support, brain warmer and essential programme administration.
+ Record separately from OTJ.
+ MME/OTJ records; starter.
+ 09:30-10:30
+ 1.00 OTJ
+ Teach fire triangle, fire classes, extinguisher identification, alarms, evacuation and common vehicle-workshop causes: fuels, solvents, hot work, static, charging, electrical faults and overheating.
+ Question selection and emphasise evacuation/raising alarm before firefighting.
+ Foundation Session 4 materials; extinguishers/signage; fire triangle; pathway scenarios.
+ 10:30-10:45
+ Break
+ Scheduled morning break.
+ Excluded from OTJ.
+ -
+ 10:45-12:15
+ 1.50 OTJ
+ Battery awareness: lead-acid and lithium hazards, hydrogen, acid, thermal risk, charging, handling, isolation, ventilation and PPE. Compare 12V light/autocare systems, 24V heavy systems and bodyshop risks before welding or refinishing.
+ Use scenario questions and identify unsafe arrangements.
+ Battery samples/images; chargers; PPE; SDS/technical information; safety checklist.
+ 12:15-12:45
+ Lunch
+ Scheduled lunch.
+ Excluded from OTJ.
+ -
+ 12:45-14:15
+ 1.50 OTJ
+ Demonstrate multimeter inspection, lead connection, range/function selection and safe simple voltage/resistance measurement. Apprentices practise within low-voltage limits.
+ Observe correct connections and stop unsafe use. Support with step card.
+ Multimeters; low-voltage battery/variable resistor or training board; test leads; PPE.
+ 14:15-14:30
+ Break
+ Scheduled afternoon break.
+ Excluded from OTJ.
+ -
+ 14:30-15:30
+ 1.00 OTJ
+ Review readings and complete fire/battery/electrical control scenarios. Learners correct errors and state reporting routes.
+ Check understanding through targeted questions and corrected records.
+ Fire/battery worksheet; measurement record; escalation card.
+ 15:30-16:00
+ Non-eligible
+ Online-course/ERR tracking or formal assessment activity.
+ Exclude formal testing and administration from OTJ.
+ Online/ERR/test records.
+ Workplace follow-up
+ • Locate fire and battery controls at work and discuss them with a supervisor.
+ • Record one pathway-specific fire or electrical risk and the control used.
+ Trainer preparation
+ • Check extinguishers/signage examples and low-voltage training equipment.
+ • Ensure multimeters and leads are serviceable.
+ • Prepare pathway scenarios and PPE examples.
+ Post-lesson impact: What can apprentices now identify, explain or complete that they could not do at the start?
+
+ Follow-up: Who needs additional support or stretch, what is the next action and when will it be reviewed?
+
+ Abbreviations and terms used
+ Abbreviation
+ Meaning
+ Abbreviation
+ Meaning
+ AFL
+ Assessment for Learning - checks used to inform teaching and next steps.
+ OTJ / OTJT
+ Off-the-Job Training - eligible occupational learning during paid working hours, away from normal productive duties.
+ MME
+ Mood, Motivation and Energy - the 0-10 morning check.
+ PPE
+ Personal Protective Equipment.
+ KSB
+ Knowledge, Skills and Behaviours.
+ SOW
+ Scheme of Work - the document that sequences programme delivery.

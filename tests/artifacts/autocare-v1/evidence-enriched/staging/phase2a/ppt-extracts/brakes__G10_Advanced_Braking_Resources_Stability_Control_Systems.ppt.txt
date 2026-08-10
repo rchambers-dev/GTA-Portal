@@ -1,0 +1,220 @@
+SOURCE: G10 Advanced Braking\Resources\Stability Control Systems.ppt
+HASH: 1c9b92ef3681e61e54cdea4c278b96a047830bf3b8920305061ca77f8bedb1b7
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+In this presentation you will:
+
+Stability Control Systems
+
+see the components of a stability control system
+
+Next >
+
+see how a stability control system operates
+
+Kyle May
+
+===== SLIDE 2 =====
+Introduction
+
+Electronic stability control (ESC) is a safety system that helps to prevent the driver losing control of the vehicle.
+
+Very little additional equipment is needed, so it is cheap to implement.
+
+It uses elements of the anti-lock braking system (ABS) and traction control system (TCS).
+
+Next >
+
+Studies show that it could reduce accidents by up to 35 %.
+
+the_toe_stubber
+
+===== SLIDE 3 =====
+DigitalRalph
+
+NRMA New Cars
+
+MSVG
+
+Implementation of Stability Control
+
+Variations of ESC are marketed under many different names:
+
+Dynamic stability control, or DSC (BMW, Land Rover)
+
+Next >
+
+Electronic stability program, or ESP (Jeep, Audi, Chrysler)
+
+Vehicle stability assist, or VSA (Honda, Acura)
+
+AdvanceTrac (Ford)
+
+===== SLIDE 4 =====
+ESC Situation Monitoring
+
+The ESC constantly monitors driver inputs, such as steering, brake pedal travel and accelerator pedal travel.
+
+If the ESC detects a discrepancy between driver inputs and vehicle movement, it intervenes.
+
+It also determines the movement of the vehicle by measuring wheel speeds, yaw and acceleration.
+
+Next >
+
+Yaw
+
+Longitudinal acceleration
+
+Lateralacceleration
+
+Nate Steiner
+
+loveheels
+
+===== SLIDE 5 =====
+Detecting Understeer and Oversteer
+
+If the ESC detects that the vehicle is not yawing enough to match the steering input for a corner, the vehicle is understeering.
+
+Next >
+
+If it detects that the vehicle is yawing too much, the vehicle is oversteering.
+
+Understeer
+
+Oversteer
+
+===== SLIDE 6 =====
+ESC Intervention
+
+The ESC can apply or release brakes on individual wheels to make the vehicle yaw.
+
+Next >
+
+It can also affect the engine power or shift an automatic transmission to correct the situation.
+
+It may apply an inside rear brake to correct understeer.
+
+It may apply an outside front brake to correct oversteer.
+
+Intended path of travel
+
+Brake force
+
+===== SLIDE 7 =====
+ESC Components and Sensors
+
+Many components of an ESC system are existing components of the ABS and TCS.
+
+It also uses acceleration and yaw sensors, which are based on miniature integrated circuits.
+
+ESC adds more sensors, such as steering wheel angle and brake pedal position.
+
+Next >
+
+Hydraulic
+
+Electric
+
+ABS electronic control unit (ABS ECU)
+
+Wheel speed sensor and tone wheel
+
+Hydraulic control unit (HCU)
+
+Master cylinder
+
+Brake booster
+
+Brake unit
+
+Anti-LockBrake System Components
+
+Steering wheel angle sensor module
+
+SparkFunElectronics
+
+acceleration sensor IC
+
+Yaw sensor module
+
+Photo: Bosch.
+
+===== SLIDE 8 =====
+Human Factors
+
+ESC works automatically, and the driver may not even be aware that it has been operating.
+
+Consequently, the ESC will inform the driver, visually or audibly, that it has had to intervene.
+
+There is a risk that the driver may become complacent and believe their skill level to be higher than it actually is.
+
+Next >
+
+Kyle May
+
+Stability Control Warning Lights
+
+===== SLIDE 9 =====
+Disabling the ESC
+
+There is usually a switch on the dashboard that will partially or fully disable the ESC.
+
+The driver may also use this if they want to deliberately drive the vehicle beyond the limit of available grip.
+
+Next >
+
+For safety, this should not be done on the public highway.
+
+Manufacturers often recommend switching off the ESC in deep snow.
+
+Brett Levin Photography
+
+mikemol
+
+CaenAbel
+
+===== SLIDE 10 =====
+A)	Sidesteer
+
+B)	Oversteer
+
+C)	Yaw-steer
+
+D)	Understeer
+
+Question 1
+
+Next >
+
+What is the name of the condition when a car yaws too much in a corner?
+
+===== SLIDE 11 =====
+A)	Sidesteer
+
+B)	Oversteer
+
+C)	Yaw-steer
+
+D)	Understeer
+
+Question 1
+
+Next >
+
+What is the name of the condition when a car yaws too much in a corner?
+
+Sidesteer and yaw-steer are not technical terms.
+
+===== SLIDE 12 =====
+Summary
+
+seen the components of a stability control system
+
+In this presentation you have:
+
+seen how a stability control system operates
+
+End
+

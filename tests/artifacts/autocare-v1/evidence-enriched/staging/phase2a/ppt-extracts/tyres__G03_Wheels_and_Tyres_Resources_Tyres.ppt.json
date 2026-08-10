@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "tyres",
+    "priority":  1,
+    "whySelected":  "Tyre knowledge/breadth (legislation, markings, types)",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G03 Wheels and Tyres\\Resources\\Tyres.ppt",
+    "relativePath":  "G03 Wheels and Tyres\\Resources\\Tyres.ppt",
+    "sourceFilename":  "Tyres.ppt",
+    "exists":  true,
+    "contentHashSha256":  "9f5cb6fbb8f37ff80234d32e84a1d976f39827727485beba4c63ea30fe7c10ea",
+    "byteLength":  4488704,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  19,
+    "extractedCharCount":  6285,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\tyres__G03_Wheels_and_Tyres_Resources_Tyres.ppt.txt",
+    "extractedAt":  "2026-08-10T13:31:32.7338409+01:00"
+}

@@ -1,0 +1,82 @@
+Lesson Plan
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Adaptive suspension systems
+ 0 0 Adaptive suspension systems
+
+ Lesson Aims
+
+ Lesson Aims
+ 0 35716 Discuss adaptive suspension sensors, ride heights and relevant measurements
+ Overview the need for up to date testing equipment and calibration
+ 0 0 Discuss adaptive suspension sensors, ride heights and relevant measurements
+ Overview the need for up to date testing equipment and calibration
+
+ Lesson Objectives
+ -8626 56527 Have awareness of adaptive suspension faults, diagnosis & rectification
+ 0 0 Have awareness of adaptive suspension faults, diagnosis & rectification
+
+ Engagement
+ -10795 57989 Power Point
+ Group Discussion
+ Workshop practical assessment
+ 0 0 Power Point
+ Group Discussion
+ Workshop practical assessment
+
+ Stick ability
+ -8255 131445 Measurement
+ Workshop practical – remove & refit suspension components
+ 0 0 Measurement
+ Workshop practical – remove & refit suspension components
+
+ Assessment for learning (AFL)
+ -10795 95250 Question & Answering
+ Observation of practical tasks
+ 0 0 Question & Answering
+ Observation of practical tasks
+
+ Key words
+ 0 48260 Ride height
+ Calibration
+ 0 0 Ride height
+ Calibration
+
+ Differentiation
+ -6350 63500 Provision of relevant resources / activities to enable all learners to have equal opportunity of effective learning
+ 0 0 Provision of relevant resources / activities to enable all learners to have equal opportunity of effective learning
+
+ Session 1
+ -25400 121920 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment and filing of paper-based work
+
+ 0 0 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment and filing of paper-based work
+
+ Session 2
+ -25400 125095 Discuss adaptive suspension systems ride heights, sensors & test equipment calibration
+
+ 0 0 Discuss adaptive suspension systems ride heights, sensors & test equipment calibration
+
+ Session 3
+ -17145 107950 Workshop practical – remove & replace suspension sensors
+ Calibration of test equipment – measurement of ride height & calibration of vehicle memory systems
+
+ 0 0 Workshop practical – remove & replace suspension sensors
+ Calibration of test equipment – measurement of ride height & calibration of vehicle memory systems
+
+ Session 4
+ -17145 83185 Review of day – feedback, also question and answer to determine embedded learning
+ 0 0 Review of day – feedback, also question and answer to determine embedded learning
+
+ Challenge
+ -17145 90805 Measurement of ride height to correct specification
+ 0 0 Measurement of ride height to correct specification
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

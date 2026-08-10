@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "tyres",
+    "priority":  1,
+    "whySelected":  "S9 inspection/repair component",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G03 Wheels and Tyres\\Resources\\Tyre Inspection and Repair.ppt",
+    "relativePath":  "G03 Wheels and Tyres\\Resources\\Tyre Inspection and Repair.ppt",
+    "sourceFilename":  "Tyre Inspection and Repair.ppt",
+    "exists":  true,
+    "contentHashSha256":  "0117421614b4bcb369fbde69d8ab90bba93f68459025f6ae93649168aa695e16",
+    "byteLength":  11419648,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  18,
+    "extractedCharCount":  6685,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\tyres__G03_Wheels_and_Tyres_Resources_Tyre_Inspection_and_Repair.ppt.txt",
+    "extractedAt":  "2026-08-10T13:31:25.5484426+01:00"
+}

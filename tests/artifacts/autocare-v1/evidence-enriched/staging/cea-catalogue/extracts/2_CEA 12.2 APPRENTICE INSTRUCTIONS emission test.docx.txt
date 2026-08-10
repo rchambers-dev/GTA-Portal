@@ -1,0 +1,67 @@
+APPRENTICE INSTRUCTIONS
+ Ref: 12.2
+ E xhaust emission test and fault code reading ( 45 mins)
+ Objectives:
+ To ensure safe working practices are followed throughout your assessment .
+ To demonstrate your knowledge and ability to carry out an emission test .
+ To demonstrate your knowledge and ability to explain the emission readings .
+ To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition .
+ To correctly complete the Apprentice Assessment Record including details specific to the system worked on during your assessment and explain your findings to the assessor .
+
+ Materials you need at the workstation:
+ Light vehicle .
+ VPE for task
+ PPE for task
+ Manufacturer’s instructions and technical information relevant for the assessment
+ General and specialist tools and equipment made available by your assessor relevant for the task .
+ Apprentice Assessment Record sheet
+
+ Scenario:
+ You are required to carry out an exhaust emission test and identify a basic fault .
+
+ Complete the following tasks and note your results where indicated:
+ Ensure your working environment is safe and the vehicle is correctly prepared before starting work .
+ Carry out an exhaust emission test and data analysis .
+ Explain to the assessor what reading s mean and explain a possible cause of any faults . Scan vehicle for fault codes and explain your findings.
+ Tighten all components to 50% (half) of the torque setting specified ensuring you record the CORRECT settings in the Apprentice Assessment Record sheet .
+ Reinstate the vehicle and workstation to a pre -assessment condition .
+
+ A PPRENTICE A SSESSMENT RECORD
+ Ref: 12.2
+ E xhaust emission test and fault code reading
+ Vehicle Model:
+ Vehicle Make:
+ Vehicle Reg:
+ Mileage:
+ Engine Size:
+ Chassis Number:
+ Brief description of the work carried out and any further recommendations:
+
+ ANALYSIS OF READINGS (WHAT IS OKAY/NOT OKAY ):
+
+ PPE worn and special precautions taken
+ List all technical data required for task
+
+ Lambda reading
+
+ CO reading
+
+ HC reading
+
+ CO2 reading
+
+ O2 reading
+
+ Special tools including any required calibration:
+ Fault codes and suspected cause :
+
+ Apprentice Name:
+ Apprentice Signature:
+ Assessor Signature:
+ Assessor Pin:
+ Date:
+ Feedback:
+
+ Result:
+ Pass
+ Refer

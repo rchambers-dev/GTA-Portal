@@ -1,0 +1,80 @@
+ACS Level 2 ST0499/AP01 Vehicle Servicing 
+ style.visibility
+
+Presentation aims The aim of this presentation is to overview what is carried out during servicing routines offered by garages as a recap of previously learned knowledge. On completion of this presentation you should be able to: State the need for regular vehicle checks and maintenance. Describe what is carried out at each stage of a particular service. Understand health and safety aspects involved with vehicle maintenance. 
+ style.visibility
+
+Overview Routine maintenance is basically about checking a vehicle over from time to time and making sure that the vehicle is in a legal and roadworthy condition. A maintenance routine can be something as simple as checking the tyres and engine oil every week to a major service where consumable items are renewed. When carried out regularly, routine maintenance ensures that a vehicle will stay in good, roadworthy and safe condition however failing to carry out even simple maintenance often leads to vehicle breakdowns and costly repair bills. 
+ style.visibility
+
+Weekly checks The very minimum that should be done weekly to ensure that a vehicle is in good order includes: Electrical checks – Operation of exterior lights, screen wipers, washers and horn. Tyres – Condition, tread depth and tyre pressure. Don’t forget the spare. Under the bonnet – Engine oil level, screenwash fluid, coolant level, brake fluid level, power steering fluid level. Check and top up as necessary also check for any fluid leaks. 
+ style.visibility
+
+Servicing Almost all garages offer vehicle servicing in some form or another. A service is a check of a vehicle and its operating systems and usually includes at least an engine oil and filter change. Depending on the type of vehicle and the service offered other parts may also be changed such as air filters, fuel filters and spark plugs. Again, depending on the garage and type of service offered the job may be cheap or expensive. It is a good idea to ask the garage what is included with the service before having it done . 
+ style.visibility
+
+Major Service Most garages will offer a major (or full) service as part of their commitment to their customers. The service is usually carried out according to a check sheet which is completed by the mechanic carrying out the service and the customer usually gets a copy of the sheet so that they can see what has been done and any faults that have been found. Before the service is carried out, the vehicle should be placed (ideally) on a ramp and all the parts needed should be to hand. The following slides outline what is carried out on a major service routine. 
+ style.visibility
+
+Bodywork check Look round the vehicle and note down any damage found. Look for dents, scratches windscreen cracks and damage to wheels etc. It is good practice to look round the vehicle while the customer is there because it will prevent the possibility of being blamed for any damage whilst the vehicle is in your care. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Interior checks From inside the vehicle, check the condition of all the seats and seat belts. Make sure the seat belts lock in their buckles and are free to be released. Check the operation of the electrical switches for lights, wipers and horn etc. Never check the operation of the radio or other device unless it is specifically part of the service routine. Customers always notice when the radio settings have been altered. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Electrical checks Ask an assistant to sit in the vehicle and operate the lights, wipers and washers and horn while you observe them working from outside the vehicle. The lights, wipers, washers and horn are legal requirements that must be working correctly for the vehicle to be roadworthy. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Wheels and Tyres Check the wheels and tyres for damage and overall condition. Check and note down the tyre tread depths, also check and set the tyre pressures to their correct settings as listed in the vehicle manufacturer’s data. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Underbody Set the vehicle up safely on a ramp and r aise it off the ground. Inspect under the vehicle looking for excessive wear, corrosion, damage and leaks in the following areas: Steering, Suspension, Exhaust, Chassis, Fuel system, Braking system . 
+ style.visibility style.visibility ppt_w ppt_h
+
+Oil and Filter Whilst checking under the vehicle, drain the engine oil and renew the oil filter. The oil can be allowed to drain for a few minutes to make sure all of it is drained out. When fitting the new filter, smear a little clean oil around the sealing ring and refit the oil drain plug. Remember to take care when draining hot oil which can cause burns to the skin. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Front Brakes With the front wheels removed, it is easier to carry out a visual inspection of the front brakes. Where necessary, strip out the caliper so that the brake pads can be removed and cleaned. When inspecting, look particularly for excessive wear, seized parts and brake fluid leaks. As the brakes are rebuilt, apply a little brake lubricant or ‘ copperslip ’ grease to the caliper and pad slides but NOT to the pad friction material or disc. Tighten all nuts and bolts to the vehicle manufacturer’s recommended torque settings . 
+ style.visibility style.visibility ppt_w ppt_h
+
+Rear Brakes With the rear wheels removed, the rear brakes can be checked. As with the front brakes, look for excessive wear, seized parts and brake fluid leaks. If the brake is a drum brake type it is not usually necessary to take all the brakes apart but the brakes should be thoroughly cleaned. When drum brakes are rebuilt, they should be adjusted to make sure that there is a small clearance between the brake shoes and brake drum . 
+ style.visibility style.visibility ppt_w ppt_h
+
+Steering and Suspension While the wheels are removed the steering, also front and rear suspension can be checked for excessive wear and damage. Look specifically for rubber boots split around ball joints, excessive wear in rubber bushes, broken springs and leaking shock absorbers. If necessary use a pry bar to gently prise the components to check for wear. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Completed Underbody When the underbody checks have been done and the oil and filter changed also the gearbox and axle oil levels checked as necessary, the wheels can be refitted and the vehicle lowered down for the wheels to be tightened to their correct torque settings. If not already done, the bonnet can be raised for the engine service to be carried out and the final checks made . 
+ style.visibility
+
+Air Filter Remove the air filter housings to remove the old air filter and clean out any dirt and debris. Fit a new filter refit the housings to give an airtight seal. It is normal practice to renew the air filter every 1 to 2 years depending on the conditions in which the vehicle is being driven. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Spark Plugs Only petrol engines have spark plugs. Remove the plugs carefully one at a time making sure that no debris falls down the plug holes into the engine. Check and set the spark gaps on the new plugs with feeler gauges to the manufacturer’s settings and refit the plugs carefully into the engine. Take care not to overtighten spark plugs - they break very easily. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Fuel Filter On most petrol engines and certainly all diesel engines, the fuel filter will need to be changed. Place a cloth round the filter when removing the fuel pipes to catch any spilled fuel which might still be under pressure. Be especially careful when changing a petrol fuel filter because of the volatility of petrol. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Fluid Levels Check and top up if necessary the under bonnet fluid levels – Brake fluid, Screenwash , Power Steering Fluid and Coolant. Use the correct fluids to top up with and don’t fill above any ‘maximum’ level marks. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Refill with Oil Remove the oil filler cap and refill the engine with new oil. Check the level on the oil dipstick and don’t overfill the level or spill oil over the engine. When the oil is up to the level on the dipstick. Replace the filler cap. 
+ style.visibility style.visibility ppt_w ppt_h style.visibility ppt_w ppt_h
+
+Start Up Make sure that the engine is safe to start and start up. Immediately check that the oil pressure light goes out and for oil and fuel leaks and if any are present, stop the engine and rectify them. Stop the engine and after a few minutes, check the oil level. If necessary top the oil up to just below the ‘Max’ mark on the dipstick. Check round under the bonnet to make sure that all filler caps have been replaced and any wiring or pipes that have been disturbed are back in their correct places. 
+ style.visibility
+
+Service Sheet Complete the service ‘tick sheet’ to the correct service schedule and note down any faults that have been found during the service. The tick sheet is the customer’s record that the items ticked have been checked and that consumable parts have been renewed, also that any faults found have been noted so that the customer can be informed what is needed. 
+ style.visibility style.visibility ppt_w ppt_h
+
+Final Checks Check round the vehicle relative to the check sheet to make sure that nothing has been missed. Check the interior and exterior for greasy hand marks etc and make sure they are cleaned off. Pass the vehicle over to be road tested and the service book stamped, then cleaned before it is returned to the customer. 
+ style.visibility
+
+In conclusion An ‘average’ full service should take around two to three hours to complete and should identify any faults with a vehicle that will need rectifying also help to keep the vehicle in a safe and roadworthy condition. Failure to carry out regular maintenance can lead to expensive repair bills later because the vehicle has not been maintained and faults which could have been rectified have been missed. 
+ style.visibility
+
+Health and Safety ‘Standard’ health and safety procedures apply to vehicle servicing as with many other vehicle tasks in as much as wearing the correct PPE, jacking and supporting vehicles safely, awareness of running engines etc. One of the main considerations regarding maintenance safety is COSHH. The Control of Substances Hazardous to Health. Under COSHH regulations, all waste materials must be disposed of safely and correctly. This applies to maintenance when dealing with waste oils, fluids, filters and used brake components. 
+ style.visibility
+
+Summary and Objectives This presentation has covered the routine generally followed during inspection and servicing. The information in this presentation should be sufficient to appreciate what is required for a service routine. Using the knowledge learned from this presentation, you should now be able to: State the method to take to carry out a thorough service routine. Describe what to do at each stage of a full service. State the importance of safe and correct workshop practice to be taken, also the importance of legislation relating to the disposal of waste materials. 
+ style.visibility

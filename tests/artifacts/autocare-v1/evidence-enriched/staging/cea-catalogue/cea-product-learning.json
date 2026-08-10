@@ -1,0 +1,28 @@
+{
+  "architectureOnly": true,
+  "ceaMeansInThisCorpus": "Controlled Evidence / Competency Assessment style centre practicals — not teaching slides and not workplace job cards.",
+  "commonStructuredFields": [
+    "ceaRef (Group.task)",
+    "programmeYear",
+    "groupCode/title",
+    "taskTitle",
+    "durationMinutes",
+    "objectives[]",
+    "materialsAndEquipment[]",
+    "scenarioNarrative",
+    "performanceSteps[]",
+    "techDataCaptureFields[]",
+    "measurements[]",
+    "oralQuestions[]",
+    "ppeAndPrecautions",
+    "assessorSignOff",
+    "apprenticeSignOff",
+    "resultPassRefer",
+    "feedback",
+    "inferredOrLinkedKsbs[]",
+    "blockRoutingDirect[] / supporting[]",
+    "relationshipAxes: PRACTISES | ASSESSES | RECORDS_EVIDENCE"
+  ],
+  "chainModel": "OFFICIAL → KSB → GROUP (CEA ref) → BLOCK (inferred routing) → WEEK/SESSION (unknown) → TEACHING (separate) → PRACTICAL/CEA → ASSESSMENT RECORD → WORKPLACE EVIDENCE (still separate job cards)",
+  "portalImplication": "Programme Builder should store CEA tasks as first-class PracticalAssessmentTask entities, linked to Groups/Blocks/KSBs, generating consistent instruction+assessment-record documents rather than absorbing inconsistent Word files."
+}

@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "brakes",
+    "priority":  1,
+    "whySelected":  "Advanced ABS teaching",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G10 Advanced Braking\\Resources\\Anti-Lock Brake Systems.ppt",
+    "relativePath":  "G10 Advanced Braking\\Resources\\Anti-Lock Brake Systems.ppt",
+    "sourceFilename":  "Anti-Lock Brake Systems.ppt",
+    "exists":  true,
+    "contentHashSha256":  "d2fd77e61892d21c279085aa3cbed8504431a21b0ea49490703f5b875dfb7245",
+    "byteLength":  2718720,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  25,
+    "extractedCharCount":  9521,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G10_Advanced_Braking_Resources_Anti-Lock_Brake_Systems.ppt.txt",
+    "extractedAt":  "2026-08-10T13:32:06.7504866+01:00"
+}

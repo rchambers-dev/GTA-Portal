@@ -1,0 +1,84 @@
+TASK 3: ABS WHEEL SPEED SENSOR
+DIAGNOSTIC INVESTIGATION
+Autocare Technician Level 2 | Block 8 | v2.0
+TIME
+60 minutes
+EVIDENCE
+Practical | Knowledge | Documentation
+PROGRAMME POINT
+Weeks 71-80
+Your task
+A vehicle has an ABS or traction warning lamp. You must carry out a structured inspection and test of the wheel
+speed sensor circuit or output, record evidence and explain the likely fault or referral route.
+What you must do
+1 Prepare the vehicle/rig and confirm the warning lamp or fault condition.
+2 Read and record relevant DTCs if equipment is available.
+3 Inspect the wheel speed sensor, wiring and reluctor/tone ring as instructed.
+4 Check output using a suitable method and record results.
+5 Explain findings and reinstate the vehicle/workstation.
+What good evidence looks like
+SAFE SETUP
+Suitable PPE, a prepared work area and controlled vehicle or
+equipment.
+CORRECT METHOD
+A logical sequence using the relevant procedure and technical
+information.
+ACCURATE EVIDENCE
+Actual readings, findings and actions recorded clearly and
+precisely.
+SOUND DECISIONS
+Appropriate recommendations, referral or authorisation
+supported by evidence.
+You will need
+• Light vehicle or ABS training rig
+• Scan tool, multimeter or oscilloscope if available
+• Manufacturer technical information
+• PPE and Apprentice Assessment Record
+SOW ALIGNMENT
+Block 8 - Advanced Diagnostics and Workshop Management
+Duties: 1-10 KSB evidence focus: K15-K21, S10-S15, B1, B2
+Task reference: Block_8_Task_3_ABS_Wheel_Speed_Diagnostic
+Block_8_Task_3_ABS_Wheel_Speed_Diagnostic | v2.0 Page 1 of 3
+TASK 3: ABS WHEEL SPEED SENSOR DIAGNOSTIC INVESTIGATION
+Practical record
+Apprentice, location and vehicle details
+Apprentice name Date
+TASK COMPLETED AT APPRENTICE'S WORKPLACE TRAINING CENTRE
+Vehicle make Model
+Registration Mileage
+Engine size / type VIN / chassis number
+Measurements and technical checks
+DTC code Sensor type
+Expected
+waveform/output Measured output
+Air gap if relevant Wiring condition
+Tone ring condition Related systems affected
+Special tools, equipment or calibration requirements
+Task evidence
+PPE and precautions used Safety-critical findings and immediate action
+Work completed, findings and recommendations
+Knowledge check
+1. What is the purpose of an ABS wheel speed sensor? 2. What does the term air gap mean?
+Block_8_Task_3_ABS_Wheel_Speed_Diagnostic | v2.0 Page 2 of 3
+TASK 3: ABS WHEEL SPEED SENSOR DIAGNOSTIC INVESTIGATION
+Knowledge check and assessment decision
+Knowledge check - continued
+3. (a) Name causes of an illuminated ABS warning lamp. (b) Why can ABS faults affect other vehicle systems?
+4. Why may an oscilloscope provide better information than a basic meter?
+5. (a) How would you explain an ABS fault to a customer? (b) What further tests or authorisation may be
+required?
+Assessor/Workplace Mentor observation
+Carry out safe ABS diagnostic checks. Identify ABS sensor type and relevant components.
+Record DTCs, signal outputs or visual findings. Explain how the evidence supports a diagnosis.
+Identify effects on related systems and customer communication.
+Assessor/Workplace Mentor observation notes
+Decision and feedback
+Decision - select one
+PASS REFER
+Evidence reference
+Feedback and action required
+Sign-off
+Signatures confirm that this is the apprentice's own work and that the evidence and decision are accurate.
+Apprentice name Assessor/Workplace Mentor name PIN (if applicable)
+Apprentice signature Assessor/Workplace Mentor signature Date
+Block_8_Task_3_ABS_Wheel_Speed_Diagnostic | v2.0 Page 3 of 3

@@ -1,0 +1,580 @@
+{
+  "title": "AUTOCARE SHADOW BATCH R51-1 — EIGHT KSB REVIEW",
+  "status": "SHADOW_ONLY_NOT_PROGRAMME_TRUTH",
+  "generatedAt": "2026-08-10",
+  "batch": "R51-1",
+  "mutatesProgrammeTruth": false,
+  "mutatesGoldenA": false,
+  "mutatesRatifiedPilotOrTranche2": false,
+  "standardVersion": "ST0499 v1.3",
+  "ksbs": ["K18", "K2", "K20", "S25", "K1", "K31", "K6", "S12"],
+  "progress": {
+    "officialTotal": 64,
+    "previouslyHumanReviewed": 13,
+    "thisBatch": 8,
+    "richerEvidenceAnalysedAfterBatch": 21,
+    "remainingAfterBatch": 43
+  },
+  "methodologyDriftStopTriggered": false,
+  "dossiers": {
+    "K18": {
+      "officialRequirement": "Advanced driver-assistance systems (ADAS) levels of autonomy: passive and active advanced driver assistance systems.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K18-C1",
+          "claim": "What ADAS is / ADAS concept",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["res_lm_5d8bcd0589f2_87 G11 Session 2 LP aims: Introduction to what ADAS is…", "res_lm_95f371942a77_98 Session 2 ADAS Systems.pptx"] },
+          "practice": { "status": "APPLICATION_PRESENT", "confidence": "EXPLICIT", "evidence": ["cea_2_11_6 CEA 11.6 Diagnose ADAS fault", "res_prac_126c9fbc1032 Block 9 Task 4 ADAS pre-calibration"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 11.6 Pass/Refer"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": ["Filled workplace job cards not supplied"] },
+          "gatewayEpaSupport": { "status": "WEAK_OR_ABSENT_FOR_LEVELS_THEORY", "confidence": "INFERRED_LOW", "evidence": ["Gateway packs emphasise practical ADAS pre-check adjacency via B9 rather than autonomy taxonomy"] },
+          "structuralAccounting": { "status": "GROUP_G11_VISIBLE_BLOCK_WEEK_UNRESOLVED_FOR_TEACHING", "confidence": "INFERRED_HIGH", "evidence": ["G11 EXPLICIT Group provenance; Block week for that LP not proven"] }
+        },
+        {
+          "id": "K18-C2",
+          "claim": "Levels of autonomy / passive and active ADAS",
+          "teaching": { "status": "PRESENT_WITH_RESIDUAL_PHRASING_CHECK", "confidence": "EXPLICIT_ON_LEVELS_INFERRED_HIGH_ON_PASSIVE_ACTIVE", "evidence": ["G11 Session 2 LP EXPLICIT aim: 'the levels we have and typical systems found on cars'", "Passive/active SAE wording not confirmed in extracted PPT excerpt; do not invent"] },
+          "practice": { "status": "NOT_DIRECTLY_PRACTISED_AS_TAXONOMY", "confidence": "INFERRED_MEDIUM", "evidence": ["CEA/B9 exercise system awareness/fault/pre-cal — not a levels quiz"] },
+          "assessment": { "status": "PARTIAL_VIA_ADAS_OPERATION_EXPLAIN", "confidence": "INFERRED_MEDIUM", "evidence": ["CEA 11.6 objective includes locate/explain operation of ADAS systems"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "NOT_USED_AS_TEACHING_HOME", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "structuralAccounting": { "status": "MAPPABLE_TO_G11_NOT_FORCED_PRIMARY", "confidence": "INFERRED_HIGH", "evidence": ["First substantive knowledge in G11 LP; B9 is later practical REINFORCE"] }
+        },
+        {
+          "id": "K18-C3",
+          "claim": "Typical ADAS systems found on cars",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G11 Session 2 LP aims; ADAS Systems.pptx camera/radar systems"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B9 Task 4 identify visible ADAS features; CEA 11.6"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 11.6"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE_LATER", "confidence": "INFERRED_MEDIUM", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "SUBSTANTIVELY_TAUGHT",
+        "practice": "PRESENT_APPLICATION_NOT_TAXONOMY_DRILL",
+        "assessment": "PRESENT_CEA",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "LATER_SUPPORT_NOT_OWNER",
+        "structuralAccounting": "GROUP_TEACHING_VISIBLE_BLOCK_WEEK_MOSTLY_UNRESOLVED"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "COVERED_WITH_RESIDUAL_DEPTH_CHECK_ON_PASSIVE_ACTIVE_WORDING",
+        "status": "LIKELY_MAPPABLE_NOT_FORCED",
+        "firstSubstantiveTeachingHome": "G11 Session 2 ADAS LP / ADAS Systems.pptx (Group-era provenance EXPLICIT)",
+        "doNotStealFrom": ["Block 9 Task 4", "CEA 11.6", "any Gateway ADAS item"],
+        "forcePrimary": false,
+        "weekSession": "UNRESOLVED for Group teaching; Block 9 practical window Weeks 81-94 EXPLICIT for Task 4 only"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A SOW-only gap)",
+        "POSSIBLE_TEACHING_DEPTH_GAP (confirm passive/active wording equals 'levels')"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidenceOverall": "HIGH_ON_TEACHING_OF_LEVELS_AIM_MEDIUM_ON_PASSIVE_ACTIVE_EQUIVALENCE",
+      "goldenAComparedAfter": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "direction": "CHANGE",
+        "note": "Golden A used only after independent judgement"
+      }
+    },
+    "K2": {
+      "officialRequirement": "Vehicle safety inspections and routine maintenance: manufacturers specifications or approved schedules. The use of vehicle specific data and the legal requirements for wear and serviceability.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K2-C1",
+          "claim": "Manufacturers specifications or approved schedules for inspection/routine maintenance",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["res_lp_54be5af2ca23 W22 title+aims: routine servicing, inspection workflow and service schedules (Block 3 Week 22 EXPLICIT)", "res_lm_6e6c9e8174f3_117 G14 Session 1: safety inspection following manufacturers specifications"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["res_prac_fdc47cc819f4 B3 Task 3 Interim Service: follow the service schedule", "cea_2_14_4 CEA 14.4 prepare 3-year service plan", "cea_2_CEA_C1_Service_Schedule_Generic_docx supporting schedule template"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 14.4 Pass/Refer", "CEA 14.1–14.3 service CEAs"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": ["Job-card mechanism referenced; filled examples not supplied"] },
+          "gatewayEpaSupport": { "status": "SUPPORTS_VIA_INSPECTION_GATEWAY", "confidence": "INFERRED_HIGH", "evidence": ["GW2AC01 vehicle safety inspection (companion to S7 practice; not K2 teaching home)"] },
+          "structuralAccounting": { "status": "BLOCK_WEEK_EXPLICIT_FOR_SCHEDULES_SESSION", "confidence": "EXPLICIT", "evidence": ["W22 Block 3"] }
+        },
+        {
+          "id": "K2-C2",
+          "claim": "Use of vehicle-specific data",
+          "teaching": { "status": "PRESENT", "confidence": "INFERRED_HIGH", "evidence": ["W22 aims: record findings using technical information", "G14 inspection cluster", "FS05 technical-data use (supporting foundation)"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["B3 Task 3 identify technical information", "Inspection/service CEAs require tech data"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 14.x", "CEA 14.0 inspection"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_HIGH", "evidence": ["GW2AC01"] },
+          "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "K2-C3",
+          "claim": "Legal requirements for wear and serviceability",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["res_lm_317be27fa403_119 G14 Session 3: checking condition and serviceability; reporting when components require attention", "Vehicle Servicing PPT: legal and roadworthy condition"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["Inspection CEAs; B3 Task 3 inspection documentation"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 14.0 Vehicle Inspection"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "SUPPORTIVE", "confidence": "INFERRED_HIGH", "evidence": ["GW2AC01"] },
+          "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "SUBSTANTIVELY_TAUGHT",
+        "practice": "CONFIRMED",
+        "assessment": "CONFIRMED",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "LATER_SUPPORT",
+        "structuralAccounting": "W22_EXPLICIT_PLUS_G14_GROUP"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "COVERED",
+        "status": "CANDIDATE_EARLY_SERVICE_HOME_NOT_FORCED",
+        "firstSubstantiveTeachingHome": "G14 manufacturers-spec inspection teaching and/or Block 3 W22 schedules session — Primary not forced between Group vs Block eras",
+        "doNotStealFrom": ["GW2AC01", "later service CEAs as Primary"],
+        "forcePrimary": false,
+        "weekSession": "W22 EXPLICIT for Block schedules session; G14 week UNRESOLVED",
+        "note": "Duty/KSB focus tag lists on W22 ignored as coverage proof; title+aims used"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "NOT_A_SIMPLE_CURRICULUM_GAP"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "direction": "CHANGE",
+        "relatedPriorShadow": "S7 CHANGE in Tranche 2 (companion skill)"
+      }
+    },
+    "K20": {
+      "officialRequirement": "Vehicle fluid and filtration systems: brake fluid, oil and oil filters, air filters.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K20-C1",
+          "claim": "Brake fluid knowledge",
+          "teaching": { "status": "PRESENT_BUT_BINARY_PPT_UNEXTRACTED", "confidence": "INFERRED_MEDIUM", "evidence": ["res_lm_81eac59f305f_21 Brake Fluid.ppt in G4 EXPLICIT path — CONTENT_EXTRACTION_REQUIRED (empty excerpt)", "res_lm_09ccf745db0e_23 Braking Systems Initial KA Q5 paint/brake-fluid interaction implies taught knowledge"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_4_3 CEA 4.3 replace brake fluid / test fluid"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 4.3 Pass/Refer", "Braking Systems Initial Knowledge Assessment"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "INCIDENTAL", "confidence": "INFERRED_LOW", "evidence": ["GW1 knowledge paper may touch fluids incidentally"] },
+          "structuralAccounting": { "status": "G4_GROUP_HOME", "confidence": "EXPLICIT_PROVENANCE", "evidence": ["G04 Basic Braking"] }
+        },
+        {
+          "id": "K20-C2",
+          "claim": "Oil and oil filters knowledge",
+          "teaching": { "status": "PRESENT_FOR_OIL_OIL_FILTER_INFERRED_HIGH", "confidence": "EXPLICIT_ON_OIL_INFERRED_HIGH_ON_FILTER", "evidence": ["G6 LP20/21 Introduction to Engines – Lubrication EXPLICIT", "Lubrication Systems Plan 19.pptx: stores/cleans/circulates oil; parts include oil pump, oil pan, o… (oil filter expected in unfinished excerpt)", "G6 folder name includes Filters — folder name alone NOT used as proof"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["cea_2_14_1 CEA 14.1 oil service", "B3 Task 3 interim service"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 14.1", "Cooling and Lubrication Initial Knowledge Assessment"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "G6_GROUP_HOME", "confidence": "EXPLICIT_PROVENANCE", "evidence": ["G06 Cooling, Lubrication and Filters"] }
+        },
+        {
+          "id": "K20-C3",
+          "claim": "Air filters knowledge",
+          "teaching": { "status": "NOT_FOUND_IN_CORPUS_SEARCH", "confidence": "UNRESOLVED_TENDERING_GAP", "evidence": ["No LP/PPT excerpt teaching air-filter purpose/function/service found", "G8 parts pricing sheet mentions Air Filter as a purchasable part — commercial listing, NOT teaching of filtration systems"] },
+          "practice": { "status": "NOT_CLEARLY_EVIDENCED", "confidence": "UNRESOLVED", "evidence": ["Interim service may include filter checks but body not proving air-filter R&R specifically"] },
+          "assessment": { "status": "NOT_CLEARLY_EVIDENCED", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "UNMAPPED_COMPONENT", "confidence": "INFERRED_MEDIUM", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "PARTIAL_STRONG_BRAKE_FLUID_AND_OIL_WEAK_AIR_FILTER",
+        "practice": "PARTIAL",
+        "assessment": "PARTIAL",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "MULTI_HOME_G4_G6"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "PARTIAL_COVERAGE",
+        "status": "DISTRIBUTED_OR_MULTI_HOME_NOT_FORCED",
+        "firstSubstantiveTeachingHome": "Not forced — brake fluid G4; oil G6; air filter unmapped",
+        "forcePrimary": false,
+        "weekSession": "UNRESOLVED for Group teaching"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP (brake fluid/oil vs Golden A total gap)",
+        "TEACHING_DEPTH_GAP / CURRICULUM_GAP candidate on air filters",
+        "POSSIBLE_PRACTICE_GAP on air filters",
+        "POSSIBLE_ASSESSMENT_GAP on air filters"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidenceOverall": "HIGH_ON_PARTIALITY_MEDIUM_ON_AIR_FILTER_ABSENCE",
+      "goldenAComparedAfter": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "direction": "CHANGE_TO_PARTIAL_NOT_FULL_KEEP"
+      }
+    },
+    "S25": {
+      "officialRequirement": "Apply procedures to check and replace fluids, and filtration parts.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S25-C1",
+          "claim": "Check fluids",
+          "teaching": { "status": "VIA_K20_CLUSTER", "confidence": "INFERRED_HIGH", "evidence": ["Brake fluid / lubrication teaching materials"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 4.3 testing of brake fluid", "B3 Task 3 interim service checks", "CEA 14.2 interim service"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 4.3", "CEA 14.2"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "S25-C2",
+          "claim": "Replace fluids",
+          "teaching": { "status": "VIA_K20_CLUSTER", "confidence": "INFERRED_MEDIUM", "evidence": ["Brake Fluid.ppt unextracted; lubrication LPs"] },
+          "practice": { "status": "STRONG_FOR_BRAKE_FLUID_AND_OIL", "confidence": "EXPLICIT", "evidence": ["CEA 4.3 replace brake fluid", "CEA 14.1 oil service"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 4.3", "CEA 14.1 Pass/Refer"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "OK", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "S25-C3",
+          "claim": "Replace filtration parts",
+          "teaching": { "status": "THIN", "confidence": "INFERRED_LOW", "evidence": ["Oil-filter knowledge inferred from lubrication cluster; air-filter teaching not found"] },
+          "practice": { "status": "PARTIAL_LIKELY_OIL_FILTER_VIA_OIL_SERVICE_AIR_FILTER_UNCLEAR", "confidence": "INFERRED_MEDIUM", "evidence": ["CEA 14.1 oil service likely includes oil filter — not re-read as itemised checklist this batch", "No dedicated air-filter R&R CEA/Task found"] },
+          "assessment": { "status": "PARTIAL", "confidence": "INFERRED_MEDIUM", "evidence": ["Oil service CEAs; air-filter instrument absent"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "INCOMPLETE", "confidence": "INFERRED_MEDIUM", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "PARTIAL",
+        "practice": "PARTIAL_STRONG_FLUIDS_WEAK_FULL_FILTRATION_SET",
+        "assessment": "PARTIAL",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "WEAK",
+        "structuralAccounting": "MULTI_HOME"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "PARTIAL_COVERAGE",
+        "status": "LIKELY_MAPPABLE_NOT_FORCED",
+        "firstSubstantiveTeachingHome": "Not forced — fluids via G4/G6; do not invent single Primary",
+        "forcePrimary": false,
+        "weekSession": "UNRESOLVED for Group; B3 interim Weeks 21-30 window for Task 3"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A total gap)",
+        "PRACTICE_GAP / ASSESSMENT_GAP residual on full filtration-parts set (esp. air filter)",
+        "TEACHING_DEPTH_GAP adjacent via K20-C3"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION_TO_PARTIAL",
+      "confidenceOverall": "HIGH_ON_PARTIALITY",
+      "goldenAComparedAfter": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "direction": "CHANGE_TO_PARTIAL"
+      }
+    },
+    "K1": {
+      "officialRequirement": "The automotive industry and the role of the autocare technician. Limits of autonomy and reporting channels.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K1-C1",
+          "claim": "Automotive industry context",
+          "teaching": { "status": "NOT_FOUND", "confidence": "UNRESOLVED_TENDERING_GAP", "evidence": ["No dedicated industry overview LP/PPT found in live corpus search"] },
+          "practice": { "status": "N_A_FOR_KNOWLEDGE", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_MEDIUM", "evidence": [] }
+        },
+        {
+          "id": "K1-C2",
+          "claim": "Role of the autocare technician",
+          "teaching": { "status": "WEAK_PARTIAL", "confidence": "INFERRED_LOW", "evidence": ["FS01 professional workshop expectations / pathway examples including Autocare — adjacency, not full role curriculum", "W16 Duties LP title exists — KSB tags/intent only; NOT treated as teaching proof"] },
+          "practice": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_MEDIUM", "evidence": [] }
+        },
+        {
+          "id": "K1-C3",
+          "claim": "Limits of autonomy",
+          "teaching": { "status": "PARTIAL_HV_CONTEXT", "confidence": "EXPLICIT_IN_FS03_BUT_SCOPE_NARROW", "evidence": ["FS03 EXPLICIT aims: Clarify limits of competence and correct escalation routes — framed on hybrid/HV awareness, not whole autocare autonomy"] },
+          "practice": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "assessment": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": ["FS03 exit explanation of competence boundaries (formative)"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT_FOR_FULL_K1", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "PARTIAL_FS_ONLY", "confidence": "EXPLICIT", "evidence": ["FS03 Week 3 EXPLICIT"] }
+        },
+        {
+          "id": "K1-C4",
+          "claim": "Reporting channels",
+          "teaching": { "status": "PARTIAL", "confidence": "EXPLICIT", "evidence": ["FS01: reporting routes in workshop safety expectations"] },
+          "practice": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "assessment": { "status": "PARTIAL_GATEWAY_KNOWLEDGE_ITEM", "confidence": "INFERRED_MEDIUM", "evidence": ["GW1 practice paper opening: H&S hazard reporting options — supports reporting awareness, not full K1"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "KNOWLEDGE_CHECKS_PARTIAL", "confidence": "EXPLICIT", "evidence": ["gw_ef36375dc80b"] },
+          "structuralAccounting": { "status": "PARTIAL_FS01", "confidence": "EXPLICIT", "evidence": ["FS01 Week 1"] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "WEAK_PARTIAL_ONLY",
+        "practice": "NOT_APPLICABLE_PRIMARY",
+        "assessment": "WEAK",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "PARTIAL_REPORTING_ITEM_ONLY",
+        "structuralAccounting": "MOSTLY_UNMAPPED"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "NOT_ADEQUATELY_COVERED",
+        "status": "UNMAPPED",
+        "firstSubstantiveTeachingHome": null,
+        "forcePrimary": false,
+        "weekSession": "FS01/FS03 weeks EXPLICIT but only for partial components"
+      },
+      "assuranceClassifications": [
+        "CURRICULUM_GAP",
+        "TEACHING_DEPTH_GAP",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP if off-pack induction exists but was not supplied"
+      ],
+      "shadowDirection": "KEEP_GAP",
+      "confidenceOverall": "MEDIUM_HIGH_ON_GAP_GIVEN_CORPUS_SCAN",
+      "goldenAComparedAfter": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "direction": "KEEP"
+      }
+    },
+    "K31": {
+      "officialRequirement": "Principles of equity, diversity, and inclusion in the workplace and the impact on their work.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K31-C1",
+          "claim": "Principles of equity, diversity and inclusion",
+          "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_SCANNED_CORPUS", "evidence": ["Precision search for equity/diversity/inclusion content: no teaching body found", "Discarded false-positive substring hits on 'edi' inside unrelated words (methodology discipline)", "mv13 tracking sheet mentions diversity as milestone label only — not teaching"] },
+          "practice": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "K31-C2",
+          "claim": "Impact on their work",
+          "teaching": { "status": "NOT_FOUND", "confidence": "HIGH_ABSENCE_IN_SCANNED_CORPUS", "evidence": [] },
+          "practice": { "status": "N_A", "confidence": "EXPLICIT_METHODOLOGY", "evidence": [] },
+          "assessment": { "status": "NOT_FOUND", "confidence": "UNRESOLVED", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "ABSENT", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "UNMAPPED", "confidence": "INFERRED_HIGH", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "ABSENT_IN_SUPPLIED_CORPUS",
+        "practice": "NOT_APPLICABLE_PRIMARY",
+        "assessment": "ABSENT",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "ABSENT",
+        "structuralAccounting": "UNMAPPED"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "NOT_COVERED_IN_SUPPLIED_CORPUS",
+        "status": "UNMAPPED",
+        "forcePrimary": false,
+        "weekSession": "UNRESOLVED",
+        "note": "Same pattern family as ratified B5 KEEP GAP — pastoral/off-pack still possible but not evidenced here"
+      },
+      "assuranceClassifications": [
+        "CURRICULUM_GAP",
+        "POSSIBLE_EVIDENCE_VISIBILITY_GAP if EDI delivered only in unsupplied induction/pastoral packs"
+      ],
+      "shadowDirection": "KEEP_GAP",
+      "confidenceOverall": "HIGH_ON_ABSENCE_IN_SUPPLIED_LIVE_CORPUS",
+      "goldenAComparedAfter": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "direction": "KEEP"
+      }
+    },
+    "K6": {
+      "officialRequirement": "Maintenance and storage methods for tools and equipment, including calibration checks.",
+      "kind": "knowledge",
+      "components": [
+        {
+          "id": "K6-C1",
+          "claim": "Maintenance / condition of tools and equipment",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS02 EXPLICIT: pre-use inspection and selection of tools; record equipment checks; remove from use when needed"] },
+          "practice": { "status": "EMBEDDED", "confidence": "INFERRED_HIGH", "evidence": ["Tool-condition tasks in FS02; embedded across workshop practicals"] },
+          "assessment": { "status": "FORMATIVE_PLUS_RECORDS", "confidence": "INFERRED_MEDIUM", "evidence": ["FS02 end task; CEA records imply tool use (RECORDS_EVIDENCE) — not a dedicated K6 summative KA"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "INCIDENTAL", "confidence": "INFERRED_LOW", "evidence": ["Torque wrench mentions in Gateway assessor materials — later/support"] },
+          "structuralAccounting": { "status": "CLEAR_B1_FS", "confidence": "EXPLICIT", "evidence": ["FS02 Week 2 Block 1 EXPLICIT"] }
+        },
+        {
+          "id": "K6-C2",
+          "claim": "Storage methods for tools and equipment",
+          "teaching": { "status": "THINNER_THAN_MAINTENANCE", "confidence": "INFERRED_MEDIUM", "evidence": ["FS01/FS02 housekeeping and tool responsibility imply storage discipline", "Dedicated storage-methods teaching not strongly excerpted — residual TEACHING_DEPTH"] },
+          "practice": { "status": "EMBEDDED", "confidence": "INFERRED_MEDIUM", "evidence": ["Workshop restore/storage behaviours (adjacent S3/S4 territory)"] },
+          "assessment": { "status": "WEAK_DEDICATED", "confidence": "INFERRED_LOW", "evidence": [] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "WEAK", "confidence": "INFERRED_LOW", "evidence": [] },
+          "structuralAccounting": { "status": "B1_CANDIDATE_STILL", "confidence": "INFERRED_HIGH", "evidence": [] }
+        },
+        {
+          "id": "K6-C3",
+          "claim": "Calibration checks",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["FS02: why equipment condition and calibration matter", "FS05: calibration awareness EXPLICIT Week 5"] },
+          "practice": { "status": "PRESENT_FOUNDATION", "confidence": "EXPLICIT", "evidence": ["FS05 zero/calibration checks demonstration"] },
+          "assessment": { "status": "FORMATIVE", "confidence": "INFERRED_MEDIUM", "evidence": ["FS05 measurement sheet"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "DO_NOT_CONFUSE_WITH_ADAS_CALIBRATION", "confidence": "EXPLICIT_METHODOLOGY", "evidence": ["ADAS sensor calibration is a different meaning — not K6 ownership"] },
+          "structuralAccounting": { "status": "CLEAR_B1_FS", "confidence": "EXPLICIT", "evidence": ["FS02/FS05"] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "ADEQUATE_TO_STRONG_WITH_STORAGE_DEPTH_NOTE",
+        "practice": "EMBEDDED_ADEQUATE",
+        "assessment": "FORMATIVE_ADEQUATE_FOR_KNOWLEDGE",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "INCIDENTAL_NOT_OWNER",
+        "structuralAccounting": "CLEAR_PRIMARY_HOME_B1"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "ADEQUATELY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "Shared Foundation Skills FS02 (Block 1) with FS05 calibration reinforcement",
+        "doNotStealFrom": ["ADAS pre-calibration Block 9", "geometry equipment calibration adjacency"],
+        "forcePrimary": false,
+        "weekSession": "FS02 Week 2 EXPLICIT; FS05 Week 5 EXPLICIT"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED",
+        "POSSIBLE_TEACHING_DEPTH_GAP on storage methods wording"
+      ],
+      "shadowDirection": "KEEP_PRIMARY_B1",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": {
+        "position": "PRIMARY_B1",
+        "direction": "KEEP"
+      }
+    },
+    "S12": {
+      "officialRequirement": "Apply four-wheel geometry checks and adjustments to cars, car derived vans, and light goods vehicles.",
+      "kind": "skills",
+      "components": [
+        {
+          "id": "S12-C1",
+          "claim": "Four-wheel geometry checks",
+          "teaching": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["res_lm_801be46beaa3_8 G3 LP3A Steering Geometry EXPLICIT", "G11 four-wheel alignment LPs REINFORCE", "Geometry/Wheel Alignment decks"] },
+          "practice": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["cea_1_5_1 CEA 5.1 front wheel alignment", "res_prac_3a8916c0651c B4 Task 3 front wheel alignment", "cea_2_11_5 CEA 11.5 four-wheel alignment EPA Practice", "GW1AC03 front wheel alignment", "GW2AC02 four-wheel alignment"] },
+          "assessment": { "status": "STRONG", "confidence": "EXPLICIT", "evidence": ["CEA 5.1 Pass/Refer", "CEA 11.5", "Gateway practicals Pass/Refer"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "STRONG_LATER", "confidence": "EXPLICIT", "evidence": ["GW1AC03", "GW2AC02"] },
+          "structuralAccounting": { "status": "EARLY_HOME_PLUS_LATER_REINFORCE", "confidence": "EXPLICIT", "evidence": ["G3 early; B4 Task 3 Block EXPLICIT; G11 later"] }
+        },
+        {
+          "id": "S12-C2",
+          "claim": "Four-wheel geometry adjustments",
+          "teaching": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["G3 LP3A adjustment discussion", "G11 measure and adjust aims"] },
+          "practice": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 11.5 measure and adjust four-wheel alignment", "B4 Task 3 adjust if instructed / within competence"] },
+          "assessment": { "status": "PRESENT", "confidence": "EXPLICIT", "evidence": ["CEA 11.5", "GW2AC02"] },
+          "workplaceApplication": { "status": "MECHANISM_ONLY", "confidence": "UNRESOLVED", "evidence": [] },
+          "gatewayEpaSupport": { "status": "STRONG_LATER", "confidence": "EXPLICIT", "evidence": ["GW2AC02"] },
+          "structuralAccounting": { "status": "OK", "confidence": "EXPLICIT", "evidence": [] }
+        }
+      ],
+      "axisRollup": {
+        "teaching": "STRONG",
+        "practice": "STRONG",
+        "assessment": "STRONG",
+        "workplaceApplication": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "gatewayEpaSupport": "STRONG_NOT_OWNER",
+        "structuralAccounting": "CLEAR_EARLY_PRIMARY_WITH_LATER_REINFORCEMENT"
+      },
+      "ownership": {
+        "coverageJudgementFirst": "STRONGLY_COVERED",
+        "status": "CLEAR_PRIMARY",
+        "firstSubstantiveTeachingHome": "Early geometry teaching G3 LP3A → Golden A Primary Block 2 remains consistent; W18 advanced alignment and G11 are REINFORCE",
+        "doNotStealFrom": ["G11 advanced alignment", "CEA 11.5 EPA practice", "GW1AC03", "GW2AC02"],
+        "forcePrimary": false,
+        "weekSession": "G3 week UNRESOLVED; B4 Task 3 programme window Weeks 31-40 EXPLICIT; W18 EXPLICIT but later/advanced — not Primary steal",
+        "note": "W18 KSB focus tags include invalid/noisy codes — ignored as coverage evidence"
+      },
+      "assuranceClassifications": [
+        "GOOD / ADEQUATELY CONTROLLED"
+      ],
+      "shadowDirection": "KEEP_PRIMARY_B2",
+      "confidenceOverall": "HIGH",
+      "goldenAComparedAfter": {
+        "position": "PRIMARY_B2",
+        "direction": "KEEP"
+      }
+    }
+  },
+  "relationshipEdges": [
+    { "id": "e_k18_teaches_g11lp", "ksb": "K18", "type": "TEACHES", "from": "res_lm_5d8bcd0589f2_87", "to": "K18", "basis": "EXPLICIT", "provenance": "GROUP_G11", "block": null, "week": null, "note": "LP aims state ADAS + levels + typical systems" },
+    { "id": "e_k18_teaches_pptx", "ksb": "K18", "type": "TEACHES", "from": "res_lm_95f371942a77_98", "to": "K18", "basis": "EXPLICIT", "provenance": "GROUP_G11", "block": null, "week": null },
+    { "id": "e_k18_practises_cea116", "ksb": "K18", "type": "PRACTISES", "from": "cea_2_11_6", "to": "K18", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_k18_assesses_cea116", "ksb": "K18", "type": "ASSESSES", "from": "cea_2_11_6", "to": "K18", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_k18_reinforces_b9t4", "ksb": "K18", "type": "REINFORCES", "from": "res_prac_126c9fbc1032", "to": "K18", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 9, "week": null, "note": "Pre-cal practical; not Primary ownership" },
+    { "id": "e_k2_teaches_w22", "ksb": "K2", "type": "TEACHES", "from": "res_lp_54be5af2ca23", "to": "K2", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": 22 },
+    { "id": "e_k2_teaches_g14s1", "ksb": "K2", "type": "TEACHES", "from": "res_lm_6e6c9e8174f3_117", "to": "K2", "basis": "EXPLICIT", "provenance": "GROUP_G14", "block": null, "week": null },
+    { "id": "e_k2_teaches_g14s3", "ksb": "K2", "type": "TEACHES", "from": "res_lm_317be27fa403_119", "to": "K2", "basis": "EXPLICIT", "provenance": "GROUP_G14", "block": null, "week": null },
+    { "id": "e_k2_practises_b3t3", "ksb": "K2", "type": "PRACTISES", "from": "res_prac_fdc47cc819f4", "to": "K2", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 3, "week": null },
+    { "id": "e_k2_assesses_cea144", "ksb": "K2", "type": "ASSESSES", "from": "cea_2_14_4", "to": "K2", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_k2_supports_c1sched", "ksb": "K2", "type": "SUPPORTS", "from": "cea_2_CEA_C1_Service_Schedule_Generic_docx", "to": "K2", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_k2_prepares_gw2ac01", "ksb": "K2", "type": "PREPARES_FOR_GATEWAY", "from": "gw_650cf2e40c5a", "to": "K2", "basis": "INFERRED_HIGH", "provenance": "GATEWAY", "block": null, "week": null, "note": "Via inspection gateway — not teaching home" },
+    { "id": "e_k20_teaches_brakefluid_ppt", "ksb": "K20", "type": "TEACHES", "from": "res_lm_81eac59f305f_21", "to": "K20-C1", "basis": "INFERRED_MEDIUM", "provenance": "GROUP_G4", "block": null, "week": null, "note": "Binary .ppt unextracted" },
+    { "id": "e_k20_knowledgechecks_brakeka", "ksb": "K20", "type": "KNOWLEDGE_CHECKS", "from": "res_lm_09ccf745db0e_23", "to": "K20-C1", "basis": "EXPLICIT", "provenance": "GROUP_G4", "block": null, "week": null },
+    { "id": "e_k20_teaches_lube_lp20", "ksb": "K20", "type": "TEACHES", "from": "res_lm_cdc4155738ce_46", "to": "K20-C2", "basis": "EXPLICIT", "provenance": "GROUP_G6", "block": null, "week": null },
+    { "id": "e_k20_teaches_lube_pptx", "ksb": "K20", "type": "TEACHES", "from": "res_lm_c72a2760897a_53", "to": "K20-C2", "basis": "EXPLICIT", "provenance": "GROUP_G6", "block": null, "week": null },
+    { "id": "e_k20_assesses_cea43", "ksb": "K20", "type": "ASSESSES", "from": "cea_1_4_3", "to": "K20-C1", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_s25_practises_cea43", "ksb": "S25", "type": "PRACTISES", "from": "cea_1_4_3", "to": "S25", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_s25_practises_cea141", "ksb": "S25", "type": "PRACTISES", "from": "cea_2_14_1", "to": "S25", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_s25_practises_b3t3", "ksb": "S25", "type": "PRACTISES", "from": "res_prac_fdc47cc819f4", "to": "S25", "basis": "INFERRED_HIGH", "provenance": "BLOCK", "block": 3, "week": null },
+    { "id": "e_s25_assesses_cea43", "ksb": "S25", "type": "ASSESSES", "from": "cea_1_4_3", "to": "S25", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_k1_teaches_fs01_reporting", "ksb": "K1", "type": "TEACHES", "from": "res_lp_8f67680b4ed9", "to": "K1-C4", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 1 },
+    { "id": "e_k1_teaches_fs03_limits", "ksb": "K1", "type": "TEACHES", "from": "res_lp_f7ae4503f880", "to": "K1-C3", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 3, "note": "HV-scoped competence limits — partial only" },
+    { "id": "e_k1_knowledgechecks_gw1", "ksb": "K1", "type": "KNOWLEDGE_CHECKS", "from": "gw_ef36375dc80b", "to": "K1-C4", "basis": "INFERRED_MEDIUM", "provenance": "GATEWAY", "block": null, "week": null },
+    { "id": "e_k6_teaches_fs02", "ksb": "K6", "type": "TEACHES", "from": "res_lp_a1de2dadb565", "to": "K6", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 2 },
+    { "id": "e_k6_teaches_fs05", "ksb": "K6", "type": "TEACHES", "from": "res_lp_f311ff09e560", "to": "K6-C3", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 5 },
+    { "id": "e_k6_practises_fs02", "ksb": "K6", "type": "PRACTISES", "from": "res_lp_a1de2dadb565", "to": "K6", "basis": "EXPLICIT", "provenance": "BLOCK_FS", "block": 1, "week": 2 },
+    { "id": "e_s12_teaches_g3", "ksb": "S12", "type": "TEACHES", "from": "res_lm_801be46beaa3_8", "to": "S12", "basis": "EXPLICIT", "provenance": "GROUP_G3", "block": null, "week": null },
+    { "id": "e_s12_teaches_g11align", "ksb": "S12", "type": "REINFORCES", "from": "res_lm_7656c297a800_88", "to": "S12", "basis": "EXPLICIT", "provenance": "GROUP_G11", "block": null, "week": null },
+    { "id": "e_s12_practises_cea51", "ksb": "S12", "type": "PRACTISES", "from": "cea_1_5_1", "to": "S12", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_s12_assesses_cea51", "ksb": "S12", "type": "ASSESSES", "from": "cea_1_5_1", "to": "S12", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null },
+    { "id": "e_s12_practises_b4t3", "ksb": "S12", "type": "PRACTISES", "from": "res_prac_3a8916c0651c", "to": "S12", "basis": "EXPLICIT", "provenance": "BLOCK", "block": 4, "week": null },
+    { "id": "e_s12_reinforces_cea115", "ksb": "S12", "type": "REINFORCES", "from": "cea_2_11_5", "to": "S12", "basis": "EXPLICIT", "provenance": "CEA", "block": null, "week": null, "note": "EPA practice — not Primary steal" },
+    { "id": "e_s12_prepares_gw1ac03", "ksb": "S12", "type": "PREPARES_FOR_GATEWAY", "from": "gw_f0ceef633f24", "to": "S12", "basis": "EXPLICIT", "provenance": "GATEWAY", "block": null, "week": null },
+    { "id": "e_s12_prepares_gw2ac02", "ksb": "S12", "type": "PREPARES_FOR_GATEWAY", "from": "gw_650cf2e40c5a", "to": "S12", "basis": "EXPLICIT", "provenance": "GATEWAY", "block": null, "week": null },
+    { "id": "e_s12_knowledgechecks_gw2paper", "ksb": "S12", "type": "KNOWLEDGE_CHECKS", "from": "gw_db7111449f77", "to": "S12", "basis": "EXPLICIT", "provenance": "GATEWAY", "block": null, "week": null }
+  ],
+  "relationshipCounts": {
+    "totalEdges": 36,
+    "byType": {
+      "TEACHES": 13,
+      "PRACTISES": 8,
+      "ASSESSES": 5,
+      "REINFORCES": 3,
+      "SUPPORTS": 1,
+      "KNOWLEDGE_CHECKS": 3,
+      "PREPARES_FOR_GATEWAY": 3,
+      "ROUTING": 0,
+      "RECORDS_EVIDENCE": 0
+    },
+    "byBasis": {
+      "EXPLICIT": 32,
+      "INFERRED_HIGH": 2,
+      "INFERRED_MEDIUM": 2,
+      "INFERRED_LOW": 0,
+      "CONFLICTING": 0,
+      "UNRESOLVED": 0
+    },
+    "note": "Edge-basis counts only. Component axes still use UNRESOLVED where week/content/off-pack is unproven."
+  },
+  "conflictingOrUnresolvedNotes": [
+    "K18 passive/active phrasing equivalence to 'levels' remains UNRESOLVED at wording-detail level",
+    "K20-C3 / S25-C3 air filter teaching and dedicated replace instrument UNRESOLVED/absent",
+    "K1 industry + full role UNRESOLVED/absent beyond FS adjacency",
+    "K31 EDI teaching absent in supplied corpus",
+    "Brake Fluid.ppt CONTENT_EXTRACTION_REQUIRED — teaching edge INFERRED_MEDIUM only",
+    "No CONFLICTING EXPLICIT-vs-EXPLICIT edges in this batch",
+    "Many Group teaching weeks remain UNRESOLVED (acceptable)"
+  ]
+}

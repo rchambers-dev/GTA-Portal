@@ -1,0 +1,159 @@
+{
+  "title": "Autocare live corpus — source sufficiency audit",
+  "status": "STAGING_AUDIT_ONLY",
+  "generatedAt": "2026-08-10",
+  "question": "Is the supplied live Autocare corpus now sufficient to analyse the CURRENT curriculum end-to-end for Curriculum Assurance methodology testing?",
+  "verdict": {
+    "sufficientToContinueMethodologyTesting": true,
+    "sufficientToWriteProgrammeTruthOrTrustedGoldenB": false,
+    "rationale": "Teaching, Block intent, Group routing, Group CEA practical assessment, Block practicals (3–4), Gateway practical+knowledge readiness, and supporting review/impact layers are now present in enough depth to shadow-review KSBs with multi-axis assurance. Remaining gaps are mostly visibility/completed-evidence/join-table items that reduce certainty for some axes but do not block controlled tranche testing. Programme-truth / trusted Golden B still requires human ratification after broader review."
+  },
+  "categories": [
+    {
+      "category": "Official standard / KSB structure",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "ST0499 fixture + Golden A labels + duties/KSBs in programme model"
+    },
+    {
+      "category": "SOW / Blocks / weeks",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "SOW v4.4 + Block lesson plans"
+    },
+    {
+      "category": "Transition Guide / Group→Block routing",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "Routing provenance available; week-level joins still not proven"
+    },
+    {
+      "category": "Lesson plans (Block + Group)",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "Large lesson-plan corpus catalogued"
+    },
+    {
+      "category": "Literal teaching materials",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "Group Learning Materials; critical PPTs extracted; some legacy variants/noise remain"
+    },
+    {
+      "category": "Block practical tasks",
+      "status": "PRESENT_BUT_PARTIAL",
+      "notes": "Tasks 3–4 supplied; Task 1–2 PDFs still not found — may be retired or elsewhere"
+    },
+    {
+      "category": "CEA / Group practical assessment tasks",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "Year 1/2 CEA apprentice assessment packs inspected"
+    },
+    {
+      "category": "Gateway practical assessment",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "GW1+GW2 apprentice/assessor practical support materials"
+    },
+    {
+      "category": "Knowledge assessment",
+      "status": "PRESENT_BUT_PARTIAL",
+      "notes": "GW1/GW2 practice papers + Group initial assessments exist; live online GW1K/GW2K item banks not supplied"
+    },
+    {
+      "category": "Assessor criteria / marking guidance",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "CEA Pass/Refer records; Gateway assessor criteria sheets; some marking sheets in Group packs"
+    },
+    {
+      "category": "Skills progress / learning impact",
+      "status": "PRESENT_AND_SUFFICIENT",
+      "notes": "Block skills reviews + impact records catalogued"
+    },
+    {
+      "category": "Workplace job-card mechanism",
+      "status": "REFERENCED_BUT_NOT_SUPPLIED",
+      "notes": "Repeatedly referenced in LPs/knowledge papers; blank workplace job-card template pack still not supplied as artefacts (CEA/GW assessment records are different)"
+    },
+    {
+      "category": "Completed learner evidence / filled CEAs / observed samples",
+      "status": "GENUINELY_MISSING_MATERIAL_FOR_SOME_CLAIMS",
+      "notes": "Blank instruments prove design of assessment, not that a given apprentice demonstrated competence. Matters for absolute competence claims; does not block curriculum-structure assurance testing if treated as visibility."
+    },
+    {
+      "category": "Resource → week join spreadsheet",
+      "status": "REFERENCED_BUT_NOT_SUPPLIED",
+      "notes": "Reduces confidence on exact week ownership; Group→Block routing still usable"
+    },
+    {
+      "category": "Block Task 1–2 pack",
+      "status": "PRESENT_BUT_PARTIAL_OR_UNKNOWN",
+      "detailStatus": "GENUINELY_MISSING_AS_ARTEFACTS",
+      "notes": "Not supplied. May be retired in v2 forms. Not required to continue if treated as unknown/visibility and not inferred as curriculum absence."
+    },
+    {
+      "category": "EPA live assessment materials",
+      "status": "NOT_REQUIRED",
+      "notes": "EPA prep practice present; live EPA is end-point, not needed to assure delivered curriculum structure"
+    },
+    {
+      "category": "G01 / G09 empty folders",
+      "status": "PRESENT_BUT_PARTIAL",
+      "notes": "Known corpus quirks; stock taught in Block weeks; not blocking"
+    }
+  ],
+  "genuinelyRemaining": [
+    {
+      "what": "Block Task 1/2 PDFs (or explicit retirement confirmation)",
+      "whyItMatters": "Completeness of Block practical assessment ladder",
+      "prevents": "Claiming full Block Task 1–4 visibility",
+      "blocksFurtherTesting": false,
+      "treatAs": "EVIDENCE_VISIBILITY / UNKNOWN — do not invent curriculum gaps from absence"
+    },
+    {
+      "what": "Workplace job-card blank templates / anonymised examples",
+      "whyItMatters": "Workplace application axis",
+      "prevents": "Strong claims about workplace evidence quality",
+      "blocksFurtherTesting": false,
+      "treatAs": "EVIDENCE_VISIBILITY for workplace axis"
+    },
+    {
+      "what": "Completed/filled CEA or Gateway assessment records",
+      "whyItMatters": "Proof a learner actually met Pass criteria",
+      "prevents": "Absolute competence-demonstrated claims",
+      "blocksFurtherTesting": false,
+      "treatAs": "Visibility — instruments still prove assessment design"
+    },
+    {
+      "what": "Live online GW knowledge banks (ST0499-AP01GW1K/GW2K)",
+      "whyItMatters": "Exact knowledge blueprint coverage",
+      "prevents": "Item-level mapping of official GW knowledge to every KSB",
+      "blocksFurtherTesting": false,
+      "treatAs": "PARTIAL — practice papers sufficient for methodology"
+    },
+    {
+      "what": "Resource→week mapping table",
+      "whyItMatters": "Precise week Primary candidacy",
+      "prevents": "High-confidence week-level ownership",
+      "blocksFurtherTesting": false,
+      "treatAs": "Visibility; Block/Group still analysable"
+    },
+    {
+      "what": "Dedicated EPS/EPAS assessed practical beyond teaching decks",
+      "whyItMatters": "K10 breadth completeness for electric assist R&R",
+      "prevents": "Closing K10 EPS practical axis fully",
+      "blocksFurtherTesting": false,
+      "treatAs": "May be PRACTICE/ASSESSMENT gap or visibility — test in later review, not blocker for tranche 2"
+    }
+  ],
+  "blockingVsNonBlocking": {
+    "blocksMethodologyTranche2": [],
+    "reducesVisibilityOnly": [
+      "Task 1/2",
+      "job cards",
+      "completed learner scripts",
+      "resource→week table",
+      "live GW item banks"
+    ],
+    "blocksProgrammeTruthWrite": [
+      "Human ratification of shadow findings",
+      "Broader than 6–13 KSB sample coverage",
+      "Ownership votes where still ambiguous"
+    ]
+  },
+  "recommendation": "Corpus is SUFFICIENT to continue controlled patterned shadow tranches. Do not continue open-ended document hunting before methodology generalisation tests. Keep residual items as visibility annotations."
+}

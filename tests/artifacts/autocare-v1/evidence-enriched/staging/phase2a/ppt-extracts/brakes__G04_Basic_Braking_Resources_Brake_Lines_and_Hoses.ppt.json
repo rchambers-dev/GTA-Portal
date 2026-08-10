@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "brakes",
+    "priority":  2,
+    "whySelected":  "Hydraulic circuit components (K12 breadth)",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Brake Lines and Hoses.ppt",
+    "relativePath":  "G04 Basic Braking\\Resources\\Brake Lines and Hoses.ppt",
+    "sourceFilename":  "Brake Lines and Hoses.ppt",
+    "exists":  true,
+    "contentHashSha256":  "86a55328547f9a1b21fd1e28eeca3b7fe5c035a8de26d7e3fcced9f7b7511558",
+    "byteLength":  3699712,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  23,
+    "extractedCharCount":  7837,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G04_Basic_Braking_Resources_Brake_Lines_and_Hoses.ppt.txt",
+    "extractedAt":  "2026-08-10T13:31:47.7984586+01:00"
+}

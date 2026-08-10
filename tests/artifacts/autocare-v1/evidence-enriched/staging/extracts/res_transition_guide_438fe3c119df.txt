@@ -1,0 +1,644 @@
+AUTOCARE TECHNICIAN LEVEL 2
+ Group-to-Block Transition and Mapping Guide
+ Controlled method for moving apprentices from the 14-Group SOW to the Block-based SOW and assessment model
+ Control
+ Position
+ Control
+ Position
+ Apprenticeship
+ Autocare Technician Level 2 – ST0499 v1.3
+ Document version
+ v1.1 | August 2026
+ Outgoing curriculum
+ Group-based SOW v1.1 | 14 training Groups | CEA model
+ Receiving curriculum
+ Block-based SOW v4.4 | Blocks 1–10 training | Blocks 11–12 gateway/EPA
+ Planned programme
+ 112 calendar weeks | 113 sessions | 611.50 eligible OTJ
+ Authority
+ GTA SOW Design and RPL Adjustment Guide v1.7
+
+ Critical control. This is an on-programme transfer between two curriculum structures for the same apprenticeship standard. It is not a new recognition of prior learning exercise. Do not change the apprentice's original RPL decision, negotiated price or funding solely because the SOW changes. Preserve valid learning and assessment evidence, carry forward actual OTJ once, and plan only the remaining learning and assessment.
+
+ 1. Purpose and required outcome
+ This guide allows GTA staff to identify what an apprentice has already learned and evidenced under the Group model, map that evidence to the receiving Blocks, identify genuine gaps and agree a controlled forward plan. It prevents unnecessary repetition while ensuring that no Block is signed off from Group completion alone.
+ 2. Transfer principles
+ Step
+ Principle
+ Required treatment
+ 1
+ Preserve the learner record
+ Retain the original start date, initial assessment, RPL record, training plan, agreed price, actual OTJ and all Group/CEA evidence.
+ 2
+ Map evidence, not labels
+ A completed Group is evidence for one or more Blocks. It is not automatically equivalent to a whole Block because Blocks integrate several duties and technical areas.
+ 3
+ No double counting
+ Do not record the same learning hours again. Historical OTJ remains actual OTJ; only new Block learning completed after transfer creates additional actual OTJ.
+ 4
+ Assess only the gaps
+ Where valid evidence meets a Block outcome, carry it forward. Deliver and assess only missing, weak, outdated or insufficiently evidenced outcomes.
+ 5
+ Keep assessment separate
+ CEA, knowledge-check, formal Block assessment, progress review, gateway and EPA time remain non-OTJ. Corrective teaching can be eligible when it is substantive new occupational learning and is separately recorded.
+ 6
+ Approve the decision
+ The tutor/assessor records the evidence and gaps; the curriculum lead or IQA samples the mapping; the apprentice and employer agree the revised plan.
+
+ 3. Transition process
+ Step
+ Action
+ What must be recorded
+ Owner
+ 1
+ Freeze and export the Group record
+ Record completed/in-progress Groups, weeks delivered, CEA attempts and results, knowledge checks, job cards, e-logbook evidence, employer evidence and actual OTJ at the transfer date.
+ Tutor/assessor
+ 2
+ Map evidence to Blocks
+ Use Sections 4–6. Link each evidence item to the receiving Block outcome/KSB. Record the source and date; do not rely on a Group title alone.
+ Tutor/assessor
+ 3
+ Complete the Block gap review
+ For each Block rate evidence as Met, Partially met or Not yet evidenced. Identify missing knowledge, practical competence, behaviours and documentation.
+ Tutor/assessor
+ 4
+ Set the receiving Block position
+ Choose Transferred complete, Partially transferred or Full Block required using the decision rules in Section 7.
+ Tutor/assessor
+ 5
+ Agree targeted learning and assessment
+ Schedule only outstanding learning and the receiving Block assessment. Preserve the planned practical end and Month 30 apprenticeship end where feasible.
+ Curriculum lead
+ 6
+ Update controlled systems
+ Update the training plan, portal/tracker, OTJ plan and next review. Lock the signed transition record and retain the outgoing Group evidence.
+ Administration/tutor
+ 7
+ Approve and review
+ Obtain apprentice, employer, tutor/assessor and curriculum lead/IQA approval. Review the transition at the next progress review.
+ GTA/apprentice/employer
+
+ Placement rule. Do not place an apprentice into a Block merely by matching their calendar week. The Group and Block SOWs sequence technical content differently. Placement must follow mapped evidence and the agreed gap plan.
+
+ 4. Group-to-Block cross-reference matrix
+ D = direct/high curriculum alignment. S = supporting or reinforcement evidence. A blank cell means no material transition credit should normally be assumed. The matrix directs the assessor to likely evidence; it does not itself complete a Block.
+ Group
+ Controlled Group title
+ B1
+ B2
+ B3
+ B4
+ B5
+ B6
+ B7
+ B8
+ B9
+ B10
+ G1
+ Foundation Skills
+ D
+ S
+ S
+ S
+ S
+ S
+ S
+ S
+ S
+ S
+ G2
+ Electric and Hybrid Awareness
+
+ S
+
+ D
+
+ S
+ S
+
+ D
+ S
+ G3
+ Wheels and Tyres
+
+ D
+ D
+ S
+
+ S
+ S
+ S
+ S
+ G4
+ Basic Braking
+
+ D
+ D
+
+ S
+
+ S
+ S
+
+ S
+ G5
+ Basic Steering and Suspension
+
+ S
+
+ D
+ D
+
+ S
+ S
+ S
+ S
+ G6
+ Cooling, Lubrication, and Filters
+
+ D
+
+ D
+
+ S
+ S
+
+ S
+ G7
+ Starting and Charging Systems
+
+ D
+
+ D
+ D
+ S
+ S
+ S
+ S
+ G8
+ Customer Service and Sales
+
+ D
+ D
+ S
+ S
+ S
+ D
+ D
+ S
+ S
+ G9
+ Stock Management
+
+ S
+ D
+ S
+ S
+ S
+ S
+ D
+ S
+ S
+ G10
+ Advanced Braking
+
+ S
+ S
+
+ D
+ D
+ D
+ D
+
+ S
+ G11
+ Advanced Steering and Suspension
+
+ S
+
+ D
+ D
+
+ D
+ D
+ D
+ S
+ G12
+ Exhaust and Emissions
+
+ S
+
+ D
+ D
+ D
+ S
+ D
+ S
+ G13
+ Air Conditioning
+
+ D
+ S
+ S
+ S
+ D
+ G14
+ Vehicle Inspection
+
+ D
+ D
+ S
+ D
+ S
+ D
+ D
+ S
+ D
+
+ 5. Detailed Group evidence transfer reference
+ Outgoing Group
+ Likely receiving Blocks
+ Evidence to transfer
+ Required Block treatment
+ G1 – Foundation Skills
+ B1 direct; B2–B10 supporting
+ FS01–FS10 learning records, observations, safety/tool/electrical/measurement evidence and transition record.
+ B1 may transfer as complete only where all ten controlled sessions and required evidence are present. Carry the evidence forward as foundation/reinforcement elsewhere.
+ G2 – Electric and Hybrid Awareness
+ B4 and B9 direct; B2, B6, B7 and B10 supporting
+ Knowledge check; EV/hybrid identification; component-location CEA; charging/customer handover and safe referral evidence.
+ Credit evidenced awareness and safe-boundary outcomes. Check gaps in applied diagnostics, charging, ADAS/hydrogen and integrated workshop application before completing B4 or B9.
+ G3 – Wheels and Tyres
+ B2 and B3 direct; B4, B7–B10 supporting
+ Tyre/wheel CEAs, TPMS, balance, puncture, torque, inspection sheets, job cards and legal/serviceability knowledge.
+ Carry practical evidence to tyre, inspection, workshop-process and pre-calibration outcomes. Assess any missing integrated customer, diagnostic or documentation elements.
+ G4 – Basic Braking
+ B2 and B3 direct; B5, B7, B8 and B10 supporting
+ Brake CEAs, measurements, hydraulic work, component job cards, service verification and knowledge check.
+ Use for basic brake inspection/repair outcomes. Advanced diagnosis, ABS/data interpretation and integrated Block decisions remain separate unless evidenced.
+ G5 – Basic Steering and Suspension
+ B4 and B5 direct; B2, B7–B10 supporting
+ Alignment and component CEAs, safe spring/lifting evidence, measurements, job cards and technical questioning.
+ Credit basic geometry and component work. Check advanced alignment, ride-height/ADAS interaction, diagnostic reasoning and integrated reporting gaps.
+ G6 – Cooling, Lubrication, and Filters
+ B3 and B5 direct; B7, B8 and B10 supporting
+ Cooling/lubrication CEAs, leak/function checks, fluid handling, waste records, job cards and knowledge check.
+ Credit service, repair, environmental and process outcomes. Check system integration, diagnosis, customer reporting and capstone application.
+ G7 – Starting and Charging Systems
+ B2, B5 and B6 direct; B7–B10 supporting
+ Battery/starter/alternator CEAs, test results, voltage-drop records, job cards and safe-procedure evidence.
+ Credit evidenced low-voltage testing and repair. Check advanced diagnosis, EV boundaries, documentation and integrated inspection outcomes.
+ G8 – Customer Service and Sales
+ B2, B3, B7 and B8 direct; B4–B6, B9 and B10 supporting
+ Customer CEA, intake/handover records, complaints, quotations, authorisation, written/digital communication and compliance evidence.
+ Carry communication and commercial evidence across Blocks. Technical Block completion still requires the relevant occupational knowledge and practical evidence.
+ G9 – Stock Management
+ B3 and B8 direct; B2, B4–B7, B9 and B10 supporting
+ Parts-sourcing CEA, orders, goods-in, stock counts, variance/returns/warranty records and supplier communications.
+ Credit parts, stock, quotation support and audit-trail outcomes. Do not use stock evidence to complete unrelated technical outcomes.
+ G10 – Advanced Braking
+ B5–B8 direct; B2, B3 and B10 supporting
+ ABS CEAs, sensor/reluctor evidence, scan data, fault codes, oscilloscope/multimeter results, verification and road-test information.
+ Credit advanced brake diagnostic outcomes where evidence is current and authentic. Complete any Block-specific customer, parts, safety and integrated workflow gaps.
+ G11 – Advanced Steering and Suspension
+ B4, B5 and B7–B9 direct; B2 and B10 supporting
+ Traction/ride-height/adaptive/geometry/ADAS CEAs, alignment reports, diagnostic plans, referral and evidence-quality records.
+ Credit advanced geometry, system interaction and pre-calibration outcomes. Check Block-specific EV, workshop organisation, customer and capstone gaps.
+ G12 – Exhaust and Emissions
+ B5–B7 and B9 direct; B3, B8 and B10 supporting
+ Exhaust/emissions CEAs, analyser/data evidence, oxygen/EGR/catalyst/DPF awareness, fault diagnosis and environmental records.
+ Credit exhaust, emissions, environmental and diagnostic outcomes. Check wider system integration and Block-specific documentation/customer outcomes.
+ G13 – Air Conditioning
+ B6 and B10 direct; B7–B9 supporting
+ HVAC CEAs, temperature/system checks, component job cards, scan data, electrified-vehicle heat-pump and referral evidence.
+ Credit inspection/component and climate-control outcomes. F-gas certification or refrigerant handling must not be inferred unless separately evidenced and authorised.
+ G14 – Vehicle Inspection
+ B2, B3, B5, B7, B8 and B10 direct; B4, B6 and B9 supporting
+ Service/safety-inspection CEAs, job cards, defect prioritisation, customer report/quote, diagnostic results, capstone, gap plan and employer evidence.
+ Use as the main integrated evidence source. Complete any specialist Block gaps and the receiving Block assessment before sign-off.
+
+ 6. Block receiving reference
+ Block
+ Receiving Block
+ Primary Group evidence sources
+ Completion evidence
+ Gap action
+ B1
+ Motor Vehicle Foundation Skills - Shared Controlled Programme
+ G1
+ All FS01–FS10 records and controlled Foundation Skills evidence present.
+ If incomplete, deliver only missing controlled sessions/evidence.
+ B2
+ Vehicle Inspection, Servicing and Customer Interaction
+ G3–G5, G7–G9, G14; G2 support
+ Inspection/service, tyre/brake/electrical, customer, parts and documentation evidence collectively cover the Block outcomes.
+ Use an integrated gap check; no single Group except the controlled B1/G1 relationship completes a Block automatically.
+ B3
+ Workshop Processes, Tools and Environmental Awareness
+ G3, G4, G6, G8, G9, G12, G14
+ Workshop procedures, fast-fit/service, parts/stock, customer authorisation, housekeeping and environmental evidence is sufficient.
+ Assess missing integrated workflow, quality and documentation outcomes.
+ B4
+ Emerging Technology and Driveline Systems
+ G2, G3, G5, G8, G9, G11
+ EV awareness, geometry/tyres, communication, parts and advanced-system evidence is present.
+ Group SOW evidence may not cover every driveline outcome; explicitly identify and deliver any driveline/warranty/quality gaps.
+ B5
+ Diagnostic Thinking and Complex Repair Activities
+ G4–G7, G9–G12, G14
+ Structured tests, repair evidence, technical data, parts, safety and verification demonstrate the receiving outcomes.
+ Require targeted diagnostic questioning/practice where evidence only shows component replacement.
+ B6
+ Vehicle Systems Integration and Advanced Diagnostics
+ G2, G7, G10–G14
+ Electrical, EV, ABS, ADAS, emissions, HVAC and integrated inspection evidence is current and sufficient.
+ Check cross-system reasoning, documentation and safe referral boundaries.
+ B7
+ Advanced Workshop Practice and Technical Communication
+ G3–G14
+ Advanced practical evidence is supported by customer communication, QA, job cards and professional behaviours.
+ Use combined evidence; assess any missing higher-level explanation, planning or quality assurance.
+ B8
+ Advanced Diagnostics and Workshop Organisation
+ G8–G12 and G14; G3–G7 support
+ Diagnostic, repair-planning, stock/parts, documentation, quality and workshop-control evidence is present.
+ Complete an integrated Block assessment where evidence remains separated by Group.
+ B9
+ Emerging Technologies, Electric Vehicles and Hydrogen Awareness
+ G2, G11–G14; G3, G7 and G9 support
+ EV/charging, ADAS, emissions/hydrogen, HVAC/heat-pump, inspection, parts and customer evidence is present.
+ Check the Block's specific emerging-technology awareness, referral and application outcomes.
+ B10
+ Final Consolidation, Corrective Learning and EPA Readiness Training
+ G1–G14
+ The complete transferred evidence set, gap record, integrated capstone/service evidence and employer feedback demonstrate readiness.
+ B10 is not automatically complete because all Groups are complete. Undertake final KSB gap learning, integrated evidence review and Block assessment.
+ B11–B12
+ Gateway confirmation and EPA
+ Not mapped as training credit
+ All occupational training and outstanding Block actions are complete; gateway evidence is confirmed.
+ Gateway and EPA remain separate, non-OTJ stages in Month 30.
+
+ 7. Block assessment method after transfer
+ The receiving Block assessment decision must use a combined evidence set. Existing Group evidence is carried forward where it is valid; the assessor then completes only the missing learning and assessment.
+ Stage
+ Assessment component
+ Required evidence/action
+ OTJ treatment
+ 1
+ Evidence transfer review
+ Verify identity, date, authenticity and result of CEAs, knowledge checks, job cards, observations, e-logbook and employer evidence. Link each item to Block outcomes/KSBs.
+ Non-OTJ administration/review
+ 2
+ Block diagnostic/gap check
+ Use questioning, document review and practical discussion/observation to identify what is Met, Partially met or Not yet evidenced. This is not a new RPL score.
+ Assessment/review – non-OTJ
+ 3
+ Targeted Block learning
+ Deliver missing or weak knowledge, skills and behaviours through the receiving Block SOW. Record only new substantive occupational learning as OTJ.
+ Eligible OTJ where rules are met
+ 4
+ Ongoing formative checks
+ Use observation, questioning, job-card/document review, feedback, correction and repeated practice during Block delivery.
+ Training; eligible only where substantive learning occurs
+ 5
+ Separate formal Block assessment
+ Where scheduled, complete the formal practical/knowledge assessment separately from the 6.00-hour GLH/OTJ session. Retain the assessment record and outcome.
+ Non-OTJ assessment
+ 6
+ Block reflection and evidence review
+ Apprentice records what they can now do, evidence produced and remaining development. Tutor and employer/mentor feedback confirm workplace transfer where available.
+ Review/reflection; classify by actual activity
+ 7
+ Completion decision
+ Confirm that required Block outcomes and its primary KSB evidence are complete. Record Transferred complete, Completed after targeted learning, or Further action required.
+ Non-OTJ decision/sign-off
+
+ 8. Status and percentage rules
+ Receiving status
+ Decision rule
+ Required action
+ Transferred complete
+ Mapped Group evidence already covers all controlled Block outcomes/primary KSB evidence and has been verified.
+ No repeat training. Record the evidence references and approval date; complete only administrative transfer.
+ Partially transferred
+ Some Block outcomes are evidenced but one or more knowledge, skill, behaviour or integrated application gaps remain.
+ Carry forward the verified evidence; schedule targeted learning and the relevant Block assessment.
+ Full Block required
+ Evidence is missing, insufficient, unauthenticated, out of date for the intended use, or does not cover the receiving Block.
+ Deliver and assess the Block normally. Preserve historical evidence but do not use it to complete the Block.
+ Operational Block progress % (if required by portal)
+ Use the controlled Autocare ST0499 v1.3 primary-block RPL matrix for the applicable cohort. Equal-weight the primary KSB assessment units assigned once to that Block: fully met primary KSB units / total primary KSB units in the Block x 100.
+ Record the controlled matrix filename and version. This is an on-programme progress indicator only: do not treat it as a new KSB RPL score, recalculate programme RPL, change funding or alter the original planned OTJ baseline.
+
+ Appendix A – Individual apprentice transfer record
+ Learner detail
+ Record
+ Transfer control
+ Record
+ Apprentice name
+
+ Employer
+
+ Apprenticeship start date
+
+ Transfer effective date
+
+ Outgoing SOW
+ Group-based v1.1
+ Receiving SOW
+ Block-based v4.4
+ Tutor/assessor
+
+ Curriculum lead/IQA
+
+ Actual OTJ at transfer
+
+ Planned OTJ remaining
+
+ Current Group/week
+
+ Receiving Block/week
+
+ Controlled primary-block RPL matrix
+
+ Matrix version
+
+ A1. Outgoing Group evidence summary
+ Group
+ Controlled title
+ Status
+ CEA/knowledge/evidence references
+ Actual OTJ carried forward
+ G1
+ Foundation Skills
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G2
+ Electric and Hybrid Awareness
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G3
+ Wheels and Tyres
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G4
+ Basic Braking
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G5
+ Basic Steering and Suspension
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G6
+ Cooling, Lubrication, and Filters
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G7
+ Starting and Charging Systems
+ ☐ Complete ☐ Partial ☐ Not started
+
+ A1. Outgoing Group evidence summary – continued
+ Group
+ Controlled title
+ Status
+ CEA/knowledge/evidence references
+ Actual OTJ carried forward
+ G8
+ Customer Service and Sales
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G9
+ Stock Management
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G10
+ Advanced Braking
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G11
+ Advanced Steering and Suspension
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G12
+ Exhaust and Emissions
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G13
+ Air Conditioning
+ ☐ Complete ☐ Partial ☐ Not started
+
+ G14
+ Vehicle Inspection
+ ☐ Complete ☐ Partial ☐ Not started
+
+ A2. Receiving Block decision and action plan
+ Block
+ Receiving title
+ Status*
+ Evidence transferred
+ Gap learning/assessment action
+ Target/review date
+ B1
+ Motor Vehicle Foundation Skills - Shared Controlled Programme
+ ☐ T ☐ P ☐ F
+
+ B2
+ Vehicle Inspection, Servicing and Customer Interaction
+ ☐ T ☐ P ☐ F
+
+ B3
+ Workshop Processes, Tools and Environmental Awareness
+ ☐ T ☐ P ☐ F
+
+ B4
+ Emerging Technology and Driveline Systems
+ ☐ T ☐ P ☐ F
+
+ B5
+ Diagnostic Thinking and Complex Repair Activities
+ ☐ T ☐ P ☐ F
+
+ B6
+ Vehicle Systems Integration and Advanced Diagnostics
+ ☐ T ☐ P ☐ F
+
+ B7
+ Advanced Workshop Practice and Technical Communication
+ ☐ T ☐ P ☐ F
+
+ B8
+ Advanced Diagnostics and Workshop Organisation
+ ☐ T ☐ P ☐ F
+
+ B9
+ Emerging Technologies, Electric Vehicles and Hydrogen Awareness
+ ☐ T ☐ P ☐ F
+
+ B10
+ Final Consolidation, Corrective Learning and EPA Readiness Training
+ ☐ T ☐ P ☐ F
+
+ * T = Transferred complete | P = Partially transferred | F = Full Block required
+ A3. Transfer rationale
+ Control
+ Record
+ Evidence and placement rationale
+
+ Outstanding priority gaps
+
+ Effect on planned delivery/end date
+
+ Training plan/portal/OTJ record updated by and date
+
+ A4. Approvals
+ Approval
+ Name
+ Signature/confirmation
+ Date
+ Apprentice
+
+ Employer/mentor
+
+ Tutor/assessor
+
+ Curriculum lead/IQA
+
+ Appendix B – Quality assurance checklist
+ Check
+ Requirement
+ ☐
+ Correct learner, standard and SOW versions recorded.
+ ☐
+ Original initial assessment and RPL decision preserved; no funding change made solely because of the SOW transfer.
+ ☐
+ Completed and in-progress Groups, CEA attempts/results, knowledge checks and evidence exported.
+ ☐
+ Actual OTJ reconciled and carried forward once; no duplicated hours.
+ ☐
+ Each evidence item mapped to receiving Block outcomes/KSBs, with source and date.
+ ☐
+ Every Block rated Transferred complete, Partially transferred or Full Block required using evidence—not time elapsed.
+ ☐
+ Targeted learning and separate assessment actions recorded for all gaps.
+ ☐
+ Practical training end and Month 30 apprenticeship end checked against the actual delivery calendar.
+ ☐
+ Training plan, portal/tracker and next progress review updated.
+ ☐
+ Apprentice, employer, tutor/assessor and curriculum lead/IQA approvals obtained.
+ ☐
+ Controlled primary-block RPL matrix filename/version recorded and matched to the receiving cohort.
+
+ Document control
+ Control
+ Position
+ Source documents
+ Autocare Technician L2 Group-based SOW v1.1; Autocare Technician L2 Block-based SOW v4.4; GTA SOW Design and RPL Adjustment Guide v1.7; and the controlled Autocare ST0499 v1.3 primary-block RPL matrix applicable to the cohort.
+ Controlled use
+ Transition of existing ST0499 v1.3 apprentices from the Group curriculum structure to the Block curriculum and assessment structure.
+ Review trigger
+ Change to either SOW, primary KSB allocation, assessment method, portal fields, funding rules or the apprenticeship standard/EPA plan.
+ Version
+ v1.1 | August 2026

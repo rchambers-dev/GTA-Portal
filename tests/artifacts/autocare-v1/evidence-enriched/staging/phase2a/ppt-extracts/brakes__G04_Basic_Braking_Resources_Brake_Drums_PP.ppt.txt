@@ -1,0 +1,202 @@
+SOURCE: G04 Basic Braking\Resources\Brake Drums PP.ppt
+HASH: 1c26257cccb17fefa8de28aa113e85cba9b6a4b5511cbf06e330d711fa0556aa
+METHOD: powerpoint_com_slidetext_v1
+
+===== SLIDE 1 =====
+Level 3 Auto-CareBrake Drums
+
+===== SLIDE 2 =====
+Lesson Aims:Explore the components involved in the operation of a drum brakeExplore the components involved in the operation of a disc brakeObserve the correct procedure to inspect and service braking system componentsLesson Objectives:Recall two advantage of disc brakes over drum brakesMemorise three tools used to measure braking system components Demonstrate two methods to measure both disc and drum brakes for serviceabilityExplain the meaning of self-servo action
+
+===== SLIDE 3 =====
+Brake Drums
+
+Next >
+
+===== SLIDE 4 =====
+Introduction
+
+Next >
+
+The brake drum provides a friction surface for the brake linings to dissipate the heat and, in somecases, provide hub bearing or wheel location.
+
+The drum fits over the wheel hub or the drive flange.
+
+The wheel and the drum are bolted together and turn as one unit.
+
+Drums sometimes have fins to aid cooling.
+
+Fins
+
+===== SLIDE 5 =====
+Construction
+
+A drum brake system comprises a backing plate, a drum, a wheel cylinder, two brake shoes, and springs.
+
+A mechanism is often included to adjust the brake shoe position as the brake linings wear.
+
+Next >
+
+Backing plate
+
+Shoe and friction lining
+
+Brake drum
+
+Adjuster
+
+Springs
+
+Wheel cylinder
+
+===== SLIDE 6 =====
+Operation
+
+A mechanically operated lever or a hydraulically operated piston pushes the brake shoes apart.
+
+The harder the linings are forced against drum, the greater the friction and the slower the drum rotates.
+
+When the brake linings contact the inside of the brake drum, friction occurs.
+
+Next >
+
+Brake Drum and Shoes
+
+===== SLIDE 7 =====
+Advantages
+
+Drum brake systems self-energize.
+
+The effect is that the brakes bite harder without any additional effort at the brake pedal.
+
+This means that, as a shoe moves towards the rotating drum, it can be dragged into the friction surface.
+
+Next >
+
+Brake lining
+
+Brake drum
+
+Brake shoe
+
+===== SLIDE 8 =====
+Disadvantages
+
+The friction area of a brake drum is almost entirely covered by lining.
+
+If overheating occurs, it can cause the braking efficiency to fall.
+
+As a result, most of the heat must be conducted away through the drum to avoid overheating.
+
+Next >
+
+Coefficient of friction
+
+Material temperature
+
+===== SLIDE 9 =====
+Disadvantages
+
+Water is also a problem for brakes because it accumulates in the drum.
+
+A reduction in braking efficiency is called brake fade.
+
+Water lowers the friction in the system and reduces the braking efficiency.
+
+Next >
+
+===== SLIDE 10 =====
+Question 1
+
+Is this statement true or false?
+
+Next >
+
+"Brakes that are used heavily become warm. This increasingly provides more effective braking.”
+
+===== SLIDE 11 =====
+False
+
+Brake fade, which is a decrease in effectiveness, occurs as brake linings and drums get hotter.
+
+Next >
+
+Question 1
+
+"Brakes that are used heavily become warm. This increasingly provides more effective braking.”
+
+Is this statement true or false?
+
+===== SLIDE 12 =====
+Backing Plate and Drum
+
+The backing plate holds the brake actuating mechanisms and the brake shoes.
+
+Next >
+
+It is attached to the stub axle or to the axle tube.
+
+The drum may incorporate the hub bearing, or it may be attached to the hub with countersunk screws.
+
+Backing plate and stub axle
+
+Central nut for fixing to axle
+
+Cast iron drum and hub – a hubbed drum
+
+Smoothly ground inner surface
+
+Drum
+
+Hub flange
+
+===== SLIDE 13 =====
+Springs
+
+Springs pull the brake shoes away from the friction surfaces when the brakes are released.
+
+Next >
+
+Other springs are designed to hold the brake shoes in the correct position on the backing plate.
+
+Springs are also used when parking brakes and adjusters are incorporated.
+
+Parking brake and adjustment linkage
+
+Parking brake and adjuster springs
+
+Return springs
+
+===== SLIDE 14 =====
+Brake Adjusters and Adjustment
+
+The distance between the brake linings and the drum increases as parts wear.
+
+Next >
+
+Brakes can incorporate a simple manual cam or an automatic ratchet adjustment system.
+
+Ratchet and spring for automatic brake adjustment
+
+===== SLIDE 15 =====
+Next >
+
+Question 2
+
+“The drum in a drum brake system rotates at the same speed as the wheel.”
+
+Is this statement true or false?
+
+===== SLIDE 16 =====
+True
+
+The components inside the drum, which is attached to the backing plate, remain stationary. The drum rotates with the wheel.
+
+Next >
+
+Question 2
+
+“The drum in a drum brake system rotates at the same speed as the wheel.”
+
+Is this statement true or false?
+

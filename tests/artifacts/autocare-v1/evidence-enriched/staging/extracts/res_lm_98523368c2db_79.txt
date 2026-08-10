@@ -1,0 +1,85 @@
+Lesson Plan 10 WK 4
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Advanced brake systems (EBS systems)
+ 0 0 Advanced brake systems (EBS systems)
+
+ Lesson Aims
+
+ Lesson Aims
+ 0 35716 Discuss the operation and testing of EBS systems.
+ Discuss reading and interpreting wiring diagrams for EBS systems
+ Discuss how to bleed ABS systems.
+ 0 0 Discuss the operation and testing of EBS systems.
+ Discuss reading and interpreting wiring diagrams for EBS systems
+ Discuss how to bleed ABS systems.
+
+ Lesson Objectives
+ -8626 56527 Correctly test EBS systems.
+ Read and interpret a basic wiring diagram for an EBS system.
+ Correctly bleed ABS brakes.
+ 0 0 Correctly test EBS systems.
+ Read and interpret a basic wiring diagram for an EBS system.
+ Correctly bleed ABS brakes.
+
+ Engagement
+ -10795 57989 Power point, white board, workshop cars
+
+ 0 0 Power point, white board, workshop cars
+
+ Stick ability
+ -8255 131445 Practical demonstrations to reinforce theoretical delivery in workshop.
+
+ 0 0 Practical demonstrations to reinforce theoretical delivery in workshop.
+
+ Assessment for learning (AFL)
+ -10795 95250 Verbal q uestioning and answering & identification of components
+
+ 0 0 Verbal q uestioning and answering & identification of components
+
+ Key words
+ 0 48260 Electronic, stability program, traction control, braking distribution & ECU
+
+ 0 0 Electronic, stability program, traction control, braking distribution & ECU
+
+ Differentiation
+ -6350 63500 Engagement will provide a number of different resources to enable differentiation .
+ Identify individual learners need from individual learning plan (ILA)
+
+ 0 0 Engagement will provide a number of different resources to enable differentiation .
+ Identify individual learners need from individual learning plan (ILA)
+
+ Session 1
+ -25400 121920 Quick verbal recap on last week. Power point presentation on testing EBS systems to include wiring diagrams.
+ 0 0 Quick verbal recap on last week. Power point presentation on testing EBS systems to include wiring diagrams.
+
+ Session 2
+ -25400 125095 Continue above to include ABS brake bleeding with and without a scan tool and discuss workshop practical tasks
+
+ 0 0 Continue above to include ABS brake bleeding with and without a scan tool and discuss workshop practical tasks
+
+ Session 3
+ -17145 107950 Workshop practical using live cars and include correct testing of systems and bleeding of ABS brakes with and without a scan tool .
+ 0 0 Workshop practical using live cars and include correct testing of systems and bleeding of ABS brakes with and without a scan tool .
+
+ Session 4
+ -17145 83185 Finish practical task and give feedback. Verbal Q&A session. Discuss today’s session.
+
+ 0 0 Finish practical task and give feedback. Verbal Q&A session. Discuss today’s session.
+
+ Challenge
+ -17145 90805 Learners to carry out independent research from various sources.
+ Learners to familiarise themselves with these systems on cars coming through their workshop.
+
+ 0 0 Learners to carry out independent research from various sources.
+ Learners to familiarise themselves with these systems on cars coming through their workshop.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

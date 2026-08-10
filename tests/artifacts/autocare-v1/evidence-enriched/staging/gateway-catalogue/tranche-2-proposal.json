@@ -1,0 +1,83 @@
+{
+  "title": "Proposed patterned shadow tranche 2",
+  "status": "PROPOSAL_ONLY_AWAITING_APPROVAL",
+  "doNotAnalyseUntilApproved": true,
+  "size": 7,
+  "selectionPrinciple": "Stress-test assurance patterns not already covered by S9/K10/K12/K21/K23/S13, using the now-sufficient live corpus including CEA + Gateway layers.",
+  "proposedKsbs": [
+    {
+      "ksbCode": "K13",
+      "goldenA": "REVIEWED_GAP",
+      "patternTests": ["EVIDENCE_VISIBILITY_GAP", "possible false curriculum gap", "ASSESSMENT via GW2AC03/CEA 12.x"],
+      "whySelected": "Classic S9/K10-style risk: Golden A gap may dissolve when emissions teaching + CEA 12.x + GW2AC03 emissions fault are admitted.",
+      "evidenceLayersLikelyAvailable": ["SOW", "lesson plans", "G12 teaching materials", "CEA 12.x", "GW2AC03 practical", "GW2 knowledge practice"],
+      "uncertaintyStressed": "Was emissions 'missing' or previously invisible? Does Gateway assessment change practice/assessment axes without resolving Primary?",
+      "addsBeyondPilot6": "Different technical system (emissions) and a Gateway diagnostic assessment pattern not central to pilot."
+    },
+    {
+      "ksbCode": "S7",
+      "goldenA": "REVIEWED_GAP (with K2 group)",
+      "patternTests": ["PRACTICE", "ASSESSMENT", "EVIDENCE_VISIBILITY", "inspection competence"],
+      "whySelected": "Golden A says inspection-to-spec gap, but GW2AC01 + Block inspection tasks + CEA 14.x may show strong assessed inspection practice.",
+      "evidenceLayersLikelyAvailable": ["Block inspection lessons/tasks", "CEA 14.0 inspection", "GW2AC01 safety inspection + assessor fault seeding", "skills reviews"],
+      "uncertaintyStressed": "Manufacturer data/schedules teaching depth vs inspection practical assessment — may split TEACHING DEPTH vs PRACTICE.",
+      "addsBeyondPilot6": "Inspection skill axis + Gateway seeded-fault assessment design."
+    },
+    {
+      "ksbCode": "S10",
+      "goldenA": "DISTRIBUTED_SKILL",
+      "patternTests": ["STRUCTURAL_MAPPING_GAP", "DISTRIBUTED ownership", "multi-Block teaching"],
+      "whySelected": "Only distributed-skill exception in Golden A — methodology must handle non-gap, non-single-Primary cases.",
+      "evidenceLayersLikelyAvailable": ["Multiple Blocks", "inspection/service practicals", "Gateway inspection"],
+      "uncertaintyStressed": "Whether distributed classification survives richer evidence or becomes CLEAR Primary.",
+      "addsBeyondPilot6": "Distributed ownership pattern absent from first six."
+    },
+    {
+      "ksbCode": "S11",
+      "goldenA": "REVIEWED_GAP",
+      "patternTests": ["CURRICULUM_GAP vs TEACHING_DEPTH", "skill-specific EV", "contrast with S13"],
+      "whySelected": "HV battery/charger SoH testing is a sharper skill claim than isolation rules/awareness; tests whether EV cluster has mixed outcomes.",
+      "evidenceLayersLikelyAvailable": ["B6/B9 EV materials", "G2 hybrid decks", "CEA 2.1 (isolation/locate — may NOT cover SoH)", "GW1 knowledge awareness only"],
+      "uncertaintyStressed": "Strict: awareness/isolation ≠ SoH testing competence.",
+      "addsBeyondPilot6": "Different EV skill from S13; prevents over-generalising EV KEEP/REVIEW conclusions."
+    },
+    {
+      "ksbCode": "B5",
+      "goldenA": "REVIEWED_GAP (EDI group with K31/S20)",
+      "patternTests": ["behaviour KSB", "possible genuine curriculum gap", "soft-skill evidence scarcity"],
+      "whySelected": "Behaviour/EDI likely poor in technical packs — stress-tests methodology on non-technical KSBs without forcing false 'taught' claims.",
+      "evidenceLayersLikelyAvailable": ["Possible foundation/behaviour sessions", "LP intent", "thin practical/CEA/Gateway linkage"],
+      "uncertaintyStressed": "Whether absence is true CURRICULUM GAP vs EVIDENCE_VISIBILITY of pastoral/tutorial materials not in Autocare packs.",
+      "addsBeyondPilot6": "Behaviour pattern; pilot was almost entirely technical."
+    },
+    {
+      "ksbCode": "K28",
+      "goldenA": "REVIEWED_GAP",
+      "patternTests": ["commercial/compliance knowledge", "possible genuine gap", "domain outside workshop CEAs"],
+      "whySelected": "FCA/PCI financial compliance — different commercial domain from workshop practicals.",
+      "evidenceLayersLikelyAvailable": ["G8 customer/sales materials", "CEA 8.1 customer needs", "quotation/commercial Block sessions"],
+      "uncertaintyStressed": "Adjacency of sales teaching vs explicit FCA/PCI requirements.",
+      "addsBeyondPilot6": "Compliance knowledge gap pattern."
+    },
+    {
+      "ksbCode": "K11",
+      "goldenA": "PRIMARY @ B5",
+      "patternTests": ["KEEP control", "reinforcement vs first teaching", "suspension vs steering adjacency with K10"],
+      "whySelected": "Strong-structure control adjacent to K10; CEA 5.x/11.x suspension tasks and alignment Gateways must not steal or confuse ownership.",
+      "evidenceLayersLikelyAvailable": ["Primary B5", "G5/G11 materials", "CEA 5.3–5.5, 11.x", "alignment GW tasks as reinforcement/adjacent"],
+      "uncertaintyStressed": "False remap risk from later advanced suspension/ADAS CEAs.",
+      "addsBeyondPilot6": "KEEP control in suspension domain (pilot used brakes/EV)."
+    }
+  ],
+  "intentionallyExcludedFromTranche2": [
+    {
+      "ksbCode": "S9/K10/K12/K21/K23/S13",
+      "why": "Already piloted — do not re-analyse in tranche 2; optional later evidence-strength reopen for S9 only"
+    },
+    {
+      "ksbCode": "K18",
+      "why": "Strong ADAS candidate but tranche size limited; reserve for tranche 3 if needed"
+    }
+  ],
+  "stopForApproval": true
+}

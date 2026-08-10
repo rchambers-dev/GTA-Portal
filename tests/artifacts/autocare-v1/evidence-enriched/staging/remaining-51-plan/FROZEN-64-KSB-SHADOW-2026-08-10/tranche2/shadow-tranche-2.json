@@ -1,0 +1,476 @@
+{
+  "title": "AUTOCARE SHADOW TRANCHE 2 — SEVEN KSB REVIEW",
+  "status": "SHADOW_ONLY_NOT_PROGRAMME_TRUTH",
+  "generatedAt": "2026-08-10",
+  "mutatesProgrammeTruth": false,
+  "mutatesGoldenA": false,
+  "mutatesRatifiedPilot": false,
+  "tranche": ["K13", "S7", "S10", "S11", "B5", "K28", "K11"],
+  "standardVersion": "ST0499 v1.3",
+  "dossiers": {
+    "K13": {
+      "officialRequirement": "Emission control systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Catalytic converters, evaporative control systems, exhaust gas recirculation (EGR), diesel particulate filter (DPF), petrol particulate filter (PPF), selective catalyst reduction (SCR).",
+      "goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "rationale": "No dedicated emission-control systems teaching (purpose/function/location) on SOW-only review; advisory B5 W43."
+      },
+      "teaching": {
+        "status": "SUBSTANTIVELY_TAUGHT",
+        "depth": "STRONG",
+        "where": [
+          "G12 Exhaust and Emissions LPs 1–5 (catalogue excerpts): exhaust layouts; emission control including SCR, EGR, DPF, PPF, CAT; inspection/testing/R&R skills aims",
+          "G12 resources: Cats/DPF/Lean-rich/SCR ppt; fuel systems/AFR; exhausts session PPT",
+          "Block lesson plans W47/W51/W52 emissions-related intent (catalogue)"
+        ],
+        "confidence": "HIGH"
+      },
+      "practice": {
+        "status": "CONFIRMED",
+        "evidence": [
+          "CEA 12.1 R&I exhaust",
+          "CEA 12.2 emission test",
+          "CEA 12.3 diagnose emission fault",
+          "CEA 12.4 oxygen sensor",
+          "CEA 12.5 EGR",
+          "GW2AC03 Emissions Related Fault (Gateway practical Pass/Refer)"
+        ],
+        "confidence": "HIGH"
+      },
+      "assessment": {
+        "status": "CONFIRMED",
+        "instruments": ["CEA 12.x Pass/Refer", "GW2AC03 assessor criteria", "Gateway knowledge practice items"],
+        "confidence": "HIGH"
+      },
+      "workplaceApplication": {
+        "status": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "evidence": "Job cards / e-logbook referenced in G12 LP aims; blank workplace job-card pack still not supplied",
+        "confidence": "LOW_AXIS"
+      },
+      "structuralOwnership": {
+        "status": "LIKELY_MAPPABLE_NOT_FORCED",
+        "firstSubstantiveTeachingHome": "G12 direct → Transition Guide D Blocks 5/6/7/9 (candidate first substantive around mid-programme emissions teaching, not Gateway)",
+        "doNotStealFrom": "GW2AC03 later gateway assessment",
+        "forcePrimary": false
+      },
+      "evidenceVisibility": {
+        "wasInvisibleToSowOnlyGoldenA": true,
+        "note": "Same pattern as S9/K10 — live Group teaching + CEA + Gateway present"
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "NOT_A_SIMPLE_CURRICULUM_GAP"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidenceOverall": "HIGH"
+    },
+    "S7": {
+      "officialRequirement": "Apply vehicle safety inspection and routine maintenance procedures using vehicle specific data on car, car derived van or light goods vehicle.",
+      "goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "groupedWith": "K2",
+        "rationale": "No explicit inspection-to-spec / manufacturer data & schedules teaching with matching practical evidence (SOW-only)."
+      },
+      "teaching": {
+        "status": "SUBSTANTIVELY_TAUGHT",
+        "depth": "ADEQUATE_TO_STRONG_FOR_SKILL",
+        "where": [
+          "G14 Vehicle Inspection Session 1: safety inspection following manufacturers specifications (catalogue excerpt)",
+          "Multiple Block inspection/service lesson intents",
+          "Companion knowledge K2 (manufacturer schedules) may remain thinner than S7 skill practice — separate axis"
+        ],
+        "confidence": "MEDIUM_HIGH"
+      },
+      "practice": {
+        "status": "CONFIRMED_STRONG",
+        "evidence": [
+          "CEA 14.0 Vehicle Inspection (seeded defects, checklist)",
+          "CEA 14.1–14.4 service activities",
+          "GW2AC01 Carry Out a Vehicle Safety Inspection (90 min Pass/Refer; seeded tyre/steer/brake faults)",
+          "Block practical inspection/service tasks in Tasks 3–4 pack"
+        ],
+        "confidence": "HIGH"
+      },
+      "assessment": {
+        "status": "CONFIRMED_STRONG",
+        "instruments": ["CEA 14.x", "GW2AC01 apprentice+assessor pair", "inspection checklist completion"],
+        "confidence": "HIGH"
+      },
+      "workplaceApplication": {
+        "status": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "evidence": "Inspection sheet / job card culture referenced; filled workplace examples not supplied",
+        "confidence": "LOW_AXIS"
+      },
+      "structuralOwnership": {
+        "status": "CANDIDATE_EARLY_INSPECTION_HOME",
+        "firstSubstantiveTeachingHome": "Early inspection teaching/application (G14 / Block 2 cluster) preferred over later Gateway GW2AC01",
+        "forcePrimary": false,
+        "doNotStealFrom": "GW2AC01"
+      },
+      "evidenceVisibility": {
+        "wasInvisibleToSowOnlyGoldenA": true
+      },
+      "assuranceClassifications": [
+        "EVIDENCE_VISIBILITY_GAP (relative to Golden A)",
+        "NOT_A_SIMPLE_CURRICULUM_GAP",
+        "POSSIBLE_TEACHING_DEPTH_GAP_ON_K2_MANUFACTURER_SCHEDULES_ADJACENT"
+      ],
+      "shadowDirection": "CHANGE_CLASSIFICATION",
+      "confidenceOverall": "HIGH_ON_SKILL_PRACTICE_ASSESSMENT"
+    },
+    "S10": {
+      "officialRequirement": "Inspect, remove, and replace of parts or components in cars, car derived vans, or light goods vehicles for the following: steering systems and suspension systems, braking systems, emission systems, air conditioning systems, battery and charging systems, fluid and filtration systems.",
+      "goldenA": {
+        "position": "DISTRIBUTED_SKILL_PRIMARY_OWNERSHIP_REVIEW",
+        "evidenceAcrossBlocks": [2, 3, 4, 5, 6, 7, 10],
+        "rationale": "Official breadth spans multiple systems; teaching exists across blocks; no single defensible Primary under one-Primary rule."
+      },
+      "teaching": {
+        "status": "DISTRIBUTED_TAUGHT",
+        "depth": "SYSTEM_BY_SYSTEM_STRONG_OVERALL",
+        "where": "Steering/suspension G5/G11; brakes G4/G10; emissions G12; A/C G13; battery/charging G7; fluids/filtration G6 + Block sessions",
+        "confidence": "HIGH"
+      },
+      "practice": {
+        "status": "DISTRIBUTED_PRACTISED",
+        "evidence": "CEAs across groups 4–7, 10–13; Block Tasks 3–4 system practicals; GW1AC01/02/04 and GW2 practicals cover subsets only",
+        "confidence": "HIGH"
+      },
+      "assessment": {
+        "status": "DISTRIBUTED_ASSESSED",
+        "evidence": "Multiple CEA Pass/Refer instruments + Gateway component assessments for subsets — none cover full official S10 list as a single assessed unit",
+        "confidence": "HIGH"
+      },
+      "workplaceApplication": {
+        "status": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "confidence": "LOW_AXIS"
+      },
+      "structuralOwnership": {
+        "status": "DISTRIBUTED",
+        "forcePrimary": false,
+        "ruleApplied": "Do not force Primary merely because one Block has strong evidence for one system family",
+        "note": "Richer corpus strengthens multi-home teaching/practice/assessment and reinforces why one-Primary is undefended"
+      },
+      "evidenceVisibility": {
+        "wasInvisibleToSowOnlyGoldenA": false,
+        "note": "Golden A already recognised distributed teaching — live corpus confirms breadth rather than collapsing it"
+      },
+      "assuranceClassifications": [
+        "DISTRIBUTED_SKILL_OWNERSHIP_ISSUE",
+        "NOT_A_CURRICULUM_GAP"
+      ],
+      "shadowDirection": "KEEP_DISTRIBUTED",
+      "confidenceOverall": "HIGH"
+    },
+    "S11": {
+      "officialRequirement": "Apply state-of-health condition monitoring tests to high voltage batteries and chargers for electrified cars, car derived vans, or light goods vehicles.",
+      "goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "rationale": "No explicit HV battery/charger SoH practical; generic EV awareness/safety insufficient."
+      },
+      "teaching": {
+        "status": "AWARENESS_ONLY_FOR_RELATED_EV",
+        "depth": "INSUFFICIENT_FOR_SOH",
+        "where": [
+          "G2/G7 hybrid features + HV safety/working PPTs (rules, components, hazards)",
+          "Block EV awareness / charging awareness sessions",
+          "No located teaching of SoH condition-monitoring test procedures for HV batteries/chargers"
+        ],
+        "confidence": "HIGH_THAT_SOH_NOT_TAUGHT"
+      },
+      "practice": {
+        "status": "NOT_EVIDENCED",
+        "evidence": [
+          "CEA 2.1 = locate components + isolate HV (not SoH tests)",
+          "Block B4 T4 location/safety awareness; B9 handover/charging awareness",
+          "GW1AC02 = 12V battery/charging/starting — not HV SoH"
+        ],
+        "confidence": "HIGH"
+      },
+      "assessment": {
+        "status": "NOT_EVIDENCED_FOR_SOH",
+        "evidence": "Gateway/CEA assessments do not require HV battery/charger SoH monitoring tests",
+        "confidence": "HIGH"
+      },
+      "workplaceApplication": {
+        "status": "NOT_EVIDENCED",
+        "confidence": "N_A"
+      },
+      "structuralOwnership": {
+        "status": "UNMAPPED_BECAUSE_REQUIREMENT_NOT_MET",
+        "forcePrimary": false
+      },
+      "evidenceVisibility": {
+        "wasInvisibleToSowOnlyGoldenA": false,
+        "note": "Rich EV materials exist but do not satisfy S11; distinguishes awareness/isolation from SoH skill"
+      },
+      "assuranceClassifications": [
+        "CURRICULUM_GAP",
+        "PRACTICE_GAP",
+        "ASSESSMENT_GAP",
+        "TEACHING_DEPTH_GAP (awareness≠SoH competence)"
+      ],
+      "shadowDirection": "KEEP_AS_GAP_INSUFFICIENT_EVIDENCE_FOR_COVERAGE",
+      "strictNote": "Must not borrow S13/K21/K23 evidence as S11 proof",
+      "confidenceOverall": "HIGH"
+    },
+    "B5": {
+      "officialRequirement": "Support an inclusive workplace, for example, being respectful of different views.",
+      "goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "groupedWith": ["K31", "S20"],
+        "rationale": "No defensible Primary teaching/application home for EDI/inclusive workplace."
+      },
+      "teaching": {
+        "status": "NOT_SUBSTANTIVELY_FOUND",
+        "depth": "GAP",
+        "where": [
+          "W11 Customer Service Scenarios lists B5 (and S20) in Duty/KSB focus tags — but body is customer-service scenarios; no inclusive/diversity/equity teaching language found in extracted LP text",
+          "Full scan of Block/Foundation lesson-plan texts: zero inclusivity/diversity/equity hits",
+          "FS01 covers professional workshop behaviours/safety — not inclusive workplace respect for different views"
+        ],
+        "confidence": "HIGH_WITHIN_SUPPLIED_AUTOCAR_CORPUS",
+        "caveat": "Pastoral/tutorial EDI materials outside Autocare packs could exist — treat residual as possible EVIDENCE_VISIBILITY_GAP for off-corpus delivery, not as proof of teaching"
+      },
+      "practice": {
+        "status": "NOT_FOUND",
+        "note": "Behaviour KSBs should not be forced into tyre/brake-style CEAs; absence of soft-skill scenario assessment recorded honestly",
+        "confidence": "HIGH_IN_CORPUS"
+      },
+      "assessment": {
+        "status": "NOT_FOUND",
+        "confidence": "HIGH_IN_CORPUS"
+      },
+      "workplaceApplication": {
+        "status": "NOT_FOUND_IN_CORPUS",
+        "confidence": "N_A"
+      },
+      "structuralOwnership": {
+        "status": "UNMAPPED",
+        "forcePrimary": false,
+        "warning": "Do not invent Primary from SOW focus-tag presence alone"
+      },
+      "evidenceVisibility": {
+        "wasInvisibleToSowOnlyGoldenA": false,
+        "note": "Methodology succeeds: tag-listed B5 without content is not false coverage"
+      },
+      "assuranceClassifications": [
+        "CURRICULUM_GAP",
+        "EVIDENCE_VISIBILITY_GAP (possible off-pack pastoral materials only)",
+        "BEHAVIOUR_SOFT_SKILL_EVIDENCE_SCARCITY"
+      ],
+      "shadowDirection": "KEEP_AS_GAP",
+      "confidenceOverall": "HIGH_FOR_CORPUS_CONCLUSION"
+    },
+    "K28": {
+      "officialRequirement": "Principles of customer sales and financial compliance: Financial conduct authority (FCA), payment card industry (PCI) requirements.",
+      "goldenA": {
+        "position": "REVIEWED_CURRICULUM_GAP",
+        "rationale": "No defensible original teaching of FCA/PCI financial-compliance requirements."
+      },
+      "teaching": {
+        "status": "ADJACENT_ONLY_NOT_SUFFICIENT",
+        "depth": "GAP_FOR_REQUIRED_CONCEPTS",
+        "where": [
+          "G08 LP29 Payments, VAT, GDPR and Fraud (catalogue excerpt) — payment methods, fraud recognition, VAT, GDPR",
+          "Block W38/W78/W88 quotation/authorisation commercial sessions — no FCA/PCI language in extracted LP text",
+          "Full Block LP scan: zero FCA / Financial Conduct / PCI / payment card industry hits"
+        ],
+        "strictRuleApplied": "Adjacent sales/regulatory language is insufficient unless FCA and PCI requirements are genuinely evidenced",
+        "confidence": "HIGH"
+      },
+      "practice": {
+        "status": "NOT_EVIDENCED_FOR_FCA_PCI",
+        "evidence": "CEA 8.1 customer needs / commercial CEAs do not encode FCA/PCI principles",
+        "confidence": "HIGH"
+      },
+      "assessment": {
+        "status": "NOT_EVIDENCED_FOR_FCA_PCI",
+        "confidence": "HIGH"
+      },
+      "workplaceApplication": {
+        "status": "NOT_EVIDENCED",
+        "confidence": "N_A"
+      },
+      "structuralOwnership": {
+        "status": "UNMAPPED",
+        "forcePrimary": false
+      },
+      "evidenceVisibility": {
+        "wasInvisibleToSowOnlyGoldenA": false,
+        "note": "Commercial materials exist but fail strict FCA/PCI test — not a visibility false-gap"
+      },
+      "assuranceClassifications": ["CURRICULUM_GAP", "TEACHING_DEPTH_GAP (payments≠FCA/PCI)"],
+      "shadowDirection": "KEEP_AS_GAP",
+      "confidenceOverall": "HIGH"
+    },
+    "K11": {
+      "officialRequirement": "Suspension systems: purpose, function, and location of systems and components for inspection, removal and replacement. Macpherson strut, double wishbone, ball joints, suspension arms, spring types, including leaf and coil, dampers and shock absorbers, air or hydraulic suspension, subframes.",
+      "goldenA": {
+        "position": "APPROVED_PRIMARY",
+        "primary": 5,
+        "rationale": "First substantive suspension systems home"
+      },
+      "teaching": {
+        "status": "SUBSTANTIVELY_TAUGHT",
+        "depth": "STRONG",
+        "where": [
+          "G5 LP8 Introduction to Suspension Systems (types, components, R&R practical aims)",
+          "G5 LP11–14 review + air suspension + practical assessment",
+          "Resources: Coil Springs, Air Suspension PPTs; ACS Steering & Suspension assignment"
+        ],
+        "confidence": "HIGH"
+      },
+      "practice": {
+        "status": "CONFIRMED",
+        "evidence": [
+          "CEA 5.3 bottom ball joint",
+          "CEA 5.4 front strut",
+          "CEA 5.5 rear damper",
+          "CEA 11.2/11.3 advanced ride height / adaptive suspension (later reinforcement)",
+          "GW1AC03/GW2AC02 alignment adjacent — not suspension R&R Primary proof"
+        ],
+        "confidence": "HIGH"
+      },
+      "assessment": {
+        "status": "CONFIRMED",
+        "instruments": ["CEA 5.x Pass/Refer", "G5 practical assessment LP14 intent", "assignment"],
+        "confidence": "HIGH"
+      },
+      "workplaceApplication": {
+        "status": "MECHANISM_REFERENCED_NOT_SUPPLIED",
+        "confidence": "LOW_AXIS"
+      },
+      "structuralOwnership": {
+        "status": "CLEAR",
+        "firstSubstantiveTeachingHome": "G5 / Block 5 (Golden A B5) — KEEP",
+        "doNotStealFrom": ["G11 advanced suspension CEAs", "Gateway alignment tasks"],
+        "forcePrimary": "RETAIN_SHADOW_B5_ONLY"
+      },
+      "evidenceVisibility": {
+        "wasInvisibleToSowOnlyGoldenA": false,
+        "note": "Control case — richer corpus confirms KEEP"
+      },
+      "assuranceClassifications": ["GOOD_ADEQUATELY_CONTROLLED"],
+      "shadowDirection": "KEEP_B5",
+      "confidenceOverall": "HIGH"
+    }
+  },
+  "comparisonTable": [
+    {
+      "ksb": "K13",
+      "goldenA": "REVIEWED_GAP",
+      "shadow": "CHANGE_CLASSIFICATION",
+      "ownership": "LIKELY_MAPPABLE_NOT_FORCED"
+    },
+    {
+      "ksb": "S7",
+      "goldenA": "REVIEWED_GAP",
+      "shadow": "CHANGE_CLASSIFICATION",
+      "ownership": "CANDIDATE_EARLY_HOME_NOT_FORCED"
+    },
+    {
+      "ksb": "S10",
+      "goldenA": "DISTRIBUTED",
+      "shadow": "KEEP_DISTRIBUTED",
+      "ownership": "DISTRIBUTED"
+    },
+    {
+      "ksb": "S11",
+      "goldenA": "REVIEWED_GAP",
+      "shadow": "KEEP_GAP",
+      "ownership": "UNMAPPED"
+    },
+    {
+      "ksb": "B5",
+      "goldenA": "REVIEWED_GAP",
+      "shadow": "KEEP_GAP",
+      "ownership": "UNMAPPED"
+    },
+    {
+      "ksb": "K28",
+      "goldenA": "REVIEWED_GAP",
+      "shadow": "KEEP_GAP",
+      "ownership": "UNMAPPED"
+    },
+    {
+      "ksb": "K11",
+      "goldenA": "PRIMARY_B5",
+      "shadow": "KEEP_B5",
+      "ownership": "CLEAR"
+    }
+  ],
+  "teachingPracticeAssessmentMatrix": {
+    "K13": { "teaching": "STRONG", "practice": "STRONG", "assessment": "STRONG", "workplace": "VISIBILITY_WEAK" },
+    "S7": { "teaching": "ADEQUATE+", "practice": "STRONG", "assessment": "STRONG", "workplace": "VISIBILITY_WEAK" },
+    "S10": { "teaching": "DISTRIBUTED_STRONG", "practice": "DISTRIBUTED_STRONG", "assessment": "DISTRIBUTED", "workplace": "VISIBILITY_WEAK" },
+    "S11": { "teaching": "INSUFFICIENT", "practice": "GAP", "assessment": "GAP", "workplace": "GAP" },
+    "B5": { "teaching": "GAP_IN_CORPUS", "practice": "GAP", "assessment": "GAP", "workplace": "GAP" },
+    "K28": { "teaching": "GAP_STRICT", "practice": "GAP", "assessment": "GAP", "workplace": "GAP" },
+    "K11": { "teaching": "STRONG", "practice": "STRONG", "assessment": "STRONG", "workplace": "VISIBILITY_WEAK" }
+  },
+  "ownershipFindings": {
+    "clearKeep": ["K11@B5"],
+    "distributedKeep": ["S10"],
+    "changeButDoNotForcePrimary": ["K13", "S7"],
+    "unmappedGaps": ["S11", "B5", "K28"],
+    "falseRemapGuards": [
+      "K13: do not Primary to GW2AC03",
+      "S7: do not Primary to GW2AC01 over earlier inspection home",
+      "K11: do not Primary to G11 advanced or Gateway alignment",
+      "S10: do not force single-system Block Primary"
+    ]
+  },
+  "evidenceVisibilityFindings": [
+    "K13 and S7 replicate the S9/K10 false-gap pattern once Group teaching + CEA + Gateway are admitted.",
+    "B5 shows the opposite: SOW focus-tags can claim behaviour coverage without content — visibility of tags ≠ teaching.",
+    "Workplace job-card axis remains weak across almost all KSBs (referenced, not artefact-supplied).",
+    "S11/K28 gaps are not visibility illusions under strict requirement reading."
+  ],
+  "assuranceIssueTaxonomyByKsb": {
+    "K13": ["EVIDENCE_VISIBILITY_GAP"],
+    "S7": ["EVIDENCE_VISIBILITY_GAP", "POSSIBLE_K2_TEACHING_DEPTH_ADJACENT"],
+    "S10": ["DISTRIBUTED_SKILL_OWNERSHIP_ISSUE"],
+    "S11": ["CURRICULUM_GAP", "PRACTICE_GAP", "ASSESSMENT_GAP", "TEACHING_DEPTH_GAP"],
+    "B5": ["CURRICULUM_GAP", "BEHAVIOUR_EVIDENCE_SCARCITY", "POSSIBLE_OFFPACK_VISIBILITY"],
+    "K28": ["CURRICULUM_GAP", "TEACHING_DEPTH_GAP"],
+    "K11": []
+  },
+  "contradictionsConflicts": [
+    "W11 lists B5 in focus line while body content is customer-service scenarios without inclusive-workplace teaching — intent tagging conflict.",
+    "G08 payments/VAT/GDPR/fraud can look like 'financial compliance' but fails strict K28 FCA/PCI requirement.",
+    "S11 can be mistakenly saturated by EV isolation/awareness (S13/K21/K23) — must stay separated.",
+    "S10 breadth vs one-Primary product rule remains a structural product tension, not an evidence failure."
+  ],
+  "confidenceByEvidenceAxis": {
+    "teachingJudgements": "HIGH for K13/K11/S10/S11/K28/B5 within corpus; MEDIUM-HIGH for S7 skill vs K2 schedule depth split",
+    "practiceJudgements": "HIGH where CEA/Gateway instruments exist; HIGH gap calls for S11/B5/K28",
+    "assessmentJudgements": "HIGH",
+    "ownershipForcing": "INTENTIONALLY_LOW — candidates only, no persistence",
+    "workplaceAxis": "LOW across tranche (shared visibility limit)"
+  },
+  "methodologyValidation": {
+    "generalisesBeyondPilot6": true,
+    "proves": [
+      "False curriculum gaps from SOW-only visibility recur outside tyre/steering (K13, S7)",
+      "True gaps survive strict reading (S11, K28, B5)",
+      "Distributed ownership pattern holds under richer evidence (S10)",
+      "KEEP controls resist late reinforcement (K11)",
+      "Behaviour KSBs can be assessed without forcing technical practical templates (B5)"
+    ],
+    "disproves": [
+      "That richer corpus always dissolves Golden A gaps",
+      "That Gateway assessment alone should set Primary ownership"
+    ],
+    "confidenceToScaleToward64": "INCREASED for continued patterned shadow review; NOT sufficient alone for trusted Golden B / programme-truth write"
+  },
+  "stillGenuinelyMissing": [
+    "Workplace job-card templates/examples",
+    "Completed learner assessment scripts",
+    "Explicit FCA/PCI teaching artefact (if exists outside corpus)",
+    "Explicit EDI/inclusive workplace teaching artefact (if delivered off-pack)",
+    "HV battery/charger SoH practical procedure + assessment",
+    "Block Task 1/2 (still separate visibility item)",
+    "Resource→week join table"
+  ],
+  "recommendedNextStep": "Human review of tranche 2 + optional S9 evidence-strength reopen from CEA/GW1AC01. Then either: (a) patterned tranche 3 (e.g. K18 ADAS, K1 role, soft-skill companions K31/S20, fluids K20/S25), or (b) define trust criteria before any programme-truth promotion. Do not auto-start tranche 3 or persist mappings."
+}

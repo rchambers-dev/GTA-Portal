@@ -1,0 +1,88 @@
+TASK 4: EV/HYBRID COMPONENT LOCATION
+AND SAFETY AWARENESS
+Autocare Technician Level 2 | Block 4 | v2.0
+TIME
+45 minutes
+EVIDENCE
+Practical | Knowledge | Documentation
+PROGRAMME POINT
+Weeks 31-40
+Your task
+A hybrid or electric vehicle/rig is being used for awareness training. You must identify visible EV or hybrid
+components, explain their function and show safe non-invasive working boundaries.
+What you must do
+1 Prepare the work area and confirm the vehicle/rig is safe for awareness activity.
+2 Identify visible EV/hybrid components as directed by the assessor/workplace mentor.
+3 Explain the basic function and risks of selected components.
+4 Record any safety warnings, limitations and referral requirements.
+5 Reinstate the vehicle/rig and workstation.
+What good evidence looks like
+SAFE SETUP
+Suitable PPE, a prepared work area and controlled vehicle or
+equipment.
+CORRECT METHOD
+A logical sequence using the relevant procedure and technical
+information.
+ACCURATE EVIDENCE
+Actual readings, findings and actions recorded clearly and
+precisely.
+SOUND DECISIONS
+Appropriate recommendations, referral or authorisation
+supported by evidence.
+You will need
+• Hybrid/electric vehicle or training rig
+• Manufacturer safety information
+• HV awareness PPE where appropriate
+• Warning label examples
+• Apprentice Assessment Record
+SOW ALIGNMENT
+Block 4 - Emerging Technology and Driveline Systems
+Duties: 1, 3, 4, 5, 6, 7, 8, 9, 10 KSB evidence focus: K16-K20, S10-S13, B1, B2
+Task reference: Block_4_Task_4_EV_Hybrid_Component_Location
+Block_4_Task_4_EV_Hybrid_Component_Location | v2.0 Page 1 of 3
+TASK 4: EV/HYBRID COMPONENT LOCATION AND SAFETY AWARENESS
+Practical record
+Apprentice, location and vehicle details
+Apprentice name Date
+TASK COMPLETED AT APPRENTICE'S WORKPLACE TRAINING CENTRE
+Vehicle make Model
+Registration Mileage
+Engine size / type VIN / chassis number
+Measurements and technical checks
+HV battery location 12V battery location
+Inverter/motor location Charging point location
+Warning labels identified System status noted
+PPE/safety boundary Referral required yes/no
+Special tools, equipment or calibration requirements
+Task evidence
+PPE and precautions used Safety-critical findings and immediate action
+Work completed, findings and recommendations
+Knowledge check
+1. Why must high-voltage work be referred to a
+qualified person?
+2. What does orange cabling normally indicate?
+Block_4_Task_4_EV_Hybrid_Component_Location | v2.0 Page 2 of 3
+TASK 4: EV/HYBRID COMPONENT LOCATION AND SAFETY AWARENESS
+Knowledge check and assessment decision
+Knowledge check - continued
+3. (a) Why is the 12V system still important on EV/hybrid vehicles? (b) What information should be recorded
+before working near EV systems?
+4. How would you explain safe limitations to a customer?
+5. (a) What should you do if a warning label or fault message is present? (b) Why is this activity non-invasive
+at Level 2?
+Assessor/Workplace Mentor observation
+Identify main EV/hybrid components from a safe position. Explain the basic function of high-voltage and low-voltage systems.
+Recognise warning labels and high-voltage risk areas. Record safe boundaries and referral requirements.
+Communicate limitations to the assessor/workplace mentor or
+customer.
+Assessor/Workplace Mentor observation notes
+Decision and feedback
+Decision - select one
+PASS REFER
+Evidence reference
+Feedback and action required
+Sign-off
+Signatures confirm that this is the apprentice's own work and that the evidence and decision are accurate.
+Apprentice name Assessor/Workplace Mentor name PIN (if applicable)
+Apprentice signature Assessor/Workplace Mentor signature Date
+Block_4_Task_4_EV_Hybrid_Component_Location | v2.0 Page 3 of 3

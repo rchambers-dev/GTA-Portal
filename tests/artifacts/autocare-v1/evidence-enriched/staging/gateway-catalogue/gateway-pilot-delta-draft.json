@@ -1,0 +1,118 @@
+{
+  "status": "SHADOW_DELTA_ONLY",
+  "mutatesRatifiedPilot": false,
+  "KSBs": {
+    "S9": {
+      "oldEvidencePosition": "CEA 3.x already closed assessed tyre strip/balance artefact gap; practice/assessment strengthened",
+      "newEvidenceSignals": {
+        "tyreRemove": true,
+        "balance": true,
+        "puncture": true,
+        "gwMentions": [
+          "Autocare GW1 practice paper.docx",
+          "Autocare GW2 practice exam 2.docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx",
+          "Autocare-AP01-GW2-Practical-Support-Material-Apprentice.docx",
+          "Autocare-AP01-GW2-Practical-Support-Material-Assessor.docx"
+        ]
+      },
+      "effectOnTeaching": "NO_MATERIAL_CHANGE",
+      "effectOnPractice": "POSSIBLE_STRENGTHEN_IF_GW_PRACTICAL_INCLUDES_TYRE_TASKS",
+      "effectOnAssessment": "POSSIBLE_STRENGTHEN_VIA_GW_KNOWLEDGE_AND_OR_PRACTICAL",
+      "effectOnOwnership": "NO_CHANGE",
+      "humanReReviewWarranted": false,
+      "notes": "Gateway adds readiness/assessment layer; Primary ownership still not forced. Determine from extracts whether GW practicals actually include strip/balance or only related inspection/service."
+    },
+    "K10": {
+      "oldEvidencePosition": "CEA 5.x hydraulic/mechanical R&R; EPS not in CEA; ownership ambiguous",
+      "newEvidenceSignals": {
+        "steering": true,
+        "eps": false,
+        "hydraulic": true,
+        "files": [
+          "Autocare GW1 practice paper.docx",
+          "Autocare GW2 practice exam 2.docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx",
+          "Autocare-AP01-GW2-Practical-Support-Material-Apprentice.docx",
+          "Autocare-AP01-GW2-Practical-Support-Material-Assessor.docx"
+        ]
+      },
+      "effectOnTeaching": "NO_MATERIAL_CHANGE",
+      "effectOnPractice": "CHECK_EXTRACTS",
+      "effectOnAssessment": "CHECK_EXTRACTS",
+      "effectOnOwnership": "UNLIKELY_TO_RESOLVE_PRIMARY",
+      "humanReReviewWarranted": false,
+      "notes": "Look specifically for EPS/EPAS in GW materials; Gateway unlikely to assign Block Primary."
+    },
+    "K12": {
+      "oldEvidencePosition": "KEEP B2 control — rich progression already",
+      "newEvidenceSignals": {
+        "brakes": true,
+        "files": [
+          "Autocare GW1 practice paper.docx",
+          "Autocare GW2 practice exam 2.docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx",
+          "Autocare-AP01-GW2-Practical-Support-Material-Apprentice.docx",
+          "Autocare-AP01-GW2-Practical-Support-Material-Assessor.docx"
+        ]
+      },
+      "effectOnTeaching": "NO_MATERIAL_CHANGE",
+      "effectOnPractice": "SUPPORTING_ONLY",
+      "effectOnAssessment": "SUPPORTING_ONLY",
+      "effectOnOwnership": "NO_CHANGE_KEEP",
+      "humanReReviewWarranted": false,
+      "notes": "Control case — expect reinforcement/readiness only."
+    },
+    "K21": {
+      "oldEvidencePosition": "KEEP B6 — EV service/safety",
+      "newEvidenceSignals": {
+        "ev": true,
+        "files": [
+          "Autocare GW1 practice paper.docx",
+          "Autocare GW2 practice exam 2.docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx"
+        ]
+      },
+      "effectOnTeaching": "NO_MATERIAL_CHANGE",
+      "effectOnPractice": "CHECK",
+      "effectOnAssessment": "CHECK",
+      "effectOnOwnership": "NO_CHANGE_KEEP",
+      "humanReReviewWarranted": false,
+      "notes": "Control — awareness vs service assessment distinction remains."
+    },
+    "K23": {
+      "oldEvidencePosition": "KEEP B6 — rules taught; practice/assessment PARTIAL; CEA 2.1 strengthened",
+      "newEvidenceSignals": {
+        "hvSafety": true,
+        "files": [
+          "Autocare GW1 practice paper.docx",
+          "Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+          "Autocare-AP01-GW2-Practical-Support-Material-Apprentice.docx"
+        ]
+      },
+      "effectOnTeaching": "NO_MATERIAL_CHANGE",
+      "effectOnPractice": "CHECK",
+      "effectOnAssessment": "CHECK",
+      "effectOnOwnership": "NO_CHANGE",
+      "humanReReviewWarranted": false,
+      "notes": "Gateway may add assessment moments for HV safe working."
+    },
+    "S13": {
+      "oldEvidencePosition": "CEA 2.1 template requires isolation; completed competence still open; REVIEW",
+      "newEvidenceSignals": {
+        "isolation": false,
+        "files": []
+      },
+      "effectOnTeaching": "NO_MATERIAL_CHANGE",
+      "effectOnPractice": "CHECK_FOR_PERFORMED_ISOLATION",
+      "effectOnAssessment": "CHECK_FOR_ASSESSED_ISOLATION",
+      "effectOnOwnership": "NO_CHANGE",
+      "humanReReviewWarranted": false,
+      "notes": "Strict: hybrid/GW activity ≠ isolation competence unless isolate/perform/verify assessed."
+    }
+  }
+}

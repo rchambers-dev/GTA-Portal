@@ -1,0 +1,64 @@
+AUTOCARE TECHNICIAN LEVEL 2 PRACTICAL TASKS
+BLOCKS 1 TO 10 | TASKS 3 AND 4 | VERSION 2.0
+
+CONTENTS
+
+Block 1
+- Task 3: Vehicle Safety Inspection and Workshop Preparation
+- Task 4: Basic Brake and Tyre Condition Check
+
+Block 2
+- Task 3: Battery and Charging System Inspection
+- Task 4: TPMS, Tyre Pressure and Customer Documentation
+
+Block 3
+- Task 3: Interim Service, Inspection and Documentation
+- Task 4: Environmental Spill Response and Waste Control
+
+Block 4
+- Task 3: Front Wheel Alignment and Steering Geometry Checks
+- Task 4: EV/Hybrid Component Location and Safety Awareness
+
+Block 5
+- Task 3: Brake Inspection, Measurement and Replacement
+- Task 4: Suspension Component Replacement and Alignment Preparation
+
+Block 6
+- Task 3: Electrical Diagnostic Testing and Evidence Recording
+- Task 4: Air Conditioning and Climate-Control Checks
+
+Block 7
+- Task 3: Steering Component Replacement and Customer Recommendations
+- Task 4: Engine Management Sensor Check and Handover
+
+Block 8
+- Task 3: ABS Wheel Speed Sensor Diagnostic Investigation
+- Task 4: Tyre Wear Root-Cause and Geometry Investigation
+
+Block 9
+- Task 3: EV/Hybrid Customer Handover and Charging Awareness
+- Task 4: ADAS Pre-Calibration and Sensor Awareness Check
+
+Block 10
+- Task 3: EPA Mock Integrated Practical Inspection
+- Task 4: Capstone Practical Task, QA and Professional Discussion Evidence
+
+VERSION 2.0 CHANGES
+
+- Reduced each task from five pages to three pages.
+- Replaced the generic first-page heading with the task number and task name.
+- Standardised all documents as Task 3 or Task 4.
+- Added task-location options for Apprentice's Workplace and Training Centre.
+- Updated assessor terminology to Assessor/Workplace Mentor.
+- Removed the Resubmission option and retained enlarged Pass and Refer controls.
+- Redesigned the instruction and good-evidence sections for clearer alignment and use.
+- Aligned the decision controls and Evidence Reference field.
+- Retained fillable PDF fields and added consistent task-specific field names.
+- Corrected the Block 5 brake task to require full manufacturer-specified torque.
+
+QUALITY CHECKS COMPLETED
+
+- 20 PDFs present; three pages per PDF.
+- All 60 pages rendered and visually checked.
+- No overlapping form widgets, clipped fields or stale v1.0/Task 1/Task 2 wording.
+- Text fields, radio buttons and checkboxes tested for visible form appearances.

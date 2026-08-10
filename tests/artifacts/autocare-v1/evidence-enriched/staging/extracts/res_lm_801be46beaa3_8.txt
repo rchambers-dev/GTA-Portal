@@ -1,0 +1,93 @@
+Lesson Plan 3A
+ Steering Geometry
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Introduction to steering geometry and wheel alignment.
+ 0 0 Introduction to steering geometry and wheel alignment.
+
+ Lesson Aims
+
+ Lesson Aims
+ -635 40005 An introduction to steering geometry , terms and inspection techniques .
+ To discuss steering system components and their operation.
+ To discuss front wheel alignment faults and adjustment.
+ 0 0 An introduction to steering geometry , terms and inspection techniques .
+ To discuss steering system components and their operation.
+ To discuss front wheel alignment faults and adjustment.
+
+ Lesson Objectives
+ -10160 57150 For learners to identify and name the components of a light vehicle steering system.
+ For learners to explain the terms Toe, Camber and Caster.
+ For learners to correctly perform 2 wheel alignment to the front wheels of a vehicle.
+ 0 0 For learners to identify and name the components of a light vehicle steering system.
+ For learners to explain the terms Toe, Camber and Caster.
+ For learners to correctly perform 2 wheel alignment to the front wheels of a vehicle.
+
+ Engagement
+ -10160 60326 Power point, white board, individual and group discussion, cars in the workshop ,
+ s ources of manufacturer data.
+ 0 0 Power point, white board, individual and group discussion, cars in the workshop ,
+ s ources of manufacturer data.
+
+ Stick ability
+ -8255 131445 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ 0 0 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ Assessment for learning (AFL)
+ -10795 95250 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ 0 0 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ Key words
+ 0 48260 Caster, Camber, Steering Axis Inclination, Toe
+ Positive, Negative, Millimetres, Degrees and Minutes.
+ 0 0 Caster, Camber, Steering Axis Inclination, Toe
+ Positive, Negative, Millimetres, Degrees and Minutes.
+
+ Differentiation
+ -10160 60325 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ 0 0 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ Session 1
+ -29210 124459 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ 0 0 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ Session 2
+ -29210 120650 Class theory session to discuss steering system components and steering geometry.
+ Discussion and overview of steering system and geometry faults and how to identify typical faults.
+ Overview of specialist equipment needed for geometry checks.
+
+ 0 0 Class theory session to discuss steering system components and steering geometry.
+ Discussion and overview of steering system and geometry faults and how to identify typical faults.
+ Overview of specialist equipment needed for geometry checks.
+
+ Session 3
+ -19685 107315 Workshop practical tasks using live cars to carry out front wheel alignment check and adjustment to vehicle manufacturer’s settings.
+ 0 0 Workshop practical tasks using live cars to carry out front wheel alignment check and adjustment to vehicle manufacturer’s settings.
+
+ Session 4
+ -17145 83185 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+ 0 0 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+
+ Challenge
+ -19685 88900 Learners to be encouraged to use independent and shared ideas regarding steering and geometry prior knowledge.
+ Learners to work in dependently to demonstrate wheel alignment techniques.
+ 0 0 Learners to be encouraged to use independent and shared ideas regarding steering and geometry prior knowledge.
+ Learners to work in dependently to demonstrate wheel alignment techniques.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

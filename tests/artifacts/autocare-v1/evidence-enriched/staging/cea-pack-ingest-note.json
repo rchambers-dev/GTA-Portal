@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-08-10T13:54:18.033Z",
+  "pack": "autocare_cea_year1_year2",
+  "addedToStagingCatalogue": true,
+  "resourceFile": "cea-catalogue/cea-resources.json",
+  "relationshipFile": "cea-catalogue/cea-relationships.json",
+  "impactFile": "cea-catalogue/cea-impact-review.json",
+  "note": "Appended as separate pack catalogue; main catalogue-resources.json not rewritten in this pass."
+}

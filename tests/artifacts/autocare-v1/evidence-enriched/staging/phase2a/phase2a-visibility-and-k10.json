@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-08-10T12:45:41.105Z",
+  "analysisOnly": true,
+  "goldenAUnchanged": true,
+  "corpusSearch": {
+    "method": "filename + content search over Learning Materials, .tmp-live packs, staging extracts",
+    "artifact": "corpus-content-search.json",
+    "results": {
+      "blockPracticalTasks1and2": "NOT FOUND as Block Task PDFs. Only unrelated Task 1 labels (G8 e-learning task sheet, MV13 foundation tasks, README noting removal of Task 1/2 wording from v2 forms).",
+      "tyreChangingStripRefitBalance": {
+        "teaching": "FOUND (PPT + LP2 + Tyres.ppt activity)",
+        "knowledgeAssessment": "FOUND — Wheels_and_Tyres_Initial_Assessment_Level2.docx asks remove-from-rim procedure, balancer purpose, BS159 puncture repair; marking sheet present",
+        "blockPracticalAssessedStripBalance": "NOT FOUND in Tasks 3-4 pack"
+      },
+      "tyreRepair": {
+        "teaching": "FOUND (Inspection and Repair PPT)",
+        "assessmentQuestions": "FOUND in G3 initial assessment",
+        "blockPractical": "NOT FOUND in Tasks 3-4"
+      },
+      "observationSheets": "Tutor observation referenced widely in Block lesson plans; dedicated blank observation-sheet templates not found as standalone pack (FS plans mention observation sheet as artefact).",
+      "ceaForms": "CEA referenced (guide, MV13 tracker Group tasks, some LP aims for CEA standard). Standalone CEA blank forms / completed CEA evidence packs NOT found in supplied materials.",
+      "jobCards": "Job-card COMPLETION referenced throughout Group lesson plans as recurring activity. Blank job-card templates / evidence pack NOT found as separate files.",
+      "markingAssessmentSheets": "FOUND for G3 tyres, G4 brakes, G7 starting/charging initial assessments + marking sheets; G5 suspension practical assessment LP.",
+      "evIsolation": {
+        "teachingProcedures": "FOUND in Safety/Working-on-HV PPTs",
+        "learnerAssessedIsolationPractical": "NOT FOUND beyond awareness tasks (B4 T4 location/safety awareness; B9 T3 handover). MV13 lists CEA Group2 task Locating EV/hybrid components — awareness-level tracker item, not S13 isolation assessment artefact."
+      },
+      "g09StockReplacement": {
+        "groupFolder": "EMPTY / Now not needed",
+        "blockEraReplacement": "FOUND in Block SOW lesson plans — e.g. W15 parts sourcing, W39 goods-in/storage, W55 technical parts sourcing, W59 order-to-goods-in flow, W65 supplier performance, W75 specialist parts/warranty, W79 inventory accuracy. Also SOW Duty 9 stock management; B4/B8/B10 skills-progress themes; G8 Task Sheet 1 stock-control e-learning.",
+        "conclusion": "G09 not missing from programme — migrated into Block curriculum intent/lessons."
+      },
+      "resourceToWeekLinks": {
+        "blockLessonPlans": "EXPLICIT week/block in filenames + body",
+        "blockPracticals": "EXPLICIT Programme Point Weeks ranges",
+        "groupResourcesToBlockWeek": "NOT FOUND as controlled join table; inferred only",
+        "lessonPlanKsbFocus": "INTENT lists only"
+      }
+    }
+  },
+  "s9UpdatedShadow": {
+    "TEACHING_COVERAGE": "CONFIRMED",
+    "PRACTICAL_APPLICATION": "PARTIALLY EVIDENCED / INCOMPLETE VISIBILITY",
+    "ASSESSMENT_EVIDENCE": "PARTIALLY EVIDENCED / INCOMPLETE VISIBILITY — upgraded note: G3 initial knowledge assessment + marking sheet explicitly tests remove-from-rim, balancer, puncture repair (knowledge assessment present; Block practical assessable strip/balance still absent from Tasks 3-4)",
+    "PRIMARY_OWNERSHIP": "UNDER REVIEW",
+    "GOLDEN_A": "REVIEWED GAP",
+    "GOLDEN_B_SHADOW_DIRECTION": "LIKELY CHANGE",
+    "notPersisted": true,
+    "note": "Simple label curriculum gap is no longer adequate for full corpus; final Primary/assessment decision still deferred"
+  },
+  "k10Shadow": {
+    "official": "Steering systems: purpose, function, and location of systems and components for inspection, removal, and replacement. Mechanical, hydraulic and electric power assisted steering.",
+    "goldenA": {
+      "status": "REVIEWED_CURRICULUM_GAP",
+      "reason": "No original session teaches steering systems (mechanical/hydraulic/EPAS) purpose/function/location for inspection/removal/replacement. Geometry/tyre-wear adjacency is insufficient.",
+      "proposedAmendmentBlock": 4
+    },
+    "literalTeachingFound": [
+      "G5 LP9 Introduction to Steering Systems — box vs rack/pinion; components; workshop remove/refit; track rod end + tracking reset",
+      "G5 LP10 Power Assistance — hydraulic and electric systems; inspect and report condition",
+      "Power Steering and EPS.ppt — hydraulic, electro-hydraulic, EPS principles/components/faults (EXTRACTED)",
+      "Electronic Steering Systems.ppt — variable assistance, EPS layouts, torque sensor, self-centering (EXTRACTED)",
+      "G11 session 1 electronic steering LP + related G11 advanced steering sessions",
+      "ACS Steering & suspension Assignment — geometry/alignment/suspension-weighted questions (partial for K10; stronger geometry)"
+    ],
+    "hydraulicCoverage": "CONFIRMED (LP10 + Power Steering PPT)",
+    "epsCoverage": "CONFIRMED (LP10 + Power Steering/EPS PPT + Electronic Steering PPT + G11)",
+    "mechanicalCoverage": "CONFIRMED PARTIAL→CONFIRMED for rack/pinion and steering box types + components (LP9); not unlimited mechanical breadth but purpose/function/location clearly intended",
+    "inspectionApplication": "CONFIRMED in LP10 inspect/report aims; B7 Task 3 steering component inspect/remove/refit; B4 Task 3 geometry/alignment (adjacent reinforcement)",
+    "practicalEvidence": "CONFIRMED — LP9 remove/refit workshop practical; B7 Task 3 Block practical PDF",
+    "assessmentEvidence": "PARTIAL — assignment mostly geometry/suspension; Block Task 3 practical assessment form; Group LP aims. Dedicated K10 knowledge exam sheet not separately found.",
+    "likelyPrimaryOwnerShadow": "B4 or B5 routing from G5 (guide: G5 D→B4/B5); Block practical replacement strong at B7; Golden A advisory proposed B4. Shadow strongest early teaching home G5→B4/B5; application reinforcement B7.",
+    "reinforcement": "B4 alignment; B7 replacement; G11 advanced EPS/ADAS/geometry",
+    "missingComponents": "Itemised exhaustive component inventory vs official list may still need human sweep; dedicated assessed mechanical-box removal breadth unspecified",
+    "goldenAVsRicher": "Golden A SOW-visibility failure — live corpus contains explicit steering-systems teaching and practical/application that SOW-only review concluded were absent",
+    "dimensions": {
+      "TEACHING_COVERAGE": "CONFIRMED",
+      "PRACTICAL_APPLICATION": "CONFIRMED (Group workshop + Block Task 3)",
+      "ASSESSMENT_EVIDENCE": "PARTIAL",
+      "PRIMARY_OWNERSHIP": "UNDER REVIEW",
+      "GOLDEN_A": "REVIEWED GAP",
+      "GOLDEN_B_SHADOW_DIRECTION": "LIKELY CHANGE"
+    },
+    "humanReviewFormat": {
+      "GOLDEN_A_POSITION": "K10 reviewed gap",
+      "CURRENT_RICHER_EVIDENCE": "Multiple steering LPs + hydraulic/EPS PPTs + Block steering replacement practical",
+      "WHAT_GOLDEN_A_COULD_NOT_SEE": "Literal Group steering curriculum and Block Task 3",
+      "WHAT_IS_NOW_CONFIRMED": "Mechanical rack/box intro, hydraulic PAS, EPS teaching; inspect/remove/refit application",
+      "WHAT_REMAINS_UNPROVEN": "Final Primary block choice; full assessment completeness vs every official wording element",
+      "STRUCTURAL_PRIMARY_IMPLICATION": "Shadow UNDER REVIEW — candidates B4/B5 early teaching, B7 application; do not write",
+      "PRACTICAL_ASSESSMENT_IMPLICATION": "Practical stronger than S9; knowledge assessment mixed with geometry assignment",
+      "CONFIDENCE": "HIGH that gap label inadequate; MEDIUM on exact Primary host",
+      "PROPOSED_GOLDEN_B_DIRECTION": "LIKELY CHANGE — advisory only; do not choose Primary yet"
+    }
+  },
+  "gapTaxonomyProductFinding": {
+    "implementEnumsYet": false,
+    "proposedTypes": [
+      "CURRICULUM_GAP — required teaching genuinely missing",
+      "TEACHING_DEPTH_GAP — topic exists but insufficient breadth/depth",
+      "PRACTICE_GAP — teaching exists but learner application insufficient",
+      "ASSESSMENT_GAP — teaching/application exist but assessment insufficient",
+      "EVIDENCE_VISIBILITY_GAP — evidence may exist but system cannot verify (or was not in SOW-only view)",
+      "STRUCTURAL_MAPPING_GAP — teaching exists but Primary ownership missing/incorrect/uncertain"
+    ],
+    "demonstratedBy": {
+      "S9": [
+        "EVIDENCE_VISIBILITY_GAP (vs Golden A)",
+        "likely TEACHING no longer gap",
+        "PRACTICE_GAP / ASSESSMENT_GAP residual for Block strip/balance",
+        "STRUCTURAL_MAPPING_GAP under review"
+      ],
+      "K10": [
+        "EVIDENCE_VISIBILITY_GAP (vs Golden A)",
+        "teaching CONFIRMED",
+        "STRUCTURAL_MAPPING_GAP under review",
+        "ASSESSMENT_GAP partial"
+      ]
+    }
+  },
+  "revisedStillMissing": [
+    "Block Practical Tasks 1 and 2 PDFs (confirmed absent from supplied Task pack)",
+    "Block-era assessed tyre strip/balance practical (beyond knowledge assessment + teaching activity language)",
+    "Standalone CEA form templates / completed CEA evidence packs",
+    "Blank job-card templates / e-logbook exports (only referenced)",
+    "Dedicated observation-sheet template pack (only referenced in plans)",
+    "EV isolation competence practical/assessment artefact distinct from awareness",
+    "Controlled Group-resource → Block-week join table",
+    "Final human decision on S9/K10 Primary hosts"
+  ],
+  "askJonAfterElimination": [
+    "Confirm whether Block Task 1/2 packs exist elsewhere or were intentionally retired in v2.0",
+    "Provide assessed tyre strip/balance practical/CEA/observation evidence if used live",
+    "Provide example job cards / CEA records for tyre and steering competencies (anonymised)",
+    "Confirm G09 retirement and that Block weeks (e.g. 39/55/79) are the live stock-management delivery",
+    "Confirm whether apprentices perform HV isolation practically or only awareness (for S13)",
+    "Any mapping spreadsheet linking Group resources to Block weeks"
+  ]
+}

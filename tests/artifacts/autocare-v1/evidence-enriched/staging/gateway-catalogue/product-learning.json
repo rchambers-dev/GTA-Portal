@@ -1,0 +1,30 @@
+{
+  "architectureOnly": true,
+  "implemented": false,
+  "lessonsFromGatewayIngest": [
+    "Gateway is a distinct assurance layer between programme delivery and EPA: GATEWAY_READINESS ≠ Block Primary ≠ Group CEA ≠ EPA.",
+    "Apprentice/Assessor paired documents should be first-class LinkedAssessmentInstrument pairs in the Portal.",
+    "Gateway Component Assessment codes (GW1AC01…) are stable IDs for PracticalAssessmentTask entities with Pass/Refer criteria.",
+    "Knowledge practice papers ≠ live online knowledge banks — model both, link when IDs like ST0499-AP01GW1K appear.",
+    "Filename tokens (EPA, EPS, EPA Practice) are unreliable; content classification is mandatory.",
+    "Seeded-fault assessor setup lists are valuable structured fields (faultCatalogue[]) for generating consistent practicals."
+  ],
+  "extendedTraceabilityTarget": [
+    "STANDARD",
+    "DUTY",
+    "KSB",
+    "PROGRAMME",
+    "BLOCK",
+    "SESSION",
+    "LEARNING_OBJECTIVE",
+    "TEACHING_MATERIAL",
+    "PRACTICE",
+    "ASSESSMENT",
+    "EVIDENCE",
+    "WORKPLACE_APPLICATION",
+    "PROGRESS",
+    "GATEWAY",
+    "EPA"
+  ],
+  "onboardingImplication": "Future multi-standard onboarding checklist should explicitly request Gateway/progress-review instruments in addition to SOW, teaching, CEA/practicals, and assessments."
+}

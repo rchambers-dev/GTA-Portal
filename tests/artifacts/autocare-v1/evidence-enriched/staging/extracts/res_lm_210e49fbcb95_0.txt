@@ -1,0 +1,89 @@
+Lesson Plan 3 B
+ Hybrid Vehicles
+
+ Trainer Name
+ -10531 74930
+ 0 0
+
+ Topic
+ -8255 69586 Introduction to hybrid vehicles and safe practice
+ 0 0 Introduction to hybrid vehicles and safe practice
+
+ Lesson Aims
+
+ Lesson Aims
+ -635 40005 An introduction to basic hybrid vehicle technology .
+ To discuss hybrid vehicle components and their operation.
+ To discuss safe practices when working on hybrid vehicles.
+ 0 0 An introduction to basic hybrid vehicle technology .
+ To discuss hybrid vehicle components and their operation.
+ To discuss safe practices when working on hybrid vehicles.
+
+ Lesson Objectives
+ -10160 57150 For learners to identify and name the components and cabling of a hybrid vehicle .
+ For learners to explain the procedure to isolate a hybrid vehicle to allow safe working.
+ For learners to demonstrate the correct procedure to isolate the electrical system of a hybrid vehicle.
+ 0 0 For learners to identify and name the components and cabling of a hybrid vehicle .
+ For learners to explain the procedure to isolate a hybrid vehicle to allow safe working.
+ For learners to demonstrate the correct procedure to isolate the electrical system of a hybrid vehicle.
+
+ Engagement
+ -10160 60326 Power point, white board, individual and group discussion, cars in the workshop ,
+ s ources of manufacturer data.
+ 0 0 Power point, white board, individual and group discussion, cars in the workshop ,
+ s ources of manufacturer data.
+
+ Stick ability
+ -8255 131445 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ 0 0 Practical learner tasks to reinforce fitting skills in workshop also following of safe and correct workshop practice.
+
+ Assessment for learning (AFL)
+ -10795 95250 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ 0 0 Verbal q uestioning and answering .
+ Observation of practical tasks (learner capability to safely use equipment following initial instruction )
+
+ Key words
+ 0 48260 Hybrid, Voltage, Current, Isolation
+ 0 0 Hybrid, Voltage, Current, Isolation
+
+ Differentiation
+ -10160 60325 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ 0 0 Engagement to use a variety of different methods to enable all learners to participate equally.
+ Identify individual learners need s and capabilities from initial assessment at start of day to adopt teaching strategies to encourage stretch and challenge.
+
+ Session 1
+ -29210 124459 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ 0 0 Review learner’s previous week at work – Update 20% OTJ logs and e-logbooks as necessary also assessment of job - based work to overview embed ding of Functional Skills . Discussion relating to today’s topic as initial assessment to determine learner’s level of subject knowledge.
+
+ Session 2
+ -29210 120650 Class theory session to discuss hybrid vehicle basic technology, system components and operation.
+ Discussion and overview of safe practice when working on hybrid vehicles.
+ Overview of specialist tool kit and procedures needed to work on hybrid vehicles.
+
+ 0 0 Class theory session to discuss hybrid vehicle basic technology, system components and operation.
+ Discussion and overview of safe practice when working on hybrid vehicles.
+ Overview of specialist tool kit and procedures needed to work on hybrid vehicles.
+
+ Session 3
+ center 58420 Workshop practical tasks using live vehicle for learners to identify system components and demonstrate correct system isolation procedure following initial instruction.
+ 0 0 Workshop practical tasks using live vehicle for learners to identify system components and demonstrate correct system isolation procedure following initial instruction.
+
+ Session 4
+ -17145 83185 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+ 0 0 Finish practical task s and give feedback. Determine if outcomes are met and discuss. Verbal Q&A to discuss relevance of today’s session and continuation into following teaching sessions.
+
+ Challenge
+ -19685 88900 Learners to work in dependently to demonstrate safe practice and electrical isolation procedures.
+ 0 0 Learners to work in dependently to demonstrate safe practice and electrical isolation procedures.
+
+ -17253 268533
+
+ 0 0
+
+ Trainer Evaluation

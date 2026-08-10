@@ -1,0 +1,20 @@
+﻿{
+    "theme":  "brakes",
+    "priority":  1,
+    "whySelected":  "Basic brake component teaching",
+    "originalPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Brake Calipers PP.ppt",
+    "relativePath":  "G04 Basic Braking\\Resources\\Brake Calipers PP.ppt",
+    "sourceFilename":  "Brake Calipers PP.ppt",
+    "exists":  true,
+    "contentHashSha256":  "14c073c3be452629d31a493afadfa7433d5a0e0902353fa2517ba8e3ea947979",
+    "byteLength":  3951616,
+    "extractionMethod":  "powerpoint_com_slidetext_v1",
+    "extractionStatus":  "EXTRACTED",
+    "extractionNotes":  [
+
+                        ],
+    "slideCount":  18,
+    "extractedCharCount":  6857,
+    "extractedTextPath":  "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G04_Basic_Braking_Resources_Brake_Calipers_PP.ppt.txt",
+    "extractedAt":  "2026-08-10T13:31:37.3914755+01:00"
+}

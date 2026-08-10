@@ -1,0 +1,46 @@
+[
+  {
+    "pairKey": "gw1_knowledge_practice",
+    "members": [
+      {
+        "id": "gw_ef36375dc80b",
+        "filename": "Autocare GW1 practice paper.docx",
+        "role": "APPRENTICE_OR_SHARED_PAPER"
+      }
+    ],
+    "relationship": "NO_ASSESSOR_PAIR_IN_PACK",
+    "confidence": "N_A"
+  },
+  {
+    "pairKey": "gw2_knowledge_practice",
+    "members": [
+      {
+        "id": "gw_db7111449f77",
+        "filename": "Autocare GW2 practice exam 2.docx",
+        "role": "APPRENTICE_OR_SHARED_PAPER"
+      }
+    ],
+    "relationship": "NO_ASSESSOR_PAIR_IN_PACK",
+    "confidence": "N_A"
+  },
+  {
+    "pairKey": "autocare-ap01-gw1-practical-support-material",
+    "apprenticeResourceId": "gw_f0ceef633f24",
+    "assessorResourceId": "gw_e8cf0cff7a22",
+    "apprenticeFile": "Autocare-AP01-GW1-Practical-Support-Material-Apprentice (1).docx",
+    "assessorFile": "Autocare-AP01-GW1-Practical-Support-Material-Assessor (1).docx",
+    "gatewayStage": "GW1",
+    "relationship": "APPRENTICE_ASSESSOR_PAIR",
+    "confidence": "EXPLICIT_FILENAME_PAIRING"
+  },
+  {
+    "pairKey": "autocare-ap01-gw2-practical-support-material",
+    "apprenticeResourceId": "gw_650cf2e40c5a",
+    "assessorResourceId": "gw_d91de30f5f63",
+    "apprenticeFile": "Autocare-AP01-GW2-Practical-Support-Material-Apprentice.docx",
+    "assessorFile": "Autocare-AP01-GW2-Practical-Support-Material-Assessor.docx",
+    "gatewayStage": "GW2",
+    "relationship": "APPRENTICE_ASSESSOR_PAIR",
+    "confidence": "EXPLICIT_FILENAME_PAIRING"
+  }
+]

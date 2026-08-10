@@ -1,0 +1,270 @@
+Welcome to your practice IMI GW2 under pinning knowledge assessment.
+ You have 70 minutes to answer 4 6 multiple choice questions.
+ Good Luck
+ 1. If the front road wheel is set to tilt inwards at the top it has a:
+ a) negative castor
+ b) positive camber
+ c) negative camber
+ d) positive castor
+ 2. After rectifying an engine fault you need to road test the customer's vehicle. Before you start the
+ test it is essential that you:
+ a) check the vehicle's tyre pressures, oil level and windscreen washer fluid
+ b) complete the job card with all details concerning the vehicle repair
+ c) ensure your work bay is tidy and all tools have been put away
+ d) check that you hold the correct driver's license for the vehicle
+ 3. During a vehicle inspection you discover that the tread on the front tyres is 'feathering'. This
+ probably indicates that:
+ a) the wheel alignment is incorrect
+ b) the tyre pressures are incorrect
+ c) the swivel pin inclination is wrong
+ d) the power steering is defective
+ 4. What component is located at the Arrow on the photo.
+ 690880 300466 711393 137077 0 0 3263885 6187
+ a) Motor
+ b) Torque Sensor
+ c) Rack
+ d) Trackrod
+ 5. The regulated voltage of an alternator is stated as 13.6 to 14.6 volts at 3000 rpm with the
+ headlamps on. This would indicate that the tolerance is:
+ a) 13.6 volts
+ b) 2.6 volts
+ c) 1.6 volts
+ d) 1 volt
+ 6. An 'aural' vehicle inspection involves:
+ a) conducting a visual inspection
+ b) carrying out a functional check
+ c) checking component clearance
+ d) listening for unusual noises
+ 7. The purpose of the brake servo fitted to a car's braking system is to:
+ a) assist the driver's pedal effort
+ b) improve the braking friction
+ c) increase the braking efficiency
+ d) increase the pedal leverage
+ 8. The tension of an alternator drive belt is checked by:
+ a) measuring maximum voltage across the battery at 2000 rev/min
+ b) measuring the deflection of the belt at its longest point
+ c) measuring the output current when under electrical load
+ d) measuring the rotation force using a spring balance gauge
+ 9. Which of the following is not likely to be part of the checks made on the windscreen wiper
+ operation during routine vehicle maintenance?
+ a) Inspecting the condition of the wiping surfaces of the rubber blades
+ b) Checking for abnormal noise during the wiping action on a wet screen
+ c) Checking the effectiveness of the wiping action on a wet screen
+ d) Checking the current draw made by the wiper motor during operation
+ 10. A cut more than 25mm or 10% of the selection width which exposes the casing cords on a tyre:
+ a) is repairable by patching
+ b) makes it illegal
+ c) is only suitable for off road use
+ d) can be safely plugged
+ 11. To increase braking effort most cars are fitted with:
+ a) a disc brake system
+ b) a vacuum servo unit
+ c) an ABS unit
+ d) a drum brake system
+ 12. The rear lamps and stop lamps are often checked by first switching on the rear lamps and then
+ operating the stop lamps. This sequence:
+ a) avoids wasting the technician’s valuable time
+ b) checks the earth connection to the lamps
+ c) checks the rating of the fuse is sufficient
+ d) checks the combined brightness of the lamps
+ 1 3 . Which of the following is most likely to provide technical data for a vehicle repair?
+ a) MOT testers manual
+ b) Vehicle workshop manual
+ c) Owners handbook
+ d) Job card
+
+ 1 4 . Failure to record onto the job card the full amount of time you have spent repairing a vehicle will:
+ a) increase company costs and increase company profits
+ b) reduce the customer's charges and reduce company profits
+ c) reduce company costs and increase company profits
+ d) increase the customer's charges and reduce company profits
+ 1 5 . Which of the following faults could be caused by worn shock absorbers?
+ a) Increase in braking distance
+ b) Poor vehicle acceleration
+ c) Reduced road spring oscillation
+ d) Decrease in braking distance
+ 1 6 . A driver complains of steering wheel 'shimmy' that gets worse as the vehicle's speed increases.
+ This most likely indicates:
+ a) the tyre pressures are too high
+ b) the front wheels need balancing
+ c) the wheel alignment needs adjusting
+ d) the shock absorbers need replacing
+ 1 7 . What is the boiling point of R134a at normal atmospheric pressure :
+ a) -26.3 degrees C
+ b) 100 degrees C
+ c) 0 degrees C
+ d) 26.3 degrees C
+ 1 8 . The presence of air in a hydraulic braking system will cause:
+ a) a very 'spongy' brake pedal during braking
+ b) corrosion of the brake lines and pistons
+ c) a significant reduction in braking efficiency
+ d) the brake fluid to boil under prolonged braking
+ 1 9 . In vehicle suspension what does the term ‘dive’ refer to?
+ a) The dipping and rising of the vehicle on uneven road surfaces
+ b) The lifting of the front of the vehicle during acceleration
+ c) The leaning movement of the body when turning
+ d) The dipping of the front of the vehicle during braking
+ 20 . In relation to steering, 'oversteer' is produced during cornering when the:
+ a) slip angles of the rear tyres are smaller than the slip angles of the front tyres
+ b) slip angles of the front tyres are the same as the slip angles of the rear tyres
+ c) slip angles of the rear tyres are larger than the slip angles of the front tyres
+ d) rear wheels of a car are carrying much less load than the front wheels
+ 2 1 . Which of the following faults will change the camber angle?
+ a) Very high tyre pressures
+ b) Unbalanced front wheels
+ c) A buckled front wheel
+ d) Incorrect toe setting
+ 2 2 . ONE advantage of alloy road wheels compared with steel road wheels is they:
+ a) increase unsprung weight
+ b) reduce unsprung weight
+ c) are cheap to manufacture
+ d) reduce heat transfer
+ 2 3 . In relation to steering geometry, the purpose of the 'castor angle' is to:
+ a) allow for the deflection of the wheels
+ b) provide self centering of the steering
+ c) provide toe-out on turns when cornering
+ d) provide centre point steering layout
+ 2 4 . When carrying out a routine vehicle service you should report any defects
+ that you find to your supervisor so that:
+ a) the customer can be contacted to get their authority to do the extra work
+ b) you can't be blamed if the vehicle goes wrong after you have done the service
+ c) you show to your supervisor that you are observant and knowledgeable
+ d) the additional parts required can be ordered without any further delay
+ 2 5 . In relation to steering geometry 'camber angle' is defined as:
+ a) the outward or inward tilt of the road wheel
+ b) the angle between the kingpin and the wheel
+ c) the backward tilt of the kingpin or swivel pin
+ d) the inward tilt of the kingpin or swivel pin
+ 2 6 . In a hydraulic power steering system the maximum pressure is limited by the:
+ a) hydraulic pump
+ b) MAP sensor
+ c) control valve
+ d) relief valve
+ 2 7 . Which of the following tasks is usually carried out by the service reception following routine
+ maintenance?
+ a) Complete the in-vehicle service history
+ b) Calculate the customer's invoice charges
+ c) Correctly re-instate any components and fittings
+ d) Check for signs of grease on paintwork surfaces
+ 2 8 . The propeller shaft sliding joint allows:
+ a) minor vibrations that occur in the shaft to be absorbed
+ b) for vibrations in the torque being transmitted by the shaft
+ c) the drive to be transmitted through angles of 90 
+ d) for changes in distance between the gearbox and rear axle
+ 2 9 . What does ‘FWD’ mean in relation to vehicle transmissions?
+ a) Four Wheel Design
+ b) Four Wheel Drive
+ c) Fixed Wheel Drive
+ d) Front Wheel Drive
+ 30 . The aspect ratio of a tyre is the:
+ a) width of a tyre expressed in millimeters
+ b) circumference of a tyre expressed in inches
+ c) maximum height of a tyre expressed in millimeters
+ d) height of the tyre sidewall , expressed as a percentage of the width
+ 3 1 . A typical compression ratio for a modern, normally aspirated, spark ignition engine is:
+ a) 20:1
+ b) 10:1
+ c) 30:1
+ d) 40:1
+ 3 2 . What could be the cause of excessive black smoke from the exhaust of a diesel vehicle?
+ a) Too much engine oil
+ b) Blown head gaskets
+ c) Worn pistons
+ d) Faulty injectors
+ 3 3 . Which of the following is normally an indication of a very weak mixture setting for a petrol
+ engine?
+ a) High % CO in exhaust gases
+ b) Very high fuel consumption
+ c) Very white spark plug insulator
+ d) Black exhaust smoke
+ 3 4 . What measuring equipment would you use to measure brake disc run out?
+ a) Vernier caliper
+ b) Caliper and steel rule
+ c) Dial test indicator
+ d) Micrometer
+ 3 5 . What does the abbreviation ‘4x4’ mean in relation to light vehicle transmission?
+ a) The bottom gear ratio is 4:4
+ b) The top gear ratio is 4:1
+ c) The vehicle is 4 wheel drive
+ d) The vehicle has 4 axles
+ 3 6 . To check 'toe-out on turns' you will need to use:
+ a) a caster angle gauge
+ b) a heavy duty jack
+ c) a pair of protractor turn tables
+ d) a wheel alignment gauge
+ 3 7 . If mineral fluids and vegetable based fluids are mixed, what effect could this have on the
+ braking system?
+ a) Improves braking efficiency
+ b) May e xpand the rubber seals
+ c) Lowers the boiling point of the fluid
+ d) Greatly improves the life of rubber seals
+ 3 8 . The three elements necessary to produce a fire are:
+ a) oxygen, a fuel source and an ignition source
+ b) carbon dioxide, nitrogen and an ignition source
+ c) oxygen, hydrogen and nitrogen
+ d) H2O, CO2 and NOx
+ 3 9 . It is a requirement for garages that work on AC systems to have specialist leak detecting equipment ?
+ a) False
+ b) True
+ 40 . A customer has repeatedly had their vehicle inspected for using too much fuel. You suspect
+ the problem is the customer’s poor driving technique. What should you do next?
+ a) Check the vehicle again for a rich mixture setting
+ b) Suggest that you go for a road test with the customer
+ c) Put the vehicle on a lift and inspect all the fuel lines
+ d) Replace the air filter and spark plugs
+ 4 1 . When tested the exhaust gas of an engine it contains an excessive amount of Carbon Monoxide.
+ One likely cause of this is:
+ a) a defective catalytic convertor
+ b) a defective oil pump
+ c) leaking inlet manifold
+ d) leaking exhaust manifold
+ 4 2 . In the engine's lubrication system the function of the oil pressure relief valve is to:
+ a) limit the minimum oil pressure
+ b) control the oil flow to the filter
+ c) limit the maximum oil pressure
+ d) control the maximum oil temperature
+ 4 3 . Octane rating is a property of:
+ a) petrol
+ b) diesel
+ c) brake fluid
+ d) water
+ 4 4 . in a vehicle with electronically controlled 4 wheel the steering, at low speeds the rear wheels will:
+ a) Turn in the opposite direction to the fronts
+ b) Turn in the same direction as the fronts
+ c) Lock in position
+ d) Cause more understeer
+ 4 5 . An indication that a good quality of engine repair has been carried out is:
+ a) the car has been valeted before being handed back
+ b) the use of good quality components fitted to the manufacturer’s specification
+ c) the garage is prestigious in appearance
+ d) the high labour costs in the garage
+
+ 4 6 . When conducting a cylinder leakage test, air bubbles appear in the cooling system. This might
+ indicate:
+ a) a defective cylinder head gasket
+ b) worn or broken piston rings
+ c) burnt inlet valve or valve seat
+ d) a defective radiator pressure cap
+ 4 7 . In a direct injection compression ignition engine the injector:
+ a) injects the fuel into the ante-chamber
+ b) injects the fuel into the combustion chamber
+ c) injects the fuel into throttle bodies
+ d) injects the fuel into the manifold
+ 48. Why might you need to remove the AC refrigerant from a vehicle:
+ Before the vehicle enters a bake oven
+ Before completing a service
+ Prior to completing an MOT
+ Prior to fitting a new windscreen
+
+ 49 . What type of suspension design in shown?
+ Ma cpherson strut
+ Torsion beam
+ Double wishbone
+ Leaf spring
+
+ 50. If we had a suspected bearing noise coming from the auxillliary drive belt area , what could you do to try and identify the problem?
+ Use a stethoscope to help identify the noisy bearing
+ Change the belt
+ Replace the alternator to see if goes away
+ Spray oil on the belt
+ .

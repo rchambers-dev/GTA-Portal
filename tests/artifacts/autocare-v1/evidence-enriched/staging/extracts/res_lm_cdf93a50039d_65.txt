@@ -1,0 +1,65 @@
+Level 2 Automotive: Starting and Charging Systems Initial Knowledge Assessment
+ Learner Name: ________________________________ Date: ________________________________
+ Section 1 – Health and Safety
+ 1. State why PPE such as gloves and eye protection should be worn when working on batteries.
+
+ 2. Explain why the negative terminal should always be disconnected first when removing a battery.
+
+ 3. Describe why hydrogen gas is dangerous when charging or jump starting a battery.
+
+ 4. Explain how to avoid short circuits or sparks when working near battery terminals.
+
+ 5. Describe how lead-acid batteries should be stored, handled, and disposed of safely.
+
+ Section 2 – Tools and Equipment
+ 6. Describe how to use a multimeter to measure voltage and resistance in an electrical circuit.
+
+ 7. Explain the purpose of a battery load tester or conductance tester.
+
+ 8. Describe how a clamp ammeter is used to measure starter motor current draw.
+
+ 9. State the safe procedure for using jump leads or a booster pack to start a vehicle.
+
+ 10. Explain why it is important to regularly calibrate electrical test tools such as multimeters.
+
+ Section 3 – Components and Operation
+ 11. Identify the main parts of a starter motor and their functions.
+
+ 12. Describe the operation sequence of a starter motor during engine cranking.
+
+ 13. Name the main components of an alternator and state their purposes.
+
+ 14. Explain how alternator voltage is controlled by the voltage regulator.
+
+ 15. State the role of the battery in the charging and starting system.
+
+ 16. Describe the current flow in the charging circuit from the alternator to the battery.
+
+ 17. Explain the purpose of belt tensioning systems used with alternators.
+
+ 18. Identify two types of alternators used on modern vehicles, such as LIN or smart alternators.
+
+ 19. Describe the construction of a lead-acid battery and the function of the electrolyte.
+
+ 20. State what the open-circuit voltage reading indicates about the battery’s state of charge.
+
+ Section 4 – Testing and Fault Diagnosis
+ 21. Explain how to carry out a battery condition test safely and interpret the results.
+
+ 22. Describe how to test alternator output voltage and current using a multimeter.
+
+ 23. Explain how to carry out a starter current draw test and what the results may indicate.
+
+ 24. Describe how to perform a voltage drop test across starter and charging cables.
+
+ 25. Explain how to check earth paths for resistance within the charging system.
+
+ 26. List three common causes of poor charging performance or low voltage output.
+
+ 27. Describe how to diagnose slow cranking or no-start conditions.
+
+ 28. Explain how to test for parasitic drain (key-off current draw) and acceptable limits.
+
+ 29. Describe how to check the charging warning light and alternator feedback circuits.
+
+ 30. State what post-repair checks should be completed after replacing a starter or alternator.

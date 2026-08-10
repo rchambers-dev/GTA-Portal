@@ -1,0 +1,134 @@
+{
+  "status": "STAGING_EVIDENCE_IMPACT_ONLY",
+  "mutatesRatifiedPilot": false,
+  "mutatesProgrammeTruth": false,
+  "classifiedMeaningOfCEA": "In these packs, CEA document titles/bodies are controlled centre practical assessment tasks: APPRENTICE INSTRUCTIONS + APPRENTICE ASSESSMENT RECORD with Pass/Refer and assessor sign-off. Numbering follows Group.task (e.g. CEA 3.1 under Wheels and Tyres). Not workplace job cards; not Block Task 1/2 PDFs.",
+  "previousMissingClaims": {
+    "ceaFormsPacks": {
+      "prior": "Standalone CEA blank forms NOT found",
+      "now": "CLOSED — Year 1 and Year 2 CEA apprentice instruction/assessment packs supplied and inspected"
+    },
+    "blockTasks1and2": {
+      "prior": "Block Task 1/2 PDFs not found",
+      "now": "STILL OPEN as Block Task 1/2 — these CEA files are a different Group-era assessment layer, not Block Task 1/2 artefacts",
+      "correspondence": "PARTIAL / ANALOGUE ONLY — they may functionally cover practical assessment that Block Tasks 1–2 once represented, but they are not those files"
+    },
+    "assessedTyreStripRefitBalance": {
+      "prior": "Not found in Block Tasks 3–4",
+      "now": "CLOSED as missing artefact — CEA 3.1 R&I (remove/replace/balance + puncture BS159), CEA 3.2 puncture, CEA 3.4 balance four wheels, CEA 3.5 run flat present"
+    },
+    "steeringPracticalApplication": {
+      "prior": "Partially evidenced via B7 Task 3 + Group teaching",
+      "now": "STRENGTHENED — CEA 5.2 TRE, 5.6 pump, 5.7 rack (+ suspension CEAs 5.1–5.5); Year2 advanced steering/ADAS cluster under CEA 11.x"
+    },
+    "hvIsolationPracticalAssessment": {
+      "prior": "Not found beyond awareness",
+      "now": "MATERIALLY STRENGTHENED — CEA 2.1 requires carry out isolation of HV system, reinstate, test; Pass/Refer assessor record. Still blank template (not completed learner sample)."
+    },
+    "observationEvidence": {
+      "prior": "Referenced not supplied",
+      "now": "PARTIAL CLOSE — assessor observation/sign-off mechanism present on each CEA assessment record; completed observed evidence still not supplied"
+    },
+    "jobCardEvidence": {
+      "prior": "Workplace job-card templates not found as pack",
+      "now": "STILL OPEN for workplace job cards — CEA packs are not those templates (commercial invoice/estimate templates in Y2 are also not job cards)"
+    }
+  },
+  "pilotImpact": {
+    "S9": {
+      "effect": "STRENGTHEN",
+      "materialChangeCandidate": true,
+      "summary": "CEA 3.1/3.2/3.4/3.5 provide controlled assessed practicals for remove/install, puncture repair (BS159), balance, and run-flat — exactly the practice/assessment visibility gap in the ratified shadow pilot. Ownership remains Group→Block inferred (G3→B2/B3); Primary still not auto-assigned.",
+      "residual": "Blank templates only; Block-era exact host still structural inference; specials breadth improved by run-flat CEA."
+    },
+    "K10": {
+      "effect": "STRENGTHEN_APPLICATION_AND_ASSESSMENT",
+      "materialChangeCandidate": true,
+      "summary": "CEA 5.6/5.7 prove assessed remove/refit of hydraulic PAS pump/rack; TRE CEA 5.2 strengthens mechanical steering R&R. Helps prove application/assessment more than resolve Primary ownership (still Ambiguous between early teaching B4/B5 vs later practical). EPS/EPAS dedicated CEA not obvious in filenames (EPA Practice 11.5 needs content check — may be End Point Assessment practice, not EPS).",
+      "residual": "Ownership still under review; confirm whether any CEA assesses EPS/EPAS specifically vs hydraulic only."
+    },
+    "S13": {
+      "effect": "STRENGTHEN",
+      "materialChangeCandidate": true,
+      "summary": "CEA 2.1 objectives and scenario explicitly require isolation of the HV system, reinstatement and functional test, with Pass/Refer assessor record. This is stronger than awareness. Title still mixes locating components. Strict reading: assessed isolation competence is now templeted/designed — completed competence evidence still unseen.",
+      "residual": "Blank form only; whether live delivery uses this for every apprentice remains operational confirmation (Jon)."
+    },
+    "K12": {
+      "effect": "STRENGTHEN_SUPPORTING",
+      "materialChangeCandidate": false,
+      "summary": "CEA 4.x and 10.x provide rich assessed brake practicals — supports KEEP B2 narrative and progression, does not force remap."
+    },
+    "K21": {
+      "effect": "MILD_SUPPORT",
+      "materialChangeCandidate": false,
+      "summary": "CEA 2.1 involves hybrid/EV vehicle and HV voltages recording — supports K21 adjacent competence but Primary KEEP B6 unchanged."
+    },
+    "K23": {
+      "effect": "STRENGTHEN",
+      "materialChangeCandidate": false,
+      "summary": "CEA 2.1 requires HV isolation procedure under assessment conditions — strengthens practice/assessment axes previously marked PARTIAL, ownership KEEP B6 unchanged."
+    }
+  },
+  "reopenPilotForHumanReview": {
+    "recommendedNow": false,
+    "recommendedLaterAfterFurtherIngest": true,
+    "humanDecision": "STOP — do not reopen pilot yet; await Gateway/practical-assessment pack then source sufficiency audit.",
+    "reason": "Material new assessed-practical artefacts for S9, K10 application, and S13/K23 practice-assessment. Directions may hold but evidence-strength ratings likely upgrade. Do not auto-edit ratified pilot."
+  },
+  "counts": {
+    "filesTotal": 57,
+    "docx": 55,
+    "extractedOk": 56,
+    "controlledAssessmentTasks": 53,
+    "supportingTemplates": 4,
+    "tyreCluster": 5,
+    "steeringCluster": 14,
+    "hybridCluster": 1,
+    "brakesCluster": 10,
+    "s9HitDocs": [
+      "CEA 3.1 APPRENTICE INSTRUCTIONS Tyres R & I.docx",
+      "CEA 3.2 APPRENTICE INSTRUCTIONS Puncture.docx",
+      "CEA 3.3 APPRENTICE INSTRUCTIONS TPMS.docx",
+      "CEA 3.4 APPRENTICE INSTRUCTIONS Balance 4 wheels.docx",
+      "CEA 3.5 APPRENTICE INSTRUCTIONS run flat.docx",
+      "CEA 4.2b APPRENTICE INSTRUCTIONS rear wheel cylinder and bleed.docx",
+      "CEA 4.5 APPRENTICE INSTRUCTIONS disc run-out.docx",
+      "CEA 5.1 APPRENTICE INSTRUCTIONS front wheel alignment.docx",
+      "CEA 5.3 APPRENTICE INSTRUCTIONS bottom ball joint.docx",
+      "CEA 10.1 APPRENTICE INSTRUCTIONS ABS wss.docx",
+      "CEA 10.2 APPRENTICE INSTRUCTIONS ABS reluctor ring.docx",
+      "CEA 10.3 APPRENTICE INSTRUCTIONS ABS output.docx",
+      "CEA 11.1 APPRENTICE INSTRUCTIONS traction control.docx",
+      "CEA 11.4 APPRENTICE INSTRUCTIONS front tyre wear.docx",
+      "CEA 11.5 APPRENTICE INSTRUCTIONS EPA Practice.docx",
+      "CEA 11.5 APPRENTICE INSTRUCTIONS rear tyre wear.docx",
+      "CEA 14.0 APPRENTICE INSTRUCTIONS inspection.docx",
+      "CEA 9.1 APPRENTICE INSTRUCTIONS sourcing parts.docx",
+      "CEA C1 Service Schedule Generic.docx"
+    ],
+    "k10HitDocs": [
+      "CEA 5.1 APPRENTICE INSTRUCTIONS front wheel alignment.docx",
+      "CEA 5.2 APPRENTICE INSTRUCTIONS track rod end.docx",
+      "CEA 5.3 APPRENTICE INSTRUCTIONS bottom ball joint.docx",
+      "CEA 5.4 APPRENTICE INSTRUCTIONS front strut.docx",
+      "CEA 5.5 APPRENTICE INSTRUCTIONS rear damper.docx",
+      "CEA 5.6 APPRENTICE INSTRUCTIONS power steering pump.docx",
+      "CEA 5.7 APPRENTICE INSTRUCTIONS power steering rack.docx",
+      "CEA 11.4 APPRENTICE INSTRUCTIONS front tyre wear.docx",
+      "CEA 11.5 APPRENTICE INSTRUCTIONS EPA Practice.docx",
+      "CEA 11.6 APPRENTICE INSTRUCTIONS adas fault.docx",
+      "CEA 14.0 APPRENTICE INSTRUCTIONS inspection.docx",
+      "CEA C1 Service Schedule Generic.docx"
+    ],
+    "s13HitDocs": [
+      "CEA 2.1 APPRENTICE INSTRUCTIONS Hybrid.docx"
+    ]
+  },
+  "epaPractice11_5Note": {
+    "filename": "CEA 11.5 APPRENTICE INSTRUCTIONS EPA Practice.docx",
+    "looksLikeEndPointAssessmentPractice": false,
+    "looksLikeElectricPowerSteering": false,
+    "note": "Filename 'EPA Practice' is ambiguous — inspect body before treating as EPS/EPAS evidence.",
+    "snippet": "APPRENTICE INSTRUCTIONS\n Re F: N/A\n Carry out Four-Wheel Alignment\n\n Objectives:\n To ensure safe working practices are followed throughout your assessment\n To demonstrate a methodical procedure when carrying out four-wheel alignment\n To demonstrate your knowledge and ability to inspect vehicle systems for wear and damage\n To demonstrate your knowledge and ability to carry out wheel alignment pre-checks\n To demonstrate you knowledge and ability to measure and adjust four-wheel alignment\n To demonstrate your knowledge and ability to reinstate the vehicle to the pre-assessment condition\n To correctly complete the Apprentice Assessment Record including details specific to the system worked on du"
+  }
+}

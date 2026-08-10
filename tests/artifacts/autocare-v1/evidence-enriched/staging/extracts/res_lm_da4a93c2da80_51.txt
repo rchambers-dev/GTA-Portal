@@ -1,0 +1,246 @@
+Auto Care Apprenticeships Heating and Ventilation 
+ style.visibility
+
+Lesson Aims 
+ 
+ Introduction to cabin heating systems. 
+ 
+ Recognise heating system faults. 
+ 
+ What equipment is required to test heating systems . 
+ 
+ style.visibility
+
+Lesson Objectives 
+ 
+ Be able to identify at least 2 heating system components. 
+ 
+ Be able to name at least 1 symptom and cause of a heating system fault. 
+ 
+ Be able to name at least 1 piece of heating system test equipment and how to use it. 
+ 
+ style.visibility
+
+Heater Control 
+ All cars are equipped with a passenger compartment heater which is designed to utilize heat from the engine which is transferred into heated air which is then blown into the passenger compartment. 
+ style.visibility style.visibility
+
+Heater Control 
+ Once the engine has run long enough to warm up, the heated coolant is transferred into the heater core which is located inside the passenger compartment. 
+ style.visibility style.visibility
+
+Heater Box 
+ The heater and air conditioner evaporator core are housed in the same unit called a heater box or plenum. This unit is where several air deflection doors and ducts are located which divert air to various vents. 
+ style.visibility style.visibility
+
+Heater Control 
+ In this illustration the heater box has been removed to show the air flow diverter door, this door swings from one opening to the next, mixing or stopping the air flow from one vent system to another. 
+ style.visibility style.visibility
+
+Heater Control 
+ These air control doors are actuated by cable, vacuum or electrical servo motors which can be controlled using a manual lever, or automatically from a computer. 
+ style.visibility style.visibility
+
+Blend Door Motors 
+ Electrical blend door motors are used to move a specific door which controls air vent outputs such as defrost, mid and floor vents. 
+ style.visibility style.visibility
+
+Heater Core/Matrix 
+ The heater core itself looks much like a small radiator, which acts much in the same way. Hot coolant runs through the core while forcing air over it which delivers the heated air. The heater core can also be referred to as a heater matrix. 
+ style.visibility style.visibility
+
+Engine Coolant 
+ When engine coolant is warmed, It is forced through the heater core via the water pump, if the engine coolant level is too low the heater will not operate. 
+ style.visibility style.visibility
+
+Blower Fan Motor 
+ A blower fan motor is used to push air throughout the ventilation system. This is controlled by the driver via the temperature control knob or climate control computer. 
+ style.visibility style.visibility
+
+Fuses and Relays 
+ A fuse and relay are used to protect the heater system. These are located in the fuse box and can be checked by using a multimeter. 
+ style.visibility style.visibility style.visibility style.visibility style.visibility
+
+Heater Upper Vents 
+ Warm air is pushed through the upper vents which are located at the front of the dashboard near the windshield. These vents are used to remove moisture from the inside of the windshield which helps improve visibility. 
+ style.visibility style.visibility
+
+Heater Mid Level Vents 
+ The mid level vents are primarily used for passenger comfort and have the ability to control and direct the airflow. 
+ style.visibility style.visibility
+
+Heater Floor Vents 
+ Heater floor vents are used to provide warm air to the lower portion of the passenger compartment. 
+ style.visibility style.visibility
+
+Heater Control 
+ 
+ Heater system controls are adjusted by one of two ways, 
+ a manual system is used which is adjusted by the driver, 
+ or a climate control computer responds to a setting, which is then automatically adjusted. 
+ 
+ Some manufacturers have separated the heater system into passenger and drivers side controls which offer independent temperature adjustments. 
+ 
+ style.visibility
+
+Air Conditioning 
+ 
+ A/C keeps the temperature and humidity inside the vehicle at a constant level. 
+ 
+ This is useful when the vehicle is used in a wide range of operating conditions. 
+ 
+ Using A/C to control the climate can help to reduce the stress of the journey for the driver and the passengers. 
+ 
+ style.visibility style.visibility
+
+Pollen Filters 
+ 
+ Most modern A/C systems have built-in filtration to remove dust, pollen, and insects from the air supply. 
+ 
+ By using these filters, driver and passenger fatigue can be reduced as well as allergy levels . 
+ 
+ style.visibility style.visibility
+
+Condenser 
+ Evaporator 
+ Compressor 
+ Refrigerant in pipes carries heat through system 
+ Passenger Compartment 
+ Engine Bay 
+ Removed heat 
+ Dissipated heat 
+ Next > 
+ Basic Air Conditioning System 
+ A compressor forces a liquid, called refrigerant, around the A/C system in pipes under pressure. 
+ 
+ The evaporator is located inside the passenger compartment to remove heat. 
+ 
+ The condenser is located in an air flow, which is normally at the front of the vehicle. 
+ 
+ The condenser dissipates heat away from the system and into the surrounding air. 
+ 
+ style.visibility style.visibility
+
+Compressor 
+ 
+ The Compressor 
+ 
+ The compressor pulls in low pressure refrigerant vapour from the evaporator and pumps it out at high pressure. 
+ 
+ This pressurization raises the temperature and the boiling point of refrigerant vapour going into the condenser. 
+ 
+ style.visibility style.visibility
+
+Condenser 
+ Fans aid ram air flow 
+ Compressor 
+ 
+ The Condenser 
+ 
+ The condenser is usually located at the front of the vehicle and receives high pressure refrigerant vapour from the compressor. 
+ 
+ The vapour is cooled by ram (forced-in) air, which changes it into a high-pressure liquid. 
+ 
+ A restriction between the condenser and the evaporator changes the liquid from high to low pressure, lowering its boiling point. 
+ 
+ 
+ style.visibility style.visibility
+
+Compressor 
+ Evaporator 
+ Condenser 
+ Fans 
+ 
+ The Evaporator 
+ The evaporator is designed to absorb heat and humidity from the vehicle′s interior. 
+ 
+ The low-pressure refrigerant liquid heats up, changing into low pressure refrigerant vapour . 
+ 
+ Moisture in the air forms droplets on the evaporator fins and this eventually drains onto the road. 
+ 
+ This is why you will often see water under a vehicle that has had the air conditioning working. 
+ 
+ style.visibility style.visibility
+
+Engine Power and Compressors 
+ 
+ The compressor is driven by the engine or a motor using pulleys and belts. 
+ 
+ The amount of engine power consumed by the compressor is directly related to the temperature setting of the A/C control. 
+ 
+ 
+ style.visibility style.visibility
+
+If the system is not serviced regularly, the algae can cause the occupants of the vehicle to exhibit flu-like symptoms. 
+ A/C Servicing 
+ 
+ To ensure that they operate efficiently, A/C systems must be serviced regularly to manufacturer's guidelines. 
+ 
+ The A/C system can develop leaks or suffer from damage by road debris. 
+ 
+ The compressor drive belt requires regular attention because it can stretch and become loose. 
+ 
+ The evaporator can be affected by algae growing on its fins. 
+ 
+ style.visibility style.visibility
+
+Air Conditioning and Climate Control Systems 
+ 
+ Air conditioning and climate control systems keep a constant, ideal temperature inside your car, ensuring you always stay cool and comfortable. 
+ 
+ The air conditioning system complements the heating and ventilation system in your car. 
+ 
+ It includes a cooling system, heating, humidity controller and blower unit, this all works just like the heat pump in a refrigerator. 
+ 
+ In simple terms, the air is directed through an evaporator, where it loses its heat to the refrigerant. The cooled and dried air is then blown into the cabin of your car. A compressor cools the refrigerant down to the required temperature. 
+ 
+ style.visibility
+
+Climatronic Automatic Air Conditioning 
+ 
+ Climatronic regulates the temperature of the cabin based on the chosen temperature setting. It adjusts the blower speed and operates the air distribution flaps automatically. This ensures a pleasant interior climate in all conditions, with minimal draught as the air flows through the passenger compartment. 
+ The Climatronic systems electronic control monitors all the key factors, such as the position of the sun, the intensity of its rays and the outside temperature. It will then add more, or less cool air accordingly. 
+ Climatronic also includes a pushbutton defrost function to clear fogged or iced-up windscreens. This directs the full airflow onto the inside of the glass at the highest blower and heat output settings. 
+ If the outside temperature is above 0°C, the cooling system cuts in as well to dry the air before it is heated. 
+ 
+ 
+ style.visibility
+
+Heater Faults 
+ 
+ Many aspects of the heater system can malfunction which require repair. 
+ 
+ A cabin filter is used to clean impurities from the air before it enters the ventilation system, when this filter becomes blocked it can slow the airflow in which case the filter needs replacement. 
+ 
+ An engine coolant leak can develop which hinders the performance of the heater system, these leaks must be repaired before proper heater operation will return. 
+ 
+ When a heater core fails, a coolant residue may be observed upon the passenger side floorboard, this will typically be accompanied by a sweet, pungent odour . 
+ 
+ style.visibility
+
+Testing For Leaks 
+ 
+ Checking for leaks in a hot cooling system can be hazardous as there is a risk of burning yourself. 
+ 
+ To simulate the pressure of a hot system, but at a cold temperature, you should use a pressure tester. 
+ 
+ This allows you to apply a pressure to the system by removing the pressure cap and fitting the gauge. 
+ 
+ 
+ style.visibility style.visibility style.visibility
+
+Heater Faults 
+ 
+ Some vehicles use a heater control valve which is used to stop the coolant from flowing into the heater core when the heater system is not being used. 
+ 
+ If an audible bubbling noise is heard from the heater core area, it is due to air being trapped inside the heater core, in time, the air should dissipate to silence the noise. 
+ 
+ style.visibility
+
+Summary 
+ 
+ In this presentation you have seen: 
+ 
+ Heater system components, operation and ways of testing . 
+ 
+ style.visibility
