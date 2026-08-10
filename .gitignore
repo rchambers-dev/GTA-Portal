@@ -59,19 +59,29 @@ scripts/*-out.txt
 scripts/*-err.txt
 scripts/*-stderr.txt
 
-# Local scratch / temp portal — never commit if present under this tree
+# Local scratch / sibling apps — never commit if present under this tree
+/Portal-1/
+/Portal-1/**
+/Website/
+/Website/**
+/Temp Portal/
+/Temp Portal/**
 /GTA Temp Portal/
 /GTA Temp Portal/**
-
-# Sibling apps (keep portal + website repos separate)
 /GTA Website/
 /GTA Website/**
 /GTA Old Portal/
 /GTA Old Portal/**
-/GTA Temp Portal/
-/GTA Temp Portal/**
 /Other Portal/
 /Other Portal/**
+
+# Parent Developing/ siblings (multi-root workspace)
+../Portal-1/
+../Portal-1/**
+../Website/
+../Website/**
+../Temp Portal/
+../Temp Portal/**
 ../GTA Website/
 ../GTA Website/**
 ../Other Portal/
