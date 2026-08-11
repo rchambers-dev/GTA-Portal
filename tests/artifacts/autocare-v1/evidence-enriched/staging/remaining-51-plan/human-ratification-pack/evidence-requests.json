@@ -5,7 +5,6 @@
       "id": "ER-01",
       "request": "Named EDI / inclusion teaching materials (not SEND “inclusion” scaffolding)",
       "affects": [
-        "K1",
         "K31",
         "S20",
         "B5"
@@ -13,7 +12,18 @@
       "why": "KEEP GAP currently; off-pack induction could change conclusion",
       "current": "KEEP GAP",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_NAMED_EDI_INCLUSION_TEACHING",
+        "axis": [
+          "teaching",
+          "practice",
+          "workplaceApplication"
+        ],
+        "reason": "KEEP GAP approved for B5/K31/S20 cluster on supplied Autocare corpus; auto-request any named EDI/inclusion induction materials (exclude SEND inclusion scaffolding false positives)."
+      },
+      "affectsNote": "K1 removed 2026-08-10 during Queue B — EDI request does not cover industry/role; see ER-27."
     },
     {
       "id": "ER-02",
@@ -24,7 +34,15 @@
       "why": "Confirms whether K28 is curriculum gap or misframed payments adjacency",
       "current": "KEEP GAP",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_NAMED_REGULATORY_COMPLIANCE_TEACHING",
+        "axis": [
+          "teaching"
+        ],
+        "reason": "KEEP GAP approved: payments/VAT/GDPR adjacency must not satisfy FCA/PCI. Auto-request named FCA/PCI materials during source-sufficiency."
+      }
     },
     {
       "id": "ER-03",
@@ -35,7 +53,17 @@
       "why": "EV awareness must not be mistaken for SoH",
       "current": "KEEP GAP",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_NAMED_SKILL_COMPETENCE_ARTEFACTS",
+        "axis": [
+          "teaching",
+          "practice",
+          "assessment"
+        ],
+        "reason": "KEEP GAP approved: EV awareness must not satisfy HV SoH skill. Auto-request SoH procedures and assessed practicals."
+      }
     },
     {
       "id": "ER-04",
@@ -46,7 +74,16 @@
       "why": "Rules teaching confirmed; assessed isolation competence unproven — REVIEW",
       "current": "REVIEW",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_PRACTICE_OR_ASSESSMENT_ARTEFACT",
+        "axis": [
+          "practice",
+          "assessment"
+        ],
+        "reason": "For skills, teaching of rules is not competence. Source-sufficiency should require learner-performed/assessed practical artefacts for skills like HV isolation, separate from awareness/materials teaching."
+      }
     },
     {
       "id": "ER-05",
@@ -74,7 +111,15 @@
       "why": "May convert depth/gap to visibility-resolved coverage",
       "current": "CHANGE ownership early + depth/visibility",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_OR_UNEXTRACTED_TEACHING_MATERIAL",
+        "axis": [
+          "teaching"
+        ],
+        "reason": "Tyres.ppt is catalogue-linked but largely unextracted; official K9 tech-info components remain unresolved between visibility and depth gap."
+      }
     },
     {
       "id": "ER-10",
@@ -85,7 +130,15 @@
       "why": "Material official component missing",
       "current": "CHANGE → G7 + e-machine gap",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_OFFICIAL_COMPONENT_TEACHING",
+        "axis": [
+          "teaching"
+        ],
+        "reason": "Official K15 explicitly names e-machine; current corpus has strong adjacent battery/starter/alternator teaching but no named e-machine component — source-sufficiency should flag official-component absences."
+      }
     },
     {
       "id": "ER-15",
@@ -107,7 +160,15 @@
       "why": "Partial/distributed; CS/ethics fragments insufficient",
       "current": "CHANGE → PARTIAL/DISTRIBUTED",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_DEDICATED_BUSINESS_OPERATIONS_TEACHING",
+        "axis": [
+          "teaching"
+        ],
+        "reason": "Official K25 spans efficiency/competitiveness/operational risk/ethics/CS; only CS/ethics fragments are evidenced — source-sufficiency should request dedicated business-operations materials rather than accepting adjacency."
+      }
     },
     {
       "id": "ER-21",
@@ -131,7 +192,17 @@
       "why": "KEEP GAP — mention/inference insufficient",
       "current": "KEEP GAP",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_DELIBERATE_SOFT_SKILL_PRINCIPLES_TEACHING",
+        "axis": [
+          "teaching",
+          "practice",
+          "assessment"
+        ],
+        "reason": "KEEP GAP approved for K30/S19: mention/inference insufficient. Auto-request deliberate team-working principles teaching and observed assessment."
+      }
     },
     {
       "id": "ER-23",
@@ -142,7 +213,17 @@
       "why": "KEEP GAP; adaptive suspension rejected",
       "current": "KEEP GAP",
       "couldChange": true,
-      "priority": "HIGH"
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_DELIBERATE_BEHAVIOUR_TEACHING_OR_OBSERVATION",
+        "axis": [
+          "teaching",
+          "practice",
+          "workplaceApplication"
+        ],
+        "reason": "KEEP GAP approved on supplied corpus; still auto-request any deliberate adapt-to-demand behaviour LP / observation packs during apprenticeship source-sufficiency."
+      }
     },
     {
       "id": "ER-06",
@@ -188,7 +269,15 @@
       "why": "Awareness strong; named methods thin",
       "current": "CHANGE → G11 + depth",
       "couldChange": true,
-      "priority": "MEDIUM"
+      "priority": "MEDIUM",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_OR_THIN_NAMED_METHOD_TEACHING",
+        "axis": [
+          "teaching"
+        ],
+        "reason": "Official K17 expects static and dynamic calibration methods and equipment; awareness/repair-impact is strong but named methods are thin — source-sufficiency should request method-depth materials."
+      }
     },
     {
       "id": "ER-12",
@@ -210,7 +299,15 @@
       "why": "PARTIAL; manuals currently not found",
       "current": "CHANGE → PARTIAL",
       "couldChange": true,
-      "priority": "MEDIUM"
+      "priority": "MEDIUM",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_OR_UNEXTRACTED_TEACHING_MATERIAL",
+        "axis": [
+          "teaching"
+        ],
+        "reason": "Named PPT exists in catalogue with empty extract; owner's manuals axis not found — future Programme Builder should flag unextracted linked materials and missing official components during source-sufficiency."
+      }
     },
     {
       "id": "ER-17",
@@ -234,7 +331,17 @@
       "why": "Partial fluids-strong conclusion",
       "current": "CHANGE → PARTIAL",
       "couldChange": true,
-      "priority": "MEDIUM"
+      "priority": "MEDIUM",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_OFFICIAL_COMPONENT_TEACHING",
+        "axis": [
+          "teaching",
+          "practice",
+          "assessment"
+        ],
+        "reason": "Official K20/S25 include air filters; fluids/oil evidenced but air-filter teaching not found — source-sufficiency should request missing filtration components explicitly."
+      }
     },
     {
       "id": "ER-24",
@@ -304,6 +411,26 @@
       "current": "KEEP B2 + depth",
       "couldChange": false,
       "priority": "LOW"
+    },
+    {
+      "id": "ER-27",
+      "request": "Dedicated automotive industry context + autocare technician role teaching (limits of autonomy & reporting channels as whole-role, not HV-only)",
+      "affects": [
+        "K1"
+      ],
+      "why": "KEEP GAP approved; industry/role components unsupported; FS03/GW fragments insufficient",
+      "current": "KEEP GAP",
+      "couldChange": true,
+      "priority": "HIGH",
+      "portalDesign": {
+        "shouldAutoRequestDuringOnboardingOrSourceSufficiency": true,
+        "evidenceClass": "MISSING_INDUSTRY_AND_ROLE_INDUCTION_TEACHING",
+        "axis": [
+          "teaching"
+        ],
+        "reason": "Official K1 requires industry context and technician role; richer Autocare corpus has none. Auto-request induction/off-pack packs during source-sufficiency."
+      },
+      "createdDuring": "Queue B K1 ratification 2026-08-10"
     }
   ],
   "rawBatchRequests": [
@@ -550,5 +677,6 @@
       "batch": "R51-5",
       "carryForward": true
     }
-  ]
+  ],
+  "lastUpdated": "2026-08-10"
 }

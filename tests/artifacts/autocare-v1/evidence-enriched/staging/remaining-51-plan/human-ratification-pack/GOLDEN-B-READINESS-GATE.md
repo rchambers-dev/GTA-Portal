@@ -14,3 +14,12 @@
 | 8 | Explicit decision to open Golden B drafting workstream (still no auto programme-truth) | Director | ☐ |
 
 Only after 1–8: open **Golden B drafting / human ratification** (still forbids OTJ/SOW/formula auto-writes and Primary persistence until a further gate).
+
+---
+
+## Binding comparison rule (locked before Golden B)
+
+See **`GOLDEN-B-REFERENCE-BASELINE-RULE.md`**.
+
+Golden B is a **human-ratified reference baseline**, not unquestionable truth.  
+AI ≠ Golden B must become a **human review case**, never an automatic **AI FAIL**.

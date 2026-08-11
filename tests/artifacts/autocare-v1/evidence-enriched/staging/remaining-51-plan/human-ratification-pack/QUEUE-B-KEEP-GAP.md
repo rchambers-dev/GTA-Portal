@@ -31,7 +31,7 @@ These conclude curriculum evidence is genuinely missing or insufficient in the s
 | P Confidence | HIGH_ON_INSUFFICIENCY |
 | Q Unresolved / missing | Adapt to changing work demands (behaviour) |
 | R Key evidence refs | No deliberate behaviour LP on adapting to changing demands \| W62 Complex system inspection and defect prioritisation — adjacency only \| G11 'adaptive suspension' is technical topic — REJECTED as evidence \| Workshop prioritisation / mixed job demands inferred — not deliberate B3 evidence |
-| S Human decision | _APPROVE / AMEND / HOLD FOR EVIDENCE_ |
+| S Human decision | **APPROVE KEEP GAP** |
 | Batch | R51-5 |
 
 **Decision notes (human):**

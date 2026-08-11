@@ -203,6 +203,13 @@ export type ProgrammeDeliveryParameters = {
   fixedCostLines: FixedCostLineItem[];
   /** Optional staff notes (evidence rules, local policy, etc.). */
   rplNotes: string;
+  /** Controlled build tag (e.g. Autocare Phase 1). Optional; not used by RPL maths. */
+  controlTag?: string;
+  publishedMinimumOtjHours?: number;
+  calendarWeeks?: number;
+  plannedSessions?: number;
+  phase?: number;
+  decisionsLog?: string;
 };
 
 export type SpineItem = {

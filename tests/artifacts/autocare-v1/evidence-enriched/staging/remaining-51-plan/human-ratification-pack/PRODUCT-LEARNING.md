@@ -26,3 +26,14 @@ It must separately answer:
 - AI-1.5 / AI-2 / V2 generation of programme truth
 
 This file is product-design learning only.
+
+---
+
+## Golden B comparison (binding)
+
+Recorded in `GOLDEN-B-REFERENCE-BASELINE-RULE.md` (2026-08-10):
+
+- Golden B = human-ratified **reference baseline**, versioned and evidence-backed  
+- Disagreement with AI → review case (coverage / ownership / depth / practice / assessment / workplace / visibility / KSB interpretation)  
+- Never: `AI != Golden B` → automatic AI FAIL  
+- Human review required before updating the trusted baseline

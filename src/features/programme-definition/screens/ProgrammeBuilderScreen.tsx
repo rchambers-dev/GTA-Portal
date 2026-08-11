@@ -67,6 +67,7 @@ import {
 import { buildCurriculumCoverageSnapshot } from "../domain/curriculum-coverage";
 import { SpineBuilderPanel } from "./SpineBuilderPanel";
 import { CurriculumCoveragePanel } from "./CurriculumCoveragePanel";
+import { SessionPlannerPanel } from "./SessionPlannerPanel";
 import styles from "./programme-builder.module.css";
 import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 
@@ -2087,6 +2088,11 @@ export function ProgrammeBuilderScreen() {
               onOpenSpineBuilder={() => setSpineMode("builder")}
             />
           ) : null}
+
+          <SessionPlannerPanel
+            programmeVersionId={programme.id}
+            spineItems={programme.spineItems}
+          />
 
           <section className={`${styles.panel} ${styles.span2}`}>
             <div className={styles.panelHead}>

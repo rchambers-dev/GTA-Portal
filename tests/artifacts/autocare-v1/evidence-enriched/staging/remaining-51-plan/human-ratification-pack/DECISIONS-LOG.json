@@ -36,12 +36,26 @@
       "proposedDirectionBucket": "CHANGE_CLASSIFICATION",
       "shadowPosition": "CHANGE_CLASSIFICATION_TO_PARTIAL",
       "goldenAPosition": "REVIEWED_CURRICULUM_GAP",
-      "rationale": "Human hold 2026-08-10: leave CHANGE CLASSIFICATION TO PARTIAL unresolved pending ER-16 (Vehicle Service History.ppt extract + owner's manuals teaching). Could materially change component coverage.",
+      "rationale": "HOLD resolution 2026-08-10 (pass 1/8): confirm HOLD_FOR_EVIDENCE pending ER-16. Onboarding/source-sufficiency auto-request: YES.",
       "amendedPosition": null,
       "linkedEvidenceRequests": [
         "ER-16"
       ],
-      "unresolved": true
+      "unresolved": true,
+      "holdResolutionReview": {
+        "reviewedAt": "2026-08-10",
+        "decision": "HOLD_FOR_EVIDENCE",
+        "linkedEvidenceRequests": [
+          "ER-16"
+        ],
+        "unresolved": true,
+        "notes": "HOLD resolution pass (1/8): confirm keep HOLD. Do not APPROVE PARTIAL flip until Vehicle Service History.ppt is extracted and owner's-manuals teaching is located or confirmed absent. Warranty intent topics remain thin.",
+        "portalOnboardingRequest": {
+          "shouldAutoRequestDuringSourceSufficiency": true,
+          "evidenceClass": "MISSING_OR_UNEXTRACTED_TEACHING_MATERIAL",
+          "requestSummary": "Extract/ingest Vehicle Service History.ppt body + locate any owner's manuals purpose/use teaching"
+        }
+      }
     },
     {
       "code": "K9",
@@ -51,12 +65,26 @@
       "proposedDirectionBucket": "CHANGE_OWNERSHIP",
       "shadowPosition": "CHANGE_OWNERSHIP_TO_EARLY_G3_B2_WITH_DEPTH_GAPS",
       "goldenAPosition": "PRIMARY B7",
-      "rationale": "Human hold 2026-08-10: leave CHANGE OWNERSHIP to early G3/B2 + depth gaps unresolved pending ER-09 (Tyres.ppt extract for legislation / EU labelling / sidewall / homologation). Ownership direction may stand once evidence reviewed; tech-info components could change.",
+      "rationale": "HOLD resolution 2026-08-10 (pass 2/8): confirm HOLD_FOR_EVIDENCE pending ER-09. Onboarding/source-sufficiency auto-request: YES.",
       "amendedPosition": null,
       "linkedEvidenceRequests": [
         "ER-09"
       ],
-      "unresolved": true
+      "unresolved": true,
+      "holdResolutionReview": {
+        "reviewedAt": "2026-08-10",
+        "decision": "HOLD_FOR_EVIDENCE",
+        "linkedEvidenceRequests": [
+          "ER-09"
+        ],
+        "unresolved": true,
+        "notes": "HOLD resolution pass (2/8): confirm keep HOLD. Ownership toward early G3/B2 is already strongly evidenced on operational components; do not finalise completeness of legislation/EU labelling/sidewall/homologation until Tyres.ppt is extracted (ER-09).",
+        "portalOnboardingRequest": {
+          "shouldAutoRequestDuringSourceSufficiency": true,
+          "evidenceClass": "MISSING_OR_UNEXTRACTED_TEACHING_MATERIAL",
+          "requestSummary": "Extract/ingest Tyres.ppt for legislation, EU labelling, sidewall markings, and homologated fitments"
+        }
+      }
     },
     {
       "code": "K10",
@@ -92,12 +120,26 @@
       "proposedDirectionBucket": "CHANGE_OWNERSHIP",
       "shadowPosition": "CHANGE_OWNERSHIP_TO_G7_CLUSTER_WITH_E_MACHINE_GAP",
       "goldenAPosition": "PRIMARY B2",
-      "rationale": "Human hold 2026-08-10: leave CHANGE OWNERSHIP to G7 + e-machine depth gap unresolved pending ER-10 (named e-machine teaching). Ownership toward G7 / awareness≠teaching may still stand; e-machine component could materially change completeness.",
+      "rationale": "HOLD resolution 2026-08-10 (pass 3/8): confirm HOLD_FOR_EVIDENCE pending ER-10. Onboarding/source-sufficiency auto-request: YES.",
       "amendedPosition": null,
       "linkedEvidenceRequests": [
         "ER-10"
       ],
-      "unresolved": true
+      "unresolved": true,
+      "holdResolutionReview": {
+        "reviewedAt": "2026-08-10",
+        "decision": "HOLD_FOR_EVIDENCE",
+        "linkedEvidenceRequests": [
+          "ER-10"
+        ],
+        "unresolved": true,
+        "notes": "HOLD resolution pass (3/8): confirm keep HOLD. Core G7 battery/starter/alternator ownership direction is strong; do not close e-machine completeness without named teaching (ER-10). FS04 awareness must not steal Primary.",
+        "portalOnboardingRequest": {
+          "shouldAutoRequestDuringSourceSufficiency": true,
+          "evidenceClass": "MISSING_OFFICIAL_COMPONENT_TEACHING",
+          "requestSummary": "Locate named e-machine teaching within LV starting/charging (or confirm genuine absence)"
+        }
+      }
     },
     {
       "code": "K16",
@@ -120,12 +162,26 @@
       "proposedDirectionBucket": "CHANGE_OWNERSHIP",
       "shadowPosition": "CHANGE_OWNERSHIP_TO_G11_WITH_DEPTH_ON_METHODS",
       "goldenAPosition": "PRIMARY B9",
-      "rationale": "Human hold 2026-08-10: leave CHANGE OWNERSHIP to G11 + static/dynamic method depth unresolved pending ER-11 (named static vs dynamic calibration methods + equipment). G11-first vs B9-reinforce may still stand; method component could change completeness.",
+      "rationale": "HOLD resolution 2026-08-10 (pass 4/8): confirm HOLD_FOR_EVIDENCE pending ER-11. Onboarding/source-sufficiency auto-request: YES.",
       "amendedPosition": null,
       "linkedEvidenceRequests": [
         "ER-11"
       ],
-      "unresolved": true
+      "unresolved": true,
+      "holdResolutionReview": {
+        "reviewedAt": "2026-08-10",
+        "decision": "HOLD_FOR_EVIDENCE",
+        "linkedEvidenceRequests": [
+          "ER-11"
+        ],
+        "unresolved": true,
+        "notes": "HOLD resolution pass (4/8): confirm keep HOLD. G11-first ownership for ADAS awareness/repair-impact is evidenced; do not close named static/dynamic methods + equipment completeness without ER-11.",
+        "portalOnboardingRequest": {
+          "shouldAutoRequestDuringSourceSufficiency": true,
+          "evidenceClass": "MISSING_OR_THIN_NAMED_METHOD_TEACHING",
+          "requestSummary": "Locate named static vs dynamic ADAS calibration methods and calibration-equipment teaching"
+        }
+      }
     },
     {
       "code": "K18",
@@ -148,12 +204,26 @@
       "proposedDirectionBucket": "CHANGE_CLASSIFICATION",
       "shadowPosition": "CHANGE_CLASSIFICATION_TO_PARTIAL",
       "goldenAPosition": "REVIEWED_CURRICULUM_GAP",
-      "rationale": "Human hold 2026-08-10: leave CHANGE CLASSIFICATION TO PARTIAL unresolved pending ER-18 (air-filter / full filtration teaching). Fluids/oil may remain covered; air-filter component could materially change completeness. Companion S25 still pending later in Queue A.",
+      "rationale": "HOLD resolution 2026-08-10 (pass 5/8): confirm HOLD_FOR_EVIDENCE pending ER-18. Onboarding/source-sufficiency auto-request: YES.",
       "amendedPosition": null,
       "linkedEvidenceRequests": [
         "ER-18"
       ],
-      "unresolved": true
+      "unresolved": true,
+      "holdResolutionReview": {
+        "reviewedAt": "2026-08-10",
+        "decision": "HOLD_FOR_EVIDENCE",
+        "linkedEvidenceRequests": [
+          "ER-18"
+        ],
+        "unresolved": true,
+        "notes": "HOLD resolution pass (5/8): confirm keep HOLD. Fluids/oil may support PARTIAL once closed, but air-filter component remains unresolved (ER-18). Do not force Primary. Companion S25 shares ER-18.",
+        "portalOnboardingRequest": {
+          "shouldAutoRequestDuringSourceSufficiency": true,
+          "evidenceClass": "MISSING_OFFICIAL_COMPONENT_TEACHING",
+          "requestSummary": "Locate air-filter / full filtration teaching beyond fluids (also affects S25)"
+        }
+      }
     },
     {
       "code": "K25",
@@ -163,12 +233,26 @@
       "proposedDirectionBucket": "CHANGE_CLASSIFICATION",
       "shadowPosition": "CHANGE_CLASSIFICATION_TO_PARTIAL_DISTRIBUTED",
       "goldenAPosition": "PRIMARY B6",
-      "rationale": "Human hold 2026-08-10: leave CHANGE CLASSIFICATION TO PARTIAL/DISTRIBUTED unresolved pending ER-20 (dedicated business-operations teaching covering efficiency, competitiveness, minimising operational risks). CS/ethics fragments must not be over-credited as full K25.",
+      "rationale": "HOLD resolution 2026-08-10 (pass 6/8): confirm HOLD_FOR_EVIDENCE pending ER-20. Onboarding/source-sufficiency auto-request: YES.",
       "amendedPosition": null,
       "linkedEvidenceRequests": [
         "ER-20"
       ],
-      "unresolved": true
+      "unresolved": true,
+      "holdResolutionReview": {
+        "reviewedAt": "2026-08-10",
+        "decision": "HOLD_FOR_EVIDENCE",
+        "linkedEvidenceRequests": [
+          "ER-20"
+        ],
+        "unresolved": true,
+        "notes": "HOLD resolution pass (6/8): confirm keep HOLD. CS/ethics fragments must not be over-credited as full K25. Do not close PARTIAL/DISTRIBUTED until dedicated efficiency/competitiveness/operational-risk teaching is located or confirmed absent (ER-20).",
+        "portalOnboardingRequest": {
+          "shouldAutoRequestDuringSourceSufficiency": true,
+          "evidenceClass": "MISSING_DEDICATED_BUSINESS_OPERATIONS_TEACHING",
+          "requestSummary": "Locate dedicated business-operations teaching covering efficiency, competitiveness, and minimising operational risks"
+        }
+      }
     },
     {
       "code": "K26",
@@ -334,12 +418,26 @@
       "proposedDirectionBucket": "REVIEW",
       "shadowPosition": "REVIEW",
       "goldenAPosition": "PRIMARY B6",
-      "rationale": "Human hold 2026-08-10: leave REVIEW unresolved pending ER-04 (HV isolation competence evidence — learner-performed / assessed). Structural ownership remains CLEAR @ B6 and is not remapped; rules teaching must not be credited as S13 competence until assessed isolation artefact reviewed.",
+      "rationale": "HOLD resolution 2026-08-10 (pass 7/8): confirm HOLD_FOR_EVIDENCE pending ER-04. Onboarding/source-sufficiency auto-request: YES (practice/assessment).",
       "amendedPosition": null,
       "linkedEvidenceRequests": [
         "ER-04"
       ],
-      "unresolved": true
+      "unresolved": true,
+      "holdResolutionReview": {
+        "reviewedAt": "2026-08-10",
+        "decision": "HOLD_FOR_EVIDENCE",
+        "linkedEvidenceRequests": [
+          "ER-04"
+        ],
+        "unresolved": true,
+        "notes": "HOLD resolution pass (7/8): confirm keep HOLD/REVIEW. Structural ownership CLEAR @ B6 is not remapped. Rules teaching must not be credited as S13 competence until learner-performed/assessed isolation artefact is reviewed (ER-04).",
+        "portalOnboardingRequest": {
+          "shouldAutoRequestDuringSourceSufficiency": true,
+          "evidenceClass": "MISSING_PRACTICE_OR_ASSESSMENT_ARTEFACT",
+          "requestSummary": "Supply HV isolation competence evidence (learner-performed and/or assessed) distinct from rules/awareness teaching"
+        }
+      }
     },
     {
       "code": "S14",
@@ -427,13 +525,772 @@
       "proposedDirectionBucket": "CHANGE_CLASSIFICATION",
       "shadowPosition": "CHANGE_CLASSIFICATION_TO_PARTIAL",
       "goldenAPosition": "REVIEWED_CURRICULUM_GAP",
-      "rationale": "Human hold 2026-08-10: leave CHANGE CLASSIFICATION TO PARTIAL unresolved pending ER-18 (air-filter / full filtration teaching beyond fluids). Fluids check/replace evidence may remain strong; filtration-parts component could materially change completeness. Aligns with companion K20 HOLD → ER-18. Primary not forced.",
+      "rationale": "HOLD resolution 2026-08-10 (pass 8/8): confirm HOLD_FOR_EVIDENCE pending ER-18 (companion K20). Onboarding/source-sufficiency auto-request: YES.",
       "amendedPosition": null,
       "linkedEvidenceRequests": [
         "ER-18"
       ],
-      "unresolved": true
+      "unresolved": true,
+      "holdResolutionReview": {
+        "reviewedAt": "2026-08-10",
+        "decision": "HOLD_FOR_EVIDENCE",
+        "linkedEvidenceRequests": [
+          "ER-18"
+        ],
+        "unresolved": true,
+        "notes": "HOLD resolution pass (8/8): confirm keep HOLD. Aligns with K20 companion. Fluids check/replace may remain strong; do not close full filtration-parts completeness without ER-18. Primary not forced.",
+        "portalOnboardingRequest": {
+          "shouldAutoRequestDuringSourceSufficiency": true,
+          "evidenceClass": "MISSING_OFFICIAL_COMPONENT_TEACHING_AND_PRACTICE",
+          "requestSummary": "Locate air-filter / full filtration teaching and R&R practice beyond fluids (shared with K20)"
+        }
+      }
+    },
+    {
+      "code": "B3",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_GAP",
+      "goldenAPosition": "PRIMARY B6",
+      "rationale": "Queue B 2026-08-10 (1/9): APPROVE KEEP GAP. Richer corpus still shows no deliberate adapt-to-demand behaviour teaching. Reject false-positive 'adaptive suspension'. Golden A Primary B6 not supported as teaching home — do not force Primary. Conclusion type B on supplied curriculum; ER-23 remains open source-sufficiency auto-request (could overturn if deliberate materials/observations appear).",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-23"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "The supplied curriculum appears genuinely not to teach/practise/assess this requirement deliberately.",
+        "notTypeA": "Not merely 'you have not supplied enough evidence to verify' — searches found adjacency/false positives only.",
+        "futureProgrammeBuilderAction": "During onboarding/source-sufficiency, auto-request deliberate B3 behaviour teaching and observed-adaptability evidence (ER-23). Do not invent a Primary while gap stands."
+      }
+    },
+    {
+      "code": "B5",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_AS_GAP",
+      "goldenAPosition": "REVIEWED_GAP / NON-PRIMARY",
+      "rationale": "Queue B 2026-08-10 (2/9): APPROVE KEEP GAP. Richer corpus: no substantive inclusive-workplace/EDI teaching. W11 B5 focus-tag rejected (CS scenarios only). FS01 professional behaviours ≠ B5. Residual off-pack pastoral EDI = possible visibility only (ER-01). Type B on supplied Autocare curriculum. Do not force Primary.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-01"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "The supplied Autocare curriculum appears genuinely not to teach/practise/assess inclusive workplace behaviour.",
+        "residualTypeAForOffPackOnly": "Off-pack pastoral/tutorial EDI could exist — tracked as ER-01 visibility residual, not as coverage.",
+        "futureProgrammeBuilderAction": "Auto-request named EDI/inclusion teaching (not SEND 'inclusion' scaffolding) during onboarding/source-sufficiency (ER-01). Do not invent Primary from SOW focus tags."
+      }
+    },
+    {
+      "code": "K1",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_GAP",
+      "goldenAPosition": "REVIEWED_CURRICULUM_GAP",
+      "rationale": "Queue B 2026-08-10 (3/9): APPROVE KEEP GAP. No dedicated automotive industry / autocare technician role teaching found in richer corpus. W16 duties tags rejected; FS01 adjacency insufficient; FS03 autonomy limits HV-framed only; reporting only partial via FS01/GW. Type B on supplied curriculum. Opened ER-27 for industry/role induction materials. ER-01 (EDI) not used as K1 overturn path.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-27"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "Supplied curriculum does not substantively teach industry context or the autocare technician role; autonomy/reporting only partial/framed.",
+        "unsupportedComponents": [
+          "Automotive industry context",
+          "Role of the autocare technician"
+        ],
+        "partialButInsufficient": [
+          "Limits of autonomy (HV-framed FS03 only)",
+          "Reporting channels (workshop/GW fragments only)"
+        ],
+        "futureProgrammeBuilderAction": "Auto-request dedicated industry + technician-role induction teaching (ER-27). Do not invent Primary. Do not treat EDI ER-01 as covering K1."
+      }
+    },
+    {
+      "code": "K28",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_AS_GAP",
+      "goldenAPosition": "REVIEWED_GAP / NON-PRIMARY",
+      "rationale": "Queue B 2026-08-10 (4/9): APPROVE KEEP GAP. Named FCA/PCI requirements not found in richer corpus. G8 LP29 payments/VAT/GDPR/fraud rejected as adjacency (payments≠FCA/PCI). Commercial quotation sessions lack FCA/PCI language. Type B on supplied curriculum. ER-02 remains onboarding auto-request. Do not force Primary.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-02"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "Supplied curriculum teaches adjacent payments/VAT/GDPR/fraud, not FCA/PCI financial-compliance principles required by K28.",
+        "rejectedFalsePositives": [
+          "G8 LP29 Payments, VAT, GDPR and Fraud as proof of FCA/PCI"
+        ],
+        "futureProgrammeBuilderAction": "Auto-request dedicated FCA/PCI teaching (ER-02). Do not map Primary from sales/payments adjacency alone."
+      }
+    },
+    {
+      "code": "K30",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_GAP",
+      "goldenAPosition": "PRIMARY B3",
+      "rationale": "Queue B 2026-08-10 (5/9): APPROVE KEEP GAP. No deliberate team-working principles teaching in richer corpus. FS06 teamwork mention rejected; inferred collaborative practicals rejected as principles coverage. Golden A Primary B3 not preserved. Type B on supplied curriculum. ER-22 primary overturn path; ER-05 filled mentor residual only.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-22",
+        "ER-05"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "Supplied curriculum does not deliberately teach team-working principles; mentions/inference insufficient.",
+        "rejectedFalsePositives": [
+          "FS06 occupational relevance listing teamwork",
+          "Inferred collaborative workshop practicals as principles teaching"
+        ],
+        "futureProgrammeBuilderAction": "Auto-request deliberate team-working principles LP and observed teamwork assessment (ER-22). Do not force Primary from Golden A B3."
+      }
+    },
+    {
+      "code": "K31",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_GAP",
+      "goldenAPosition": "REVIEWED_CURRICULUM_GAP",
+      "rationale": "Queue B 2026-08-10 (6/9): APPROVE KEEP GAP. No EDI principles / workplace-impact teaching in richer Autocare corpus. Rejected edi-substring false positives and mv13 diversity milestone labels. Type B on supplied curriculum; ER-01 off-pack pastoral residual. Companion B5/S20. Do not force Primary.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-01"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "Supplied Autocare curriculum does not teach equity, diversity and inclusion principles or their workplace impact.",
+        "residualTypeAForOffPackOnly": "Off-pack pastoral EDI via ER-01 only.",
+        "futureProgrammeBuilderAction": "Auto-request named EDI teaching (ER-01), excluding SEND 'inclusion' scaffolding false positives. Do not invent Primary."
+      }
+    },
+    {
+      "code": "S11",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_AS_GAP_INSUFFICIENT_EVIDENCE_FOR_COVERAGE",
+      "goldenAPosition": "REVIEWED_GAP / NON-PRIMARY",
+      "rationale": "Queue B 2026-08-10 (7/9): APPROVE KEEP GAP. HV battery/charger SoH condition-monitoring competence not found. EV awareness, HV safety, locate/isolate (CEA 2.1), 12V GW tests rejected as false substitutes. Must not borrow S13/K21/K23. Type B on supplied curriculum. ER-03 onboarding auto-request. Do not force Primary.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-03"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "Supplied curriculum teaches EV awareness/isolation but not HV battery/charger State-of-Health testing competence.",
+        "rejectedFalsePositives": [
+          "Hybrid/HV awareness PPTs as SoH",
+          "CEA locate + isolate as SoH tests",
+          "GW1 12V battery/charging as HV SoH"
+        ],
+        "futureProgrammeBuilderAction": "Auto-request SoH teaching/practice/assessment artefacts (ER-03). Keep awareness≠competence rule for EV skills."
+      }
+    },
+    {
+      "code": "S19",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_GAP",
+      "goldenAPosition": "PRIMARY B3",
+      "rationale": "Queue B 2026-08-10 (8/9): APPROVE KEEP GAP. Aligns with companion K30. No deliberate apply-team-working skill evidence. FS06 mention and inferred paired practicals rejected. Golden A Primary B3 not preserved. Type B on supplied curriculum. ER-22 primary; ER-05 mentor residual.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-22",
+        "ER-05"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "Supplied curriculum does not deliberately teach/assess application of team-working principles.",
+        "rejectedFalsePositives": [
+          "FS06 teamwork mention",
+          "Common paired/group practicals as deliberate S19 assessment"
+        ],
+        "futureProgrammeBuilderAction": "Auto-request deliberate team-working application teaching and observed assessment (ER-22). Do not force Primary B3."
+      }
+    },
+    {
+      "code": "S20",
+      "queue": "B",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP_GAP",
+      "shadowPosition": "KEEP_GAP",
+      "goldenAPosition": "REVIEWED_CURRICULUM_GAP",
+      "rationale": "Queue B 2026-08-10 (9/9): APPROVE KEEP GAP. No EDI compliance skill teaching/practice/assessment in richer Autocare corpus. Rejected SEND 'Inclusion, support and stretch' boilerplate and W11 S20 tags. Companion B5/K31. Type B on supplied curriculum; ER-01 off-pack residual. Do not force Primary.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-01"
+      ],
+      "unresolved": false,
+      "gapProductClassification": {
+        "conclusionType": "B_GENUINE_UNSUPPORTED_ON_SUPPLIED_CURRICULUM",
+        "meaning": "Supplied Autocare curriculum does not teach or assess compliance with equity, diversity and inclusion guidance.",
+        "rejectedFalsePositives": [
+          "Block LP boilerplate 'Inclusion, support and stretch' (SEND scaffolding)",
+          "W11 KSB tag listing S20"
+        ],
+        "residualTypeAForOffPackOnly": "Off-pack pastoral EDI via ER-01 only.",
+        "futureProgrammeBuilderAction": "Auto-request named EDI compliance teaching/guidance (ER-01). Never treat SEND inclusion scaffolding as EDI skill coverage."
+      }
+    },
+    {
+      "code": "B1",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B1",
+      "goldenAPosition": "PRIMARY B1",
+      "rationale": "Queue C 2026-08-10 (1/23): APPROVE KEEP PRIMARY B1. Independently supported by FS01 H&S-first teaching + observed safety practice. First home FS01 W1. GW1 not owner. Residual: filled mentor LIR/SPR examples unsourced (ER-05) — visibility under correct mapping, not ownership change.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-05"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Correct Primary can coexist with workplace evidence-visibility residual."
+      }
+    },
+    {
+      "code": "B2",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B3",
+      "goldenAPosition": "PRIMARY B3",
+      "rationale": "Queue C 2026-08-10 (2/23): APPROVE KEEP PRIMARY B3 for behaviour B2. Independently supported by Block 3 environmental cluster (K4/S6 companion) + Task 4 spill/waste practice. First substantive home Block 3 — not stolen by later content. Residual: filled mentor examples unsourced (ER-05).",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-05"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "KEEP Primary B3 while workplace filled-evidence remains a visibility residual."
+      }
+    },
+    {
+      "code": "B4",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B10_WITH_DEPTH",
+      "goldenAPosition": "PRIMARY B10",
+      "rationale": "Queue C 2026-08-10 (3/23): APPROVE KEEP PRIMARY B10 WITH DEPTH. Mapping kept: LIR/SPR seeking/recording mechanism + Block 10 capstone reinforce; early support does not steal. Residuals: seeking-CPD pedagogy depth (ER-26) and filled mentor examples (ER-05) — quality/visibility under correct KEEP, not ownership change.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-26",
+        "ER-05"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Model can KEEP Primary while tagging teaching-depth + visibility residuals underneath."
+      }
+    },
+    {
+      "code": "K3",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B1_WITH_DEPTH_GAPS",
+      "goldenAPosition": "PRIMARY B1",
+      "rationale": "Queue C 2026-08-10 (4/23): APPROVE KEEP PRIMARY B1 WITH DEPTH GAPS. Core H&S independently supported at FS01 first home (hazards, fire, PPE, procedures). Later W37 COSHH reinforce does not steal. Residuals: named HASAWA/LOLER/PUWER/manual-handling/COSHH depth (ER-06/ER-07) — depth under correct KEEP, not ownership change. GW1 not owner.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-06",
+        "ER-07"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "KEEP Primary while retaining named-regulation teaching-depth residuals."
+      }
+    },
+    {
+      "code": "K4",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B3",
+      "goldenAPosition": "PRIMARY B3",
+      "rationale": "Queue C 2026-08-10 (5/23): APPROVE KEEP PRIMARY B3. Independently supported by W30/Task 4 environmental cluster + strong spill/waste practice. Residual ER-08: reuse/recycling vocabulary depth under KEEP — not ownership change.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-08"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "KEEP Primary with teaching-depth residual on explicit reuse/recycling wording."
+      }
+    },
+    {
+      "code": "K5",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B1",
+      "goldenAPosition": "PRIMARY B1",
+      "rationale": "Queue C 2026-08-10 (6/23): APPROVE KEEP PRIMARY B1. Independently supported by FS02/FS05/FS08 tools purpose and operation teaching + strong practice. First home FS02 Week 2. No conflicting ownership.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "Clean KEEP control: stronger tooling corpus confirms Primary B1."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "K6",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B1",
+      "goldenAPosition": "PRIMARY B1",
+      "rationale": "Queue C 2026-08-10 (7/23): APPROVE KEEP PRIMARY B1. Independently supported by FS02 tool maintenance/inspection + FS05 calibration. First home FS02 with FS05 reinforce. Residual: storage-methods teaching depth thinner — KEEP with depth residual, not ownership change.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "KEEP Primary while carrying storage-methods teaching-depth residual."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "K11",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_B5",
+      "goldenAPosition": "PRIMARY B5",
+      "rationale": "Queue C 2026-08-10 (8/23): APPROVE KEEP PRIMARY B5. Independently confirmed by G5 suspension LPs/PPTs + CEA 5.3–5.5. First home G5/B5. Later G11/Gateway must not steal Primary. Control KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "Richer evidence preserves correct Primary; later advanced CEAs tagged reinforce only."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "K12",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY",
+      "goldenAPosition": "PRIMARY B2",
+      "rationale": "Queue C 2026-08-10 (9/23): APPROVE KEEP PRIMARY B2. Control case: basic→advanced brake ladder confirmed; later ABS/ESP/B8 strength must not steal Primary from B2 first home. Coverage strong.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "KEEP resists false remap from later stronger practicals."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "K14",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B6",
+      "goldenAPosition": "PRIMARY B6",
+      "rationale": "Queue C 2026-08-10 (10/23): APPROVE KEEP PRIMARY B6. Independently supported by G13 AC lessons + G6 heating + CEA 13.x / B6 Task 4. First home G13/B6. Residual ER-14 named HVAC component breadth depth under KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-14"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "KEEP Primary with component-naming depth residual."
+      }
+    },
+    {
+      "code": "K19",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B2_WITH_DEPTH_ON_ACKERMANN_THRUST",
+      "goldenAPosition": "PRIMARY B2",
+      "rationale": "Queue C 2026-08-10 (11/23): APPROVE KEEP PRIMARY B2 WITH DEPTH. Core geometry independently supported at G3 LP3A → B2. G11 later reinforce cannot steal. Residual ER-12 Ackermann/thrust angle depth/visibility under KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-12"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "KEEP Primary while retaining named-principle depth/visibility residual."
+      }
+    },
+    {
+      "code": "K21",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY",
+      "goldenAPosition": "PRIMARY B6",
+      "rationale": "Queue C 2026-08-10 (12/23): APPROVE KEEP PRIMARY B6. Control KEEP for EV service/charging/safety at Autocare level. First dedicated home B6; B9 reinforce cannot steal. Dual G2/G7 PPT copy noise is provenance/visibility, not remap.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "KEEP Primary despite duplicate-resource filing noise / visibility."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "K22",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B9_WITH_DEPTH_AND_VISIBILITY",
+      "goldenAPosition": "PRIMARY B9",
+      "rationale": "Queue C 2026-08-10 (13/23): APPROVE KEEP PRIMARY B9 WITH DEPTH/VISIBILITY. Hydrogen awareness intent at Block 9 independently supports ownership. Residual ER-15 Fuel Cells.ppt / storage & condition monitoring — depth/visibility under KEEP, not ownership change.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-15"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "KEEP Primary while open depth/visibility residual remains on a named official component."
+      }
+    },
+    {
+      "code": "K23",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY",
+      "goldenAPosition": "PRIMARY B6",
+      "rationale": "Queue C 2026-08-10 (14/23): APPROVE KEEP PRIMARY B6 for HV safe-working teaching. Isolation RULES teaching confirmed; practice/assessment residual for deep competence acknowledged (distinct from S13 skill HOLD). B9 reinforce cannot steal. Do not confuse with S13 Queue A HOLD.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "KEEP knowledge Primary while practice/assessment residuals remain; separate from skill competence gap."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "K24",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B2",
+      "goldenAPosition": "PRIMARY B2",
+      "rationale": "Queue C 2026-08-10 (15/23): APPROVE KEEP PRIMARY B2. G8 customer-care LPs independently support first home → B2. Residual ER-25 explicit pre/post framing depth under KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-25"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "KEEP Primary with teaching-depth residual on pre/post framing."
+      }
+    },
+    {
+      "code": "K33",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B1",
+      "goldenAPosition": "PRIMARY B1",
+      "rationale": "Queue C 2026-08-10 (16/23): APPROVE KEEP PRIMARY B1. FS10 technical documentation/job cards/handover independently supports first home. Clean control KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "Clean KEEP control for communication/documentation knowledge."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "S5",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B1",
+      "goldenAPosition": "PRIMARY B1",
+      "rationale": "Queue C 2026-08-10 (17/23): APPROVE KEEP PRIMARY B1. Independently supported by FS05 tech-data/spec comparison + early inspection CEAs/practice. First home FS05 Week 5. Clean control KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "Clean KEEP control for tech-data inspection skill."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "S6",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B3",
+      "goldenAPosition": "PRIMARY B3",
+      "rationale": "Queue C 2026-08-10 (18/23): APPROVE KEEP PRIMARY B3. Independently supported by Block 3 environmental cluster + Task 4 spill/waste. Companion K4. Residual ER-08 reuse/recycling depth under KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "ER-08"
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "KEEP Primary with reuse/recycling depth residual under strong waste-stream practice."
+      }
+    },
+    {
+      "code": "S8",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B1",
+      "goldenAPosition": "PRIMARY B1",
+      "rationale": "Queue C 2026-08-10 (19/23): APPROVE KEEP PRIMARY B1. First home FS02/FS04/FS05/FS07 independently supported. Later distributed diagnostic practice cannot steal Primary. Residual: dedicated diagnostic-equipment pedagogy breadth under KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "KEEP Primary; later distributed diagnostics tagged reinforce/practice breadth residual."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "S12",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B2",
+      "goldenAPosition": "PRIMARY B2",
+      "rationale": "Queue C 2026-08-10 (20/23): APPROVE KEEP PRIMARY B2. Early geometry teaching G3 LP3A + CEA 5.1 independently support B2. W18 advanced alignment and G11 are reinforce only — cannot steal Primary.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "KEEP resists false remap from later advanced alignment practicals."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "S15",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B2",
+      "goldenAPosition": "PRIMARY B2",
+      "rationale": "Queue C 2026-08-10 (21/23): APPROVE KEEP PRIMARY B2. Independently supported by G8 CS/sales cluster + CEA 8.1 / role-play. First home → B2. Companion K24 KEEP. Clean control KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "Clean KEEP control for customer-service skill aligned to knowledge K24."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "S16",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B3",
+      "goldenAPosition": "PRIMARY B3",
+      "rationale": "Queue C 2026-08-10 (22/23): APPROVE KEEP PRIMARY B3. Independently supported by G8 parts/quote tasks → Block 3 estimates. Later W38 reinforces only — cannot steal Primary. Clean control KEEP.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "KEEP resists false remap from later commercial reinforce weeks."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
+    },
+    {
+      "code": "S22",
+      "queue": "C",
+      "decision": "APPROVE",
+      "decidedAt": "2026-08-10",
+      "proposedDirectionBucket": "KEEP",
+      "shadowPosition": "KEEP_PRIMARY_B1",
+      "goldenAPosition": "PRIMARY B1",
+      "rationale": "Queue C 2026-08-10 (23/23): APPROVE KEEP PRIMARY B1. Independently supported by FS10 written communication/job cards/handover. Companion K33 KEEP. Clean control KEEP. Queue C complete.",
+      "amendedPosition": null,
+      "linkedEvidenceRequests": [
+        "Clean KEEP control closes 23/23 control set."
+      ],
+      "unresolved": false,
+      "controlProductProof": {
+        "proved": "Mapping can KEEP Primary while still carrying residual quality/visibility issues underneath."
+      }
     }
   ],
-  "lastUpdated": "2026-08-10"
+  "lastUpdated": "2026-08-10",
+  "holdResolutionPass": {
+    "status": "COMPLETE",
+    "startedAt": "2026-08-10",
+    "scope": "Queue A HOLD_FOR_EVIDENCE cases only (8)",
+    "order": [
+      "K8",
+      "K9",
+      "K15",
+      "K17",
+      "K20",
+      "K25",
+      "S13",
+      "S25"
+    ],
+    "completed": [
+      "K8",
+      "K9",
+      "K15",
+      "K17",
+      "K20",
+      "K25",
+      "S13",
+      "S25"
+    ],
+    "completedAt": "2026-08-10",
+    "summary": "All 8 Queue A HOLD_FOR_EVIDENCE cases re-reviewed and confirmed HOLD. None converted to APPROVE/AMEND. All linked ERs marked for future Portal onboarding/source-sufficiency auto-request. No Golden A / programme-truth mutation.",
+    "frozenBeforeQueueC": true
+  },
+  "queueBPass": {
+    "status": "COMPLETE",
+    "startedAt": "2026-08-10",
+    "scope": "Queue B KEEP GAP cases only (9)",
+    "order": [
+      "B3",
+      "B5",
+      "K1",
+      "K28",
+      "K30",
+      "K31",
+      "S11",
+      "S19",
+      "S20"
+    ],
+    "completed": [
+      "B3",
+      "B5",
+      "K1",
+      "K28",
+      "K30",
+      "K31",
+      "S11",
+      "S19",
+      "S20"
+    ],
+    "completedAt": "2026-08-10",
+    "summary": "All 9 Queue B KEEP GAP cases APPROVED KEEP GAP (type B on supplied curriculum). Opened ER-27 for K1. No Golden A/programme-truth mutation. Queue C not started.",
+    "frozenBeforeQueueC": true
+  },
+  "queueCPass": {
+    "status": "COMPLETE",
+    "startedAt": "2026-08-10",
+    "scope": "Queue C KEEP control cases only (23)",
+    "order": [
+      "B1",
+      "B2",
+      "B4",
+      "K3",
+      "K4",
+      "K5",
+      "K6",
+      "K11",
+      "K12",
+      "K14",
+      "K19",
+      "K21",
+      "K22",
+      "K23",
+      "K24",
+      "K33",
+      "S5",
+      "S6",
+      "S8",
+      "S12",
+      "S15",
+      "S16",
+      "S22"
+    ],
+    "completed": [
+      "B1",
+      "B2",
+      "B4",
+      "K3",
+      "K4",
+      "K5",
+      "K6",
+      "K11",
+      "K12",
+      "K14",
+      "K19",
+      "K21",
+      "K22",
+      "K23",
+      "K24",
+      "K33",
+      "S5",
+      "S6",
+      "S8",
+      "S12",
+      "S15",
+      "S16",
+      "S22"
+    ],
+    "completedAt": "2026-08-10",
+    "summary": "All 23 Queue C KEEP controls APPROVED KEEP. Residuals retained under correct Primaries where listed. No Golden A/programme-truth mutation. Golden B not started."
+  }
 }

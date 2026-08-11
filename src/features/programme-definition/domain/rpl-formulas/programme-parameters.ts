@@ -40,6 +40,13 @@ export const programmeParametersSchema = z
     fundingBandPounds: z.number().finite().min(0).nullable(),
     fixedCostLines: z.array(fixedCostLineSchema),
     rplNotes: z.string(),
+    /** Controlled Autocare Phase 1 tag — optional; ignored by RPL maths. */
+    controlTag: z.string().optional(),
+    publishedMinimumOtjHours: z.number().finite().min(0).optional(),
+    calendarWeeks: z.number().int().positive().optional(),
+    plannedSessions: z.number().int().positive().optional(),
+    phase: z.number().int().positive().optional(),
+    decisionsLog: z.string().optional(),
   })
   .strict();
 

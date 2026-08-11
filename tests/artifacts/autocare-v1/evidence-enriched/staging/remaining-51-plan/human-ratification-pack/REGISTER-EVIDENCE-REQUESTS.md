@@ -4,7 +4,7 @@ Deduplicated from pilot + R51-1..5. Supported by existing analysis only.
 
 | ID | Priority | Request | Affected KSBs | Why it matters | Current conclusion | Could materially change? |
 |---|---|---|---|---|---|---|
-| ER-01 | **HIGH** | Named EDI / inclusion teaching materials (not SEND “inclusion” scaffolding) | K1, K31, S20, B5 | KEEP GAP currently; off-pack induction could change conclusion | KEEP GAP | YES |
+| ER-01 | **HIGH** | Named EDI / inclusion teaching materials (not SEND “inclusion” scaffolding) | K31, S20, B5 | KEEP GAP currently; off-pack induction could change conclusion | KEEP GAP | YES |
 | ER-02 | **HIGH** | FCA/PCI financial-compliance teaching beyond payments/VAT/GDPR | K28 | Confirms whether K28 is curriculum gap or misframed payments adjacency | KEEP GAP | YES |
 | ER-03 | **HIGH** | Battery State-of-Health (SoH) competence teaching/practice/assessment | S11 | EV awareness must not be mistaken for SoH | KEEP GAP | YES |
 | ER-04 | **HIGH** | HV isolation competence evidence (learner-performed / assessed) | S13 | Rules teaching confirmed; assessed isolation competence unproven — REVIEW | REVIEW | YES |
@@ -61,3 +61,15 @@ Deduplicated from pilot + R51-1..5. Supported by existing analysis only.
 - (R51-5) deeper COSHH
 - (R51-5) reuse/recycling
 - (R51-5) filled mentor LIR/SPR
+
+---
+
+## HOLD resolution pass 2026-08-10
+
+Queue A re-confirmed HOLD on ER-04, ER-09, ER-10, ER-11, ER-16, ER-18, ER-20.
+
+All of these are flagged `shouldAutoRequestDuringOnboardingOrSourceSufficiency: true` in `evidence-requests.json` (`portalDesign`).
+
+For product design: distinguish **unextracted linked materials**, **missing official components**, and **missing practice/assessment artefacts** — each should generate a different source-sufficiency prompt later (not implemented yet).
+
+| ER-27 | **HIGH** | Dedicated automotive industry + autocare technician role induction teaching (whole-role autonomy/reporting, not HV-only) | K1 | KEEP GAP; industry/role unsupported | KEEP GAP | YES |

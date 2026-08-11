@@ -24,6 +24,8 @@
 - `REGISTER-EVIDENCE-REQUESTS.md`
 - `DIRECTOR-READOUT.md`
 - `GOLDEN-B-READINESS-GATE.md`
+- `GOLDEN-B-REFERENCE-BASELINE-RULE.md` — **binding:** Golden B is a human-ratified reference baseline, not an automatic AI fail key
+- `HOLD-BLOCKING-EVIDENCE-PACK.md`
 - `PRODUCT-LEARNING.md`
 - `INCONSISTENCIES.md`
 - `RECOMMENDED-HUMAN-PROCESS.md`

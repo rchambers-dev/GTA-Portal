@@ -6,6 +6,7 @@
 
 - `staging/` — live curriculum evidence catalogue and three shadow chains (Tyres / Brakes / EV).  
   Regenerable analysis artefacts. **Do not treat as programme truth.**
+- `staging/structure-reconciliation/` — Other Portal ↔ GTA/PB ↔ SOW structure compare; includes **LOCKED** [H1–H9 controlled structure decisions](./staging/structure-reconciliation/AUTOCARE-CONTROLLED-STRUCTURE-DECISIONS-H1-H9.md) (staging/control only).
 
 ## Rules
 

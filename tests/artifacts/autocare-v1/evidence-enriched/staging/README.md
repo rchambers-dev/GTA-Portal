@@ -31,9 +31,17 @@ Requires Desktop Autocare packs + local `.tmp-live/` short-path extracts. PDF te
 - Same-named resources may be variants (check hashes)
 - Golden A frozen: 45 / 18 / 1 / 0 / 611.5
 
+## Structure reconciliation (separate control track)
+
+| Path | Purpose |
+| --- | --- |
+| [`structure-reconciliation/`](./structure-reconciliation/) | Staging index for Other Portal ↔ GTA/PB ↔ SOW v4.4 structure compare |
+| [`structure-reconciliation/AUTOCARE-CONTROLLED-STRUCTURE-DECISIONS-H1-H9.md`](./structure-reconciliation/AUTOCARE-CONTROLLED-STRUCTURE-DECISIONS-H1-H9.md) | **LOCKED** H1–H9 controlled Autocare structure decisions (2026-08-11 v1.0). Not programme truth / not Golden B. |
+
 ## Not yet
 
 - Golden B decisions
 - Primary / gap persistence
 - Legacy `.ppt` content extraction
 - Full 64-KSB review
+- Programme Builder write from H1–H9 locks (authorised separately)
