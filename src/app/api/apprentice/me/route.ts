@@ -141,7 +141,6 @@ export async function GET() {
     programmeStartDate: startDate,
     standardCode: enrolment?.standard_code?.trim() || null,
     standardVersion: delivery.standardVersion,
-    deliverySpine: delivery.deliverySpine,
     cohortName: delivery.cohortName,
     gtaProgrammeVersionId: delivery.gtaProgrammeVersionId,
   };

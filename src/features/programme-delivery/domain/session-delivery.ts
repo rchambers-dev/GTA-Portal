@@ -22,20 +22,5 @@ export type SessionDeliveryRecord = {
   updatedAt: string;
 };
 
-export type SessionLearningLaneStatus =
-  | "upcoming"
-  | "available"
-  | "completed";
-
-export function labelSessionLearningStatus(
-  status: SessionLearningLaneStatus,
-): string {
-  switch (status) {
-    case "upcoming":
-      return "Upcoming";
-    case "available":
-      return "Current / available";
-    case "completed":
-      return "Completed";
-  }
-}
+export type { SessionLaneStatus as SessionLearningLaneStatus } from "./session-lane";
+export { labelSessionLaneStatus as labelSessionLearningStatus } from "./session-lane";

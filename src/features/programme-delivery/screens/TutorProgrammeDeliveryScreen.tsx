@@ -201,24 +201,15 @@ export function TutorProgrammeDeliveryScreen() {
               )
             ) : (
               <div className={styles.blockList}>
-                {taskedBlocks.map((block, index) => {
+                {taskedBlocks.map((block) => {
                   const tasks = tasksForDeliveryBlock(
                     catalogue,
                     block.spineItemId,
                   );
-                  const prior =
-                    index > 0
-                      ? tasksForDeliveryBlock(
-                          catalogue,
-                          taskedBlocks[index - 1]!.spineItemId,
-                        )
-                      : [];
                   const unlocked = isDeliveryBlockUnlocked({
                     block,
                     blocks: catalogue.blocks,
                     programmeWeek: 999,
-                    priorBlockTasks: prior,
-                    apprenticeId: storeId,
                   });
                   return (
                     <article key={block.spineItemId} className={styles.blockCard}>
@@ -239,7 +230,7 @@ export function TutorProgrammeDeliveryScreen() {
                                     Task {task.taskNumber}: {task.title}
                                   </strong>
                                   <span>
-                                    {unlocked ? "Open" : "Prior reflection may gate unlock"}
+                                    {unlocked ? "Open" : "Locked until calendar week / authorised unlock"}
                                   </span>
                                 </div>
                                 <ApprenticeStatusChip tone={statusTone(sub.status)}>

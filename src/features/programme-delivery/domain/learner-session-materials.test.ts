@@ -83,4 +83,27 @@ describe("learner session materials filter", () => {
     expect(list.map((r) => r.id)).toEqual(["r-learn"]);
     expect(list.some((r) => r.title.includes("lesson plan"))).toBe(false);
   });
+
+  it("never returns a tutor-only teaching PowerPoint to the learner session", () => {
+    const pptAtt: ProgrammeResourceAttachmentRecord = {
+      ...tutorAtt,
+      id: "a-ppt",
+      resourceId: "r-ppt",
+    };
+    const pptResource: ProgrammeResourceRecord = {
+      ...resources[0]!,
+      id: "r-ppt",
+      resourceKey: "res_lm_b956dd2a0014_1",
+      title: "Features of Hybrid Vehicles",
+      filename: "Features of Hybrid Vehicles.ppt",
+    };
+    const list = learnerVisibleResourcesForSession({
+      attachments: [pptAtt, learnerAtt],
+      resources: [...resources, pptResource],
+      sessionId: "s1",
+    });
+    expect(list.map((r) => r.id)).toEqual(["r-learn"]);
+    expect(list.some((r) => /\.ppt$/i.test(r.filename))).toBe(false);
+    expect(assertNoTutorOnlyLeak([pptAtt]).ok).toBe(false);
+  });
 });

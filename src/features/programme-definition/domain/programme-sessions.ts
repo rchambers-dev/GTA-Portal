@@ -7,6 +7,7 @@ import type {
   LearningObjectivesReview,
   SessionPublishStatus,
 } from "./programme-resources";
+import type { LearnerFacingContent } from "./learner-facing-content";
 
 export type ProgrammeSessionRecord = {
   id: string;
@@ -22,6 +23,7 @@ export type ProgrammeSessionRecord = {
   plannedOtjHours: number | null;
   publishStatus: SessionPublishStatus;
   learningObjectivesReview: LearningObjectivesReview;
+  learnerFacingContent: LearnerFacingContent;
   metadata: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;

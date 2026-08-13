@@ -5,6 +5,7 @@ import {
   updateProgrammeSessionAuthoring,
 } from "@/features/programme-definition/domain/programme-sessions-repository";
 import type { LearningObjectivesReview } from "@/features/programme-definition/domain/programme-resources";
+import type { LearnerFacingContent } from "@/features/programme-definition/domain/learner-facing-content";
 
 export const runtime = "nodejs";
 
@@ -52,6 +53,7 @@ type PatchBody = {
   sessionId?: string;
   publishStatus?: "draft" | "published";
   learningObjectivesReview?: LearningObjectivesReview;
+  learnerFacingContent?: LearnerFacingContent;
 };
 
 export async function PATCH(request: Request) {
@@ -76,6 +78,7 @@ export async function PATCH(request: Request) {
       {
         publishStatus: body.publishStatus,
         learningObjectivesReview: body.learningObjectivesReview,
+        learnerFacingContent: body.learnerFacingContent,
       },
     );
     return NextResponse.json({ ok: true, session });

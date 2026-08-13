@@ -48,6 +48,26 @@ describe("apprentice RAG", () => {
     ).toBe(false);
   });
 
+  it("does not unlock the next Block when prior reflection / Task 5 would be verified", () => {
+    expect(
+      isApprenticeBlockUnlocked({
+        blockId: 2,
+        weekStart: 11,
+        programmeWeek: 3,
+        priorBlockTasks: [{ id: "b1-t5" } as never],
+        apprenticeId: "live-apprentice",
+      }),
+    ).toBe(false);
+    expect(
+      isApprenticeBlockUnlocked({
+        blockId: 2,
+        weekStart: 11,
+        programmeWeek: 3,
+        manuallyUnlocked: true,
+      }),
+    ).toBe(true);
+  });
+
   it("unlocks past calendar blocks for catch-up without prior reflection", () => {
     expect(
       isApprenticeBlockUnlocked({

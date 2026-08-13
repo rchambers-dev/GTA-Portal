@@ -11,10 +11,12 @@ import {
   filterLearnerVisibleAttachments,
   learnerVisibleResourcesForSession,
 } from "@/features/programme-delivery/domain/learner-session-materials";
+import { isSecurityTestFixtureResource } from "@/features/programme-definition/domain/learner-facing-content";
 import {
-  labelSessionLearningStatus,
-  type SessionLearningLaneStatus,
-} from "@/features/programme-delivery/domain/session-delivery";
+  assignSessionLaneStatuses,
+  labelSessionLaneStatus,
+  nextSessionAfterCurrent,
+} from "@/features/programme-delivery/domain/session-lane";
 
 export const runtime = "nodejs";
 
@@ -127,12 +129,16 @@ export async function GET(request: Request) {
     const deliveredBySession = new Map(
       deliveries.map((d) => [d.sessionId, d]),
     );
+    const assigned = assignSessionLaneStatuses(
+      block1Sessions,
+      new Set(deliveries.map((d) => d.sessionId)),
+    );
+    const nextSession = nextSessionAfterCurrent(assigned);
 
-    const lane = block1Sessions.map((s) => {
+    const lane = assigned.map((row) => {
+      const s = row.session;
       const delivery = deliveredBySession.get(s.id) || null;
-      let learningStatus: SessionLearningLaneStatus = "upcoming";
-      if (delivery) learningStatus = "completed";
-      else if (s.calendarWeek <= programmeWeek) learningStatus = "available";
+      const learningStatus = row.status;
 
       const sessionAtt = attachments.filter((a) => a.sessionId === s.id);
       const tutorMaterials = sessionAtt.filter(
@@ -140,20 +146,25 @@ export async function GET(request: Request) {
       );
       const learnerMaterials = filterLearnerVisibleAttachments(sessionAtt);
       const learnerLeakCheck = assertNoTutorOnlyLeak(learnerMaterials);
+      const visibleResources = learnerVisibleResourcesForSession({
+        attachments,
+        resources,
+        sessionId: s.id,
+      });
+      const learnerVisibleResources =
+        audience === "learner"
+          ? visibleResources.filter((r) => !isSecurityTestFixtureResource(r))
+          : visibleResources;
 
       return {
         session: s,
         learningStatus,
-        learningStatusLabel: labelSessionLearningStatus(learningStatus),
+        learningStatusLabel: labelSessionLaneStatus(learningStatus),
         delivery,
         tutorMaterialAttachments:
           audience === "tutor" ? tutorMaterials : [],
         learnerMaterialAttachments: learnerMaterials,
-        learnerVisibleResources: learnerVisibleResourcesForSession({
-          attachments,
-          resources,
-          sessionId: s.id,
-        }),
+        learnerVisibleResources,
         visibilityOk: learnerLeakCheck.ok,
       };
     });
@@ -201,11 +212,19 @@ export async function GET(request: Request) {
         plannedOtjHours: 45,
       },
       sessions: lane,
+      nextSession: nextSession
+        ? {
+            id: nextSession.id,
+            sessionKey: nextSession.sessionKey,
+            title: nextSession.title,
+            calendarWeek: nextSession.calendarWeek,
+          }
+        : null,
       deliveryRecords: deliveries,
       visibilityProof: learnerViewW001,
       notes: {
-        s4Conflict:
-          "Runtime delivery-unlock.ts still auto-unlocks next blocks when prior reflection is verified. That conflicts with locked S4. Block 1 pilot is unaffected (Block 1 is always first). Do not silently change global unlock in this pilot.",
+        s4:
+          "Block unlock is calendar/sequence by default. Authorised per-enrolment override only. Task 5 / Session completion does not auto-unlock the next Block.",
         otj:
           "Session sign-off does not log OTJ, alter 611.5, attendance, or RPL.",
         correction:

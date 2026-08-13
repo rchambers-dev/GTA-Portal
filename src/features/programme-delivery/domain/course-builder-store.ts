@@ -1,12 +1,9 @@
 /**
  * Course Builder — authored tasks + forms keyed by GTA programme version.
  * DB (gta_course_tasks) is source of truth; localStorage is cache only.
- * Groups spine authoring removed; CEA pack form helpers remain for legacy group delivery.
+ * Controlled programme tasks only (gta_course_tasks).
  */
 
-import {
-  getAutocareGroupsSeedForm,
-} from "@/features/programme-delivery/domain/autocare-groups-forms";
 import type { AuthoredTaskForm } from "@/features/programme-delivery/domain/form-modules";
 import { defaultAuthoredTaskForm } from "@/features/programme-delivery/domain/form-modules";
 import type { PracticalTaskDef } from "@/features/programme-delivery/domain/task-schema";
@@ -366,10 +363,7 @@ export function getAuthoredTaskForm(
   const key = taskFormKey(ownerId, taskId);
   const stored = snap.taskForms[key];
   if (!stored) {
-    return (
-      getAutocareGroupsSeedForm(ownerId, taskId) ??
-      defaultAuthoredTaskForm(fallbackTitle)
-    );
+    return defaultAuthoredTaskForm(fallbackTitle);
   }
   return {
     ...stored,
@@ -385,9 +379,7 @@ export function ensureAuthoredTaskForm(
   const key = taskFormKey(ownerId, taskId);
   const stored = state().taskForms[key];
   if (!stored) {
-    const form =
-      getAutocareGroupsSeedForm(ownerId, taskId) ??
-      defaultAuthoredTaskForm(title);
+    const form = defaultAuthoredTaskForm(title);
     saveAuthoredTaskForm(ownerId, taskId, form);
     return form;
   }
@@ -437,8 +429,7 @@ export function hasAuthoredTaskForm(
   taskId: string,
   snap: CourseBuilderState = state(),
 ): boolean {
-  if (snap.taskForms[taskFormKey(ownerId, taskId)]) return true;
-  return getAutocareGroupsSeedForm(ownerId, taskId) != null;
+  return snap.taskForms[taskFormKey(ownerId, taskId)] != null;
 }
 
 export function isAuthoredTaskFormReady(
@@ -448,7 +439,7 @@ export function isAuthoredTaskFormReady(
 ): boolean {
   const stored = snap.taskForms[taskFormKey(ownerId, taskId)];
   if (stored) return stored.status === "ready";
-  return getAutocareGroupsSeedForm(ownerId, taskId)?.status === "ready";
+  return false;
 }
 
 export function authoredTaskFormBadge(

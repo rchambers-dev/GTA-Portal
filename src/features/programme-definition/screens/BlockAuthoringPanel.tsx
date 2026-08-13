@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import adminStyles from "@/features/administration/screens/admin-pages.module.css";
 import type { SpineItem } from "../domain/types";
 import type { ProgrammeSessionRecord } from "../domain/programme-sessions";
+import type { LearnerFacingContent } from "../domain/learner-facing-content";
+import { approvedLearnerCopy } from "../domain/learner-facing-content";
 import type { GtaCourseTaskRecord } from "@/features/programme-delivery/domain/gta-course-tasks";
 import type {
   ProgrammeResourceAttachmentRecord,
@@ -106,6 +108,9 @@ export function BlockAuthoringPanel({
   const [extractText, setExtractText] = useState("");
   const [candidateActivities, setCandidateActivities] = useState<string[]>([]);
   const [extractLoading, setExtractLoading] = useState(false);
+  const [learnerSummary, setLearnerSummary] = useState("");
+  const [learnerLearning, setLearnerLearning] = useState("");
+  const [learnerActivity, setLearnerActivity] = useState("");
 
   const blockNumber = blockNumberOf(block);
   const weekStart = weekStartOf(block);
@@ -180,6 +185,21 @@ export function BlockAuthoringPanel({
 
   const selectedSession = sessions.find((s) => s.id === selectedSessionId);
 
+  useEffect(() => {
+    if (!selectedSession) {
+      setLearnerSummary("");
+      setLearnerLearning("");
+      setLearnerActivity("");
+      return;
+    }
+    const approved = approvedLearnerCopy(selectedSession.learnerFacingContent);
+    const draft =
+      approved || selectedSession.learnerFacingContent.candidate;
+    setLearnerSummary(draft?.summary || selectedSession.topic || "");
+    setLearnerLearning(draft?.learningContent || "");
+    setLearnerActivity(draft?.activityPractice || "");
+  }, [selectedSession]);
+
   const sessionAttachments = useMemo(
     () =>
       attachments
@@ -247,6 +267,97 @@ export function BlockAuthoringPanel({
       cancelled = true;
     };
   }, [selectedSessionId, lessonPlanResourceId, programmeVersionId]);
+
+  async function saveLearnerFacingContent(
+    next: LearnerFacingContent,
+  ): Promise<void> {
+    if (!selectedSession) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch(
+        "/api/management/programme-definition/sessions",
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            programmeVersionId,
+            sessionId: selectedSession.id,
+            learnerFacingContent: next,
+          }),
+        },
+      );
+      const json = (await res.json()) as { ok: boolean; error?: string };
+      if (!json.ok) throw new Error(json.error || "Update failed");
+      await loadAll();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Update failed");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function saveLearnerDraft() {
+    if (!selectedSession) return;
+    const current = selectedSession.learnerFacingContent;
+    if (current.status === "approved_published" && current.approved) {
+      await saveLearnerFacingContent({
+        status: "approved_published",
+        candidate: current.candidate,
+        approved: {
+          ...current.approved,
+          summary: learnerSummary,
+          learningContent: learnerLearning,
+          activityPractice: learnerActivity,
+        },
+      });
+      return;
+    }
+    await saveLearnerFacingContent({
+      status: "candidate_for_review",
+      candidate: {
+        summary: learnerSummary,
+        learningContent: learnerLearning,
+        activityPractice: learnerActivity,
+        sourceLabel:
+          current.candidate?.sourceLabel ||
+          selectedSession.learningObjectivesReview.sourceLabel ||
+          "Curriculum owner draft",
+      },
+      approved: null,
+    });
+  }
+
+  async function approveLearnerContent() {
+    if (!selectedSession) return;
+    const current = selectedSession.learnerFacingContent;
+    await saveLearnerFacingContent({
+      status: "approved_published",
+      candidate: current.candidate,
+      approved: {
+        summary: learnerSummary,
+        learningContent: learnerLearning,
+        activityPractice: learnerActivity,
+        sourceLabel:
+          current.candidate?.sourceLabel ||
+          current.approved?.sourceLabel ||
+          selectedSession.learningObjectivesReview.sourceLabel ||
+          "",
+        approvedAt: new Date().toISOString(),
+        approvedByName: "Curriculum owner",
+      },
+    });
+  }
+
+  async function clearApprovedLearnerContent() {
+    if (!selectedSession) return;
+    const current = selectedSession.learnerFacingContent;
+    await saveLearnerFacingContent({
+      status: current.candidate ? "candidate_for_review" : "empty",
+      candidate: current.candidate,
+      approved: null,
+    });
+  }
 
   async function setAuthoringStatus(status: "draft" | "published") {
     if (!selectedSession) return;
@@ -663,6 +774,141 @@ export function BlockAuthoringPanel({
                   </p>
                 )}
 
+                <h4 className={styles.meta}>Learner experience</h4>
+                <div className={styles.banner}>
+                  <p>
+                    <strong>WHAT TUTOR SEES</strong>
+                    {" — "}
+                    lesson plan, tutor delivery materials, and source extracts
+                    stay tutor-only.
+                  </p>
+                  <p>
+                    <strong>WHAT APPRENTICE SEES</strong>
+                    {" — "}
+                    only approved learner summary, activity, and learner-visible
+                    resources.
+                  </p>
+                </div>
+                {selectedSession.learnerFacingContent.candidate ? (
+                  <div className={styles.banner}>
+                    <p>
+                      <strong>
+                        CANDIDATE FROM SOURCE — REQUIRES APPROVAL
+                      </strong>
+                    </p>
+                    <p className={styles.meta}>
+                      Source:{" "}
+                      {selectedSession.learnerFacingContent.candidate.sourceLabel}
+                    </p>
+                    {selectedSession.learnerFacingContent.candidate.summary ? (
+                      <p>
+                        <strong>Candidate summary:</strong>{" "}
+                        {selectedSession.learnerFacingContent.candidate.summary}
+                      </p>
+                    ) : null}
+                    {selectedSession.learnerFacingContent.candidate
+                      .learningContent ? (
+                      <p className={styles.meta} style={{ whiteSpace: "pre-wrap" }}>
+                        {
+                          selectedSession.learnerFacingContent.candidate
+                            .learningContent
+                        }
+                      </p>
+                    ) : null}
+                    {selectedSession.learnerFacingContent.candidate
+                      .activityPractice ? (
+                      <p className={styles.meta} style={{ whiteSpace: "pre-wrap" }}>
+                        {
+                          selectedSession.learnerFacingContent.candidate
+                            .activityPractice
+                        }
+                      </p>
+                    ) : null}
+                    <button
+                      type="button"
+                      className={adminStyles.secondaryBtn}
+                      onClick={() => {
+                        const c =
+                          selectedSession.learnerFacingContent.candidate;
+                        if (!c) return;
+                        setLearnerSummary(c.summary);
+                        setLearnerLearning(c.learningContent);
+                        setLearnerActivity(c.activityPractice);
+                      }}
+                    >
+                      Copy candidate into editor
+                    </button>
+                  </div>
+                ) : (
+                  <p className={styles.meta}>
+                    No source candidate has been prepared for apprentice copy
+                    yet.
+                  </p>
+                )}
+                <p className={styles.meta}>
+                  Learner copy status:{" "}
+                  {selectedSession.learnerFacingContent.status ===
+                  "approved_published"
+                    ? "Approved for apprentices"
+                    : selectedSession.learnerFacingContent.status ===
+                        "candidate_for_review"
+                      ? "Candidate — not shown to apprentices"
+                      : "Empty — not shown to apprentices"}
+                </p>
+                <label className={styles.meta}>
+                  Learner learning summary
+                  <textarea
+                    value={learnerSummary}
+                    onChange={(e) => setLearnerSummary(e.target.value)}
+                    rows={2}
+                    style={{ width: "100%", marginTop: "0.35rem" }}
+                  />
+                </label>
+                <label className={styles.meta}>
+                  Learner-facing learning content
+                  <textarea
+                    value={learnerLearning}
+                    onChange={(e) => setLearnerLearning(e.target.value)}
+                    rows={5}
+                    style={{ width: "100%", marginTop: "0.35rem" }}
+                  />
+                </label>
+                <label className={styles.meta}>
+                  Learner-facing activity / practice
+                  <textarea
+                    value={learnerActivity}
+                    onChange={(e) => setLearnerActivity(e.target.value)}
+                    rows={4}
+                    style={{ width: "100%", marginTop: "0.35rem" }}
+                  />
+                </label>
+                <div className={styles.spineActions}>
+                  <button
+                    type="button"
+                    className={adminStyles.secondaryBtn}
+                    disabled={saving}
+                    onClick={() => void saveLearnerDraft()}
+                  >
+                    Save learner draft
+                  </button>
+                  <button
+                    type="button"
+                    className={adminStyles.primaryBtn}
+                    disabled={saving}
+                    onClick={() => void approveLearnerContent()}
+                  >
+                    Approve and publish for learners
+                  </button>
+                  <button
+                    type="button"
+                    className={adminStyles.secondaryBtn}
+                    disabled={saving}
+                    onClick={() => void clearApprovedLearnerContent()}
+                  >
+                    Remove from apprentice view
+                  </button>
+                </div>
+
                 <h4 className={styles.meta}>Tutor delivery materials</h4>
                 {tutorDelivery.length === 0 ? (
                   <p className={styles.meta}>None attached.</p>
@@ -686,8 +932,14 @@ export function BlockAuthoringPanel({
                             className={adminStyles.secondaryBtn}
                             onClick={() => void openLessonPlan(a.resourceId)}
                           >
-                            View source / open lesson plan
+                            View extract
                           </button>
+                          {/\.(ppt|pptx|pptm)$/i.test(r?.filename || "") ? (
+                            <div className={styles.meta}>
+                              Open PowerPoint: original deck cannot be rendered
+                              in the browser. Source remains catalogue-referenced.
+                            </div>
+                          ) : null}
                         </li>
                       );
                     })}
@@ -1035,11 +1287,11 @@ export function BlockAuthoringPanel({
         <div>
           <div className={styles.banner}>
             <p>
-              <strong>Authoring / delivery preview</strong>
+              <strong>WHAT TUTOR SEES vs WHAT APPRENTICE SEES</strong>
             </p>
             <p className={styles.meta}>
-              This previews how authored Session content may appear in delivery.
-              It is not the live tutor sign-off workflow.
+              This is an authoring preview. It is not the live tutor sign-off
+              workflow and does not mean the Session has been delivered.
             </p>
           </div>
           {!selectedSession ? (
@@ -1049,7 +1301,13 @@ export function BlockAuthoringPanel({
           ) : (
             <div className={styles.startLayout}>
               <div>
-                <h4>Tutor would see</h4>
+                <h4>WHAT TUTOR SEES</h4>
+                <p className={styles.meta}>
+                  {selectedSession.title}
+                  {selectedSession.foundationSkillCode
+                    ? ` · ${selectedSession.foundationSkillCode}`
+                    : ""}
+                </p>
                 <ul>
                   {sessionAttachments
                     .filter((a) => a.audience === "TUTOR_ONLY")
@@ -1063,9 +1321,50 @@ export function BlockAuthoringPanel({
                       );
                     })}
                 </ul>
+                {selectedSession.learningObjectivesReview.status ===
+                "candidate_for_review" ? (
+                  <p className={styles.meta}>
+                    Source learning aims remain candidates until structured
+                    approval.
+                  </p>
+                ) : null}
               </div>
               <div>
-                <h4>Learner would see</h4>
+                <h4>WHAT APPRENTICE SEES</h4>
+                {approvedLearnerCopy(
+                  selectedSession.learnerFacingContent,
+                ) ? (
+                  <>
+                    <p>
+                      <strong>
+                        {
+                          approvedLearnerCopy(
+                            selectedSession.learnerFacingContent,
+                          )?.summary
+                        }
+                      </strong>
+                    </p>
+                    <p className={styles.meta} style={{ whiteSpace: "pre-wrap" }}>
+                      {
+                        approvedLearnerCopy(
+                          selectedSession.learnerFacingContent,
+                        )?.learningContent
+                      }
+                    </p>
+                    <p className={styles.meta} style={{ whiteSpace: "pre-wrap" }}>
+                      {
+                        approvedLearnerCopy(
+                          selectedSession.learnerFacingContent,
+                        )?.activityPractice
+                      }
+                    </p>
+                  </>
+                ) : (
+                  <p className={styles.meta}>
+                    No approved learner content yet. Candidates are not shown to
+                    apprentices.
+                  </p>
+                )}
                 {sessionAttachments.some(
                   (a) => a.audience === "LEARNER_VISIBLE",
                 ) ? (
@@ -1084,8 +1383,7 @@ export function BlockAuthoringPanel({
                   </ul>
                 ) : (
                   <p className={styles.meta}>
-                    No learner learning/revision materials have been approved for
-                    this Session yet.
+                    No learner-visible resources attached.
                   </p>
                 )}
               </div>

@@ -28,11 +28,6 @@ export type PortalAccount = {
   moduleScope?: string[];
   /** Linked apprentices.id when this login is an apprentice portal account. */
   linkedApprenticeId?: string | null;
-  /**
-   * Cohort delivery spine for the linked apprentice (groups vs blocks).
-   * Drives college nav / task UI. Defaults to groups when unknown.
-   */
-  deliverySpine?: "groups" | "blocks";
 };
 
 export type TemporaryAssignment = {

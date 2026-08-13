@@ -26,7 +26,7 @@ type LaneSession = {
       sourceLabel?: string;
     };
   };
-  learningStatus: "upcoming" | "available" | "completed";
+  learningStatus: "upcoming" | "current" | "completed";
   learningStatusLabel: string;
   delivery: {
     deliveredAt: string;
@@ -62,6 +62,12 @@ type Bundle = {
   };
   block?: { title: string; weekStart: number; weekEnd: number; plannedOtjHours: number };
   sessions?: LaneSession[];
+  nextSession?: {
+    id: string;
+    sessionKey: string;
+    title: string;
+    calendarWeek: number;
+  } | null;
   visibilityProof?: {
     sessionKey: string;
     resourceTitles: string[];
@@ -313,8 +319,8 @@ export function TutorBlock1DeliveryScreen() {
           </h2>
           <p className={styles.blockMeta}>
             Weeks {bundle?.block?.weekStart}–{bundle?.block?.weekEnd} ·{" "}
-            {bundle?.block?.plannedOtjHours} planned eligible OTJ · learning
-            completed ≠ Task completed
+            {bundle?.block?.plannedOtjHours} planned eligible OTJ · Session
+            delivered ≠ Task completed
           </p>
 
           <ul className={styles.taskList}>
@@ -341,19 +347,18 @@ export function TutorBlock1DeliveryScreen() {
                     </span>
                   </span>
                   <ApprenticeStatusChip
-                    label={
-                      row.learningStatus === "completed"
-                        ? "Completed"
-                        : row.learningStatusLabel
-                    }
                     tone={
                       row.learningStatus === "completed"
-                        ? "success"
-                        : row.learningStatus === "available"
-                          ? "info"
+                        ? "green"
+                        : row.learningStatus === "current"
+                          ? "amber"
                           : "neutral"
                     }
-                  />
+                  >
+                    {row.learningStatus === "completed"
+                      ? "Session delivered"
+                      : row.learningStatusLabel}
+                  </ApprenticeStatusChip>
                 </button>
               </li>
             ))}
@@ -424,9 +429,26 @@ export function TutorBlock1DeliveryScreen() {
             )}
 
             <h3 className={styles.purposeLabel}>Activity / practice</h3>
+            <p className={styles.purposeBody}>
+              <strong>Orientation:</strong> {selectedLane.session.title}
+            </p>
+            {(selectedLane.session.learningObjectivesReview.byTheEnd || [])
+              .length > 0 ? (
+              <ul className={styles.objectives}>
+                {(
+                  selectedLane.session.learningObjectivesReview.byTheEnd || []
+                ).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className={styles.blockMeta}>
+                No practice orientation captured on this Session yet.
+              </p>
+            )}
             <p className={styles.blockMeta}>
-              See View source on the lesson plan for candidate day activities.
-              No controlled Practice record is required to sign off delivery.
+              Tutor source (lesson plan) remains tutor-only. No controlled
+              Practice record is required to sign off Session delivered.
             </p>
 
             <h3 className={styles.purposeLabel}>Task checkpoints</h3>
@@ -436,10 +458,21 @@ export function TutorBlock1DeliveryScreen() {
               Exact Session→Task release links are not authored (S7 deferred).
             </p>
 
+            {bundle?.nextSession ? (
+              <p className={styles.purposeNote}>
+                Next Session: {bundle.nextSession.sessionKey} · Week{" "}
+                {bundle.nextSession.calendarWeek} · {bundle.nextSession.title}
+              </p>
+            ) : (
+              <p className={styles.purposeNote}>
+                No further Session in this Block after the current / next one.
+              </p>
+            )}
+
             {selectedLane.delivery ? (
               <div className={styles.autosaveBar} data-state="saved">
                 <p className={styles.autosaveText}>
-                  Learning completed ·{" "}
+                  Session delivered ·{" "}
                   {new Date(selectedLane.delivery.deliveredAt).toLocaleString(
                     "en-GB",
                   )}{" "}
@@ -473,17 +506,18 @@ export function TutorBlock1DeliveryScreen() {
               Learner lane preview · {selectedLane.session.sessionKey}
             </h2>
             <ApprenticeStatusChip
-              label={
-                selectedLane.learningStatus === "completed"
-                  ? "Completed"
-                  : selectedLane.learningStatusLabel
-              }
               tone={
                 selectedLane.learningStatus === "completed"
-                  ? "success"
-                  : "info"
+                  ? "green"
+                  : selectedLane.learningStatus === "current"
+                    ? "amber"
+                    : "neutral"
               }
-            />
+            >
+              {selectedLane.learningStatus === "completed"
+                ? "Session delivered"
+                : selectedLane.learningStatusLabel}
+            </ApprenticeStatusChip>
             {selectedLane.delivery ? (
               <p className={styles.purposeBody}>
                 Completed{" "}
@@ -603,7 +637,9 @@ function TutorMaterialTitles({
   attachmentResourceIds: string[];
   onViewSource: (id: string) => void;
 }) {
-  const [titles, setTitles] = useState<Record<string, string>>({});
+  const [byId, setById] = useState<
+    Record<string, { title: string; filename: string }>
+  >({});
   useEffect(() => {
     if (!programmeVersionId || attachmentResourceIds.length === 0) return;
     let cancelled = false;
@@ -616,11 +652,14 @@ function TutorMaterialTitles({
         resources?: Array<{ id: string; title: string; filename: string }>;
       };
       if (cancelled || !json.ok) return;
-      const map: Record<string, string> = {};
+      const map: Record<string, { title: string; filename: string }> = {};
       for (const r of json.resources || []) {
-        map[r.id] = r.title || r.filename;
+        map[r.id] = {
+          title: r.title || r.filename,
+          filename: r.filename || "",
+        };
       }
-      setTitles(map);
+      setById(map);
     })();
     return () => {
       cancelled = true;
@@ -630,19 +669,29 @@ function TutorMaterialTitles({
   if (!attachmentResourceIds.length) return null;
   return (
     <ul className={styles.objectives}>
-      {attachmentResourceIds.map((id) => (
-        <li key={id}>
-          <strong>{titles[id] || "Tutor material"}</strong>
-          <div className={styles.blockMeta}>Tutor delivery · Tutor only</div>
-          <button
-            type="button"
-            className={styles.secondaryBtn}
-            onClick={() => onViewSource(id)}
-          >
-            View source
-          </button>
-        </li>
-      ))}
+      {attachmentResourceIds.map((id) => {
+        const meta = byId[id];
+        const isPpt = /\.(ppt|pptx|pptm)$/i.test(meta?.filename || "");
+        return (
+          <li key={id}>
+            <strong>{meta?.title || "Tutor material"}</strong>
+            <div className={styles.blockMeta}>Tutor delivery · Tutor only</div>
+            <button
+              type="button"
+              className={styles.secondaryBtn}
+              onClick={() => onViewSource(id)}
+            >
+              View extract
+            </button>
+            {isPpt ? (
+              <p className={styles.blockMeta}>
+                Open PowerPoint: the original deck cannot be rendered in the
+                browser. Source remains catalogue-referenced.
+              </p>
+            ) : null}
+          </li>
+        );
+      })}
     </ul>
   );
 }

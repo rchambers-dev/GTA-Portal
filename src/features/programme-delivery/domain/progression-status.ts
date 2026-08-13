@@ -18,7 +18,6 @@ import type { PracticalTaskDef } from "./task-schema";
 import type { TaskSubmissionStatus } from "./task-submission-store";
 import {
   getTaskSubmission,
-  isBlockReflectionVerified,
 } from "./task-submission-store";
 import { startOfUtcDay } from "@/features/apprentice-lifecycle/domain/programme-week";
 
@@ -104,25 +103,22 @@ export function furthestReachedBlockId(
  * Whether an apprentice can open a college block.
  * Everything up to the current calendar block stays open so catch-up can stack
  * (being behind on Block 2 does not re-lock Block 9).
- * Future blocks stay locked until their week begins (or prior reflection verified).
+ * Future blocks stay locked until their week begins.
+ * S4: reflection / Task 5 does not auto-unlock. Use authorised override instead.
  */
 export function isApprenticeBlockUnlocked(input: {
   blockId: number;
   weekStart: number | null;
   programmeWeek: number;
-  priorBlockTasks: PracticalTaskDef[];
-  apprenticeId: string;
+  priorBlockTasks?: PracticalTaskDef[];
+  apprenticeId?: string;
+  manuallyUnlocked?: boolean;
 }): boolean {
   if (input.blockId <= 1) return true;
+  if (input.manuallyUnlocked) return true;
 
   const reached = furthestReachedBlockId(input.programmeWeek);
-  if (input.blockId <= reached) return true;
-
-  return isBlockReflectionVerified(
-    input.blockId - 1,
-    input.priorBlockTasks,
-    input.apprenticeId,
-  );
+  return input.blockId <= reached;
 }
 
 /**

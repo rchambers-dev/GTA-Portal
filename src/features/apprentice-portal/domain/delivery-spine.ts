@@ -1,18 +1,14 @@
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
-import type { DeliverySpine } from "@/features/administration/domain/cohort-products";
-import { normalizeDeliverySpine } from "@/features/administration/domain/cohort-products";
 
 export type ApprenticeDeliveryContext = {
-  deliverySpine: DeliverySpine;
   standardVersion: string | null;
   cohortId: string | null;
   cohortName: string | null;
-  /** Enrolment pin — authoritative GTA programme version for blocks delivery. */
+  /** Enrolment pin — authoritative GTA programme version. */
   gtaProgrammeVersionId: string | null;
 };
 
 const DEFAULT_CONTEXT: ApprenticeDeliveryContext = {
-  deliverySpine: "groups",
   standardVersion: null,
   cohortId: null,
   cohortName: null,
@@ -20,8 +16,9 @@ const DEFAULT_CONTEXT: ApprenticeDeliveryContext = {
 };
 
 /**
- * Resolve the signed-in apprentice's cohort product spine + enrolment pin.
- * Never invents a programme version when the pin is missing.
+ * Resolve the signed-in apprentice's enrolment pin + optional cohort metadata.
+ * Controlled delivery is Blocks/Sessions/Tasks. Missing cohort does not fall
+ * back to the retired Groups/CEA runtime.
  */
 export async function resolveApprenticeDeliveryContext(
   apprenticeId: string | null | undefined,
@@ -51,7 +48,7 @@ export async function resolveApprenticeDeliveryContext(
 
     const { data: cohort } = await supabase
       .from("cohorts")
-      .select("id, name, standard_version, delivery_spine")
+      .select("id, name, standard_version")
       .eq("id", cohortId)
       .maybeSingle();
 
@@ -60,7 +57,6 @@ export async function resolveApprenticeDeliveryContext(
     }
 
     return {
-      deliverySpine: normalizeDeliverySpine(cohort.delivery_spine),
       standardVersion: cohort.standard_version?.trim() || null,
       cohortId: cohort.id,
       cohortName: cohort.name?.trim() || null,
@@ -70,4 +66,3 @@ export async function resolveApprenticeDeliveryContext(
     return DEFAULT_CONTEXT;
   }
 }
-

@@ -1,9 +1,6 @@
 /**
- * Cohort product = Skills England pack version + delivery spine.
- * Same official version (e.g. 1.3) can run on groups (Temp) or blocks (Main).
- *
- * Per standard: legacy groups · current groups · GTA blocks (same newest SE version).
- * Autocare also keeps 1.1-groups as finishers-only.
+ * Cohort product = Skills England pack version + controlled Blocks delivery.
+ * Groups/CEA is retired; stored "groups" spine values normalize to blocks.
  */
 
 export type DeliverySpine = "groups" | "blocks";
@@ -44,9 +41,9 @@ const SPINE_LABEL: Record<DeliverySpine, string> = {
 };
 
 export function normalizeDeliverySpine(
-  value: string | null | undefined,
+  _value: string | null | undefined,
 ): DeliverySpine {
-  return value === "blocks" ? "blocks" : "groups";
+  return "blocks";
 }
 
 export function deliverySpineLabel(spine: DeliverySpine): string {
@@ -188,28 +185,13 @@ function buildProduct(
 }
 
 function triadFor(standardCode: StandardCode): CohortProduct[] {
-  const legacy = LEGACY_STANDARD_VERSION[standardCode];
   const current = CURRENT_STANDARD_VERSION[standardCode];
   return [
     buildProduct(
       standardCode,
-      legacy,
-      "groups",
-      "Legacy groups spine — previous Skills England version. Tutors edit structure; Jon maps KSBs.",
-      { labelNote: "legacy groups" },
-    ),
-    buildProduct(
-      standardCode,
-      current,
-      "groups",
-      "Current groups spine — newest Skills England version. Same pack version as GTA blocks.",
-      { labelNote: "current groups" },
-    ),
-    buildProduct(
-      standardCode,
       current,
       "blocks",
-      "GTA forward blocks spine (10+2 empty shells). Same Skills England version as current groups.",
+      "Controlled GTA Blocks / Sessions / Tasks programme.",
       { labelNote: "GTA blocks" },
     ),
   ];
@@ -217,14 +199,6 @@ function triadFor(standardCode: StandardCode): CohortProduct[] {
 
 /** All selectable products across standards. */
 export const ALL_COHORT_PRODUCTS: CohortProduct[] = [
-  // Autocare finishers-only (1.0/1.1 flat pack)
-  buildProduct(
-    "ST0499",
-    "1.1",
-    "groups",
-    "Finishers only. Flat KSB era (covers ST0499 1.0/1.1). Not for new starts.",
-    { labelNote: "finishers", finishersOnly: true },
-  ),
   ...COURSE_STANDARD_CODES.flatMap(triadFor),
 ];
 
@@ -247,7 +221,7 @@ export function productsForStandard(
   });
 }
 
-/** Primary triad only (legacy groups, current groups, GTA blocks). */
+/** Current controlled Blocks products only. */
 export function primaryProductsForStandard(
   standardCode: string | null | undefined,
 ): CohortProduct[] {
@@ -314,11 +288,11 @@ export function resolveAutocareProductId(
   return resolveProductId("ST0499", standardVersion, deliverySpine);
 }
 
-/** Default product for a new cohort on this standard (current groups). */
+/** Default product for a new cohort on this standard (controlled Blocks). */
 export function defaultProductForStandard(
   standardCode: string | null | undefined,
 ): CohortProduct | undefined {
   const code = normalizeStandardCode(standardCode);
   if (!code) return undefined;
-  return findProduct(code, CURRENT_STANDARD_VERSION[code], "groups");
+  return findProduct(code, CURRENT_STANDARD_VERSION[code], "blocks");
 }

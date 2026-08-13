@@ -1,0 +1,4394 @@
+{
+  "generatedAt": "2026-08-13T14:58:05.282Z",
+  "cataloguePptTotal": 58,
+  "byExt": {
+    ".ppt": 46,
+    ".pptx": 11,
+    ".pptm": 1
+  },
+  "byCatalogueExtraction": {
+    "CONTENT_EXTRACTION_REQUIRED": 46,
+    "EXTRACTED": 12
+  },
+  "g01Note": "G01 Foundation Skills folder was recorded empty in Learning Materials catalogue summary.",
+  "block1PlausibleCount": 15,
+  "inventory": [
+    {
+      "catalogueId": "res_lm_b956dd2a0014_1",
+      "filename": "Features of Hybrid Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G02_Electric_Hybrid_Awareness_Resources_Features_of_Hybrid_Vehicles.ppt.txt",
+      "extractChars": 7008,
+      "excerpt": "SOURCE: G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt HASH: b956dd2a00140f66bee5813f27342993d71c1858b2b08829f904bae54fdaf085 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Features of Hybrid Vehicles explore some of the features of hybrid vehicles Next > ===== SLIDE 2 ===== Introduction Next > A hybrid vehicle contains two or more sources of power. EEV means an Enhanced Environmentally Friendly Vehicle. Hybrid vehicles have severa",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 3,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 3,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 1,
+          "hits": [
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_c6f98e42ad5a_2",
+      "filename": "Fuel Cells.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Fuel Cells.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 1,
+        "hits": [
+          "hybrid"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 1,
+          "hits": [
+            "hybrid"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Fuel Cells.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_a70bd86e7a03_3",
+      "filename": "Range Extenders.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Range Extenders.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 1,
+        "hits": [
+          "hybrid"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 1,
+          "hits": [
+            "hybrid"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Range Extenders.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_288abfbed632_4",
+      "filename": "Safety in High Voltage Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G02_Electric_Hybrid_Awareness_Resources_Safety_in_High_Voltage_Vehicles.ppt.txt",
+      "extractChars": 6419,
+      "excerpt": "SOURCE: G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt HASH: 288abfbed6323d2838680cf54e0e6e9db0e30e423a6f3986de58d2b848f57ab5 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Safety in High Voltage Vehicles explore the safety procedures needed for high voltage vehicles Next > ===== SLIDE 2 ===== Introduction A technician that works on electric vehicles needs to be suitably qualified. Next > There are special procedures for workin",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 4,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle",
+          "hv"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 4,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle",
+            "hv"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 2,
+          "hits": [
+            "hazard",
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 2,
+          "hits": [
+            "multimeter",
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        },
+        {
+          "sessionKey": "W004",
+          "fs": "FS04",
+          "hitCount": 1,
+          "hits": [
+            "extinguisher"
+          ],
+          "lpKeywordOverlap": [
+            "fire safety",
+            "extinguisher",
+            "lead-acid",
+            "battery safety",
+            "electrical safety"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_05f45b516e6f_5",
+      "filename": "The Principle of the Fuel Cell.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\The Principle of the Fuel Cell.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 1,
+        "hits": [
+          "hybrid"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 1,
+          "hits": [
+            "hybrid"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\The Principle of the Fuel Cell.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_f401e434a502_6",
+      "filename": "Working on High Voltage Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Working on High Voltage Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G02_Electric_Hybrid_Awareness_Resources_Working_on_High_Voltage_Vehicles.ppt.txt",
+      "extractChars": 5532,
+      "excerpt": "SOURCE: G02 Electric Hybrid Awareness\\Resources\\Working on High Voltage Vehicles.ppt HASH: f401e434a502352176a9d1f748cb20c58516de1b1a24e009ecbc8839c27db294 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Working on High Voltage Vehicles explore the rules governing who can work on high voltage vehicles and how they can do so safely Next > ===== SLIDE 2 ===== Introduction Next > There are very strict rules governing the work that can be done on high voltage (",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 4,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle",
+          "hv"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 4,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle",
+            "hv"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 2,
+          "hits": [
+            "multimeter",
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        },
+        {
+          "sessionKey": "W004",
+          "fs": "FS04",
+          "hitCount": 1,
+          "hits": [
+            "short circuit"
+          ],
+          "lpKeywordOverlap": [
+            "fire safety",
+            "extinguisher",
+            "lead-acid",
+            "battery safety",
+            "electrical safety"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Working on High Voltage Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_10e45332013b_9",
+      "filename": "Tire Changing and Wheel Balancing.ppt",
+      "relativePath": "G03 Wheels and Tyres\\Resources\\Tire Changing and Wheel Balancing.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G3",
+        "groupFolder": "G03 Wheels and Tyres",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\tyres__G03_Wheels_and_Tyres_Resources_Tire_Changing_and_Wheel_Balancing.ppt.txt",
+      "extractChars": 6662,
+      "excerpt": "SOURCE: G03 Wheels and Tyres\\Resources\\Tire Changing and Wheel Balancing.ppt HASH: 10e45332013b1279de8e6a253ac6a7359353d62779824469563bbed3abc5d4ad METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Tire Changing and Wheel Balancing identify tire and wheel runout Next > identify how to change a tire and balance a wheel and tire assembly ===== SLIDE 2 ===== Wheel and Tire Runout Runout causes vibration that can usually be felt through the steering wheel. Next >",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W005",
+        "fs": "FS05",
+        "hitCount": 1,
+        "hits": [
+          "torque"
+        ],
+        "lpKeywordOverlap": [
+          "tolerance",
+          "micrometer",
+          "vernier",
+          "technical information",
+          "measurement",
+          "torque"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W005",
+          "fs": "FS05",
+          "hitCount": 1,
+          "hits": [
+            "torque"
+          ],
+          "lpKeywordOverlap": [
+            "tolerance",
+            "micrometer",
+            "vernier",
+            "technical information",
+            "measurement",
+            "torque"
+          ]
+        },
+        {
+          "sessionKey": "W006",
+          "fs": "FS06",
+          "hitCount": 1,
+          "hits": [
+            "torque wrench"
+          ],
+          "lpKeywordOverlap": [
+            "fastener",
+            "technical drawing",
+            "fabrication",
+            "thread"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G03 Wheels and Tyres\\Resources\\Tire Changing and Wheel Balancing.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_0117421614b4_10",
+      "filename": "Tyre Inspection and Repair.ppt",
+      "relativePath": "G03 Wheels and Tyres\\Resources\\Tyre Inspection and Repair.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G3",
+        "groupFolder": "G03 Wheels and Tyres",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\tyres__G03_Wheels_and_Tyres_Resources_Tyre_Inspection_and_Repair.ppt.txt",
+      "extractChars": 6685,
+      "excerpt": "SOURCE: G03 Wheels and Tyres\\Resources\\Tyre Inspection and Repair.ppt HASH: 0117421614b4bcb369fbde69d8ab90bba93f68459025f6ae93649168aa695e16 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Tyre Inspection and Repair identify the types of puncture damage to tyres Next > identify when to recommend repair or replacement ===== SLIDE 2 ===== Introduction A vehicle must not be driven with a flat tyre, otherwise the wheel and tyre assembly may be damaged. Knowing ",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G03 Wheels and Tyres\\Resources\\Tyre Inspection and Repair.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_9f5cb6fbb8f3_11",
+      "filename": "Tyres.ppt",
+      "relativePath": "G03 Wheels and Tyres\\Resources\\Tyres.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G3",
+        "groupFolder": "G03 Wheels and Tyres",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\tyres__G03_Wheels_and_Tyres_Resources_Tire_Changing_and_Wheel_Balancing.ppt.txt",
+      "extractChars": 6662,
+      "excerpt": "SOURCE: G03 Wheels and Tyres\\Resources\\Tire Changing and Wheel Balancing.ppt HASH: 10e45332013b1279de8e6a253ac6a7359353d62779824469563bbed3abc5d4ad METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Tire Changing and Wheel Balancing identify tire and wheel runout Next > identify how to change a tire and balance a wheel and tire assembly ===== SLIDE 2 ===== Wheel and Tire Runout Runout causes vibration that can usually be felt through the steering wheel. Next >",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W005",
+        "fs": "FS05",
+        "hitCount": 1,
+        "hits": [
+          "torque"
+        ],
+        "lpKeywordOverlap": [
+          "tolerance",
+          "micrometer",
+          "vernier",
+          "technical information",
+          "measurement",
+          "torque"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W005",
+          "fs": "FS05",
+          "hitCount": 1,
+          "hits": [
+            "torque"
+          ],
+          "lpKeywordOverlap": [
+            "tolerance",
+            "micrometer",
+            "vernier",
+            "technical information",
+            "measurement",
+            "torque"
+          ]
+        },
+        {
+          "sessionKey": "W006",
+          "fs": "FS06",
+          "hitCount": 1,
+          "hits": [
+            "torque wrench"
+          ],
+          "lpKeywordOverlap": [
+            "fastener",
+            "technical drawing",
+            "fabrication",
+            "thread"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G03 Wheels and Tyres\\Resources\\Tyres.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_fc25d7deb5b7_12",
+      "filename": "Wheel Alignment.ppt",
+      "relativePath": "G03 Wheels and Tyres\\Resources\\Wheel Alignment.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G3",
+        "groupFolder": "G03 Wheels and Tyres",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G03 Wheels and Tyres\\Resources\\Wheel Alignment.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_14c073c3be45_19",
+      "filename": "Brake Calipers PP.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Brake Calipers PP.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G4",
+        "groupFolder": "G04 Basic Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G04_Basic_Braking_Resources_Brake_Calipers_PP.ppt.txt",
+      "extractChars": 6857,
+      "excerpt": "SOURCE: G04 Basic Braking\\Resources\\Brake Calipers PP.ppt HASH: 14c073c3be452629d31a493afadfa7433d5a0e0902353fa2517ba8e3ea947979 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== Level 3 Auto-CareBrake Calipers ===== SLIDE 2 ===== Lesson Aims:Explore the components involved in the operation of a drum brakeExplore the components involved in the operation of a disc brakeObserve the correct procedure to inspect and service braking system componentsLesson Objectives:Recall two advantage of dis",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 1,
+        "hits": [
+          "ppe"
+        ],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 1,
+          "hits": [
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        },
+        {
+          "sessionKey": "W006",
+          "fs": "FS06",
+          "hitCount": 1,
+          "hits": [
+            "bolt"
+          ],
+          "lpKeywordOverlap": [
+            "fastener",
+            "technical drawing",
+            "fabrication",
+            "thread"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Brake Calipers PP.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_1c26257cccb1_20",
+      "filename": "Brake Drums PP.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Brake Drums PP.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G4",
+        "groupFolder": "G04 Basic Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G04_Basic_Braking_Resources_Brake_Drums_PP.ppt.txt",
+      "extractChars": 4844,
+      "excerpt": "SOURCE: G04 Basic Braking\\Resources\\Brake Drums PP.ppt HASH: 1c26257cccb17fefa8de28aa113e85cba9b6a4b5511cbf06e330d711fa0556aa METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== Level 3 Auto-CareBrake Drums ===== SLIDE 2 ===== Lesson Aims:Explore the components involved in the operation of a drum brakeExplore the components involved in the operation of a disc brakeObserve the correct procedure to inspect and service braking system componentsLesson Objectives:Recall two advantage of disc brak",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W006",
+        "fs": "FS06",
+        "hitCount": 1,
+        "hits": [
+          "bolt"
+        ],
+        "lpKeywordOverlap": [
+          "fastener",
+          "technical drawing",
+          "fabrication",
+          "thread"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W006",
+          "fs": "FS06",
+          "hitCount": 1,
+          "hits": [
+            "bolt"
+          ],
+          "lpKeywordOverlap": [
+            "fastener",
+            "technical drawing",
+            "fabrication",
+            "thread"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Brake Drums PP.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_81eac59f305f_21",
+      "filename": "Brake Fluid.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Brake Fluid.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G4",
+        "groupFolder": "G04 Basic Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Brake Fluid.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_86a55328547f_22",
+      "filename": "Brake Lines and Hoses.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Brake Lines and Hoses.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G4",
+        "groupFolder": "G04 Basic Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G04_Basic_Braking_Resources_Brake_Lines_and_Hoses.ppt.txt",
+      "extractChars": 7837,
+      "excerpt": "SOURCE: G04 Basic Braking\\Resources\\Brake Lines and Hoses.ppt HASH: 86a55328547f9a1b21fd1e28eeca3b7fe5c035a8de26d7e3fcced9f7b7511558 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Brake Lines and Hoses investigate the construction of brake fluid lines and hoses Next > find out how to diagnose and repair common brake problems Blocked hose ===== SLIDE 2 ===== Introduction Brake lines and hoses are an essential part of the brake system. Problems with lines an",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W008",
+        "fs": "FS08",
+        "hitCount": 1,
+        "hits": [
+          "relay"
+        ],
+        "lpKeywordOverlap": [
+          "relay",
+          "basic circuit",
+          "consolidation",
+          "series",
+          "parallel"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W008",
+          "fs": "FS08",
+          "hitCount": 1,
+          "hits": [
+            "relay"
+          ],
+          "lpKeywordOverlap": [
+            "relay",
+            "basic circuit",
+            "consolidation",
+            "series",
+            "parallel"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Brake Lines and Hoses.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_23464e70dbc6_25",
+      "filename": "Friction.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Friction.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G4",
+        "groupFolder": "G04 Basic Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Friction.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_bedd9d04d363_26",
+      "filename": "Pressure Control Valves.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Pressure Control Valves.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G4",
+        "groupFolder": "G04 Basic Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Pressure Control Valves.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_563b08768807_27",
+      "filename": "Sensors and Switches.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Sensors and Switches.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G4",
+        "groupFolder": "G04 Basic Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Sensors and Switches.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_3a89189e8265_28",
+      "filename": "Wheel Speed Sensors.ppt",
+      "relativePath": "G04 Basic Braking\\Resources\\Wheel Speed Sensors.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G4",
+        "groupFolder": "G04 Basic Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G04_Basic_Braking_Resources_Wheel_Speed_Sensors.ppt.txt",
+      "extractChars": 8206,
+      "excerpt": "SOURCE: G04 Basic Braking\\Resources\\Wheel Speed Sensors.ppt HASH: 3a89189e8265a2acabcb4f0f08b29ba4031f96880f1003f991787952777ad0ce METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Wheel Speed Sensors identify the operation of wheel speed sensors Next > Wheel speed sensor Tone wheel ===== SLIDE 2 ===== Introduction The ABS ECU monitors the output signal from a wheel speed sensor to determine the speed of a road wheel. Next > Metal housing Wires to ABS ECU Mou",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 1,
+        "hits": [
+          "ppe"
+        ],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 1,
+          "hits": [
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        },
+        {
+          "sessionKey": "W004",
+          "fs": "FS04",
+          "hitCount": 1,
+          "hits": [
+            "short circuit"
+          ],
+          "lpKeywordOverlap": [
+            "fire safety",
+            "extinguisher",
+            "lead-acid",
+            "battery safety",
+            "electrical safety"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 1,
+          "hits": [
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G04 Basic Braking\\Resources\\Wheel Speed Sensors.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_e76ad6ff34ed_37",
+      "filename": "Air Suspension Systems.ppt",
+      "relativePath": "G05 Basic Steering and Suspension\\Resources\\Air Suspension Systems.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G5",
+        "groupFolder": "G05 Basic Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G05 Basic Steering and Suspension\\Resources\\Air Suspension Systems.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_d9da0790afac_38",
+      "filename": "Coil Springs.ppt",
+      "relativePath": "G05 Basic Steering and Suspension\\Resources\\Coil Springs.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G5",
+        "groupFolder": "G05 Basic Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G05 Basic Steering and Suspension\\Resources\\Coil Springs.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_dd715a15145e_39",
+      "filename": "Power Steering and EPS.ppt",
+      "relativePath": "G05 Basic Steering and Suspension\\Resources\\Power Steering and EPS.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G5",
+        "groupFolder": "G05 Basic Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\k10__G05_Basic_Steering_and_Suspension_Resources_Power_Steering_and_EPS.ppt.txt",
+      "extractChars": 4344,
+      "excerpt": "SOURCE: G05 Basic Steering and Suspension\\Resources\\Power Steering and EPS.ppt HASH: dd715a15145eb27a147adf66e7af2cee0ff47e8fa5676a965edc943ed7e5fb68 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== Power Steering Systems By Marc Hadfield ===== SLIDE 2 ===== The Power Steering System Traditionally, the first power steering systems were Hydraulic. They were powered by a pump driven by the engine. Whilst it’s a massive improvement over manual steering. It was far from perfect. Can you name ",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 2,
+        "hits": [
+          "hybrid",
+          "electric vehicle"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 2,
+          "hits": [
+            "hybrid",
+            "electric vehicle"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W005",
+          "fs": "FS05",
+          "hitCount": 1,
+          "hits": [
+            "torque"
+          ],
+          "lpKeywordOverlap": [
+            "tolerance",
+            "micrometer",
+            "vernier",
+            "technical information",
+            "measurement",
+            "torque"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G05 Basic Steering and Suspension\\Resources\\Power Steering and EPS.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_944b5735a618_40",
+      "filename": "Rear Wheel Drive Shafts.ppt",
+      "relativePath": "G05 Basic Steering and Suspension\\Resources\\Rear Wheel Drive Shafts.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G5",
+        "groupFolder": "G05 Basic Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G05 Basic Steering and Suspension\\Resources\\Rear Wheel Drive Shafts.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_ac67a697c16a_41",
+      "filename": "Suspension Systems ACS.ppt",
+      "relativePath": "G05 Basic Steering and Suspension\\Resources\\Suspension Systems ACS.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G5",
+        "groupFolder": "G05 Basic Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G05 Basic Steering and Suspension\\Resources\\Suspension Systems ACS.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_67b673b95c1a_50",
+      "filename": "Engine Basics and 4 Stroke Cycle.ppt",
+      "relativePath": "G06 Cooling, Lubrication and Filters\\Resources\\Engine Basics and 4 Stroke Cycle.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G6",
+        "groupFolder": "G06 Cooling, Lubrication and Filters",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G06 Cooling, Lubrication and Filters\\Resources\\Engine Basics and 4 Stroke Cycle.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_da4a93c2da80_51",
+      "filename": "Heating and ventilation Plan 18.pptx",
+      "relativePath": "G06 Cooling, Lubrication and Filters\\Resources\\Heating and ventilation Plan 18.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G6",
+        "groupFolder": "G06 Cooling, Lubrication and Filters",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "Auto Care Apprenticeships Heating and Ventilation style.visibility Lesson Aims Introduction to cabin heating systems. Recognise heating system faults. What equipment is required to test heating systems . style.visibility Lesson Objectives Be able to identify at least 2 heating system components. Be able to name at least 1 symptom and cause of a heating system fault. Be able to name at least 1 piece of heating system test equipment and how to use it. style.visibility Heater Control All cars are e",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 1,
+        "hits": [
+          "ppe"
+        ],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 1,
+          "hits": [
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G06 Cooling, Lubrication and Filters\\Resources\\Heating and ventilation Plan 18.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_eac9a3e5de42_52",
+      "filename": "Lubrication Systems Plan 19.ppt",
+      "relativePath": "G06 Cooling, Lubrication and Filters\\Resources\\Lubrication Systems Plan 19.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G6",
+        "groupFolder": "G06 Cooling, Lubrication and Filters",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G06 Cooling, Lubrication and Filters\\Resources\\Lubrication Systems Plan 19.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_c72a2760897a_53",
+      "filename": "Lubrication Systems Plan 19.pptx",
+      "relativePath": "G06 Cooling, Lubrication and Filters\\Resources\\Lubrication Systems Plan 19.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G6",
+        "groupFolder": "G06 Cooling, Lubrication and Filters",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "Aims 1. Introduction to lubrication systems. 2. Recognising lubrication system faults. 3. What equipment is required to test lubrication systems. style.visibility Objectives 1. Be able to identify at least 2 lubrication system components. 2. Be able to name at least 1 symptom and cause of a lubrication system fault. 3. Be able to name at least 1 piece of lubrication system test equipment and how to use it. style.visibility Subject - Lubrication Systems style.visibility style.visibility style.vis",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G06 Cooling, Lubrication and Filters\\Resources\\Lubrication Systems Plan 19.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_0349c1397a1c_57",
+      "filename": "Batteries.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Batteries.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Batteries.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_277e84194c5f_58",
+      "filename": "Batteries.pptx",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Batteries.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "In this presentation you will: Batteries explore battery operating principles Next > identify battery construction = electrons Load style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility Introduction The electrical systems on a vehicle require electrical power so that they can function. When an engine is stationary, electrical power is provided by a battery. When an engine is running, electrical power is provided by an alternator. Next > The starter",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Batteries.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_e78a4ed3d652_59",
+      "filename": "Charging Systems.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Charging Systems.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G07_Starting_and_Charging_Systems_Resources_Features_of_Hybrid_Vehicles.ppt.txt",
+      "extractChars": 7012,
+      "excerpt": "SOURCE: G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt HASH: eb016735391c91cb0db90eef2fa47e969af3f701381503d9056a65408f4650b6 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Features of Hybrid Vehicles explore some of the features of hybrid vehicles Next > ===== SLIDE 2 ===== Introduction Next > A hybrid vehicle contains two or more sources of power. EEV means an Enhanced Environmentally Friendly Vehicle. Hybrid vehicles have se",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 3,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 3,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 1,
+          "hits": [
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Charging Systems.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_eb016735391c_60",
+      "filename": "Features of Hybrid Vehicles.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G07_Starting_and_Charging_Systems_Resources_Features_of_Hybrid_Vehicles.ppt.txt",
+      "extractChars": 7012,
+      "excerpt": "SOURCE: G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt HASH: eb016735391c91cb0db90eef2fa47e969af3f701381503d9056a65408f4650b6 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Features of Hybrid Vehicles explore some of the features of hybrid vehicles Next > ===== SLIDE 2 ===== Introduction Next > A hybrid vehicle contains two or more sources of power. EEV means an Enhanced Environmentally Friendly Vehicle. Hybrid vehicles have se",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 3,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 3,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 1,
+          "hits": [
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_e7921a6bc84c_61",
+      "filename": "Fuel Cells.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Fuel Cells.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Fuel Cells.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_674b62b99ade_62",
+      "filename": "Range Extenders.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Range Extenders.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Range Extenders.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_063b872ce1c7_63",
+      "filename": "Safety in High Voltage Vehicles.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G07_Starting_and_Charging_Systems_Resources_Safety_in_High_Voltage_Vehicles.ppt.txt",
+      "extractChars": 6423,
+      "excerpt": "SOURCE: G07 Starting and Charging Systems\\Resources\\Safety in High Voltage Vehicles.ppt HASH: 063b872ce1c7fe6c9d2278082ed004e03b04a3a6e9625716cc63952901112f20 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Safety in High Voltage Vehicles explore the safety procedures needed for high voltage vehicles Next > ===== SLIDE 2 ===== Introduction A technician that works on electric vehicles needs to be suitably qualified. Next > There are special procedures for wo",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 3,
+        "hits": [
+          "high voltage",
+          "electric vehicle",
+          "hv"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 3,
+          "hits": [
+            "high voltage",
+            "electric vehicle",
+            "hv"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 2,
+          "hits": [
+            "hazard",
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 2,
+          "hits": [
+            "multimeter",
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        },
+        {
+          "sessionKey": "W004",
+          "fs": "FS04",
+          "hitCount": 1,
+          "hits": [
+            "extinguisher"
+          ],
+          "lpKeywordOverlap": [
+            "fire safety",
+            "extinguisher",
+            "lead-acid",
+            "battery safety",
+            "electrical safety"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_53fca2d9a338_64",
+      "filename": "Starting Systems.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Starting Systems.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Starting Systems.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_2616f5623cf1_72",
+      "filename": "Effective Customer Service.pptm",
+      "relativePath": "G08 Customer Service and Sales\\Resources\\Effective Customer Service.pptm",
+      "fileType": ".pptm",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G8",
+        "groupFolder": "G08 Customer Service and Sales",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "Effective Customer Service Effective Customer Service Aims Look at the top ten ‘Soft’ Skills for good Customer service Question what these skills mean Research your understanding of these skills How many of these do you use? What can I change? Effective Customer Service Objectives Listen and discuss the skills Answer Open questions Interact with others and discuss what you really think. How would you deal with situations? This doesn’t mean shouting ‘ Eyup mate’ at the top of your voice or even ‘",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W010",
+        "fs": "FS10",
+        "hitCount": 1,
+        "hits": [
+          "customer"
+        ],
+        "lpKeywordOverlap": [
+          "job card",
+          "handover",
+          "technical documentation",
+          "customer"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W010",
+          "fs": "FS10",
+          "hitCount": 1,
+          "hits": [
+            "customer"
+          ],
+          "lpKeywordOverlap": [
+            "job card",
+            "handover",
+            "technical documentation",
+            "customer"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G08 Customer Service and Sales\\Resources\\Effective Customer Service.pptm",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_35d3db394db5_75",
+      "filename": "Repair Order Forms.ppt",
+      "relativePath": "G08 Customer Service and Sales\\Resources\\Repair Order Forms.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G8",
+        "groupFolder": "G08 Customer Service and Sales",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W010",
+        "fs": "FS10",
+        "hitCount": 1,
+        "hits": [
+          "customer"
+        ],
+        "lpKeywordOverlap": [
+          "job card",
+          "handover",
+          "technical documentation",
+          "customer"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W010",
+          "fs": "FS10",
+          "hitCount": 1,
+          "hits": [
+            "customer"
+          ],
+          "lpKeywordOverlap": [
+            "job card",
+            "handover",
+            "technical documentation",
+            "customer"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G08 Customer Service and Sales\\Resources\\Repair Order Forms.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_b498a55f3266_81",
+      "filename": "Anti-Lock Brake Systems begin pp.ppt",
+      "relativePath": "G10 Advanced Braking\\Resources\\Anti-Lock Brake Systems begin pp.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G10",
+        "groupFolder": "G10 Advanced Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G10 Advanced Braking\\Resources\\Anti-Lock Brake Systems begin pp.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_d2fd77e61892_82",
+      "filename": "Anti-Lock Brake Systems.ppt",
+      "relativePath": "G10 Advanced Braking\\Resources\\Anti-Lock Brake Systems.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G10",
+        "groupFolder": "G10 Advanced Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G10 Advanced Braking\\Resources\\Anti-Lock Brake Systems.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_1c9b92ef3681_83",
+      "filename": "Stability Control Systems.ppt",
+      "relativePath": "G10 Advanced Braking\\Resources\\Stability Control Systems.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G10",
+        "groupFolder": "G10 Advanced Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G10_Advanced_Braking_Resources_Stability_Control_Systems.ppt.txt",
+      "extractChars": 4445,
+      "excerpt": "SOURCE: G10 Advanced Braking\\Resources\\Stability Control Systems.ppt HASH: 1c9b92ef3681e61e54cdea4c278b96a047830bf3b8920305061ca77f8bedb1b7 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Stability Control Systems see the components of a stability control system Next > see how a stability control system operates Kyle May ===== SLIDE 2 ===== Introduction Electronic stability control (ESC) is a safety system that helps to prevent the driver losing control of ",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G10 Advanced Braking\\Resources\\Stability Control Systems.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_7a3aee6d5543_85",
+      "filename": "Wheel Speed Sensors.ppt",
+      "relativePath": "G10 Advanced Braking\\Resources\\Wheel Speed Sensors.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G10",
+        "groupFolder": "G10 Advanced Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G10_Advanced_Braking_Resources_Wheel_Speed_Sensors.ppt.txt",
+      "extractChars": 8352,
+      "excerpt": "SOURCE: G10 Advanced Braking\\Resources\\Wheel Speed Sensors.ppt HASH: 7a3aee6d5543f24d74d766d78788a51ffcc2fde64799c0ed3dcfb6e9a369beda METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Wheel Speed Sensors identify the operation of wheel speed sensors Next > Wheel speed sensor Tone wheel ===== SLIDE 2 ===== Introduction The ABS ECU monitors the output signal from a wheel speed sensor to determine the speed of a road wheel. Next > Metal housing Wires to ABS ECU ",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 1,
+        "hits": [
+          "ppe"
+        ],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 1,
+          "hits": [
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        },
+        {
+          "sessionKey": "W004",
+          "fs": "FS04",
+          "hitCount": 1,
+          "hits": [
+            "short circuit"
+          ],
+          "lpKeywordOverlap": [
+            "fire safety",
+            "extinguisher",
+            "lead-acid",
+            "battery safety",
+            "electrical safety"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 1,
+          "hits": [
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G10 Advanced Braking\\Resources\\Wheel Speed Sensors.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_b316b7696abb_95",
+      "filename": "Electronic Steering Systems.ppt",
+      "relativePath": "G11 Advance Steering and Suspension\\Resources\\Electronic Steering Systems.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G11",
+        "groupFolder": "G11 Advance Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\k10__G11_Advance_Steering_and_Suspension_Resources_Electronic_Steering_Systems.ppt.txt",
+      "extractChars": 8607,
+      "excerpt": "SOURCE: G11 Advance Steering and Suspension\\Resources\\Electronic Steering Systems.ppt HASH: b316b7696abb29751d19dc029594e9df005ca754bdf0a22075c3b6bba138d6af METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Electronic Steering Systems see how the amount of power steering assistance can be varied Next > see how electric power steering systems work ===== SLIDE 2 ===== Introduction Modern vehicles are increasingly making use of electronics to improve the steerin",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 1,
+        "hits": [
+          "ppe"
+        ],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 1,
+          "hits": [
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        },
+        {
+          "sessionKey": "W005",
+          "fs": "FS05",
+          "hitCount": 1,
+          "hits": [
+            "torque"
+          ],
+          "lpKeywordOverlap": [
+            "tolerance",
+            "micrometer",
+            "vernier",
+            "technical information",
+            "measurement",
+            "torque"
+          ]
+        },
+        {
+          "sessionKey": "W008",
+          "fs": "FS08",
+          "hitCount": 1,
+          "hits": [
+            "parallel"
+          ],
+          "lpKeywordOverlap": [
+            "relay",
+            "basic circuit",
+            "consolidation",
+            "series",
+            "parallel"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G11 Advance Steering and Suspension\\Resources\\Electronic Steering Systems.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_6ff7769390a3_96",
+      "filename": "Hydraulic Adaptive Suspension.pptx",
+      "relativePath": "G11 Advance Steering and Suspension\\Resources\\Hydraulic Adaptive Suspension.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G11",
+        "groupFolder": "G11 Advance Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "Autocare Standards Level 2 ST0499/AP01 Hydraulic Adaptive Suspension style.visibility style.visibility style.visibility Aims and Objectives At the end of this presentation you should be able to: Have some awareness of the concept of hydraulic adaptive suspension Understand the safety benefits of hydraulic adaptive suspension Identify the components in a hydraulic adaptive suspension system Understand the operation of hydraulic adaptive suspension systems style.visibility System Overview Hydrauli",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G11 Advance Steering and Suspension\\Resources\\Hydraulic Adaptive Suspension.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_d8f95483aed1_97",
+      "filename": "Session 1electronic steering.pptx",
+      "relativePath": "G11 Advance Steering and Suspension\\Resources\\Session 1electronic steering.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G11",
+        "groupFolder": "G11 Advance Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "Electronic Steering Systems To be able to identify components of the electronic steering systems To be able to identify a selection of sensors and actuators for vehicle operation To be able to identify basic diagnostic equipment and faults Describe the operation and benefits of electronics in the steering system Aims and Objectives Next > style.visibility style.visibility style.visibility style.visibility style.visibility In this presentation you will: Electronic Steering Systems see how the amo",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G11 Advance Steering and Suspension\\Resources\\Session 1electronic steering.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_95f371942a77_98",
+      "filename": "Session 2 ADAS Systems.pptx",
+      "relativePath": "G11 Advance Steering and Suspension\\Resources\\Session 2 ADAS Systems.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G11",
+        "groupFolder": "G11 Advance Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "ADAS Systems Next Advanced Driver-Assistance systems ( ADAS ) are one of the fastest-growing safety application areas due to the desire to reduce vehicle accidents and fatalities. style.visibility style.visibility Next > style.visibility ADAS Systems These systems use a camera & radar which need expert adjustment and calibration after various repairs have been completed. Many vehicles now have these advanced driver assist systems which require specialist attention to correctly adjust following e",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G11 Advance Steering and Suspension\\Resources\\Session 2 ADAS Systems.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_8fa749f780b7_99",
+      "filename": "Sessions 3-4 Wheel alignment-18 slides 2020.pptx",
+      "relativePath": "G11 Advance Steering and Suspension\\Resources\\Sessions 3-4 Wheel alignment-18 slides 2020.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G11",
+        "groupFolder": "G11 Advance Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "Wheel Alignment identify wheel alignment terms Next > In this presentation you will: style.visibility style.visibility style.visibility Introduction Wheels are the parts of the vehicle that make it turn in response to steering input. Next > They are also responsible for pulling (front wheel drive) or pushing (rear wheel drive) the vehicle along. It is therefore essential that they are aligned correctly. style.visibility style.visibility style.visibility style.visibility style.visibility style.vi",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G11 Advance Steering and Suspension\\Resources\\Sessions 3-4 Wheel alignment-18 slides 2020.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_a70ba19fb707_100",
+      "filename": "Sessions 4-5 Geometry-26 slides 2020.pptx",
+      "relativePath": "G11 Advance Steering and Suspension\\Resources\\Sessions 4-5 Geometry-26 slides 2020.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G11",
+        "groupFolder": "G11 Advance Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "Geometry Fundamentals identify fundamental wheel alignment terms Next > In this presentation you will: style.visibility style.visibility style.visibility Introduction Wheels are the parts of the vehicle that make it turn in response to steering input. Next > They are also responsible for pulling (front wheel drive) or pushing (rear wheel drive) the vehicle along. It is therefore essential that they are aligned correctly. style.visibility style.visibility style.visibility style.visibility style.v",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G11 Advance Steering and Suspension\\Resources\\Sessions 4-5 Geometry-26 slides 2020.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_970f2da51c5a_106",
+      "filename": "Autocare Group 12 Exhausts session 1 Powerpoint.ppt",
+      "relativePath": "G12 Exhaust and Emissions\\Resources\\Autocare Group 12 Exhausts session 1 Powerpoint.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G12",
+        "groupFolder": "G12 Exhaust and Emissions",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G12 Exhaust and Emissions\\Resources\\Autocare Group 12 Exhausts session 1 Powerpoint.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_0e0b8ca75744_107",
+      "filename": "Cats, DPF, Lean-rich and SCR GTA session 3.ppt",
+      "relativePath": "G12 Exhaust and Emissions\\Resources\\Cats, DPF, Lean-rich and SCR GTA session 3.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G12",
+        "groupFolder": "G12 Exhaust and Emissions",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G12 Exhaust and Emissions\\Resources\\Cats, DPF, Lean-rich and SCR GTA session 3.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_7bbc873ac4dc_108",
+      "filename": "Electronic Multipoint Fuel Injection Systems GTA.ppt",
+      "relativePath": "G12 Exhaust and Emissions\\Resources\\Electronic Multipoint Fuel Injection Systems GTA.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G12",
+        "groupFolder": "G12 Exhaust and Emissions",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G12 Exhaust and Emissions\\Resources\\Electronic Multipoint Fuel Injection Systems GTA.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_b408308ec3c0_109",
+      "filename": "Petrol Fuel systems and AFR GTA session 2.ppt",
+      "relativePath": "G12 Exhaust and Emissions\\Resources\\Petrol Fuel systems and AFR GTA session 2.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G12",
+        "groupFolder": "G12 Exhaust and Emissions",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G12 Exhaust and Emissions\\Resources\\Petrol Fuel systems and AFR GTA session 2.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_7d543a844bfb_116",
+      "filename": "Air Conditioning revised.ppt",
+      "relativePath": "G13 Air Conditioning\\Resources\\Air Conditioning revised.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G13",
+        "groupFolder": "G13 Air Conditioning",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G13 Air Conditioning\\Resources\\Air Conditioning revised.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_2f57c41b194c_120",
+      "filename": "Major Service Routine.pptx",
+      "relativePath": "G14 Vehicle Inspection\\Resources\\Major Service Routine.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G14",
+        "groupFolder": "G14 Vehicle Inspection",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "ACS Level 2 ST0499/AP01 Major Service Routine style.visibility style.visibility ppt_w ppt_h style.visibility Presentation Aim The aim of this presentation is to overview a major service routine in depth to outline the procedures to be followed as a recap of previously learned knowledge. On completion of this presentation you should be able to: Describe what is done at each stage of a major service. Adapt your learning from this presentation to demonstrate your capabilities to carry out a major s",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W009",
+        "fs": "FS09",
+        "hitCount": 1,
+        "hits": [
+          "recap"
+        ],
+        "lpKeywordOverlap": [
+          "first aid",
+          "recap",
+          "gap teaching",
+          "emergency"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W009",
+          "fs": "FS09",
+          "hitCount": 1,
+          "hits": [
+            "recap"
+          ],
+          "lpKeywordOverlap": [
+            "first aid",
+            "recap",
+            "gap teaching",
+            "emergency"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G14 Vehicle Inspection\\Resources\\Major Service Routine.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_e4d51014bed4_121",
+      "filename": "Vehicle Care.ppt",
+      "relativePath": "G14 Vehicle Inspection\\Resources\\Vehicle Care.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G14",
+        "groupFolder": "G14 Vehicle Inspection",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G14 Vehicle Inspection\\Resources\\Vehicle Care.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_263645b7861e_122",
+      "filename": "Vehicle Inspection and Servicing.pptx",
+      "relativePath": "G14 Vehicle Inspection\\Resources\\Vehicle Inspection and Servicing.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G14",
+        "groupFolder": "G14 Vehicle Inspection",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "ACS Level 2 ST0499/AP01 Vehicle Inspection and Servicing style.visibility Presentation Aims The aim of this presentation is to overview the basic types of maintenance and inspection routines offered by garages as a recap of previously learned knowledge. On completion of this presentation you should be able to: Identify and describe the different types of inspection and servicing offered by garages. Explain what actions are performed in specific inspections and service routines. style.visibility ",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W009",
+        "fs": "FS09",
+        "hitCount": 1,
+        "hits": [
+          "recap"
+        ],
+        "lpKeywordOverlap": [
+          "first aid",
+          "recap",
+          "gap teaching",
+          "emergency"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W009",
+          "fs": "FS09",
+          "hitCount": 1,
+          "hits": [
+            "recap"
+          ],
+          "lpKeywordOverlap": [
+            "first aid",
+            "recap",
+            "gap teaching",
+            "emergency"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G14 Vehicle Inspection\\Resources\\Vehicle Inspection and Servicing.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_150aa5b0d611_123",
+      "filename": "Vehicle Preparation.ppt",
+      "relativePath": "G14 Vehicle Inspection\\Resources\\Vehicle Preparation.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G14",
+        "groupFolder": "G14 Vehicle Inspection",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G14 Vehicle Inspection\\Resources\\Vehicle Preparation.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_049aeee9cc31_124",
+      "filename": "Vehicle Service History.ppt",
+      "relativePath": "G14 Vehicle Inspection\\Resources\\Vehicle Service History.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G14",
+        "groupFolder": "G14 Vehicle Inspection",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W010",
+        "fs": "FS10",
+        "hitCount": 1,
+        "hits": [
+          "service history"
+        ],
+        "lpKeywordOverlap": [
+          "job card",
+          "handover",
+          "technical documentation",
+          "customer"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W010",
+          "fs": "FS10",
+          "hitCount": 1,
+          "hits": [
+            "service history"
+          ],
+          "lpKeywordOverlap": [
+            "job card",
+            "handover",
+            "technical documentation",
+            "customer"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G14 Vehicle Inspection\\Resources\\Vehicle Service History.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_a146beab76cd_125",
+      "filename": "Vehicle Servicing.pptx",
+      "relativePath": "G14 Vehicle Inspection\\Resources\\Vehicle Servicing.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G14",
+        "groupFolder": "G14 Vehicle Inspection",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "ACS Level 2 ST0499/AP01 Vehicle Servicing style.visibility Presentation aims The aim of this presentation is to overview what is carried out during servicing routines offered by garages as a recap of previously learned knowledge. On completion of this presentation you should be able to: State the need for regular vehicle checks and maintenance. Describe what is carried out at each stage of a particular service. Understand health and safety aspects involved with vehicle maintenance. style.visibil",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W009",
+        "fs": "FS09",
+        "hitCount": 1,
+        "hits": [
+          "recap"
+        ],
+        "lpKeywordOverlap": [
+          "first aid",
+          "recap",
+          "gap teaching",
+          "emergency"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W009",
+          "fs": "FS09",
+          "hitCount": 1,
+          "hits": [
+            "recap"
+          ],
+          "lpKeywordOverlap": [
+            "first aid",
+            "recap",
+            "gap teaching",
+            "emergency"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G14 Vehicle Inspection\\Resources\\Vehicle Servicing.pptx",
+      "originalExists": false
+    }
+  ],
+  "plausible": [
+    {
+      "catalogueId": "res_lm_b956dd2a0014_1",
+      "filename": "Features of Hybrid Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G02_Electric_Hybrid_Awareness_Resources_Features_of_Hybrid_Vehicles.ppt.txt",
+      "extractChars": 7008,
+      "excerpt": "SOURCE: G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt HASH: b956dd2a00140f66bee5813f27342993d71c1858b2b08829f904bae54fdaf085 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Features of Hybrid Vehicles explore some of the features of hybrid vehicles Next > ===== SLIDE 2 ===== Introduction Next > A hybrid vehicle contains two or more sources of power. EEV means an Enhanced Environmentally Friendly Vehicle. Hybrid vehicles have severa",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 3,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 3,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 1,
+          "hits": [
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Features of Hybrid Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_c6f98e42ad5a_2",
+      "filename": "Fuel Cells.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Fuel Cells.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 1,
+        "hits": [
+          "hybrid"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 1,
+          "hits": [
+            "hybrid"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Fuel Cells.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_a70bd86e7a03_3",
+      "filename": "Range Extenders.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Range Extenders.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 1,
+        "hits": [
+          "hybrid"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 1,
+          "hits": [
+            "hybrid"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Range Extenders.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_288abfbed632_4",
+      "filename": "Safety in High Voltage Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G02_Electric_Hybrid_Awareness_Resources_Safety_in_High_Voltage_Vehicles.ppt.txt",
+      "extractChars": 6419,
+      "excerpt": "SOURCE: G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt HASH: 288abfbed6323d2838680cf54e0e6e9db0e30e423a6f3986de58d2b848f57ab5 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Safety in High Voltage Vehicles explore the safety procedures needed for high voltage vehicles Next > ===== SLIDE 2 ===== Introduction A technician that works on electric vehicles needs to be suitably qualified. Next > There are special procedures for workin",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 4,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle",
+          "hv"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 4,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle",
+            "hv"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 2,
+          "hits": [
+            "hazard",
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 2,
+          "hits": [
+            "multimeter",
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        },
+        {
+          "sessionKey": "W004",
+          "fs": "FS04",
+          "hitCount": 1,
+          "hits": [
+            "extinguisher"
+          ],
+          "lpKeywordOverlap": [
+            "fire safety",
+            "extinguisher",
+            "lead-acid",
+            "battery safety",
+            "electrical safety"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_05f45b516e6f_5",
+      "filename": "The Principle of the Fuel Cell.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\The Principle of the Fuel Cell.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 1,
+        "hits": [
+          "hybrid"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 1,
+          "hits": [
+            "hybrid"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\The Principle of the Fuel Cell.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_f401e434a502_6",
+      "filename": "Working on High Voltage Vehicles.ppt",
+      "relativePath": "G02 Electric Hybrid Awareness\\Resources\\Working on High Voltage Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G2",
+        "groupFolder": "G02 Electric Hybrid Awareness",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G02_Electric_Hybrid_Awareness_Resources_Working_on_High_Voltage_Vehicles.ppt.txt",
+      "extractChars": 5532,
+      "excerpt": "SOURCE: G02 Electric Hybrid Awareness\\Resources\\Working on High Voltage Vehicles.ppt HASH: f401e434a502352176a9d1f748cb20c58516de1b1a24e009ecbc8839c27db294 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Working on High Voltage Vehicles explore the rules governing who can work on high voltage vehicles and how they can do so safely Next > ===== SLIDE 2 ===== Introduction Next > There are very strict rules governing the work that can be done on high voltage (",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": false,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 4,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle",
+          "hv"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 4,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle",
+            "hv"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 2,
+          "hits": [
+            "multimeter",
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        },
+        {
+          "sessionKey": "W004",
+          "fs": "FS04",
+          "hitCount": 1,
+          "hits": [
+            "short circuit"
+          ],
+          "lpKeywordOverlap": [
+            "fire safety",
+            "extinguisher",
+            "lead-acid",
+            "battery safety",
+            "electrical safety"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G02 Electric Hybrid Awareness\\Resources\\Working on High Voltage Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_dd715a15145e_39",
+      "filename": "Power Steering and EPS.ppt",
+      "relativePath": "G05 Basic Steering and Suspension\\Resources\\Power Steering and EPS.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G5",
+        "groupFolder": "G05 Basic Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\k10__G05_Basic_Steering_and_Suspension_Resources_Power_Steering_and_EPS.ppt.txt",
+      "extractChars": 4344,
+      "excerpt": "SOURCE: G05 Basic Steering and Suspension\\Resources\\Power Steering and EPS.ppt HASH: dd715a15145eb27a147adf66e7af2cee0ff47e8fa5676a965edc943ed7e5fb68 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== Power Steering Systems By Marc Hadfield ===== SLIDE 2 ===== The Power Steering System Traditionally, the first power steering systems were Hydraulic. They were powered by a pump driven by the engine. Whilst it’s a massive improvement over manual steering. It was far from perfect. Can you name ",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 2,
+        "hits": [
+          "hybrid",
+          "electric vehicle"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 2,
+          "hits": [
+            "hybrid",
+            "electric vehicle"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W005",
+          "fs": "FS05",
+          "hitCount": 1,
+          "hits": [
+            "torque"
+          ],
+          "lpKeywordOverlap": [
+            "tolerance",
+            "micrometer",
+            "vernier",
+            "technical information",
+            "measurement",
+            "torque"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G05 Basic Steering and Suspension\\Resources\\Power Steering and EPS.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_277e84194c5f_58",
+      "filename": "Batteries.pptx",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Batteries.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "In this presentation you will: Batteries explore battery operating principles Next > identify battery construction = electrons Load style.visibility style.visibility style.visibility style.visibility style.visibility style.visibility Introduction The electrical systems on a vehicle require electrical power so that they can function. When an engine is stationary, electrical power is provided by a battery. When an engine is running, electrical power is provided by an alternator. Next > The starter",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Batteries.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_e78a4ed3d652_59",
+      "filename": "Charging Systems.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Charging Systems.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G07_Starting_and_Charging_Systems_Resources_Features_of_Hybrid_Vehicles.ppt.txt",
+      "extractChars": 7012,
+      "excerpt": "SOURCE: G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt HASH: eb016735391c91cb0db90eef2fa47e969af3f701381503d9056a65408f4650b6 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Features of Hybrid Vehicles explore some of the features of hybrid vehicles Next > ===== SLIDE 2 ===== Introduction Next > A hybrid vehicle contains two or more sources of power. EEV means an Enhanced Environmentally Friendly Vehicle. Hybrid vehicles have se",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "LOW",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 3,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 3,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 1,
+          "hits": [
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Charging Systems.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_eb016735391c_60",
+      "filename": "Features of Hybrid Vehicles.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G07_Starting_and_Charging_Systems_Resources_Features_of_Hybrid_Vehicles.ppt.txt",
+      "extractChars": 7012,
+      "excerpt": "SOURCE: G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt HASH: eb016735391c91cb0db90eef2fa47e969af3f701381503d9056a65408f4650b6 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Features of Hybrid Vehicles explore some of the features of hybrid vehicles Next > ===== SLIDE 2 ===== Introduction Next > A hybrid vehicle contains two or more sources of power. EEV means an Enhanced Environmentally Friendly Vehicle. Hybrid vehicles have se",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 3,
+        "hits": [
+          "hybrid",
+          "high voltage",
+          "electric vehicle"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 3,
+          "hits": [
+            "hybrid",
+            "high voltage",
+            "electric vehicle"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 1,
+          "hits": [
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Features of Hybrid Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_063b872ce1c7_63",
+      "filename": "Safety in High Voltage Vehicles.ppt",
+      "relativePath": "G07 Starting and Charging Systems\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G7",
+        "groupFolder": "G07 Starting and Charging Systems",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\ev__G07_Starting_and_Charging_Systems_Resources_Safety_in_High_Voltage_Vehicles.ppt.txt",
+      "extractChars": 6423,
+      "excerpt": "SOURCE: G07 Starting and Charging Systems\\Resources\\Safety in High Voltage Vehicles.ppt HASH: 063b872ce1c7fe6c9d2278082ed004e03b04a3a6e9625716cc63952901112f20 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Safety in High Voltage Vehicles explore the safety procedures needed for high voltage vehicles Next > ===== SLIDE 2 ===== Introduction A technician that works on electric vehicles needs to be suitably qualified. Next > There are special procedures for wo",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "MEDIUM",
+      "bestSession": {
+        "sessionKey": "W003",
+        "fs": "FS03",
+        "hitCount": 3,
+        "hits": [
+          "high voltage",
+          "electric vehicle",
+          "hv"
+        ],
+        "lpKeywordOverlap": [
+          "hybrid",
+          "high-voltage",
+          "electric vehicle",
+          "orange cable",
+          "safe approach"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W003",
+          "fs": "FS03",
+          "hitCount": 3,
+          "hits": [
+            "high voltage",
+            "electric vehicle",
+            "hv"
+          ],
+          "lpKeywordOverlap": [
+            "hybrid",
+            "high-voltage",
+            "electric vehicle",
+            "orange cable",
+            "safe approach"
+          ]
+        },
+        {
+          "sessionKey": "W001",
+          "fs": "FS01",
+          "hitCount": 2,
+          "hits": [
+            "hazard",
+            "ppe"
+          ],
+          "lpKeywordOverlap": [
+            "workshop safety",
+            "housekeeping",
+            "hazard",
+            "occupational",
+            "ppe",
+            "reporting"
+          ]
+        },
+        {
+          "sessionKey": "W007",
+          "fs": "FS07",
+          "hitCount": 2,
+          "hits": [
+            "multimeter",
+            "voltage"
+          ],
+          "lpKeywordOverlap": [
+            "multimeter",
+            "voltage",
+            "electrical measurement",
+            "fabrication quality"
+          ]
+        },
+        {
+          "sessionKey": "W004",
+          "fs": "FS04",
+          "hitCount": 1,
+          "hits": [
+            "extinguisher"
+          ],
+          "lpKeywordOverlap": [
+            "fire safety",
+            "extinguisher",
+            "lead-acid",
+            "battery safety",
+            "electrical safety"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G07 Starting and Charging Systems\\Resources\\Safety in High Voltage Vehicles.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_1c9b92ef3681_83",
+      "filename": "Stability Control Systems.ppt",
+      "relativePath": "G10 Advanced Braking\\Resources\\Stability Control Systems.ppt",
+      "fileType": ".ppt",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G10",
+        "groupFolder": "G10 Advanced Braking",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "CONTENT_EXTRACTION_REQUIRED",
+      "extractionStatusPhase2a": "EXTRACTED",
+      "extractPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Documents\\Developing\\GTA Portal\\tests\\artifacts\\autocare-v1\\evidence-enriched\\staging\\phase2a\\ppt-extracts\\brakes__G10_Advanced_Braking_Resources_Stability_Control_Systems.ppt.txt",
+      "extractChars": 4445,
+      "excerpt": "SOURCE: G10 Advanced Braking\\Resources\\Stability Control Systems.ppt HASH: 1c9b92ef3681e61e54cdea4c278b96a047830bf3b8920305061ca77f8bedb1b7 METHOD: powerpoint_com_slidetext_v1 ===== SLIDE 1 ===== In this presentation you will: Stability Control Systems see the components of a stability control system Next > see how a stability control system operates Kyle May ===== SLIDE 2 ===== Introduction Electronic stability control (ESC) is a safety system that helps to prevent the driver losing control of ",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G10 Advanced Braking\\Resources\\Stability Control Systems.ppt",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_6ff7769390a3_96",
+      "filename": "Hydraulic Adaptive Suspension.pptx",
+      "relativePath": "G11 Advance Steering and Suspension\\Resources\\Hydraulic Adaptive Suspension.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G11",
+        "groupFolder": "G11 Advance Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "Autocare Standards Level 2 ST0499/AP01 Hydraulic Adaptive Suspension style.visibility style.visibility style.visibility Aims and Objectives At the end of this presentation you should be able to: Have some awareness of the concept of hydraulic adaptive suspension Understand the safety benefits of hydraulic adaptive suspension Identify the components in a hydraulic adaptive suspension system Understand the operation of hydraulic adaptive suspension systems style.visibility System Overview Hydrauli",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G11 Advance Steering and Suspension\\Resources\\Hydraulic Adaptive Suspension.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_95f371942a77_98",
+      "filename": "Session 2 ADAS Systems.pptx",
+      "relativePath": "G11 Advance Steering and Suspension\\Resources\\Session 2 ADAS Systems.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G11",
+        "groupFolder": "G11 Advance Steering and Suspension",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "ADAS Systems Next Advanced Driver-Assistance systems ( ADAS ) are one of the fastest-growing safety application areas due to the desire to reduce vehicle accidents and fatalities. style.visibility style.visibility Next > style.visibility ADAS Systems These systems use a camera & radar which need expert adjustment and calibration after various repairs have been completed. Many vehicles now have these advanced driver assist systems which require specialist attention to correctly adjust following e",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W001",
+        "fs": "FS01",
+        "hitCount": 0,
+        "hits": [],
+        "lpKeywordOverlap": [
+          "workshop safety",
+          "housekeeping",
+          "hazard",
+          "occupational",
+          "ppe",
+          "reporting"
+        ]
+      },
+      "sessionScores": [],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G11 Advance Steering and Suspension\\Resources\\Session 2 ADAS Systems.pptx",
+      "originalExists": false
+    },
+    {
+      "catalogueId": "res_lm_a146beab76cd_125",
+      "filename": "Vehicle Servicing.pptx",
+      "relativePath": "G14 Vehicle Inspection\\Resources\\Vehicle Servicing.pptx",
+      "fileType": ".pptx",
+      "sourcePack": "learning_materials",
+      "curriculumEra": "GROUP",
+      "groupAssociation": {
+        "groupCode": "G14",
+        "groupFolder": "G14 Vehicle Inspection",
+        "basis": "EXPLICIT",
+        "note": "From folder path under ACS L2 Lesson plans and resources"
+      },
+      "extractionStatusCatalogue": "EXTRACTED",
+      "extractionStatusPhase2a": "NO_PHASE2A_EXTRACT",
+      "extractPath": null,
+      "extractChars": 0,
+      "excerpt": "ACS Level 2 ST0499/AP01 Vehicle Servicing style.visibility Presentation aims The aim of this presentation is to overview what is carried out during servicing routines offered by garages as a recap of previously learned knowledge. On completion of this presentation you should be able to: State the need for regular vehicle checks and maintenance. Describe what is carried out at each stage of a particular service. Understand health and safety aspects involved with vehicle maintenance. style.visibil",
+      "block1FolderSignal": false,
+      "laterSpecialistFolder": true,
+      "block1Confidence": "UNRESOLVED",
+      "bestSession": {
+        "sessionKey": "W009",
+        "fs": "FS09",
+        "hitCount": 1,
+        "hits": [
+          "recap"
+        ],
+        "lpKeywordOverlap": [
+          "first aid",
+          "recap",
+          "gap teaching",
+          "emergency"
+        ]
+      },
+      "sessionScores": [
+        {
+          "sessionKey": "W009",
+          "fs": "FS09",
+          "hitCount": 1,
+          "hits": [
+            "recap"
+          ],
+          "lpKeywordOverlap": [
+            "first aid",
+            "recap",
+            "gap teaching",
+            "emergency"
+          ]
+        }
+      ],
+      "currentDbResourceId": null,
+      "currentDbTitle": null,
+      "currentAttachments": [],
+      "originalPath": "C:\\Users\\ReissChambers\\OneDrive - Doncaster GTA\\Desktop\\Autocare Learning Materials\\ACS L2 Lesson plans and resources\\G14 Vehicle Inspection\\Resources\\Vehicle Servicing.pptx",
+      "originalExists": false
+    }
+  ],
+  "currentBlock1Attachments": [
+    {
+      "sessionKey": "W001",
+      "fs": "FS01",
+      "resourceId": "efec5f6c-5399-4fa9-817e-5187b3e7e3ea",
+      "evidenceId": "res_lp_8f67680b4ed9",
+      "filename": "Foundation_Skills_FS01_Week_1_Lesson_Plan_v1.2.docx",
+      "title": "FS01 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W002",
+      "fs": "FS02",
+      "resourceId": "af07c5b0-fa2a-474e-aec8-e03e6b884cd0",
+      "evidenceId": "res_lp_a1de2dadb565",
+      "filename": "Foundation_Skills_FS02_Week_2_Lesson_Plan_v1.2.docx",
+      "title": "FS02 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W003",
+      "fs": "FS03",
+      "resourceId": "ea86326d-289e-48b9-85af-cece9e21603b",
+      "evidenceId": "res_lp_f7ae4503f880",
+      "filename": "Foundation_Skills_FS03_Week_3_Lesson_Plan_v1.2.docx",
+      "title": "FS03 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W004",
+      "fs": "FS04",
+      "resourceId": "454552fe-e436-4295-bcd0-251ddc164b29",
+      "evidenceId": "res_lp_4e5d5534a1f4",
+      "filename": "Foundation_Skills_FS04_Week_4_Lesson_Plan_v1.2.docx",
+      "title": "FS04 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W005",
+      "fs": "FS05",
+      "resourceId": "71a9ba14-8b0b-4d53-9d8e-118cb654e497",
+      "evidenceId": "res_lp_f311ff09e560",
+      "filename": "Foundation_Skills_FS05_Week_5_Lesson_Plan_v1.2.docx",
+      "title": "FS05 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W006",
+      "fs": "FS06",
+      "resourceId": "ae852ff4-255b-474f-816b-6284220347c3",
+      "evidenceId": "res_lp_c67c9df7ff7b",
+      "filename": "Foundation_Skills_FS06_Week_6_Lesson_Plan_v1.2.docx",
+      "title": "FS06 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W007",
+      "fs": "FS07",
+      "resourceId": "6f25e6ab-a1a2-4531-9b52-aa77cf5e4037",
+      "evidenceId": "res_lp_7561f4aaf78a",
+      "filename": "Foundation_Skills_FS07_Week_7_Lesson_Plan_v1.2.docx",
+      "title": "FS07 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W008",
+      "fs": "FS08",
+      "resourceId": "f03de46b-9d04-4243-9c57-50b80deb7e8a",
+      "evidenceId": "res_lp_8afb61732d53",
+      "filename": "Foundation_Skills_FS08_Week_8_Lesson_Plan_v1.2.docx",
+      "title": "FS08 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W009",
+      "fs": "FS09",
+      "resourceId": "c9a32ca5-5a73-4900-a376-b4a6c0548f32",
+      "evidenceId": "res_lp_5792e033a5a0",
+      "filename": "Foundation_Skills_FS09_Week_9_Lesson_Plan_v1.2.docx",
+      "title": "FS09 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W010",
+      "fs": "FS10",
+      "resourceId": "319edffa-aeea-4b37-b93f-410b4d4e00ac",
+      "evidenceId": "res_lp_76cd8f807cd7",
+      "filename": "Foundation_Skills_FS10_Week_10_Lesson_Plan_v1.2.docx",
+      "title": "FS10 lesson plan (v1.2)",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W001",
+      "fs": "FS01",
+      "resourceId": "995b4292-a537-444f-aa7f-fc0af8d4e22a",
+      "evidenceId": "res_lp_70e8cb3eeacc",
+      "filename": "README.txt",
+      "title": "Shared Foundation Skills pack README",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W010",
+      "fs": "FS10",
+      "resourceId": "995b4292-a537-444f-aa7f-fc0af8d4e22a",
+      "evidenceId": "res_lp_70e8cb3eeacc",
+      "filename": "README.txt",
+      "title": "Shared Foundation Skills pack README",
+      "role": "TUTOR_DELIVERY",
+      "audience": "TUTOR_ONLY"
+    },
+    {
+      "sessionKey": "W001",
+      "fs": "FS01",
+      "resourceId": "96f2fc3a-0adb-4c26-bb59-6164194bbe4f",
+      "evidenceId": "",
+      "filename": "TEST_W001_learner_handout_fixture.txt",
+      "title": "TEST learner handout fixture (W001) — SAFE DEMO",
+      "role": "LEARNER_LEARNING",
+      "audience": "LEARNER_VISIBLE"
+    }
+  ],
+  "sessionLpExtractChars": {
+    "W001": 6165,
+    "W002": 5541,
+    "W003": 5065,
+    "W004": 4953,
+    "W005": 4859,
+    "W006": 4944,
+    "W007": 4653,
+    "W008": 4838,
+    "W009": 4921,
+    "W010": 4950
+  }
+}

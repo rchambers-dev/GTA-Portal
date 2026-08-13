@@ -152,8 +152,7 @@ export type AdminCohortRecord = {
   /** Skills England version this cohort delivers, e.g. 1.2 */
   standardVersion: string;
   /**
-   * Delivery UI spine for this intake: groups (CEA / Temp) or blocks (Main).
-   * Same standardVersion can run on either spine for different cohorts.
+   * Stored cohort column. Groups/CEA is retired; runtime always normalizes to blocks.
    */
   deliverySpine: "groups" | "blocks";
   /**

@@ -30,6 +30,7 @@ const sessions: ProgrammeSessionRecord[] = [
     plannedOtjHours: null,
     publishStatus: "draft",
     learningObjectivesReview: { status: "empty" },
+    learnerFacingContent: { status: "empty", candidate: null, approved: null },
     metadata: {},
     createdAt: "",
     updatedAt: "",

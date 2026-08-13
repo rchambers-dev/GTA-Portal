@@ -5,6 +5,8 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { LearningObjectivesReview } from "./programme-resources";
+import type { LearnerFacingContent } from "./learner-facing-content";
+import { parseLearnerFacingContent } from "./learner-facing-content";
 import type { ProgrammeSessionRecord } from "./programme-sessions";
 
 type SessionRow = {
@@ -21,6 +23,7 @@ type SessionRow = {
   planned_otj_hours: number | null;
   publish_status?: string | null;
   learning_objectives_review?: unknown;
+  learner_facing_content?: unknown;
   metadata: unknown;
   created_at: string;
   updated_at: string;
@@ -67,6 +70,9 @@ function rowToRecord(row: SessionRow): ProgrammeSessionRecord {
     learningObjectivesReview: asObjectivesReview(
       row.learning_objectives_review,
     ),
+    learnerFacingContent: parseLearnerFacingContent(
+      row.learner_facing_content,
+    ),
     metadata: asMetadata(row.metadata),
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -85,7 +91,7 @@ export async function listProgrammeSessionsForVersion(
   const { data, error } = await supabase
     .from("gta_programme_sessions")
     .select(
-      "id, programme_version_id, spine_item_id, session_key, sequence, calendar_week, session_index_in_week, title, topic, foundation_skill_code, planned_otj_hours, publish_status, learning_objectives_review, metadata, created_at, updated_at",
+      "id, programme_version_id, spine_item_id, session_key, sequence, calendar_week, session_index_in_week, title, topic, foundation_skill_code, planned_otj_hours, publish_status, learning_objectives_review, learner_facing_content, metadata, created_at, updated_at",
     )
     .eq("programme_version_id", id)
     .order("sequence", { ascending: true });
@@ -101,6 +107,7 @@ export async function updateProgrammeSessionAuthoring(
   patch: {
     publishStatus?: "draft" | "published";
     learningObjectivesReview?: LearningObjectivesReview;
+    learnerFacingContent?: LearnerFacingContent;
   },
 ): Promise<ProgrammeSessionRecord> {
   const versionId = programmeVersionId.trim();
@@ -114,6 +121,9 @@ export async function updateProgrammeSessionAuthoring(
   if (patch.learningObjectivesReview) {
     update.learning_objectives_review = patch.learningObjectivesReview;
   }
+  if (patch.learnerFacingContent) {
+    update.learner_facing_content = patch.learnerFacingContent;
+  }
   if (Object.keys(update).length === 0) {
     throw new Error("No session authoring fields to update.");
   }
@@ -124,7 +134,7 @@ export async function updateProgrammeSessionAuthoring(
     .eq("id", id)
     .eq("programme_version_id", versionId)
     .select(
-      "id, programme_version_id, spine_item_id, session_key, sequence, calendar_week, session_index_in_week, title, topic, foundation_skill_code, planned_otj_hours, publish_status, learning_objectives_review, metadata, created_at, updated_at",
+      "id, programme_version_id, spine_item_id, session_key, sequence, calendar_week, session_index_in_week, title, topic, foundation_skill_code, planned_otj_hours, publish_status, learning_objectives_review, learner_facing_content, metadata, created_at, updated_at",
     )
     .single();
 

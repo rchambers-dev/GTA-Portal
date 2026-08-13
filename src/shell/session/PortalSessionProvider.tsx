@@ -39,7 +39,6 @@ function sessionIdentity(session: EffectiveSession): string {
     account.id,
     account.workspace,
     account.baseRole,
-    account.deliverySpine ?? "",
     account.linkedApprenticeId ?? "",
     permissions.join(","),
     temporaryAccessLabels.join(","),

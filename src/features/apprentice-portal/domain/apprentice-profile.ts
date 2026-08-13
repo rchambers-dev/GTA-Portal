@@ -25,8 +25,6 @@ export type ApprenticePortalProfile = {
   standardCode?: string | null;
   /** Cohort Skills England version, e.g. 1.2 */
   standardVersion?: string | null;
-  /** Cohort delivery spine — groups (CEA) or blocks (programme tasks). */
-  deliverySpine?: "groups" | "blocks";
   cohortName?: string | null;
   /** Enrolment pin to GTA programme version — required for blocks delivery. */
   gtaProgrammeVersionId?: string | null;
@@ -57,7 +55,6 @@ export const BLANK_APPRENTICE_PROFILE: ApprenticePortalProfile = {
   programmeStartDate: "",
   standardCode: null,
   standardVersion: null,
-  deliverySpine: "groups",
   cohortName: null,
   gtaProgrammeVersionId: null,
 };

@@ -88,3 +88,26 @@ export function labelResourceAudience(audience: ResourceAudience): string {
       return "Visible to learners";
   }
 }
+
+export function isPowerpointFilename(filename: string): boolean {
+  return /\.(ppt|pptx|pptm)$/i.test(filename.trim());
+}
+
+export function staffResourceOpenLabels(filename: string): {
+  viewExtract: string;
+  openOriginal: string;
+  originalAvailableInBrowser: boolean;
+} {
+  if (isPowerpointFilename(filename)) {
+    return {
+      viewExtract: "View extract",
+      openOriginal: "Open PowerPoint",
+      originalAvailableInBrowser: false,
+    };
+  }
+  return {
+    viewExtract: "View extract",
+    openOriginal: "View resource",
+    originalAvailableInBrowser: false,
+  };
+}

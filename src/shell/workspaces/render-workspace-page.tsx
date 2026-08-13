@@ -9,24 +9,20 @@ import {
   ApprenticeDashboardScreen,
   ApprenticeOtjHoursScreen,
   ApprenticeLearningScreen,
+  ApprenticeSessionDetailScreen,
   ApprenticeMessagesScreen,
   ApprenticeProgressScreen,
-  ApprenticeCeaTaskScreen,
   ApprenticeReviewDetailScreen,
   ApprenticeReviewsScreen,
   ApprenticeSupportScreen,
   EmployerOtjApprovalsScreen,
   TutorOtjApprovalsScreen,
 } from "@/features/apprentice-portal";
-import { resolveApprenticeDeliveryContext } from "@/features/apprentice-portal/domain/delivery-spine";
 import {
   ApprenticeProgrammeTasksScreen,
-  ApprenticeTaskFillScreen,
   TutorProgrammeDeliveryScreen,
   TutorBlock1DeliveryScreen,
   TutorTaskReviewScreen,
-  TutorCeaSignOffScreen,
-  TutorCeaReviewRoute,
   ManagementApprenticeRplScreen,
   ManagementApprenticeTnpScreen,
   ManagementApprenticeBragScreen,
@@ -63,7 +59,7 @@ const STAFF_SHARED_REDIRECTS: Record<string, string> = {
   "employer-contacts": "/employers?from=staff",
   // Old module catalogue — Autocare delivery is blocks + tasks now
   modules: "/staff/programme-delivery",
-  "module-sign-offs": "/staff/cea-sign-offs",
+  "module-sign-offs": "/staff/programme-delivery",
   assessments: "/staff/programme-delivery",
   resources: "/staff/programme-delivery",
   "curriculum-feedback": "/staff/programme-delivery",
@@ -101,45 +97,31 @@ function renderDocumentsPage(
   return null;
 }
 
-function renderApprenticeTracking(spine: "groups" | "blocks") {
-  // Groups apprentices work from Progress (CEA documents). Blocks keep college tasks.
-  if (spine === "blocks") return <ApprenticeProgrammeTasksScreen />;
-  redirect("/apprentice/progress");
-}
-
 async function renderApprenticePage(
   segment: string,
-  session: EffectiveSession,
+  _session: EffectiveSession,
 ) {
-  const spine =
-    session.account.deliverySpine ??
-    (
-      await resolveApprenticeDeliveryContext(session.account.linkedApprenticeId)
-    ).deliverySpine;
-
   const reviewMatch = /^reviews\/([^/]+)$/.exec(segment);
   if (reviewMatch) {
     return <ApprenticeReviewDetailScreen reviewId={reviewMatch[1]} />;
   }
 
-  // Retired module catalogue paths → personal tracking.
+  const learningSessionMatch = /^learning\/([^/]+)$/.exec(segment);
+  if (learningSessionMatch) {
+    return (
+      <ApprenticeSessionDetailScreen sessionId={learningSessionMatch[1]} />
+    );
+  }
+
+  // Retired module / CEA group-task paths.
   if (/^modules(?:\/|$)/.test(segment)) {
+    redirect("/apprentice/learning");
+  }
+  if (/^progress\/([^/]+)$/.test(segment)) {
+    redirect("/apprentice/progress");
+  }
+  if (/^(?:tracking|college-tasks)\/([^/]+)$/.test(segment)) {
     redirect("/apprentice/tracking");
-  }
-
-  // Task fill lives under /tracking/[taskId] (blocks). Legacy college-tasks kept as alias.
-  const trackingTaskMatch =
-    /^tracking\/([^/]+)$/.exec(segment) ??
-    /^college-tasks\/([^/]+)$/.exec(segment);
-  if (trackingTaskMatch) {
-    if (spine !== "blocks") redirect("/apprentice/progress");
-    return <ApprenticeTaskFillScreen taskId={trackingTaskMatch[1]} />;
-  }
-
-  const progressTaskMatch = /^progress\/([^/]+)$/.exec(segment);
-  if (progressTaskMatch) {
-    if (spine === "blocks") redirect("/apprentice/progress");
-    return <ApprenticeCeaTaskScreen taskId={progressTaskMatch[1]} />;
   }
 
   const documentsPage = renderDocumentsPage("apprentice", segment);
@@ -151,14 +133,13 @@ async function renderApprenticePage(
     case "learning":
       return <ApprenticeLearningScreen />;
     case "tracking":
-      return renderApprenticeTracking(spine);
-    // Legacy aliases — groups → Progress; blocks tracking is college tasks.
+      return <ApprenticeProgrammeTasksScreen />;
     case "cea":
     case "personal-tracking":
     case "college-tasks":
     case "modules":
     case "assignments":
-      redirect(spine === "blocks" ? "/apprentice/tracking" : "/apprentice/progress");
+      redirect("/apprentice/learning");
     case "otj":
       return <ApprenticeOtjHoursScreen />;
     case "training-plan":
@@ -233,23 +214,18 @@ export async function renderWorkspacePage(
     return <TutorOtjApprovalsScreen />;
   }
 
-  if (workspace === "staff" && segment === "cea-sign-offs") {
-    return <TutorCeaSignOffScreen audience="teacher" />;
+  if (
+    workspace === "staff" &&
+    (segment === "cea-sign-offs" || segment === "cea-sign-offs/review")
+  ) {
+    redirect("/staff/programme-delivery");
   }
 
-  const staffCeaReview =
-    workspace === "staff" && segment === "cea-sign-offs/review";
-  if (staffCeaReview) {
-    // Params read client-side from URL search — pass via wrapper page pattern.
-    return <TutorCeaReviewRoute audience="teacher" />;
-  }
-
-  if (workspace === "employer" && segment === "cea-sign-offs") {
-    return <TutorCeaSignOffScreen audience="employer" />;
-  }
-
-  if (workspace === "employer" && segment === "cea-sign-offs/review") {
-    return <TutorCeaReviewRoute audience="employer" />;
+  if (
+    workspace === "employer" &&
+    (segment === "cea-sign-offs" || segment === "cea-sign-offs/review")
+  ) {
+    redirect("/employer/dashboard");
   }
 
   if (workspace === "staff" && segment === "programme-delivery/block1") {

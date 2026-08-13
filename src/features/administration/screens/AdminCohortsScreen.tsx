@@ -77,7 +77,7 @@ function emptyForm(programme?: AdminProgrammeRecord): FormState {
     programmeName: programme?.name ?? "",
     standardCode: programme?.standardCode ?? "",
     standardVersion: defaultProduct?.standardVersion ?? "1.0",
-    deliverySpine: defaultProduct?.deliverySpine ?? "groups",
+    deliverySpine: defaultProduct?.deliverySpine ?? "blocks",
     enrolmentOpensDate: "",
     startDate: "",
     expectedEndDate: "",
@@ -853,8 +853,7 @@ export function AdminCohortsScreen() {
                       <Select
                         value={form.deliverySpine}
                         options={[
-                          { value: "groups", label: "Groups (CEA / Temp)" },
-                          { value: "blocks", label: "Blocks (programme / Main)" },
+                          { value: "blocks", label: "Blocks (controlled programme)" },
                         ]}
                         onChange={(value) =>
                           setForm((prev) =>
@@ -1448,12 +1447,8 @@ export function AdminCohortsScreen() {
                                 disabled={isLocked || isCohortStarted(row)}
                                 options={[
                                   {
-                                    value: "groups",
-                                    label: "Groups (CEA / Temp)",
-                                  },
-                                  {
                                     value: "blocks",
-                                    label: "Blocks (programme / Main)",
+                                    label: "Blocks (controlled programme)",
                                   },
                                 ]}
                                 onChange={(value) =>

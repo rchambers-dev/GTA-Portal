@@ -4,13 +4,12 @@ export { PortalShareProvider } from "./components/portal-share/PortalShareProvid
 export { Shareable } from "./components/portal-share/Shareable";
 export { ApprenticeDashboardScreen } from "./screens/ApprenticeDashboardScreen";
 export { ApprenticeLearningScreen } from "./screens/ApprenticeLearningScreen";
+export { ApprenticeSessionDetailScreen } from "./screens/ApprenticeSessionDetailScreen";
 export { ApprenticeModulesScreen } from "./screens/ApprenticeModulesScreen";
 export { ApprenticeModuleDetailScreen } from "./screens/ApprenticeModuleDetailScreen";
 export { ApprenticeModuleTopicScreen } from "./screens/ApprenticeModuleTopicScreen";
-export { ApprenticeGroupsTrackingScreen } from "./screens/ApprenticeGroupsTrackingScreen";
 export { ApprenticeOtjHoursScreen } from "./screens/ApprenticeOtjHoursScreen";
 export { ApprenticeProgressScreen } from "./screens/ApprenticeProgressScreen";
-export { ApprenticeCeaTaskScreen } from "./screens/ApprenticeCeaTaskScreen";
 export { ApprenticeReviewsScreen } from "./screens/ApprenticeReviewsScreen";
 export { ApprenticeReviewDetailScreen } from "./screens/ApprenticeReviewDetailScreen";
 export { ApprenticeAttendanceScreen } from "./screens/ApprenticeAttendanceScreen";
