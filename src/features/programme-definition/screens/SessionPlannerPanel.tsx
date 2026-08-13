@@ -247,7 +247,7 @@ export function SessionPlannerPanel({
       aria-label="Sessions and task availability"
     >
       <div className={styles.panelHead}>
-        <h2>Sessions / Task links (S8 gate)</h2>
+        <h2>Sessions / Task links (technical QA)</h2>
         <button
           type="button"
           className={adminStyles.secondaryBtn}
@@ -259,9 +259,9 @@ export function SessionPlannerPanel({
       </div>
 
       <p className={styles.coverageIntro}>
-        Controlled planned sessions for this programme version. Tasks stay under
-        blocks; optional session links drive availability preview (S1–S3). This
-        is not Golden B, Primaries, or learner form content.
+        Technical scaffolding for session browse, task↔session links, and
+        availability preview. Day-to-day Block session authoring lives in the
+        Block panel (click a Block in the spine). Not Golden B / Primaries.
       </p>
 
       {error ? (

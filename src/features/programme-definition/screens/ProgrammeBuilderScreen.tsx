@@ -68,6 +68,7 @@ import { buildCurriculumCoverageSnapshot } from "../domain/curriculum-coverage";
 import { SpineBuilderPanel } from "./SpineBuilderPanel";
 import { CurriculumCoveragePanel } from "./CurriculumCoveragePanel";
 import { SessionPlannerPanel } from "./SessionPlannerPanel";
+import { BlockAuthoringPanel } from "./BlockAuthoringPanel";
 import styles from "./programme-builder.module.css";
 import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 
@@ -265,6 +266,8 @@ export function ProgrammeBuilderScreen() {
     ksbCode: string;
   } | null>(null);
   const [spineMode, setSpineMode] = useState<"view" | "builder">("view");
+  const [selectedBlockId, setSelectedBlockId] = useState<string | null>(null);
+  const [showAdvancedQa, setShowAdvancedQa] = useState(false);
   const [expandedKsb, setExpandedKsb] = useState<string | null>(null);
   const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
   const [forkConfirmOpen, setForkConfirmOpen] = useState(false);
@@ -2089,10 +2092,47 @@ export function ProgrammeBuilderScreen() {
             />
           ) : null}
 
-          <SessionPlannerPanel
-            programmeVersionId={programme.id}
-            spineItems={programme.spineItems}
-          />
+          <section className={`${styles.panel} ${styles.span2}`}>
+            <div className={styles.panelHead}>
+              <h2>Advanced / QA tools</h2>
+              <button
+                type="button"
+                className={adminStyles.secondaryBtn}
+                onClick={() => setShowAdvancedQa((v) => !v)}
+              >
+                {showAdvancedQa
+                  ? "Hide technical session tools"
+                  : "Show technical session tools"}
+              </button>
+            </div>
+            <p className={styles.meta}>
+              Day-to-day curriculum authoring: open a Block in the spine, then
+              use Sessions · Materials · Tasks. Technical S8 tools stay hidden
+              unless you need DEV/QA access.
+            </p>
+          </section>
+
+          {showAdvancedQa ? (
+            <SessionPlannerPanel
+              programmeVersionId={programme.id}
+              spineItems={programme.spineItems}
+            />
+          ) : null}
+
+          {selectedBlockId
+            ? (() => {
+                const block = programme.spineItems.find(
+                  (i) => i.id === selectedBlockId && i.itemType === "block",
+                );
+                return block ? (
+                  <BlockAuthoringPanel
+                    programmeVersionId={programme.id}
+                    block={block}
+                    onClose={() => setSelectedBlockId(null)}
+                  />
+                ) : null;
+              })()
+            : null}
 
           <section className={`${styles.panel} ${styles.span2}`}>
             <div className={styles.panelHead}>
@@ -2140,7 +2180,7 @@ export function ProgrammeBuilderScreen() {
                 ? " Structure editing is locked while apprentices are enrolled."
                 : spineMode === "builder"
                   ? " Drag structure pieces onto the canvas and drop KSBs onto blocks."
-                  : " Open Spine Builder to edit sequence and assign KSBs."}
+                  : " Open Spine Builder to edit sequence and assign KSBs. Click a Block row to open session authoring."}
             </p>
 
             {spineMode === "builder" && !structureLocked ? (
@@ -2186,7 +2226,30 @@ export function ProgrammeBuilderScreen() {
                               ).length
                             : 0;
                         return (
-                        <tr key={item.id}>
+                        <tr
+                          key={item.id}
+                          data-active={
+                            item.itemType === "block" &&
+                            selectedBlockId === item.id
+                              ? "true"
+                              : "false"
+                          }
+                          style={
+                            item.itemType === "block"
+                              ? { cursor: "pointer" }
+                              : undefined
+                          }
+                          onClick={() => {
+                            if (item.itemType === "block") {
+                              setSelectedBlockId(item.id);
+                            }
+                          }}
+                          title={
+                            item.itemType === "block"
+                              ? "Open block session authoring"
+                              : undefined
+                          }
+                        >
                           <td>{item.sequence}</td>
                           <td>{labelSpineType(item)}</td>
                           <td>{item.title}</td>

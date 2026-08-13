@@ -28,6 +28,8 @@ const sessions: ProgrammeSessionRecord[] = [
     topic: "FS05",
     foundationSkillCode: "FS05",
     plannedOtjHours: null,
+    publishStatus: "draft",
+    learningObjectivesReview: { status: "empty" },
     metadata: {},
     createdAt: "",
     updatedAt: "",

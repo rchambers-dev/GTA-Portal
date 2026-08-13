@@ -1,6 +1,7 @@
 export { ApprenticeProgrammeTasksScreen } from "./screens/ApprenticeProgrammeTasksScreen";
 export { ApprenticeTaskFillScreen } from "./screens/ApprenticeTaskFillScreen";
 export { TutorProgrammeDeliveryScreen } from "./screens/TutorProgrammeDeliveryScreen";
+export { TutorBlock1DeliveryScreen } from "./screens/TutorBlock1DeliveryScreen";
 export { TutorTaskReviewScreen } from "./screens/TutorTaskReviewScreen";
 export { TutorCeaSignOffScreen } from "./screens/TutorCeaSignOffScreen";
 export { TutorCeaTaskReviewScreen } from "./screens/TutorCeaTaskReviewScreen";

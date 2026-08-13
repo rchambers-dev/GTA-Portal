@@ -1015,3 +1015,32 @@
   font-size: 0.88rem;
 }
 
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.blocksList {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.startActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.secondaryBtn[data-active="true"] {
+  border-color: var(--color-navy-700, #0b3d5c);
+  background: color-mix(in srgb, var(--color-navy-500) 12%, white);
+}
+
+.taskRow[data-active="true"] {
+  border-color: var(--color-navy-700, #0b3d5c);
+  background: color-mix(in srgb, var(--color-navy-500) 8%, white);
+}

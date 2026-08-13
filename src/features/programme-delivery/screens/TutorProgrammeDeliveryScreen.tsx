@@ -84,6 +84,16 @@ export function TutorProgrammeDeliveryScreen() {
     >
       <div className={styles.root}>
         <div className={styles.purpose}>
+          <p className={styles.purposeLead}>
+            Review published Course Builder tasks for a learner’s pinned GTA
+            programme version. Draft content never appears here.
+          </p>
+          <p className={styles.purposeNote}>
+            <Link href="/staff/programme-delivery/block1">
+              Block 1 Session delivery pilot →
+            </Link>{" "}
+            (planned Session sign-off for TEST apprentices)
+          </p>
           <label className={styles.blockMeta} style={{ display: "grid", gap: 6 }}>
             <span>Learner (enrolment pin)</span>
             <Select

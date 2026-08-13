@@ -3,6 +3,11 @@
  * SESSION = planned SOW learning event (S1). calendar_week ≠ planned session (H3).
  */
 
+import type {
+  LearningObjectivesReview,
+  SessionPublishStatus,
+} from "./programme-resources";
+
 export type ProgrammeSessionRecord = {
   id: string;
   programmeVersionId: string;
@@ -15,6 +20,8 @@ export type ProgrammeSessionRecord = {
   topic: string;
   foundationSkillCode: string | null;
   plannedOtjHours: number | null;
+  publishStatus: SessionPublishStatus;
+  learningObjectivesReview: LearningObjectivesReview;
   metadata: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;

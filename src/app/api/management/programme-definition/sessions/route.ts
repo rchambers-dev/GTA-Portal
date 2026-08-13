@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
-import { listProgrammeSessionsForVersion } from "@/features/programme-definition/domain/programme-sessions-repository";
+import {
+  listProgrammeSessionsForVersion,
+  updateProgrammeSessionAuthoring,
+} from "@/features/programme-definition/domain/programme-sessions-repository";
+import type { LearningObjectivesReview } from "@/features/programme-definition/domain/programme-resources";
 
 export const runtime = "nodejs";
 
@@ -40,5 +44,45 @@ export async function GET(request: Request) {
       },
       { status: 500 },
     );
+  }
+}
+
+type PatchBody = {
+  programmeVersionId?: string;
+  sessionId?: string;
+  publishStatus?: "draft" | "published";
+  learningObjectivesReview?: LearningObjectivesReview;
+};
+
+export async function PATCH(request: Request) {
+  try {
+    const body = (await request.json().catch(() => ({}))) as PatchBody;
+    const programmeVersionId = body.programmeVersionId?.trim() || "";
+    const sessionId = body.sessionId?.trim() || "";
+    if (!programmeVersionId || !sessionId) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "programmeVersionId and sessionId are required.",
+        },
+        { status: 400 },
+      );
+    }
+    const supabase = createSupabaseAdminClient();
+    const session = await updateProgrammeSessionAuthoring(
+      supabase,
+      programmeVersionId,
+      sessionId,
+      {
+        publishStatus: body.publishStatus,
+        learningObjectivesReview: body.learningObjectivesReview,
+      },
+    );
+    return NextResponse.json({ ok: true, session });
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "Could not update session.";
+    const status = /required|No session/i.test(message) ? 422 : 500;
+    return NextResponse.json({ ok: false, error: message }, { status });
   }
 }

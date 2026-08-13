@@ -23,6 +23,7 @@ import {
   ApprenticeProgrammeTasksScreen,
   ApprenticeTaskFillScreen,
   TutorProgrammeDeliveryScreen,
+  TutorBlock1DeliveryScreen,
   TutorTaskReviewScreen,
   TutorCeaSignOffScreen,
   TutorCeaReviewRoute,
@@ -251,6 +252,10 @@ export async function renderWorkspacePage(
     return <TutorCeaReviewRoute audience="employer" />;
   }
 
+  if (workspace === "staff" && segment === "programme-delivery/block1") {
+    return <TutorBlock1DeliveryScreen />;
+  }
+
   if (workspace === "staff" && segment === "programme-delivery") {
     return <TutorProgrammeDeliveryScreen />;
   }
@@ -259,7 +264,7 @@ export async function renderWorkspacePage(
     workspace === "staff"
       ? /^programme-delivery\/([^/]+)$/.exec(segment)
       : null;
-  if (staffTaskMatch) {
+  if (staffTaskMatch && staffTaskMatch[1] !== "block1") {
     return <TutorTaskReviewScreen taskId={staffTaskMatch[1]} />;
   }
 
