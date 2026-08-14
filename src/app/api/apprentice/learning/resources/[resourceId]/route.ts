@@ -2,8 +2,12 @@ import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import { loadApprenticeLearningJourney } from "@/features/programme-delivery/domain/apprentice-learning-repository";
+import { resolveApprenticeSessionAccess } from "@/features/programme-delivery/domain/apprentice-learning";
 import { includesTutorLessonPlan } from "@/features/programme-delivery/domain/learner-session-view";
-import { isSecurityTestFixtureResource } from "@/features/programme-definition/domain/learner-facing-content";
+import {
+  isSecurityTestFixtureResource,
+  LEARNER_SESSION_LOCKED_ERROR,
+} from "@/features/programme-definition/domain/learner-facing-content";
 import { loadResourceExtractText } from "@/features/programme-definition/domain/resource-extract";
 
 export const runtime = "nodejs";
@@ -38,10 +42,26 @@ export async function GET(_request: Request, { params }: Props) {
   try {
     const supabase = createSupabaseAdminClient();
     const journey = await loadApprenticeLearningJourney(supabase, apprenticeId);
-    const material = journey.blocks
-      .flatMap((b) => b.sessions)
-      .flatMap((s) => s.materials)
-      .find((m) => m.id === id);
+    const owner = journey.blocks
+      .flatMap((b) => b.sessions.map((s) => ({ session: s, block: b })))
+      .find(({ session }) => session.materials.some((m) => m.id === id));
+    if (!owner) {
+      return NextResponse.json(
+        { ok: false, error: "Resource not found on your learning journey." },
+        { status: 404 },
+      );
+    }
+    const access = resolveApprenticeSessionAccess(
+      journey.blocks,
+      owner.session.id,
+    );
+    if (access.status === "locked") {
+      return NextResponse.json(
+        { ok: false, error: LEARNER_SESSION_LOCKED_ERROR },
+        { status: 403 },
+      );
+    }
+    const material = owner.session.materials.find((m) => m.id === id);
     if (!material) {
       return NextResponse.json(
         { ok: false, error: "Resource not found on your learning journey." },

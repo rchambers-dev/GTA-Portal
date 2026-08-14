@@ -1,8 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createDefaultProgrammeParameters } from "@/features/programme-definition/domain/rpl-formulas/programme-parameters";
+import { buildEffectiveSession } from "@/lib/permissions/effective-permissions";
+import type { PortalAccount } from "@/lib/portal/types";
 
 const loadProgrammeSpine = vi.fn();
 const saveProgrammeSpine = vi.fn();
+const getEffectiveSession = vi.fn();
+
+vi.mock("@/adapters/standalone", () => ({
+  getStandalonePorts: () => ({
+    auth: { getEffectiveSession: () => getEffectiveSession() },
+  }),
+}));
 
 vi.mock("@/adapters/supabase/client", () => ({
   createSupabaseAdminClient: vi.fn(() => ({ __client: true })),
@@ -13,10 +22,23 @@ vi.mock("@/features/programme-definition/domain/spine-repository", () => ({
   saveProgrammeSpine: (...args: unknown[]) => saveProgrammeSpine(...args),
 }));
 
+const ownerAccount: PortalAccount = {
+  id: "owner-1",
+  name: "Curriculum Owner",
+  initials: "CO",
+  email: "owner@example.invalid",
+  baseRole: "Management",
+  responsibilities: [],
+  workspace: "management",
+  permissions: ["management.workspace.view", "management.programme.setup"],
+};
+
 describe("spine API — P0 contracts", () => {
   beforeEach(() => {
     loadProgrammeSpine.mockReset();
     saveProgrammeSpine.mockReset();
+    getEffectiveSession.mockReset();
+    getEffectiveSession.mockResolvedValue(buildEffectiveSession(ownerAccount, []));
     vi.resetModules();
   });
 

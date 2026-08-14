@@ -1,0 +1,62 @@
+{
+  "W011": {
+    "summary": "Customer Service Scenarios",
+    "learningContent": "This session is about handling workshop customer conversations professionally, including complaints, delays and misunderstandings. You will learn what customers expect, how poor communication can make a problem worse, and how to keep a clear, accurate record of what was said and what you did. You will also look at what the workshop can and cannot do, so expectations stay realistic.\n\nBy the end you should be able to explain the sequence and risks of a customer service scenario and complete a simple interaction record.",
+    "activityPractice": "You will take part in structured role-play of realistic complaints (incorrect work, delays, cost disputes). After the tutor models a response, you practise independently and write a short record of the issue and the action taken. This is session practice — not a formal Task.",
+    "sourceLabel": "Autocare_L2_Week_011_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W012": {
+    "summary": "Electrical system inspection — battery, charging and starting.",
+    "learningContent": "This session covers battery, charging and starting systems and the basic electrical checks used during inspection. You will learn how voltage, current and resistance relate to vehicle systems, and how to inspect connections and take simple readings safely.\n\nBy the end you should be able to identify key electrical components, carry out basic voltage and visual checks, and record findings without guessing.",
+    "activityPractice": "After your tutor shows how to use the meter, you will identify components and carry out basic voltage and visual checks. You then work through simple examples such as a flat battery or a poor connection and complete a test record. This is session practice. It is not Task 3.",
+    "sourceLabel": "Autocare_L2_Week_012_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W013": {
+    "summary": "Engine components, inspection and fault scenarios.",
+    "learningContent": "This session introduces engine mechanical components — pistons, crankshaft, camshaft, valves and timing — and how they work together in the four-stroke cycle. You will learn how to inspect for leaks, loose parts and visible wear, and how symptoms can point to mechanical causes.\n\nBy the end you should be able to locate and name key engine parts, explain basic timing and synchronisation, and record a simple diagnostic observation.",
+    "activityPractice": "On a training engine or vehicle, you will locate and name key parts. Your tutor will show inspection checks (leaks, loose items, visible wear). You then work through fault scenarios and record possible causes. You are not carrying out an independent engine repair. This is session practice — not a formal Task.",
+    "sourceLabel": "Autocare_L2_Week_013_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W014": {
+    "summary": "Tyre Pressure Monitoring Systems",
+    "learningContent": "This session explains how TPMS works, including direct and indirect systems, sensors, warnings and communication with the vehicle. You will learn why TPMS matters for inspection and MOT, and when a reset or relearn is needed after tyre work.\n\nBy the end you should be able to describe the main TPMS types, locate sensors where shown, and record a TPMS observation using the correct terms.",
+    "activityPractice": "You will identify TPMS components and watch your tutor demonstrate a reset or relearn where appropriate. You then work through warning-light or after-tyre-fit scenarios and complete a short record. Completing this Session does not complete Task 4.",
+    "sourceLabel": "Autocare_L2_Week_014_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W015": {
+    "summary": "Supplier Liaison",
+    "learningContent": "This session is about sourcing the correct parts using vehicle information such as registration or VIN, and communicating clearly with suppliers. You will learn how catalogues and order processes work, and how to deal with wrong, damaged or delayed parts.\n\nBy the end you should be able to identify a suitable part for a given vehicle, complete basic order documentation, and record a supplier issue clearly.",
+    "activityPractice": "You will use catalogues or systems to select parts for given vehicle scenarios, then practise handling incorrect or delayed parts with order and communication records. This is session practice — not a formal Task.",
+    "sourceLabel": "Autocare_L2_Week_015_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W016": {
+    "summary": "Intake plus Inspection",
+    "learningContent": "This session links customer communication to vehicle intake and inspection planning. You will learn how to greet a customer, gather the concern accurately, and use that information to plan the right checks and complete a job card.\n\nBy the end you should be able to run a simple intake conversation, record concerns clearly, and choose inspection priorities from the symptoms described.",
+    "activityPractice": "You will role-play vehicle intake — greeting, questioning and recording concerns — then plan inspections from those symptoms and complete job-card and inspection records. This is session practice — not a formal Task. The job card you complete here is session practice. It is not the Block 2 Employer Job Card (Task 2).",
+    "sourceLabel": "Autocare_L2_Week_016_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W017": {
+    "summary": "Advanced Brake Diagnostics",
+    "learningContent": "This session covers ABS and related brake diagnostics: wheel-speed sensors, tone rings, the hydraulic control unit and how the ECU uses them. You will learn common inspection points such as damaged wiring, corrosion and incorrect sensor gaps.\n\nBy the end you should be able to locate main ABS components, describe a logical inspection sequence, and record a diagnostic observation from a given warning or symptom.",
+    "activityPractice": "You will identify ABS components on a training vehicle. Your tutor will demonstrate visual inspection of sensors, wiring and mounting. You then work through warning-light or vibration scenarios and suggest possible causes on a worksheet. This is not independent ABS repair or a formal Task.",
+    "sourceLabel": "Autocare_L2_Week_017_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W018": {
+    "summary": "Wheel Alignment — Advanced",
+    "learningContent": "This session builds alignment knowledge: camber, caster, toe, thrust angle and steering-axis inclination, and how they affect handling, tyre wear and steering return. You will learn to read sample alignment values and link pull, wear or off-centre steering to likely causes.\n\nBy the end you should be able to explain the main alignment angles, say whether a sample reading is in specification, and record a reasoned diagnostic note.",
+    "activityPractice": "You will observe alignment equipment and review sample readings with your tutor, then link scenarios (pull, uneven wear, off-centre steering) to likely causes. You will not set alignment independently. This is session practice — not a formal Task.",
+    "sourceLabel": "Autocare_L2_Week_018_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W019": {
+    "summary": "Stock Auditing",
+    "learningContent": "This session explains stock auditing: cycle counts, full checks and why recorded quantities can differ from what is on the shelf. You will learn common causes such as incorrect booking-in, misplacement or use without recording, and how to complete audit paperwork.\n\nBy the end you should be able to carry out a structured count, identify a discrepancy, and record a clear variance note.",
+    "activityPractice": "You will complete a structured stock check against recorded quantities, investigate possible causes of any difference, and complete audit documentation. This is session practice — not a formal Task.",
+    "sourceLabel": "Autocare_L2_Week_019_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  },
+  "W020": {
+    "summary": "Customer Dispute Resolution",
+    "learningContent": "This session covers handling customer disputes: complaint procedures, when to escalate, and basic consumer-rights awareness. You will learn common causes such as incorrect work, delays or pricing issues, and why written records must be accurate and defensible.\n\nBy the end you should be able to describe a professional dispute-handling sequence, complete a written interaction record, and understand that block review paperwork is completed separately.",
+    "activityPractice": "You will role-play dispute scenarios and complete a written record of the issue, action and outcome. Block-end review paperwork may be discussed this week. The controlled Block Reflection (Task 5) and the Learning Impact Record are separate forms. Completing this Session does not unlock the next Block.",
+    "sourceLabel": "Autocare_L2_Week_020_Lesson_Plan_v4.4.docx (catalogue v4.4 extract)"
+  }
+}

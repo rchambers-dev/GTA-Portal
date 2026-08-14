@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import { loadPublishedDeliveryCatalogue } from "@/features/programme-delivery/domain/published-delivery-catalogue";
+import { requireTutorDeliveryAccess } from "@/features/programme-delivery/domain/staff-delivery-access";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,8 @@ export const runtime = "nodejs";
  * Never selects newest / Autocare static content.
  */
 export async function GET(request: Request) {
+  const access = await requireTutorDeliveryAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =

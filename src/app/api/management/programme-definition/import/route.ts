@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 import { buildOfficialStandardVersion } from "@/features/programme-definition/domain/normalize";
 import {
   findOfficialInDatabase,
@@ -71,6 +72,8 @@ function slimOfficialForClient(
  * and persist once. Never creates a duplicate for the same ST + version.
  */
 export async function POST(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as Body;
     let occupationCode = body.occupationCode?.trim().toUpperCase() || "";

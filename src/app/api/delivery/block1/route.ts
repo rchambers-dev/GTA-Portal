@@ -10,6 +10,7 @@ import {
   assertNoTutorOnlyLeak,
   filterLearnerVisibleAttachments,
   learnerVisibleResourcesForSession,
+  tutorDeliveryResourcesForSession,
 } from "@/features/programme-delivery/domain/learner-session-materials";
 import { isSecurityTestFixtureResource } from "@/features/programme-definition/domain/learner-facing-content";
 import {
@@ -17,6 +18,10 @@ import {
   labelSessionLaneStatus,
   nextSessionAfterCurrent,
 } from "@/features/programme-delivery/domain/session-lane";
+import {
+  deliveryWeekRange,
+  requireTutorDeliveryAccess,
+} from "@/features/programme-delivery/domain/staff-delivery-access";
 
 export const runtime = "nodejs";
 
@@ -27,8 +32,18 @@ const CONTROL_TAG = "autocare-st0499-v1.3-phase1-controlled";
  * GET ?apprenticeProgrammeId=  (or programmeVersionId + apprenticeId)
  */
 export async function GET(request: Request) {
+  const access = await requireTutorDeliveryAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
+    const blockNumber = Number(url.searchParams.get("block") || "1");
+    const weeks = deliveryWeekRange(blockNumber);
+    if (!weeks) {
+      return NextResponse.json(
+        { ok: false, error: "Only Block 1 and Block 2 delivery are available in this pilot." },
+        { status: 400 },
+      );
+    }
     const apprenticeProgrammeId =
       url.searchParams.get("apprenticeProgrammeId")?.trim() || "";
     const audience =
@@ -109,10 +124,10 @@ export async function GET(request: Request) {
       supabase,
       programmeVersionId,
     );
-    const block1Sessions = allSessions.filter(
-      (s) => s.calendarWeek >= 1 && s.calendarWeek <= 10,
+    const blockSessions = allSessions.filter(
+      (s) => s.calendarWeek >= weeks.weekStart && s.calendarWeek <= weeks.weekEnd,
     );
-    const spineItemId = block1Sessions[0]?.spineItemId || null;
+    const spineItemId = blockSessions[0]?.spineItemId || null;
 
     const [resources, attachments, deliveries] = await Promise.all([
       listProgrammeResourcesForVersion(supabase, programmeVersionId),
@@ -130,7 +145,7 @@ export async function GET(request: Request) {
       deliveries.map((d) => [d.sessionId, d]),
     );
     const assigned = assignSessionLaneStatuses(
-      block1Sessions,
+      blockSessions,
       new Set(deliveries.map((d) => d.sessionId)),
     );
     const nextSession = nextSessionAfterCurrent(assigned);
@@ -155,6 +170,18 @@ export async function GET(request: Request) {
         audience === "learner"
           ? visibleResources.filter((r) => !isSecurityTestFixtureResource(r))
           : visibleResources;
+      const tutorDeliveryResources =
+        audience === "tutor"
+          ? tutorDeliveryResourcesForSession({
+              attachments,
+              resources,
+              sessionId: s.id,
+            }).map((r) => ({
+              id: r.id,
+              title: r.title,
+              filename: r.filename,
+            }))
+          : [];
 
       return {
         session: s,
@@ -163,26 +190,27 @@ export async function GET(request: Request) {
         delivery,
         tutorMaterialAttachments:
           audience === "tutor" ? tutorMaterials : [],
+        tutorDeliveryResources,
         learnerMaterialAttachments: learnerMaterials,
         learnerVisibleResources,
         visibilityOk: learnerLeakCheck.ok,
       };
     });
 
-    // Explicit visibility proof payload
-    const w001 = lane.find((l) => l.session.sessionKey === "W001");
-    const learnerViewW001 = w001
+    const proofKey = blockNumber === 2 ? "W011" : "W001";
+    const proofRow = lane.find((l) => l.session.sessionKey === proofKey);
+    const visibilityProof = proofRow
       ? {
-          sessionKey: "W001",
-          resourceTitles: w001.learnerVisibleResources.map((r) => r.title),
-          includesTutorLessonPlan: w001.learnerVisibleResources.some(
+          sessionKey: proofKey,
+          resourceTitles: proofRow.learnerVisibleResources.map((r) => r.title),
+          includesTutorLessonPlan: proofRow.learnerVisibleResources.some(
             (r) =>
               /lesson plan/i.test(r.title) ||
               /Lesson_Plan/i.test(r.filename),
           ),
           tutorOnlyCount: attachments.filter(
             (a) =>
-              a.sessionId === w001.session.id && a.audience === "TUTOR_ONLY",
+              a.sessionId === proofRow.session.id && a.audience === "TUTOR_ONLY",
           ).length,
         }
       : null;
@@ -205,10 +233,14 @@ export async function GET(request: Request) {
         programmeWeek,
       },
       audience,
+      blockNumber,
       block: {
-        title: "Motor Vehicle Foundation Skills - Shared Controlled Programme",
-        weekStart: 1,
-        weekEnd: 10,
+        title:
+          blockNumber === 2
+            ? "Block 2"
+            : "Motor Vehicle Foundation Skills - Shared Controlled Programme",
+        weekStart: weeks.weekStart,
+        weekEnd: weeks.weekEnd,
         plannedOtjHours: 45,
       },
       sessions: lane,
@@ -221,7 +253,7 @@ export async function GET(request: Request) {
           }
         : null,
       deliveryRecords: deliveries,
-      visibilityProof: learnerViewW001,
+      visibilityProof,
       notes: {
         s4:
           "Block unlock is calendar/sequence by default. Authorised per-enrolment override only. Task 5 / Session completion does not auto-unlock the next Block.",

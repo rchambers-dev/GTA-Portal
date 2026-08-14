@@ -62,6 +62,32 @@ describe("isDeliveryBlockUnlocked (S4)", () => {
     ).toBe(false);
   });
 
+  it("does not unlock Block 3 when W020 / Task 5 would be complete (S4)", () => {
+    const block3: DeliveryBlockView = {
+      spineItemId: "b3",
+      title: "Block 3",
+      sequence: 3,
+      displayOrdinal: 3,
+      plannedOtjHours: 45,
+      weekStart: 21,
+      weekEnd: 30,
+    };
+    expect(
+      isDeliveryBlockUnlocked({
+        block: block3,
+        blocks: [block1, block2, block3],
+        programmeWeek: 3,
+      }),
+    ).toBe(false);
+    expect(
+      isDeliveryBlockUnlocked({
+        block: block3,
+        blocks: [block1, block2, block3],
+        programmeWeek: 20,
+      }),
+    ).toBe(false);
+  });
+
   it("unlocks one learner via authorised override without unlocking another", () => {
     const learnerA = isDeliveryBlockUnlocked({
       block: block2,

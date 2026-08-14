@@ -5,7 +5,9 @@
 import type { ProgrammeSessionRecord } from "@/features/programme-definition/domain/programme-sessions";
 import type { ProgrammeResourceRecord } from "@/features/programme-definition/domain/programme-resources";
 import {
+  LEARNER_ACTIVITY_LOCKED,
   LEARNER_ACTIVITY_PENDING,
+  LEARNER_BLOCK_LOCKED,
   LEARNER_CONTENT_PENDING,
   approvedLearnerCopy,
   isSecurityTestFixtureResource,
@@ -40,6 +42,8 @@ export type LearnerSessionView = {
   hasApprovedLearning: boolean;
   materials: LearnerVisibleMaterial[];
   reviewLearning: boolean;
+  /** False when the parent Block is still calendar/sequence locked (S4). */
+  openable: boolean;
 };
 
 export function productionLearnerResources(input: {
@@ -65,6 +69,8 @@ export function toLearnerSessionView(input: {
   delivery: SessionDeliveryRecord | null;
   learnerResources: ProgrammeResourceRecord[];
   resourceRolesById?: Map<string, string>;
+  /** S4: published copy is not openable until the Block is unlocked. */
+  blockUnlocked?: boolean;
 }): LearnerSessionView {
   const approved = approvedLearnerCopy(input.session.learnerFacingContent);
   const materials = productionLearnerResources({
@@ -75,6 +81,7 @@ export function toLearnerSessionView(input: {
     title: input.session.title,
     topic: approved?.summary || input.session.topic || input.session.title,
   });
+  const openable = input.blockUnlocked !== false;
   return {
     id: input.session.id,
     sessionKey: input.session.sessionKey,
@@ -89,13 +96,19 @@ export function toLearnerSessionView(input: {
     status: input.status,
     statusLabel: labelSessionLaneStatus(input.status),
     deliveredAt: input.delivery?.deliveredAt ?? null,
-    learningInformation: approved?.learningContent || LEARNER_CONTENT_PENDING,
-    activityPractice: approved?.activityPractice || LEARNER_ACTIVITY_PENDING,
-    hasApprovedLearning: Boolean(approved?.learningContent),
-    materials,
+    learningInformation: openable
+      ? approved?.learningContent || LEARNER_CONTENT_PENDING
+      : LEARNER_BLOCK_LOCKED,
+    activityPractice: openable
+      ? approved?.activityPractice || LEARNER_ACTIVITY_PENDING
+      : LEARNER_ACTIVITY_LOCKED,
+    hasApprovedLearning: openable && Boolean(approved?.learningContent),
+    materials: openable ? materials : [],
     reviewLearning:
+      openable &&
       input.status === "completed" &&
       (Boolean(approved?.learningContent) || materials.length > 0),
+    openable,
   };
 }
 

@@ -50,6 +50,7 @@ next-env.d.ts
 
 # Programme Builder / Autocare scratch outputs (regenerable; do not commit)
 # Permanent frozen eval/audit artifacts live under tests/artifacts/autocare-v1/
+.tmp/
 .tmp-*
 .tmp-*/
 

@@ -8,10 +8,6 @@ import {
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
 import { Select } from "@/components/ui/Select";
-import { isDeliveryBlockUnlocked } from "../domain/delivery-unlock";
-import {
-  tasksForDeliveryBlock,
-} from "../domain/published-delivery-catalogue";
 import { usePublishedDeliveryCatalogue } from "../domain/use-published-delivery-catalogue";
 import {
   getTaskServerSnapshot,
@@ -25,32 +21,36 @@ import {
 } from "../domain/task-submission-store";
 import styles from "./programme-delivery.module.css";
 
-type Tab = "queue" | "blocks";
-
 /**
- * Tutor programme delivery — published Course Builder tasks for a selected
- * learner's pinned GTA programme version. No Autocare static fallback.
+ * Tutor landing: pick a learner, open Session delivery.
+ * Tasks are separate and must not block this page.
  */
 export function TutorProgrammeDeliveryScreen() {
-  const [tab, setTab] = useState<Tab>("queue");
   const admin = useAdminStore();
-  const enrolments = useMemo(
-    () =>
-      admin.enrolments
-        .filter((e) => e.apprenticeId)
-        .slice()
-        .sort((a, b) =>
-          (a.displayName || a.apprenticeId || "").localeCompare(
-            b.displayName || b.apprenticeId || "",
-          ),
+  const enrolments = useMemo(() => {
+    const rows = admin.enrolments
+      .filter((e) => e.apprenticeId)
+      .slice()
+      .sort((a, b) =>
+        (a.displayName || a.apprenticeId || "").localeCompare(
+          b.displayName || b.apprenticeId || "",
         ),
-    [admin.enrolments],
-  );
+      );
+    return rows.slice().sort((a, b) => {
+      const at = /TEST|DEMO/i.test(a.displayName) ? 0 : 1;
+      const bt = /TEST|DEMO/i.test(b.displayName) ? 0 : 1;
+      return at - bt;
+    });
+  }, [admin.enrolments]);
+
   const [apprenticeId, setApprenticeId] = useState("");
   const selected =
-    enrolments.find((e) => e.apprenticeId === apprenticeId) ?? enrolments[0] ?? null;
+    enrolments.find((e) => e.apprenticeId === apprenticeId) ??
+    enrolments[0] ??
+    null;
   const resolvedApprenticeId = selected?.apprenticeId ?? "";
   const storeId = resolveTaskStoreApprenticeId(resolvedApprenticeId);
+  const week = selected?.programmeWeek ?? null;
 
   useSyncExternalStore(
     subscribeTaskStore,
@@ -69,185 +69,146 @@ export function TutorProgrammeDeliveryScreen() {
       ? listAwaitingTrainer(catalogue.tasks, storeId)
       : [];
 
-  const taskedBlocks =
-    catalogue.status === "ready"
-      ? catalogue.blocks.filter(
-          (b) => tasksForDeliveryBlock(catalogue, b.spineItemId).length > 0,
-        )
-      : [];
+  const blockHref = (block: 1 | 2) => {
+    const path =
+      block === 1
+        ? "/staff/programme-delivery/block1"
+        : "/staff/programme-delivery/block2";
+    if (!selected?.id) return path;
+    return `${path}?enrolment=${encodeURIComponent(selected.id)}`;
+  };
 
   return (
     <ApprenticePageShell
       eyebrow="Tutor"
       title="Programme delivery"
-      description="Review published Course Builder tasks for a learner’s pinned GTA programme version. Draft content never appears here."
+      description="Deliver planned learning Sessions for a learner. This is not Task marking, competence, or OTJ."
     >
       <div className={styles.root}>
         <div className={styles.purpose}>
-          <p className={styles.purposeLead}>
-            Review published Course Builder tasks for a learner’s pinned GTA
-            programme version. Draft content never appears here.
-          </p>
+          <h2 className={styles.purposeLabel}>What to do here</h2>
+          <ol className={styles.steps}>
+            <li>Choose the learner you are teaching.</li>
+            <li>Open the Block for that week.</li>
+            <li>
+              Open the Session, use the tutor materials, then confirm the
+              Session was delivered.
+            </li>
+          </ol>
           <p className={styles.purposeNote}>
-            <Link href="/staff/programme-delivery/block1">
-              Block 1 Session delivery pilot →
-            </Link>{" "}
-            (planned Session sign-off for TEST apprentices)
+            Confirming a Session was delivered does <strong>not</strong> mean
+            the apprentice passed a Task or is competent. Tasks stay separate.
           </p>
           <label className={styles.blockMeta} style={{ display: "grid", gap: 6 }}>
-            <span>Learner (enrolment pin)</span>
+            <span>Learner</span>
             <Select
               value={resolvedApprenticeId}
               onChange={setApprenticeId}
               options={
                 enrolments.length === 0
-                  ? [{ value: "", label: "No enrolments…" }]
+                  ? [{ value: "", label: "No learners available" }]
                   : enrolments.map((e) => ({
                       value: e.apprenticeId!,
                       label: `${e.displayName || e.apprenticeId}${
-                        e.gtaProgrammeVersionId ? "" : " · unpinned"
-                      }`,
+                        e.programmeWeek ? ` · week ${e.programmeWeek}` : ""
+                      }${e.gtaProgrammeVersionId ? "" : " · not pinned"}`,
                     }))
               }
             />
           </label>
-          <p className={styles.purposeLead} style={{ marginTop: 12 }}>
-            <strong>
-              {catalogue.programmeTitle ||
-                selected?.programmeName ||
-                "Programme"}
-            </strong>
-            {catalogue.standardCode ? ` · ${catalogue.standardCode}` : ""}
-            {catalogue.internalVersion
-              ? ` · GTA v${catalogue.internalVersion}`
-              : ""}
-          </p>
-          {selected && !selected.gtaProgrammeVersionId ? (
-            <p className={styles.purposeBody}>
-              This enrolment has no GTA programme version pin. Bind one on RPL/TNP
-              before delivery content can load.
+          {selected ? (
+            <p className={styles.purposeLead}>
+              <strong>{selected.displayName}</strong>
+              {selected.programmeName ? ` · ${selected.programmeName}` : ""}
+              {week ? ` · programme week ${week}` : ""}
             </p>
           ) : null}
-          {selected?.gtaProgrammeVersionId && catalogue.status !== "ready" ? (
-            <p className={styles.purposeBody}>{catalogue.message}</p>
-          ) : null}
-          {selected && catalogue.status === "ready" ? (
+          {selected && !selected.gtaProgrammeVersionId ? (
             <p className={styles.purposeBody}>
-              Learners on the same cohort may be pinned to different GTA programme
-              versions — always select the learner before reviewing.
+              This enrolment is not pinned to a GTA programme version yet, so
+              Session delivery cannot load.
             </p>
           ) : null}
         </div>
 
         {!selected ? (
-          <p className={styles.empty}>Select a learner to open delivery.</p>
-        ) : loading ? (
-          <p className={styles.empty}>Loading published tasks…</p>
-        ) : catalogue.status !== "ready" ? (
-          <p className={styles.empty}>{catalogue.message}</p>
+          <p className={styles.empty}>Choose a learner to continue.</p>
         ) : (
-          <>
-            <div className={styles.tabRow} role="tablist">
-              <button
-                type="button"
-                role="tab"
-                className={tab === "queue" ? styles.tabActive : styles.tab}
-                aria-selected={tab === "queue"}
-                onClick={() => setTab("queue")}
-              >
-                Sign-off queue ({awaiting.length})
-              </button>
-              <button
-                type="button"
-                role="tab"
-                className={tab === "blocks" ? styles.tabActive : styles.tab}
-                aria-selected={tab === "blocks"}
-                onClick={() => setTab("blocks")}
-              >
-                Blocks
-              </button>
-            </div>
-
-            {tab === "queue" ? (
-              awaiting.length === 0 ? (
-                <p className={styles.empty}>
-                  Nothing waiting for mentor or trainer sign-off right now.
+          <div className={styles.actionGrid}>
+            <article className={styles.actionCard}>
+              <p className={styles.purposeLabel}>Block 1</p>
+              <h2 className={styles.blockTitle}>Weeks 1–10</h2>
+              <p className={styles.blockMeta}>
+                Foundation skills Sessions. Open the Session, use the lesson
+                plan, then confirm it was delivered.
+              </p>
+              {week != null && week <= 10 ? (
+                <p className={styles.blockMeta}>This learner is in Block 1 now.</p>
+              ) : null}
+              <Link href={blockHref(1)} className={styles.primaryBtn}>
+                Open Block 1 Sessions
+              </Link>
+            </article>
+            <article className={styles.actionCard}>
+              <p className={styles.purposeLabel}>Block 2</p>
+              <h2 className={styles.blockTitle}>Weeks 11–20</h2>
+              <p className={styles.blockMeta}>
+                Later Sessions. The learner only sees these when the Block is
+                open. You can still prepare and deliver them.
+              </p>
+              {week != null && week >= 11 && week <= 20 ? (
+                <p className={styles.blockMeta}>This learner is in Block 2 now.</p>
+              ) : week != null && week < 11 ? (
+                <p className={styles.blockMeta}>
+                  Learner copy for Block 2 stays locked until week 11 (or an
+                  authorised unlock).
                 </p>
-              ) : (
-                <div className={styles.blockList}>
-                  {awaiting.map((task) => {
-                    const sub = getTaskSubmission(task.id, storeId);
-                    return (
-                      <article key={task.id} className={styles.queueCard}>
-                        <div>
-                          <p className={styles.blockMeta}>
-                            Block {task.blockId} · Task {task.taskNumber}
-                          </p>
-                          <h2 className={styles.blockTitle}>{task.title}</h2>
-                          <ApprenticeStatusChip tone={statusTone(sub.status)}>
-                            {statusLabel(sub.status)}
-                          </ApprenticeStatusChip>
-                        </div>
-                        <Link
-                          href={`/staff/programme-delivery/${task.id}?apprentice=${encodeURIComponent(resolvedApprenticeId)}`}
-                          className={styles.linkish}
-                        >
-                          Review →
-                        </Link>
-                      </article>
-                    );
-                  })}
-                </div>
-              )
-            ) : (
-              <div className={styles.blockList}>
-                {taskedBlocks.map((block) => {
-                  const tasks = tasksForDeliveryBlock(
-                    catalogue,
-                    block.spineItemId,
-                  );
-                  const unlocked = isDeliveryBlockUnlocked({
-                    block,
-                    blocks: catalogue.blocks,
-                    programmeWeek: 999,
-                  });
-                  return (
-                    <article key={block.spineItemId} className={styles.blockCard}>
-                      <h2 className={styles.blockTitle}>
-                        Block {block.displayOrdinal} · {block.title}
-                      </h2>
-                      <ul className={styles.taskList}>
-                        {tasks.map((task) => {
-                          const sub = getTaskSubmission(task.id, storeId);
-                          return (
-                            <li key={task.id}>
-                              <Link
-                                href={`/staff/programme-delivery/${task.id}?apprentice=${encodeURIComponent(resolvedApprenticeId)}`}
-                                className={styles.taskRow}
-                              >
-                                <div className={styles.taskMain}>
-                                  <strong>
-                                    Task {task.taskNumber}: {task.title}
-                                  </strong>
-                                  <span>
-                                    {unlocked ? "Open" : "Locked until calendar week / authorised unlock"}
-                                  </span>
-                                </div>
-                                <ApprenticeStatusChip tone={statusTone(sub.status)}>
-                                  {statusLabel(sub.status)}
-                                </ApprenticeStatusChip>
-                              </Link>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </article>
-                  );
-                })}
-              </div>
-            )}
-          </>
+              ) : null}
+              <Link href={blockHref(2)} className={styles.primaryBtn}>
+                Open Block 2 Sessions
+              </Link>
+            </article>
+          </div>
         )}
+
+        {selected && catalogue.status === "ready" && awaiting.length > 0 ? (
+          <section className={styles.purpose}>
+            <h2 className={styles.purposeLabel}>Task reviews waiting</h2>
+            <p className={styles.purposeLead}>
+              These are Tasks, not Sessions. Reviewing a Task does not sign off
+              a Session.
+            </p>
+            <div className={styles.blockList}>
+              {awaiting.map((task) => {
+                const sub = getTaskSubmission(task.id, storeId);
+                return (
+                  <article key={task.id} className={styles.queueCard}>
+                    <div>
+                      <p className={styles.blockMeta}>
+                        Block {task.blockId} · Task {task.taskNumber}
+                      </p>
+                      <h2 className={styles.blockTitle}>{task.title}</h2>
+                      <ApprenticeStatusChip tone={statusTone(sub.status)}>
+                        {statusLabel(sub.status)}
+                      </ApprenticeStatusChip>
+                    </div>
+                    <Link
+                      href={`/staff/programme-delivery/${task.id}?apprentice=${encodeURIComponent(resolvedApprenticeId)}`}
+                      className={styles.linkish}
+                    >
+                      Review Task →
+                    </Link>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        ) : selected && !loading ? (
+          <p className={styles.empty}>
+            No Task reviews are waiting. That is normal — deliver Sessions
+            first. Tasks are a separate piece of work.
+          </p>
+        ) : null}
       </div>
     </ApprenticePageShell>
   );

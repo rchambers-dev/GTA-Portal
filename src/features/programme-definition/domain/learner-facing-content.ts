@@ -10,6 +10,15 @@ export const LEARNER_CONTENT_PENDING =
 export const LEARNER_ACTIVITY_PENDING =
   "Your tutor will explain the activity during this session.";
 
+export const LEARNER_BLOCK_LOCKED =
+  "This Session is listed so you can see what is coming next. The learning content opens when this part of your programme starts.";
+
+export const LEARNER_ACTIVITY_LOCKED =
+  "The activity for this Session will be available when this Block opens.";
+
+export const LEARNER_SESSION_LOCKED_ERROR =
+  "This Session is not open yet. It will become available when this part of your programme starts.";
+
 export type LearnerFacingContentStatus =
   | "empty"
   | "candidate_for_review"
@@ -163,12 +172,26 @@ export function sessionCodesLine(input: {
   return parts.join(" · ");
 }
 
+/**
+ * W001 leak-detection decoy only. Hidden from apprentice production views.
+ * Later SAFE DEMO learner-visible proofs (e.g. W011) must NOT match this.
+ */
 export function isSecurityTestFixtureResource(input: {
   title?: string;
   filename?: string;
 }): boolean {
   const blob = `${input.title || ""} ${input.filename || ""}`;
-  return /TEST learner|SAFE DEMO|_fixture|TEST_W00/i.test(blob);
+  return /TEST_W001_learner_handout_fixture|TEST learner handout fixture \(W001\)/i.test(
+    blob,
+  );
+}
+
+export function isSafeDemoTaggedResource(input: {
+  title?: string;
+  filename?: string;
+}): boolean {
+  const blob = `${input.title || ""} ${input.filename || ""}`;
+  return /SAFE DEMO|SAFE TEST/i.test(blob);
 }
 
 export function labelLearnerMaterialPurpose(role: string): string {

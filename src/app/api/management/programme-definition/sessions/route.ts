@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 import {
   listProgrammeSessionsForVersion,
   updateProgrammeSessionAuthoring,
@@ -10,6 +11,8 @@ import type { LearnerFacingContent } from "@/features/programme-definition/domai
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =
@@ -57,6 +60,8 @@ type PatchBody = {
 };
 
 export async function PATCH(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PatchBody;
     const programmeVersionId = body.programmeVersionId?.trim() || "";

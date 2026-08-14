@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 
 export const runtime = "nodejs";
 
@@ -8,6 +9,8 @@ export const runtime = "nodejs";
  * Explicit catalogue only — never auto-selects "newest".
  */
 export async function GET(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const standardCode = (url.searchParams.get("standardCode") || "")

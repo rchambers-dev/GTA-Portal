@@ -1,21 +1,17 @@
 import { NextResponse } from "next/server";
-import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 import {
   createEnrolmentBlockUnlock,
   listEnrolmentBlockUnlocks,
 } from "@/features/programme-delivery/domain/block-unlock-overrides-repository";
+import { requireTutorDeliveryAccess } from "@/features/programme-delivery/domain/staff-delivery-access";
 
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const session = await getStandalonePorts().auth.getEffectiveSession();
-  if (!session) {
-    return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
-  }
-  if (session.account.workspace === "apprentice") {
-    return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
-  }
+  const access = await requireTutorDeliveryAccess();
+  if (access instanceof NextResponse) return access;
 
   const url = new URL(request.url);
   const apprenticeProgrammeId =
@@ -54,13 +50,8 @@ type PostBody = {
 };
 
 export async function POST(request: Request) {
-  const session = await getStandalonePorts().auth.getEffectiveSession();
-  if (!session) {
-    return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
-  }
-  if (session.account.workspace === "apprentice") {
-    return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
-  }
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
 
   try {
     const body = (await request.json().catch(() => ({}))) as PostBody;
@@ -77,8 +68,8 @@ export async function POST(request: Request) {
     const record = await createEnrolmentBlockUnlock(supabase, {
       apprenticeProgrammeId: body.apprenticeProgrammeId || "",
       spineItemId: body.spineItemId || "",
-      unlockedBy: session.account.id || null,
-      unlockedByName: session.account.name || "Staff",
+      unlockedBy: access.account.id || null,
+      unlockedByName: access.account.name || "Staff",
       reason: body.reason || "",
     });
     return NextResponse.json({ ok: true, record });

@@ -1040,6 +1040,128 @@
   background: color-mix(in srgb, var(--color-navy-500) 12%, white);
 }
 
+.steps {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--text-primary, #0f172a);
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.steps li + li {
+  margin-top: 0.35rem;
+}
+
+.actionGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .actionGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.actionCard {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.actionCard .primaryBtn {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 0.35rem;
+  text-decoration: none;
+}
+
+.deliveryLayout {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 900px) {
+  .deliveryLayout {
+    grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.sessionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  overflow: hidden;
+}
+
+.sessionRow {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  background: white;
+}
+
+.sessionRow:last-child {
+  border-bottom: none;
+}
+
+.sessionRow:hover {
+  background: rgb(0 0 0 / 0.03);
+}
+
+.sessionRow[data-active="true"] {
+  background: color-mix(in srgb, var(--color-navy-500) 10%, white);
+  box-shadow: inset 4px 0 0 var(--color-navy-700, #0b3d5c);
+}
+
+.sessionRowMain {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.sessionRowMain strong {
+  font-size: 0.92rem;
+}
+
+.sessionDetail {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
 .taskRow[data-active="true"] {
   border-color: var(--color-navy-700, #0b3d5c);
   background: color-mix(in srgb, var(--color-navy-500) 8%, white);

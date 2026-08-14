@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireTutorDeliveryAccess } from "@/features/programme-delivery/domain/staff-delivery-access";
 import {
   extractCandidateActivities,
   loadResourceExtractText,
@@ -13,6 +14,8 @@ export const runtime = "nodejs";
  * Does not claim binary DOCX is openable in-app.
  */
 export async function GET(request: Request) {
+  const access = await requireTutorDeliveryAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =

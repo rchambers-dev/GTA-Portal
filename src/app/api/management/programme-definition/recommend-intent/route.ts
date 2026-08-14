@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 import {
   parseAiJson,
   recommendLearningIntentHeuristic,
@@ -28,6 +29,8 @@ type Body = {
 };
 
 export async function POST(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   const body = (await request.json().catch(() => ({}))) as Body;
   const ksb: ImportedKsb = {
     code: (body.ksbCode || "").toUpperCase(),

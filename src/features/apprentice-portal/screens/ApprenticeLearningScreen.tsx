@@ -107,44 +107,82 @@ export function ApprenticeLearningScreen() {
                   : ""}
               </p>
 
+              {!block.unlocked ? (
+                <p className={styles.note}>
+                  Coming up
+                  {block.weekStart != null
+                    ? ` — this Block opens from week ${block.weekStart}`
+                    : ""}
+                  . You can see the Sessions that are planned; the learning
+                  content opens when this part of your programme starts.
+                </p>
+              ) : null}
+
               {block.sessions.length === 0 ? (
                 <p className={styles.note}>
                   Sessions for this part of your programme are not listed yet.
                 </p>
               ) : (
                 <ul className={styles.list}>
-                  {block.sessions.map((session) => (
-                    <li key={session.id}>
-                      <Link
-                        href={`/apprentice/learning/${session.id}`}
-                        className={styles.rowLink}
-                        data-tone={
-                          session.status === "completed"
-                            ? "green"
-                            : session.status === "current"
-                              ? "amber"
-                              : "navy"
-                        }
-                      >
+                  {block.sessions.map((session) => {
+                    const tone =
+                      session.status === "completed"
+                        ? "green"
+                        : session.status === "current"
+                          ? "amber"
+                          : "navy";
+                    const body = (
+                      <>
                         <div className={styles.rowMain}>
                           <strong>{session.title}</strong>
                           <span>
                             {session.codesLine}
-                            {session.status === "completed" && session.deliveredAt
+                            {session.status === "completed" &&
+                            session.deliveredAt
                               ? ` · ${formatDelivered(session.deliveredAt)}`
                               : ""}
                             {session.reviewLearning ? " · Review learning" : ""}
                           </span>
                         </div>
                         <div className={styles.rowEnd}>
-                          <ApprenticeStatusChip tone={chipTone(session.status)}>
-                            {session.statusLabel}
+                          <ApprenticeStatusChip
+                            tone={
+                              session.openable
+                                ? chipTone(session.status)
+                                : "neutral"
+                            }
+                          >
+                            {session.openable
+                              ? session.statusLabel
+                              : "Coming up"}
                           </ApprenticeStatusChip>
-                          <span className={styles.linkish}>Open →</span>
+                          {session.openable ? (
+                            <span className={styles.linkish}>Open →</span>
+                          ) : null}
                         </div>
-                      </Link>
-                    </li>
-                  ))}
+                      </>
+                    );
+                    return (
+                      <li key={session.id}>
+                        {session.openable ? (
+                          <Link
+                            href={`/apprentice/learning/${session.id}`}
+                            className={styles.rowLink}
+                            data-tone={tone}
+                          >
+                            {body}
+                          </Link>
+                        ) : (
+                          <div
+                            className={`${styles.rowLink} ${styles.rowLocked}`}
+                            data-tone="navy"
+                          >
+                            {body}
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
 

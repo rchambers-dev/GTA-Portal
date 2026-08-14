@@ -103,5 +103,11 @@ describe("learner-facing content", () => {
         filename: "safety.pdf",
       }),
     ).toBe(false);
+    expect(
+      isSecurityTestFixtureResource({
+        title: "TEST learner resource — W011 visibility proof — SAFE DEMO",
+        filename: "TEST_W011_learner_visibility_proof.txt",
+      }),
+    ).toBe(false);
   });
 });

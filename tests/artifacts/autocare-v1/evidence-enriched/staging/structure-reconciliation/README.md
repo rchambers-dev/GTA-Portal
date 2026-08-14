@@ -19,6 +19,12 @@ Read-only reconciliation of Autocare structure across:
 | [PHASE2A-BLOCK1-SESSION-AUTHORING-REPORT.md](./PHASE2A-BLOCK1-SESSION-AUTHORING-REPORT.md) | Implemented 2026-08-12 | Block 1 session authoring pilot — FS LP mappings, resources schema, Block panel |
 | [PHASE2A1-BLOCK1-AUTHORING-UX-REPORT.md](./PHASE2A1-BLOCK1-AUTHORING-UX-REPORT.md) | Implemented 2026-08-12 | Block 1 authoring UX refinement (clarity, materials editor, demote S8) |
 | [PHASE2B-BLOCK1-SESSION-DELIVERY-REPORT.md](./PHASE2B-BLOCK1-SESSION-DELIVERY-REPORT.md) | Implemented 2026-08-12 | Block 1 tutor Session delivery + sign-off pilot (TEST apprentice only) |
+| [PHASE2B.1-GROUPS-REMOVAL-REPORT.md](./PHASE2B.1-GROUPS-REMOVAL-REPORT.md) | Implemented 2026-08-13 | Groups/CEA runtime removed; S4 calendar + auditable override |
+| [PHASE2C-BLOCK1-LEARNER-EXPERIENCE-REPORT.md](./PHASE2C-BLOCK1-LEARNER-EXPERIENCE-REPORT.md) | Implemented 2026-08-13 | Block 1 learner journey + W001–W003 approved copy |
+| [BLOCK1-PPT-RECONCILIATION-REPORT.md](./BLOCK1-PPT-RECONCILIATION-REPORT.md) | Complete — STOP 2026-08-13 | Block 1 PPT evidence; only W003 Hybrid HIGH; originals missing |
+| [PHASE2A-BLOCK2-SESSION-AUTHORING-REPORT.md](./PHASE2A-BLOCK2-SESSION-AUTHORING-REPORT.md) | Implemented 2026-08-13 | Block 2 W011–W020 v4.4 LP attachments + staff candidates; not published |
+| [PHASE2C-BLOCK2-LEARNER-PUBLICATION-REPORT.md](./PHASE2C-BLOCK2-LEARNER-PUBLICATION-REPORT.md) | Implemented 2026-08-13 | Block 2 reviewed learner copy approved_published; Ready for delivery; no Block 3 |
+| [PHASE2C-SAFE-TEST-TUTOR-VISIBILITY-REPORT.md](./PHASE2C-SAFE-TEST-TUTOR-VISIBILITY-REPORT.md) | Implemented 2026-08-13 | SAFE TEST tutor + W011 learner-visible proof; no Block 3 |
 
 ## Related (not superseded by H1–H9)
 

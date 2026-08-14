@@ -21,11 +21,10 @@ import { isDeliveryBlockUnlocked } from "./delivery-unlock";
 import type { DeliveryBlockView } from "./published-delivery-catalogue";
 import { learnerFacingBlockTitle } from "@/features/programme-definition/domain/learner-facing-content";
 import {
-  CONTROLLED_TASK_AVAILABILITY_LABEL,
+  comingUpTaskRow,
   isRetiredCeaGroupTaskKey,
   type ApprenticeLearningBlock,
   type ApprenticeLearningJourney,
-  type ApprenticeLearningTaskRow,
 } from "./apprentice-learning";
 
 function metaNumber(
@@ -154,6 +153,12 @@ export async function loadApprenticeLearningJourney(
     const blockSessions = orderedSessions.filter(
       (s) => s.spineItemId === block.spineItemId,
     );
+    const unlocked = isDeliveryBlockUnlocked({
+      block,
+      blocks,
+      programmeWeek,
+      manuallyUnlockedBlockIds: unlockedIds,
+    });
     const sessionViews = blockSessions.map((session) => {
       const sessionAtt = attachments.filter((a) => a.sessionId === session.id);
       const learnerAtt = filterLearnerVisibleAttachments(sessionAtt);
@@ -175,10 +180,11 @@ export async function loadApprenticeLearningJourney(
         delivery: deliveryBySession.get(session.id) ?? null,
         learnerResources,
         resourceRolesById,
+        blockUnlocked: unlocked,
       });
     });
 
-    const tasks: ApprenticeLearningTaskRow[] = courseTasks
+    const tasks = courseTasks
       .filter(
         (t) =>
           t.spineItemId === block.spineItemId &&
@@ -186,17 +192,17 @@ export async function loadApprenticeLearningJourney(
       )
       .slice()
       .sort((a, b) => a.taskNumber - b.taskNumber)
-      .map((t) => ({
-        id: t.id,
-        taskKey: t.taskKey,
-        spineItemId: t.spineItemId,
-        blockOrdinal: t.blockOrdinal,
-        taskNumber: t.taskNumber,
-        kind: t.kind,
-        title: t.title,
-        availabilityLabel: CONTROLLED_TASK_AVAILABILITY_LABEL,
-        openable: false,
-      }));
+      .map((t) =>
+        comingUpTaskRow({
+          id: t.id,
+          taskKey: t.taskKey,
+          spineItemId: t.spineItemId,
+          blockOrdinal: t.blockOrdinal,
+          taskNumber: t.taskNumber,
+          kind: t.kind,
+          title: t.title,
+        }),
+      );
 
     return {
       spineItemId: block.spineItemId,
@@ -206,12 +212,7 @@ export async function loadApprenticeLearningJourney(
       weekStart: block.weekStart,
       weekEnd: block.weekEnd,
       plannedOtjHours: block.plannedOtjHours,
-      unlocked: isDeliveryBlockUnlocked({
-        block,
-        blocks,
-        programmeWeek,
-        manuallyUnlockedBlockIds: unlockedIds,
-      }),
+      unlocked,
       sessions: sessionViews,
       tasks,
     };

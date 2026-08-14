@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import { loadApprenticeLearningJourney } from "@/features/programme-delivery/domain/apprentice-learning-repository";
+import { resolveApprenticeSessionAccess } from "@/features/programme-delivery/domain/apprentice-learning";
+import { LEARNER_SESSION_LOCKED_ERROR } from "@/features/programme-definition/domain/learner-facing-content";
 import { includesTutorLessonPlan } from "@/features/programme-delivery/domain/learner-session-view";
 
 export const runtime = "nodejs";
@@ -36,22 +38,28 @@ export async function GET(_request: Request, { params }: Props) {
   try {
     const supabase = createSupabaseAdminClient();
     const journey = await loadApprenticeLearningJourney(supabase, apprenticeId);
-    const view = journey.blocks
-      .flatMap((b) => b.sessions)
-      .find((s) => s.id === id);
-    if (!view) {
+    const access = resolveApprenticeSessionAccess(journey.blocks, id);
+    if (access.status === "missing") {
       return NextResponse.json(
         { ok: false, error: "Session not found on your programme." },
         { status: 404 },
       );
     }
+    if (access.status === "locked") {
+      return NextResponse.json(
+        { ok: false, error: LEARNER_SESSION_LOCKED_ERROR },
+        { status: 403 },
+      );
+    }
     return NextResponse.json({
       ok: true,
-      session: view,
+      session: access.session,
       programmeTitle: journey.programmeTitle,
       visibilityProof: {
-        includesTutorLessonPlan: includesTutorLessonPlan(view.materials),
-        resourceTitles: view.materials.map((m) => m.title),
+        includesTutorLessonPlan: includesTutorLessonPlan(
+          access.session.materials,
+        ),
+        resourceTitles: access.session.materials.map((m) => m.title),
       },
     });
   } catch (err) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 import {
   loadProgrammeSpine,
   saveProgrammeSpine,
@@ -18,6 +19,8 @@ import type {
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const standardCode = (url.searchParams.get("standardCode") || "")
@@ -120,6 +123,8 @@ type PutBody = {
 };
 
 export async function PUT(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PutBody;
     if (

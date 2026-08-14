@@ -4,10 +4,13 @@ import {
   listSessionDeliveryRecords,
   signOffSessionDelivered,
 } from "@/features/programme-delivery/domain/session-delivery-repository";
+import { requireTutorDeliveryAccess } from "@/features/programme-delivery/domain/staff-delivery-access";
 
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
+  const access = await requireTutorDeliveryAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =
@@ -53,6 +56,8 @@ type PostBody = {
 };
 
 export async function POST(request: Request) {
+  const access = await requireTutorDeliveryAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PostBody;
     if (!body.confirm) {

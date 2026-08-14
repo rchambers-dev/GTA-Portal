@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 import {
   analyseProgrammeVersion,
   listAnalysisRuns,
@@ -22,6 +23,8 @@ function blockNumberFromItem(item: {
 }
 
 export async function GET(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =
@@ -49,6 +52,8 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as {
       programmeVersionId?: string;

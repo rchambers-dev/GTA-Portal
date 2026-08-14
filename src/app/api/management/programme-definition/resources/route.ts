@@ -1,5 +1,6 @@
 ﻿import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 import {
   deleteResourceAttachment,
   listProgrammeResourcesForVersion,
@@ -14,6 +15,8 @@ import {
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =
@@ -60,6 +63,8 @@ type PutBody = {
 };
 
 export async function PUT(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PutBody;
     const programmeVersionId = body.programmeVersionId?.trim() || "";
@@ -106,6 +111,8 @@ type PostBody = {
 };
 
 export async function POST(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PostBody;
     const programmeVersionId = body.programmeVersionId?.trim() || "";
@@ -142,6 +149,8 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =

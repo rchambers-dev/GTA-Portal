@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { requireCurriculumAuthoringAccess } from "@/features/programme-definition/domain/curriculum-authoring-access";
 import {
   deleteTaskSessionLink,
   listTaskSessionLinksForVersion,
@@ -10,6 +11,8 @@ import type { TaskSessionLinkUpsertInput } from "@/features/programme-delivery/d
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =
@@ -48,6 +51,8 @@ type PutBody = {
 
 /** Upsert provided links only — never delete-missing on PUT. */
 export async function PUT(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PutBody;
     const programmeVersionId = body.programmeVersionId?.trim() || "";
@@ -83,6 +88,8 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const access = await requireCurriculumAuthoringAccess();
+  if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
     const programmeVersionId =

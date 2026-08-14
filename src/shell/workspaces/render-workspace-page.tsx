@@ -229,7 +229,11 @@ export async function renderWorkspacePage(
   }
 
   if (workspace === "staff" && segment === "programme-delivery/block1") {
-    return <TutorBlock1DeliveryScreen />;
+    return <TutorBlock1DeliveryScreen blockNumber={1} />;
+  }
+
+  if (workspace === "staff" && segment === "programme-delivery/block2") {
+    return <TutorBlock1DeliveryScreen blockNumber={2} />;
   }
 
   if (workspace === "staff" && segment === "programme-delivery") {
@@ -240,7 +244,11 @@ export async function renderWorkspacePage(
     workspace === "staff"
       ? /^programme-delivery\/([^/]+)$/.exec(segment)
       : null;
-  if (staffTaskMatch && staffTaskMatch[1] !== "block1") {
+  if (
+    staffTaskMatch &&
+    staffTaskMatch[1] !== "block1" &&
+    staffTaskMatch[1] !== "block2"
+  ) {
     return <TutorTaskReviewScreen taskId={staffTaskMatch[1]} />;
   }
 
