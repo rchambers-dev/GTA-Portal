@@ -41,10 +41,13 @@ export function ApprenticeProgressScreen() {
   }, []);
 
   const sessions = journey?.blocks.flatMap((b) => b.sessions) ?? [];
-  const completed = sessions.filter((s) => s.status === "completed").length;
-  const current = sessions.find((s) => s.status === "current");
+  const available = sessions.filter((s) => s.status === "available").length;
+  const nextUp = sessions.find((s) => s.status === "coming_up" && s.openable === false);
   const currentBlock =
-    journey?.blocks.find((b) => b.sessions.some((s) => s.status === "current")) ??
+    journey?.blocks.find((b) =>
+      b.sessions.some((s) => s.status === "available" && s.openable),
+    ) ??
+    journey?.blocks.find((b) => b.unlocked) ??
     journey?.blocks[0];
   const blockTasks = currentBlock?.tasks ?? [];
 
@@ -79,21 +82,21 @@ export function ApprenticeProgressScreen() {
             </p>
           </div>
           <div className={styles.glance} data-tone="green">
-            <p className={styles.glanceLabel}>Sessions completed</p>
+            <p className={styles.glanceLabel}>Sessions available</p>
             <p className={styles.glanceValue}>
-              {journey ? `${completed}/${sessions.length || 0}` : "—"}
+              {journey ? `${available}/${sessions.length || 0}` : "—"}
             </p>
             <p className={styles.glanceHint}>
-              Completed means that Session was delivered
+              Available means your tutor has released this learning
             </p>
           </div>
           <div className={styles.glance} data-tone="amber">
-            <p className={styles.glanceLabel}>Current / next</p>
+            <p className={styles.glanceLabel}>Coming up</p>
             <p className={styles.glanceValueSmall}>
-              {current ? current.title : "—"}
+              {nextUp ? nextUp.title : "—"}
             </p>
             <p className={styles.glanceHint}>
-              {current ? current.codesLine : "No current Session"}
+              {nextUp ? nextUp.codesLine : "No upcoming Session listed"}
             </p>
           </div>
         </div>
@@ -103,7 +106,7 @@ export function ApprenticeProgressScreen() {
             My Learning
           </h2>
           <p className={styles.meta}>
-            See what you are learning now and review completed Sessions.
+            See which Sessions are available and review released learning.
           </p>
           <p>
             <Link href="/apprentice/learning" className={styles.linkish}>

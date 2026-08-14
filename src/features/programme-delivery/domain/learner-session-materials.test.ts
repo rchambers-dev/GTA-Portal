@@ -106,4 +106,28 @@ describe("learner session materials filter", () => {
     expect(list.some((r) => /\.ppt$/i.test(r.filename))).toBe(false);
     expect(assertNoTutorOnlyLeak([pptAtt]).ok).toBe(false);
   });
+
+  it("returns a LEARNER_VISIBLE PowerPoint for the learner session", () => {
+    const pptAtt: ProgrammeResourceAttachmentRecord = {
+      ...learnerAtt,
+      id: "a-ppt-learn",
+      resourceId: "r-ppt-learn",
+      role: "LEARNER_LEARNING",
+      audience: "LEARNER_VISIBLE",
+    };
+    const pptResource: ProgrammeResourceRecord = {
+      ...resources[1]!,
+      id: "r-ppt-learn",
+      resourceKey: "test_w003_learner_pptx",
+      title: "TEST learner presentation — Hybrid awareness (SAFE DEMO)",
+      filename: "TEST_W003_learner_presentation.pptx",
+    };
+    const list = learnerVisibleResourcesForSession({
+      attachments: [tutorAtt, pptAtt],
+      resources: [...resources, pptResource],
+      sessionId: "s1",
+    });
+    expect(list.map((r) => r.id)).toEqual(["r-ppt-learn"]);
+    expect(list[0]?.filename).toMatch(/\.pptx$/i);
+  });
 });

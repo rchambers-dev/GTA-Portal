@@ -1,0 +1,27 @@
+TEST learner presentation — Hybrid awareness (SAFE DEMO)
+
+This is a learner-safe test presentation for W003.
+
+It exists only to prove:
+
+- Session release controls availability
+- LEARNER_VISIBLE PowerPoints are shown to apprentices
+- file extension .pptx does not make a resource tutor-only
+
+It is not a real teaching asset.
+It does not contain quiz answers.
+Do not treat it as controlled curriculum evidence.
+
+===== SLIDE 1 =====
+Hybrid and high-voltage awareness
+
+This test deck is for the SAFE TEST apprentice only.
+
+===== SLIDE 2 =====
+What you will cover
+
+Identify hybrid vehicle features.
+Recognise orange high-voltage cables.
+Know when to stop and ask for help.
+
+End

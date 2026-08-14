@@ -3,6 +3,7 @@ import type { ProgrammeSessionRecord } from "@/features/programme-definition/dom
 import {
   LEARNER_BLOCK_LOCKED,
   LEARNER_CONTENT_PENDING,
+  LEARNER_NOT_RELEASED,
 } from "@/features/programme-definition/domain/learner-facing-content";
 import {
   includesTutorLessonPlan,
@@ -43,23 +44,6 @@ const baseSession: ProgrammeSessionRecord = {
   updatedAt: "",
 };
 
-const delivery = {
-  id: "d1",
-  programmeVersionId: "pv",
-  sessionId: "s1",
-  apprenticeId: "a1",
-  apprenticeProgrammeId: "e1",
-  spineItemId: "b1",
-  status: "delivered" as const,
-  deliveredAt: "2026-08-12T10:00:00.000Z",
-  signedOffBy: null,
-  signedOffByName: "Tutor",
-  note: "",
-  metadata: {},
-  createdAt: "",
-  updatedAt: "",
-};
-
 const testFixture = {
   id: "r-learn",
   programmeVersionId: "pv",
@@ -86,8 +70,9 @@ describe("toLearnerSessionView", () => {
   it("does not expose authoring status, candidate aims, or tutor lesson plans", () => {
     const view = toLearnerSessionView({
       session: baseSession,
-      status: "completed",
-      delivery,
+      status: "available",
+      released: true,
+      releasedAt: "2026-08-12T10:00:00.000Z",
       learnerResources: [testFixture],
     });
 
@@ -120,8 +105,9 @@ describe("toLearnerSessionView", () => {
           },
         },
       },
-      status: "completed",
-      delivery,
+      status: "available",
+      released: true,
+      releasedAt: "2026-08-12T10:00:00.000Z",
       learnerResources: [testFixture, genuine],
     });
 
@@ -137,6 +123,121 @@ describe("toLearnerSessionView", () => {
     expect(view.reviewLearning).toBe(true);
     expect(view.openable).toBe(true);
     expect(JSON.stringify(view)).not.toMatch(/SAFE DEMO/);
+  });
+
+  it("shows a LEARNER_VISIBLE PowerPoint as a learning material, not as a tutor leak", () => {
+    const learnerPpt = {
+      ...genuine,
+      id: "r-ppt",
+      title: "Hybrid awareness for learners",
+      filename: "hybrid-awareness.pptx",
+      extractPath: "tests/artifacts/demo.pptx.txt",
+    };
+    const view = toLearnerSessionView({
+      session: {
+        ...baseSession,
+        learnerFacingContent: {
+          status: "approved_published",
+          candidate: baseSession.learnerFacingContent.candidate,
+          approved: {
+            summary: "Workshop Safety",
+            learningContent: "You will learn how to work safely.",
+            activityPractice: "Guided walk.",
+            sourceLabel: "FS01 lesson plan",
+            approvedAt: "2026-08-13T12:00:00.000Z",
+            approvedByName: "Curriculum owner",
+          },
+        },
+      },
+      status: "available",
+      released: true,
+      releasedAt: "2026-08-12T10:00:00.000Z",
+      learnerResources: [learnerPpt],
+      resourceRolesById: new Map([[learnerPpt.id, "LEARNER_LEARNING"]]),
+    });
+    expect(view.materials).toHaveLength(1);
+    expect(view.materials[0]?.kindLabel).toBe("PowerPoint");
+    expect(view.materials[0]?.openLabel).toBe("View learning extract");
+    expect(view.materials[0]?.binaryAvailable).toBe(false);
+    expect(view.materials[0]?.openMode).toBe("extract");
+    expect(view.materials[0]?.unavailableNote).toBe(
+      "Original file not currently available",
+    );
+    expect(includesTutorLessonPlan(view.materials)).toBe(false);
+  });
+
+  it("offers Open presentation only when a portal preview exists", () => {
+    const learnerPpt = {
+      ...genuine,
+      id: "r-ppt-bin",
+      title: "Hybrid awareness for learners",
+      filename: "hybrid-awareness.pptx",
+      extractPath: "tests/artifacts/demo.pptx.txt",
+    };
+    const view = toLearnerSessionView({
+      session: {
+        ...baseSession,
+        learnerFacingContent: {
+          status: "approved_published",
+          candidate: baseSession.learnerFacingContent.candidate,
+          approved: {
+            summary: "Workshop Safety",
+            learningContent: "You will learn how to work safely.",
+            activityPractice: "Guided walk.",
+            sourceLabel: "FS01 lesson plan",
+            approvedAt: "2026-08-13T12:00:00.000Z",
+            approvedByName: "Curriculum owner",
+          },
+        },
+      },
+      status: "available",
+      released: true,
+      releasedAt: "2026-08-12T10:00:00.000Z",
+      learnerResources: [learnerPpt],
+      resourceRolesById: new Map([[learnerPpt.id, "LEARNER_LEARNING"]]),
+      binaryResourceIds: new Set([learnerPpt.id]),
+      previewResourceIds: new Set([learnerPpt.id]),
+    });
+    expect(view.materials[0]?.openLabel).toBe("Open presentation");
+    expect(view.materials[0]?.downloadLabel).toBe("Download original");
+    expect(view.materials[0]?.binaryAvailable).toBe(true);
+    expect(view.materials[0]?.previewAvailable).toBe(true);
+    expect(view.materials[0]?.openMode).toBe("preview");
+    expect(view.materials[0]?.extractLabel).toBe("View extract");
+    expect(view.materials[0]?.unavailableNote).toBeNull();
+  });
+
+  it("keeps the Session title as a roadmap but hides copy until the tutor releases it", () => {
+    const view = toLearnerSessionView({
+      session: {
+        ...baseSession,
+        sessionKey: "W003",
+        calendarWeek: 3,
+        learnerFacingContent: {
+          status: "approved_published",
+          candidate: baseSession.learnerFacingContent.candidate,
+          approved: {
+            summary: "Hybrid and High-Voltage Vehicle Awareness",
+            learningContent: "You will learn how hybrid and high-voltage systems work.",
+            activityPractice: "Guided hybrid awareness activity.",
+            sourceLabel: "W003 lesson plan",
+            approvedAt: "2026-08-13T12:00:00.000Z",
+            approvedByName: "Curriculum owner",
+          },
+        },
+      },
+      status: "coming_up",
+      released: false,
+      learnerResources: [genuine],
+      blockUnlocked: true,
+    });
+
+    expect(view.title).toBe("Hybrid and High-Voltage Vehicle Awareness");
+    expect(view.openable).toBe(false);
+    expect(view.hasApprovedLearning).toBe(false);
+    expect(view.materials).toEqual([]);
+    expect(view.reviewLearning).toBe(false);
+    expect(view.learningInformation).toBe(LEARNER_NOT_RELEASED);
   });
 
   it("keeps the Session title as a roadmap but hides approved copy while the Block is locked", () => {
@@ -159,8 +260,8 @@ describe("toLearnerSessionView", () => {
           },
         },
       },
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [genuine],
       blockUnlocked: false,
     });

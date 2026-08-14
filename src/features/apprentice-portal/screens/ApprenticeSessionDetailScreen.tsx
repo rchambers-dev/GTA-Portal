@@ -7,9 +7,10 @@ import {
   ApprenticeStatusChip,
 } from "../components/ApprenticePageShell";
 import type { LearnerSessionView } from "@/features/programme-delivery/domain/learner-session-view";
+import { ResourcePreviewViewer } from "@/features/programme-delivery/components/ResourcePreviewViewer";
 import styles from "./apprentice-pages.module.css";
 
-function formatDelivered(iso: string | null): string {
+function formatReleased(iso: string | null): string {
   if (!iso) return "";
   return new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -23,6 +24,7 @@ export function ApprenticeSessionDetailScreen({ sessionId }: { sessionId: string
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [viewerId, setViewerId] = useState<string | null>(null);
   const [extractNote, setExtractNote] = useState("");
   const [extractText, setExtractText] = useState("");
   const [extractLoading, setExtractLoading] = useState(false);
@@ -108,12 +110,9 @@ export function ApprenticeSessionDetailScreen({ sessionId }: { sessionId: string
     );
   }
 
-  const tone =
-    view.status === "completed"
-      ? "green"
-      : view.status === "current"
-        ? "amber"
-        : "neutral";
+  const tone = view.status === "available" ? "green" : "neutral";
+  const opened = view.materials.find((m) => m.id === openId) ?? null;
+  const viewing = view.materials.find((m) => m.id === viewerId) ?? null;
 
   return (
     <ApprenticePageShell title={view.title} description={view.codesLine}>
@@ -128,37 +127,23 @@ export function ApprenticeSessionDetailScreen({ sessionId }: { sessionId: string
           <p className={styles.purposeLead}>{view.title}</p>
           <p className={styles.purposeBody}>{view.codesLine}</p>
           <ApprenticeStatusChip tone={tone}>{view.statusLabel}</ApprenticeStatusChip>
-          {view.deliveredAt ? (
+          {view.releasedAt ? (
             <p className={styles.meta}>
-              Delivered {formatDelivered(view.deliveredAt)}
+              Available since {formatReleased(view.releasedAt)}
             </p>
           ) : null}
         </div>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>What you learned</h2>
+          <h2 className={styles.sectionTitle}>What you will learn</h2>
           <p className={styles.note} style={{ whiteSpace: "pre-wrap" }}>
             {view.learningInformation}
           </p>
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Activity / practice</h2>
-          <p className={styles.note} style={{ whiteSpace: "pre-wrap" }}>
-            {view.activityPractice}
-          </p>
-        </section>
-
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>
-            {view.status === "completed" ? "Review learning" : "Learning materials"}
-          </h2>
-          {view.status === "completed" && view.hasApprovedLearning ? (
-            <p className={styles.meta}>
-              You can come back to this Session any time to recap what you
-              covered.
-            </p>
-          ) : null}
+          <h2 className={styles.sectionTitle}>Learning materials</h2>
+          <p className={styles.meta}>These are the materials for this lesson.</p>
           {view.materials.length === 0 ? (
             <p className={styles.note}>
               No extra learning materials have been added for this Session yet.
@@ -169,29 +154,108 @@ export function ApprenticeSessionDetailScreen({ sessionId }: { sessionId: string
                 <li key={m.id}>
                   <div className={styles.rowLink}>
                     <div className={styles.rowMain}>
+                      <span>{m.kindLabel}</span>
                       <strong>{m.title}</strong>
-                      <span>{m.purposeLabel}</span>
+                      {m.previewUnavailableNote ? (
+                        <span className={styles.meta}>{m.previewUnavailableNote}</span>
+                      ) : null}
+                      {m.unavailableNote ? (
+                        <span className={styles.meta}>{m.unavailableNote}</span>
+                      ) : null}
                     </div>
-                    <button
-                      type="button"
-                      className={styles.linkish}
-                      onClick={() => void openResource(m.id)}
-                    >
-                      {view.status === "completed"
-                        ? "Review resource"
-                        : "Open resource"}
-                    </button>
+                    {m.openMode === "preview" ? (
+                      <button
+                        type="button"
+                        className={styles.linkish}
+                        onClick={() => setViewerId(m.id)}
+                      >
+                        {m.openLabel}
+                      </button>
+                    ) : m.openMode === "download" ? (
+                      <a
+                        className={styles.linkish}
+                        href={`/api/apprentice/learning/resources/${encodeURIComponent(m.id)}/file?download=1`}
+                      >
+                        {m.openLabel}
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        className={styles.linkish}
+                        onClick={() => void openResource(m.id)}
+                      >
+                        {m.openLabel}
+                      </button>
+                    )}
+                    {m.downloadLabel ? (
+                      <a
+                        className={styles.linkish}
+                        href={`/api/apprentice/learning/resources/${encodeURIComponent(m.id)}/file?download=1`}
+                      >
+                        {m.downloadLabel}
+                      </a>
+                    ) : null}
+                    {m.extractAvailable && m.openMode !== "extract" ? (
+                      <button
+                        type="button"
+                        className={styles.linkish}
+                        onClick={() => void openResource(m.id)}
+                      >
+                        {m.extractLabel || "View extract"}
+                      </button>
+                    ) : null}
                   </div>
                 </li>
               ))}
             </ul>
           )}
+          {viewing ? (
+            viewing.viewerKind === "pdf" || viewing.viewerKind === "video" ? (
+              <div style={{ marginTop: "1rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: "0.75rem" }}>
+                  <strong>{viewing.title}</strong>
+                  <button
+                    type="button"
+                    className={styles.linkish}
+                    onClick={() => setViewerId(null)}
+                  >
+                    Close
+                  </button>
+                </div>
+                {viewing.viewerKind === "pdf" ? (
+                  <iframe
+                    title={viewing.title}
+                    src={`/api/apprentice/learning/resources/${encodeURIComponent(viewing.id)}/file`}
+                    style={{ width: "100%", minHeight: "70vh", border: 0, marginTop: "0.75rem" }}
+                  />
+                ) : (
+                  <video
+                    controls
+                    src={`/api/apprentice/learning/resources/${encodeURIComponent(viewing.id)}/file`}
+                    style={{ width: "100%", marginTop: "0.75rem" }}
+                  />
+                )}
+              </div>
+            ) : (
+              <ResourcePreviewViewer
+                title={viewing.title}
+                previewApi={`/api/apprentice/learning/resources/${encodeURIComponent(viewing.id)}/preview`}
+                slideApiBase={`/api/apprentice/learning/resources/${encodeURIComponent(viewing.id)}/preview/slides`}
+                onClose={() => setViewerId(null)}
+              />
+            )
+          ) : null}
           {openId ? (
             <div className={styles.purposeBox} style={{ marginTop: "1rem" }}>
               {extractLoading ? (
                 <p className={styles.note}>Opening resource…</p>
               ) : (
                 <>
+                  {opened ? (
+                    <p className={styles.purposeLead}>
+                      <strong>{opened.title}</strong>
+                    </p>
+                  ) : null}
                   <p className={styles.meta}>{extractNote}</p>
                   {extractText ? (
                     <pre
@@ -208,6 +272,21 @@ export function ApprenticeSessionDetailScreen({ sessionId }: { sessionId: string
               )}
             </div>
           ) : null}
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Activity / practice</h2>
+          <p className={styles.note} style={{ whiteSpace: "pre-wrap" }}>
+            {view.activityPractice}
+          </p>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Review this learning</h2>
+          <p className={styles.meta}>
+            You can return to these materials at any time. Access stays available
+            after the Session — you do not need to complete anything extra.
+          </p>
         </section>
 
         <section className={styles.section}>

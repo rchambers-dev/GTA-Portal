@@ -98,7 +98,8 @@ export type ApprenticeSessionAccess =
 
 /**
  * Publishing curriculum copy does not grant access.
- * A Session is openable only when its Block is unlocked (S4).
+ * A Session is openable only when its Block is unlocked (S4)
+ * AND a Session learning release exists for this enrolment.
  */
 export function resolveApprenticeSessionAccess(
   blocks: ApprenticeLearningBlock[],

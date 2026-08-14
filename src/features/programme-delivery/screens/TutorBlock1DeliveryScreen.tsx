@@ -7,14 +7,35 @@ import {
   ApprenticePageShell,
   ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { useAdminStore } from "@/features/administration/hooks/useAdminStore";
-import { Select } from "@/components/ui/Select";
-import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import {
   approvedLearnerCopy,
   type LearnerFacingContent,
 } from "@/features/programme-definition/domain/learner-facing-content";
+import { ResourcePreviewViewer } from "@/features/programme-delivery/components/ResourcePreviewViewer";
 import styles from "./programme-delivery.module.css";
+
+type RosterMember = {
+  apprenticeProgrammeId: string;
+  apprenticeId: string;
+  displayName: string;
+  apprenticeReference: string;
+};
+
+type TutorMaterialItem = {
+  id: string;
+  title: string;
+  filename: string;
+  binaryAvailable: boolean;
+  extractAvailable: boolean;
+  previewAvailable?: boolean;
+  openLabel: string;
+  extractLabel: string | null;
+  downloadLabel?: string | null;
+  unavailableNote: string | null;
+  previewUnavailableNote?: string | null;
+  viewerKind?: "slides" | "pdf" | "video" | "none";
+  openMode?: "preview" | "download" | "extract" | "none";
+};
 
 type LaneSession = {
   session: {
@@ -22,125 +43,87 @@ type LaneSession = {
     sessionKey: string;
     calendarWeek: number;
     title: string;
-    foundationSkillCode: string | null;
-    publishStatus: "draft" | "published";
-    learningObjectivesReview: {
-      status: string;
-      lessonAims?: string[];
-      byTheEnd?: string[];
-      sourceLabel?: string;
-    };
     learnerFacingContent?: LearnerFacingContent;
   };
-  learningStatus: "upcoming" | "current" | "completed";
+  learningStatus: "coming_up" | "available";
   learningStatusLabel: string;
-  delivery: {
-    deliveredAt: string;
-    signedOffByName: string;
-    note: string;
-  } | null;
-  tutorMaterialAttachments: Array<{
-    id: string;
-    resourceId: string;
-    role: string;
-    audience: string;
-  }>;
-  tutorDeliveryResources?: Array<{
-    id: string;
-    title: string;
-    filename: string;
-  }>;
+  isNextToTeach: boolean;
+  access: {
+    releasedCount: number;
+    eligibleCount: number;
+    latestRelease: {
+      releasedAt: string;
+      releasedByName: string;
+    } | null;
+    releasedEnrolmentIds: string[];
+  };
+  tutorMaterials: {
+    lessonPlans: TutorMaterialItem[];
+    powerpoints: TutorMaterialItem[];
+    other: TutorMaterialItem[];
+  };
   learnerVisibleResources: Array<{
     id: string;
     title: string;
     filename: string;
+    kindLabel: string;
+    openLabel: string;
+    roleLabel: string;
+    binaryAvailable: boolean;
+    extractAvailable: boolean;
+    previewAvailable?: boolean;
+    extractLabel: string | null;
+    downloadLabel?: string | null;
+    unavailableNote: string | null;
+    previewUnavailableNote?: string | null;
+    viewerKind?: "slides" | "pdf" | "video" | "none";
+    openMode?: "preview" | "download" | "extract" | "none";
   }>;
+  approvedLearnerContent: {
+    summary: string;
+    learningContent: string;
+    activityPractice: string;
+  } | null;
+  hasApprovedLearnerPackage: boolean;
 };
 
 type Bundle = {
   ok: boolean;
   error?: string;
-  blockNumber?: number;
-  apprentice?: {
+  group?: {
     id: string;
-    displayName: string;
-    apprenticeReference: string;
-    isTest: boolean;
+    name: string;
+    tutorName: string;
+    collegeDays: string;
   };
-  enrolment?: {
-    id: string;
-    programmeVersionId: string;
-    programmeWeek: number;
-  };
-  block?: { title: string; weekStart: number; weekEnd: number; plannedOtjHours: number };
+  roster?: RosterMember[];
+  programmeVersionId?: string;
+  block?: { title: string; weekStart: number; weekEnd: number };
   sessions?: LaneSession[];
-  nextSession?: {
-    id: string;
-    sessionKey: string;
-    title: string;
-    calendarWeek: number;
-  } | null;
-  notes?: Record<string, string>;
 };
 
-function chipTone(
-  status: LaneSession["learningStatus"],
-): "green" | "amber" | "neutral" {
-  if (status === "completed") return "green";
-  if (status === "current") return "amber";
-  return "neutral";
+function formatWhen(iso: string): string {
+  return new Date(iso).toLocaleString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
-function statusLabel(row: LaneSession): string {
-  if (row.learningStatus === "completed") return "Delivered";
-  if (row.learningStatus === "current") return "Next to deliver";
-  return "Later";
-}
-
-/**
- * Tutor Session delivery for Block 1 or Block 2.
- * Not competence, Task completion, OTJ, or attendance.
- */
 export function TutorBlock1DeliveryScreen({
   blockNumber = 1,
 }: {
   blockNumber?: 1 | 2;
 }) {
-  const { session: portalSession } = usePortalSession();
   const searchParams = useSearchParams();
-  const requestedEnrolment = searchParams.get("enrolment")?.trim() || "";
-  const admin = useAdminStore();
-  const apprenticesById = useMemo(() => {
-    const map = new Map(admin.apprentices.map((a) => [a.id, a] as const));
-    return map;
-  }, [admin.apprentices]);
+  const requestedGroup = searchParams.get("group")?.trim() || "";
 
-  const testEnrolments = useMemo(
-    () =>
-      admin.enrolments
-        .filter((e) => e.apprenticeId && e.gtaProgrammeVersionId)
-        .filter((e) => {
-          const ap = e.apprenticeId
-            ? apprenticesById.get(e.apprenticeId)
-            : undefined;
-          const ref = ap?.apprenticeReference || "";
-          const name = e.displayName || ap?.displayName || "";
-          return ref.startsWith("TEST-") || /TEST|DEMO/i.test(name);
-        })
-        .slice()
-        .sort((a, b) =>
-          (a.displayName || "").localeCompare(b.displayName || ""),
-        ),
-    [admin.enrolments, apprenticesById],
-  );
-
-  const [enrolmentId, setEnrolmentId] = useState("");
-  const selected =
-    testEnrolments.find((e) => e.id === enrolmentId) ??
-    testEnrolments.find((e) => e.id === requestedEnrolment) ??
-    testEnrolments[0] ??
-    null;
-
+  const [groups, setGroups] = useState<
+    Array<{ id: string; name: string; apprenticeCount: number }>
+  >([]);
+  const [groupId, setGroupId] = useState(requestedGroup);
   const [bundle, setBundle] = useState<Bundle | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -148,16 +131,43 @@ export function TutorBlock1DeliveryScreen({
     null,
   );
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [note, setNote] = useState("");
-  const [deliveredAt, setDeliveredAt] = useState(
-    () => new Date().toISOString().slice(0, 10),
-  );
+  const [individualOpen, setIndividualOpen] = useState(false);
+  const [viewLearners, setViewLearners] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [individualId, setIndividualId] = useState("");
   const [saving, setSaving] = useState(false);
-  const [showLearnerView, setShowLearnerView] = useState(false);
   const [extractText, setExtractText] = useState<string | null>(null);
+  const [viewer, setViewer] = useState<{
+    resourceId: string;
+    title: string;
+    viewerKind: "slides" | "pdf" | "video";
+  } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetch("/api/delivery/teaching-groups")
+      .then(async (res) => {
+        const json = (await res.json()) as {
+          ok: boolean;
+          teachingGroups?: Array<{
+            id: string;
+            name: string;
+            apprenticeCount: number;
+          }>;
+        };
+        if (cancelled || !json.ok) return;
+        const rows = json.teachingGroups || [];
+        setGroups(rows);
+        setGroupId((prev) => prev || requestedGroup || rows[0]?.id || "");
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [requestedGroup]);
 
   const load = useCallback(async () => {
-    if (!selected?.id) {
+    if (!groupId) {
       setBundle(null);
       return;
     }
@@ -165,7 +175,7 @@ export function TutorBlock1DeliveryScreen({
     setError(null);
     try {
       const res = await fetch(
-        `/api/delivery/block1?block=${blockNumber}&apprenticeProgrammeId=${encodeURIComponent(selected.id)}`,
+        `/api/delivery/group-block?block=${blockNumber}&teachingGroupId=${encodeURIComponent(groupId)}`,
       );
       const json = (await res.json()) as Bundle;
       if (!json.ok) throw new Error(json.error || "Load failed");
@@ -175,8 +185,7 @@ export function TutorBlock1DeliveryScreen({
           return prev;
         }
         return (
-          json.sessions?.find((s) => s.learningStatus === "current")?.session
-            .id ??
+          json.sessions?.find((s) => s.isNextToTeach)?.session.id ??
           json.sessions?.[0]?.session.id ??
           null
         );
@@ -186,27 +195,53 @@ export function TutorBlock1DeliveryScreen({
     } finally {
       setLoading(false);
     }
-  }, [selected?.id, blockNumber]);
+  }, [groupId, blockNumber]);
 
   useEffect(() => {
     void load();
   }, [load]);
 
-  useEffect(() => {
-    if (selected?.id) setEnrolmentId(selected.id);
-  }, [selected?.id]);
-
   const selectedLane = bundle?.sessions?.find(
     (s) => s.session.id === selectedSessionId,
   );
+  const roster = bundle?.roster || [];
   const approved = selectedLane
-    ? approvedLearnerCopy(selectedLane.session.learnerFacingContent)
+    ? selectedLane.approvedLearnerContent ||
+      approvedLearnerCopy(selectedLane.session.learnerFacingContent)
     : null;
 
+  const releasedSet = useMemo(
+    () => new Set(selectedLane?.access.releasedEnrolmentIds || []),
+    [selectedLane],
+  );
+
+  function openRelease() {
+    setSelectedIds(roster.map((m) => m.apprenticeProgrammeId));
+    setConfirmOpen(true);
+    setIndividualOpen(false);
+    setViewLearners(false);
+  }
+
+  function toggleSelected(id: string, alreadyReleased: boolean) {
+    if (alreadyReleased) return;
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  }
+
+  async function openFile(resourceId: string) {
+    if (!bundle?.programmeVersionId) return;
+    window.open(
+      `/api/delivery/resources/${encodeURIComponent(resourceId)}/file?programmeVersionId=${encodeURIComponent(bundle.programmeVersionId)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+  }
+
   async function openSource(resourceId: string) {
-    if (!bundle?.enrolment?.programmeVersionId) return;
+    if (!bundle?.programmeVersionId) return;
     const res = await fetch(
-      `/api/management/programme-definition/resources/extract?programmeVersionId=${encodeURIComponent(bundle.enrolment.programmeVersionId)}&resourceId=${encodeURIComponent(resourceId)}`,
+      `/api/management/programme-definition/resources/extract?programmeVersionId=${encodeURIComponent(bundle.programmeVersionId)}&resourceId=${encodeURIComponent(resourceId)}`,
     );
     const json = (await res.json()) as {
       ok: boolean;
@@ -223,65 +258,74 @@ export function TutorBlock1DeliveryScreen({
     );
   }
 
-  async function confirmSignOff() {
-    if (!selectedLane || !bundle?.enrolment || !bundle.apprentice) return;
+  async function submitRelease(source: "teaching_group" | "individual") {
+    if (!selectedLane || !bundle?.group) return;
+    const ids =
+      source === "individual"
+        ? individualId
+          ? [individualId]
+          : []
+        : selectedIds;
     setSaving(true);
     setError(null);
     try {
-      const res = await fetch("/api/delivery/session-signoff", {
+      const res = await fetch("/api/delivery/session-learning-release", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           confirm: true,
-          programmeVersionId: bundle.enrolment.programmeVersionId,
+          teachingGroupId: bundle.group.id,
           sessionId: selectedLane.session.id,
-          apprenticeId: bundle.apprentice.id,
-          apprenticeProgrammeId: bundle.enrolment.id,
-          spineItemId: null,
-          deliveredAt: new Date(deliveredAt).toISOString(),
-          signedOffBy: portalSession.account.id || null,
-          signedOffByName: portalSession.account.name || "Tutor",
-          note,
+          apprenticeProgrammeIds: ids,
+          source,
         }),
       });
       const json = (await res.json()) as { ok: boolean; error?: string };
-      if (!json.ok) throw new Error(json.error || "Sign-off failed");
+      if (!json.ok) throw new Error(json.error || "Release failed");
       setConfirmOpen(false);
-      setNote("");
+      setIndividualOpen(false);
+      setViewLearners(true);
       await load();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Sign-off failed");
+      setError(err instanceof Error ? err.message : "Release failed");
     } finally {
       setSaving(false);
     }
   }
 
+  const willReceive = roster.filter(
+    (m) =>
+      selectedIds.includes(m.apprenticeProgrammeId) &&
+      !releasedSet.has(m.apprenticeProgrammeId),
+  );
+  const alreadyHave = roster.filter((m) =>
+    releasedSet.has(m.apprenticeProgrammeId),
+  );
+  const missing = roster.filter(
+    (m) => !releasedSet.has(m.apprenticeProgrammeId),
+  );
+  const allReleased =
+    roster.length > 0 && alreadyHave.length === roster.length;
+
   return (
     <ApprenticePageShell
       eyebrow={`Tutor · Block ${blockNumber}`}
       title={`Block ${blockNumber} Sessions`}
-      description="Choose a Session on the left. Use your materials, then confirm it was delivered."
+      description="See the approved teaching package, then release learning to your teaching group."
     >
       <div className={styles.root}>
         <div className={styles.toolbar}>
           <Link href="/staff/programme-delivery" className={styles.back}>
             ← Programme delivery
           </Link>
-          <label className={styles.blockMeta} style={{ display: "grid", gap: 6, minWidth: "16rem" }}>
-            <span>Learner</span>
-            <Select
-              value={selected?.id || ""}
-              onChange={setEnrolmentId}
-              options={
-                testEnrolments.length === 0
-                  ? [{ value: "", label: "No test learner available" }]
-                  : testEnrolments.map((e) => ({
-                      value: e.id,
-                      label: e.displayName,
-                    }))
-              }
-            />
-          </label>
+          <p className={styles.blockMeta}>
+            {bundle?.group?.name ||
+              groups.find((g) => g.id === groupId)?.name ||
+              "Teaching group"}
+            {roster.length
+              ? ` · ${roster.length} apprentice${roster.length === 1 ? "" : "s"}`
+              : ""}
+          </p>
         </div>
 
         {error ? (
@@ -292,6 +336,10 @@ export function TutorBlock1DeliveryScreen({
 
         {loading && !bundle ? (
           <p className={styles.empty}>Loading Sessions…</p>
+        ) : !groupId ? (
+          <p className={styles.empty}>
+            No teaching group is assigned to you. Go back and choose a group.
+          </p>
         ) : (
           <div className={styles.deliveryLayout}>
             <div>
@@ -300,10 +348,7 @@ export function TutorBlock1DeliveryScreen({
                 {bundle?.block?.weekEnd ?? "—"}
               </h2>
               <p className={styles.blockMeta}>
-                {bundle?.apprentice?.displayName || "Learner"}
-                {bundle?.enrolment?.programmeWeek
-                  ? ` · week ${bundle.enrolment.programmeWeek}`
-                  : ""}
+                {bundle?.group?.name || "Teaching group"}
               </p>
               <ul className={styles.sessionList}>
                 {(bundle?.sessions || []).map((row) => (
@@ -317,8 +362,9 @@ export function TutorBlock1DeliveryScreen({
                       onClick={() => {
                         setSelectedSessionId(row.session.id);
                         setConfirmOpen(false);
+                        setIndividualOpen(false);
+                        setViewLearners(false);
                         setExtractText(null);
-                        setShowLearnerView(false);
                       }}
                     >
                       <span className={styles.sessionRowMain}>
@@ -330,8 +376,20 @@ export function TutorBlock1DeliveryScreen({
                           {row.session.title}
                         </span>
                       </span>
-                      <ApprenticeStatusChip tone={chipTone(row.learningStatus)}>
-                        {statusLabel(row)}
+                      <ApprenticeStatusChip
+                        tone={
+                          row.learningStatus === "available"
+                            ? "green"
+                            : row.isNextToTeach
+                              ? "amber"
+                              : "neutral"
+                        }
+                      >
+                        {row.learningStatus === "available"
+                          ? "Released"
+                          : row.isNextToTeach
+                            ? "Next to teach"
+                            : "Not released"}
                       </ApprenticeStatusChip>
                     </button>
                   </li>
@@ -348,221 +406,543 @@ export function TutorBlock1DeliveryScreen({
                   <h2 className={styles.sectionTitle}>
                     {selectedLane.session.title}
                   </h2>
-                  <ApprenticeStatusChip
-                    tone={chipTone(selectedLane.learningStatus)}
-                  >
-                    {statusLabel(selectedLane)}
-                  </ApprenticeStatusChip>
                 </div>
 
-                <div className={styles.chipRow}>
-                  <button
-                    type="button"
-                    className={styles.secondaryBtn}
-                    data-active={showLearnerView ? "false" : "true"}
-                    onClick={() => setShowLearnerView(false)}
-                  >
-                    Your materials
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.secondaryBtn}
-                    data-active={showLearnerView ? "true" : "false"}
-                    onClick={() => setShowLearnerView(true)}
-                  >
-                    What the learner sees
-                  </button>
+                <div className={styles.purpose}>
+                  <p className={styles.purposeLabel}>Teaching group</p>
+                  <p className={styles.purposeLead}>
+                    <strong>{bundle?.group?.name}</strong>
+                  </p>
+                  <p className={styles.blockMeta}>
+                    {roster.length} apprentice
+                    {roster.length === 1 ? "" : "s"}
+                  </p>
                 </div>
 
-                {showLearnerView ? (
-                  <>
-                    {approved ? (
-                      <>
-                        <p className={styles.purposeBody}>
-                          <strong>{approved.summary}</strong>
-                        </p>
-                        <p
-                          className={styles.purposeLead}
-                          style={{ whiteSpace: "pre-wrap" }}
-                        >
-                          {approved.learningContent}
-                        </p>
-                      </>
-                    ) : (
-                      <p className={styles.blockMeta}>
-                        No approved learner copy for this Session yet.
-                      </p>
-                    )}
-                    <h3 className={styles.purposeLabel}>Learner resources</h3>
-                    {selectedLane.learnerVisibleResources.length === 0 ? (
-                      <p className={styles.blockMeta}>
-                        Nothing learner-visible is attached yet.
-                      </p>
-                    ) : (
-                      <ul className={styles.objectives}>
-                        {selectedLane.learnerVisibleResources.map((r) => (
-                          <li key={r.id}>{r.title}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <h3 className={styles.purposeLabel}>Tutor materials</h3>
-                    <TutorMaterialTitles
-                      resources={selectedLane.tutorDeliveryResources || []}
-                      attachmentResourceIds={selectedLane.tutorMaterialAttachments.map(
-                        (a) => a.resourceId,
-                      )}
-                      onViewSource={(id) => void openSource(id)}
-                    />
-                    {selectedLane.tutorMaterialAttachments.length === 0 ? (
-                      <p className={styles.blockMeta}>
-                        No tutor lesson plan is attached to this Session.
-                      </p>
-                    ) : null}
-                    {extractText ? (
+                <div>
+                  <h3 className={styles.purposeLabel}>Today&apos;s teaching</h3>
+                  <p className={styles.blockMeta}>Tutor only — apprentices never see these</p>
+                  <TutorResourceList
+                    heading="Lesson plan"
+                    items={selectedLane.tutorMaterials.lessonPlans}
+                    onOpenFile={(id) => void openFile(id)}
+                    onOpenPreview={(item) =>
+                      setViewer({
+                        resourceId: item.id,
+                        title: item.title || item.filename,
+                        viewerKind: item.viewerKind === "pdf" || item.viewerKind === "video" ? item.viewerKind : "slides",
+                      })
+                    }
+                    onViewExtract={(id) => void openSource(id)}
+                    empty="No tutor lesson plan is attached to this Session."
+                  />
+                  <TutorResourceList
+                    heading="PowerPoint"
+                    items={selectedLane.tutorMaterials.powerpoints}
+                    onOpenFile={(id) => void openFile(id)}
+                    onOpenPreview={(item) =>
+                      setViewer({
+                        resourceId: item.id,
+                        title: item.title || item.filename,
+                        viewerKind: item.viewerKind === "pdf" || item.viewerKind === "video" ? item.viewerKind : "slides",
+                      })
+                    }
+                    onViewExtract={(id) => void openSource(id)}
+                    empty="No tutor PowerPoint is attached."
+                  />
+                  <TutorResourceList
+                    heading="Other tutor resources"
+                    items={selectedLane.tutorMaterials.other}
+                    onOpenFile={(id) => void openFile(id)}
+                    onOpenPreview={(item) =>
+                      setViewer({
+                        resourceId: item.id,
+                        title: item.title || item.filename,
+                        viewerKind: item.viewerKind === "pdf" || item.viewerKind === "video" ? item.viewerKind : "slides",
+                      })
+                    }
+                    onViewExtract={(id) => void openSource(id)}
+                    empty=""
+                  />
+                  {viewer && bundle?.programmeVersionId ? (
+                    viewer.viewerKind === "pdf" || viewer.viewerKind === "video" ? (
                       <div>
                         <div className={styles.chipRow}>
-                          <h3 className={styles.purposeLabel}>Extract</h3>
+                          <h3 className={styles.purposeLabel}>{viewer.title}</h3>
                           <button
                             type="button"
                             className={styles.secondaryBtn}
-                            onClick={() => setExtractText(null)}
+                            onClick={() => setViewer(null)}
                           >
                             Close
                           </button>
                         </div>
-                        <pre
-                          style={{
-                            whiteSpace: "pre-wrap",
-                            fontSize: "0.82rem",
-                          }}
-                        >
-                          {extractText}
-                        </pre>
+                        {viewer.viewerKind === "pdf" ? (
+                          <iframe
+                            title={viewer.title}
+                            src={`/api/delivery/resources/${encodeURIComponent(viewer.resourceId)}/file?programmeVersionId=${encodeURIComponent(bundle.programmeVersionId)}`}
+                            style={{ width: "100%", minHeight: "70vh", border: 0 }}
+                          />
+                        ) : (
+                          <video
+                            controls
+                            src={`/api/delivery/resources/${encodeURIComponent(viewer.resourceId)}/file?programmeVersionId=${encodeURIComponent(bundle.programmeVersionId)}`}
+                            style={{ width: "100%" }}
+                          />
+                        )}
                       </div>
-                    ) : null}
-                  </>
-                )}
+                    ) : (
+                      <ResourcePreviewViewer
+                        title={viewer.title}
+                        previewApi={`/api/delivery/resources/${encodeURIComponent(viewer.resourceId)}/preview?programmeVersionId=${encodeURIComponent(bundle.programmeVersionId)}`}
+                        slideApiBase={`/api/delivery/resources/${encodeURIComponent(viewer.resourceId)}/preview/slides`}
+                        slideQuery={`programmeVersionId=${encodeURIComponent(bundle.programmeVersionId)}`}
+                        onClose={() => setViewer(null)}
+                      />
+                    )
+                  ) : null}
+                  {extractText ? (
+                    <div>
+                      <div className={styles.chipRow}>
+                        <h3 className={styles.purposeLabel}>Extract</h3>
+                        <button
+                          type="button"
+                          className={styles.secondaryBtn}
+                          onClick={() => setExtractText(null)}
+                        >
+                          Close
+                        </button>
+                      </div>
+                      <pre
+                        style={{
+                          whiteSpace: "pre-wrap",
+                          fontSize: "0.82rem",
+                        }}
+                      >
+                        {extractText}
+                      </pre>
+                    </div>
+                  ) : null}
+                </div>
 
-                {selectedLane.delivery ? (
-                  <div className={styles.autosaveBar} data-state="saved">
-                    <p className={styles.autosaveText}>
-                      Session delivered ·{" "}
-                      {new Date(
-                        selectedLane.delivery.deliveredAt,
-                      ).toLocaleDateString("en-GB")}{" "}
-                      · {selectedLane.delivery.signedOffByName}
+                <div>
+                  <h3 className={styles.purposeLabel}>Learner learning</h3>
+                  {approved ? (
+                    <>
+                      <p className={styles.purposeBody}>
+                        <strong>{approved.summary}</strong>
+                      </p>
+                      <p
+                        className={styles.purposeLead}
+                        style={{ whiteSpace: "pre-wrap" }}
+                      >
+                        {approved.learningContent}
+                      </p>
+                    </>
+                  ) : (
+                    <p className={styles.blockMeta}>
+                      No approved learner content is attached to this Session
+                      yet. You cannot author curriculum from this screen.
                     </p>
-                  </div>
-                ) : confirmOpen ? (
-                  <div>
-                    <h3 className={styles.sectionTitle}>
-                      Confirm this Session was delivered
-                    </h3>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className={styles.purposeLabel}>Learner materials</h3>
+                  <p className={styles.blockMeta}>
+                    Apprentices receive these when you release this Session.
+                    You cannot change which files are learner-visible.
+                  </p>
+                  {selectedLane.learnerVisibleResources.length === 0 ? (
+                    <p className={styles.blockMeta}>
+                      No approved learner-visible resources are attached yet.
+                    </p>
+                  ) : (
+                    <ul className={styles.objectives}>
+                      {selectedLane.learnerVisibleResources.map((r) => (
+                        <li key={r.id}>
+                          <strong>{r.kindLabel}</strong>
+                          {" · "}
+                          {r.title}
+                          {r.previewUnavailableNote ? (
+                            <p className={styles.blockMeta}>{r.previewUnavailableNote}</p>
+                          ) : null}
+                          <div className={styles.chipRow} style={{ marginTop: 6 }}>
+                            {r.openMode === "preview" ? (
+                              <button
+                                type="button"
+                                className={styles.secondaryBtn}
+                                onClick={() =>
+                                  setViewer({
+                                    resourceId: r.id,
+                                    title: r.title,
+                                    viewerKind:
+                                      r.viewerKind === "pdf" || r.viewerKind === "video"
+                                        ? r.viewerKind
+                                        : "slides",
+                                  })
+                                }
+                              >
+                                {r.openLabel}
+                              </button>
+                            ) : r.openMode === "download" || r.binaryAvailable ? (
+                              <button
+                                type="button"
+                                className={styles.secondaryBtn}
+                                onClick={() => void openFile(r.id)}
+                              >
+                                {r.downloadLabel || r.openLabel}
+                              </button>
+                            ) : (
+                              <span className={styles.blockMeta}>
+                                {r.unavailableNote ||
+                                  "Original file not currently available"}
+                              </span>
+                            )}
+                            {r.downloadLabel && r.openMode === "preview" ? (
+                              <button
+                                type="button"
+                                className={styles.secondaryBtn}
+                                onClick={() => void openFile(r.id)}
+                              >
+                                {r.downloadLabel}
+                              </button>
+                            ) : null}
+                            {r.extractAvailable ? (
+                              <button
+                                type="button"
+                                className={styles.secondaryBtn}
+                                onClick={() => void openSource(r.id)}
+                              >
+                                {r.extractLabel || "View extract"}
+                              </button>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                <div>
+                  <h3 className={styles.purposeLabel}>Activity / practice</h3>
+                  <p
+                    className={styles.purposeLead}
+                    style={{ whiteSpace: "pre-wrap" }}
+                  >
+                    {approved?.activityPractice ||
+                      "No approved activity/practice is attached yet."}
+                  </p>
+                </div>
+
+                <div className={styles.purpose}>
+                  <h3 className={styles.purposeLabel}>Learner access</h3>
+                  {allReleased ? (
+                    <>
+                      <p className={styles.purposeLead}>
+                        Released to {selectedLane.access.releasedCount}{" "}
+                        apprentice
+                        {selectedLane.access.releasedCount === 1 ? "" : "s"}
+                      </p>
+                      {selectedLane.access.latestRelease ? (
+                        <>
+                          <p className={styles.blockMeta}>
+                            Released by:{" "}
+                            {selectedLane.access.latestRelease.releasedByName}
+                          </p>
+                          <p className={styles.blockMeta}>
+                            Released:{" "}
+                            {formatWhen(
+                              selectedLane.access.latestRelease.releasedAt,
+                            )}
+                          </p>
+                        </>
+                      ) : null}
+                    </>
+                  ) : selectedLane.access.releasedCount > 0 ? (
                     <p className={styles.purposeLead}>
-                      This only records that the planned learning happened. It
-                      does not pass a Task or mark the apprentice competent.
+                      {selectedLane.access.releasedCount} already have access ·{" "}
+                      {missing.length} will receive access if released now
                     </p>
-                    <label className={styles.blockMeta}>
-                      Delivery date
-                      <input
-                        type="date"
-                        value={deliveredAt}
-                        onChange={(e) => setDeliveredAt(e.target.value)}
-                      />
-                    </label>
-                    <label className={styles.blockMeta}>
-                      Optional note
-                      <textarea
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                        rows={2}
-                      />
-                    </label>
+                  ) : (
+                    <p className={styles.purposeLead}>Not released</p>
+                  )}
+
+                  {confirmOpen ? (
+                    <div>
+                      <h3 className={styles.sectionTitle}>
+                        Release {selectedLane.session.sessionKey} to{" "}
+                        {bundle?.group?.name}?
+                      </h3>
+                      <p className={styles.purposeLead}>
+                        {willReceive.length} apprentice
+                        {willReceive.length === 1 ? "" : "s"} will receive
+                        access to the approved learner learning package.
+                        {alreadyHave.length
+                          ? ` ${alreadyHave.length} already have access.`
+                          : ""}
+                      </p>
+                      <p className={styles.blockMeta}>
+                        This does not record attendance or completion.
+                      </p>
+                      {selectedLane.learnerVisibleResources.length > 0 ? (
+                        <>
+                          <p className={styles.blockMeta}>
+                            They will be able to open:
+                          </p>
+                          <ul className={styles.objectives}>
+                            {selectedLane.learnerVisibleResources.map((r) => (
+                              <li key={r.id}>
+                                {r.kindLabel} · {r.title}
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <p className={styles.blockMeta}>
+                          No learner-visible files are attached yet. Approved
+                          learner copy will still be released.
+                        </p>
+                      )}
+                      <ul className={styles.rosterList}>
+                        {roster.map((member) => {
+                          const already = releasedSet.has(
+                            member.apprenticeProgrammeId,
+                          );
+                          const checked = selectedIds.includes(
+                            member.apprenticeProgrammeId,
+                          );
+                          return (
+                            <li key={member.apprenticeProgrammeId}>
+                              <label className={styles.rosterItem}>
+                                <input
+                                  type="checkbox"
+                                  checked={already || checked}
+                                  disabled={already}
+                                  onChange={() =>
+                                    toggleSelected(
+                                      member.apprenticeProgrammeId,
+                                      already,
+                                    )
+                                  }
+                                />
+                                <span>
+                                  {member.displayName}
+                                  {already ? " · already has access" : ""}
+                                </span>
+                              </label>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      <p className={styles.blockMeta}>
+                        {willReceive.length} apprentice
+                        {willReceive.length === 1 ? "" : "s"} selected to
+                        receive access
+                      </p>
+                      <div className={styles.chipRow}>
+                        <button
+                          type="button"
+                          className={styles.primaryBtn}
+                          disabled={saving || willReceive.length === 0}
+                          onClick={() => void submitRelease("teaching_group")}
+                        >
+                          {saving ? "Releasing…" : "Release learning"}
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.secondaryBtn}
+                          onClick={() => setConfirmOpen(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : individualOpen ? (
+                    <div>
+                      <h3 className={styles.sectionTitle}>
+                        Release to individual
+                      </h3>
+                      <p className={styles.purposeLead}>
+                        Use this for a late joiner, catch-up learner, or someone
+                        left out of the original group release.
+                      </p>
+                      {missing.length === 0 ? (
+                        <p className={styles.blockMeta}>
+                          Everyone in this teaching group already has access.
+                        </p>
+                      ) : (
+                        <ul className={styles.rosterList}>
+                          {missing.map((member) => (
+                            <li key={member.apprenticeProgrammeId}>
+                              <label className={styles.rosterItem}>
+                                <input
+                                  type="radio"
+                                  name="individual-release"
+                                  checked={
+                                    individualId ===
+                                    member.apprenticeProgrammeId
+                                  }
+                                  onChange={() =>
+                                    setIndividualId(
+                                      member.apprenticeProgrammeId,
+                                    )
+                                  }
+                                />
+                                <span>{member.displayName}</span>
+                              </label>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      <div className={styles.chipRow}>
+                        <button
+                          type="button"
+                          className={styles.primaryBtn}
+                          disabled={saving || !individualId}
+                          onClick={() => void submitRelease("individual")}
+                        >
+                          {saving ? "Releasing…" : "Release to individual"}
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.secondaryBtn}
+                          onClick={() => setIndividualOpen(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
                     <div className={styles.chipRow}>
+                      {!allReleased ? (
+                        <button
+                          type="button"
+                          className={styles.primaryBtn}
+                          onClick={openRelease}
+                        >
+                          Release learning to group
+                        </button>
+                      ) : null}
                       <button
                         type="button"
-                        className={styles.primaryBtn}
-                        disabled={saving}
-                        onClick={() => void confirmSignOff()}
+                        className={styles.secondaryBtn}
+                        onClick={() => {
+                          setIndividualOpen(true);
+                          setConfirmOpen(false);
+                          setIndividualId(missing[0]?.apprenticeProgrammeId || "");
+                        }}
                       >
-                        {saving ? "Saving…" : "Confirm delivered"}
+                        Release to individual
                       </button>
                       <button
                         type="button"
                         className={styles.secondaryBtn}
-                        onClick={() => setConfirmOpen(false)}
+                        onClick={() => setViewLearners((v) => !v)}
                       >
-                        Cancel
+                        {viewLearners ? "Hide learners" : "View learners"}
                       </button>
                     </div>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    className={styles.primaryBtn}
-                    onClick={() => setConfirmOpen(true)}
-                  >
-                    Confirm Session delivered
-                  </button>
-                )}
+                  )}
+
+                  {viewLearners && !confirmOpen && !individualOpen ? (
+                    <ul className={styles.rosterList}>
+                      {roster.map((member) => (
+                        <li key={member.apprenticeProgrammeId}>
+                          {member.displayName}
+                          {releasedSet.has(member.apprenticeProgrammeId)
+                            ? " · access granted"
+                            : " · not released"}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
               </section>
             ) : (
               <p className={styles.empty}>Choose a Session from the list.</p>
             )}
           </div>
         )}
-
-        {bundle?.notes?.s4Conflict ? (
-          <p className={styles.blockMeta}>{bundle.notes.s4Conflict}</p>
-        ) : null}
       </div>
     </ApprenticePageShell>
   );
 }
 
-function TutorMaterialTitles({
-  resources,
-  attachmentResourceIds,
-  onViewSource,
+function TutorResourceList({
+  heading,
+  items,
+  onOpenFile,
+  onOpenPreview,
+  onViewExtract,
+  empty,
 }: {
-  resources: Array<{ id: string; title: string; filename: string }>;
-  attachmentResourceIds: string[];
-  onViewSource: (id: string) => void;
+  heading: string;
+  items: TutorMaterialItem[];
+  onOpenFile: (id: string) => void;
+  onOpenPreview: (item: TutorMaterialItem) => void;
+  onViewExtract: (id: string) => void;
+  empty: string;
 }) {
-  const byId = useMemo(() => {
-    const map: Record<string, { title: string; filename: string }> = {};
-    for (const r of resources) {
-      map[r.id] = {
-        title: r.title || r.filename,
-        filename: r.filename || "",
-      };
-    }
-    return map;
-  }, [resources]);
-
-  if (!attachmentResourceIds.length) return null;
+  if (items.length === 0) {
+    return empty ? <p className={styles.blockMeta}>{empty}</p> : null;
+  }
   return (
-    <ul className={styles.objectives}>
-      {attachmentResourceIds.map((id) => {
-        const meta = byId[id];
-        return (
-          <li key={id}>
-            <strong>{meta?.title || "Tutor material"}</strong>
+    <div>
+      <p className={styles.blockMeta}>{heading}</p>
+      <ul className={styles.objectives}>
+        {items.map((item) => (
+          <li key={item.id}>
+            <strong>{item.title || item.filename}</strong>
+            {item.previewUnavailableNote ? (
+              <p className={styles.blockMeta}>{item.previewUnavailableNote}</p>
+            ) : null}
+            {!item.binaryAvailable ? (
+              <p className={styles.blockMeta}>
+                {item.unavailableNote ||
+                  "Original file not currently available"}
+              </p>
+            ) : null}
             <div className={styles.chipRow} style={{ marginTop: 6 }}>
-              <button
-                type="button"
-                className={styles.secondaryBtn}
-                onClick={() => onViewSource(id)}
-              >
-                Open lesson plan extract
-              </button>
+              {item.openMode === "preview" ? (
+                <button
+                  type="button"
+                  className={styles.secondaryBtn}
+                  onClick={() => onOpenPreview(item)}
+                >
+                  {item.openLabel}
+                </button>
+              ) : item.binaryAvailable ? (
+                <button
+                  type="button"
+                  className={styles.secondaryBtn}
+                  onClick={() => onOpenFile(item.id)}
+                >
+                  {item.downloadLabel || item.openLabel}
+                </button>
+              ) : null}
+              {item.downloadLabel && item.openMode === "preview" ? (
+                <button
+                  type="button"
+                  className={styles.secondaryBtn}
+                  onClick={() => onOpenFile(item.id)}
+                >
+                  {item.downloadLabel}
+                </button>
+              ) : null}
+              {item.extractAvailable ? (
+                <button
+                  type="button"
+                  className={styles.secondaryBtn}
+                  onClick={() => onViewExtract(item.id)}
+                >
+                  {item.extractLabel || "View extract"}
+                </button>
+              ) : null}
             </div>
           </li>
-        );
-      })}
-    </ul>
+        ))}
+      </ul>
+    </div>
   );
 }

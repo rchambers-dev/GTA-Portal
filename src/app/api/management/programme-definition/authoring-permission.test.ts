@@ -72,6 +72,11 @@ vi.mock("@/features/programme-definition/domain/resource-extract", () => ({
     extractCandidateActivities(...args),
 }));
 
+vi.mock("@/features/programme-definition/domain/programme-resource-binaries-repository", () => ({
+  getResourceBinary: async () => null,
+  listResourceBinariesForVersion: async () => [],
+}));
+
 function account(input: {
   workspace: PortalAccount["workspace"];
   permissions: string[];

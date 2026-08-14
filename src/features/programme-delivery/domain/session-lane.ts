@@ -1,42 +1,35 @@
 /**
- * Learner/tutor Session lane statuses.
- * Exactly one Current / next Session — never mark every reached week as Current.
+ * Learner Session lane statuses for the release model.
+ * Available = tutor released approved learning to this enrolment.
+ * Coming up = not released (or listed only). Attendance is not represented here.
  */
 
-export type SessionLaneStatus = "completed" | "current" | "upcoming";
+export type SessionLaneStatus = "coming_up" | "available";
 
 export function labelSessionLaneStatus(status: SessionLaneStatus): string {
   switch (status) {
-    case "completed":
-      return "Completed";
-    case "current":
-      return "Current / next";
-    case "upcoming":
-      return "Upcoming";
+    case "available":
+      return "Available";
+    case "coming_up":
+      return "Coming up";
   }
 }
 
 export function assignSessionLaneStatuses<T extends { id: string }>(
   orderedSessions: T[],
-  deliveredSessionIds: ReadonlySet<string>,
+  releasedSessionIds: ReadonlySet<string>,
 ): Array<{ session: T; status: SessionLaneStatus }> {
-  let currentAssigned = false;
-  return orderedSessions.map((session) => {
-    if (deliveredSessionIds.has(session.id)) {
-      return { session, status: "completed" as const };
-    }
-    if (!currentAssigned) {
-      currentAssigned = true;
-      return { session, status: "current" as const };
-    }
-    return { session, status: "upcoming" as const };
-  });
+  return orderedSessions.map((session) => ({
+    session,
+    status: releasedSessionIds.has(session.id)
+      ? ("available" as const)
+      : ("coming_up" as const),
+  }));
 }
 
-export function nextSessionAfterCurrent<T extends { id: string }>(
+/** Tutor-only highlight: first Session in the Block that is not yet released. */
+export function nextUnreleasedSession<T extends { id: string }>(
   lane: Array<{ session: T; status: SessionLaneStatus }>,
 ): T | null {
-  const currentIndex = lane.findIndex((row) => row.status === "current");
-  if (currentIndex < 0) return null;
-  return lane[currentIndex + 1]?.session ?? null;
+  return lane.find((row) => row.status === "coming_up")?.session ?? null;
 }

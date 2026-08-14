@@ -4,8 +4,8 @@ import type { PortalAccount } from "@/lib/portal/types";
 
 const getEffectiveSession = vi.fn();
 const loadApprenticeLearningJourney = vi.fn();
-const listSessionDeliveryRecords = vi.fn();
-const signOffSessionDelivered = vi.fn();
+const listSessionLearningReleases = vi.fn();
+const releaseSessionLearningPackage = vi.fn();
 const createEnrolmentBlockUnlock = vi.fn();
 const listEnrolmentBlockUnlocks = vi.fn();
 const loadPublishedDeliveryCatalogue = vi.fn();
@@ -26,10 +26,24 @@ vi.mock("@/features/programme-delivery/domain/apprentice-learning-repository", (
 }));
 
 vi.mock("@/features/programme-delivery/domain/session-delivery-repository", () => ({
-  listSessionDeliveryRecords: (...args: unknown[]) =>
-    listSessionDeliveryRecords(...args),
-  signOffSessionDelivered: (...args: unknown[]) =>
-    signOffSessionDelivered(...args),
+  listSessionDeliveryRecords: vi.fn(async () => []),
+}));
+
+vi.mock("@/features/programme-delivery/domain/session-learning-release-repository", () => ({
+  listSessionLearningReleases: (...args: unknown[]) =>
+    listSessionLearningReleases(...args),
+}));
+
+vi.mock("@/features/programme-delivery/domain/release-session-learning", () => ({
+  SessionLearningReleaseError: class SessionLearningReleaseError extends Error {
+    status: number;
+    constructor(message: string, status = 400) {
+      super(message);
+      this.status = status;
+    }
+  },
+  releaseSessionLearningPackage: (...args: unknown[]) =>
+    releaseSessionLearningPackage(...args),
 }));
 
 vi.mock("@/features/programme-delivery/domain/block-unlock-overrides-repository", () => ({
@@ -100,8 +114,8 @@ describe("delivery / apprentice permission matrix", () => {
   beforeEach(() => {
     getEffectiveSession.mockReset();
     loadApprenticeLearningJourney.mockReset();
-    listSessionDeliveryRecords.mockReset();
-    signOffSessionDelivered.mockReset();
+    listSessionLearningReleases.mockReset();
+    releaseSessionLearningPackage.mockReset();
     createEnrolmentBlockUnlock.mockReset();
     listEnrolmentBlockUnlocks.mockReset();
     loadPublishedDeliveryCatalogue.mockReset();
@@ -110,7 +124,7 @@ describe("delivery / apprentice permission matrix", () => {
       programmeVersionId: "pv",
       blocks: [],
     });
-    listSessionDeliveryRecords.mockResolvedValue([]);
+    listSessionLearningReleases.mockResolvedValue([]);
     listEnrolmentBlockUnlocks.mockResolvedValue([]);
     loadPublishedDeliveryCatalogue.mockResolvedValue({ sessions: [] });
     vi.resetModules();
@@ -227,35 +241,70 @@ describe("delivery / apprentice permission matrix", () => {
     expect(createEnrolmentBlockUnlock).toHaveBeenCalled();
   });
 
-  it("tutor session sign-off is allowed (delivery, not authoring)", async () => {
+  it("tutor session sign-off POST is retired", async () => {
     getEffectiveSession.mockResolvedValue(tutorSession);
-    signOffSessionDelivered.mockResolvedValue({ id: "del-1" });
     const { POST } = await import("./session-signoff/route");
-    const res = await POST(
-      new Request("http://localhost/api/delivery/session-signoff", {
-        method: "POST",
-        body: JSON.stringify({
-          confirm: true,
-          programmeVersionId: "pv",
-          sessionId: "sess-1",
-          apprenticeId: "apprentice-1",
-          apprenticeProgrammeId: "enr-1",
-        }),
-      }),
-    );
-    expect(res.status).toBe(200);
+    const res = await POST();
+    expect(res.status).toBe(410);
   });
 
   it("apprentice cannot sign off a Session", async () => {
     getEffectiveSession.mockResolvedValue(apprenticeSession);
     const { POST } = await import("./session-signoff/route");
+    const res = await POST();
+    expect(res.status).toBe(403);
+  });
+
+  it("unauthenticated cannot release Session learning", async () => {
+    getEffectiveSession.mockResolvedValue(null);
+    const { POST } = await import("./session-learning-release/route");
     const res = await POST(
-      new Request("http://localhost/api/delivery/session-signoff", {
+      new Request("http://localhost/api/delivery/session-learning-release", {
         method: "POST",
         body: JSON.stringify({ confirm: true }),
       }),
     );
+    expect(res.status).toBe(401);
+    expect(releaseSessionLearningPackage).not.toHaveBeenCalled();
+  });
+
+  it("apprentice cannot release Session learning", async () => {
+    getEffectiveSession.mockResolvedValue(apprenticeSession);
+    const { POST } = await import("./session-learning-release/route");
+    const res = await POST(
+      new Request("http://localhost/api/delivery/session-learning-release", {
+        method: "POST",
+        body: JSON.stringify({
+          confirm: true,
+          teachingGroupId: "group-1",
+          sessionId: "sess-1",
+          apprenticeProgrammeIds: ["enr-1"],
+        }),
+      }),
+    );
     expect(res.status).toBe(403);
-    expect(signOffSessionDelivered).not.toHaveBeenCalled();
+    expect(releaseSessionLearningPackage).not.toHaveBeenCalled();
+  });
+
+  it("tutor can call Session learning release", async () => {
+    getEffectiveSession.mockResolvedValue(tutorSession);
+    releaseSessionLearningPackage.mockResolvedValue({
+      created: [{ id: "rel-1" }],
+    });
+    const { POST } = await import("./session-learning-release/route");
+    const res = await POST(
+      new Request("http://localhost/api/delivery/session-learning-release", {
+        method: "POST",
+        body: JSON.stringify({
+          confirm: true,
+          teachingGroupId: "group-1",
+          sessionId: "sess-1",
+          apprenticeProgrammeIds: ["enr-1"],
+          source: "teaching_group",
+        }),
+      }),
+    );
+    expect(res.status).toBe(200);
+    expect(releaseSessionLearningPackage).toHaveBeenCalled();
   });
 });

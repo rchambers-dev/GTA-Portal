@@ -70,9 +70,9 @@ export function labelResourceRole(role: ResourceRole): string {
     case "LEARNER_LEARNING":
       return "Learner learning";
     case "LEARNER_REVISION":
-      return "Learner revision";
+      return "Reference";
     case "PRACTICE":
-      return "Practice";
+      return "Activity / practice";
     case "ASSESSMENT_PREP":
       return "Assessment preparation";
     case "CONTROLLED_FORM":
@@ -85,12 +85,88 @@ export function labelResourceAudience(audience: ResourceAudience): string {
     case "TUTOR_ONLY":
       return "Tutor only";
     case "LEARNER_VISIBLE":
-      return "Visible to learners";
+      return "Learner visible";
+  }
+}
+
+/** Curriculum Lead sets audience independently of file type. */
+export function suggestedAudienceForRole(role: ResourceRole): ResourceAudience {
+  switch (role) {
+    case "TUTOR_DELIVERY":
+    case "CONTROLLED_FORM":
+      return "TUTOR_ONLY";
+    default:
+      return "LEARNER_VISIBLE";
   }
 }
 
 export function isPowerpointFilename(filename: string): boolean {
   return /\.(ppt|pptx|pptm)$/i.test(filename.trim());
+}
+
+export type LearnerMaterialKind =
+  | "powerpoint"
+  | "handout"
+  | "worksheet"
+  | "document";
+
+export function classifyLearnerMaterialKind(input: {
+  filename: string;
+  title?: string;
+  role?: string;
+}): {
+  kind: LearnerMaterialKind;
+  kindLabel: string;
+  openLabel: string;
+} {
+  if (isPowerpointFilename(input.filename)) {
+    return {
+      kind: "powerpoint",
+      kindLabel: "PowerPoint",
+      openLabel: "Open presentation",
+    };
+  }
+  const blob = `${input.title || ""} ${input.filename} ${input.role || ""}`.toLowerCase();
+  if (input.role === "PRACTICE" || /worksheet/.test(blob)) {
+    return {
+      kind: "worksheet",
+      kindLabel: "Worksheet",
+      openLabel: "Open",
+    };
+  }
+  if (/\.pdf$/i.test(input.filename) || /handout/.test(blob)) {
+    return {
+      kind: "handout",
+      kindLabel: "Handout",
+      openLabel: "Open",
+    };
+  }
+  return {
+    kind: "document",
+    kindLabel: "Document",
+    openLabel: "Open",
+  };
+}
+
+/**
+ * Honest catalogue openability. GTA Portal does not host original binaries.
+ * Learners/tutors can read a stored extract when one exists.
+ */
+export function catalogueFileOpenCapabilities(filename: string): {
+  extension: string;
+  originalBinaryHostedInPortal: false;
+  previewInBrowser: false;
+  downloadOriginal: false;
+  canShowExtractIfPresent: true;
+} {
+  const match = filename.trim().match(/(\.[a-z0-9]+)$/i);
+  return {
+    extension: (match?.[1] || "").toLowerCase(),
+    originalBinaryHostedInPortal: false,
+    previewInBrowser: false,
+    downloadOriginal: false,
+    canShowExtractIfPresent: true,
+  };
 }
 
 export function staffResourceOpenLabels(filename: string): {

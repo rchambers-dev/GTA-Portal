@@ -5,7 +5,7 @@ import {
   listProgrammeResourcesForVersion,
   listResourceAttachmentsForVersion,
 } from "@/features/programme-definition/domain/programme-resources-repository";
-import { listSessionDeliveryRecords } from "@/features/programme-delivery/domain/session-delivery-repository";
+import { listSessionLearningReleases } from "@/features/programme-delivery/domain/session-learning-release-repository";
 import {
   assertNoTutorOnlyLeak,
   filterLearnerVisibleAttachments,
@@ -16,7 +16,7 @@ import { isSecurityTestFixtureResource } from "@/features/programme-definition/d
 import {
   assignSessionLaneStatuses,
   labelSessionLaneStatus,
-  nextSessionAfterCurrent,
+  nextUnreleasedSession,
 } from "@/features/programme-delivery/domain/session-lane";
 import {
   deliveryWeekRange,
@@ -129,30 +129,30 @@ export async function GET(request: Request) {
     );
     const spineItemId = blockSessions[0]?.spineItemId || null;
 
-    const [resources, attachments, deliveries] = await Promise.all([
+    const [resources, attachments, releases] = await Promise.all([
       listProgrammeResourcesForVersion(supabase, programmeVersionId),
       listResourceAttachmentsForVersion(supabase, programmeVersionId, {
         spineItemId: spineItemId || undefined,
       }),
-      listSessionDeliveryRecords(supabase, {
+      listSessionLearningReleases(supabase, {
         programmeVersionId,
         apprenticeProgrammeId: enrolmentId || undefined,
         apprenticeId,
       }),
     ]);
 
-    const deliveredBySession = new Map(
-      deliveries.map((d) => [d.sessionId, d]),
+    const releasedBySession = new Map(
+      releases.map((d) => [d.sessionId, d]),
     );
     const assigned = assignSessionLaneStatuses(
       blockSessions,
-      new Set(deliveries.map((d) => d.sessionId)),
+      new Set(releases.map((d) => d.sessionId)),
     );
-    const nextSession = nextSessionAfterCurrent(assigned);
+    const nextSession = nextUnreleasedSession(assigned);
 
     const lane = assigned.map((row) => {
       const s = row.session;
-      const delivery = deliveredBySession.get(s.id) || null;
+      const release = releasedBySession.get(s.id) || null;
       const learningStatus = row.status;
 
       const sessionAtt = attachments.filter((a) => a.sessionId === s.id);
@@ -187,7 +187,7 @@ export async function GET(request: Request) {
         session: s,
         learningStatus,
         learningStatusLabel: labelSessionLaneStatus(learningStatus),
-        delivery,
+        release,
         tutorMaterialAttachments:
           audience === "tutor" ? tutorMaterials : [],
         tutorDeliveryResources,
@@ -252,15 +252,16 @@ export async function GET(request: Request) {
             calendarWeek: nextSession.calendarWeek,
           }
         : null,
-      deliveryRecords: deliveries,
+      deliveryRecords: [],
+      learningReleases: releases,
       visibilityProof,
       notes: {
         s4:
           "Block unlock is calendar/sequence by default. Authorised per-enrolment override only. Task 5 / Session completion does not auto-unlock the next Block.",
         otj:
-          "Session sign-off does not log OTJ, alter 611.5, attendance, or RPL.",
+          "Session learning release does not log OTJ, alter 611.5, attendance, or RPL.",
         correction:
-          "Normal tutor UI cannot undo a delivered sign-off. Authorised amendment is a future requirement.",
+          "Use teaching-group learning release. Session delivery sign-off no longer writes new records.",
       },
     });
   } catch (err) {

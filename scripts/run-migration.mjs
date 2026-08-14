@@ -219,7 +219,7 @@ const probes = [
   ["cohort_change_log", "id"],
   ["staff_assignments", "id"],
   ["programmes", "id"],
-  ["course_pack_task_forms", "id"],
+  ["gta_session_learning_releases", "id"],
 ];
 
 for (const [table, column] of probes) {

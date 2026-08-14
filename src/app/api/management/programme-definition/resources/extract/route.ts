@@ -5,6 +5,7 @@ import {
   extractCandidateActivities,
   loadResourceExtractText,
 } from "@/features/programme-definition/domain/resource-extract";
+import { getResourceBinary } from "@/features/programme-definition/domain/programme-resource-binaries-repository";
 
 export const runtime = "nodejs";
 
@@ -52,15 +53,28 @@ export async function GET(request: Request) {
       extractPath: data.extract_path || "",
       evidenceResourceId: data.evidence_resource_id || "",
     });
+    const binary = await getResourceBinary(
+      supabase,
+      programmeVersionId,
+      resourceId,
+    );
+    const binaryAvailable = Boolean(binary);
     const isPpt = /\.(ppt|pptx|pptm)$/i.test(data.filename || "");
-    const note =
-      loaded.mode === "extract_file"
+    const note = binaryAvailable
+      ? loaded.mode === "extract_file"
         ? isPpt
-          ? "Showing the controlled slide extract. The original PowerPoint cannot be opened or rendered in the browser; the source deck remains catalogue-referenced and has not been discarded."
-          : "Showing controlled source extract. Original binary is catalogue-referenced and not opened in-app."
+          ? "Showing the controlled slide extract. Use Open presentation to download the original PowerPoint. Browsers cannot preview .ppt files."
+          : "Showing the controlled extract. Use Open file to download the original."
         : isPpt
-          ? "No slide extract is available. The original PowerPoint cannot be opened in the browser and is not hosted in the portal."
-          : "No extract file available for this resource. Filename remains catalogue-referenced only.";
+          ? "Use Open presentation to download the original PowerPoint. Browsers cannot preview .ppt files."
+          : "Use Open file to download the original."
+      : loaded.mode === "extract_file"
+        ? isPpt
+          ? "Original file not currently available. Showing the controlled slide extract."
+          : "Original file not currently available. Showing controlled source extract."
+        : isPpt
+          ? "Original file not currently available. No slide extract is available."
+          : "Original file not currently available. No extract file is available for this resource.";
 
     return NextResponse.json({
       ok: true,
@@ -71,7 +85,7 @@ export async function GET(request: Request) {
         sourcePath: data.source_path,
         evidenceResourceId: data.evidence_resource_id,
       },
-      binaryAvailableInApp: false,
+      binaryAvailableInApp: binaryAvailable,
       powerpointOpenableInBrowser: false,
       note,
       extractMode: loaded.mode,

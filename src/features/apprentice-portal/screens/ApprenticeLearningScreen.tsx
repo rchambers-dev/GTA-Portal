@@ -9,20 +9,10 @@ import {
 import type { ApprenticeLearningJourney } from "@/features/programme-delivery/domain/apprentice-learning";
 import styles from "./apprentice-pages.module.css";
 
-function formatDelivered(iso: string | null): string {
-  if (!iso) return "";
-  return new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-
 function chipTone(
-  status: "completed" | "current" | "upcoming",
-): "green" | "amber" | "neutral" {
-  if (status === "completed") return "green";
-  if (status === "current") return "amber";
+  status: "coming_up" | "available",
+): "green" | "neutral" {
+  if (status === "available") return "green";
   return "neutral";
 }
 
@@ -78,13 +68,16 @@ export function ApprenticeLearningScreen() {
   }
 
   const focusBlock =
-    journey.blocks.find((b) => b.sessions.some((s) => s.status === "current")) ??
+    journey.blocks.find((b) =>
+      b.sessions.some((s) => s.status === "available" && s.openable),
+    ) ??
+    journey.blocks.find((b) => b.unlocked) ??
     journey.blocks[0];
 
   return (
     <ApprenticePageShell
       title="My Learning"
-      description="Follow your learning journey, see what is coming next and return to completed Sessions to review your learning."
+      description="Follow your learning journey. Sessions become available when your tutor releases them. You can come back to released learning any time."
     >
       <div className={styles.stack}>
         {journey.isTest ? (
@@ -126,21 +119,13 @@ export function ApprenticeLearningScreen() {
                 <ul className={styles.list}>
                   {block.sessions.map((session) => {
                     const tone =
-                      session.status === "completed"
-                        ? "green"
-                        : session.status === "current"
-                          ? "amber"
-                          : "navy";
+                      session.status === "available" ? "green" : "navy";
                     const body = (
                       <>
                         <div className={styles.rowMain}>
                           <strong>{session.title}</strong>
                           <span>
                             {session.codesLine}
-                            {session.status === "completed" &&
-                            session.deliveredAt
-                              ? ` · ${formatDelivered(session.deliveredAt)}`
-                              : ""}
                             {session.reviewLearning ? " · Review learning" : ""}
                           </span>
                         </div>

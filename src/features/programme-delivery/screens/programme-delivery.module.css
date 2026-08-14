@@ -1166,3 +1166,19 @@
   border-color: var(--color-navy-700, #0b3d5c);
   background: color-mix(in srgb, var(--color-navy-500) 8%, white);
 }
+
+.rosterList {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.rosterItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}

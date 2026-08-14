@@ -4,8 +4,13 @@ import {
   listProgrammeResourcesForVersion,
   listResourceAttachmentsForVersion,
 } from "@/features/programme-definition/domain/programme-resources-repository";
+import { listResourceBinariesForVersion } from "@/features/programme-definition/domain/programme-resource-binaries-repository";
+import {
+  currentPreviewResourceIds,
+  listResourcePreviewsForVersion,
+} from "@/features/programme-definition/domain/programme-resource-previews-repository";
 import { listCourseTasksForVersion } from "./gta-course-tasks-repository";
-import { listSessionDeliveryRecords } from "./session-delivery-repository";
+import { listSessionLearningReleases } from "./session-learning-release-repository";
 import { listEnrolmentBlockUnlocks } from "./block-unlock-overrides-repository";
 import {
   assertNoTutorOnlyLeak,
@@ -118,23 +123,28 @@ export async function loadApprenticeLearningJourney(
     };
   });
 
-  const [sessions, resources, attachments, deliveries, unlocks, courseTasks] =
+  const [sessions, resources, attachments, releases, unlocks, courseTasks, binaries, previews] =
     await Promise.all([
       listProgrammeSessionsForVersion(supabase, programmeVersionId),
       listProgrammeResourcesForVersion(supabase, programmeVersionId),
       listResourceAttachmentsForVersion(supabase, programmeVersionId),
-      listSessionDeliveryRecords(supabase, {
+      listSessionLearningReleases(supabase, {
         programmeVersionId,
         apprenticeProgrammeId: enrolmentId,
         apprenticeId: id,
       }),
       listEnrolmentBlockUnlocks(supabase, enrolmentId),
       listCourseTasksForVersion(supabase, programmeVersionId),
+      listResourceBinariesForVersion(supabase, programmeVersionId),
+      listResourcePreviewsForVersion(supabase, programmeVersionId),
     ]);
 
-  const deliveredIds = new Set(deliveries.map((d) => d.sessionId));
-  const deliveryBySession = new Map(deliveries.map((d) => [d.sessionId, d]));
+  const releasedIds = new Set(releases.map((row) => row.sessionId));
+  const releaseBySession = new Map(releases.map((row) => [row.sessionId, row]));
   const unlockedIds = unlocks.map((u) => u.spineItemId);
+  const binaryResourceIds = new Set(binaries.map((b) => b.resourceId));
+  const hashesByResourceId = new Map(binaries.map((b) => [b.resourceId, b.sha256]));
+  const previewResourceIds = currentPreviewResourceIds(previews, hashesByResourceId);
 
   const orderedSessions = sessions.slice().sort(
     (a, b) =>
@@ -143,7 +153,7 @@ export async function loadApprenticeLearningJourney(
       a.sequence - b.sequence,
   );
   const laneBySessionId = new Map(
-    assignSessionLaneStatuses(orderedSessions, deliveredIds).map((row) => [
+    assignSessionLaneStatuses(orderedSessions, releasedIds).map((row) => [
       row.session.id,
       row.status,
     ]),
@@ -174,13 +184,20 @@ export async function loadApprenticeLearningJourney(
       const resourceRolesById = new Map(
         learnerAtt.map((a) => [a.resourceId, a.role]),
       );
+      const release = releaseBySession.get(session.id) ?? null;
       return toLearnerSessionView({
         session,
-        status: laneBySessionId.get(session.id) ?? "upcoming",
-        delivery: deliveryBySession.get(session.id) ?? null,
+        status: laneBySessionId.get(session.id) ?? "coming_up",
+        released: Boolean(release),
+        releasedAt: release?.releasedAt ?? null,
         learnerResources,
         resourceRolesById,
         blockUnlocked: unlocked,
+        includeSafeDemoFixtures:
+          String(apprentice.apprentice_reference || "").startsWith("TEST-") ||
+          /TEST|DEMO/i.test(String(apprentice.display_name || "")),
+        binaryResourceIds,
+        previewResourceIds,
       });
     });
 

@@ -5,7 +5,7 @@
  */
 
 export const LEARNER_CONTENT_PENDING =
-  "Your tutor will take you through this during the session. After it has been delivered, you can come back here to review what you learned.";
+  "Your tutor will take you through this during the session. Once they release this learning, you can come back here to review it.";
 
 export const LEARNER_ACTIVITY_PENDING =
   "Your tutor will explain the activity during this session.";
@@ -16,8 +16,14 @@ export const LEARNER_BLOCK_LOCKED =
 export const LEARNER_ACTIVITY_LOCKED =
   "The activity for this Session will be available when this Block opens.";
 
+export const LEARNER_NOT_RELEASED =
+  "This learning has not been released to you yet. It will become available when your tutor releases it.";
+
+export const LEARNER_ACTIVITY_NOT_RELEASED =
+  "The activity for this Session will be available when your tutor releases this learning.";
+
 export const LEARNER_SESSION_LOCKED_ERROR =
-  "This Session is not open yet. It will become available when this part of your programme starts.";
+  "This Session is not available yet.";
 
 export type LearnerFacingContentStatus =
   | "empty"

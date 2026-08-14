@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   assignSessionLaneStatuses,
-  nextSessionAfterCurrent,
+  nextUnreleasedSession,
 } from "./session-lane";
 
 describe("assignSessionLaneStatuses", () => {
@@ -12,30 +12,30 @@ describe("assignSessionLaneStatuses", () => {
     { id: "w004" },
   ];
 
-  it("marks delivered sessions Completed and the first remaining as the single Current/next", () => {
+  it("marks released sessions Available and the rest Coming up", () => {
     const lane = assignSessionLaneStatuses(
       sessions,
       new Set(["w001", "w002"]),
     );
     expect(lane.map((r) => [r.session.id, r.status])).toEqual([
-      ["w001", "completed"],
-      ["w002", "completed"],
-      ["w003", "current"],
-      ["w004", "upcoming"],
+      ["w001", "available"],
+      ["w002", "available"],
+      ["w003", "coming_up"],
+      ["w004", "coming_up"],
     ]);
   });
 
-  it("does not mark every undelivered session as current", () => {
+  it("does not invent a Current/Completed learner state", () => {
     const lane = assignSessionLaneStatuses(sessions, new Set());
-    expect(lane.filter((r) => r.status === "current")).toHaveLength(1);
-    expect(lane[0]?.status).toBe("current");
+    expect(lane.every((r) => r.status === "coming_up")).toBe(true);
+    expect(JSON.stringify(lane)).not.toMatch(/completed|current/i);
   });
 
-  it("returns the following session as next guidance", () => {
+  it("returns the first unreleased session as next-to-teach guidance", () => {
     const lane = assignSessionLaneStatuses(
       sessions,
       new Set(["w001", "w002"]),
     );
-    expect(nextSessionAfterCurrent(lane)?.id).toBe("w004");
+    expect(nextUnreleasedSession(lane)?.id).toBe("w003");
   });
 });

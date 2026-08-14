@@ -26,7 +26,7 @@ describe("controlled apprentice learning (no Groups/CEA)", () => {
     expect(CONTROLLED_TASK_AVAILABILITY_LABEL).not.toMatch(/S7|configured/i);
   });
 
-  it("renders W001/W002 completed, one Current/next, remaining upcoming", () => {
+  it("renders W001/W002 Available and remaining Coming up after release", () => {
     const lane = assignSessionLaneStatuses(
       [
         { id: "w001", key: "W001" },
@@ -38,12 +38,12 @@ describe("controlled apprentice learning (no Groups/CEA)", () => {
       ],
       new Set(["w001", "w002"]),
     );
-    expect(lane.filter((r) => r.status === "current")).toHaveLength(1);
-    expect(lane.find((r) => r.session.key === "W001")?.status).toBe("completed");
-    expect(lane.find((r) => r.session.key === "W002")?.status).toBe("completed");
-    expect(lane.find((r) => r.session.key === "W003")?.status).toBe("current");
-    expect(lane.find((r) => r.session.key === "W004")?.status).toBe("upcoming");
-    expect(lane.find((r) => r.session.key === "W011")?.status).toBe("upcoming");
+    expect(lane.find((r) => r.session.key === "W001")?.status).toBe("available");
+    expect(lane.find((r) => r.session.key === "W002")?.status).toBe("available");
+    expect(lane.find((r) => r.session.key === "W003")?.status).toBe("coming_up");
+    expect(lane.find((r) => r.session.key === "W004")?.status).toBe("coming_up");
+    expect(lane.find((r) => r.session.key === "W011")?.status).toBe("coming_up");
+    expect(lane.filter((r) => r.status === "available")).toHaveLength(2);
   });
 
   it("does not treat FS01 lesson plan titles as learner-visible", () => {
@@ -62,7 +62,15 @@ describe("controlled apprentice learning (no Groups/CEA)", () => {
     ).toBe(false);
   });
 
-  it("treats Block 1 teaching PowerPoints as tutor-only leak if they appear in learner materials", () => {
+  it("does not hide a PowerPoint just because of its file extension", () => {
+    expect(
+      includesTutorLessonPlan([
+        {
+          title: "TEST learner presentation — Hybrid awareness (SAFE DEMO)",
+          filename: "TEST_W003_learner_presentation.pptx",
+        },
+      ]),
+    ).toBe(false);
     expect(
       includesTutorLessonPlan([
         {
@@ -70,23 +78,15 @@ describe("controlled apprentice learning (no Groups/CEA)", () => {
           filename: "Features of Hybrid Vehicles.ppt",
         },
       ]),
-    ).toBe(true);
+    ).toBe(false);
   });
 
-  it("treats Block 2 v4.4 lesson plans and teaching PowerPoints as tutor-only leaks", () => {
+  it("still treats lesson plans as tutor leaks if they appear in learner materials", () => {
     expect(
       includesTutorLessonPlan([
         {
           title: "Week 12 lesson plan — Electrical System Inspection (v4.4)",
           filename: "Autocare_L2_Week_012_Lesson_Plan_v4.4.docx",
-        },
-      ]),
-    ).toBe(true);
-    expect(
-      includesTutorLessonPlan([
-        {
-          title: "Unplaced Block 2 teaching deck",
-          filename: "Block2_Teaching.pptx",
         },
       ]),
     ).toBe(true);
@@ -100,14 +100,14 @@ describe("controlled apprentice learning (no Groups/CEA)", () => {
       codesLine: "Week 3 · FS03 · W003",
       foundationSkillCode: "FS03",
       calendarWeek: 3,
-      status: "current",
-      statusLabel: "Current / next",
-      deliveredAt: null,
+      status: "available",
+      statusLabel: "Available",
+      releasedAt: "2026-08-14T09:00:00.000Z",
       learningInformation: "Approved Block 1 copy",
       activityPractice: "Guided activity",
       hasApprovedLearning: true,
       materials: [],
-      reviewLearning: false,
+      reviewLearning: true,
       openable: true,
     };
     const w011: LearnerSessionView = {
@@ -117,9 +117,9 @@ describe("controlled apprentice learning (no Groups/CEA)", () => {
       codesLine: "Week 11 · W011",
       foundationSkillCode: null,
       calendarWeek: 11,
-      status: "upcoming",
-      statusLabel: "Upcoming",
-      deliveredAt: null,
+      status: "coming_up",
+      statusLabel: "Coming up",
+      releasedAt: null,
       learningInformation: "Locked placeholder",
       activityPractice: "Locked placeholder",
       hasApprovedLearning: false,
@@ -161,6 +161,43 @@ describe("controlled apprentice learning (no Groups/CEA)", () => {
     );
     expect(resolveApprenticeSessionAccess(blocks, "sess-missing").status).toBe(
       "missing",
+    );
+  });
+
+  it("does not let an apprentice open an unreleased Session in an unlocked Block", () => {
+    const w003: LearnerSessionView = {
+      id: "sess-w003",
+      sessionKey: "W003",
+      title: "Hybrid and High-Voltage Vehicle Awareness",
+      codesLine: "Week 3 · FS03 · W003",
+      foundationSkillCode: "FS03",
+      calendarWeek: 3,
+      status: "coming_up",
+      statusLabel: "Coming up",
+      releasedAt: null,
+      learningInformation: "Not released",
+      activityPractice: "Not released",
+      hasApprovedLearning: false,
+      materials: [],
+      reviewLearning: false,
+      openable: false,
+    };
+    const blocks: ApprenticeLearningBlock[] = [
+      {
+        spineItemId: "b1",
+        title: "Block 1",
+        displayTitle: "Block 1 — Foundation Skills",
+        displayOrdinal: 1,
+        weekStart: 1,
+        weekEnd: 10,
+        plannedOtjHours: 45,
+        unlocked: true,
+        sessions: [w003],
+        tasks: [],
+      },
+    ];
+    expect(resolveApprenticeSessionAccess(blocks, "sess-w003").status).toBe(
+      "locked",
     );
   });
 

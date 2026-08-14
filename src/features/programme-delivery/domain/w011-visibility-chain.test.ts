@@ -150,10 +150,11 @@ describe("W011 author → tutor → apprentice visibility chain", () => {
     });
     const view = toLearnerSessionView({
       session,
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: resources,
       blockUnlocked: true,
+      includeSafeDemoFixtures: true,
     });
     expect(view.materials.map((m) => m.title)).toEqual([W011_LEARNER.title]);
     expect(includesTutorLessonPlan(view.materials)).toBe(false);
@@ -168,8 +169,8 @@ describe("W011 author → tutor → apprentice visibility chain", () => {
     });
     const view = toLearnerSessionView({
       session,
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: resources,
       blockUnlocked: false,
     });

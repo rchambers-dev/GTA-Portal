@@ -2,13 +2,21 @@ import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import { loadApprenticeLearningJourney } from "@/features/programme-delivery/domain/apprentice-learning-repository";
-import { resolveApprenticeSessionAccess } from "@/features/programme-delivery/domain/apprentice-learning";
-import { includesTutorLessonPlan } from "@/features/programme-delivery/domain/learner-session-view";
+import { decideApprenticeResourceAccess } from "@/features/programme-delivery/domain/learner-resource-access";
 import {
-  isSecurityTestFixtureResource,
-  LEARNER_SESSION_LOCKED_ERROR,
-} from "@/features/programme-definition/domain/learner-facing-content";
+  catalogueFileOpenCapabilities,
+  isPowerpointFilename,
+} from "@/features/programme-definition/domain/programme-resources";
+import {
+  listProgrammeResourcesForVersion,
+  listResourceAttachmentsForVersion,
+} from "@/features/programme-definition/domain/programme-resources-repository";
 import { loadResourceExtractText } from "@/features/programme-definition/domain/resource-extract";
+import { getResourceBinary } from "@/features/programme-definition/domain/programme-resource-binaries-repository";
+import {
+  catalogueFileOpenCapabilities,
+  isPowerpointFilename,
+} from "@/features/programme-definition/domain/programme-resources";
 
 export const runtime = "nodejs";
 
@@ -42,50 +50,25 @@ export async function GET(_request: Request, { params }: Props) {
   try {
     const supabase = createSupabaseAdminClient();
     const journey = await loadApprenticeLearningJourney(supabase, apprenticeId);
-    const owner = journey.blocks
-      .flatMap((b) => b.sessions.map((s) => ({ session: s, block: b })))
-      .find(({ session }) => session.materials.some((m) => m.id === id));
-    if (!owner) {
+    const [resources, attachments] = await Promise.all([
+      listProgrammeResourcesForVersion(supabase, journey.programmeVersionId),
+      listResourceAttachmentsForVersion(supabase, journey.programmeVersionId),
+    ]);
+    const resource = resources.find((row) => row.id === id) ?? null;
+    const access = decideApprenticeResourceAccess({
+      resourceId: id,
+      resource,
+      attachments,
+      blocks: journey.blocks,
+      isTest: journey.isTest,
+    });
+    if (!access.ok) {
       return NextResponse.json(
-        { ok: false, error: "Resource not found on your learning journey." },
-        { status: 404 },
+        { ok: false, error: access.error },
+        { status: access.status },
       );
     }
-    const access = resolveApprenticeSessionAccess(
-      journey.blocks,
-      owner.session.id,
-    );
-    if (access.status === "locked") {
-      return NextResponse.json(
-        { ok: false, error: LEARNER_SESSION_LOCKED_ERROR },
-        { status: 403 },
-      );
-    }
-    const material = owner.session.materials.find((m) => m.id === id);
-    if (!material) {
-      return NextResponse.json(
-        { ok: false, error: "Resource not found on your learning journey." },
-        { status: 404 },
-      );
-    }
-    if (includesTutorLessonPlan([material])) {
-      return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
-    }
-    if (isSecurityTestFixtureResource(material)) {
-      return NextResponse.json(
-        { ok: false, error: "Resource not found on your learning journey." },
-        { status: 404 },
-      );
-    }
-
-    const { data, error } = await supabase
-      .from("gta_programme_resources")
-      .select("id, title, filename, extract_path, evidence_resource_id")
-      .eq("id", id)
-      .eq("programme_version_id", journey.programmeVersionId)
-      .maybeSingle();
-    if (error) throw new Error(error.message);
-    if (!data) {
+    if (!resource) {
       return NextResponse.json(
         { ok: false, error: "Resource not found." },
         { status: 404 },
@@ -93,22 +76,42 @@ export async function GET(_request: Request, { params }: Props) {
     }
 
     const loaded = loadResourceExtractText({
-      extractPath: data.extract_path || "",
-      evidenceResourceId: data.evidence_resource_id || "",
+      extractPath: resource.extractPath || "",
+      evidenceResourceId: resource.evidenceResourceId || "",
     });
+    const binary = await getResourceBinary(
+      supabase,
+      journey.programmeVersionId,
+      id,
+    );
+    const binaryAvailable = Boolean(binary);
+    const capabilities = catalogueFileOpenCapabilities(resource.filename);
+    const isPpt = isPowerpointFilename(resource.filename);
+    const note = binaryAvailable
+      ? isPpt
+        ? "The original PowerPoint is available to download. Browsers cannot preview PowerPoint files; open the downloaded file in PowerPoint or equivalent."
+        : "The original file is available to download."
+      : loaded.mode === "extract_file"
+        ? isPpt
+          ? "Original file not currently available. This is the available text extract of the presentation."
+          : "Original file not currently available. This is the available text extract."
+        : isPpt
+          ? "Original file not currently available, and no text extract is available yet."
+          : "This resource is listed for your Session, but a viewable copy is not available in the portal yet.";
 
     return NextResponse.json({
       ok: true,
       resource: {
-        id: data.id,
-        title: data.title,
-        filename: data.filename,
+        id: resource.id,
+        title: resource.title,
+        filename: resource.filename,
       },
-      binaryAvailableInApp: false,
-      note:
-        loaded.mode === "extract_file"
-          ? "Showing the available text extract for this resource. The original file is not opened in the portal."
-          : "This resource is listed for your Session, but a viewable copy is not available in the portal yet.",
+      binaryAvailableInApp: binaryAvailable,
+      powerpointOpenableInBrowser: false,
+      downloadOriginal: binaryAvailable,
+      capabilities,
+      viewMode: loaded.mode,
+      note,
       extractText: loaded.text,
     });
   } catch (err) {

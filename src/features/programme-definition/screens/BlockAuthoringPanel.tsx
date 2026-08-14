@@ -18,6 +18,7 @@ import {
   labelResourceRole,
   RESOURCE_AUDIENCES,
   RESOURCE_ROLES,
+  suggestedAudienceForRole,
 } from "../domain/programme-resources";
 import styles from "./programme-builder.module.css";
 
@@ -61,8 +62,8 @@ function authoringStatusLabel(status: "draft" | "published"): string {
 const ROLE_OPTIONS: { value: ResourceRole; label: string }[] = [
   { value: "TUTOR_DELIVERY", label: "Tutor delivery" },
   { value: "LEARNER_LEARNING", label: "Learner learning" },
-  { value: "LEARNER_REVISION", label: "Learner revision" },
-  { value: "PRACTICE", label: "Practice / activity" },
+  { value: "LEARNER_REVISION", label: "Reference" },
+  { value: "PRACTICE", label: "Activity / practice" },
   { value: "ASSESSMENT_PREP", label: "Assessment preparation" },
   { value: "CONTROLLED_FORM", label: "Controlled form" },
 ];
@@ -1043,8 +1044,11 @@ export function BlockAuthoringPanel({
         <div>
           <h3 className={styles.meta}>Attach material to a Session</h3>
           <p className={styles.meta}>
-            Same resource may attach to more than one Session. Placement is
-            manual — nothing is auto-mapped here.
+            Role describes how the file is used. Audience controls who can open
+            it. A PowerPoint is not automatically tutor-only — mark it{" "}
+            <strong>Learner visible</strong> when it is suitable for apprentices.
+            Tutors cannot change this later. When they release the Session, every
+            learner-visible attachment is released with it.
           </p>
           <div className={styles.startLayout}>
             <label className={styles.meta}>
@@ -1077,7 +1081,11 @@ export function BlockAuthoringPanel({
               Role
               <select
                 value={attachRole}
-                onChange={(e) => setAttachRole(e.target.value as ResourceRole)}
+                onChange={(e) => {
+                  const role = e.target.value as ResourceRole;
+                  setAttachRole(role);
+                  setAttachAudience(suggestedAudienceForRole(role));
+                }}
               >
                 {ROLE_OPTIONS.filter((r) =>
                   (RESOURCE_ROLES as readonly string[]).includes(r.value),
@@ -1089,7 +1097,7 @@ export function BlockAuthoringPanel({
               </select>
             </label>
             <label className={styles.meta}>
-              Audience / visibility
+              Audience
               <select
                 value={attachAudience}
                 onChange={(e) =>
@@ -1105,6 +1113,10 @@ export function BlockAuthoringPanel({
                 ))}
               </select>
             </label>
+            <p className={styles.meta}>
+              Learner visible = apprentices can open it after Session release,
+              including PowerPoints. Tutor only = staff only.
+            </p>
             <label className={styles.meta}>
               Sort order
               <input
@@ -1331,6 +1343,11 @@ export function BlockAuthoringPanel({
               </div>
               <div>
                 <h4>WHAT APPRENTICE SEES</h4>
+                <p className={styles.meta}>
+                  After the tutor releases the Session, apprentices receive the
+                  approved learner copy plus every learner-visible resource —
+                  including PowerPoints marked learner visible.
+                </p>
                 {approvedLearnerCopy(
                   selectedSession.learnerFacingContent,
                 ) ? (

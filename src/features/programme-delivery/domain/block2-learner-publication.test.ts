@@ -134,8 +134,8 @@ describe("Block 2 approved learner publication", () => {
       const copy = approvedCopy[key];
       const view = toLearnerSessionView({
         session: block2Session(key, "approved_published"),
-        status: "upcoming",
-        delivery: null,
+        status: "coming_up",
+        released: true,
         learnerResources: [],
       });
       const json = JSON.stringify(view);
@@ -156,8 +156,8 @@ describe("Block 2 approved learner publication", () => {
   it("does not expose candidate copy before approval", () => {
     const view = toLearnerSessionView({
       session: block2Session("W011", "candidate_for_review"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(view.learningInformation).toBe(LEARNER_CONTENT_PENDING);
@@ -168,8 +168,8 @@ describe("Block 2 approved learner publication", () => {
   it("applies the reviewed W011–W020 wording/scope corrections", () => {
     const w011 = toLearnerSessionView({
       session: block2Session("W011", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(w011.learningInformation).toContain(
@@ -179,8 +179,8 @@ describe("Block 2 approved learner publication", () => {
 
     const w012 = toLearnerSessionView({
       session: block2Session("W012", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(w012.title).toBe(
@@ -192,8 +192,8 @@ describe("Block 2 approved learner publication", () => {
 
     const w013 = toLearnerSessionView({
       session: block2Session("W013", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(w013.title).toBe("Engine components, inspection and fault scenarios.");
@@ -204,8 +204,8 @@ describe("Block 2 approved learner publication", () => {
 
     const w014 = toLearnerSessionView({
       session: block2Session("W014", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(w014.activityPractice).toMatch(/watch your tutor demonstrate/);
@@ -213,8 +213,8 @@ describe("Block 2 approved learner publication", () => {
 
     const w016 = toLearnerSessionView({
       session: block2Session("W016", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(w016.activityPractice).toMatch(
@@ -223,8 +223,8 @@ describe("Block 2 approved learner publication", () => {
 
     const w017 = toLearnerSessionView({
       session: block2Session("W017", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(w017.activityPractice).toMatch(/identify ABS components/);
@@ -233,16 +233,16 @@ describe("Block 2 approved learner publication", () => {
 
     const w018 = toLearnerSessionView({
       session: block2Session("W018", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(w018.activityPractice).toMatch(/You will not set alignment independently/);
 
     const w020 = toLearnerSessionView({
       session: block2Session("W020", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources: [],
     });
     expect(w020.activityPractice).toMatch(/Block Reflection \(Task 5\)/);
@@ -303,8 +303,8 @@ describe("Block 2 approved learner publication", () => {
     });
     const view = toLearnerSessionView({
       session: block2Session("W011", "approved_published"),
-      status: "upcoming",
-      delivery: null,
+      status: "coming_up",
+      released: true,
       learnerResources,
     });
     expect(view.materials).toEqual([]);
@@ -322,10 +322,10 @@ describe("Block 2 approved learner publication", () => {
       BLOCK2_KEYS.map((key) => ({ id: `sess-${key.toLowerCase()}`, key })),
       new Set(["sess-w012", "sess-w014", "sess-w016", "sess-w020"]),
     );
-    expect(lane.find((r) => r.session.key === "W012")?.status).toBe("completed");
-    expect(lane.find((r) => r.session.key === "W014")?.status).toBe("completed");
-    expect(lane.find((r) => r.session.key === "W016")?.status).toBe("completed");
-    expect(lane.find((r) => r.session.key === "W020")?.status).toBe("completed");
+    expect(lane.find((r) => r.session.key === "W012")?.status).toBe("available");
+    expect(lane.find((r) => r.session.key === "W014")?.status).toBe("available");
+    expect(lane.find((r) => r.session.key === "W016")?.status).toBe("available");
+    expect(lane.find((r) => r.session.key === "W020")?.status).toBe("available");
 
     const tasks = [2, 3, 4, 5].map((taskNumber) =>
       comingUpTaskRow({
@@ -352,8 +352,8 @@ describe("Block 2 approved learner publication", () => {
     const sessions = BLOCK2_KEYS.map((key) =>
       toLearnerSessionView({
         session: block2Session(key, "approved_published"),
-        status: "upcoming",
-        delivery: null,
+        status: "coming_up",
+        released: true,
         learnerResources: [],
         blockUnlocked: false,
       }),
