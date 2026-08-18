@@ -56,6 +56,12 @@ type LaneSession = {
       releasedByName: string;
     } | null;
     releasedEnrolmentIds: string[];
+    reviewReleasedCount: number;
+    latestReviewRelease: {
+      releasedAt: string;
+      releasedByName: string;
+    } | null;
+    reviewReleasedEnrolmentIds: string[];
   };
   tutorMaterials: {
     lessonPlans: TutorMaterialItem[];
@@ -79,6 +85,24 @@ type LaneSession = {
     viewerKind?: "slides" | "pdf" | "video" | "none";
     openMode?: "preview" | "download" | "extract" | "none";
   }>;
+  learnerReviewResources: Array<{
+    id: string;
+    title: string;
+    filename: string;
+    kindLabel: string;
+    openLabel: string;
+    roleLabel: string;
+    binaryAvailable: boolean;
+    extractAvailable: boolean;
+    previewAvailable?: boolean;
+    extractLabel: string | null;
+    downloadLabel?: string | null;
+    unavailableNote: string | null;
+    previewUnavailableNote?: string | null;
+    viewerKind?: "slides" | "pdf" | "video" | "none";
+    openMode?: "preview" | "download" | "extract" | "none";
+  }>;
+  hasHeldReviewMaterials: boolean;
   approvedLearnerContent: {
     summary: string;
     learningContent: string;
@@ -131,7 +155,9 @@ export function TutorBlock1DeliveryScreen({
     null,
   );
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [reviewConfirmOpen, setReviewConfirmOpen] = useState(false);
   const [individualOpen, setIndividualOpen] = useState(false);
+  const [individualReviewOpen, setIndividualReviewOpen] = useState(false);
   const [viewLearners, setViewLearners] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [individualId, setIndividualId] = useState("");
@@ -214,11 +240,26 @@ export function TutorBlock1DeliveryScreen({
     () => new Set(selectedLane?.access.releasedEnrolmentIds || []),
     [selectedLane],
   );
+  const reviewReleasedSet = useMemo(
+    () => new Set(selectedLane?.access.reviewReleasedEnrolmentIds || []),
+    [selectedLane],
+  );
 
   function openRelease() {
     setSelectedIds(roster.map((m) => m.apprenticeProgrammeId));
     setConfirmOpen(true);
+    setReviewConfirmOpen(false);
     setIndividualOpen(false);
+    setIndividualReviewOpen(false);
+    setViewLearners(false);
+  }
+
+  function openReviewRelease() {
+    setSelectedIds(roster.map((m) => m.apprenticeProgrammeId));
+    setReviewConfirmOpen(true);
+    setConfirmOpen(false);
+    setIndividualOpen(false);
+    setIndividualReviewOpen(false);
     setViewLearners(false);
   }
 
@@ -293,6 +334,41 @@ export function TutorBlock1DeliveryScreen({
     }
   }
 
+  async function submitReviewRelease(source: "teaching_group" | "individual") {
+    if (!selectedLane || !bundle?.group) return;
+    const ids =
+      source === "individual"
+        ? individualId
+          ? [individualId]
+          : []
+        : selectedIds;
+    setSaving(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/delivery/session-review-release", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          confirm: true,
+          teachingGroupId: bundle.group.id,
+          sessionId: selectedLane.session.id,
+          apprenticeProgrammeIds: ids,
+          source,
+        }),
+      });
+      const json = (await res.json()) as { ok: boolean; error?: string };
+      if (!json.ok) throw new Error(json.error || "Review release failed");
+      setReviewConfirmOpen(false);
+      setIndividualReviewOpen(false);
+      setViewLearners(true);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Review release failed");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   const willReceive = roster.filter(
     (m) =>
       selectedIds.includes(m.apprenticeProgrammeId) &&
@@ -306,6 +382,19 @@ export function TutorBlock1DeliveryScreen({
   );
   const allReleased =
     roster.length > 0 && alreadyHave.length === roster.length;
+  const reviewWillReceive = roster.filter(
+    (m) =>
+      selectedIds.includes(m.apprenticeProgrammeId) &&
+      !reviewReleasedSet.has(m.apprenticeProgrammeId),
+  );
+  const reviewAlreadyHave = roster.filter((m) =>
+    reviewReleasedSet.has(m.apprenticeProgrammeId),
+  );
+  const reviewMissing = roster.filter(
+    (m) => !reviewReleasedSet.has(m.apprenticeProgrammeId),
+  );
+  const reviewAllReleased =
+    roster.length > 0 && reviewAlreadyHave.length === roster.length;
 
   return (
     <ApprenticePageShell
@@ -362,7 +451,9 @@ export function TutorBlock1DeliveryScreen({
                       onClick={() => {
                         setSelectedSessionId(row.session.id);
                         setConfirmOpen(false);
+                        setReviewConfirmOpen(false);
                         setIndividualOpen(false);
+                        setIndividualReviewOpen(false);
                         setViewLearners(false);
                         setExtractText(null);
                       }}
@@ -548,10 +639,12 @@ export function TutorBlock1DeliveryScreen({
                 </div>
 
                 <div>
-                  <h3 className={styles.purposeLabel}>Learner materials</h3>
+                  <h3 className={styles.purposeLabel}>
+                    Learning materials - with Session
+                  </h3>
                   <p className={styles.blockMeta}>
-                    Apprentices receive these when you release this Session.
-                    You cannot change which files are learner-visible.
+                    Learners receive these when you release this Session. Held
+                    review materials stay hidden until you release them later.
                   </p>
                   {selectedLane.learnerVisibleResources.length === 0 ? (
                     <p className={styles.blockMeta}>
@@ -624,6 +717,33 @@ export function TutorBlock1DeliveryScreen({
                   )}
                 </div>
 
+                {selectedLane.hasHeldReviewMaterials ? (
+                  <div>
+                    <h3 className={styles.purposeLabel}>
+                      Review materials - held
+                    </h3>
+                    <p className={styles.blockMeta}>
+                      Learners do not receive these from Session release alone.
+                      Tutors can preview them here but cannot reclassify them.
+                    </p>
+                    {selectedLane.learnerReviewResources.length === 0 ? (
+                      <p className={styles.blockMeta}>
+                        No learner-visible review materials are attached.
+                      </p>
+                    ) : (
+                      <ul className={styles.objectives}>
+                        {selectedLane.learnerReviewResources.map((r) => (
+                          <li key={r.id}>
+                            <strong>{r.kindLabel}</strong>
+                            {" · "}
+                            {r.title}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ) : null}
+
                 <div>
                   <h3 className={styles.purposeLabel}>Activity / practice</h3>
                   <p
@@ -667,6 +787,16 @@ export function TutorBlock1DeliveryScreen({
                   ) : (
                     <p className={styles.purposeLead}>Not released</p>
                   )}
+                  {selectedLane.hasHeldReviewMaterials ? (
+                    <p className={styles.blockMeta}>
+                      Review materials:{" "}
+                      {reviewAllReleased
+                        ? `Released to ${selectedLane.access.reviewReleasedCount} apprentice${selectedLane.access.reviewReleasedCount === 1 ? "" : "s"}`
+                        : selectedLane.access.reviewReleasedCount > 0
+                          ? `${selectedLane.access.reviewReleasedCount} already have review access · ${reviewMissing.length} will receive access if released now`
+                          : "Not released"}
+                    </p>
+                  ) : null}
 
                   {confirmOpen ? (
                     <div>
@@ -749,10 +879,82 @@ export function TutorBlock1DeliveryScreen({
                         >
                           {saving ? "Releasing…" : "Release learning"}
                         </button>
-                        <button
+                          <button
                           type="button"
                           className={styles.secondaryBtn}
                           onClick={() => setConfirmOpen(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : reviewConfirmOpen ? (
+                    <div>
+                      <h3 className={styles.sectionTitle}>
+                        Release review materials for {selectedLane.session.sessionKey}?
+                      </h3>
+                      <p className={styles.purposeLead}>
+                        {reviewWillReceive.length} apprentice
+                        {reviewWillReceive.length === 1 ? "" : "s"} will receive
+                        access to held review materials.
+                        {reviewAlreadyHave.length
+                          ? ` ${reviewAlreadyHave.length} already have access.`
+                          : ""}
+                      </p>
+                      <p className={styles.blockMeta}>
+                        This does not record attendance or completion.
+                      </p>
+                      <ul className={styles.objectives}>
+                        {selectedLane.learnerReviewResources.map((r) => (
+                          <li key={r.id}>
+                            {r.kindLabel} · {r.title}
+                          </li>
+                        ))}
+                      </ul>
+                      <ul className={styles.rosterList}>
+                        {roster.map((member) => {
+                          const already = reviewReleasedSet.has(
+                            member.apprenticeProgrammeId,
+                          );
+                          const checked = selectedIds.includes(
+                            member.apprenticeProgrammeId,
+                          );
+                          return (
+                            <li key={member.apprenticeProgrammeId}>
+                              <label className={styles.rosterItem}>
+                                <input
+                                  type="checkbox"
+                                  checked={already || checked}
+                                  disabled={already}
+                                  onChange={() =>
+                                    toggleSelected(
+                                      member.apprenticeProgrammeId,
+                                      already,
+                                    )
+                                  }
+                                />
+                                <span>
+                                  {member.displayName}
+                                  {already ? " · already has review access" : ""}
+                                </span>
+                              </label>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      <div className={styles.chipRow}>
+                        <button
+                          type="button"
+                          className={styles.primaryBtn}
+                          disabled={saving || reviewWillReceive.length === 0}
+                          onClick={() => void submitReviewRelease("teaching_group")}
+                        >
+                          {saving ? "Releasing…" : "Release review materials"}
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.secondaryBtn}
+                          onClick={() => setReviewConfirmOpen(false)}
                         >
                           Cancel
                         </button>
@@ -813,6 +1015,58 @@ export function TutorBlock1DeliveryScreen({
                         </button>
                       </div>
                     </div>
+                  ) : individualReviewOpen ? (
+                    <div>
+                      <h3 className={styles.sectionTitle}>
+                        Release review materials to individual
+                      </h3>
+                      <p className={styles.purposeLead}>
+                        Use this for a late joiner, catch-up learner, or someone
+                        left out of the original group review release.
+                      </p>
+                      {reviewMissing.length === 0 ? (
+                        <p className={styles.blockMeta}>
+                          Everyone in this teaching group already has review access.
+                        </p>
+                      ) : (
+                        <ul className={styles.rosterList}>
+                          {reviewMissing.map((member) => (
+                            <li key={member.apprenticeProgrammeId}>
+                              <label className={styles.rosterItem}>
+                                <input
+                                  type="radio"
+                                  name="individual-review-release"
+                                  checked={
+                                    individualId === member.apprenticeProgrammeId
+                                  }
+                                  onChange={() =>
+                                    setIndividualId(member.apprenticeProgrammeId)
+                                  }
+                                />
+                                <span>{member.displayName}</span>
+                              </label>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      <div className={styles.chipRow}>
+                        <button
+                          type="button"
+                          className={styles.primaryBtn}
+                          disabled={saving || !individualId}
+                          onClick={() => void submitReviewRelease("individual")}
+                        >
+                          {saving ? "Releasing…" : "Release review to individual"}
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.secondaryBtn}
+                          onClick={() => setIndividualReviewOpen(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
                   ) : (
                     <div className={styles.chipRow}>
                       {!allReleased ? (
@@ -830,11 +1084,41 @@ export function TutorBlock1DeliveryScreen({
                         onClick={() => {
                           setIndividualOpen(true);
                           setConfirmOpen(false);
+                          setReviewConfirmOpen(false);
+                          setIndividualReviewOpen(false);
                           setIndividualId(missing[0]?.apprenticeProgrammeId || "");
                         }}
                       >
                         Release to individual
                       </button>
+                      {selectedLane.hasHeldReviewMaterials ? (
+                        <>
+                          {!reviewAllReleased ? (
+                            <button
+                              type="button"
+                              className={styles.primaryBtn}
+                              onClick={openReviewRelease}
+                            >
+                              Release review materials
+                            </button>
+                          ) : null}
+                          <button
+                            type="button"
+                            className={styles.secondaryBtn}
+                            onClick={() => {
+                              setIndividualReviewOpen(true);
+                              setConfirmOpen(false);
+                              setReviewConfirmOpen(false);
+                              setIndividualOpen(false);
+                              setIndividualId(
+                                reviewMissing[0]?.apprenticeProgrammeId || "",
+                              );
+                            }}
+                          >
+                            Release review to individual
+                          </button>
+                        </>
+                      ) : null}
                       <button
                         type="button"
                         className={styles.secondaryBtn}
@@ -845,13 +1129,19 @@ export function TutorBlock1DeliveryScreen({
                     </div>
                   )}
 
-                  {viewLearners && !confirmOpen && !individualOpen ? (
+                  {viewLearners &&
+                  !confirmOpen &&
+                  !reviewConfirmOpen &&
+                  !individualOpen &&
+                  !individualReviewOpen ? (
                     <ul className={styles.rosterList}>
                       {roster.map((member) => (
                         <li key={member.apprenticeProgrammeId}>
                           {member.displayName}
                           {releasedSet.has(member.apprenticeProgrammeId)
-                            ? " · access granted"
+                            ? reviewReleasedSet.has(member.apprenticeProgrammeId)
+                              ? " · learning + review granted"
+                              : " · learning granted"
                             : " · not released"}
                         </li>
                       ))}

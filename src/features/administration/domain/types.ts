@@ -71,9 +71,13 @@ export type AdminApprenticeEnrolment = {
    * Null until explicitly bound — never auto-bind to "newest" on publish.
    */
   gtaProgrammeVersionId: string | null;
-  /** Cohort this apprentice belongs to — pins cohort calendar / groups. */
+  /** Cohort / intake this apprentice entered under. Independent of Teaching Group. */
   cohortId: string | null;
-  /** Teaching group within the cohort — inherits tutor + college days. */
+  /**
+   * Transitional current Teaching Group pointer.
+   * Durable history lives on teaching_group_memberships; keep this in sync
+   * with the active membership. Do not treat this as the full history.
+   */
   teachingGroupId: string | null;
   employerId: string;
   employerName: string;
@@ -139,30 +143,33 @@ export type AdminProgrammeRecord = {
 };
 
 /**
- * An intake delivering one version of a programme (not day-specific).
- * Teaching groups under tutors sit on the cohort.
+ * An administrative intake grouping (programme + Skills England version).
+ * Does not own Teaching Groups, live tutor, or college days.
+ * Individual apprenticeship dates live on the enrolment, not here.
  */
 export type AdminCohortRecord = {
   id: string;
-  /** e.g. Autocare L2 (ST0499) · v1.0 · Jan 2026–Jul 2028 */
+  /** e.g. Autocare L2 (ST0499) · v1.3 · Blocks · Sept 2026 Intake */
   name: string;
   programmeId: string;
   programmeName: string;
   standardCode: string;
-  /** Skills England version this cohort delivers, e.g. 1.2 */
+  /** Skills England version this intake delivers, e.g. 1.3. Locked after start. */
   standardVersion: string;
   /**
    * Stored cohort column. Groups/CEA is retired; runtime always normalizes to blocks.
    */
   deliverySpine: "groups" | "blocks";
   /**
-   * Date the intake opens for enrolment (ISO date). New apprentices auto-flow into a
-   * planned cohort from this date until it goes active.
+   * Enrolment Opens — one calendar month before Intake Start (ISO date).
    */
   enrolmentOpensDate: string;
-  /** Intake start date — when teaching/delivery begins (ISO date). */
+  /** Intake Start — when this intake begins (ISO date). Not each learner's start. */
   startDate: string;
-  /** Expected end / gateway date (ISO date), optional. */
+  /**
+   * @deprecated Not part of the intake business model. Kept on the row so we
+   * do not need a destructive migration. Do not copy onto enrolments.
+   */
   expectedEndDate: string;
   /**
    * @deprecated Prefer teaching groups. Kept for legacy rows / migration.
@@ -173,7 +180,8 @@ export type AdminCohortRecord = {
    */
   collegeDays: string;
   /**
-   * Teachers who may own groups on this intake.
+   * @deprecated Cohort teacher pool. Not used to create Teaching Groups or
+   * grant delivery permissions. Kept as legacy storage.
    */
   teacherNames: string[];
   /**
@@ -203,11 +211,44 @@ export type AdminCohortChangeLogEntry = {
   actorName: string;
 };
 
-/** One tutor's class within a cohort (college days + capacity). */
+export type AdminTeachingGroupStatus = "active" | "inactive";
+
+export type AdminGtaProgrammeVersionStatus =
+  | "draft"
+  | "in_review"
+  | "approved"
+  | "published"
+  | "superseded"
+  | "archived";
+
+/** Selectable GTA curriculum version for pinning and Teaching Groups. */
+export type AdminGtaProgrammeVersionOption = {
+  id: string;
+  programmeId: string;
+  programmeTitle: string;
+  standardCode: string;
+  /** Skills England external version, e.g. 1.3 */
+  skillsEnglandVersion: string;
+  internalVersion: string;
+  status: AdminGtaProgrammeVersionStatus;
+  /** Spine title(s) when loaded; empty if unknown. */
+  deliverySpine: string;
+};
+
+/** Independent tutor-led class. Not owned by a Cohort. */
 export type AdminTeachingGroupRecord = {
   id: string;
-  cohortId: string;
-  /** Group owner — all apprentices in this group share this tutor. */
+  /**
+   * Legacy/optional intake link. New groups are null.
+   * Not the primary relationship after Phase 2.
+   */
+  cohortId: string | null;
+  /** Pinned GTA curriculum version this class delivers. Null until proven or assigned. */
+  gtaProgrammeVersionId: string | null;
+  /** True when existing data could not safely prove a GTA programme version. */
+  versionReviewRequired: boolean;
+  status: AdminTeachingGroupStatus;
+  /** Group owner — operational source of truth for the tutor. */
   tutorName: string;
   name: string;
   collegeDays: string;
@@ -216,6 +257,25 @@ export type AdminTeachingGroupRecord = {
   notes: string;
   createdAt: string;
   updatedAt: string;
+};
+
+export type AdminTeachingGroupMembershipSource = "staff" | "legacy_backfill";
+
+/**
+ * Durable Teaching Group membership history.
+ * joinedAt is null when the true join date is unknown (legacy backfill).
+ */
+export type AdminTeachingGroupMembership = {
+  id: string;
+  enrolmentId: string;
+  teachingGroupId: string;
+  joinedAt: string | null;
+  leftAt: string | null;
+  isCurrent: boolean;
+  source: AdminTeachingGroupMembershipSource;
+  recordedAt: string;
+  actorName: string;
+  notes: string;
 };
 
 export type AdminPortalRole =
@@ -253,13 +313,15 @@ export type AdminPortalUser = {
 };
 
 export type AdminStoreSnapshot = {
-  version: 19;
+  version: 20;
   apprentices: AdminApprenticeRecord[];
   enrolments: AdminApprenticeEnrolment[];
   employers: AdminEmployerRecord[];
   programmes: AdminProgrammeRecord[];
   cohorts: AdminCohortRecord[];
   teachingGroups: AdminTeachingGroupRecord[];
+  teachingGroupMemberships: AdminTeachingGroupMembership[];
+  gtaProgrammeVersions: AdminGtaProgrammeVersionOption[];
   cohortChangeLogs: AdminCohortChangeLogEntry[];
   users: AdminPortalUser[];
 };

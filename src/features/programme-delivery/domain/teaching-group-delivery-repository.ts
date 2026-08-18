@@ -23,11 +23,13 @@ import {
 } from "@/features/programme-definition/domain/programme-resources";
 import {
   filterLearnerVisibleAttachments,
+  hasHeldReviewMaterials,
   learnerVisibleResourcesForSession,
   tutorDeliveryResourcesForSession,
 } from "./learner-session-materials";
 import { nextUnreleasedSession } from "./session-lane";
 import { listSessionLearningReleases } from "./session-learning-release-repository";
+import { listSessionReviewReleases } from "./session-review-release-repository";
 import {
   classifyTutorResource,
   eligibleReleaseRoster,
@@ -37,10 +39,11 @@ import {
 } from "./teaching-group-delivery";
 import { deliveryWeekRange } from "./staff-delivery-access";
 import type { SessionLearningRelease } from "./session-learning-release";
+import type { SessionReviewRelease } from "./session-review-release";
 
 type TeachingGroupRow = {
   id: string;
-  cohort_id: string;
+  cohort_id: string | null;
   name: string;
   tutor_name: string;
   college_days: string;
@@ -50,7 +53,7 @@ type TeachingGroupRow = {
 function mapGroup(row: TeachingGroupRow): TeachingGroupRecord {
   return {
     id: row.id,
-    cohortId: row.cohort_id,
+    cohortId: row.cohort_id ?? null,
     name: row.name || "Teaching group",
     tutorName: row.tutor_name || "",
     collegeDays: row.college_days || "",
@@ -140,6 +143,8 @@ export type GroupSessionAccessSummary = {
   releasedCount: number;
   eligibleCount: number;
   latestRelease: SessionLearningRelease | null;
+  reviewReleasedCount: number;
+  latestReviewRelease: SessionReviewRelease | null;
 };
 
 export async function loadTeachingGroupBlockBundle(
@@ -201,12 +206,13 @@ export async function loadTeachingGroupBlockBundle(
   );
   const spineItemId = blockSessions[0]?.spineItemId || null;
 
-  const [resources, attachments, releases, binaries, previews] = await Promise.all([
+  const [resources, attachments, releases, reviewReleases, binaries, previews] = await Promise.all([
     listProgrammeResourcesForVersion(supabase, programmeVersionId),
     listResourceAttachmentsForVersion(supabase, programmeVersionId, {
       spineItemId: spineItemId || undefined,
     }),
     listSessionLearningReleases(supabase, { programmeVersionId }),
+    listSessionReviewReleases(supabase, { programmeVersionId }),
     listResourceBinariesForVersion(supabase, programmeVersionId),
     listResourcePreviewsForVersion(supabase, programmeVersionId),
   ]);
@@ -220,6 +226,9 @@ export async function loadTeachingGroupBlockBundle(
     versionRoster.map((row) => row.apprenticeProgrammeId),
   );
   const currentMemberReleases = releases.filter((row) =>
+    enrolmentIds.has(row.apprenticeProgrammeId),
+  );
+  const currentMemberReviewReleases = reviewReleases.filter((row) =>
     enrolmentIds.has(row.apprenticeProgrammeId),
   );
 
@@ -249,19 +258,35 @@ export async function loadTeachingGroupBlockBundle(
     const releasedEnrolmentIds = new Set(
       sessionReleases.map((row) => row.apprenticeProgrammeId),
     );
+    const sessionReviewReleases = currentMemberReviewReleases.filter(
+      (row) => row.sessionId === session.id,
+    );
+    const reviewReleasedEnrolmentIds = new Set(
+      sessionReviewReleases.map((row) => row.apprenticeProgrammeId),
+    );
     const releasedCount = versionRoster.filter((member) =>
       releasedEnrolmentIds.has(member.apprenticeProgrammeId),
+    ).length;
+    const reviewReleasedCount = versionRoster.filter((member) =>
+      reviewReleasedEnrolmentIds.has(member.apprenticeProgrammeId),
     ).length;
     const latestRelease =
       sessionReleases.slice().sort((a, b) =>
         a.releasedAt.localeCompare(b.releasedAt),
       )[sessionReleases.length - 1] ?? null;
+    const latestReviewRelease =
+      sessionReviewReleases.slice().sort((a, b) =>
+        a.releasedAt.localeCompare(b.releasedAt),
+      )[sessionReviewReleases.length - 1] ?? null;
 
     const sessionAtt = attachments.filter((a) => a.sessionId === session.id);
     const tutorMaterials = sessionAtt.filter(
       (a) => a.audience === "TUTOR_ONLY" || a.role === "TUTOR_DELIVERY",
     );
     const learnerMaterials = filterLearnerVisibleAttachments(sessionAtt);
+    const heldReviewMaterials = filterLearnerVisibleAttachments(sessionAtt, {
+      learnerReleaseTiming: "REVIEW_LATER",
+    });
     const tutorDeliveryResources = tutorDeliveryResourcesForSession({
       attachments,
       resources,
@@ -271,6 +296,13 @@ export async function loadTeachingGroupBlockBundle(
       attachments,
       resources,
       sessionId: session.id,
+      learnerReleaseTiming: "WITH_SESSION",
+    });
+    const learnerReviewResources = learnerVisibleResourcesForSession({
+      attachments,
+      resources,
+      sessionId: session.id,
+      learnerReleaseTiming: "REVIEW_LATER",
     });
     const approved = approvedLearnerCopy(session.learnerFacingContent);
 
@@ -336,9 +368,13 @@ export async function loadTeachingGroupBlockBundle(
         releasedCount,
         eligibleCount: versionRoster.length,
         latestRelease,
+        reviewReleasedCount,
+        latestReviewRelease,
         releasedEnrolmentIds: [...releasedEnrolmentIds],
+        reviewReleasedEnrolmentIds: [...reviewReleasedEnrolmentIds],
       } satisfies GroupSessionAccessSummary & {
         releasedEnrolmentIds: string[];
+        reviewReleasedEnrolmentIds: string[];
       },
       tutorMaterials: tutorByKind,
       learnerVisibleResources: learnerVisibleResources.map((r) => {
@@ -374,6 +410,38 @@ export async function loadTeachingGroupBlockBundle(
           openMode: open.openMode,
         };
       }),
+      learnerReviewResources: learnerReviewResources.map((r) => {
+        const attachment = heldReviewMaterials.find((a) => a.resourceId === r.id);
+        const kind = classifyLearnerMaterialKind({
+          filename: r.filename,
+          title: r.title,
+          role: attachment?.role,
+        });
+        const open = describeResourceOpen({
+          filename: r.filename,
+          binaryAvailable: binaryResourceIds.has(r.id),
+          previewAvailable: previewResourceIds.has(r.id),
+          extractAvailable: resourceExtractAvailable(r),
+        });
+        return {
+          id: r.id,
+          title: r.title,
+          filename: r.filename,
+          kindLabel: kind.kindLabel,
+          openLabel: open.openLabel,
+          roleLabel: labelResourceRole(attachment?.role || "LEARNER_REVISION"),
+          binaryAvailable: open.binaryAvailable,
+          extractAvailable: open.extractAvailable,
+          previewAvailable: open.previewAvailable,
+          extractLabel: open.extractLabel,
+          downloadLabel: open.downloadLabel,
+          unavailableNote: open.unavailableNote,
+          previewUnavailableNote: open.previewUnavailableNote,
+          viewerKind: open.viewerKind,
+          openMode: open.openMode,
+        };
+      }),
+      hasHeldReviewMaterials: hasHeldReviewMaterials(sessionAtt),
       approvedLearnerContent: approved
         ? {
             summary: approved.summary,

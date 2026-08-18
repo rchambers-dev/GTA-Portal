@@ -12,14 +12,21 @@ import {
   COHORT_VERSION_FROZEN_MESSAGE,
   isCohortStarted,
 } from "./cohort-lifecycle";
+import {
+  PIN_GROUP_MISMATCH_MESSAGE,
+  pinCompatibilityError,
+} from "./gta-programme-version-options";
+import { applyMembershipPlanToList } from "./teaching-group-placement";
 import type {
   AdminEmployerRecord,
   AdminApprenticeEnrolment,
   AdminApprenticeRecord,
+  AdminGtaProgrammeVersionOption,
   AdminPackItemStatus,
   AdminPortalUser,
   AdminProgrammeRecord,
   AdminStoreSnapshot,
+  AdminTeachingGroupMembership,
   EnrolmentKind,
   EnrolmentStatus,
 } from "./types";
@@ -65,6 +72,8 @@ async function fetchLiveAdminSlice(): Promise<void> {
     programmes?: AdminProgrammeRecord[];
     cohorts?: AdminStoreSnapshot["cohorts"];
     teachingGroups?: AdminStoreSnapshot["teachingGroups"];
+    teachingGroupMemberships?: AdminTeachingGroupMembership[];
+    gtaProgrammeVersions?: AdminGtaProgrammeVersionOption[];
     cohortChangeLogs?: AdminStoreSnapshot["cohortChangeLogs"];
     users?: AdminPortalUser[];
   };
@@ -81,6 +90,10 @@ async function fetchLiveAdminSlice(): Promise<void> {
     programmes: data.programmes ?? snapshot.programmes,
     cohorts: data.cohorts ?? snapshot.cohorts,
     teachingGroups: data.teachingGroups ?? snapshot.teachingGroups,
+    teachingGroupMemberships:
+      data.teachingGroupMemberships ?? snapshot.teachingGroupMemberships,
+    gtaProgrammeVersions:
+      data.gtaProgrammeVersions ?? snapshot.gtaProgrammeVersions,
     cohortChangeLogs: data.cohortChangeLogs ?? snapshot.cohortChangeLogs,
     users: data.users ?? snapshot.users,
   };
@@ -108,12 +121,6 @@ function id(prefix: string): string {
 
 /** Assigned after updateEnrolment — used by cohort ops + enrolment placement. */
 let cohortOps: ReturnType<typeof createCohortOps>;
-
-function requireCohortUnlocked(cohortId: string): void {
-  const cohort = snapshot.cohorts.find((c) => c.id === cohortId);
-  if (!cohort) throw new Error("Cohort not found");
-  if (cohort.locked !== false) throw new Error(COHORT_LOCKED_MESSAGE);
-}
 
 export function subscribeAdminStore(listener: () => void): () => void {
   listeners.add(listener);
@@ -363,6 +370,41 @@ export type EnrolmentInput = {
   notes: string;
 };
 
+function gtaVersionById(
+  id: string | null | undefined,
+): AdminGtaProgrammeVersionOption | null {
+  const pin = id?.trim() || "";
+  if (!pin) return null;
+  return snapshot.gtaProgrammeVersions.find((row) => row.id === pin) ?? null;
+}
+
+function assertPinCohortAndGroup(args: {
+  pinId: string | null | undefined;
+  cohortId: string | null | undefined;
+  teachingGroupId?: string | null;
+}): void {
+  const cohort = args.cohortId
+    ? (snapshot.cohorts.find((row) => row.id === args.cohortId) ?? null)
+    : null;
+  const error = pinCompatibilityError({
+    pinId: args.pinId,
+    pin: gtaVersionById(args.pinId),
+    cohort,
+  });
+  if (error) throw new Error(error);
+  const pinId = args.pinId?.trim() || "";
+  const groupId = args.teachingGroupId?.trim() || "";
+  if (pinId && groupId) {
+    const group = snapshot.teachingGroups.find((row) => row.id === groupId);
+    if (
+      group?.gtaProgrammeVersionId &&
+      group.gtaProgrammeVersionId !== pinId
+    ) {
+      throw new Error(PIN_GROUP_MISMATCH_MESSAGE);
+    }
+  }
+}
+
 export function listEnrolments(): AdminApprenticeEnrolment[] {
   ensureHydrated();
   return snapshot.enrolments
@@ -389,16 +431,10 @@ export function getEnrolment(idValue: string): AdminApprenticeEnrolment | undefi
 export async function createEnrolment(input: EnrolmentInput): Promise<AdminApprenticeEnrolment> {
   ensureHydrated();
   if (isLiveAdminStoreEnabled()) {
-    const response = await fetch("/api/admin/store", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ action: "createEnrolment", input }),
-    });
-    if (!response.ok) {
-      throw new Error("Unable to create enrolment");
-    }
-    const data = (await response.json()) as { enrolment: AdminApprenticeEnrolment };
+    const data = await liveAdminPost<{
+      enrolment: AdminApprenticeEnrolment;
+      memberships?: AdminTeachingGroupMembership[];
+    }>({ action: "createEnrolment", input }, "Unable to create enrolment");
     const enrolment = normalizeEnrolmentTiming(data.enrolment);
     snapshot = {
       ...snapshot,
@@ -406,19 +442,41 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminAppre
         enrolment,
         ...snapshot.enrolments.filter((row) => row.id !== enrolment.id),
       ],
+      teachingGroupMemberships: data.memberships
+        ? [
+            ...data.memberships,
+            ...snapshot.teachingGroupMemberships.filter(
+              (row) => !data.memberships?.some((next) => next.id === row.id),
+            ),
+          ]
+        : snapshot.teachingGroupMemberships,
     };
     emit();
     return enrolment;
   }
+
+  const enrolmentId = id("enr");
+  assertPinCohortAndGroup({
+    pinId: input.gtaProgrammeVersionId ?? null,
+    cohortId: input.cohortId,
+    teachingGroupId: input.teachingGroupId ?? null,
+  });
+
   let teachingGroupId = input.teachingGroupId ?? null;
   let tutorName = input.tutorName.trim();
   let collegeDays = input.collegeDays.trim();
-  let cohortId = input.cohortId;
+  let memberships = snapshot.teachingGroupMemberships ?? [];
   if (teachingGroupId) {
     const applied = cohortOps.applyTeachingGroupToEnrolmentPatch(
       teachingGroupId,
       Boolean(input.allowOverCapacity),
-      "",
+      {
+        id: enrolmentId,
+        gtaProgrammeVersionId: input.gtaProgrammeVersionId ?? null,
+        teachingGroupId: null,
+        tutorName,
+        collegeDays,
+      },
     );
     if ("error" in applied) {
       throw new Error(applied.error);
@@ -426,12 +484,21 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminAppre
     teachingGroupId = applied.patch.teachingGroupId ?? teachingGroupId;
     tutorName = (applied.patch.tutorName ?? tutorName).trim();
     collegeDays = (applied.patch.collegeDays ?? collegeDays).trim();
-    cohortId = applied.patch.cohortId ?? cohortId;
+    memberships = applyMembershipPlanToList({
+      memberships,
+      plan: {
+        enrolmentPatch: applied.patch,
+        closeMembershipId: applied.closeMembershipId,
+        newMembership: applied.newMembership,
+      },
+      newId: id("tgm"),
+      leftAt: new Date().toISOString(),
+    });
   }
 
   const stamp = new Date().toISOString();
   const row = normalizeEnrolmentTiming({
-    id: id("enr"),
+    id: enrolmentId,
     kind: input.kind,
     status:
       input.status ??
@@ -445,7 +512,7 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminAppre
     programmeName: input.programmeName,
     standardCode: input.standardCode,
     gtaProgrammeVersionId: input.gtaProgrammeVersionId ?? null,
-    cohortId,
+    cohortId: input.cohortId,
     teachingGroupId,
     employerId: input.employerId,
     employerName: input.employerName,
@@ -497,6 +564,7 @@ export async function createEnrolment(input: EnrolmentInput): Promise<AdminAppre
   snapshot = {
     ...snapshot,
     enrolments: [row, ...snapshot.enrolments],
+    teachingGroupMemberships: memberships,
     users: provisionedUser
       ? [provisionedUser, ...snapshot.users]
       : snapshot.users,
@@ -511,20 +579,39 @@ export async function updateEnrolment(
 ): Promise<AdminApprenticeEnrolment | null> {
   ensureHydrated();
   if (isLiveAdminStoreEnabled()) {
-    const response = await fetch("/api/admin/store", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({ action: "updateEnrolment", id: idValue, patch }),
-    });
-    if (!response.ok) return null;
-    const data = (await response.json()) as { enrolment: AdminApprenticeEnrolment };
+    const data = await liveAdminPost<{
+      enrolment: AdminApprenticeEnrolment;
+      memberships?: AdminTeachingGroupMembership[];
+    }>(
+      { action: "updateEnrolment", id: idValue, patch },
+      "Unable to update enrolment",
+    );
     const enrolment = normalizeEnrolmentTiming(data.enrolment);
     snapshot = {
       ...snapshot,
       enrolments: snapshot.enrolments.map((row) =>
         row.id === idValue ? enrolment : row,
       ),
+      teachingGroupMemberships: data.memberships
+        ? snapshot.teachingGroupMemberships
+            .filter(
+              (row) =>
+                row.enrolmentId !== idValue ||
+                data.memberships?.some((next) => next.id === row.id),
+            )
+            .map(
+              (row) =>
+                data.memberships?.find((next) => next.id === row.id) ?? row,
+            )
+            .concat(
+              data.memberships.filter(
+                (row) =>
+                  !snapshot.teachingGroupMemberships.some(
+                    (existing) => existing.id === row.id,
+                  ),
+              ),
+            )
+        : snapshot.teachingGroupMemberships,
     };
     emit();
     return enrolment;
@@ -532,25 +619,62 @@ export async function updateEnrolment(
   const existing = snapshot.enrolments.find((e) => e.id === idValue);
   if (!existing) return null;
 
-  let derived: Partial<AdminApprenticeEnrolment> = {};
-  if (patch.teachingGroupId !== undefined) {
-    if (patch.teachingGroupId) {
-      const group = snapshot.teachingGroups.find(
-        (g) => g.id === patch.teachingGroupId,
-      );
-      if (group) requireCohortUnlocked(group.cohortId);
-    } else if (existing.cohortId) {
-      requireCohortUnlocked(existing.cohortId);
+  const nextPin =
+    patch.gtaProgrammeVersionId !== undefined
+      ? patch.gtaProgrammeVersionId
+      : existing.gtaProgrammeVersionId;
+  const nextCohortId =
+    patch.cohortId !== undefined ? patch.cohortId : existing.cohortId;
+  const nextGroupId =
+    patch.teachingGroupId !== undefined
+      ? patch.teachingGroupId
+      : existing.teachingGroupId;
+
+  assertPinCohortAndGroup({
+    pinId: nextPin,
+    cohortId: nextCohortId,
+    teachingGroupId: nextGroupId,
+  });
+
+  if (
+    patch.gtaProgrammeVersionId !== undefined &&
+    patch.gtaProgrammeVersionId &&
+    existing.teachingGroupId &&
+    patch.teachingGroupId === undefined
+  ) {
+    const group = snapshot.teachingGroups.find(
+      (g) => g.id === existing.teachingGroupId,
+    );
+    if (
+      group?.gtaProgrammeVersionId &&
+      group.gtaProgrammeVersionId !== patch.gtaProgrammeVersionId
+    ) {
+      throw new Error(PIN_GROUP_MISMATCH_MESSAGE);
     }
+  }
+
+  let derived: Partial<AdminApprenticeEnrolment> = {};
+  let memberships = snapshot.teachingGroupMemberships ?? [];
+  if (patch.teachingGroupId !== undefined) {
     const applied = cohortOps.applyTeachingGroupToEnrolmentPatch(
       patch.teachingGroupId,
       Boolean(patch.allowOverCapacity),
-      idValue,
+      existing,
     );
     if ("error" in applied) {
       throw new Error(applied.error);
     }
     derived = applied.patch;
+    memberships = applyMembershipPlanToList({
+      memberships,
+      plan: {
+        enrolmentPatch: applied.patch,
+        closeMembershipId: applied.closeMembershipId,
+        newMembership: applied.newMembership,
+      },
+      newId: id("tgm"),
+      leftAt: new Date().toISOString(),
+    });
   }
 
   const next: AdminApprenticeEnrolment = {
@@ -576,9 +700,7 @@ export async function updateEnrolment(
         ? derived.teachingGroupId
         : (patch.teachingGroupId ?? existing.teachingGroupId),
     cohortId:
-      derived.cohortId !== undefined
-        ? derived.cohortId
-        : (patch.cohortId ?? existing.cohortId),
+      patch.cohortId !== undefined ? patch.cohortId : existing.cohortId,
     gtaProgrammeVersionId:
       patch.gtaProgrammeVersionId !== undefined
         ? patch.gtaProgrammeVersionId
@@ -595,6 +717,7 @@ export async function updateEnrolment(
     enrolments: snapshot.enrolments.map((e) =>
       e.id === idValue ? normalised : e,
     ),
+    teachingGroupMemberships: memberships,
   };
   emit();
   return normalised;
@@ -831,6 +954,8 @@ cohortOps = createCohortOps({
   getSnapshot: () => ({
     cohorts: snapshot.cohorts,
     teachingGroups: snapshot.teachingGroups,
+    teachingGroupMemberships: snapshot.teachingGroupMemberships ?? [],
+    gtaProgrammeVersions: snapshot.gtaProgrammeVersions ?? [],
     cohortChangeLogs: snapshot.cohortChangeLogs,
     enrolments: snapshot.enrolments,
   }),

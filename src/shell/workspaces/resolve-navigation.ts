@@ -113,7 +113,8 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/management/dashboard", label: "Management Dashboard", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
           { href: "/management/employers", label: "Employer Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/programmes-records", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/cohorts", label: "Cohorts & Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/management/cohorts", label: "Cohorts", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/management/teaching-groups", label: "Teaching Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/intake", label: "Apprentice Intake", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/enrolments", label: "Apprentice Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/apprentices?from=management", label: "Apprentices", permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
@@ -138,7 +139,8 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       {
         items: [
           { href: "/administration/dashboard", label: "Administration Dashboard", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
-          { href: "/administration/cohorts", label: "Cohorts & Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/administration/cohorts", label: "Cohorts", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+          { href: "/administration/teaching-groups", label: "Teaching Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/employers", label: "Employer Records", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/apprentices?from=administration", label: "Apprentices", permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
           { href: "/administration/programmes", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },

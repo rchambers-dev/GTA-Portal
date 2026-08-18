@@ -1,10 +1,15 @@
 import type { AdminPortalUser } from "./types";
 import { parseCohortTeachers } from "./cohort-teachers";
 
-/** Staff marked as Tutor — for cohort / apprentice tutor dropdowns. */
+/** Staff who may own a Teaching Group — Tutor role or a tutor job title. */
 export function listTutorStaff(users: AdminPortalUser[]): AdminPortalUser[] {
   return users
-    .filter((row) => row.role === "Tutor")
+    .filter(
+      (row) =>
+        row.status !== "disabled" &&
+        (row.role === "Tutor" ||
+          row.jobTitles.some((title) => /tutor/i.test(title))),
+    )
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
 

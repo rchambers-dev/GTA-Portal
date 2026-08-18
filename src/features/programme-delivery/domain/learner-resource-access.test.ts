@@ -60,6 +60,8 @@ function att(
     sessionId: "sess-w003",
     spineItemId: "b1",
     role: overrides.audience === "LEARNER_VISIBLE" ? "LEARNER_LEARNING" : "TUTOR_DELIVERY",
+    learnerReleaseTiming:
+      overrides.audience === "LEARNER_VISIBLE" ? "WITH_SESSION" : null,
     sortOrder: 10,
     metadata: {},
     createdAt: "",
@@ -116,6 +118,44 @@ describe("decideApprenticeResourceAccess", () => {
     if (result.ok) return;
     expect(result.status).toBe(403);
     expect(result.error).toBe(LEARNER_SESSION_LOCKED_ERROR);
+  });
+
+  it("denies REVIEW_LATER until review materials are released", () => {
+    const result = decideApprenticeResourceAccess({
+      resourceId: learnerPpt.id,
+      resource: learnerPpt,
+      attachments: [
+        att({
+          resourceId: learnerPpt.id,
+          audience: "LEARNER_VISIBLE",
+          learnerReleaseTiming: "REVIEW_LATER",
+        }),
+      ],
+      blocks: [block([sessionView({ id: "sess-w003", openable: true })])],
+      isTest: true,
+      reviewReleasedSessionIds: new Set(),
+    });
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.status).toBe(404);
+  });
+
+  it("allows REVIEW_LATER after review materials are released", () => {
+    const result = decideApprenticeResourceAccess({
+      resourceId: learnerPpt.id,
+      resource: learnerPpt,
+      attachments: [
+        att({
+          resourceId: learnerPpt.id,
+          audience: "LEARNER_VISIBLE",
+          learnerReleaseTiming: "REVIEW_LATER",
+        }),
+      ],
+      blocks: [block([sessionView({ id: "sess-w003", openable: true })])],
+      isTest: true,
+      reviewReleasedSessionIds: new Set(["sess-w003"]),
+    });
+    expect(result).toEqual({ ok: true, sessionId: "sess-w003" });
   });
 
   it("denies TUTOR_ONLY even when the Session is released", () => {

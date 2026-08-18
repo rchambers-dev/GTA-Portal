@@ -3,14 +3,21 @@
  */
 
 import type {
+  LearnerReleaseTiming,
   ProgrammeResourceAttachmentRecord,
   ProgrammeResourceRecord,
 } from "@/features/programme-definition/domain/programme-resources";
 
 export function filterLearnerVisibleAttachments(
   attachments: ProgrammeResourceAttachmentRecord[],
+  opts?: { learnerReleaseTiming?: LearnerReleaseTiming },
 ): ProgrammeResourceAttachmentRecord[] {
-  return attachments.filter((a) => a.audience === "LEARNER_VISIBLE");
+  return attachments.filter(
+    (a) =>
+      a.audience === "LEARNER_VISIBLE" &&
+      (!opts?.learnerReleaseTiming ||
+        a.learnerReleaseTiming === opts.learnerReleaseTiming),
+  );
 }
 
 export function assertNoTutorOnlyLeak(
@@ -26,13 +33,24 @@ export function learnerVisibleResourcesForSession(input: {
   attachments: ProgrammeResourceAttachmentRecord[];
   resources: ProgrammeResourceRecord[];
   sessionId: string;
+  learnerReleaseTiming?: LearnerReleaseTiming;
 }): ProgrammeResourceRecord[] {
   const ids = new Set(
-    filterLearnerVisibleAttachments(input.attachments)
+    filterLearnerVisibleAttachments(input.attachments, {
+      learnerReleaseTiming: input.learnerReleaseTiming,
+    })
       .filter((a) => a.sessionId === input.sessionId)
       .map((a) => a.resourceId),
   );
   return input.resources.filter((r) => ids.has(r.id));
+}
+
+export function hasHeldReviewMaterials(
+  attachments: ProgrammeResourceAttachmentRecord[],
+): boolean {
+  return filterLearnerVisibleAttachments(attachments, {
+    learnerReleaseTiming: "REVIEW_LATER",
+  }).some((a) => Boolean(a.sessionId));
 }
 
 /** Tutor-delivery materials for a Session — never mix into learner views. */

@@ -22,12 +22,7 @@ import type {
 import { enrolmentKindLabel } from "../domain/enrolment-status";
 import { Select } from "@/components/ui/Select";
 import { useAdminStore } from "../hooks/useAdminStore";
-import { CohortTeachersPicker } from "../components/CohortTeachersPicker";
-import { CohortTeachingGroupsPanel } from "../components/CohortTeachingGroupsPanel";
-import { cohortTeacherList } from "../domain/tutor-options";
-import {
-  formatCohortTeachers,
-} from "../domain/cohort-teachers";
+import { formatCohortTeachers } from "../domain/cohort-teachers";
 import {
   defaultProductForStandard,
   deliverySpineLabel,
@@ -38,9 +33,11 @@ import {
   productById,
   productsForStandard,
   resolveProductId,
-  type DeliverySpine,
 } from "../domain/cohort-products";
-import { plannedDatesFromStart } from "../domain/programme-duration";
+import {
+  buildCohortName,
+  enrolmentOpensFromIntakeStart,
+} from "../domain/cohort-intake";
 import styles from "./admin-pages.module.css";
 
 type FormState = CohortInput;
@@ -89,83 +86,6 @@ function emptyForm(programme?: AdminProgrammeRecord): FormState {
   };
 }
 
-/** "Autocare Level 2" → "Autocare L2" */
-function programmeShortLabel(name: string): string {
-  return name
-    .replace(/\bLevel\s+(\d+)\b/gi, "L$1")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-const INTAKE_MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const;
-
-function formatIntakeMonthYear(isoDate: string): string | null {
-  const match = /^(\d{4})-(\d{2})/.exec(isoDate);
-  if (!match) return null;
-  const year = match[1];
-  const monthIndex = Number(match[2]) - 1;
-  if (monthIndex < 0 || monthIndex > 11) return null;
-  return `${INTAKE_MONTHS[monthIndex]} ${year}`;
-}
-
-function formatVersionLabel(version: string): string | null {
-  const trimmed = version.trim().replace(/^v/i, "");
-  if (!trimmed) return null;
-  return `v${trimmed}`;
-}
-
-/**
- * e.g. Autocare L2 (ST0499) · v1.3 · Groups · Dec 2025–Jun 2028
- * (Teachers, groups and college days live under the intake — not in the name.)
- */
-function buildCohortName(input: {
-  programmeName: string;
-  standardCode?: string;
-  standardVersion?: string;
-  deliverySpine?: DeliverySpine | string;
-  startDate: string;
-  expectedEndDate?: string;
-}): string {
-  const programme = programmeShortLabel(input.programmeName);
-  const when = formatIntakeMonthYear(input.startDate);
-  if (!programme || !when) return "";
-
-  const code = input.standardCode?.trim().toUpperCase() ?? "";
-  const programmePart = code ? `${programme} (${code})` : programme;
-  const parts = [programmePart];
-
-  const product = formatCohortProductLabel(
-    input.standardVersion ?? "",
-    input.deliverySpine,
-  );
-  if (product) {
-    parts.push(product);
-  } else {
-    const version = formatVersionLabel(input.standardVersion ?? "");
-    if (version) parts.push(version);
-  }
-
-  const endWhen = input.expectedEndDate
-    ? formatIntakeMonthYear(input.expectedEndDate)
-    : null;
-  parts.push(endWhen ? `${when}–${endWhen}` : when);
-
-  return parts.join(" · ");
-}
-
 function autoNameFromForm(form: FormState): string {
   return buildCohortName({
     programmeName: form.programmeName,
@@ -173,11 +93,9 @@ function autoNameFromForm(form: FormState): string {
     standardVersion: form.standardVersion,
     deliverySpine: form.deliverySpine,
     startDate: form.startDate,
-    expectedEndDate: form.expectedEndDate,
   });
 }
 
-/** Cohort title without teacher / day / group suffixes. */
 function cohortDisplayName(row: AdminCohortRecord): string {
   const auto = buildCohortName({
     programmeName: row.programmeName,
@@ -185,7 +103,6 @@ function cohortDisplayName(row: AdminCohortRecord): string {
     standardVersion: row.standardVersion,
     deliverySpine: row.deliverySpine,
     startDate: row.startDate,
-    expectedEndDate: row.expectedEndDate,
   });
   if (auto) return auto;
   return row.name;
@@ -203,21 +120,15 @@ function withAutoCohortName(
   return next;
 }
 
-/** Refresh name + expected end when programme or intake start changes. */
+/** Refresh name + Enrolment Opens when Intake Start changes. */
 function withAutoCohortFields(
   prev: FormState,
   patch: Partial<FormState>,
   nameLocked: boolean,
-  durationMonths: number | undefined,
 ): FormState {
   const next = { ...prev, ...patch };
-  const refreshEnd =
-    patch.startDate !== undefined || patch.programmeId !== undefined;
-  if (refreshEnd) {
-    const planned = plannedDatesFromStart(next.startDate, durationMonths);
-    if (planned.practicalEndDate) {
-      next.expectedEndDate = planned.practicalEndDate;
-    }
+  if (patch.startDate !== undefined) {
+    next.enrolmentOpensDate = enrolmentOpensFromIntakeStart(next.startDate);
   }
   if (!nameLocked) {
     const autoName = autoNameFromForm(next);
@@ -376,7 +287,6 @@ export function AdminCohortsScreen() {
   const [form, setForm] = useState<FormState>(() =>
     emptyForm(programmes[0]),
   );
-  const selectedProgramme = programmes.find((p) => p.id === form.programmeId);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [lockBusy, setLockBusy] = useState(false);
@@ -472,9 +382,8 @@ export function AdminCohortsScreen() {
     if (patch.enrolmentOpensDate != null) {
       return `Enrolment opens ${patch.enrolmentOpensDate || "(cleared)"}`;
     }
-    if (patch.startDate != null) return `Start date set to ${patch.startDate}`;
-    if (patch.expectedEndDate != null) {
-      return `Expected end set to ${patch.expectedEndDate || "(cleared)"}`;
+    if (patch.startDate != null) {
+      return `Intake start set to ${patch.startDate}`;
     }
     if (patch.status != null) return `Status set to ${patch.status}`;
     if (patch.notes != null) return "Notes updated";
@@ -559,31 +468,6 @@ export function AdminCohortsScreen() {
     };
   }, [apprenticeMenuId]);
 
-  /** One-time: drop legacy tutor names from stored cohort titles. */
-  const namesSyncedRef = useRef(false);
-  useEffect(() => {
-    if (namesSyncedRef.current || store.cohorts.length === 0) return;
-    namesSyncedRef.current = true;
-    void (async () => {
-      for (const row of store.cohorts) {
-        const clean = cohortDisplayName(row);
-        if (!clean || clean === row.name) continue;
-        try {
-          const wasLocked = row.locked !== false;
-          if (wasLocked) {
-            await updateCohort(row.id, { locked: false });
-          }
-          await updateCohort(row.id, {
-            name: clean,
-            ...(wasLocked ? { locked: true } : {}),
-          });
-        } catch {
-          // Leave display-only clean name if persist fails.
-        }
-      }
-    })();
-  }, [store.cohorts]);
-
   function openCreate() {
     setEditingId(null);
     setNameLocked(false);
@@ -610,12 +494,13 @@ export function AdminCohortsScreen() {
       standardCode: row.standardCode,
       standardVersion: row.standardVersion,
       deliverySpine: normalizeDeliverySpine(row.deliverySpine),
-      enrolmentOpensDate: row.enrolmentOpensDate,
+      enrolmentOpensDate:
+        enrolmentOpensFromIntakeStart(row.startDate) || row.enrolmentOpensDate,
       startDate: row.startDate,
       expectedEndDate: row.expectedEndDate,
       teachingGroup: row.teachingGroup,
       collegeDays: row.collegeDays,
-      teacherNames: cohortTeacherList(row),
+      teacherNames: row.teacherNames ?? [],
       status: row.status,
       notes: row.notes,
     });
@@ -667,7 +552,6 @@ export function AdminCohortsScreen() {
             : {}),
         },
         nameLocked,
-        match?.durationMonths,
       ),
     );
   }
@@ -698,6 +582,7 @@ export function AdminCohortsScreen() {
       name: form.name.trim(),
       standardVersion: form.standardVersion.trim().replace(/^v/i, ""),
       deliverySpine: normalizeDeliverySpine(form.deliverySpine),
+      enrolmentOpensDate: enrolmentOpensFromIntakeStart(form.startDate),
       teacherNames: form.teacherNames ?? [],
       tutorName: formatCohortTeachers(form.teacherNames ?? []),
     };
@@ -733,8 +618,8 @@ export function AdminCohortsScreen() {
   return (
     <ApprenticePageShell
       eyebrow="Administration"
-      title="Cohorts & Groups"
-      description="Set up intakes (programme version + dates), select tutors, then create each tutor’s teaching groups with college days and capacity. Place apprentices into a tutor’s group."
+      title="Cohorts"
+      description="Administrative intakes: programme, Skills England version, Enrolment Opens and Intake Start. Teaching Groups are independent live classes — they are not owned by an intake."
       actions={
         <button type="button" className={styles.primaryBtn} onClick={openCreate}>
           Add cohort
@@ -757,9 +642,10 @@ export function AdminCohortsScreen() {
                 </span>
               </div>
               <p className={styles.formGroupMeta}>
-                Pick the Skills England pack and delivery spine together. Older
-                cohorts stay on groups; new intakes can use the same pack on
-                blocks. Both lock for the life of the intake.
+                Pick the Skills England pack and GTA delivery spine together.
+                That product locks for the life of the intake once it has
+                started. Intake Start is when this intake begins — not each
+                apprentice&apos;s individual apprenticeship start.
               </p>
 
               <div className={styles.formGrid}>
@@ -871,23 +757,6 @@ export function AdminCohortsScreen() {
                   </>
                 )}
                 <label className={styles.field}>
-                  <span>Enrolment opens</span>
-                  <input
-                    type="date"
-                    value={form.enrolmentOpensDate}
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        enrolmentOpensDate: e.target.value,
-                      }))
-                    }
-                  />
-                  <span className={styles.fieldHint}>
-                    While planned, new apprentices auto-flow into this cohort from
-                    this date until it goes active.
-                  </span>
-                </label>
-                <label className={styles.field}>
                   <span>
                     Intake start{" "}
                     <em className={styles.fieldRequired}>required</em>
@@ -901,34 +770,26 @@ export function AdminCohortsScreen() {
                           prev,
                           { startDate: e.target.value },
                           nameLocked,
-                          selectedProgramme?.durationMonths ??
-                            programmes.find((p) => p.id === prev.programmeId)
-                              ?.durationMonths,
                         ),
                       );
                     }}
                     required
                   />
+                  <span className={styles.fieldHint}>
+                    The date this intake begins. Apprentices in this intake can
+                    have different individual start dates.
+                  </span>
                 </label>
                 <label className={styles.field}>
-                  <span>Expected end / gateway</span>
+                  <span>Enrolment opens</span>
                   <input
                     type="date"
-                    value={form.expectedEndDate}
-                    onChange={(e) =>
-                      setForm((prev) =>
-                        withAutoCohortName(
-                          prev,
-                          { expectedEndDate: e.target.value },
-                          nameLocked,
-                        ),
-                      )
-                    }
+                    value={form.enrolmentOpensDate}
+                    readOnly
                   />
                   <span className={styles.fieldHint}>
-                    {selectedProgramme?.durationMonths
-                      ? `Auto-filled as intake start + ${selectedProgramme.durationMonths} months (Skills England typical duration). Edit to override.`
-                      : "Auto-fills from Skills England duration once a programme and intake start are set."}
+                    One calendar month before Intake Start — the window for
+                    staff to prepare the intake and assign future starters.
                   </span>
                 </label>
                 <label className={`${styles.field} ${styles.fieldWide}`}>
@@ -943,30 +804,12 @@ export function AdminCohortsScreen() {
                       setForm((prev) => ({ ...prev, name: e.target.value }));
                     }}
                     required
-                    placeholder="Fills from programme, version, dates…"
+                    placeholder="Fills from programme, version, intake month…"
                   />
                   <span className={styles.fieldHint}>
-                    Auto-filled as programme (code) · version · start–end.
-                    Teaching groups and college days are set after create, under
-                    each tutor.
-                  </span>
-                </label>
-                <label className={`${styles.field} ${styles.fieldWide}`}>
-                  <span>Teachers who teach this cohort</span>
-                  <CohortTeachersPicker
-                    users={store.users}
-                    selected={form.teacherNames ?? []}
-                    onChange={(teacherNames) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        teacherNames,
-                        tutorName: formatCohortTeachers(teacherNames),
-                      }))
-                    }
-                  />
-                  <span className={styles.fieldHint}>
-                    Add only tutors who will own groups on this intake. Create
-                    their day-specific groups after the cohort exists.
+                    Auto-filled as programme (code) · version · month year
+                    Intake. This names the intake — not a shared learner
+                    timeline.
                   </span>
                 </label>
                 <label className={styles.field}>
@@ -985,6 +828,11 @@ export function AdminCohortsScreen() {
                       }))
                     }
                   />
+                  <span className={styles.fieldHint}>
+                    Planned = preparing (intake start still ahead). Active =
+                    intake has started; learners finish on their own dates.
+                    Completed is staff-controlled when the intake is historical.
+                  </span>
                 </label>
                 <label className={`${styles.field} ${styles.fieldWide}`}>
                   <span>Notes</span>
@@ -1076,14 +924,6 @@ export function AdminCohortsScreen() {
                   : linked.length > 0
                     ? "green"
                     : "amber";
-              const candidates = store.enrolments
-                .filter(
-                  (e) =>
-                    e.standardCode.toUpperCase() ===
-                      row.standardCode.toUpperCase() ||
-                    e.cohortId === row.id,
-                )
-                .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
               return (
                 <article
@@ -1118,27 +958,22 @@ export function AdminCohortsScreen() {
                         )}
                       </span>
                       <span>
-                        Starts {formatDate(row.startDate)}
-                        {row.expectedEndDate
-                          ? ` · ends ${formatDate(row.expectedEndDate)}`
+                        Intake start {formatDate(row.startDate)}
+                        {enrolmentOpensFromIntakeStart(row.startDate)
+                          ? ` · enrolment opens ${formatDate(enrolmentOpensFromIntakeStart(row.startDate))}`
                           : ""}
                         {(() => {
-                          const teachers = cohortTeacherList(row);
-                          const groupCount = (store.teachingGroups ?? []).filter(
-                            (g) => g.cohortId === row.id,
-                          ).length;
-                          const bits: string[] = [];
-                          if (teachers.length) {
-                            bits.push(
-                              `${teachers.length} teacher${teachers.length === 1 ? "" : "s"}`,
-                            );
-                          }
-                          if (groupCount) {
-                            bits.push(
-                              `${groupCount} group${groupCount === 1 ? "" : "s"}`,
-                            );
-                          }
-                          return bits.length ? ` · ${bits.join(" · ")}` : "";
+                          const groupIds = new Set(
+                            (store.enrolments ?? [])
+                              .filter(
+                                (e) =>
+                                  e.cohortId === row.id && e.teachingGroupId,
+                              )
+                              .map((e) => e.teachingGroupId as string),
+                          );
+                          return groupIds.size
+                            ? ` · currently in ${groupIds.size} teaching group${groupIds.size === 1 ? "" : "s"}`
+                            : "";
                         })()}
                       </span>
                     </div>
@@ -1469,55 +1304,36 @@ export function AdminCohortsScreen() {
                             cohort has started.
                           </span>
                         ) : null}
-                        <label
-                          className={`${styles.detailField} ${styles.detailFieldWide}`}
-                        >
-                          <span className={styles.detailFieldLabel}>
-                            Teachers who teach this cohort
-                          </span>
-                          <CohortTeachersPicker
-                            users={store.users}
-                            selected={cohortTeacherList(row)}
-                            disabled={isLocked}
-                            onChange={(teacherNames) =>
-                              void patchCohort(row.id, {
-                                teacherNames,
-                                tutorName: formatCohortTeachers(teacherNames),
-                              })
-                            }
-                          />
-                          <span className={styles.fieldHint}>
-                            Only selected teachers can own teaching groups below.
-                          </span>
-                        </label>
-                        <CohortInlineField
-                          label="Enrolment opens"
-                          value={row.enrolmentOpensDate}
-                          type="date"
-                          readOnly={isLocked}
-                          onCommit={(next) =>
-                            void patchCohort(row.id, {
-                              enrolmentOpensDate: next,
-                            })
-                          }
-                        />
                         <CohortInlineField
                           label="Intake start"
                           value={row.startDate}
                           type="date"
                           readOnly={isLocked}
                           onCommit={(next) =>
-                            void patchCohort(row.id, { startDate: next })
+                            void patchCohort(row.id, {
+                              startDate: next,
+                              enrolmentOpensDate:
+                                enrolmentOpensFromIntakeStart(next),
+                              name:
+                                buildCohortName({
+                                  programmeName: row.programmeName,
+                                  standardCode: row.standardCode,
+                                  standardVersion: row.standardVersion,
+                                  deliverySpine: row.deliverySpine,
+                                  startDate: next,
+                                }) || row.name,
+                            })
                           }
                         />
                         <CohortInlineField
-                          label="Expected end"
-                          value={row.expectedEndDate}
-                          type="date"
-                          readOnly={isLocked}
-                          onCommit={(next) =>
-                            void patchCohort(row.id, { expectedEndDate: next })
+                          label="Enrolment opens"
+                          value={
+                            enrolmentOpensFromIntakeStart(row.startDate) ||
+                            row.enrolmentOpensDate
                           }
+                          type="date"
+                          readOnly
+                          onCommit={() => undefined}
                         />
                         <label className={styles.detailField}>
                           <span className={styles.detailFieldLabel}>
@@ -1550,16 +1366,70 @@ export function AdminCohortsScreen() {
                         />
                       </div>
 
-                      <CohortTeachingGroupsPanel
-                        cohort={row}
-                        groups={store.teachingGroups ?? []}
-                        enrolments={store.enrolments}
-                        candidates={candidates}
-                        locked={isLocked}
-                        onSessionEdit={recordSessionEdit}
-                        onError={setError}
-                        onSuccess={setSuccess}
-                      />
+                      {(() => {
+                        const groupIds = [
+                          ...new Set(
+                            (store.enrolments ?? [])
+                              .filter(
+                                (e) =>
+                                  e.cohortId === row.id && e.teachingGroupId,
+                              )
+                              .map((e) => e.teachingGroupId as string),
+                          ),
+                        ];
+                        const groups = groupIds
+                          .map((id) =>
+                            (store.teachingGroups ?? []).find((g) => g.id === id),
+                          )
+                          .filter(Boolean);
+                        return (
+                          <div className={styles.formGroup}>
+                            <div className={styles.formGroupHead}>
+                              <h3 className={styles.formGroupTitle}>
+                                Teaching groups
+                              </h3>
+                              <span className={styles.formGroupBadge}>
+                                {groups.length}
+                              </span>
+                            </div>
+                            <p className={styles.formGroupMeta}>
+                              This intake does not own teaching groups. Apprentices
+                              from this intake are currently spread across{" "}
+                              {groups.length} teaching group
+                              {groups.length === 1 ? "" : "s"}. Create or edit
+                              groups in Teaching Groups.
+                            </p>
+                            {groups.length === 0 ? (
+                              <p className={styles.empty}>
+                                No apprentices from this intake are in a teaching
+                                group yet.
+                              </p>
+                            ) : (
+                              <ul className={styles.linkedApprenticeList}>
+                                {groups.map((group) =>
+                                  group ? (
+                                    <li key={group.id}>
+                                      <div className={styles.linkedApprenticeRow}>
+                                        <div
+                                          className={styles.linkedApprenticeMain}
+                                        >
+                                          <strong>{group.name}</strong>
+                                          <span>
+                                            {group.tutorName}
+                                            {group.collegeDays
+                                              ? ` · ${group.collegeDays}`
+                                              : ""}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  ) : null,
+                                )}
+                              </ul>
+                            )}
+                          </div>
+                        );
+                      })()}
 
                       <div className={styles.formGroupHead}>
                         <h3 className={styles.formGroupTitle}>Change history</h3>

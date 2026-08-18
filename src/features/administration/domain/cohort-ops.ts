@@ -14,14 +14,25 @@ import {
   formatCollegeDaysShort,
   parseCollegeDays,
 } from "./college-days";
+import {
+  currentMembershipForEnrolment,
+  GROUP_VERSION_MEMBER_MISMATCH_MESSAGE,
+  notesWithTutorIdentity,
+  planTeachingGroupMembershipChange,
+  teachingGroupFieldsForEnrolment,
+} from "./teaching-group-placement";
 import type {
   AdminCohortChangeLogEntry,
   AdminCohortRecord,
   AdminApprenticeEnrolment,
+  AdminGtaProgrammeVersionOption,
+  AdminTeachingGroupMembership,
   AdminTeachingGroupRecord,
 } from "./types";
 
 export const DEFAULT_TEACHING_GROUP_CAPACITY = 9;
+
+export { teachingGroupFieldsForEnrolment };
 
 export type CohortInput = {
   name: string;
@@ -47,18 +58,28 @@ export type CohortInput = {
 };
 
 export type TeachingGroupInput = {
-  cohortId: string;
+  /** Required for new groups. */
+  gtaProgrammeVersionId: string;
   tutorName: string;
+  tutorUserId?: string;
+  tutorEmail?: string;
   name: string;
   collegeDays: string;
   capacity?: number;
   notes?: string;
+  status?: AdminTeachingGroupRecord["status"];
+  /**
+   * @deprecated New groups do not take a cohort owner. Ignored on create.
+   */
+  cohortId?: string | null;
 };
 
 type SnapshotAccess = {
   getSnapshot: () => {
     cohorts: AdminCohortRecord[];
     teachingGroups: AdminTeachingGroupRecord[];
+    teachingGroupMemberships: AdminTeachingGroupMembership[];
+    gtaProgrammeVersions: AdminGtaProgrammeVersionOption[];
     cohortChangeLogs: AdminCohortChangeLogEntry[];
     enrolments: AdminApprenticeEnrolment[];
   };
@@ -106,29 +127,50 @@ export function createCohortOps(access: SnapshotAccess) {
   function applyTeachingGroupToEnrolmentPatch(
     teachingGroupId: string | null,
     allowOverCapacity: boolean,
-    enrolmentId: string,
-  ): { patch: Partial<AdminApprenticeEnrolment> } | { error: string } {
+    enrolment: Pick<
+      AdminApprenticeEnrolment,
+      | "id"
+      | "gtaProgrammeVersionId"
+      | "teachingGroupId"
+      | "tutorName"
+      | "collegeDays"
+    >,
+    actorName?: string,
+    nowIso?: string,
+  ):
+    | {
+        patch: Pick<
+          AdminApprenticeEnrolment,
+          "teachingGroupId" | "tutorName" | "collegeDays"
+        >;
+        closeMembershipId: string | null;
+        newMembership: Omit<AdminTeachingGroupMembership, "id"> | null;
+      }
+    | { error: string } {
     const snap = access.getSnapshot();
-    if (!teachingGroupId) {
-      return { patch: { teachingGroupId: null } };
+    const group = teachingGroupId
+      ? (snap.teachingGroups.find((g) => g.id === teachingGroupId) ?? null)
+      : null;
+    if (teachingGroupId && !group) {
+      return { error: "Teaching group not found" };
     }
-    const group = snap.teachingGroups.find((g) => g.id === teachingGroupId);
-    if (!group) return { error: "Teaching group not found" };
-    const count = snap.enrolments.filter(
-      (e) => e.teachingGroupId === teachingGroupId && e.id !== enrolmentId,
-    ).length;
-    if (count >= group.capacity && !allowOverCapacity) {
-      return {
-        error: `Group is full (${count}/${group.capacity}). Admins can confirm to add over capacity.`,
-      };
-    }
+    const planned = planTeachingGroupMembershipChange({
+      enrolment,
+      group,
+      currentMembership: currentMembershipForEnrolment(
+        snap.teachingGroupMemberships ?? [],
+        enrolment.id,
+      ),
+      enrolments: snap.enrolments,
+      allowOverCapacity,
+      actorName,
+      nowIso,
+    });
+    if ("error" in planned) return planned;
     return {
-      patch: {
-        teachingGroupId: group.id,
-        cohortId: group.cohortId,
-        tutorName: group.tutorName,
-        collegeDays: group.collegeDays,
-      },
+      patch: planned.enrolmentPatch,
+      closeMembershipId: planned.closeMembershipId,
+      newMembership: planned.newMembership,
     };
   }
 
@@ -280,22 +322,15 @@ export function createCohortOps(access: SnapshotAccess) {
     return { cohort, entry };
   }
 
+  /**
+   * @deprecated Use suggestCohortForLearnerStart with the learner's own start date.
+   * Kept so older callers do not silently assign by record-created date.
+   */
   function findIntakeCohort(
-    standardCode: string,
-    onDate: string = new Date().toISOString().slice(0, 10),
+    _standardCode: string,
+    _onDate: string = new Date().toISOString().slice(0, 10),
   ): AdminCohortRecord | null {
-    access.ensureHydrated();
-    const code = standardCode.trim().toUpperCase();
-    const eligible = access
-      .getSnapshot()
-      .cohorts.filter(
-        (c) =>
-          c.standardCode.toUpperCase() === code &&
-          c.status === "planned" &&
-          (!c.enrolmentOpensDate || c.enrolmentOpensDate <= onDate),
-      )
-      .sort((a, b) => a.startDate.localeCompare(b.startDate));
-    return eligible[0] ?? null;
+    return null;
   }
 
   async function setEnrolmentCohort(
@@ -303,12 +338,6 @@ export function createCohortOps(access: SnapshotAccess) {
     cohortId: string | null,
   ): Promise<AdminApprenticeEnrolment | null> {
     access.ensureHydrated();
-    if (!cohortId) {
-      return access.updateEnrolment(enrolmentId, {
-        cohortId: null,
-        teachingGroupId: null,
-      });
-    }
     return access.updateEnrolment(enrolmentId, { cohortId });
   }
 
@@ -324,12 +353,12 @@ export function createCohortOps(access: SnapshotAccess) {
   }
 
   function listTeachingGroups(
-    cohortId?: string,
+    gtaProgrammeVersionId?: string,
   ): AdminTeachingGroupRecord[] {
     access.ensureHydrated();
     const rows = [...access.getSnapshot().teachingGroups];
-    const filtered = cohortId
-      ? rows.filter((g) => g.cohortId === cohortId)
+    const filtered = gtaProgrammeVersionId
+      ? rows.filter((g) => g.gtaProgrammeVersionId === gtaProgrammeVersionId)
       : rows;
     return filtered.sort((a, b) => {
       const tutor = a.tutorName.localeCompare(b.tutorName);
@@ -338,14 +367,32 @@ export function createCohortOps(access: SnapshotAccess) {
     });
   }
 
+  function tutorDayClash(
+    tutorName: string,
+    collegeDays: string,
+    excludingId?: string,
+  ): AdminTeachingGroupRecord | undefined {
+    const snap = access.getSnapshot();
+    return snap.teachingGroups.find(
+      (g) =>
+        g.id !== excludingId &&
+        g.status === "active" &&
+        g.tutorName.toLowerCase() === tutorName.toLowerCase() &&
+        collegeDaysOverlap(g.collegeDays, collegeDays),
+    );
+  }
+
   async function createTeachingGroup(
     input: TeachingGroupInput,
   ): Promise<AdminTeachingGroupRecord> {
     access.ensureHydrated();
-    requireCohortUnlocked(input.cohortId);
 
     const tutorName = input.tutorName.trim();
     const collegeDays = input.collegeDays.trim();
+    const gtaProgrammeVersionId = input.gtaProgrammeVersionId.trim();
+    if (!gtaProgrammeVersionId) {
+      throw new Error("Choose the GTA Programme Version this group delivers.");
+    }
     if (!tutorName) {
       throw new Error("Choose a tutor who owns this group.");
     }
@@ -353,12 +400,7 @@ export function createCohortOps(access: SnapshotAccess) {
       throw new Error("Choose the college day this group attends.");
     }
     const snap = access.getSnapshot();
-    const clash = snap.teachingGroups.find(
-      (g) =>
-        g.cohortId === input.cohortId &&
-        g.tutorName.toLowerCase() === tutorName.toLowerCase() &&
-        collegeDaysOverlap(g.collegeDays, collegeDays),
-    );
+    const clash = tutorDayClash(tutorName, collegeDays);
     if (clash) {
       throw new Error(
         `${tutorName} already has “${clash.name}” on ${formatCollegeDaysShort(clash.collegeDays)}. Pick a free day.`,
@@ -368,12 +410,18 @@ export function createCohortOps(access: SnapshotAccess) {
     const stamp = new Date().toISOString();
     const row: AdminTeachingGroupRecord = {
       id: access.id("tgroup"),
-      cohortId: input.cohortId,
+      cohortId: null,
+      gtaProgrammeVersionId,
+      versionReviewRequired: false,
+      status: input.status ?? "active",
       tutorName,
       name: input.name.trim() || "Group",
       collegeDays,
       capacity: Math.max(1, input.capacity ?? DEFAULT_TEACHING_GROUP_CAPACITY),
-      notes: (input.notes ?? "").trim(),
+      notes: notesWithTutorIdentity(input.notes ?? "", {
+        id: input.tutorUserId,
+        email: input.tutorEmail,
+      }),
       createdAt: stamp,
       updatedAt: stamp,
     };
@@ -393,14 +441,61 @@ export function createCohortOps(access: SnapshotAccess) {
     const snap = access.getSnapshot();
     const existing = snap.teachingGroups.find((g) => g.id === idValue);
     if (!existing) return null;
-    requireCohortUnlocked(existing.cohortId);
+
+    const nextTutor = (patch.tutorName ?? existing.tutorName).trim();
+    const nextDays = (patch.collegeDays ?? existing.collegeDays).trim();
+    if (patch.tutorName != null || patch.collegeDays != null) {
+      if (!nextTutor) {
+        throw new Error("Choose a tutor who owns this group.");
+      }
+      if (!nextDays || parseCollegeDays(nextDays).length === 0) {
+        throw new Error("Choose the college day this group attends.");
+      }
+      const clash = tutorDayClash(nextTutor, nextDays, idValue);
+      if (clash) {
+        throw new Error(
+          `${nextTutor} already has “${clash.name}” on ${formatCollegeDaysShort(clash.collegeDays)}. Pick a free day.`,
+        );
+      }
+    }
+
+    let nextVersion =
+      patch.gtaProgrammeVersionId !== undefined
+        ? patch.gtaProgrammeVersionId.trim() || null
+        : existing.gtaProgrammeVersionId;
+    let versionReviewRequired = existing.versionReviewRequired;
+    if (patch.gtaProgrammeVersionId !== undefined) {
+      if (!nextVersion) {
+        throw new Error("Choose the GTA Programme Version this group delivers.");
+      }
+      const members = snap.enrolments.filter(
+        (e) => e.teachingGroupId === idValue,
+      );
+      const mismatched = members.some(
+        (e) => (e.gtaProgrammeVersionId?.trim() || "") !== nextVersion,
+      );
+      if (mismatched) {
+        throw new Error(GROUP_VERSION_MEMBER_MISMATCH_MESSAGE);
+      }
+      versionReviewRequired = false;
+    }
+
     const next: AdminTeachingGroupRecord = {
       ...existing,
-      tutorName: (patch.tutorName ?? existing.tutorName).trim(),
+      gtaProgrammeVersionId: nextVersion,
+      versionReviewRequired,
+      status: patch.status ?? existing.status,
+      tutorName: nextTutor,
       name: (patch.name ?? existing.name).trim(),
-      collegeDays: (patch.collegeDays ?? existing.collegeDays).trim(),
+      collegeDays: nextDays,
       capacity: Math.max(1, patch.capacity ?? existing.capacity),
-      notes: (patch.notes ?? existing.notes).trim(),
+      notes:
+        patch.notes != null || patch.tutorUserId != null || patch.tutorEmail != null
+          ? notesWithTutorIdentity(patch.notes ?? existing.notes, {
+              id: patch.tutorUserId,
+              email: patch.tutorEmail,
+            })
+          : existing.notes,
       updatedAt: new Date().toISOString(),
     };
     access.setSnapshot({
@@ -425,14 +520,18 @@ export function createCohortOps(access: SnapshotAccess) {
   async function deleteTeachingGroup(idValue: string): Promise<void> {
     access.ensureHydrated();
     const snap = access.getSnapshot();
-    const existingGroup = snap.teachingGroups.find((g) => g.id === idValue);
-    if (existingGroup) {
-      requireCohortUnlocked(existingGroup.cohortId);
-    }
     const attached = snap.enrolments.some((e) => e.teachingGroupId === idValue);
     if (attached) {
       throw new Error(
-        "Move or remove apprentices from this group before deleting it.",
+        "Move or remove apprentices from this group before deleting it. Historic groups should be set inactive instead.",
+      );
+    }
+    const historic = (snap.teachingGroupMemberships ?? []).some(
+      (row) => row.teachingGroupId === idValue,
+    );
+    if (historic) {
+      throw new Error(
+        "This teaching group has membership history. Set it inactive instead of deleting it.",
       );
     }
     access.setSnapshot({

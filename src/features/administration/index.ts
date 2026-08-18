@@ -5,5 +5,6 @@ export type { AccountSetupScope } from "./screens/AdminUsersScreen";
 export { AdminEmployersScreen } from "./screens/AdminEmployersScreen";
 export { AdminProgrammesScreen } from "./screens/AdminProgrammesScreen";
 export { AdminCohortsScreen } from "./screens/AdminCohortsScreen";
+export { AdminTeachingGroupsScreen } from "./screens/AdminTeachingGroupsScreen";
 export { AdminApprenticeIntakeScreen } from "./screens/AdminApprenticeIntakeScreen";
 export { AdminStaffScreen } from "./screens/AdminStaffScreen";

@@ -3,6 +3,7 @@ import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import { loadApprenticeLearningJourney } from "@/features/programme-delivery/domain/apprentice-learning-repository";
 import { decideApprenticeResourceAccess } from "@/features/programme-delivery/domain/learner-resource-access";
+import { listSessionReviewReleases } from "@/features/programme-delivery/domain/session-review-release-repository";
 import {
   catalogueFileOpenCapabilities,
   isPowerpointFilename,
@@ -50,9 +51,14 @@ export async function GET(_request: Request, { params }: Props) {
   try {
     const supabase = createSupabaseAdminClient();
     const journey = await loadApprenticeLearningJourney(supabase, apprenticeId);
-    const [resources, attachments] = await Promise.all([
+    const [resources, attachments, reviewReleases] = await Promise.all([
       listProgrammeResourcesForVersion(supabase, journey.programmeVersionId),
       listResourceAttachmentsForVersion(supabase, journey.programmeVersionId),
+      listSessionReviewReleases(supabase, {
+        programmeVersionId: journey.programmeVersionId,
+        apprenticeId,
+        apprenticeProgrammeId: journey.enrolmentId,
+      }),
     ]);
     const resource = resources.find((row) => row.id === id) ?? null;
     const access = decideApprenticeResourceAccess({
@@ -61,6 +67,9 @@ export async function GET(_request: Request, { params }: Props) {
       attachments,
       blocks: journey.blocks,
       isTest: journey.isTest,
+      reviewReleasedSessionIds: new Set(
+        reviewReleases.map((row) => row.sessionId),
+      ),
     });
     if (!access.ok) {
       return NextResponse.json(

@@ -143,14 +143,9 @@ export function ManagementApprenticeRplScreen() {
 
   const enrolment =
     enrolments.find((e) => e.apprenticeId === apprenticeId) ?? null;
-  const cohort = enrolment?.cohortId
-    ? admin.cohorts.find((c) => c.id === enrolment.cohortId)
-    : null;
 
-  const cohortStartDate =
-    cohort?.startDate || enrolment?.startDate || "2024-09-02";
-  const deliveryEnd =
-    cohort?.expectedEndDate || enrolment?.originalPlannedEndDate || null;
+  const learnerStartDate = enrolment?.startDate || "2024-09-02";
+  const deliveryEnd = enrolment?.originalPlannedEndDate || null;
 
   const resolution = useMemo(() => {
     if (!enrolment) return null;
@@ -195,7 +190,7 @@ export function ManagementApprenticeRplScreen() {
 
   const legacyPlan = useLegacy
     ? buildApprenticeFundingPlan({
-        cohortStartDate,
+        cohortStartDate: learnerStartDate,
         deliveryExpectedEndDate: deliveryEnd,
         rplByBlock: Object.fromEntries(
           Object.entries(rplByBlock).map(([k, v]) => [Number(k), v]),
@@ -379,9 +374,9 @@ export function ManagementApprenticeRplScreen() {
         {enrolment && legacyPlan ? (
           <div className={deliveryStyles.fundingStats}>
             <div className={deliveryStyles.fundingStat}>
-              <span>Cohort start</span>
+              <span>Apprenticeship start</span>
               <strong>
-                {formatDisplayDate(new Date(`${cohortStartDate}T12:00:00.000Z`))}
+                {formatDisplayDate(new Date(`${learnerStartDate}T12:00:00.000Z`))}
               </strong>
             </div>
             <div className={deliveryStyles.fundingStat}>

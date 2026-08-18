@@ -9,7 +9,7 @@ import { PERMISSIONS } from "@/lib/permissions/capabilities";
 
 export type TeachingGroupRecord = {
   id: string;
-  cohortId: string;
+  cohortId: string | null;
   name: string;
   tutorName: string;
   collegeDays: string;

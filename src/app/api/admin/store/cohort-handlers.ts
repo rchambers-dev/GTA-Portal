@@ -21,9 +21,22 @@ import {
 } from "@/features/administration/domain/cohort-lifecycle";
 import { normalizeDeliverySpine } from "@/features/administration/domain/cohort-products";
 import { DEFAULT_TEACHING_GROUP_CAPACITY } from "@/features/administration/domain/cohort-ops";
+import {
+  PIN_GROUP_MISMATCH_MESSAGE,
+  pinCompatibilityError,
+  type AdminGtaProgrammeVersionOption,
+} from "@/features/administration/domain/gta-programme-version-options";
+import {
+  currentMembershipForEnrolment,
+  GROUP_VERSION_MEMBER_MISMATCH_MESSAGE,
+  notesWithTutorIdentity,
+  planTeachingGroupMembershipChange,
+} from "@/features/administration/domain/teaching-group-placement";
 import type {
   AdminCohortChangeLogEntry,
   AdminCohortRecord,
+  AdminApprenticeEnrolment,
+  AdminTeachingGroupMembership,
   AdminTeachingGroupRecord,
 } from "@/features/administration/domain/types";
 import type {
@@ -65,7 +78,10 @@ export type CohortRow = {
 
 export type TeachingGroupRow = {
   id: string;
-  cohort_id: string;
+  cohort_id: string | null;
+  gta_programme_version_id?: string | null;
+  version_review_required?: boolean | null;
+  status?: string | null;
   tutor_name: string;
   name: string;
   college_days: string;
@@ -119,9 +135,13 @@ export function mapCohort(row: CohortRow): AdminCohortRecord {
 }
 
 export function mapTeachingGroup(row: TeachingGroupRow): AdminTeachingGroupRecord {
+  const status = row.status === "inactive" ? "inactive" : "active";
   return {
     id: row.id,
-    cohortId: row.cohort_id,
+    cohortId: row.cohort_id ?? null,
+    gtaProgrammeVersionId: row.gta_programme_version_id ?? null,
+    versionReviewRequired: Boolean(row.version_review_required),
+    status,
     tutorName: row.tutor_name,
     name: row.name,
     collegeDays: row.college_days,
@@ -151,10 +171,10 @@ export function mapCohortChangeLog(
   };
 }
 
-async function fetchCohortLocked(
+async function fetchCohortById(
   supabase: SupabaseAdmin,
   cohortId: string,
-): Promise<{ locked: boolean; cohort?: AdminCohortRecord } | { error: string }> {
+): Promise<AdminCohortRecord | { error: string }> {
   const { data, error } = await supabase
     .from("cohorts")
     .select("*")
@@ -163,8 +183,7 @@ async function fetchCohortLocked(
   if (error || !data) {
     return { error: error?.message ?? "Cohort not found" };
   }
-  const cohort = mapCohort(data as CohortRow);
-  return { locked: cohort.locked !== false, cohort };
+  return mapCohort(data as CohortRow);
 }
 
 export async function handleCohortAction(
@@ -398,15 +417,15 @@ export async function handleCohortAction(
 
   if (body.action === "createTeachingGroup") {
     const input = body.input;
-    const lockState = await fetchCohortLocked(supabase, input.cohortId);
-    if ("error" in lockState) {
-      return NextResponse.json({ error: lockState.error }, { status: 404 });
-    }
-    if (lockState.locked) {
-      return NextResponse.json({ error: COHORT_LOCKED_MESSAGE }, { status: 403 });
-    }
     const tutorName = input.tutorName.trim();
     const collegeDays = input.collegeDays.trim();
+    const gtaProgrammeVersionId = (input.gtaProgrammeVersionId ?? "").trim();
+    if (!gtaProgrammeVersionId) {
+      return NextResponse.json(
+        { error: "Choose the GTA Programme Version this group delivers." },
+        { status: 400 },
+      );
+    }
     if (!tutorName) {
       return NextResponse.json(
         { error: "Choose a tutor who owns this group." },
@@ -422,8 +441,8 @@ export async function handleCohortAction(
 
     const { data: existingRows, error: existingError } = await supabase
       .from("cohort_teaching_groups")
-      .select("id, name, tutor_name, college_days")
-      .eq("cohort_id", input.cohortId);
+      .select("id, name, tutor_name, college_days, status")
+      .eq("status", "active");
     if (existingError && !isMissingSchemaError(existingError.message)) {
       return NextResponse.json({ error: existingError.message }, { status: 500 });
     }
@@ -444,12 +463,18 @@ export async function handleCohortAction(
     const { data, error } = await supabase
       .from("cohort_teaching_groups")
       .insert({
-        cohort_id: input.cohortId,
+        cohort_id: null,
+        gta_programme_version_id: gtaProgrammeVersionId,
+        version_review_required: false,
+        status: input.status ?? "active",
         tutor_name: tutorName,
         name: input.name.trim() || "Group",
         college_days: collegeDays,
         capacity: Math.max(1, input.capacity ?? DEFAULT_TEACHING_GROUP_CAPACITY),
-        notes: (input.notes ?? "").trim(),
+        notes: notesWithTutorIdentity(input.notes ?? "", {
+          id: input.tutorUserId,
+          email: input.tutorEmail,
+        }),
       })
       .select("*")
       .single();
@@ -459,7 +484,7 @@ export async function handleCohortAction(
         return NextResponse.json(
           {
             error:
-              "Teaching groups missing. Run supabase/migrations/002_cohorts_and_teaching_groups.sql.",
+              "Teaching groups missing. Run supabase/migrations/002_cohorts_and_teaching_groups.sql and 034_independent_teaching_groups.sql.",
           },
           { status: 500 },
         );
@@ -492,12 +517,64 @@ export async function handleCohortAction(
       );
     }
     const existingMapped = mapTeachingGroup(existingGroup as TeachingGroupRow);
-    const lockState = await fetchCohortLocked(supabase, existingMapped.cohortId);
-    if ("error" in lockState) {
-      return NextResponse.json({ error: lockState.error }, { status: 404 });
+
+    const nextTutor = (patch.tutorName ?? existingMapped.tutorName).trim();
+    const nextDays = (patch.collegeDays ?? existingMapped.collegeDays).trim();
+    if (patch.tutorName != null || patch.collegeDays != null) {
+      if (!nextTutor) {
+        return NextResponse.json(
+          { error: "Choose a tutor who owns this group." },
+          { status: 400 },
+        );
+      }
+      if (!nextDays || parseCollegeDays(nextDays).length === 0) {
+        return NextResponse.json(
+          { error: "Choose the college day this group attends." },
+          { status: 400 },
+        );
+      }
+      const { data: existingRows } = await supabase
+        .from("cohort_teaching_groups")
+        .select("id, name, tutor_name, college_days, status")
+        .eq("status", "active")
+        .neq("id", body.id);
+      const clash = (existingRows ?? []).find(
+        (row) =>
+          String(row.tutor_name ?? "").toLowerCase() === nextTutor.toLowerCase() &&
+          collegeDaysOverlap(String(row.college_days ?? ""), nextDays),
+      );
+      if (clash) {
+        return NextResponse.json(
+          {
+            error: `${nextTutor} already has “${clash.name}” on ${formatCollegeDaysShort(String(clash.college_days ?? ""))}. Pick a free day.`,
+          },
+          { status: 409 },
+        );
+      }
     }
-    if (lockState.locked) {
-      return NextResponse.json({ error: COHORT_LOCKED_MESSAGE }, { status: 403 });
+
+    if (patch.gtaProgrammeVersionId !== undefined) {
+      const nextVersion = patch.gtaProgrammeVersionId.trim();
+      if (!nextVersion) {
+        return NextResponse.json(
+          { error: "Choose the GTA Programme Version this group delivers." },
+          { status: 400 },
+        );
+      }
+      const { data: members } = await supabase
+        .from("apprentice_programmes")
+        .select("id, gta_programme_version_id")
+        .eq("teaching_group_id", body.id);
+      const mismatched = (members ?? []).some(
+        (row) =>
+          String(row.gta_programme_version_id ?? "").trim() !== nextVersion,
+      );
+      if (mismatched) {
+        return NextResponse.json(
+          { error: GROUP_VERSION_MEMBER_MISMATCH_MESSAGE },
+          { status: 400 },
+        );
+      }
     }
 
     const update: Record<string, unknown> = {};
@@ -507,8 +584,17 @@ export async function handleCohortAction(
     if (patch.capacity != null) {
       update.capacity = Math.max(1, Math.round(patch.capacity));
     }
-    if (patch.notes != null) update.notes = patch.notes.trim();
-    if (patch.cohortId != null) update.cohort_id = patch.cohortId;
+    if (patch.notes != null || patch.tutorUserId != null || patch.tutorEmail != null) {
+      update.notes = notesWithTutorIdentity(patch.notes ?? existingMapped.notes, {
+        id: patch.tutorUserId,
+        email: patch.tutorEmail,
+      });
+    }
+    if (patch.gtaProgrammeVersionId != null) {
+      update.gta_programme_version_id = patch.gtaProgrammeVersionId.trim();
+      update.version_review_required = false;
+    }
+    if (patch.status != null) update.status = patch.status;
 
     const { data, error } = await supabase
       .from("cohort_teaching_groups")
@@ -562,14 +648,7 @@ export async function handleCohortAction(
       );
     }
     if (existingGroup) {
-      const mapped = mapTeachingGroup(existingGroup as TeachingGroupRow);
-      const lockState = await fetchCohortLocked(supabase, mapped.cohortId);
-      if ("error" in lockState) {
-        return NextResponse.json({ error: lockState.error }, { status: 404 });
-      }
-      if (lockState.locked) {
-        return NextResponse.json({ error: COHORT_LOCKED_MESSAGE }, { status: 403 });
-      }
+      // Groups are independent of cohort lock.
     }
 
     const { count, error: countError } = await supabase
@@ -583,7 +662,29 @@ export async function handleCohortAction(
     } else if ((count ?? 0) > 0) {
       return NextResponse.json(
         {
-          error: "Move or remove apprentices from this group before deleting it.",
+          error:
+            "Move or remove apprentices from this group before deleting it. Historic groups should be set inactive instead.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const { count: membershipCount, error: membershipCountError } = await supabase
+      .from("teaching_group_memberships")
+      .select("id", { count: "exact", head: true })
+      .eq("teaching_group_id", body.id);
+    if (membershipCountError) {
+      if (!isMissingSchemaError(membershipCountError.message)) {
+        return NextResponse.json(
+          { error: membershipCountError.message },
+          { status: 500 },
+        );
+      }
+    } else if ((membershipCount ?? 0) > 0) {
+      return NextResponse.json(
+        {
+          error:
+            "This teaching group has membership history. Set it inactive instead of deleting it.",
         },
         { status: 400 },
       );
@@ -610,4 +711,284 @@ export async function handleCohortAction(
   }
 
   return null;
+}
+
+export type TeachingGroupMembershipRow = {
+  id: string;
+  apprentice_programme_id: string;
+  teaching_group_id: string;
+  joined_at: string | null;
+  left_at: string | null;
+  is_current: boolean;
+  source: string;
+  recorded_at: string;
+  actor_name: string | null;
+  notes: string | null;
+};
+
+export function mapTeachingGroupMembership(
+  row: TeachingGroupMembershipRow,
+): AdminTeachingGroupMembership {
+  return {
+    id: row.id,
+    enrolmentId: row.apprentice_programme_id,
+    teachingGroupId: row.teaching_group_id,
+    joinedAt: row.joined_at,
+    leftAt: row.left_at,
+    isCurrent: Boolean(row.is_current),
+    source: row.source === "legacy_backfill" ? "legacy_backfill" : "staff",
+    recordedAt: row.recorded_at,
+    actorName: row.actor_name ?? "",
+    notes: row.notes ?? "",
+  };
+}
+
+export async function loadTeachingGroupMemberships(
+  supabase: SupabaseAdmin,
+): Promise<{
+  memberships: AdminTeachingGroupMembership[];
+  error?: string;
+}> {
+  const { data, error } = await supabase
+    .from("teaching_group_memberships")
+    .select("*")
+    .order("recorded_at", { ascending: false });
+  if (error) {
+    if (isMissingSchemaError(error.message)) {
+      return { memberships: [] };
+    }
+    return { memberships: [], error: error.message };
+  }
+  return {
+    memberships: (data ?? []).map((row) =>
+      mapTeachingGroupMembership(row as TeachingGroupMembershipRow),
+    ),
+  };
+}
+
+function firstNested<T>(value: T | T[] | null | undefined): T | null {
+  if (Array.isArray(value)) return value[0] ?? null;
+  return value ?? null;
+}
+
+export async function loadGtaProgrammeVersions(
+  supabase: SupabaseAdmin,
+): Promise<{
+  versions: AdminGtaProgrammeVersionOption[];
+  error?: string;
+}> {
+  const { data, error } = await supabase
+    .from("gta_programme_versions")
+    .select(
+      "id, programme_id, internal_version, status, gta_programmes(title, se_standards(standard_code)), se_standard_versions(external_version), gta_spines(title)",
+    )
+    .order("updated_at", { ascending: false });
+  if (error) {
+    if (isMissingSchemaError(error.message)) {
+      return { versions: [] };
+    }
+    return { versions: [], error: error.message };
+  }
+
+  const versions: AdminGtaProgrammeVersionOption[] = (data ?? []).map((row) => {
+    const programme = firstNested(
+      row.gta_programmes as
+        | { title?: string; se_standards?: { standard_code?: string } | { standard_code?: string }[] }
+        | { title?: string; se_standards?: { standard_code?: string } | { standard_code?: string }[] }[]
+        | null,
+    );
+    const seStandard = firstNested(
+      programme?.se_standards as
+        | { standard_code?: string }
+        | { standard_code?: string }[]
+        | null,
+    );
+    const seVersion = firstNested(
+      row.se_standard_versions as
+        | { external_version?: string }
+        | { external_version?: string }[]
+        | null,
+    );
+    const spines = Array.isArray(row.gta_spines)
+      ? row.gta_spines
+          .map((spine) => String((spine as { title?: string }).title ?? "").trim())
+          .filter(Boolean)
+      : [];
+    return {
+      id: String(row.id),
+      programmeId: String(row.programme_id ?? ""),
+      programmeTitle: String(programme?.title ?? "GTA programme"),
+      standardCode: String(seStandard?.standard_code ?? ""),
+      skillsEnglandVersion: String(seVersion?.external_version ?? ""),
+      internalVersion: String(row.internal_version ?? "1"),
+      status: (row.status as AdminGtaProgrammeVersionOption["status"]) ?? "draft",
+      deliverySpine: spines.join(" / "),
+    };
+  });
+  return { versions };
+}
+
+async function loadMembershipsForEnrolment(
+  supabase: SupabaseAdmin,
+  enrolmentId: string,
+): Promise<AdminTeachingGroupMembership[]> {
+  const { data, error } = await supabase
+    .from("teaching_group_memberships")
+    .select("*")
+    .eq("apprentice_programme_id", enrolmentId)
+    .order("recorded_at", { ascending: false });
+  if (error) {
+    if (isMissingSchemaError(error.message)) return [];
+    throw new Error(error.message);
+  }
+  return (data ?? []).map((row) =>
+    mapTeachingGroupMembership(row as TeachingGroupMembershipRow),
+  );
+}
+
+export async function applyLiveTeachingGroupPlacement(args: {
+  supabase: SupabaseAdmin;
+  enrolment: Pick<
+    AdminApprenticeEnrolment,
+    | "id"
+    | "gtaProgrammeVersionId"
+    | "teachingGroupId"
+    | "tutorName"
+    | "collegeDays"
+  >;
+  teachingGroupId: string | null;
+  allowOverCapacity?: boolean;
+  actorName?: string;
+}): Promise<{ error: string; status: number } | { ok: true }> {
+  const { supabase } = args;
+  let group: AdminTeachingGroupRecord | null = null;
+  if (args.teachingGroupId) {
+    const { data, error } = await supabase
+      .from("cohort_teaching_groups")
+      .select("*")
+      .eq("id", args.teachingGroupId)
+      .maybeSingle();
+    if (error && !isMissingSchemaError(error.message)) {
+      return { error: error.message, status: 500 };
+    }
+    group = data ? mapTeachingGroup(data as TeachingGroupRow) : null;
+  }
+
+  const { data: enrolmentRows, error: enrolmentError } = await supabase
+    .from("apprentice_programmes")
+    .select("id, teaching_group_id");
+  if (enrolmentError) {
+    return { error: enrolmentError.message, status: 500 };
+  }
+
+  let memberships: AdminTeachingGroupMembership[] = [];
+  try {
+    memberships = await loadMembershipsForEnrolment(supabase, args.enrolment.id);
+  } catch (err) {
+    return {
+      error: err instanceof Error ? err.message : "Unable to load memberships",
+      status: 500,
+    };
+  }
+
+  const planned = planTeachingGroupMembershipChange({
+    enrolment: args.enrolment,
+    group,
+    currentMembership: currentMembershipForEnrolment(
+      memberships,
+      args.enrolment.id,
+    ),
+    enrolments: (enrolmentRows ?? []).map((row) => ({
+      id: String(row.id),
+      teachingGroupId: (row.teaching_group_id as string | null) ?? null,
+    })),
+    allowOverCapacity: args.allowOverCapacity,
+    actorName: args.actorName,
+  });
+  if ("error" in planned) {
+    return { error: planned.error, status: 400 };
+  }
+
+  const { error: enrolmentUpdateError } = await supabase
+    .from("apprentice_programmes")
+    .update({
+      teaching_group_id: planned.enrolmentPatch.teachingGroupId,
+      tutor_name: planned.enrolmentPatch.tutorName,
+      college_days: planned.enrolmentPatch.collegeDays,
+    })
+    .eq("id", args.enrolment.id);
+  if (enrolmentUpdateError) {
+    return { error: enrolmentUpdateError.message, status: 500 };
+  }
+
+  if (planned.closeMembershipId) {
+    const { error: closeError } = await supabase
+      .from("teaching_group_memberships")
+      .update({
+        is_current: false,
+        left_at: planned.newMembership?.recordedAt ?? new Date().toISOString(),
+      })
+      .eq("id", planned.closeMembershipId);
+    if (closeError && !isMissingSchemaError(closeError.message)) {
+      return { error: closeError.message, status: 500 };
+    }
+  }
+
+  if (planned.newMembership) {
+    const { error: insertError } = await supabase
+      .from("teaching_group_memberships")
+      .insert({
+        apprentice_programme_id: planned.newMembership.enrolmentId,
+        teaching_group_id: planned.newMembership.teachingGroupId,
+        joined_at: planned.newMembership.joinedAt,
+        left_at: planned.newMembership.leftAt,
+        is_current: planned.newMembership.isCurrent,
+        source: planned.newMembership.source,
+        recorded_at: planned.newMembership.recordedAt,
+        actor_name: planned.newMembership.actorName,
+        notes: planned.newMembership.notes,
+      });
+    if (insertError && !isMissingSchemaError(insertError.message)) {
+      return { error: insertError.message, status: 500 };
+    }
+  }
+
+  return { ok: true };
+}
+
+export async function assertLivePinCohortAndGroup(args: {
+  supabase: SupabaseAdmin;
+  pinId: string | null | undefined;
+  cohortId: string | null | undefined;
+  teachingGroupId?: string | null;
+  versions: AdminGtaProgrammeVersionOption[];
+}): Promise<{ error: string; status: number } | { ok: true }> {
+  let cohort: AdminCohortRecord | null = null;
+  if (args.cohortId) {
+    const loaded = await fetchCohortById(args.supabase, args.cohortId);
+    if ("error" in loaded) {
+      return { error: loaded.error, status: 404 };
+    }
+    cohort = loaded;
+  }
+  const pinId = args.pinId?.trim() || "";
+  const pin = pinId
+    ? (args.versions.find((row) => row.id === pinId) ?? null)
+    : null;
+  const pinError = pinCompatibilityError({ pinId, pin, cohort });
+  if (pinError) return { error: pinError, status: 400 };
+
+  const groupId = args.teachingGroupId?.trim() || "";
+  if (pinId && groupId) {
+    const { data } = await args.supabase
+      .from("cohort_teaching_groups")
+      .select("gta_programme_version_id")
+      .eq("id", groupId)
+      .maybeSingle();
+    const groupPin = String(data?.gta_programme_version_id ?? "").trim();
+    if (groupPin && groupPin !== pinId) {
+      return { error: PIN_GROUP_MISMATCH_MESSAGE, status: 400 };
+    }
+  }
+  return { ok: true };
 }

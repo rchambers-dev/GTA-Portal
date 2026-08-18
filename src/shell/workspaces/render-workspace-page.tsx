@@ -36,6 +36,7 @@ import {
   AdminEnrolmentsScreen,
   AdminEmployersScreen,
   AdminCohortsScreen,
+  AdminTeachingGroupsScreen,
   AdminApprenticeIntakeScreen,
   AdminProgrammesScreen,
   AdminUsersScreen,
@@ -305,6 +306,8 @@ export async function renderWorkspacePage(
         return <AdminProgrammesScreen />;
       case "cohorts":
         return <AdminCohortsScreen />;
+      case "teaching-groups":
+        return <AdminTeachingGroupsScreen />;
       case "intake":
         return <AdminApprenticeIntakeScreen />;
       case "staff":
@@ -346,6 +349,8 @@ export async function renderWorkspacePage(
         return <CourseBuilderScreen />;
       case "cohorts":
         return <AdminCohortsScreen />;
+      case "teaching-groups":
+        return <AdminTeachingGroupsScreen />;
       case "intake":
         return <AdminApprenticeIntakeScreen />;
       case "enrolments":

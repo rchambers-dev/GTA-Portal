@@ -22,8 +22,12 @@ import type {
   UserInput,
 } from "@/features/administration/domain/store";
 import {
+  applyLiveTeachingGroupPlacement,
+  assertLivePinCohortAndGroup,
   handleCohortAction,
   isMissingSchemaError,
+  loadGtaProgrammeVersions,
+  loadTeachingGroupMemberships,
   mapCohort,
   mapCohortChangeLog,
   mapTeachingGroup,
@@ -216,9 +220,19 @@ export async function GET() {
     loadProgrammes(supabase),
   ]);
 
-  const usersResult = await loadPortalUsers(supabase);
+  const [usersResult, versionsResult, membershipsResult] = await Promise.all([
+    loadPortalUsers(supabase),
+    loadGtaProgrammeVersions(supabase),
+    loadTeachingGroupMemberships(supabase),
+  ]);
   if (usersResult.error) {
     return NextResponse.json({ error: usersResult.error }, { status: 500 });
+  }
+  if (versionsResult.error) {
+    return NextResponse.json({ error: versionsResult.error }, { status: 500 });
+  }
+  if (membershipsResult.error) {
+    return NextResponse.json({ error: membershipsResult.error }, { status: 500 });
   }
 
   if (apprenticesError || enrolmentsError) {
@@ -294,6 +308,8 @@ export async function GET() {
     programmes: programmesResult.programmes,
     cohorts,
     teachingGroups,
+    teachingGroupMemberships: membershipsResult.memberships,
+    gtaProgrammeVersions: versionsResult.versions,
     cohortChangeLogs,
     users: usersResult.users,
   });
@@ -465,6 +481,21 @@ export async function POST(request: Request) {
 
   if (body.action === "createEnrolment") {
     const input = body.input;
+    const versions = (await loadGtaProgrammeVersions(supabase)).versions;
+    const pinCheck = await assertLivePinCohortAndGroup({
+      supabase,
+      pinId: input.gtaProgrammeVersionId ?? null,
+      cohortId: input.cohortId,
+      teachingGroupId: input.teachingGroupId ?? null,
+      versions,
+    });
+    if ("error" in pinCheck) {
+      return NextResponse.json(
+        { error: pinCheck.error },
+        { status: pinCheck.status },
+      );
+    }
+
     const { data, error } = await supabase
       .from("apprentice_programmes")
       .insert({
@@ -475,7 +506,7 @@ export async function POST(request: Request) {
         standard_code: input.standardCode,
         gta_programme_version_id: input.gtaProgrammeVersionId ?? null,
         cohort_id: input.cohortId,
-        teaching_group_id: input.teachingGroupId ?? null,
+        teaching_group_id: null,
         employer_id: input.employerId,
         employer_name: input.employerName,
         workplace_contact: input.workplaceContact.trim(),
@@ -497,7 +528,38 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error?.message ?? "Unable to create enrolment" }, { status: 500 });
     }
 
-    return NextResponse.json({ enrolment: mapEnrolment(data as ApprenticeProgrammeRow) });
+    const created = mapEnrolment(data as ApprenticeProgrammeRow);
+    if (input.teachingGroupId) {
+      const placed = await applyLiveTeachingGroupPlacement({
+        supabase,
+        enrolment: created,
+        teachingGroupId: input.teachingGroupId,
+        allowOverCapacity: input.allowOverCapacity,
+        actorName: actorFallback,
+      });
+      if ("error" in placed) {
+        return NextResponse.json(
+          { error: placed.error },
+          { status: placed.status },
+        );
+      }
+      const { data: refreshed } = await supabase
+        .from("apprentice_programmes")
+        .select("*, apprentices(*)")
+        .eq("id", created.id)
+        .single();
+      const memberships = (await loadTeachingGroupMemberships(supabase)).memberships.filter(
+        (row) => row.enrolmentId === created.id,
+      );
+      return NextResponse.json({
+        enrolment: refreshed
+          ? mapEnrolment(refreshed as ApprenticeProgrammeRow)
+          : created,
+        memberships,
+      });
+    }
+
+    return NextResponse.json({ enrolment: created, memberships: [] });
   }
 
   if (body.action !== "updateEnrolment") {
@@ -505,6 +567,43 @@ export async function POST(request: Request) {
   }
 
   const patch = body.patch;
+  const { data: existingRow, error: existingError } = await supabase
+    .from("apprentice_programmes")
+    .select("*, apprentices(*)")
+    .eq("id", body.id)
+    .single();
+  if (existingError || !existingRow) {
+    return NextResponse.json(
+      { error: existingError?.message ?? "Enrolment not found" },
+      { status: 404 },
+    );
+  }
+  const existing = mapEnrolment(existingRow as ApprenticeProgrammeRow);
+  const versions = (await loadGtaProgrammeVersions(supabase)).versions;
+  const nextPin =
+    patch.gtaProgrammeVersionId !== undefined
+      ? patch.gtaProgrammeVersionId
+      : existing.gtaProgrammeVersionId;
+  const nextCohortId =
+    patch.cohortId !== undefined ? patch.cohortId : existing.cohortId;
+  const nextGroupId =
+    patch.teachingGroupId !== undefined
+      ? patch.teachingGroupId
+      : existing.teachingGroupId;
+  const pinCheck = await assertLivePinCohortAndGroup({
+    supabase,
+    pinId: nextPin,
+    cohortId: nextCohortId,
+    teachingGroupId: nextGroupId,
+    versions,
+  });
+  if ("error" in pinCheck) {
+    return NextResponse.json(
+      { error: pinCheck.error },
+      { status: pinCheck.status },
+    );
+  }
+
   const update: Record<string, unknown> = {};
   if (patch.kind != null) update.kind = patch.kind;
   if (patch.status != null) update.status = patch.status;
@@ -515,14 +614,10 @@ export async function POST(request: Request) {
     update.gta_programme_version_id = patch.gtaProgrammeVersionId;
   }
   if (patch.cohortId !== undefined) update.cohort_id = patch.cohortId;
-  if (patch.teachingGroupId !== undefined) {
-    update.teaching_group_id = patch.teachingGroupId;
-  }
   if (patch.employerId != null) update.employer_id = patch.employerId;
   if (patch.employerName != null) update.employer_name = patch.employerName;
   if (patch.workplaceContact != null) update.workplace_contact = patch.workplaceContact.trim();
   if (patch.mentorName != null) update.mentor_name = patch.mentorName.trim();
-  if (patch.tutorName != null) update.tutor_name = patch.tutorName.trim();
   if (patch.startDate != null) update.start_date = patch.startDate;
   if (patch.originalPlannedEndDate != null) {
     update.original_planned_end_date = patch.originalPlannedEndDate;
@@ -533,19 +628,74 @@ export async function POST(request: Request) {
   if (patch.actualProgressPercent !== undefined) {
     update.actual_progress_percent = patch.actualProgressPercent;
   }
-  if (patch.collegeDays != null) update.college_days = patch.collegeDays.trim();
   if (patch.notes != null) update.notes = patch.notes.trim();
+  // teaching_group_id / tutor_name / college_days are applied by membership placement.
+
+  if (Object.keys(update).length > 0) {
+    const { error } = await supabase
+      .from("apprentice_programmes")
+      .update(update)
+      .eq("id", body.id);
+    if (error) {
+      return NextResponse.json(
+        { error: error.message ?? "Unable to update enrolment" },
+        { status: 500 },
+      );
+    }
+  }
+
+  if (patch.teachingGroupId !== undefined) {
+    const latestPin =
+      patch.gtaProgrammeVersionId !== undefined
+        ? patch.gtaProgrammeVersionId
+        : existing.gtaProgrammeVersionId;
+    const placed = await applyLiveTeachingGroupPlacement({
+      supabase,
+      enrolment: {
+        ...existing,
+        gtaProgrammeVersionId: latestPin ?? null,
+      },
+      teachingGroupId: patch.teachingGroupId,
+      allowOverCapacity: patch.allowOverCapacity,
+      actorName: actorFallback,
+    });
+    if ("error" in placed) {
+      return NextResponse.json(
+        { error: placed.error },
+        { status: placed.status },
+      );
+    }
+  } else if (patch.tutorName != null || patch.collegeDays != null) {
+    const leftover: Record<string, unknown> = {};
+    if (patch.tutorName != null) leftover.tutor_name = patch.tutorName.trim();
+    if (patch.collegeDays != null) leftover.college_days = patch.collegeDays.trim();
+    const { error: leftoverError } = await supabase
+      .from("apprentice_programmes")
+      .update(leftover)
+      .eq("id", body.id);
+    if (leftoverError) {
+      return NextResponse.json(
+        { error: leftoverError.message },
+        { status: 500 },
+      );
+    }
+  }
 
   const { data, error } = await supabase
     .from("apprentice_programmes")
-    .update(update)
-    .eq("id", body.id)
     .select("*, apprentices(*)")
+    .eq("id", body.id)
     .single();
 
   if (error || !data) {
     return NextResponse.json({ error: error?.message ?? "Unable to update enrolment" }, { status: 500 });
   }
 
-  return NextResponse.json({ enrolment: mapEnrolment(data as ApprenticeProgrammeRow) });
+  const memberships = (await loadTeachingGroupMemberships(supabase)).memberships.filter(
+    (row) => row.enrolmentId === body.id,
+  );
+  return NextResponse.json({
+    enrolment: mapEnrolment(data as ApprenticeProgrammeRow),
+    memberships,
+  });
 }

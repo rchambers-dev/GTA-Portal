@@ -110,7 +110,7 @@ function BragPieCard({
 
 /**
  * Management progression BRAG for controlled Blocks delivery.
- * Training blocks use Blue/Green/Amber/Red against cohort dates.
+ * Training blocks use Blue/Green/Amber/Red against the learner's apprenticeship dates.
  * Gateway / EPA use Green/Amber/Red (RAG).
  */
 export function ManagementApprenticeBragScreen() {
@@ -147,12 +147,10 @@ export function ManagementApprenticeBragScreen() {
   const cohort = enrolment?.cohortId
     ? admin.cohorts.find((c) => c.id === enrolment.cohortId)
     : null;
-  const programmeStartDate =
-    enrolment?.startDate || cohort?.startDate || "2024-09-02";
-  const cohortStartDate =
-    cohort?.startDate || enrolment?.startDate || "2024-09-02";
+  const programmeStartDate = enrolment?.startDate || "2024-09-02";
+  const learnerStartDate = enrolment?.startDate || "2024-09-02";
   const deliveryEnd =
-    cohort?.expectedEndDate || enrolment?.originalPlannedEndDate || null;
+    enrolment?.originalPlannedEndDate || null;
   const storeApprenticeId = resolveTaskStoreApprenticeId(apprenticeId);
 
   const { catalogue, loading: catalogueLoading } = usePublishedDeliveryCatalogue(
@@ -188,7 +186,7 @@ export function ManagementApprenticeBragScreen() {
       const tasks = tasksForDeliveryBlock(catalogue, block.spineItemId);
       if (tasks.length === 0) continue;
       const summary = summariseBlockCompletion(tasks, storeApprenticeId);
-      const window = blockCohortWindowDates(block, cohortStartDate);
+      const window = blockCohortWindowDates(block, learnerStartDate);
       const brag = calculateBlockProgressionBrag({
         windowStartIso: window?.startIso ?? null,
         windowEndIso: window?.endIso ?? null,
@@ -203,7 +201,7 @@ export function ManagementApprenticeBragScreen() {
     const milestones = AUTOCARE_GATEWAYS.map((gw) => {
       const dueIso = gatewayMilestoneDueIso({
         milestone: gw,
-        cohortStartIso: cohortStartDate,
+        cohortStartIso: learnerStartDate,
         deliveryEndIso: deliveryEnd,
       });
       const complete = false;
@@ -222,7 +220,7 @@ export function ManagementApprenticeBragScreen() {
     };
   }, [
     catalogue,
-    cohortStartDate,
+    learnerStartDate,
     deliveryEnd,
     storeApprenticeId,
     taskSnap,
@@ -351,7 +349,7 @@ export function ManagementApprenticeBragScreen() {
   return (
     <ApprenticePageShell
       title="Apprentice progression BRAG"
-      description="Training blocks use Blue / Green / Amber / Red against cohort dates. Gateway 1, Gateway 2 and EPA use Green / Amber / Red (RAG)."
+      description="Training blocks use Blue / Green / Amber / Red against this apprentice’s start date. Gateway 1, Gateway 2 and EPA use Green / Amber / Red (RAG)."
       eyebrow="Management"
     >
       <div className={styles.root}>
@@ -513,7 +511,7 @@ export function ManagementApprenticeBragScreen() {
                           <p className={styles.muted}>
                             {window
                               ? `${formatDisplayDate(new Date(`${window.startIso}T12:00:00.000Z`))} – ${formatDisplayDate(new Date(`${window.endIso}T12:00:00.000Z`))}`
-                              : "No cohort week window"}
+                              : "No learner week window"}
                             {" · "}
                             {summary.verified}/{summary.total} tasks verified
                             {summary.complete ? " · block complete" : ""}

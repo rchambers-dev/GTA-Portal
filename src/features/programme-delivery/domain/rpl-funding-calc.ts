@@ -6,7 +6,8 @@
  * delivery defaults (10% steppers, round-1 hours) onto that runner, then builds
  * funding calendar / indicative band helpers around the result.
  *
- * GTA does not fast-track delivery. Apprentices keep cohort weeks.
+ * GTA does not fast-track delivery. Funding calendar origin is the learner's
+ * apprenticeship start date (parameter name kept for existing callers).
  */
 
 import {
@@ -145,7 +146,8 @@ function addDaysIso(startIso: string, days: number): string {
 }
 
 /**
- * Cohort delivery window for a programme week (no RPL). Week 1 starts on cohort start.
+ * Delivery window for a programme week (no RPL). Week 1 starts on the learner's
+ * apprenticeship start date.
  */
 export function cohortDateForProgrammeWeek(
   cohortStartIso: string,

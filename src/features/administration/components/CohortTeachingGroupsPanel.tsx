@@ -181,7 +181,7 @@ export function CohortTeachingGroupsPanel({
       setLocalStatus(null);
       onError(null);
       await createTeachingGroup({
-        cohortId: cohort.id,
+        gtaProgrammeVersionId: "",
         tutorName: newTutor.trim(),
         name,
         collegeDays: selectedDay,

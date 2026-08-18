@@ -8,6 +8,7 @@ import type { LearnerFacingContent } from "../domain/learner-facing-content";
 import { approvedLearnerCopy } from "../domain/learner-facing-content";
 import type { GtaCourseTaskRecord } from "@/features/programme-delivery/domain/gta-course-tasks";
 import type {
+  LearnerReleaseTiming,
   ProgrammeResourceAttachmentRecord,
   ProgrammeResourceRecord,
   ResourceAudience,
@@ -15,7 +16,9 @@ import type {
 } from "../domain/programme-resources";
 import {
   labelResourceAudience,
+  labelLearnerReleaseTiming,
   labelResourceRole,
+  LEARNER_RELEASE_TIMINGS,
   RESOURCE_AUDIENCES,
   RESOURCE_ROLES,
   suggestedAudienceForRole,
@@ -73,6 +76,14 @@ const AUDIENCE_OPTIONS: { value: ResourceAudience; label: string }[] = [
   { value: "LEARNER_VISIBLE", label: "Learner visible" },
 ];
 
+const LEARNER_RELEASE_TIMING_OPTIONS: {
+  value: LearnerReleaseTiming;
+  label: string;
+}[] = [
+  { value: "WITH_SESSION", label: "With Session" },
+  { value: "REVIEW_LATER", label: "Release later for review" },
+];
+
 export function BlockAuthoringPanel({
   programmeVersionId,
   block,
@@ -97,6 +108,8 @@ export function BlockAuthoringPanel({
   const [attachRole, setAttachRole] = useState<ResourceRole>("TUTOR_DELIVERY");
   const [attachAudience, setAttachAudience] =
     useState<ResourceAudience>("TUTOR_ONLY");
+  const [attachLearnerReleaseTiming, setAttachLearnerReleaseTiming] =
+    useState<LearnerReleaseTiming>("WITH_SESSION");
   const [attachSort, setAttachSort] = useState(10);
 
   const [placeSessionByAtt, setPlaceSessionByAtt] = useState<
@@ -439,6 +452,10 @@ export function BlockAuthoringPanel({
                 sessionId: attachSessionId,
                 role: attachRole,
                 audience: attachAudience,
+                learnerReleaseTiming:
+                  attachAudience === "LEARNER_VISIBLE"
+                    ? attachLearnerReleaseTiming
+                    : null,
                 sortOrder: attachSort,
               },
             ],
@@ -1047,8 +1064,9 @@ export function BlockAuthoringPanel({
             Role describes how the file is used. Audience controls who can open
             it. A PowerPoint is not automatically tutor-only — mark it{" "}
             <strong>Learner visible</strong> when it is suitable for apprentices.
-            Tutors cannot change this later. When they release the Session, every
-            learner-visible attachment is released with it.
+            Tutors cannot change this later. Learner release timing separately
+            controls whether learner-visible material appears with the Session or
+            is held for later review.
           </p>
           <div className={styles.startLayout}>
             <label className={styles.meta}>
@@ -1084,7 +1102,11 @@ export function BlockAuthoringPanel({
                 onChange={(e) => {
                   const role = e.target.value as ResourceRole;
                   setAttachRole(role);
-                  setAttachAudience(suggestedAudienceForRole(role));
+                  const nextAudience = suggestedAudienceForRole(role);
+                  setAttachAudience(nextAudience);
+                  if (nextAudience === "TUTOR_ONLY") {
+                    setAttachLearnerReleaseTiming("WITH_SESSION");
+                  }
                 }}
               >
                 {ROLE_OPTIONS.filter((r) =>
@@ -1100,9 +1122,13 @@ export function BlockAuthoringPanel({
               Audience
               <select
                 value={attachAudience}
-                onChange={(e) =>
-                  setAttachAudience(e.target.value as ResourceAudience)
-                }
+                onChange={(e) => {
+                  const nextAudience = e.target.value as ResourceAudience;
+                  setAttachAudience(nextAudience);
+                  if (nextAudience !== "LEARNER_VISIBLE") {
+                    setAttachLearnerReleaseTiming("WITH_SESSION");
+                  }
+                }}
               >
                 {AUDIENCE_OPTIONS.filter((a) =>
                   (RESOURCE_AUDIENCES as readonly string[]).includes(a.value),
@@ -1114,9 +1140,36 @@ export function BlockAuthoringPanel({
               </select>
             </label>
             <p className={styles.meta}>
-              Learner visible = apprentices can open it after Session release,
-              including PowerPoints. Tutor only = staff only.
+              Learner visible = apprentices may eventually open it, including
+              PowerPoints. Tutor only = staff only.
             </p>
+            <label className={styles.meta}>
+              Available to learner
+              {attachAudience === "LEARNER_VISIBLE" ? (
+                <select
+                  value={attachLearnerReleaseTiming}
+                  onChange={(e) =>
+                    setAttachLearnerReleaseTiming(
+                      e.target.value as LearnerReleaseTiming,
+                    )
+                  }
+                >
+                  {LEARNER_RELEASE_TIMINGS.map((value) => (
+                    <option key={value} value={value}>
+                      {
+                        LEARNER_RELEASE_TIMING_OPTIONS.find(
+                          (option) => option.value === value,
+                        )?.label
+                      }
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <span className={styles.meta} style={{ display: "block" }}>
+                  Not applicable
+                </span>
+              )}
+            </label>
             <label className={styles.meta}>
               Sort order
               <input
@@ -1151,6 +1204,7 @@ export function BlockAuthoringPanel({
                   <th>Resource</th>
                   <th>Role</th>
                   <th>Audience</th>
+                  <th>Available to learner</th>
                   <th>Why unplaced</th>
                   <th>Place in session</th>
                 </tr>
@@ -1167,6 +1221,11 @@ export function BlockAuthoringPanel({
                       <td>{r?.title || r?.filename || a.resourceId}</td>
                       <td>{labelResourceRole(a.role)}</td>
                       <td>{labelResourceAudience(a.audience)}</td>
+                      <td>
+                        {a.learnerReleaseTiming
+                          ? labelLearnerReleaseTiming(a.learnerReleaseTiming)
+                          : "Not applicable"}
+                      </td>
                       <td className={styles.meta}>{reason}</td>
                       <td>
                         <select
@@ -1215,6 +1274,7 @@ export function BlockAuthoringPanel({
                   <th>Resource</th>
                   <th>Role</th>
                   <th>Audience</th>
+                  <th>Available to learner</th>
                   <th />
                 </tr>
               </thead>
@@ -1230,6 +1290,11 @@ export function BlockAuthoringPanel({
                         <td>{r?.title || r?.filename || a.resourceId}</td>
                         <td>{labelResourceRole(a.role)}</td>
                         <td>{labelResourceAudience(a.audience)}</td>
+                        <td>
+                          {a.learnerReleaseTiming
+                            ? labelLearnerReleaseTiming(a.learnerReleaseTiming)
+                            : "Not applicable"}
+                        </td>
                         <td>
                           <button
                             type="button"

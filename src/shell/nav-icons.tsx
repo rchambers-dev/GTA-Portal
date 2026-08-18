@@ -172,6 +172,17 @@ export function NavIcon({ href }: { href: string }) {
     );
   }
   if (
+    key.includes("/administration/teaching-groups") ||
+    key.includes("/management/teaching-groups")
+  ) {
+    return (
+      <svg {...common}>
+        <path d="M4 19V7a2 2 0 0 1 2-2h5l2 2h5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
+        <path d="M9 13h6M9 16h4" />
+      </svg>
+    );
+  }
+  if (
     key.includes("/administration/cohorts") ||
     key.includes("/management/cohorts")
   ) {

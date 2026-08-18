@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   assertNoTutorOnlyLeak,
   filterLearnerVisibleAttachments,
+  hasHeldReviewMaterials,
   learnerVisibleResourcesForSession,
 } from "./learner-session-materials";
 import type {
@@ -17,6 +18,7 @@ const tutorAtt: ProgrammeResourceAttachmentRecord = {
   spineItemId: "b1",
   role: "TUTOR_DELIVERY",
   audience: "TUTOR_ONLY",
+  learnerReleaseTiming: null,
   sortOrder: 1,
   metadata: {},
   createdAt: "",
@@ -31,6 +33,7 @@ const learnerAtt: ProgrammeResourceAttachmentRecord = {
   spineItemId: "b1",
   role: "LEARNER_LEARNING",
   audience: "LEARNER_VISIBLE",
+  learnerReleaseTiming: "WITH_SESSION",
   sortOrder: 2,
   metadata: {},
   createdAt: "",
@@ -129,5 +132,39 @@ describe("learner session materials filter", () => {
     });
     expect(list.map((r) => r.id)).toEqual(["r-ppt-learn"]);
     expect(list[0]?.filename).toMatch(/\.pptx$/i);
+  });
+
+  it("separates held review materials from with-session materials", () => {
+    const reviewAtt: ProgrammeResourceAttachmentRecord = {
+      ...learnerAtt,
+      id: "a-review",
+      resourceId: "r-review",
+      role: "LEARNER_REVISION",
+      learnerReleaseTiming: "REVIEW_LATER",
+    };
+    const reviewResource: ProgrammeResourceRecord = {
+      ...resources[1]!,
+      id: "r-review",
+      resourceKey: "test_w003_review",
+      title: "TEST W003 review material — SAFE DEMO",
+      filename: "TEST_W003_review_SAFE_DEMO.pdf",
+    };
+    expect(
+      learnerVisibleResourcesForSession({
+        attachments: [learnerAtt, reviewAtt],
+        resources: [...resources, reviewResource],
+        sessionId: "s1",
+        learnerReleaseTiming: "WITH_SESSION",
+      }).map((r) => r.id),
+    ).toEqual(["r-learn"]);
+    expect(
+      learnerVisibleResourcesForSession({
+        attachments: [learnerAtt, reviewAtt],
+        resources: [...resources, reviewResource],
+        sessionId: "s1",
+        learnerReleaseTiming: "REVIEW_LATER",
+      }).map((r) => r.id),
+    ).toEqual(["r-review"]);
+    expect(hasHeldReviewMaterials([learnerAtt, reviewAtt])).toBe(true);
   });
 });

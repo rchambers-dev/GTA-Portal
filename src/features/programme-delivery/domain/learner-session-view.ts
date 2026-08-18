@@ -57,6 +57,7 @@ export type LearnerSessionView = {
   activityPractice: string;
   hasApprovedLearning: boolean;
   materials: LearnerVisibleMaterial[];
+  reviewMaterials: LearnerVisibleMaterial[];
   reviewLearning: boolean;
   /** Block window open AND a Session learning release exists for this enrolment. */
   openable: boolean;
@@ -121,6 +122,7 @@ export function toLearnerSessionView(input: {
   released: boolean;
   releasedAt?: string | null;
   learnerResources: ProgrammeResourceRecord[];
+  reviewResources?: ProgrammeResourceRecord[];
   resourceRolesById?: Map<string, string>;
   /** S4: published copy is not openable until the Block is unlocked. */
   blockUnlocked?: boolean;
@@ -131,6 +133,13 @@ export function toLearnerSessionView(input: {
   const approved = approvedLearnerCopy(input.session.learnerFacingContent);
   const materials = productionLearnerResources({
     resources: input.learnerResources,
+    rolesByResourceId: input.resourceRolesById,
+    includeSafeDemoFixtures: input.includeSafeDemoFixtures,
+    binaryResourceIds: input.binaryResourceIds,
+    previewResourceIds: input.previewResourceIds,
+  });
+  const reviewMaterials = productionLearnerResources({
+    resources: input.reviewResources ?? [],
     rolesByResourceId: input.resourceRolesById,
     includeSafeDemoFixtures: input.includeSafeDemoFixtures,
     binaryResourceIds: input.binaryResourceIds,
@@ -171,9 +180,12 @@ export function toLearnerSessionView(input: {
     activityPractice,
     hasApprovedLearning: openable && Boolean(approved?.learningContent),
     materials: openable ? materials : [],
+    reviewMaterials: openable ? reviewMaterials : [],
     reviewLearning:
       openable &&
-      (Boolean(approved?.learningContent) || materials.length > 0),
+      (Boolean(approved?.learningContent) ||
+        materials.length > 0 ||
+        reviewMaterials.length > 0),
     openable,
   };
 }

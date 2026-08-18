@@ -16,6 +16,12 @@ export type ResourceRole = (typeof RESOURCE_ROLES)[number];
 export const RESOURCE_AUDIENCES = ["TUTOR_ONLY", "LEARNER_VISIBLE"] as const;
 export type ResourceAudience = (typeof RESOURCE_AUDIENCES)[number];
 
+export const LEARNER_RELEASE_TIMINGS = [
+  "WITH_SESSION",
+  "REVIEW_LATER",
+] as const;
+export type LearnerReleaseTiming = (typeof LEARNER_RELEASE_TIMINGS)[number];
+
 export type SessionPublishStatus = "draft" | "published";
 
 export type LearningObjectivesReview = {
@@ -48,6 +54,7 @@ export type ProgrammeResourceAttachmentRecord = {
   spineItemId: string;
   role: ResourceRole;
   audience: ResourceAudience;
+  learnerReleaseTiming: LearnerReleaseTiming | null;
   sortOrder: number;
   metadata: Record<string, unknown>;
   createdAt: string;
@@ -60,6 +67,12 @@ export function isResourceRole(value: string): value is ResourceRole {
 
 export function isResourceAudience(value: string): value is ResourceAudience {
   return (RESOURCE_AUDIENCES as readonly string[]).includes(value);
+}
+
+export function isLearnerReleaseTiming(
+  value: string,
+): value is LearnerReleaseTiming {
+  return (LEARNER_RELEASE_TIMINGS as readonly string[]).includes(value);
 }
 
 /** Plain-language labels for curriculum users (hide raw enums in UI). */
@@ -89,6 +102,17 @@ export function labelResourceAudience(audience: ResourceAudience): string {
   }
 }
 
+export function labelLearnerReleaseTiming(
+  timing: LearnerReleaseTiming,
+): string {
+  switch (timing) {
+    case "WITH_SESSION":
+      return "With Session";
+    case "REVIEW_LATER":
+      return "Release later for review";
+  }
+}
+
 /** Curriculum Lead sets audience independently of file type. */
 export function suggestedAudienceForRole(role: ResourceRole): ResourceAudience {
   switch (role) {
@@ -98,6 +122,12 @@ export function suggestedAudienceForRole(role: ResourceRole): ResourceAudience {
     default:
       return "LEARNER_VISIBLE";
   }
+}
+
+export function defaultLearnerReleaseTiming(
+  audience: ResourceAudience,
+): LearnerReleaseTiming | null {
+  return audience === "LEARNER_VISIBLE" ? "WITH_SESSION" : null;
 }
 
 export function isPowerpointFilename(filename: string): boolean {

@@ -111,8 +111,9 @@ export function ApprenticeSessionDetailScreen({ sessionId }: { sessionId: string
   }
 
   const tone = view.status === "available" ? "green" : "neutral";
-  const opened = view.materials.find((m) => m.id === openId) ?? null;
-  const viewing = view.materials.find((m) => m.id === viewerId) ?? null;
+  const allMaterials = [...view.materials, ...view.reviewMaterials];
+  const opened = allMaterials.find((m) => m.id === openId) ?? null;
+  const viewing = allMaterials.find((m) => m.id === viewerId) ?? null;
 
   return (
     <ApprenticePageShell title={view.title} description={view.codesLine}>
@@ -273,6 +274,51 @@ export function ApprenticeSessionDetailScreen({ sessionId }: { sessionId: string
             </div>
           ) : null}
         </section>
+
+        {view.reviewMaterials.length > 0 ? (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Review materials</h2>
+            <p className={styles.meta}>
+              These were released later for revision and recap.
+            </p>
+            <ul className={styles.list}>
+              {view.reviewMaterials.map((m) => (
+                <li key={m.id}>
+                  <div className={styles.rowLink}>
+                    <div className={styles.rowMain}>
+                      <span>{m.kindLabel}</span>
+                      <strong>{m.title}</strong>
+                    </div>
+                    {m.openMode === "preview" ? (
+                      <button
+                        type="button"
+                        className={styles.linkish}
+                        onClick={() => setViewerId(m.id)}
+                      >
+                        {m.openLabel}
+                      </button>
+                    ) : m.openMode === "download" ? (
+                      <a
+                        className={styles.linkish}
+                        href={`/api/apprentice/learning/resources/${encodeURIComponent(m.id)}/file?download=1`}
+                      >
+                        {m.openLabel}
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        className={styles.linkish}
+                        onClick={() => void openResource(m.id)}
+                      >
+                        {m.openLabel}
+                      </button>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Activity / practice</h2>

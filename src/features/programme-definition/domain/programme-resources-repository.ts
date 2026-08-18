@@ -4,8 +4,11 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
+  defaultLearnerReleaseTiming,
+  isLearnerReleaseTiming,
   isResourceAudience,
   isResourceRole,
+  type LearnerReleaseTiming,
   type ProgrammeResourceAttachmentRecord,
   type ProgrammeResourceRecord,
   type ResourceAudience,
@@ -34,6 +37,7 @@ type AttachmentRow = {
   spine_item_id: string;
   role: string;
   audience: string;
+  learner_release_timing: string | null;
   sort_order: number;
   metadata: unknown;
   created_at: string;
@@ -78,6 +82,12 @@ function attachmentRowToRecord(
     spineItemId: row.spine_item_id,
     role: row.role,
     audience: row.audience,
+    learnerReleaseTiming:
+      row.audience === "LEARNER_VISIBLE"
+        ? isLearnerReleaseTiming(row.learner_release_timing || "")
+          ? row.learner_release_timing
+          : "WITH_SESSION"
+        : null,
     sortOrder: Number(row.sort_order) || 0,
     metadata: asMetadata(row.metadata),
     createdAt: row.created_at,
@@ -112,7 +122,7 @@ export async function listResourceAttachmentsForVersion(
   let q = supabase
     .from("gta_programme_resource_attachments")
     .select(
-      "id, programme_version_id, resource_id, session_id, spine_item_id, role, audience, sort_order, metadata, created_at, updated_at",
+      "id, programme_version_id, resource_id, session_id, spine_item_id, role, audience, learner_release_timing, sort_order, metadata, created_at, updated_at",
     )
     .eq("programme_version_id", id)
     .order("sort_order", { ascending: true });
@@ -175,6 +185,7 @@ export type AttachmentUpsertInput = {
   sessionId?: string | null;
   role: ResourceRole;
   audience: ResourceAudience;
+  learnerReleaseTiming?: LearnerReleaseTiming | null;
   sortOrder?: number;
   metadata?: Record<string, unknown>;
 };
@@ -191,6 +202,16 @@ export async function upsertResourceAttachments(
   for (const a of attachments) {
     if (!isResourceRole(a.role) || !isResourceAudience(a.audience)) {
       throw new Error("Invalid role or audience.");
+    }
+    const learnerReleaseTiming =
+      a.audience === "LEARNER_VISIBLE"
+        ? a.learnerReleaseTiming ?? defaultLearnerReleaseTiming(a.audience)
+        : null;
+    if (
+      a.audience === "LEARNER_VISIBLE" &&
+      (!learnerReleaseTiming || !isLearnerReleaseTiming(learnerReleaseTiming))
+    ) {
+      throw new Error("Invalid learner release timing.");
     }
     const sessionId = a.sessionId?.trim() || null;
     const spineItemId = a.spineItemId?.trim();
@@ -220,6 +241,7 @@ export async function upsertResourceAttachments(
       spine_item_id: spineItemId,
       role: a.role,
       audience: a.audience,
+      learner_release_timing: learnerReleaseTiming,
       sort_order: a.sortOrder ?? 0,
       metadata: a.metadata ?? {},
     };
@@ -230,14 +252,14 @@ export async function upsertResourceAttachments(
           .update(payload)
           .eq("id", existing.id)
           .select(
-            "id, programme_version_id, resource_id, session_id, spine_item_id, role, audience, sort_order, metadata, created_at, updated_at",
+            "id, programme_version_id, resource_id, session_id, spine_item_id, role, audience, learner_release_timing, sort_order, metadata, created_at, updated_at",
           )
           .single()
       : await supabase
           .from("gta_programme_resource_attachments")
           .insert(payload)
           .select(
-            "id, programme_version_id, resource_id, session_id, spine_item_id, role, audience, sort_order, metadata, created_at, updated_at",
+            "id, programme_version_id, resource_id, session_id, spine_item_id, role, audience, learner_release_timing, sort_order, metadata, created_at, updated_at",
           )
           .single();
 
@@ -288,7 +310,7 @@ export async function placeUnplacedAttachmentOnSession(
   const { data: existing, error: findErr } = await supabase
     .from("gta_programme_resource_attachments")
     .select(
-      "id, programme_version_id, resource_id, session_id, spine_item_id, role, audience, sort_order, metadata",
+      "id, programme_version_id, resource_id, session_id, spine_item_id, role, audience, learner_release_timing, sort_order, metadata",
     )
     .eq("id", attId)
     .eq("programme_version_id", versionId)
@@ -318,6 +340,11 @@ export async function placeUnplacedAttachmentOnSession(
       sessionId: targetSessionId,
       role: existing.role as ResourceRole,
       audience: existing.audience as ResourceAudience,
+      learnerReleaseTiming: isLearnerReleaseTiming(
+        existing.learner_release_timing || "",
+      )
+        ? existing.learner_release_timing
+        : null,
       sortOrder: existing.sort_order,
       metadata: {
         ...(typeof existing.metadata === "object" && existing.metadata

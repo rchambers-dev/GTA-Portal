@@ -11,6 +11,7 @@ import {
 } from "@/features/programme-definition/domain/programme-resource-previews-repository";
 import { listCourseTasksForVersion } from "./gta-course-tasks-repository";
 import { listSessionLearningReleases } from "./session-learning-release-repository";
+import { listSessionReviewReleases } from "./session-review-release-repository";
 import { listEnrolmentBlockUnlocks } from "./block-unlock-overrides-repository";
 import {
   assertNoTutorOnlyLeak,
@@ -123,12 +124,17 @@ export async function loadApprenticeLearningJourney(
     };
   });
 
-  const [sessions, resources, attachments, releases, unlocks, courseTasks, binaries, previews] =
+  const [sessions, resources, attachments, releases, reviewReleases, unlocks, courseTasks, binaries, previews] =
     await Promise.all([
       listProgrammeSessionsForVersion(supabase, programmeVersionId),
       listProgrammeResourcesForVersion(supabase, programmeVersionId),
       listResourceAttachmentsForVersion(supabase, programmeVersionId),
       listSessionLearningReleases(supabase, {
+        programmeVersionId,
+        apprenticeProgrammeId: enrolmentId,
+        apprenticeId: id,
+      }),
+      listSessionReviewReleases(supabase, {
         programmeVersionId,
         apprenticeProgrammeId: enrolmentId,
         apprenticeId: id,
@@ -141,6 +147,9 @@ export async function loadApprenticeLearningJourney(
 
   const releasedIds = new Set(releases.map((row) => row.sessionId));
   const releaseBySession = new Map(releases.map((row) => [row.sessionId, row]));
+  const reviewReleasedIds = new Set(
+    reviewReleases.map((row) => row.sessionId),
+  );
   const unlockedIds = unlocks.map((u) => u.spineItemId);
   const binaryResourceIds = new Set(binaries.map((b) => b.resourceId));
   const hashesByResourceId = new Map(binaries.map((b) => [b.resourceId, b.sha256]));
@@ -180,10 +189,19 @@ export async function loadApprenticeLearningJourney(
         attachments,
         resources,
         sessionId: session.id,
+        learnerReleaseTiming: "WITH_SESSION",
       });
+      const reviewResources = reviewReleasedIds.has(session.id)
+        ? learnerVisibleResourcesForSession({
+            attachments,
+            resources,
+            sessionId: session.id,
+            learnerReleaseTiming: "REVIEW_LATER",
+          })
+        : [];
       const resourceRolesById = new Map(
         learnerAtt.map((a) => [a.resourceId, a.role]),
-      );
+      });
       const release = releaseBySession.get(session.id) ?? null;
       return toLearnerSessionView({
         session,
@@ -191,6 +209,7 @@ export async function loadApprenticeLearningJourney(
         released: Boolean(release),
         releasedAt: release?.releasedAt ?? null,
         learnerResources,
+        reviewResources,
         resourceRolesById,
         blockUnlocked: unlocked,
         includeSafeDemoFixtures:

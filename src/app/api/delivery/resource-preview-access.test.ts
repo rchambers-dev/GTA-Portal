@@ -8,6 +8,7 @@ const getEffectiveSession = vi.fn();
 const loadApprenticeLearningJourney = vi.fn();
 const listProgrammeResourcesForVersion = vi.fn();
 const listResourceAttachmentsForVersion = vi.fn();
+const listSessionReviewReleases = vi.fn();
 const getResourceBinary = vi.fn();
 const getResourcePreview = vi.fn();
 const readResourceBinaryBytes = vi.fn();
@@ -45,6 +46,11 @@ vi.mock("@/features/programme-definition/domain/programme-resources-repository",
     listProgrammeResourcesForVersion(...args),
   listResourceAttachmentsForVersion: (...args: unknown[]) =>
     listResourceAttachmentsForVersion(...args),
+}));
+
+vi.mock("@/features/programme-delivery/domain/session-review-release-repository", () => ({
+  listSessionReviewReleases: (...args: unknown[]) =>
+    listSessionReviewReleases(...args),
 }));
 
 vi.mock("@/features/programme-definition/domain/programme-resource-binaries-repository", () => ({
@@ -179,6 +185,7 @@ function openSessionView(id: string) {
     activityPractice: "activity",
     hasApprovedLearning: true,
     materials: [],
+    reviewMaterials: [],
     reviewLearning: true,
     openable: true,
   };
@@ -218,6 +225,8 @@ function att(resourceId: string, audience: "TUTOR_ONLY" | "LEARNER_VISIBLE") {
     spineItemId: "b1",
     role: audience === "LEARNER_VISIBLE" ? "LEARNER_LEARNING" : "TUTOR_DELIVERY",
     audience,
+    learnerReleaseTiming:
+      audience === "LEARNER_VISIBLE" ? "WITH_SESSION" : null,
     sortOrder: 10,
     metadata: {},
     createdAt: "",
@@ -231,12 +240,14 @@ describe("presentation preview access", () => {
     loadApprenticeLearningJourney.mockReset();
     listProgrammeResourcesForVersion.mockReset();
     listResourceAttachmentsForVersion.mockReset();
+    listSessionReviewReleases.mockReset();
     getResourceBinary.mockReset();
     getResourcePreview.mockReset();
     readResourceBinaryBytes.mockReset();
     getResourceBinary.mockResolvedValue(binary);
     getResourcePreview.mockResolvedValue(previewRecord);
     readResourceBinaryBytes.mockResolvedValue(Buffer.from("PNGBYTES"));
+    listSessionReviewReleases.mockResolvedValue([]);
     vi.resetModules();
   });
 

@@ -29,6 +29,7 @@ export function decideApprenticeResourceAccess(input: {
   attachments: ProgrammeResourceAttachmentRecord[];
   blocks: ApprenticeLearningBlock[];
   isTest: boolean;
+  reviewReleasedSessionIds?: ReadonlySet<string>;
 }): ApprenticeResourceAccess {
   const resourceId = input.resourceId.trim();
   if (!resourceId || !input.resource) {
@@ -82,6 +83,12 @@ export function decideApprenticeResourceAccess(input: {
     if (!sessionId) continue;
     const access = resolveApprenticeSessionAccess(input.blocks, sessionId);
     if (access.status === "open") {
+      if (
+        att.learnerReleaseTiming === "REVIEW_LATER" &&
+        !input.reviewReleasedSessionIds?.has(sessionId)
+      ) {
+        continue;
+      }
       return { ok: true, sessionId };
     }
     if (access.status === "locked") {

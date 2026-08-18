@@ -373,13 +373,15 @@ function seedProgrammes(): AdminProgrammeRecord[] {
  */
 export function createSeedSnapshot(): AdminStoreSnapshot {
   return {
-    version: 19,
+    version: 20,
     apprentices: [],
     enrolments: [],
     employers: [],
     programmes: seedProgrammes(),
     cohorts: [],
     teachingGroups: [],
+    teachingGroupMemberships: [],
+    gtaProgrammeVersions: [],
     cohortChangeLogs: [],
     users: GTA_ORG_STAFF.map(seedOrgStaffUser),
   };

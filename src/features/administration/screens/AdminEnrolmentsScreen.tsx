@@ -14,10 +14,25 @@ import {
 import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import {
   createEnrolment,
-  findIntakeCohort,
   updateEnrolment,
+  assignEnrolmentToTeachingGroup,
   type EnrolmentInput,
 } from "../domain/store";
+import {
+  cohortAssignmentPatch,
+  hasApprenticeshipStarted,
+  suggestCohortForLearnerStart,
+} from "../domain/cohort-intake";
+import {
+  formatGtaProgrammeVersionLabel,
+  selectableGtaVersionsForIntake,
+} from "../domain/gta-programme-version-options";
+import {
+  formatTeachingGroupOptionLabel,
+  teachingGroupsCompatibleWithPin,
+  currentMemberCount,
+} from "../domain/teaching-group-placement";
+import { plannedDatesFromStart } from "../domain/programme-duration";
 import { awaitingEnrolment, enrolmentBlockers } from "../domain/intake-pack";
 import type {
   AdminCohortRecord,
@@ -32,6 +47,7 @@ import styles from "./admin-pages.module.css";
 
 type TransferDraft = {
   cohortId: string;
+  teachingGroupId: string;
   employerId: string;
   reason: string;
 };
@@ -42,6 +58,8 @@ type FormState = {
   programmeName: string;
   standardCode: string;
   cohortId: string | null;
+  gtaProgrammeVersionId: string;
+  teachingGroupId: string;
   employerId: string;
   workplaceContact: string;
   mentorName: string;
@@ -94,6 +112,8 @@ function emptyForm(
     programmeName: programme?.name ?? "",
     standardCode: programme?.standardCode ?? "",
     cohortId: null,
+    gtaProgrammeVersionId: "",
+    teachingGroupId: "",
     employerId: "",
     workplaceContact: "",
     mentorName: "",
@@ -147,31 +167,12 @@ function applyCohortFields(
   cohort: AdminCohortRecord | null,
   programmes: AdminProgrammeRecord[],
 ): FormState {
-  if (!cohort) {
-    return {
-      ...prev,
-      cohortId: null,
-    };
-  }
-  const programme = programmes.find((p) => p.id === cohort.programmeId);
-  const position = derivePosition(cohort.startDate);
-  const studying = prev.kind === "currently_studying";
+  const assignment = cohortAssignmentPatch(cohort, programmes);
   return {
     ...prev,
-    cohortId: cohort.id,
-    programmeName: programme?.name ?? prev.programmeName,
-    standardCode: cohort.standardCode || prev.standardCode,
-    startDate: cohort.startDate,
-    originalPlannedEndDate: cohort.expectedEndDate,
-    collegeDays: cohort.collegeDays,
-    tutorName: cohort.tutorName,
-    programmeWeek: studying && position.programmeWeek != null
-      ? String(position.programmeWeek)
-      : "",
-    programmeYear: studying && position.programmeYear != null
-      ? String(position.programmeYear)
-      : "",
-    status: deriveEnrolmentStatus(prev.kind, cohort.startDate, prev.status),
+    cohortId: assignment.cohortId,
+    programmeName: assignment.programmeName ?? prev.programmeName,
+    standardCode: assignment.standardCode ?? prev.standardCode,
   };
 }
 
@@ -326,6 +327,7 @@ export function AdminEnrolmentsScreen() {
   const [transferringId, setTransferringId] = useState<string | null>(null);
   const [transferDraft, setTransferDraft] = useState<TransferDraft>({
     cohortId: "",
+    teachingGroupId: "",
     employerId: "",
     reason: "",
   });
@@ -392,6 +394,18 @@ export function AdminEnrolmentsScreen() {
   const selectedCohort = form.cohortId
     ? (store.cohorts.find((c) => c.id === form.cohortId) ?? null)
     : null;
+  const gtaVersionsForForm = selectedCohort
+    ? selectableGtaVersionsForIntake({
+        versions: store.gtaProgrammeVersions ?? [],
+        standardCode: selectedCohort.standardCode,
+        skillsEnglandVersion: selectedCohort.standardVersion,
+        includeId: form.gtaProgrammeVersionId,
+      })
+    : [];
+  const groupsForForm = teachingGroupsCompatibleWithPin(
+    store.teachingGroups ?? [],
+    form.gtaProgrammeVersionId,
+  );
 
   const cohortHint = (() => {
     if (selectedCohort) {
@@ -401,11 +415,11 @@ export function AdminEnrolmentsScreen() {
       if (selectedCohort.status === "completed") {
         return `This cohort has completed — verify before assigning.`;
       }
-      return `Auto-flowed into the planned intake (v${selectedCohort.standardVersion}). Apprentice finishes on this version.`;
+      return `Intake grouping (v${selectedCohort.standardVersion}). Does not change this apprentice’s start date, planned end, tutor, or college days.`;
     }
     if (form.kind === "new_starter") {
       return cohortsForProgramme.some((c) => c.status === "planned")
-        ? "Select a planned cohort, or leave unset to assign later."
+        ? "Select a planned intake, or leave unset to assign later. Suggestion uses the apprenticeship start date."
         : "No planned intake open for this programme yet — assign a cohort later.";
     }
     return "Place studying apprentices in their current cohort manually for accuracy.";
@@ -452,19 +466,35 @@ export function AdminEnrolmentsScreen() {
   const totalEnrolments = store.enrolments.length;
   const activeSearch = SEARCH_MODES.find((m) => m.id === searchMode)!;
 
-  function autoCohortId(
-    kind: EnrolmentKind,
-    standardCode?: string,
+  function durationForForm(formState: FormState): number | undefined {
+    return programmes.find((p) => p.name === formState.programmeName)
+      ?.durationMonths;
+  }
+
+  function suggestCohortId(
+    standardCode: string,
+    startDate: string,
   ): string | null {
-    if (kind !== "new_starter" || !standardCode) return null;
-    return findIntakeCohort(standardCode)?.id ?? null;
+    if (!standardCode || !startDate) return null;
+    return (
+      suggestCohortForLearnerStart({
+        cohorts: store.cohorts,
+        standardCode,
+        apprenticeshipStartDate: startDate,
+      }).cohort?.id ?? null
+    );
   }
 
   function setKind(kind: EnrolmentKind) {
     setForm((prev) => ({
       ...emptyForm(kind, defaultProgramme),
       apprenticeId: prev.apprenticeId,
-      cohortId: autoCohortId(kind, defaultProgramme?.standardCode),
+      startDate: prev.startDate,
+      originalPlannedEndDate: prev.originalPlannedEndDate,
+      cohortId: suggestCohortId(
+        defaultProgramme?.standardCode ?? "",
+        prev.startDate,
+      ),
       employerId: prev.employerId || employers[0]?.id || "",
       workplaceContact:
         prev.workplaceContact ||
@@ -480,15 +510,11 @@ export function AdminEnrolmentsScreen() {
     setError(null);
     setSuccess(null);
     const employer = employers[0] ?? null;
-    const autoCohort = autoCohortId(kind, defaultProgramme?.standardCode)
-      ? findIntakeCohort(defaultProgramme?.standardCode ?? "")
-      : null;
     let next = {
       ...emptyForm(kind, defaultProgramme),
       apprenticeId,
     };
     next = applyEmployerFields(next, employer);
-    if (autoCohort) next = applyCohortFields(next, autoCohort, programmes);
     setForm(next);
     setShowForm(true);
   }
@@ -504,6 +530,8 @@ export function AdminEnrolmentsScreen() {
       programmeName: row.programmeName,
       standardCode: row.standardCode,
       cohortId: row.cohortId,
+      gtaProgrammeVersionId: row.gtaProgrammeVersionId ?? "",
+      teachingGroupId: row.teachingGroupId ?? "",
       employerId: row.employerId,
       workplaceContact: row.workplaceContact,
       mentorName: row.mentorName,
@@ -525,24 +553,61 @@ export function AdminEnrolmentsScreen() {
   function onProgrammeChange(name: string) {
     const match = programmes.find((p) => p.name === name);
     const standardCode = match?.standardCode ?? "";
-    const autoCohort =
-      form.kind === "new_starter" && !editingId
-        ? findIntakeCohort(standardCode)
-        : null;
     setForm((prev) => {
       const next = {
         ...prev,
         programmeName: name,
         standardCode: standardCode || prev.standardCode,
       };
-      if (autoCohort) return applyCohortFields(next, autoCohort, programmes);
-      return { ...next, cohortId: prev.cohortId };
+      const planned = plannedDatesFromStart(
+        next.startDate,
+        match?.durationMonths,
+      );
+      if (planned.apprenticeshipEndDate) {
+        next.originalPlannedEndDate = planned.apprenticeshipEndDate;
+      }
+      const maySuggest = !editingId || !hasApprenticeshipStarted(next.startDate);
+      if (maySuggest && next.startDate && standardCode) {
+        next.cohortId = suggestCohortId(standardCode, next.startDate);
+      }
+      return next;
     });
   }
 
   function onCohortChange(cohortId: string) {
     const cohort = store.cohorts.find((c) => c.id === cohortId) ?? null;
-    setForm((prev) => applyCohortFields(prev, cohort, programmes));
+    setForm((prev) => ({
+      ...applyCohortFields(prev, cohort, programmes),
+      gtaProgrammeVersionId: "",
+      teachingGroupId: "",
+    }));
+  }
+
+  function onStartDateChange(startDate: string) {
+    setForm((prev) => {
+      const planned = plannedDatesFromStart(startDate, durationForForm(prev));
+      const next: FormState = {
+        ...prev,
+        startDate,
+        originalPlannedEndDate:
+          !editingId || !hasApprenticeshipStarted(prev.startDate)
+            ? planned.apprenticeshipEndDate || prev.originalPlannedEndDate
+            : prev.originalPlannedEndDate,
+        status: deriveEnrolmentStatus(prev.kind, startDate, prev.status),
+      };
+      const position = derivePosition(startDate);
+      if (prev.kind === "currently_studying") {
+        next.programmeWeek =
+          position.programmeWeek != null ? String(position.programmeWeek) : "";
+        next.programmeYear =
+          position.programmeYear != null ? String(position.programmeYear) : "";
+      }
+      const maySuggest = !editingId || !hasApprenticeshipStarted(startDate);
+      if (maySuggest && next.standardCode && startDate) {
+        next.cohortId = suggestCohortId(next.standardCode, startDate);
+      }
+      return next;
+    });
   }
 
   function onEmployerChange(employerId: string) {
@@ -572,11 +637,13 @@ export function AdminEnrolmentsScreen() {
       return null;
     }
     if (!form.startDate) {
-      setError("Pick a cohort so the start date can fill from the intake.");
+      setError("Enter the apprentice’s apprenticeship start date.");
       return null;
     }
     if (!form.originalPlannedEndDate) {
-      setError("Pick a cohort with a planned finish date.");
+      setError(
+        "Enter a planned end date. It fills from the programme duration once a start date is set.",
+      );
       return null;
     }
     const employer = employers.find((e) => e.id === form.employerId);
@@ -606,7 +673,9 @@ export function AdminEnrolmentsScreen() {
       uln: apprentice.uln,
       programmeName: form.programmeName,
       standardCode: form.standardCode,
+      gtaProgrammeVersionId: form.gtaProgrammeVersionId || null,
       cohortId: form.cohortId,
+      teachingGroupId: form.teachingGroupId || null,
       employerId: employer.id,
       employerName: employer.name,
       workplaceContact: employer.mainContact,
@@ -633,29 +702,39 @@ export function AdminEnrolmentsScreen() {
     const input = buildInput();
     if (!input) return;
 
-    if (editingId) {
-      await updateEnrolment(editingId, input);
-      setSuccess(`Updated ${input.displayName}.`);
-      setExpandedId(editingId);
-    } else {
-      const created = await createEnrolment(input);
-      setSuccess(
-        input.kind === "new_starter"
-          ? `Added new starter ${input.displayName}.`
-          : `Registered currently studying apprentice ${input.displayName}.`,
+    try {
+      if (editingId) {
+        await updateEnrolment(editingId, input);
+        setSuccess(`Updated ${input.displayName}.`);
+        setExpandedId(editingId);
+      } else {
+        const created = await createEnrolment(input);
+        setSuccess(
+          input.kind === "new_starter"
+            ? `Added new starter ${input.displayName}.`
+            : `Registered currently studying apprentice ${input.displayName}.`,
+        );
+        setExpandedId(created.id);
+      }
+      setShowForm(false);
+      setEditingId(null);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Unable to save enrolment.",
       );
-      setExpandedId(created.id);
     }
-    setShowForm(false);
-    setEditingId(null);
   }
 
   async function patchEnrolment(
     idValue: string,
     patch: Partial<EnrolmentInput> & { status?: EnrolmentStatus },
   ) {
-    const next = await updateEnrolment(idValue, patch);
-    if (next) setSuccess(`Updated ${next.displayName}.`);
+    try {
+      const next = await updateEnrolment(idValue, patch);
+      if (next) setSuccess(`Updated ${next.displayName}.`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to update enrolment.");
+    }
   }
 
   function openTransfer(row: AdminApprenticeEnrolment) {
@@ -667,6 +746,7 @@ export function AdminEnrolmentsScreen() {
     setTransferringId(row.id);
     setTransferDraft({
       cohortId: row.cohortId ?? "",
+      teachingGroupId: row.teachingGroupId ?? "",
       employerId: row.employerId,
       reason: "",
     });
@@ -674,17 +754,26 @@ export function AdminEnrolmentsScreen() {
 
   function closeTransfer() {
     setTransferringId(null);
-    setTransferDraft({ cohortId: "", employerId: "", reason: "" });
+    setTransferDraft({
+      cohortId: "",
+      teachingGroupId: "",
+      employerId: "",
+      reason: "",
+    });
     setError(null);
   }
 
   /**
-   * Pre-framed transfer: college day/group (cohort) and/or employer.
-   * Formal rules (approvals, version pinning, progress reset) still TBC with Jon.
+   * Transfer: intake, teaching group, and/or employer.
+   * Teaching group assignment never changes cohort, dates, or GTA pin.
    */
   async function applyTransfer(row: AdminApprenticeEnrolment) {
     const nextCohort = transferDraft.cohortId
       ? store.cohorts.find((c) => c.id === transferDraft.cohortId) ?? null
+      : null;
+    const nextGroup = transferDraft.teachingGroupId
+      ? store.teachingGroups.find((g) => g.id === transferDraft.teachingGroupId) ??
+        null
       : null;
     const nextEmployer = transferDraft.employerId
       ? store.employers.find((e) => e.id === transferDraft.employerId) ?? null
@@ -697,10 +786,12 @@ export function AdminEnrolmentsScreen() {
 
     const cohortChanged =
       (row.cohortId ?? "") !== (transferDraft.cohortId || "");
+    const groupChanged =
+      (row.teachingGroupId ?? "") !== (transferDraft.teachingGroupId || "");
     const employerChanged = row.employerId !== transferDraft.employerId;
 
-    if (!cohortChanged && !employerChanged) {
-      setError("Nothing has changed — pick a new group or employer.");
+    if (!cohortChanged && !groupChanged && !employerChanged) {
+      setError("Nothing has changed — pick a new intake, teaching group or employer.");
       return;
     }
 
@@ -711,8 +802,14 @@ export function AdminEnrolmentsScreen() {
     });
     const parts: string[] = [];
     if (cohortChanged) {
+      parts.push(`intake ${row.cohortId ? "set" : "none"} → ${nextCohort?.name ?? "no cohort"}`);
+    }
+    if (groupChanged) {
+      const currentGroup = store.teachingGroups.find(
+        (g) => g.id === row.teachingGroupId,
+      );
       parts.push(
-        `group ${row.collegeDays || "unset"} → ${nextCohort?.collegeDays || "unset"} (${nextCohort?.name ?? "no cohort"})`,
+        `teaching group ${currentGroup?.name ?? "none"} → ${nextGroup?.name ?? "none"}`,
       );
     }
     if (employerChanged) {
@@ -724,18 +821,12 @@ export function AdminEnrolmentsScreen() {
     const transferNote = `Transfer ${stamp} by ${session.account.name}: ${parts.join("; ")}.${reasonNote}`;
 
     const patch: Partial<EnrolmentInput> = {
-      notes: row.notes
-        ? `${row.notes}\n${transferNote}`
-        : transferNote,
+      notes: row.notes ? `${row.notes}\n${transferNote}` : transferNote,
     };
 
     if (cohortChanged) {
-      // College day / group move — tutor and days follow the cohort.
-      // Start date and year/week are left alone until Jon confirms the rule.
       patch.cohortId = nextCohort?.id ?? null;
       if (nextCohort) {
-        patch.collegeDays = nextCohort.collegeDays;
-        patch.tutorName = nextCohort.tutorName;
         if (nextCohort.standardCode) {
           patch.standardCode = nextCohort.standardCode;
         }
@@ -753,20 +844,30 @@ export function AdminEnrolmentsScreen() {
       patch.mentorName = nextEmployer.mainContact;
     }
 
-    const updated = await updateEnrolment(row.id, patch);
-    if (!updated) {
-      setError("Could not apply the transfer.");
-      return;
+    try {
+      const updated = await updateEnrolment(row.id, patch);
+      if (!updated) {
+        setError("Could not apply the transfer.");
+        return;
+      }
+      if (groupChanged) {
+        await assignEnrolmentToTeachingGroup(
+          row.id,
+          transferDraft.teachingGroupId || null,
+        );
+      }
+      setSuccess(`Transfer recorded for ${updated.displayName}.`);
+      closeTransfer();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not apply the transfer.");
     }
-    setSuccess(`Transfer recorded for ${updated.displayName}.`);
-    closeTransfer();
   }
 
   return (
     <ApprenticePageShell
       eyebrow="Administration"
       title="Apprentice Enrolments"
-      description="Enrol apprentices who are already on the system onto a programme — employer, cohort and progress position. Transfer covers college-day / group moves and employer changes. Personal details are captured once in Apprentice Intake."
+      description="Enrol apprentices who are already on the system onto a programme — employer, intake, GTA Programme Version and teaching group. Transfer can change intake, teaching group and employer independently. Personal details are captured once in Apprentice Intake."
       actions={
         <div className={styles.toolbarActions}>
           <button
@@ -942,6 +1043,66 @@ export function AdminEnrolmentsScreen() {
                   <span className={styles.fieldHint}>{cohortHint}</span>
                 </label>
                 <label className={styles.field}>
+                  <span>GTA Programme Version</span>
+                  <select
+                    value={form.gtaProgrammeVersionId}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        gtaProgrammeVersionId: e.target.value,
+                        teachingGroupId: "",
+                      }))
+                    }
+                    disabled={!selectedCohort}
+                  >
+                    <option value="">
+                      {selectedCohort
+                        ? "Choose GTA Programme Version…"
+                        : "Choose intake first…"}
+                    </option>
+                    {gtaVersionsForForm.map((version) => (
+                      <option key={version.id} value={version.id}>
+                        {formatGtaProgrammeVersionLabel(version)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className={styles.field}>
+                  <span>Teaching group</span>
+                  <select
+                    value={form.teachingGroupId}
+                    onChange={(e) => {
+                      const group = store.teachingGroups.find(
+                        (g) => g.id === e.target.value,
+                      );
+                      setForm((prev) => ({
+                        ...prev,
+                        teachingGroupId: e.target.value,
+                        tutorName: group?.tutorName ?? prev.tutorName,
+                        collegeDays: group?.collegeDays ?? prev.collegeDays,
+                      }));
+                    }}
+                    disabled={!form.gtaProgrammeVersionId}
+                  >
+                    <option value="">
+                      {form.gtaProgrammeVersionId
+                        ? "Choose teaching group…"
+                        : "Pin programme version first…"}
+                    </option>
+                    {groupsForForm.map((group) => (
+                      <option key={group.id} value={group.id}>
+                        {formatTeachingGroupOptionLabel(
+                          group,
+                          currentMemberCount(store.enrolments, group.id),
+                        )}
+                      </option>
+                    ))}
+                  </select>
+                  <span className={styles.fieldHint}>
+                    Filtered by the pinned GTA Programme Version, not by intake.
+                  </span>
+                </label>
+                <label className={styles.field}>
                   <span>
                     Employer <em className={styles.fieldRequired}>required</em>
                   </span>
@@ -969,19 +1130,55 @@ export function AdminEnrolmentsScreen() {
                   </span>
                 </label>
                 <label className={styles.field}>
-                  <span>Start date</span>
-                  <input type="date" value={form.startDate} readOnly />
-                  <span className={styles.fieldHint}>From the cohort intake.</span>
+                  <span>
+                    Apprenticeship start date{" "}
+                    <em className={styles.fieldRequired}>required</em>
+                  </span>
+                  <input
+                    type="date"
+                    value={form.startDate}
+                    onChange={(e) => onStartDateChange(e.target.value)}
+                    required
+                  />
+                  <span className={styles.fieldHint}>
+                    This apprentice’s own start date. Intake Start is a separate
+                    cohort date and is not copied here.
+                  </span>
+                </label>
+                <label className={styles.field}>
+                  <span>
+                    Planned end date{" "}
+                    <em className={styles.fieldRequired}>required</em>
+                  </span>
+                  <input
+                    type="date"
+                    value={form.originalPlannedEndDate}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        originalPlannedEndDate: e.target.value,
+                      }))
+                    }
+                    required
+                  />
+                  <span className={styles.fieldHint}>
+                    Fills from this apprentice’s start and the programme
+                    duration. Edit for learner-specific adjustments.
+                  </span>
                 </label>
                 <label className={styles.field}>
                   <span>Tutor</span>
                   <input value={form.tutorName || "—"} readOnly />
-                  <span className={styles.fieldHint}>From the cohort.</span>
+                  <span className={styles.fieldHint}>
+                    From the teaching group — not the cohort.
+                  </span>
                 </label>
                 <label className={styles.field}>
                   <span>College days</span>
                   <input value={form.collegeDays || "—"} readOnly />
-                  <span className={styles.fieldHint}>From the cohort.</span>
+                  <span className={styles.fieldHint}>
+                    From the teaching group — not the cohort.
+                  </span>
                 </label>
                 <label className={styles.field}>
                   <span>Workplace contact</span>
@@ -1215,11 +1412,11 @@ export function AdminEnrolmentsScreen() {
                         <ReadonlyDetail
                           label="Programme"
                           value={`${row.programmeName} · ${row.standardCode}`}
-                          hint="From the selected programme / cohort."
+                          hint="From the selected programme."
                         />
                         <label className={styles.detailField}>
                           <span className={styles.detailFieldLabel}>
-                            Cohort
+                            Cohort / intake
                           </span>
                           <select
                             className={styles.detailFieldInput}
@@ -1229,40 +1426,10 @@ export function AdminEnrolmentsScreen() {
                                 store.cohorts.find(
                                   (c) => c.id === e.target.value,
                                 ) ?? null;
-                              if (!cohort) {
-                                patchEnrolment(row.id, { cohortId: null });
-                                return;
-                              }
-                              const programme = programmes.find(
-                                (p) => p.id === cohort.programmeId,
+                              patchEnrolment(
+                                row.id,
+                                cohortAssignmentPatch(cohort, programmes),
                               );
-                              const liveKind = deriveEnrolmentKind(
-                                cohort.startDate,
-                                row.kind,
-                              );
-                              const position = derivePosition(cohort.startDate);
-                              patchEnrolment(row.id, {
-                                cohortId: cohort.id,
-                                programmeName:
-                                  programme?.name ?? row.programmeName,
-                                standardCode: cohort.standardCode,
-                                startDate: cohort.startDate,
-                                collegeDays: cohort.collegeDays,
-                                tutorName: cohort.tutorName,
-                                programmeWeek:
-                                  liveKind === "currently_studying"
-                                    ? position.programmeWeek
-                                    : null,
-                                programmeYear:
-                                  liveKind === "currently_studying"
-                                    ? position.programmeYear
-                                    : null,
-                                status: deriveEnrolmentStatus(
-                                  liveKind,
-                                  cohort.startDate,
-                                  row.status,
-                                ),
-                              });
                             }}
                           >
                             <option value="">No cohort yet</option>
@@ -1277,6 +1444,75 @@ export function AdminEnrolmentsScreen() {
                                   {cohort.name} · v{cohort.standardVersion}
                                 </option>
                               ))}
+                          </select>
+                        </label>
+                        <label className={styles.detailField}>
+                          <span className={styles.detailFieldLabel}>
+                            GTA Programme Version
+                          </span>
+                          <select
+                            className={styles.detailFieldInput}
+                            value={row.gtaProgrammeVersionId ?? ""}
+                            onChange={(e) =>
+                              patchEnrolment(row.id, {
+                                gtaProgrammeVersionId: e.target.value || null,
+                              })
+                            }
+                          >
+                            <option value="">Not pinned</option>
+                            {(row.cohortId
+                              ? selectableGtaVersionsForIntake({
+                                  versions: store.gtaProgrammeVersions ?? [],
+                                  standardCode: row.standardCode,
+                                  skillsEnglandVersion:
+                                    store.cohorts.find((c) => c.id === row.cohortId)
+                                      ?.standardVersion ?? "",
+                                  includeId: row.gtaProgrammeVersionId,
+                                })
+                              : (store.gtaProgrammeVersions ?? []).filter(
+                                  (v) =>
+                                    v.standardCode.toUpperCase() ===
+                                    row.standardCode.toUpperCase(),
+                                )
+                            ).map((version) => (
+                              <option key={version.id} value={version.id}>
+                                {formatGtaProgrammeVersionLabel(version)}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label className={styles.detailField}>
+                          <span className={styles.detailFieldLabel}>
+                            Teaching group
+                          </span>
+                          <select
+                            className={styles.detailFieldInput}
+                            value={row.teachingGroupId ?? ""}
+                            onChange={(e) =>
+                              void assignEnrolmentToTeachingGroup(
+                                row.id,
+                                e.target.value || null,
+                              ).catch((err: unknown) =>
+                                setError(
+                                  err instanceof Error
+                                    ? err.message
+                                    : "Unable to assign teaching group.",
+                                ),
+                              )
+                            }
+                          >
+                            <option value="">No teaching group</option>
+                            {teachingGroupsCompatibleWithPin(
+                              store.teachingGroups ?? [],
+                              row.gtaProgrammeVersionId ?? "",
+                            ).map((group) => (
+                              <option key={group.id} value={group.id}>
+                                {formatTeachingGroupOptionLabel(
+                                  group,
+                                  currentMemberCount(store.enrolments, group.id),
+                                )}
+                              </option>
+                            ))}
                           </select>
                         </label>
                         <label className={styles.detailField}>
@@ -1319,22 +1555,69 @@ export function AdminEnrolmentsScreen() {
                         <ReadonlyDetail
                           label="Tutor"
                           value={row.tutorName}
-                          hint="From the cohort."
+                          hint="From the teaching group."
                         />
-                        <ReadonlyDetail
+                        <EnrolmentInlineField
                           label={
                             deriveEnrolmentKind(row.startDate, row.kind) ===
                             "new_starter"
-                              ? "Planned start"
+                              ? "Apprenticeship start"
                               : "Programme start"
                           }
                           value={row.startDate}
-                          hint="From the cohort intake date."
+                          type="date"
+                          onCommit={(next) => {
+                            const duration = programmes.find(
+                              (p) =>
+                                p.name === row.programmeName ||
+                                p.standardCode.toUpperCase() ===
+                                  row.standardCode.toUpperCase(),
+                            )?.durationMonths;
+                            const planned = plannedDatesFromStart(
+                              next,
+                              duration,
+                            );
+                            const patch: Partial<EnrolmentInput> = {
+                              startDate: next,
+                            };
+                            const notStarted = !hasApprenticeshipStarted(next);
+                            if (
+                              notStarted &&
+                              planned.apprenticeshipEndDate
+                            ) {
+                              patch.originalPlannedEndDate =
+                                planned.apprenticeshipEndDate;
+                            }
+                            if (notStarted) {
+                              const suggested = suggestCohortForLearnerStart({
+                                cohorts: store.cohorts,
+                                standardCode: row.standardCode,
+                                apprenticeshipStartDate: next,
+                              });
+                              if (
+                                suggested.reason === "matched" &&
+                                suggested.cohort
+                              ) {
+                                patch.cohortId = suggested.cohort.id;
+                              }
+                            }
+                            patchEnrolment(row.id, patch);
+                          }}
+                        />
+                        <EnrolmentInlineField
+                          label="Planned end date"
+                          value={row.originalPlannedEndDate}
+                          type="date"
+                          onCommit={(next) =>
+                            patchEnrolment(row.id, {
+                              originalPlannedEndDate: next,
+                            })
+                          }
                         />
                         <ReadonlyDetail
                           label="College days"
                           value={row.collegeDays}
-                          hint="From the cohort."
+                          hint="From the teaching group."
                         />
                         {deriveEnrolmentKind(row.startDate, row.kind) ===
                         "currently_studying" ? (
@@ -1342,7 +1625,7 @@ export function AdminEnrolmentsScreen() {
                             <ReadonlyDetail
                               label="Programme year / week"
                               value={positionLabel(row)}
-                              hint="Calculated from start date."
+                              hint="Calculated from this apprentice’s start date."
                             />
                             <ReadonlyDetail
                               label="Attendance %"
@@ -1375,6 +1658,54 @@ export function AdminEnrolmentsScreen() {
                         />
                       </div>
 
+                      {(store.teachingGroupMemberships ?? []).some(
+                        (rowMembership) => rowMembership.enrolmentId === row.id,
+                      ) ? (
+                        <div className={styles.formGroup}>
+                          <div className={styles.formGroupHead}>
+                            <h3 className={styles.formGroupTitle}>
+                              Teaching group membership
+                            </h3>
+                          </div>
+                          <ul className={styles.linkedApprenticeList}>
+                            {(store.teachingGroupMemberships ?? [])
+                              .filter(
+                                (membership) =>
+                                  membership.enrolmentId === row.id,
+                              )
+                              .map((membership) => {
+                                const group = store.teachingGroups.find(
+                                  (g) => g.id === membership.teachingGroupId,
+                                );
+                                return (
+                                  <li key={membership.id}>
+                                    <div className={styles.linkedApprenticeRow}>
+                                      <div
+                                        className={styles.linkedApprenticeMain}
+                                      >
+                                        <strong>
+                                          {group?.name ?? "Teaching group"}
+                                        </strong>
+                                        <span>
+                                          {membership.isCurrent
+                                            ? "Current"
+                                            : "Previous"}
+                                          {membership.joinedAt
+                                            ? ` · joined ${new Date(membership.joinedAt).toLocaleDateString("en-GB")}`
+                                            : " · join date unknown (legacy)"}
+                                          {membership.leftAt
+                                            ? ` · left ${new Date(membership.leftAt).toLocaleDateString("en-GB")}`
+                                            : ""}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </li>
+                                );
+                              })}
+                          </ul>
+                        </div>
+                      ) : null}
+
                       <div className={styles.formActions}>
                         <ApprenticeStatusChip tone={statusTone(row.status)}>
                           {kindLabel(row.kind, row.startDate)}
@@ -1406,29 +1737,21 @@ export function AdminEnrolmentsScreen() {
                             </span>
                           </div>
                           <p className={styles.formGroupMeta}>
-                            Two common moves: college day / teaching group
-                            (cohort), or employer. Formal rules — approvals,
-                            whether start date or programme version move with a
-                            group change — still to agree with Jon. This frame
-                            updates group days, tutor, and employer only.
+                            Intake, teaching group and employer are independent.
+                            Moving teaching group does not change cohort, start
+                            date, planned end or GTA Programme Version.
                           </p>
 
                           <div className={styles.transferGrid}>
                             <div className={styles.transferBlock}>
                               <h4 className={styles.transferBlockTitle}>
-                                College day / group
+                                Intake
                               </h4>
                               <p className={styles.transferCurrent}>
-                                Now:{" "}
-                                {cohort
-                                  ? `${cohort.name} · ${row.collegeDays || "days unset"}`
-                                  : row.collegeDays || "No group assigned"}
-                                {row.tutorName
-                                  ? ` · Tutor ${row.tutorName}`
-                                  : ""}
+                                Now: {cohort ? cohort.name : "No intake"}
                               </p>
                               <label className={styles.field}>
-                                <span>Move to cohort</span>
+                                <span>Move to intake</span>
                                 <select
                                   value={transferDraft.cohortId}
                                   onChange={(e) =>
@@ -1448,19 +1771,54 @@ export function AdminEnrolmentsScreen() {
                                     )
                                     .map((c) => (
                                       <option key={c.id} value={c.id}>
-                                        {c.name}
-                                        {c.collegeDays
-                                          ? ` · ${c.collegeDays}`
-                                          : ""}
-                                        {c.tutorName
-                                          ? ` · ${c.tutorName}`
-                                          : ""}
+                                        {c.name} · SE v{c.standardVersion}
                                       </option>
                                     ))}
                                 </select>
+                              </label>
+                            </div>
+                            <div className={styles.transferBlock}>
+                              <h4 className={styles.transferBlockTitle}>
+                                Teaching group
+                              </h4>
+                              <p className={styles.transferCurrent}>
+                                Now:{" "}
+                                {store.teachingGroups.find(
+                                  (g) => g.id === row.teachingGroupId,
+                                )
+                                  ? `${store.teachingGroups.find((g) => g.id === row.teachingGroupId)?.name} · ${row.tutorName || "no tutor"} · ${row.collegeDays || "days unset"}`
+                                  : "No teaching group"}
+                              </p>
+                              <label className={styles.field}>
+                                <span>Move to teaching group</span>
+                                <select
+                                  value={transferDraft.teachingGroupId}
+                                  onChange={(e) =>
+                                    setTransferDraft((prev) => ({
+                                      ...prev,
+                                      teachingGroupId: e.target.value,
+                                    }))
+                                  }
+                                >
+                                  <option value="">No teaching group</option>
+                                  {teachingGroupsCompatibleWithPin(
+                                    store.teachingGroups ?? [],
+                                    row.gtaProgrammeVersionId ?? "",
+                                  ).map((group) => (
+                                    <option key={group.id} value={group.id}>
+                                      {formatTeachingGroupOptionLabel(
+                                        group,
+                                        currentMemberCount(
+                                          store.enrolments,
+                                          group.id,
+                                        ),
+                                      )}
+                                    </option>
+                                  ))}
+                                </select>
                                 <span className={styles.fieldHint}>
-                                  Same standard only for now. Cross-programme
-                                  moves TBC.
+                                  Only groups matching this apprentice’s pinned
+                                  GTA Programme Version.
                                 </span>
                               </label>
                             </div>

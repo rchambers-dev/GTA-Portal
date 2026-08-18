@@ -31,3 +31,8 @@ export function plannedDatesFromStart(
     ),
   };
 }
+
+/** Enrolment Opens = one calendar month before Intake Start. */
+export function enrolmentOpensFromIntakeStart(intakeStartDate: string): string {
+  return addMonthsToIsoDate(intakeStartDate, -1);
+}

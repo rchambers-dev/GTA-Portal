@@ -18,7 +18,18 @@ import {
 } from "../domain/intake-pack";
 import { formatCollegeDaysShort } from "../domain/college-days";
 import { plannedDatesFromStart } from "../domain/programme-duration";
-import { cohortTeacherList } from "../domain/tutor-options";
+import {
+  suggestCohortForLearnerStart,
+} from "../domain/cohort-intake";
+import {
+  formatGtaProgrammeVersionLabel,
+  selectableGtaVersionsForIntake,
+} from "../domain/gta-programme-version-options";
+import {
+  formatTeachingGroupOptionLabel,
+  teachingGroupsCompatibleWithPin,
+  currentMemberCount,
+} from "../domain/teaching-group-placement";
 import type { AdminApprenticeRecord, AdminCohortRecord } from "../domain/types";
 import { useAdminStore } from "../hooks/useAdminStore";
 import styles from "./admin-pages.module.css";
@@ -32,6 +43,7 @@ type CreateForm = {
   programmeId: string;
   employerId: string;
   cohortId: string;
+  gtaProgrammeVersionId: string;
   teachingGroupId: string;
   mentorName: string;
   tutorName: string;
@@ -70,6 +82,7 @@ function emptyCreateForm(): CreateForm {
     programmeId: "",
     employerId: "",
     cohortId: "",
+    gtaProgrammeVersionId: "",
     teachingGroupId: "",
     mentorName: "",
     tutorName: "",
@@ -99,8 +112,8 @@ function formatDate(value: string): string {
   });
 }
 
-function placementFieldsFromCohort(
-  cohort: Pick<AdminCohortRecord, "startDate" | "expectedEndDate">,
+function learnerDatesFromStart(
+  startDate: string,
   durationMonths: number | undefined,
 ): Pick<
   CreateForm,
@@ -109,38 +122,50 @@ function placementFieldsFromCohort(
   | "practicalStartDate"
   | "practicalEndDate"
 > {
-  const startDate = cohort.startDate.slice(0, 10);
   const planned = plannedDatesFromStart(startDate, durationMonths);
-  const cohortEnd = cohort.expectedEndDate?.slice(0, 10) || "";
   return {
     apprenticeshipStartDate: startDate,
     practicalStartDate: startDate,
-    practicalEndDate: planned.practicalEndDate || cohortEnd,
+    practicalEndDate: planned.practicalEndDate,
     apprenticeshipEndDate:
-      planned.apprenticeshipEndDate || cohortEnd || planned.practicalEndDate,
+      planned.apprenticeshipEndDate || planned.practicalEndDate,
   };
 }
 
-function clearPlacementFromCohort(): Pick<
+function clearGroupPlacement(): Pick<
   CreateForm,
-  | "cohortId"
-  | "teachingGroupId"
-  | "tutorName"
-  | "collegeDays"
-  | "apprenticeshipStartDate"
-  | "apprenticeshipEndDate"
-  | "practicalStartDate"
-  | "practicalEndDate"
+  "cohortId" | "gtaProgrammeVersionId" | "teachingGroupId" | "tutorName" | "collegeDays"
 > {
   return {
     cohortId: "",
+    gtaProgrammeVersionId: "",
     teachingGroupId: "",
     tutorName: "",
     collegeDays: "",
-    apprenticeshipStartDate: "",
-    apprenticeshipEndDate: "",
-    practicalStartDate: "",
-    practicalEndDate: "",
+  };
+}
+
+function withLearnerStart(
+  prev: CreateForm,
+  startDate: string,
+  durationMonths: number | undefined,
+  cohorts: AdminCohortRecord[],
+  standardCode: string,
+): CreateForm {
+  const dates = learnerDatesFromStart(startDate, durationMonths);
+  if (!startDate || !standardCode) {
+    return { ...prev, ...dates };
+  }
+  const suggestion = suggestCohortForLearnerStart({
+    cohorts,
+    standardCode,
+    apprenticeshipStartDate: startDate,
+  });
+  const nextCohortId = suggestion.cohort?.id ?? "";
+  return {
+    ...prev,
+    ...dates,
+    cohortId: nextCohortId,
   };
 }
 
@@ -261,6 +286,27 @@ export function AdminApprenticeIntakeScreen() {
             selectedProgramme.standardCode.toUpperCase(),
       )
     : [];
+  const cohortSuggestion =
+    selectedProgramme && createForm.apprenticeshipStartDate
+      ? suggestCohortForLearnerStart({
+          cohorts: store.cohorts,
+          standardCode: selectedProgramme.standardCode,
+          apprenticeshipStartDate: createForm.apprenticeshipStartDate,
+        })
+      : null;
+
+  const gtaVersionsForIntake = selectedCohort
+    ? selectableGtaVersionsForIntake({
+        versions: store.gtaProgrammeVersions ?? [],
+        standardCode: selectedCohort.standardCode,
+        skillsEnglandVersion: selectedCohort.standardVersion,
+        includeId: createForm.gtaProgrammeVersionId,
+      })
+    : [];
+  const compatibleGroups = teachingGroupsCompatibleWithPin(
+    store.teachingGroups ?? [],
+    createForm.gtaProgrammeVersionId,
+  );
 
   function closeEditor() {
     setActiveId(null);
@@ -310,21 +356,32 @@ export function AdminApprenticeIntakeScreen() {
       setError("Choose a garage / employer.");
       return;
     }
-    if (!createForm.cohortId) {
-      setError("Choose the cohort for this apprenticeship.");
+    if (!createForm.apprenticeshipStartDate) {
+      setError("Enter the apprentice’s apprenticeship start date.");
       return;
     }
-    if (!createForm.teachingGroupId) {
-      setError("Choose a teaching group (tutor + college days).");
-      return;
-    }
-    if (
-      !createForm.apprenticeshipStartDate ||
-      !createForm.apprenticeshipEndDate
-    ) {
+    if (!createForm.apprenticeshipEndDate) {
       setError(
-        "The selected cohort needs a start date (and expected end) so placement dates can be set.",
+        "Planned end date is required. It fills from the programme duration once a start date is set.",
       );
+      return;
+    }
+    if (!createForm.cohortId) {
+      setError(
+        "Choose the intake / cohort. A suggestion appears from the apprenticeship start date when a compatible intake exists.",
+      );
+      return;
+    }
+    if (!createForm.gtaProgrammeVersionId) {
+      setError(
+        gtaVersionsForIntake.length === 0
+          ? "No published GTA Programme Version is compatible with this intake’s Skills England version. Publish a matching version before adding the apprentice — the newest version will not be chosen automatically."
+          : "Choose the GTA Programme Version this apprentice will follow.",
+      );
+      return;
+    }
+    if (compatibleGroups.length > 0 && !createForm.teachingGroupId) {
+      setError("Choose a teaching group that delivers the pinned GTA Programme Version.");
       return;
     }
 
@@ -354,6 +411,7 @@ export function AdminApprenticeIntakeScreen() {
           uln: "",
           programmeName: programme.name,
           standardCode: programme.standardCode,
+          gtaProgrammeVersionId: createForm.gtaProgrammeVersionId || null,
           cohortId: createForm.cohortId || null,
           teachingGroupId: createForm.teachingGroupId || null,
           allowOverCapacity,
@@ -498,9 +556,11 @@ export function AdminApprenticeIntakeScreen() {
               <span className={styles.formGroupBadge}>Where they go</span>
             </div>
             <p className={styles.formGroupMeta}>
-              Choose the garage first, then apprenticeship, intake cohort, and
-              teaching group (tutor + college days). Placement dates come from
-              the cohort.
+              Choose the garage, apprenticeship, then this apprentice&apos;s
+              own start date. Intake / cohort is an administrative grouping —
+              it does not set their apprenticeship dates. Pin a GTA Programme
+              Version next, then a compatible teaching group supplies tutor
+              and college days.
             </p>
             <div className={styles.formGrid}>
               <FormField label="Garage / employer">
@@ -556,22 +616,75 @@ export function AdminApprenticeIntakeScreen() {
                       })),
                   ]}
                   onChange={(programmeId) => {
-                    setCreateForm((prev) => ({
-                      ...prev,
-                      programmeId,
-                      ...clearPlacementFromCohort(),
-                    }));
+                    const programme = store.programmes.find(
+                      (p) => p.id === programmeId,
+                    );
+                    setCreateForm((prev) =>
+                      withLearnerStart(
+                        { ...prev, programmeId, ...clearGroupPlacement() },
+                        prev.apprenticeshipStartDate,
+                        programme?.durationMonths,
+                        store.cohorts,
+                        programme?.standardCode ?? "",
+                      ),
+                    );
                   }}
                 />
               </FormField>
               <FormField
-                label="Cohort"
+                label="Apprenticeship start date"
+                hint="This apprentice’s own start — not the intake start. Can be a future date."
+              >
+                <TextInput
+                  type="date"
+                  value={createForm.apprenticeshipStartDate}
+                  onChange={(e) => {
+                    const startDate = e.target.value;
+                    setCreateForm((prev) =>
+                      withLearnerStart(
+                        prev,
+                        startDate,
+                        selectedProgramme?.durationMonths,
+                        store.cohorts,
+                        selectedProgramme?.standardCode ?? "",
+                      ),
+                    );
+                  }}
+                />
+              </FormField>
+              <FormField
+                label="Planned end date"
+                hint={
+                  selectedProgramme?.durationMonths
+                    ? `Filled from this apprentice’s start + ${selectedProgramme.durationMonths} months typical duration plus EPA. Edit if needed.`
+                    : "Fills from the programme duration once a start date is set."
+                }
+              >
+                <TextInput
+                  type="date"
+                  value={createForm.apprenticeshipEndDate}
+                  onChange={(e) =>
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      apprenticeshipEndDate: e.target.value,
+                    }))
+                  }
+                />
+              </FormField>
+              <FormField
+                label="Cohort / intake"
                 hint={
                   !selectedProgramme
                     ? "Choose an apprenticeship first"
-                    : cohortsForProgramme.length === 0
-                      ? "No cohorts for this apprenticeship yet — add one on Cohorts"
-                      : undefined
+                    : !createForm.apprenticeshipStartDate
+                      ? "Enter the apprenticeship start date to suggest an intake"
+                      : cohortSuggestion?.reason === "review"
+                        ? cohortSuggestion.message
+                        : cohortsForProgramme.length === 0
+                          ? "No intakes for this apprenticeship yet — add one on Cohorts"
+                          : cohortSuggestion?.cohort
+                            ? `Suggested from apprenticeship start. Intake Start is ${formatDate(cohortSuggestion.cohort.startDate)} — this does not change the apprentice’s dates.`
+                            : "Intake grouping only — does not set this apprentice’s dates."
                 }
               >
                 <Select
@@ -582,85 +695,119 @@ export function AdminApprenticeIntakeScreen() {
                   placeholder={
                     !selectedProgramme
                       ? "Choose apprenticeship first…"
-                      : "Choose cohort…"
+                      : "Choose intake…"
                   }
                   options={[
                     {
                       value: "",
                       label: !selectedProgramme
                         ? "Choose apprenticeship first…"
-                        : "Choose cohort…",
+                        : "Choose intake…",
                     },
                     ...cohortsForProgramme.map((c) => ({
                       value: c.id,
-                      label: c.name,
+                      label: `${c.name} (${c.status})`,
                     })),
                   ]}
                   onChange={(cohortId) => {
-                    const cohort = store.cohorts.find((c) => c.id === cohortId);
                     setCreateForm((prev) => {
-                      if (!cohort) {
-                        return { ...prev, ...clearPlacementFromCohort() };
+                      if (!cohortId) {
+                        return {
+                          ...prev,
+                          cohortId: "",
+                          gtaProgrammeVersionId: "",
+                          teachingGroupId: "",
+                          tutorName: "",
+                          collegeDays: "",
+                        };
                       }
-                      const programme = store.programmes.find(
-                        (p) =>
-                          p.id === prev.programmeId ||
-                          p.id === cohort.programmeId ||
-                          p.standardCode.toUpperCase() ===
-                            cohort.standardCode.toUpperCase(),
-                      );
                       return {
                         ...prev,
                         cohortId,
+                        gtaProgrammeVersionId: "",
                         teachingGroupId: "",
                         tutorName: "",
                         collegeDays: "",
-                        programmeId: programme?.id || prev.programmeId,
-                        ...placementFieldsFromCohort(
-                          cohort,
-                          programme?.durationMonths,
-                        ),
                       };
                     });
                   }}
                 />
               </FormField>
               <FormField
-                label="Teaching group"
+                label="GTA Programme Version"
                 hint={
                   !createForm.cohortId
-                    ? "Choose a cohort first"
-                    : "Tutor and college days come from this group"
+                    ? "Choose an intake first — it sets the Skills England version this pin must match"
+                    : gtaVersionsForIntake.length === 0
+                      ? "No published GTA Programme Version matches this intake’s Skills England version. Newest will not be chosen automatically."
+                      : "Pin the curriculum version this apprentice will follow. Teaching Groups are filtered by this pin, not by intake."
                 }
               >
                 <Select
-                  value={createForm.teachingGroupId}
-                  disabled={!createForm.cohortId}
+                  value={createForm.gtaProgrammeVersionId}
+                  disabled={!createForm.cohortId || gtaVersionsForIntake.length === 0}
                   placeholder={
                     !createForm.cohortId
-                      ? "Choose cohort first…"
-                      : "Choose teaching group…"
+                      ? "Choose intake first…"
+                      : "Choose GTA Programme Version…"
                   }
                   options={[
                     {
                       value: "",
                       label: !createForm.cohortId
-                        ? "Choose cohort first…"
-                        : "Choose teaching group…",
+                        ? "Choose intake first…"
+                        : "Choose GTA Programme Version…",
                     },
-                    ...(store.teachingGroups ?? [])
-                      .filter((g) => g.cohortId === createForm.cohortId)
-                      .map((g) => {
-                        const n = (store.enrolments ?? []).filter(
-                          (e) => e.teachingGroupId === g.id,
-                        ).length;
-                        return {
-                          value: g.id,
-                          label: `${g.tutorName} · ${g.name}${
-                            g.collegeDays ? ` · ${g.collegeDays}` : ""
-                          } · ${n}/${g.capacity}`,
-                        };
-                      }),
+                    ...gtaVersionsForIntake.map((version) => ({
+                      value: version.id,
+                      label: formatGtaProgrammeVersionLabel(version),
+                    })),
+                  ]}
+                  onChange={(gtaProgrammeVersionId) => {
+                    setCreateForm((prev) => ({
+                      ...prev,
+                      gtaProgrammeVersionId,
+                      teachingGroupId: "",
+                      tutorName: "",
+                      collegeDays: "",
+                    }));
+                  }}
+                />
+              </FormField>
+              <FormField
+                label="Teaching group"
+                hint={
+                  !createForm.gtaProgrammeVersionId
+                    ? "Pin a GTA Programme Version first"
+                    : compatibleGroups.length === 0
+                      ? "No active teaching group delivers this version yet — you can add the apprentice unplaced, then create a group in Teaching Groups"
+                      : "Tutor and college days come from this group. Groups are not filtered by intake."
+                }
+              >
+                <Select
+                  value={createForm.teachingGroupId}
+                  disabled={!createForm.gtaProgrammeVersionId}
+                  placeholder={
+                    !createForm.gtaProgrammeVersionId
+                      ? "Pin programme version first…"
+                      : "Choose teaching group…"
+                  }
+                  options={[
+                    {
+                      value: "",
+                      label: !createForm.gtaProgrammeVersionId
+                        ? "Pin programme version first…"
+                        : compatibleGroups.length === 0
+                          ? "No compatible teaching group yet"
+                          : "Choose teaching group…",
+                    },
+                    ...compatibleGroups.map((g) => {
+                      const n = currentMemberCount(store.enrolments ?? [], g.id);
+                      return {
+                        value: g.id,
+                        label: formatTeachingGroupOptionLabel(g, n),
+                      };
+                    }),
                   ]}
                   onChange={(teachingGroupId) => {
                     const group = (store.teachingGroups ?? []).find(
@@ -677,42 +824,40 @@ export function AdminApprenticeIntakeScreen() {
               </FormField>
             </div>
 
-            {selectedCohort ? (
+            {selectedCohort || createForm.apprenticeshipStartDate ? (
               <div className={styles.placementFromCohort}>
-                <p className={styles.placementFromCohortTitle}>From placement</p>
+                <p className={styles.placementFromCohortTitle}>
+                  Dates belong to this apprentice
+                </p>
                 <dl className={styles.placementFromCohortGrid}>
                   <div>
-                    <dt>Tutor</dt>
-                    <dd>{createForm.tutorName || "—"}</dd>
-                  </div>
-                  <div>
-                    <dt>College days</dt>
+                    <dt>Apprenticeship start</dt>
                     <dd>
-                      {formatCollegeDaysShort(createForm.collegeDays) || "—"}
+                      {formatDate(createForm.apprenticeshipStartDate)}
                     </dd>
                   </div>
                   <div>
-                    <dt>Teachers on cohort</dt>
-                    <dd>
-                      {cohortTeacherList(selectedCohort).join(", ") || "—"}
-                    </dd>
+                    <dt>Planned end</dt>
+                    <dd>{formatDate(createForm.apprenticeshipEndDate)}</dd>
                   </div>
                   <div>
                     <dt>Intake start</dt>
                     <dd>
-                      {formatDate(
-                        createForm.apprenticeshipStartDate ||
-                          selectedCohort.startDate,
-                      )}
+                      {selectedCohort
+                        ? formatDate(selectedCohort.startDate)
+                        : "—"}
                     </dd>
                   </div>
                   <div>
-                    <dt>Expected end</dt>
+                    <dt>Tutor / college days</dt>
                     <dd>
-                      {formatDate(
-                        createForm.practicalEndDate ||
-                          selectedCohort.expectedEndDate,
-                      )}
+                      {createForm.tutorName
+                        ? `${createForm.tutorName}${
+                            createForm.collegeDays
+                              ? ` · ${formatCollegeDaysShort(createForm.collegeDays)}`
+                              : ""
+                          }`
+                        : "From teaching group"}
                     </dd>
                   </div>
                 </dl>
