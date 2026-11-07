@@ -177,7 +177,19 @@ export function GlobalHeader({ hidden = false }: { hidden?: boolean }) {
               }}
             >
               <span className={styles.iconGlyph} aria-hidden>
-                N
+                <svg
+                  width={18}
+                  height={18}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.9}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16z" />
+                  <path d="M10 18a2 2 0 0 0 4 0" />
+                </svg>
               </span>
               {unreadCount > 0 ? (
                 <span className={styles.badge}>
