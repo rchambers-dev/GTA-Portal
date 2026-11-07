@@ -17,6 +17,7 @@ import {
   enrolmentPositionLabel,
 } from "../domain/enrolment-status";
 import { useAdminStore } from "../hooks/useAdminStore";
+import { EmployersVisualPreview } from "./employers-visual-preview";
 import styles from "./admin-pages.module.css";
 
 type FormState = EmployerInput;
@@ -183,7 +184,8 @@ function EmployerInlineField({
   );
 }
 
-export function AdminEmployersScreen() {
+/** Live employer records, kept for later wiring. Not rendered during the layout preview. */
+export function AdminEmployersScreenLive() {
   const store = useAdminStore();
   const [query, setQuery] = useState("");
   const [searchMode, setSearchMode] = useState<GarageSearchMode>("name");
@@ -962,4 +964,9 @@ export function AdminEmployersScreen() {
       </div>
     </ApprenticePageShell>
   );
+}
+
+/** Signed-in employer routes show the layout preview. Saving stays off. */
+export function AdminEmployersScreen() {
+  return <EmployersVisualPreview />;
 }

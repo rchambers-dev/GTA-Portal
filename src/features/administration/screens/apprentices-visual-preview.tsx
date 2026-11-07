@@ -1,215 +1,145 @@
 "use client";
 
+import { useReducer } from "react";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./admin-pages.module.css";
+import {
+  apprenticePreviewReducer,
+  employerName,
+  initialApprenticePreviewState,
+  visibleApprentices,
+  type ApprenticePreviewState,
+} from "./visual-preview-state";
 
 /**
- * Layout preview only. Example names are not records.
- * Controls are disabled and this component does not call the network.
- * The previous intake implementation remains in this folder for later wiring.
+ * Layout preview on the existing Apprentices routes.
+ * Search, the add container, and the employer selector change local state only.
  */
-const EXAMPLE_APPRENTICES = [
-  {
-    name: "Alex Example",
-    reference: "EXAMPLE-0001",
-    employer: "Not linked",
-    gaps: "Postcode, release day, tutor",
-  },
-  {
-    name: "Jordan Example",
-    reference: "EXAMPLE-0002",
-    employer: "Example Motors",
-    gaps: "Reviewer, planned review",
-  },
-];
+export function ApprenticesVisualPreview({
+  initialState,
+}: {
+  initialState?: ApprenticePreviewState;
+} = {}) {
+  const [state, dispatch] = useReducer(
+    apprenticePreviewReducer,
+    initialState,
+    (seed) => seed ?? initialApprenticePreviewState(),
+  );
+  const rows = visibleApprentices(state);
 
-export function ApprenticesVisualPreview() {
   return (
     <ApprenticePageShell
       eyebrow="Apprentices"
       title="Apprentices"
-      description="Layout preview with example data. Saving is disabled. Nothing here is written to the portal."
+      description="Search the list, or open Add apprentice. Example data only. Saving is disabled."
       actions={
-        <button type="button" className={styles.primaryBtn} disabled>
-          Add apprentice
+        <button
+          type="button"
+          className={styles.primaryBtn}
+          aria-expanded={state.addOpen}
+          onClick={() => dispatch({ type: "toggle-add" })}
+        >
+          {state.addOpen ? "Close" : "Add apprentice"}
         </button>
       }
     >
-      <div className={styles.stack}>
-        <p className={styles.formGroupMeta} role="status">
-          EXAMPLE DATA. Preview only. Saving is disabled. These names are not real apprentices or employers.
+      <div className={styles.stack} data-visual="apprentices">
+        <p className={styles.previewBanner} role="status">
+          EXAMPLE DATA. Saving is disabled. Phone and postcode belong on the employer, not here.
         </p>
 
-        <form
-          className={styles.formStack}
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <section className={styles.formGroup}>
-            <div className={styles.formGroupHead}>
-              <h2 className={styles.formGroupTitle}>Add apprentice</h2>
-              <span className={styles.formGroupBadge}>Example</span>
-            </div>
+        <div className={styles.registryToolbar}>
+          <label className={styles.registrySearch}>
+            <span className={styles.registrySearchLabel}>Search apprentices</span>
+            <input
+              type="search"
+              value={state.query}
+              placeholder="Search by apprentice or employer"
+              onChange={(event) => dispatch({ type: "search", query: event.target.value })}
+            />
+          </label>
+        </div>
+
+        {state.addOpen ? (
+          <form
+            className={styles.addPanel}
+            data-add-panel="apprentice"
+            onSubmit={(event) => {
+              event.preventDefault();
+              dispatch({ type: "add-local" });
+            }}
+          >
+            <h2 className={styles.formGroupTitle}>Add apprentice</h2>
             <p className={styles.formGroupMeta}>
-              Full name is the only required field in this layout. Leave unknown details blank. Enrolment is not part of this preview.
+              Full name is the apprentice field. Choose an employer if one should be linked. Nothing is written to the portal.
             </p>
-            <fieldset className={styles.formGrid} disabled>
+            <div className={styles.formGrid}>
               <label className={styles.field}>
                 <span>
                   Full name <em className={styles.fieldRequired}>required</em>
                 </span>
-                <input readOnly defaultValue="Alex Example" />
+                <input
+                  value={state.fullName}
+                  onChange={(event) =>
+                    dispatch({ type: "set-name", fullName: event.target.value })
+                  }
+                />
               </label>
-              <label className={styles.field}>
-                <span>Recorded employer name</span>
-                <input readOnly defaultValue="" placeholder="Not recorded" />
-              </label>
-              <label className={styles.field}>
-                <span>Recorded postcode</span>
-                <input readOnly defaultValue="" />
-              </label>
-              <label className={styles.field}>
-                <span>Release day</span>
-                <select defaultValue="" disabled>
-                  <option value="">Not recorded</option>
-                  <option>Monday</option>
-                </select>
-              </label>
-              <label className={styles.field}>
-                <span>Tutor</span>
-                <input readOnly defaultValue="" />
-              </label>
-              <label className={styles.field}>
-                <span>Apprenticeship</span>
-                <input readOnly defaultValue="" />
-              </label>
-            </fieldset>
-          </section>
-
-          <section className={styles.formGroup}>
-            <div className={styles.formGroupHead}>
-              <h2 className={styles.formGroupTitle}>Employer, site and manager</h2>
-              <span className={styles.formGroupBadge}>Optional link</span>
-            </div>
-            <p className={styles.formGroupMeta}>
-              Optional. Example companies only. Choosing one does not save a link.
-            </p>
-            <fieldset className={styles.formGrid} disabled>
               <label className={styles.field}>
                 <span>Employer</span>
-                <select defaultValue="example-motors" disabled>
+                <select
+                  value={state.employerId}
+                  onChange={(event) =>
+                    dispatch({ type: "set-employer", employerId: event.target.value })
+                  }
+                >
                   <option value="">Not linked</option>
-                  <option value="example-motors">Example Motors</option>
-                  <option value="example-yard-co">Example Yard Co</option>
+                  {state.employers.map((employer) => (
+                    <option key={employer.id} value={employer.id}>
+                      {employer.name}
+                    </option>
+                  ))}
                 </select>
               </label>
-              <label className={styles.field}>
-                <span>Site</span>
-                <select defaultValue="example-yard" disabled>
-                  <option value="">Not recorded</option>
-                  <option value="example-yard">Example yard</option>
-                </select>
-              </label>
-              <label className={styles.field}>
-                <span>Manager</span>
-                <select defaultValue="example-manager" disabled>
-                  <option value="">Not recorded</option>
-                  <option value="example-manager">Example Manager · Example yard</option>
-                </select>
-              </label>
-            </fieldset>
+            </div>
+            {state.notice ? <p className={styles.formGroupMeta}>{state.notice}</p> : null}
             <div className={styles.formActions}>
-              <button type="button" className={styles.secondaryBtn} disabled>
+              <button
+                type="button"
+                className={styles.secondaryBtn}
+                onClick={() => dispatch({ type: "cancel-add" })}
+              >
                 Cancel
               </button>
-              <button type="submit" className={styles.primaryBtn} disabled>
+              <button type="submit" className={styles.primaryBtn}>
                 Add apprentice
               </button>
             </div>
-          </section>
-        </form>
+          </form>
+        ) : null}
 
-        <section className={styles.formGroup}>
-          <div className={styles.formGroupHead}>
-            <h2 className={styles.formGroupTitle}>Example apprentices</h2>
-            <span className={styles.formGroupBadge}>2</span>
-          </div>
-          <div className={styles.employerList}>
-            {EXAMPLE_APPRENTICES.map((row) => (
-              <article key={row.reference} className={styles.employerCard} data-open="false">
-                <div className={styles.employerCardHeader}>
-                  <div className={styles.employerCardMain}>
-                    <strong className={styles.employerName}>{row.name}</strong>
-                    <span>{row.reference}</span>
-                    <span>Employer: {row.employer}</span>
-                    <span>Not recorded: {row.gaps}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className={styles.formGroup}>
-          <div className={styles.formGroupHead}>
-            <h2 className={styles.formGroupTitle}>Companies, sites and managers</h2>
-            <span className={styles.formGroupBadge}>Example</span>
-          </div>
-          <p className={styles.formGroupMeta}>
-            Example only. One site can be linked to more than one company. Nothing is saved.
+        {!state.addOpen && state.notice ? (
+          <p className={styles.formGroupMeta} role="status">
+            {state.notice}
           </p>
-          <fieldset className={styles.formGrid} disabled>
-            <label className={styles.field}>
-              <span>
-                Company name <em className={styles.fieldRequired}>required</em>
-              </span>
-              <input readOnly defaultValue="Example Motors" />
-            </label>
-            <label className={styles.field}>
-              <span>
-                Site label <em className={styles.fieldRequired}>required</em>
-              </span>
-              <input readOnly defaultValue="Example yard" />
-            </label>
-            <label className={styles.field}>
-              <span>
-                Manager name <em className={styles.fieldRequired}>required</em>
-              </span>
-              <input readOnly defaultValue="Example Manager" />
-            </label>
-          </fieldset>
-          <div className={styles.employerList}>
-            <article className={styles.employerCard} data-open="false">
-              <div className={styles.employerCardHeader}>
-                <div className={styles.employerCardMain}>
-                  <strong className={styles.employerName}>Example Motors</strong>
-                  <span>Sites: Example yard</span>
-                  <span>Managers: Example Manager</span>
-                  <span>Apprentices: Jordan Example</span>
-                </div>
-              </div>
-            </article>
-            <article className={styles.employerCard} data-open="false">
-              <div className={styles.employerCardHeader}>
-                <div className={styles.employerCardMain}>
-                  <strong className={styles.employerName}>Example Yard Co</strong>
-                  <span>Sites: Example yard</span>
-                  <span>Same physical site as Example Motors. Not the same company.</span>
-                </div>
-              </div>
-            </article>
-          </div>
-          <div className={styles.formActions}>
-            <button type="button" className={styles.primaryBtn} disabled>
-              Add company
-            </button>
-            <button type="button" className={styles.secondaryBtn} disabled>
-              Add site
-            </button>
-            <button type="button" className={styles.secondaryBtn} disabled>
-              Add manager
-            </button>
-          </div>
-        </section>
+        ) : null}
+
+        {rows.length === 0 ? (
+          <p className={styles.empty} role="status">
+            No apprentices match this search.
+          </p>
+        ) : (
+          <ul className={styles.pillList}>
+            {rows.map((row) => (
+              <li key={row.id} className={styles.pillRow}>
+                <span className={styles.pillName}>{row.fullName}</span>
+                <span className={styles.pillMeta}>
+                  {employerName(row.employerId, state.employers)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </ApprenticePageShell>
   );
