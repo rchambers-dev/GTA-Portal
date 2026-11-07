@@ -201,7 +201,7 @@ export async function loadApprenticeLearningJourney(
         : [];
       const resourceRolesById = new Map(
         learnerAtt.map((a) => [a.resourceId, a.role]),
-      });
+      );
       const release = releaseBySession.get(session.id) ?? null;
       return toLearnerSessionView({
         session,

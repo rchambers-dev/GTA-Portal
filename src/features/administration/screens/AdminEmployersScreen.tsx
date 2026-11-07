@@ -63,7 +63,7 @@ type GarageSearchMode =
   | "apprentice";
 
 const SEARCH_MODES: Array<{ id: GarageSearchMode; label: string; placeholder: string }> = [
-  { id: "name", label: "Name", placeholder: "Search by garage or legal name…" },
+  { id: "name", label: "Name", placeholder: "Search by employer or legal name…" },
   { id: "postcode", label: "Postcode", placeholder: "Search by postcode…" },
   { id: "contact", label: "Contact", placeholder: "Search by contact name, email or phone…" },
   { id: "area", label: "Area", placeholder: "Search by town, street or area…" },
@@ -272,7 +272,7 @@ export function AdminEmployersScreen() {
 
   function buildInput(): EmployerInput | null {
     if (!form.name.trim() || !form.mainContact.trim()) {
-      setError("Garage name and main contact are required.");
+      setError("Employer name and main contact are required.");
       return null;
     }
     if (!form.addressLine1.trim() || !form.town.trim() || !form.postcode.trim()) {
@@ -309,13 +309,13 @@ export function AdminEmployersScreen() {
         setExpandedId(editingId);
       } else {
         const created = await createEmployer(input);
-        setSuccess(`Added garage ${input.name}.`);
+        setSuccess(`Added employer ${input.name}.`);
         setExpandedId(created.id);
       }
       setShowForm(false);
       setEditingId(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to save garage.");
+      setError(err instanceof Error ? err.message : "Unable to save employer.");
     }
   }
 
@@ -323,10 +323,10 @@ export function AdminEmployersScreen() {
     <ApprenticePageShell
       eyebrow="Administration"
       title="Employer Records"
-      description="Garage and workplace details, plus which apprentices are linked to each one."
+      description="Employer and workplace details, plus which apprentices are linked through enrolments."
       actions={
         <button type="button" className={styles.primaryBtn} onClick={openCreate}>
-          Add garage
+          Add employer
         </button>
       }
     >
@@ -338,7 +338,7 @@ export function AdminEmployersScreen() {
             <section className={styles.formGroup}>
               <div className={styles.formGroupHead}>
                 <h2 className={styles.formGroupTitle}>
-                  {editingId ? "Edit garage" : "Add garage"}
+                  {editingId ? "Edit employer" : "Add employer"}
                 </h2>
                 <span className={styles.formGroupBadge}>
                   {editingId ? "Existing record" : "New workplace"}
@@ -353,7 +353,7 @@ export function AdminEmployersScreen() {
               <div className={styles.formGrid}>
                 <label className={styles.field}>
                   <span>
-                    Garage / trading name{" "}
+                    Employer / trading name{" "}
                     <em className={styles.fieldRequired}>required</em>
                   </span>
                   <input
@@ -549,7 +549,7 @@ export function AdminEmployersScreen() {
                   placeholder="Visit notes, access info, parking…"
                 />
                 <p className={styles.fieldHint}>
-                  Anything useful for tutors or assessors visiting this garage.
+                  Anything useful for tutors or assessors visiting this employer.
                 </p>
               </label>
             </section>
@@ -564,7 +564,7 @@ export function AdminEmployersScreen() {
                 Cancel
               </button>
               <button type="submit" className={styles.primaryBtn}>
-                {editingId ? "Save changes" : "Save garage"}
+                {editingId ? "Save changes" : "Save employer"}
               </button>
             </div>
           </form>
@@ -576,7 +576,7 @@ export function AdminEmployersScreen() {
             <div
               className={styles.searchModeTabs}
               role="group"
-              aria-label="Search garages by"
+              aria-label="Search employers by"
             >
               {SEARCH_MODES.map((mode) => (
                 <button
@@ -597,11 +597,11 @@ export function AdminEmployersScreen() {
             <p className={styles.searchResultCount}>
               {query.trim()
                 ? `Showing ${filtered.length} of ${totalGarages}`
-                : `${totalGarages} garage${totalGarages === 1 ? "" : "s"}`}
+                : `${totalGarages} employer${totalGarages === 1 ? "" : "s"}`}
             </p>
           </div>
           <label className={styles.searchField}>
-            <span>Search garages</span>
+            <span>Search employers</span>
             <input
               type="search"
               value={query}
@@ -612,7 +612,7 @@ export function AdminEmployersScreen() {
         </div>
 
         {filtered.length === 0 ? (
-          <p className={styles.empty}>No garages match this search.</p>
+          <p className={styles.empty}>No employers match this search.</p>
         ) : (
           <div className={styles.employerList}>
             {filtered.map((row) => {
@@ -676,7 +676,7 @@ export function AdminEmployersScreen() {
                         }
                         aria-pressed={row.status === "active"}
                         aria-label={`${row.status === "active" ? "Deactivate" : "Activate"} ${row.name}`}
-                        title={`Click to ${row.status === "active" ? "deactivate" : "activate"} this garage`}
+                        title={`Click to ${row.status === "active" ? "deactivate" : "activate"} this employer`}
                         onClick={() => {
                           const nextStatus =
                             row.status === "active" ? "inactive" : "active";
@@ -890,7 +890,7 @@ export function AdminEmployersScreen() {
                         </div>
                         {linked.length === 0 ? (
                           <p className={styles.empty}>
-                            No apprentices linked to this garage yet. Add them
+                            No apprentices linked to this employer yet. Add them
                             under Apprentice Enrolments and choose this employer.
                           </p>
                         ) : (

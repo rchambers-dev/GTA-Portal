@@ -28,6 +28,7 @@ export const ROUTE_RULES: RouteRule[] = [
   { pattern: /^\/apprentices\//, permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
   { pattern: /^\/apprentices$/, permission: PERMISSIONS.APPRENTICE_WORKSPACE_VIEW },
   { pattern: /^\/dashboard$/, permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
+  { pattern: /^\/reviews\/employer-directory(?:\/|$)/, permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
   { pattern: /^\/reviews/, permission: PERMISSIONS.REVIEWS_MANAGE },
   { pattern: /^\/employers/, permission: PERMISSIONS.EMPLOYER_CONTACTS_VIEW },
   { pattern: /^\/interventions/, permission: PERMISSIONS.INTERVENTIONS_MANAGE },

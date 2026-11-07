@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AddApprenticeForm } from "@/features/employer-directory/screens/add-apprentice-form";
+import {
+  emptyDirectory,
+  type DirectorySnapshot,
+} from "@/features/employer-directory/domain/model";
 import { FormField, Select, TextInput } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import {
@@ -256,17 +261,68 @@ export function AdminApprenticeIntakeScreen() {
     (() => Promise<void>) | null
   >(null);
   const [lastReadyId, setLastReadyId] = useState<string | null>(null);
+  const [directory, setDirectory] = useState<DirectorySnapshot>(emptyDirectory());
+  const [reviewsMode, setReviewsMode] = useState<"add" | "edit" | null>(null);
+  const [reviewApprenticeId, setReviewApprenticeId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const response = await fetch("/api/employer-directory", { cache: "no-store" });
+      const payload = (await response.json().catch(() => ({}))) as {
+        snapshot?: DirectorySnapshot;
+      };
+      if (cancelled || !response.ok || !payload.snapshot) return;
+      setDirectory(payload.snapshot);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [reviewsMode]);
 
   const enrolledApprenticeIds = store.enrolments.map((e) => e.apprenticeId);
+  const reviewEntryIds = new Set(
+    directory.apprentices
+      .filter((person) => person.portalEntry === "reviews")
+      .map((person) => person.id),
+  );
 
   const queue = [...store.apprentices]
-    .filter((apprentice) => apprentice.intakeStatus === "in_progress")
+    .filter(
+      (apprentice) =>
+        apprentice.intakeStatus === "in_progress" &&
+        !reviewEntryIds.has(apprentice.id),
+    )
     .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
   const readyAwaiting = awaitingEnrolment(
-    store.apprentices,
+    store.apprentices.filter((apprentice) => !reviewEntryIds.has(apprentice.id)),
     enrolledApprenticeIds,
   );
+
+  const registerIds = new Set<string>();
+  const register = [
+    ...store.apprentices.map((apprentice) => ({
+      id: apprentice.id,
+      displayName: apprentice.displayName,
+      reference: apprentice.apprenticeReference,
+      intakeStatus: apprentice.intakeStatus,
+    })),
+    ...directory.apprentices
+      .filter((person) => !store.apprentices.some((row) => row.id === person.id))
+      .map((person) => ({
+        id: person.id,
+        displayName: person.displayName,
+        reference: person.apprenticeReference,
+        intakeStatus: "ready" as const,
+      })),
+  ]
+    .filter((row) => {
+      if (registerIds.has(row.id)) return false;
+      registerIds.add(row.id);
+      return true;
+    })
+    .sort((a, b) => a.displayName.localeCompare(b.displayName));
 
   const active = activeId
     ? (store.apprentices.find((l) => l.id === activeId) ?? null)
@@ -490,6 +546,54 @@ export function AdminApprenticeIntakeScreen() {
     );
     setLastReadyId(apprentice.id);
     closeEditor();
+  }
+
+  const reviewPerson = directory.apprentices.find((row) => row.id === reviewApprenticeId);
+  const reviewDetail = directory.reviewDetails.find(
+    (row) => row.apprenticeId === reviewApprenticeId,
+  );
+  const storedReviewPerson = store.apprentices.find((row) => row.id === reviewApprenticeId);
+  if (reviewsMode === "add" || (reviewsMode === "edit" && (reviewPerson || storedReviewPerson))) {
+    return (
+      <AddApprenticeForm
+        eyebrow="Apprentices"
+        existing={
+          reviewsMode === "edit" && (reviewPerson || storedReviewPerson)
+            ? {
+                apprenticeId: (reviewPerson ?? storedReviewPerson)!.id,
+                version: reviewDetail?.version ?? 0,
+                employerId: reviewDetail?.employerId ?? "",
+                siteId: reviewDetail?.siteId ?? "",
+                managerRoleId: reviewDetail?.managerRoleId ?? "",
+                values: {
+                  fullName: (reviewPerson ?? storedReviewPerson)!.displayName,
+                  sourceCompanyName: reviewDetail?.sourceCompanyName ?? "",
+                  sourcePostcode: reviewDetail?.sourcePostcode ?? "",
+                  releaseDay: reviewDetail?.releaseDay ?? "",
+                  tutorName: reviewDetail?.tutorName ?? "",
+                  apprenticeshipLabel: reviewDetail?.apprenticeshipLabel ?? "",
+                  apprenticeshipStartDate: reviewDetail?.apprenticeshipStartDate ?? "",
+                  apprenticeshipEndDate: reviewDetail?.apprenticeshipEndDate ?? "",
+                  reviewerName: reviewDetail?.reviewerName ?? "",
+                  sourceContactName: reviewDetail?.sourceContactName ?? "",
+                  sourceContactEmail: reviewDetail?.sourceContactEmail ?? "",
+                  sourceContactPhone: reviewDetail?.sourceContactPhone ?? "",
+                  plannedReviewDate: reviewDetail?.plannedReviewDate ?? "",
+                },
+              }
+            : undefined
+        }
+        onCancel={() => {
+          setReviewsMode(null);
+          setReviewApprenticeId(null);
+        }}
+        onCreated={(message) => {
+          setSuccess(message);
+          setReviewsMode(null);
+          setReviewApprenticeId(null);
+        }}
+      />
+    );
   }
 
   if (creating) {
@@ -978,9 +1082,35 @@ export function AdminApprenticeIntakeScreen() {
                 label="Full name"
                 value={active.displayName}
                 required
-                onCommit={(next) =>
-                  updateApprentice(active.id, { displayName: next })
-                }
+                onCommit={(next) => {
+                  const expectedReviewVersion =
+                    directory.reviewDetails.find((row) => row.apprenticeId === active.id)
+                      ?.version ?? null;
+                  void updateApprentice(
+                    active.id,
+                    { displayName: next },
+                    { expectedReviewVersion },
+                  ).then(
+                    (saved) => {
+                      if (!saved || expectedReviewVersion == null) return;
+                      setDirectory((current) => ({
+                        ...current,
+                        reviewDetails: current.reviewDetails.map((row) =>
+                          row.apprenticeId === active.id
+                            ? { ...row, version: row.version + 1 }
+                            : row,
+                        ),
+                      }));
+                    },
+                    (err: unknown) => {
+                      setError(
+                        err instanceof Error
+                          ? err.message
+                          : "Unable to rename the apprentice.",
+                      );
+                    },
+                  );
+                }}
               />
               <IntakeInlineField
                 label="Apprentice reference"
@@ -1116,13 +1246,27 @@ export function AdminApprenticeIntakeScreen() {
 
   return (
     <ApprenticePageShell
-      eyebrow="Administration"
-      title="Apprentice Intake"
-      description="Add apprentices with account and placement in one go. Finish any remaining personal details afterwards. Staff onboarding sits on Management."
+      eyebrow="Apprentices"
+      title="Apprentices"
+      description="Everyone on the apprentice register is listed here. Add someone with a full name, or continue an onboarding intake that is already in progress. Full onboarding is still available and is not required for a new reviews entry."
       actions={
-        <button type="button" className={styles.primaryBtn} onClick={startNew}>
-          Start new apprentice
-        </button>
+        <div className={styles.toolbarActions}>
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            onClick={() => {
+              setSuccess(null);
+              setError(null);
+              setReviewApprenticeId(null);
+              setReviewsMode("add");
+            }}
+          >
+            Add apprentice
+          </button>
+          <button type="button" className={styles.secondaryBtn} onClick={startNew}>
+            Full onboarding
+          </button>
+        </div>
       }
     >
       <div className={styles.stack}>
@@ -1171,10 +1315,100 @@ export function AdminApprenticeIntakeScreen() {
           </section>
         ) : null}
 
+        <section className={styles.formGroup}>
+          <div className={styles.formGroupHead}>
+            <h2 className={styles.formGroupTitle}>Register</h2>
+            <span className={styles.formGroupBadge}>{register.length}</span>
+          </div>
+          <p className={styles.formGroupMeta}>
+            Every apprentice on the shared register, including people added
+            before this page and people who do not have review details yet.
+          </p>
+          {register.length === 0 ? (
+            <p className={styles.empty}>No apprentices on the register yet.</p>
+          ) : (
+            <div className={`${styles.panel} ${styles.tableWrap}`}>
+              <table className={styles.table}>
+                <caption className={styles.srOnly}>All apprentices</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Apprentice</th>
+                    <th scope="col">Route</th>
+                    <th scope="col">
+                      <span className={styles.srOnly}>Actions</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {register.map((row) => {
+                    const reviewsEntry = reviewEntryIds.has(row.id);
+                    const onboardingOpen =
+                      row.intakeStatus === "in_progress" && !reviewsEntry;
+                    const detail = directory.reviewDetails.find(
+                      (item) => item.apprenticeId === row.id,
+                    );
+                    return (
+                      <tr key={row.id}>
+                        <td>
+                          <span className={styles.rowName}>{row.displayName}</span>
+                          <span className={styles.rowMeta}>{row.reference}</span>
+                        </td>
+                        <td>
+                          <span className={styles.rowMeta}>
+                            {reviewsEntry
+                              ? "Reviews entry"
+                              : onboardingOpen
+                                ? "Onboarding in progress"
+                                : "On the register"}
+                            {detail ? "" : " · Review details not started"}
+                          </span>
+                        </td>
+                        <td className={styles.rowActions}>
+                          {onboardingOpen ? (
+                            <button
+                              type="button"
+                              className={styles.secondaryBtn}
+                              onClick={() => {
+                                const apprentice = store.apprentices.find(
+                                  (item) => item.id === row.id,
+                                );
+                                if (apprentice) resume(apprentice);
+                              }}
+                            >
+                              Continue intake
+                            </button>
+                          ) : null}
+                          <button
+                            type="button"
+                            className={styles.secondaryBtn}
+                            onClick={() => {
+                              setReviewApprenticeId(row.id);
+                              setReviewsMode("edit");
+                            }}
+                          >
+                            Review details
+                          </button>
+                          <Link
+                            href={`/apprentices/${row.id}?from=administration`}
+                            className={styles.secondaryBtn}
+                          >
+                            Open pack
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
         {queue.length === 0 ? (
           <p className={styles.empty}>
-            No intakes in progress. Start a new apprentice when you want to get
-            ahead on someone.
+            No onboarding intakes in progress. Add apprentice does not start
+            onboarding. Full onboarding remains available when an account and
+            placement are needed.
           </p>
         ) : (
           <div className={styles.employerList}>

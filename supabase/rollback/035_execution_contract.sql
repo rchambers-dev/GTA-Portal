@@ -1,0 +1,34 @@
+-- Runner contract for migration 035 and its inverse. This file is not a
+-- migration and must not be copied into supabase/migrations.
+--
+-- Observed in this repository, not assumed about the live Supabase tool:
+--   * 035_employer_directory_and_review_learners.sql and
+--     035_employer_directory_reversal.sql contain no BEGIN and no COMMIT.
+--   * They do set lock_timeout to 4s and statement_timeout to 120s with
+--     set_config(..., true), which lasts only for the surrounding transaction.
+--   * They refuse unless current_user and session_user are both non-superuser,
+--     current_user owns public.apprentices, public.employers, and
+--     public.apprentice_programmes, and current_user has CREATE on schema public.
+--   * A local statement-at-a-time session does not keep a lock_timeout or a
+--     CREATE from an earlier statement when a later statement fails.
+--   * One psql simple-query batch, and one explicit BEGIN that raises, do
+--     roll the batch back together. That is local psql behaviour only.
+--   * This file does not prove that Supabase execute_sql wraps a batch.
+--     Parent proof of that tool is still required. Do not treat a scratch
+--     database or a psql batch as that proof.
+--
+-- Sanctioned forward path: Supabase apply_migration (or the CLI migration
+-- runner) on supabase/migrations/035_employer_directory_and_review_learners.sql.
+-- That runner records migration history. Do not insert into
+-- supabase_migrations or edit pg_catalog by hand.
+--
+-- Inverse path: 035_employer_directory_reversal.sql is outside
+-- supabase/migrations so it is not a forward history row. Run it only as one
+-- transaction after the parent has proved the tool's transaction mode.
+-- It refuses populated directory tables and a populated employer_uuid that
+-- this migration added. DROP TABLE does not use CASCADE.
+--
+-- After apply, run 035_post_apply_readback.sql and keep the result.
+-- 035_go_no_go.sql separates attestation rows from measurement rows.
+-- reviews.manage is not a record-management grant. That choice is application
+-- policy and is not made by this SQL.

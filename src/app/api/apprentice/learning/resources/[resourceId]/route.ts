@@ -14,10 +14,6 @@ import {
 } from "@/features/programme-definition/domain/programme-resources-repository";
 import { loadResourceExtractText } from "@/features/programme-definition/domain/resource-extract";
 import { getResourceBinary } from "@/features/programme-definition/domain/programme-resource-binaries-repository";
-import {
-  catalogueFileOpenCapabilities,
-  isPowerpointFilename,
-} from "@/features/programme-definition/domain/programme-resources";
 
 export const runtime = "nodejs";
 
