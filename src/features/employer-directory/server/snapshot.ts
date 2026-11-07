@@ -1,12 +1,13 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
-  Company,
-  CompanySite,
+  ApprenticePerson,
   DirectorySnapshot,
   DirectoryWrite,
+  EmployerRecord,
+  EmployerSite,
   Manager,
   ManagerRole,
-  ReviewLearner,
+  ReviewDetails,
   Site,
 } from "../domain/model";
 
@@ -22,20 +23,31 @@ function nullableText(row: Row, key: string): string | null {
   return typeof value === "string" && value ? value : null;
 }
 
+function numberValue(row: Row, key: string): number {
+  const value = row[key];
+  return typeof value === "number" ? value : Number(value) || 1;
+}
+
 export function snapshotFromRows(input: {
-  companies: Row[];
+  employers: Row[];
   sites: Row[];
-  companySites: Row[];
+  employerSites: Row[];
   managers: Row[];
   roles: Row[];
-  learners: Row[];
+  apprentices: Row[];
+  reviewDetails: Row[];
 }): DirectorySnapshot {
-  const companies: Company[] = input.companies.map((row) => ({
+  const employers: EmployerRecord[] = input.employers.map((row) => ({
     id: text(row, "id"),
     name: text(row, "name"),
     legalName: text(row, "legal_name"),
     companyNumber: text(row, "company_number"),
-    notes: text(row, "notes"),
+    mainContact: text(row, "main_contact"),
+    contactEmail: text(row, "contact_email"),
+    contactPhone: text(row, "contact_phone"),
+    addressLine1: text(row, "address_line1"),
+    town: text(row, "town"),
+    postcode: text(row, "postcode"),
     status: text(row, "status") === "inactive" ? "inactive" : "active",
   }));
   const sites: Site[] = input.sites.map((row) => ({
@@ -47,8 +59,8 @@ export function snapshotFromRows(input: {
     postcode: text(row, "postcode"),
     notes: text(row, "notes"),
   }));
-  const companySites: CompanySite[] = input.companySites.map((row) => ({
-    companyId: text(row, "company_id"),
+  const employerSites: EmployerSite[] = input.employerSites.map((row) => ({
+    employerId: text(row, "employer_id"),
     siteId: text(row, "site_id"),
   }));
   const managers: Manager[] = input.managers.map((row) => ({
@@ -61,17 +73,22 @@ export function snapshotFromRows(input: {
   const roles: ManagerRole[] = input.roles.map((row) => ({
     id: text(row, "id"),
     managerId: text(row, "manager_id"),
-    companyId: text(row, "company_id"),
+    employerId: text(row, "employer_id"),
     siteId: nullableText(row, "site_id"),
     responsibility: text(row, "responsibility"),
   }));
-  const learners: ReviewLearner[] = input.learners.map((row) => ({
+  const apprentices: ApprenticePerson[] = input.apprentices.map((row) => ({
     id: text(row, "id"),
-    portalReference: text(row, "portal_reference"),
-    fullName: text(row, "full_name"),
+    displayName: text(row, "display_name"),
+    apprenticeReference: text(row, "apprentice_reference"),
+    portalEntry: text(row, "portal_entry") === "reviews" ? "reviews" : "onboarding",
+  }));
+  const reviewDetails: ReviewDetails[] = input.reviewDetails.map((row) => ({
+    apprenticeId: text(row, "apprentice_id"),
+    version: numberValue(row, "version"),
     sourceCompanyName: text(row, "source_company_name"),
     sourcePostcode: text(row, "source_postcode"),
-    releaseDay: text(row, "release_day") as ReviewLearner["releaseDay"],
+    releaseDay: text(row, "release_day") as ReviewDetails["releaseDay"],
     tutorName: text(row, "tutor_name"),
     apprenticeshipLabel: text(row, "apprenticeship_label"),
     apprenticeshipStartDate: nullableText(row, "apprenticeship_start_date"),
@@ -81,40 +98,61 @@ export function snapshotFromRows(input: {
     sourceContactEmail: text(row, "source_contact_email"),
     sourceContactPhone: text(row, "source_contact_phone"),
     plannedReviewDate: nullableText(row, "planned_review_date"),
-    companyId: nullableText(row, "company_id"),
+    employerId: nullableText(row, "employer_id"),
     siteId: nullableText(row, "site_id"),
     managerRoleId: nullableText(row, "manager_role_id"),
   }));
-  return { companies, sites, companySites, managers, roles, learners };
+  return {
+    employers,
+    sites,
+    employerSites,
+    managers,
+    roles,
+    apprentices,
+    reviewDetails,
+  };
 }
 
 export async function loadDirectorySnapshot(
   supabase: SupabaseClient,
 ): Promise<DirectorySnapshot> {
-  const [companies, sites, companySites, managers, roles, learners] = await Promise.all([
-    supabase.from("employer_companies").select("*"),
-    supabase.from("employer_sites").select("*"),
-    supabase.from("employer_company_sites").select("*"),
-    supabase.from("employer_managers").select("*"),
-    supabase.from("employer_manager_roles").select("*"),
-    supabase.from("review_learners").select("*"),
-  ]);
+  const [employers, sites, employerSites, managers, roles, apprentices, reviewDetails] =
+    await Promise.all([
+      supabase.from("employers").select("*"),
+      supabase.from("employer_sites").select("*"),
+      supabase.from("employer_site_memberships").select("*"),
+      supabase.from("employer_managers").select("*"),
+      supabase.from("employer_manager_roles").select("*"),
+      supabase
+        .from("apprentices")
+        .select("id, display_name, apprentice_reference, portal_entry"),
+      supabase.from("review_apprentice_details").select("*"),
+    ]);
   const error =
-    companies.error ||
+    employers.error ||
     sites.error ||
-    companySites.error ||
+    employerSites.error ||
     managers.error ||
     roles.error ||
-    learners.error;
+    apprentices.error ||
+    reviewDetails.error;
   if (error) throw new Error(error.message);
   return snapshotFromRows({
-    companies: (companies.data ?? []) as Row[],
+    employers: (employers.data ?? []) as Row[],
     sites: (sites.data ?? []) as Row[],
-    companySites: (companySites.data ?? []) as Row[],
+    employerSites: (employerSites.data ?? []) as Row[],
     managers: (managers.data ?? []) as Row[],
     roles: (roles.data ?? []) as Row[],
-    learners: (learners.data ?? []) as Row[],
+    apprentices: (apprentices.data ?? []) as Row[],
+    reviewDetails: (reviewDetails.data ?? []) as Row[],
   });
+}
+
+export class VersionConflictError extends Error {
+  constructor() {
+    super("This apprentice was saved by someone else. Reload before changing it.");
+    this.name = "VersionConflictError";
+  }
 }
 
 export async function applyDirectoryWrites(
@@ -132,11 +170,22 @@ export async function applyDirectoryWrites(
       if (error) throw error;
       continue;
     }
-    if (write.table === "employer_company_sites") {
+    if (write.op === "versioned_update") {
+      const { data, error } = await supabase
+        .from(write.table)
+        .update(write.row)
+        .eq("apprentice_id", write.apprenticeId)
+        .eq("version", write.expectedVersion)
+        .select("apprentice_id");
+      if (error) throw error;
+      if (!data || data.length === 0) throw new VersionConflictError();
+      continue;
+    }
+    if (write.table === "employer_site_memberships") {
       const { error } = await supabase
-        .from("employer_company_sites")
+        .from("employer_site_memberships")
         .delete()
-        .eq("company_id", write.companyId)
+        .eq("employer_id", write.employerId)
         .eq("site_id", write.siteId);
       if (error) throw error;
       continue;
@@ -150,5 +199,5 @@ export function isReferenceCollision(error: unknown): boolean {
   if (!error || typeof error !== "object") return false;
   const code = "code" in error ? String(error.code) : "";
   const message = "message" in error ? String(error.message) : "";
-  return code === "23505" && /portal_reference/i.test(message);
+  return code === "23505" && /apprentice_reference|portal_reference/i.test(message);
 }

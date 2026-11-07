@@ -16,7 +16,6 @@ export const STAFF_BASE_NAV: NavItem[] = [
     permission: PERMISSIONS.MODULES_DELIVER,
   },
   { href: "/reviews?from=tutor", label: "Reviews", permission: PERMISSIONS.REVIEWS_MANAGE },
-  { href: "/reviews/learners", label: "Review learners", permission: PERMISSIONS.REVIEWS_MANAGE },
   { href: "/reviews/employer-directory", label: "Companies, sites & managers", permission: PERMISSIONS.REVIEWS_MANAGE },
   { href: "/staff/shared-drive", label: "Shared Drive", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
   { href: "/staff/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
@@ -55,11 +54,6 @@ export const MENTOR_NAV_SECTIONS: NavSection[] = [
       {
         href: "/workspaces/progress-mentor/reviews",
         label: "Reviews",
-        permission: PERMISSIONS.REVIEWS_MANAGE,
-      },
-      {
-        href: "/reviews/learners",
-        label: "Review learners",
         permission: PERMISSIONS.REVIEWS_MANAGE,
       },
       {

@@ -7,21 +7,22 @@ import {
   applyDirectoryWrites,
   isReferenceCollision,
   loadDirectorySnapshot,
+  VersionConflictError,
 } from "@/features/employer-directory/server/snapshot";
 
 export const runtime = "nodejs";
 
 const ACTIONS = new Set<DirectoryAction["action"]>([
-  "createCompany",
+  "createEmployer",
   "createSite",
-  "linkCompanySite",
-  "unlinkCompanySite",
+  "linkEmployerSite",
+  "unlinkEmployerSite",
   "createManager",
   "assignManagerRole",
   "removeManagerRole",
-  "createReviewLearner",
-  "updateReviewLearner",
-  "linkReviewLearner",
+  "createReviewApprentice",
+  "updateReviewDetails",
+  "linkReviewApprentice",
 ]);
 
 export async function GET() {
@@ -60,7 +61,13 @@ export async function POST(request: Request) {
       await applyDirectoryWrites(supabase, result.writes);
       return NextResponse.json({ snapshot: result.snapshot });
     } catch (error) {
-      if (body.action === "createReviewLearner" && isReferenceCollision(error) && attempt < 2) {
+      if (error instanceof VersionConflictError) {
+        return NextResponse.json(
+          { error: error.message, code: "version_conflict" },
+          { status: 409 },
+        );
+      }
+      if (body.action === "createReviewApprentice" && isReferenceCollision(error) && attempt < 2) {
         continue;
       }
       return NextResponse.json(

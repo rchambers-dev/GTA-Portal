@@ -5,13 +5,13 @@ import type { PortalAccount } from "@/lib/portal/types";
 const getEffectiveSession = vi.fn();
 const inserts: Array<{ table: string; row: Record<string, unknown> }> = [];
 const tables: Record<string, Record<string, unknown>[]> = {
-  employer_companies: [],
+  employers: [],
   employer_sites: [],
-  employer_company_sites: [],
+  employer_site_memberships: [],
   employer_managers: [],
   employer_manager_roles: [],
-  review_learners: [],
-  employers: [],
+  apprentices: [],
+  review_apprentice_details: [],
   apprentice_programmes: [],
   profiles: [],
 };
@@ -42,13 +42,21 @@ vi.mock("@/adapters/supabase/client", () => ({
           return Promise.resolve({ data: row, error: null });
         },
         update(row: Record<string, unknown>) {
-          return {
+          const matched: Array<[string, unknown]> = [];
+          const chain = {
             eq(column: string, value: unknown) {
-              const match = rows.find((item) => item[column] === value);
-              if (match) Object.assign(match, row);
-              return Promise.resolve({ error: null });
+              matched.push([column, value]);
+              return chain;
+            },
+            select() {
+              const hits = rows.filter((item) =>
+                matched.every(([column, value]) => item[column] === value),
+              );
+              for (const hit of hits) Object.assign(hit, row);
+              return Promise.resolve({ data: hits, error: null });
             },
           };
+          return chain;
         },
         delete() {
           return {
@@ -124,7 +132,7 @@ describe("employer directory route", () => {
         new Request("http://localhost/api/employer-directory", {
           method: "POST",
           body: JSON.stringify({
-            action: "createReviewLearner",
+            action: "createReviewApprentice",
             input: { fullName: "Should Not Save" },
           }),
         }),
@@ -140,7 +148,7 @@ describe("employer directory route", () => {
     const response = await POST(
       new Request("http://localhost/api/employer-directory", {
         method: "POST",
-        body: JSON.stringify({ action: "createCompany", input: { name: "Nope" } }),
+        body: JSON.stringify({ action: "createEmployer", input: { name: "Nope" } }),
       }),
     );
     expect(response.status).toBe(401);
@@ -157,14 +165,14 @@ describe("employer directory route", () => {
     const company = await POST(
       new Request("http://localhost/api/employer-directory", {
         method: "POST",
-        body: JSON.stringify({ action: "createCompany", input: { name: "Example Motors" } }),
+        body: JSON.stringify({ action: "createEmployer", input: { name: "Example Motors" } }),
       }),
     );
     expect(company.status).toBe(200);
     const companyBody = (await company.json()) as {
-      snapshot: { companies: Array<{ name: string; legalName: string }> };
+      snapshot: { employers: Array<{ name: string; legalName: string }> };
     };
-    expect(companyBody.snapshot.companies[0]).toMatchObject({
+    expect(companyBody.snapshot.employers[0]).toMatchObject({
       name: "Example Motors",
       legalName: "",
     });
@@ -173,22 +181,26 @@ describe("employer directory route", () => {
       new Request("http://localhost/api/employer-directory", {
         method: "POST",
         body: JSON.stringify({
-          action: "createReviewLearner",
+          action: "createReviewApprentice",
           input: { fullName: "Example Learner" },
         }),
       }),
     );
     expect(learner.status).toBe(200);
     const learnerBody = (await learner.json()) as {
-      snapshot: { learners: Array<{ fullName: string; companyId: string | null }> };
+      snapshot: {
+        apprentices: Array<{ displayName: string }>;
+        reviewDetails: Array<{ employerId: string | null }>;
+      };
     };
-    expect(learnerBody.snapshot.learners[0].fullName).toBe("Example Learner");
-    expect(learnerBody.snapshot.learners[0].companyId).toBeNull();
+    expect(learnerBody.snapshot.apprentices[0].displayName).toBe("Example Learner");
+    expect(learnerBody.snapshot.reviewDetails[0].employerId).toBeNull();
     expect(inserts.map((insert) => insert.table)).toEqual([
-      "employer_companies",
-      "review_learners",
+      "employers",
+      "apprentices",
+      "review_apprentice_details",
     ]);
-    expect(inserts.some((insert) => insert.table === "employers")).toBe(false);
+    expect(inserts.filter((insert) => insert.table === "employers")).toHaveLength(1);
     expect(inserts.some((insert) => insert.table === "profiles")).toBe(false);
     expect(inserts.some((insert) => insert.table === "apprentice_programmes")).toBe(false);
   });
@@ -201,31 +213,32 @@ describe("employer directory route", () => {
     await POST(
       new Request("http://localhost/api/employer-directory", {
         method: "POST",
-        body: JSON.stringify({ action: "createCompany", input: { name: "Linked Co" } }),
+        body: JSON.stringify({ action: "createEmployer", input: { name: "Linked Co" } }),
       }),
     );
     await POST(
       new Request("http://localhost/api/employer-directory", {
         method: "POST",
-        body: JSON.stringify({ action: "createReviewLearner", input: { fullName: "Linked Learner" } }),
+        body: JSON.stringify({ action: "createReviewApprentice", input: { fullName: "Linked Learner" } }),
       }),
     );
-    const companyId = tables.employer_companies[0]?.id;
-    const learnerId = tables.review_learners[0]?.id;
+    const companyId = tables.employers[0]?.id;
+    const learnerId = tables.apprentices[0]?.id;
     inserts.length = 0;
     const linked = await POST(
       new Request("http://localhost/api/employer-directory", {
         method: "POST",
         body: JSON.stringify({
-          action: "linkReviewLearner",
-          id: learnerId,
-          link: { companyId, siteId: null, managerRoleId: null },
+          action: "linkReviewApprentice",
+          apprenticeId: learnerId,
+          expectedVersion: 1,
+          link: { employerId: companyId, siteId: null, managerRoleId: null },
         }),
       }),
     );
     expect(linked.status).toBe(200);
     expect(inserts).toHaveLength(0);
-    expect(tables.employer_companies).toHaveLength(1);
-    expect(tables.review_learners[0]?.company_id).toBe(companyId);
+    expect(tables.employers).toHaveLength(1);
+    expect(tables.review_apprentice_details[0]?.employer_id).toBe(companyId);
   });
 });

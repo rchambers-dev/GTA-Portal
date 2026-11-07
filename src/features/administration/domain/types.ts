@@ -80,8 +80,6 @@ export type AdminApprenticeEnrolment = {
    */
   teachingGroupId: string | null;
   employerId: string;
-  /** Legacy catalogue foreign key when the employer id is a uuid. Optional for older rows. */
-  employerUuid?: string | null;
   employerName: string;
   workplaceContact: string;
   mentorName: string;
@@ -103,7 +101,7 @@ export type AdminApprenticeEnrolment = {
 
 export type AdminEmployerRecord = {
   id: string;
-  /** Trading name shown in the portal. */
+  /** Trading / garage name shown in the portal. */
   name: string;
   /** Optional legal company name if different from trading name. */
   legalName: string;

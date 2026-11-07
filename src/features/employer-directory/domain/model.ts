@@ -1,9 +1,8 @@
 /**
- * Reviews-first employer directory.
- * Company, physical site, and manager are separate identities.
- * A company can use many sites, and one site can host many companies.
- * A manager responsibility belongs to one company and, optionally, one of that company's sites.
- * Nothing here writes the legacy `employers` catalogue or the reviews app JSON.
+ * Reviews-first data uses the existing portal identities.
+ * A person is public.apprentices. A company is public.employers.
+ * Review-only facts live on review_apprentice_details, one row per apprentice.
+ * Sites and managers hang off employers. They are not a second company list.
  */
 
 export const RELEASE_DAYS = [
@@ -16,12 +15,17 @@ export const RELEASE_DAYS = [
 
 export type ReleaseDay = (typeof RELEASE_DAYS)[number];
 
-export type Company = {
+export type EmployerRecord = {
   id: string;
   name: string;
   legalName: string;
   companyNumber: string;
-  notes: string;
+  mainContact: string;
+  contactEmail: string;
+  contactPhone: string;
+  addressLine1: string;
+  town: string;
+  postcode: string;
   status: "active" | "inactive";
 };
 
@@ -35,8 +39,8 @@ export type Site = {
   notes: string;
 };
 
-export type CompanySite = {
-  companyId: string;
+export type EmployerSite = {
+  employerId: string;
   siteId: string;
 };
 
@@ -51,15 +55,21 @@ export type Manager = {
 export type ManagerRole = {
   id: string;
   managerId: string;
-  companyId: string;
+  employerId: string;
   siteId: string | null;
   responsibility: string;
 };
 
-export type ReviewLearner = {
+export type ApprenticePerson = {
   id: string;
-  portalReference: string;
-  fullName: string;
+  displayName: string;
+  apprenticeReference: string;
+  portalEntry: "onboarding" | "reviews";
+};
+
+export type ReviewDetails = {
+  apprenticeId: string;
+  version: number;
   sourceCompanyName: string;
   sourcePostcode: string;
   releaseDay: "" | ReleaseDay;
@@ -72,18 +82,19 @@ export type ReviewLearner = {
   sourceContactEmail: string;
   sourceContactPhone: string;
   plannedReviewDate: string | null;
-  companyId: string | null;
+  employerId: string | null;
   siteId: string | null;
   managerRoleId: string | null;
 };
 
 export type DirectorySnapshot = {
-  companies: Company[];
+  employers: EmployerRecord[];
   sites: Site[];
-  companySites: CompanySite[];
+  employerSites: EmployerSite[];
   managers: Manager[];
   roles: ManagerRole[];
-  learners: ReviewLearner[];
+  apprentices: ApprenticePerson[];
+  reviewDetails: ReviewDetails[];
 };
 
 export type Candidate = {
@@ -96,9 +107,41 @@ export type DirectoryFailure = {
   ok: false;
   status: number;
   error: string;
-  code?: "possible_duplicate" | "not_found" | "invalid";
+  code?: "possible_duplicate" | "version_conflict" | "not_found" | "invalid";
   candidates?: Candidate[];
 };
+
+export type DirectoryWrite =
+  | { op: "insert"; table: DirectoryTable; row: Record<string, unknown> }
+  | {
+      op: "versioned_update";
+      table: "review_apprentice_details";
+      apprenticeId: string;
+      expectedVersion: number;
+      row: Record<string, unknown>;
+    }
+  | {
+      op: "update";
+      table: "apprentices";
+      id: string;
+      row: Record<string, unknown>;
+    }
+  | {
+      op: "delete";
+      table: "employer_site_memberships";
+      employerId: string;
+      siteId: string;
+    }
+  | { op: "delete"; table: "employer_manager_roles"; id: string };
+
+export type DirectoryTable =
+  | "employers"
+  | "employer_sites"
+  | "employer_site_memberships"
+  | "employer_managers"
+  | "employer_manager_roles"
+  | "apprentices"
+  | "review_apprentice_details";
 
 export type DirectorySuccess = {
   ok: true;
@@ -106,48 +149,8 @@ export type DirectorySuccess = {
   writes: DirectoryWrite[];
 };
 
-export type DirectoryWrite =
-  | { op: "insert"; table: DirectoryTable; row: Record<string, unknown> }
-  | {
-      op: "update";
-      table: DirectoryTable;
-      id: string;
-      row: Record<string, unknown>;
-    }
-  | {
-      op: "delete";
-      table: "employer_company_sites";
-      companyId: string;
-      siteId: string;
-    }
-  | { op: "delete"; table: "employer_manager_roles"; id: string };
-
-export type DirectoryTable =
-  | "employer_companies"
-  | "employer_sites"
-  | "employer_company_sites"
-  | "employer_managers"
-  | "employer_manager_roles"
-  | "review_learners";
-
-export type DirectoryAction =
-  | { action: "createCompany"; input: CompanyInput }
-  | { action: "createSite"; input: SiteInput }
-  | { action: "linkCompanySite"; companyId: string; siteId: string }
-  | { action: "unlinkCompanySite"; companyId: string; siteId: string }
-  | { action: "createManager"; input: ManagerInput }
-  | { action: "assignManagerRole"; input: ManagerRoleInput }
-  | { action: "removeManagerRole"; roleId: string }
-  | { action: "createReviewLearner"; input: ReviewLearnerInput }
-  | { action: "updateReviewLearner"; id: string; patch: ReviewLearnerPatch }
-  | { action: "linkReviewLearner"; id: string; link: LearnerLink };
-
-export type CompanyInput = {
+export type EmployerInput = {
   name: string;
-  legalName?: string;
-  companyNumber?: string;
-  notes?: string;
-  status?: "active" | "inactive";
   confirmDistinct?: boolean;
 };
 
@@ -171,12 +174,12 @@ export type ManagerInput = {
 
 export type ManagerRoleInput = {
   managerId: string;
-  companyId: string;
+  employerId: string;
   siteId?: string | null;
   responsibility?: string;
 };
 
-export type ReviewLearnerInput = {
+export type ReviewApprenticeInput = {
   fullName: string;
   sourceCompanyName?: string;
   sourcePostcode?: string;
@@ -190,23 +193,49 @@ export type ReviewLearnerInput = {
   sourceContactEmail?: string;
   sourceContactPhone?: string;
   plannedReviewDate?: string;
+  confirmDistinct?: boolean;
 };
 
-export type ReviewLearnerPatch = Partial<ReviewLearnerInput>;
+export type ReviewDetailPatch = Partial<
+  Omit<ReviewApprenticeInput, "confirmDistinct" | "fullName">
+> & { fullName?: string };
 
-export type LearnerLink = {
-  companyId: string | null;
+export type ReviewLink = {
+  employerId: string | null;
   siteId: string | null;
   managerRoleId: string | null;
 };
 
+export type DirectoryAction =
+  | { action: "createEmployer"; input: EmployerInput }
+  | { action: "createSite"; input: SiteInput }
+  | { action: "linkEmployerSite"; employerId: string; siteId: string }
+  | { action: "unlinkEmployerSite"; employerId: string; siteId: string }
+  | { action: "createManager"; input: ManagerInput }
+  | { action: "assignManagerRole"; input: ManagerRoleInput }
+  | { action: "removeManagerRole"; roleId: string }
+  | { action: "createReviewApprentice"; input: ReviewApprenticeInput }
+  | {
+      action: "updateReviewDetails";
+      apprenticeId: string;
+      expectedVersion: number;
+      patch: ReviewDetailPatch;
+    }
+  | {
+      action: "linkReviewApprentice";
+      apprenticeId: string;
+      expectedVersion: number;
+      link: ReviewLink;
+    };
+
 export function emptyDirectory(): DirectorySnapshot {
   return {
-    companies: [],
+    employers: [],
     sites: [],
-    companySites: [],
+    employerSites: [],
     managers: [],
     roles: [],
-    learners: [],
+    apprentices: [],
+    reviewDetails: [],
   };
 }

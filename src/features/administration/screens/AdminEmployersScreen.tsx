@@ -323,7 +323,7 @@ export function AdminEmployersScreen() {
     <ApprenticePageShell
       eyebrow="Administration"
       title="Employer Records"
-      description="Employer and workplace details for enrolments. Review learners use Companies, sites & managers instead, so a company, a site, and a manager stay separate."
+      description="Employer and workplace details, plus which apprentices are linked through enrolments."
       actions={
         <button type="button" className={styles.primaryBtn} onClick={openCreate}>
           Add employer

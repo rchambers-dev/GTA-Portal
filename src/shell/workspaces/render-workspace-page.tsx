@@ -47,10 +47,7 @@ import { getStandalonePorts } from "@/adapters/standalone";
 import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
 import { assertRouteAccess } from "@/shell/guards/require-route-access";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
-import {
-  EmployerDirectoryScreen,
-  ReviewLearnersScreen,
-} from "@/features/employer-directory";
+import { EmployerDirectoryScreen } from "@/features/employer-directory";
 import { EmployerDashboardScreen } from "./EmployerDashboardScreen";
 import { ManagementDashboardScreen } from "./ManagementDashboardScreen";
 import { resolveWorkspaceStub } from "./workspace-stubs";
@@ -309,7 +306,7 @@ export async function renderWorkspacePage(
       case "employer-directory":
         return <EmployerDirectoryScreen eyebrow="Administration" />;
       case "review-learners":
-        return <ReviewLearnersScreen eyebrow="Administration" />;
+        redirect("/administration/intake");
       case "programmes":
         return <AdminProgrammesScreen />;
       case "cohorts":
@@ -352,7 +349,7 @@ export async function renderWorkspacePage(
       case "employer-directory":
         return <EmployerDirectoryScreen eyebrow="Management" />;
       case "review-learners":
-        return <ReviewLearnersScreen eyebrow="Management" />;
+        redirect("/management/intake");
       case "programmes-records":
         return <AdminProgrammesScreen />;
       case "programme-builder":

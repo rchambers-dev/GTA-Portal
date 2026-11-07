@@ -8,7 +8,12 @@ import type {
   DirectorySnapshot,
 } from "../domain/model";
 import { emptyDirectory } from "../domain/model";
-import { companiesForSite, rolesForCompany, sitesForCompany } from "../domain/reduce";
+import {
+  apprenticesForEmployer,
+  employersForSite,
+  rolesForEmployer,
+  sitesForEmployer,
+} from "../domain/reduce";
 import styles from "@/features/administration/screens/admin-pages.module.css";
 
 type Payload = {
@@ -80,14 +85,17 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
     const result = await postDirectory(action);
     if (result.status === 409 && result.payload.code === "possible_duplicate") {
       if (
-        action.action === "createCompany" ||
+        action.action === "createEmployer" ||
         action.action === "createSite" ||
         action.action === "createManager"
       ) {
-        setDuplicate({
-          ...action,
-          input: { ...action.input, confirmDistinct: true },
-        });
+        setDuplicate(
+          action.action === "createEmployer"
+            ? { action: "createEmployer", input: { ...action.input, confirmDistinct: true } }
+            : action.action === "createSite"
+              ? { action: "createSite", input: { ...action.input, confirmDistinct: true } }
+              : { action: "createManager", input: { ...action.input, confirmDistinct: true } },
+        );
       }
       setError(result.payload.error || "Possible duplicate.");
       return;
@@ -105,7 +113,7 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
     setManagerName("");
   }
 
-  const roleSites = roleCompanyId ? sitesForCompany(snapshot, roleCompanyId) : [];
+  const roleSites = roleCompanyId ? sitesForEmployer(snapshot, roleCompanyId) : [];
 
   return (
     <ApprenticePageShell
@@ -130,7 +138,7 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
             className={styles.formGrid}
             onSubmit={(event) => {
               event.preventDefault();
-              void submit({ action: "createCompany", input: { name: companyName } });
+              void submit({ action: "createEmployer", input: { name: companyName } });
             }}
           >
             <label className={styles.field}>
@@ -140,7 +148,7 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
             <button type="submit" className={styles.primaryBtn}>Add company</button>
           </form>
           <ul>
-            {snapshot.companies.map((company) => (
+            {snapshot.employers.map((company) => (
               <li key={company.id}>
                 <strong>{company.name}</strong>
                 {company.status === "inactive" ? " · Inactive" : ""}
@@ -153,16 +161,16 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
                   />
                 </div>
                 <div className={styles.fieldHint}>
-                  Sites: {sitesForCompany(snapshot, company.id).map((site) => site.label).join(", ") || "none linked"}
+                  Sites: {sitesForEmployer(snapshot, company.id).map((site) => site.label).join(", ") || "none linked"}
                   {" · "}
-                  Managers: {rolesForCompany(snapshot, company.id).length}
+                  Managers: {rolesForEmployer(snapshot, company.id).length}
                   {" · "}
-                  Review learners: {snapshot.learners.filter((learner) => learner.companyId === company.id).length}
+                  Apprentices: {apprenticesForEmployer(snapshot, company.id).length}
                 </div>
               </li>
             ))}
           </ul>
-          {snapshot.companies.length === 0 && !loading ? (
+          {snapshot.employers.length === 0 && !loading ? (
             <p className={styles.empty}>No companies yet.</p>
           ) : null}
         </section>
@@ -208,7 +216,7 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
                   />
                 </div>
                 <div className={styles.fieldHint}>
-                  Companies here: {companiesForSite(snapshot, site.id).map((company) => company.name).join(", ") || "none"}
+                  Employers here: {employersForSite(snapshot, site.id).map((company) => company.name).join(", ") || "none"}
                 </div>
               </li>
             ))}
@@ -221,14 +229,14 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
             className={styles.formGrid}
             onSubmit={(event) => {
               event.preventDefault();
-              void submit({ action: "linkCompanySite", companyId: linkCompanyId, siteId: linkSiteId });
+              void submit({ action: "linkEmployerSite", employerId: linkCompanyId, siteId: linkSiteId });
             }}
           >
             <label className={styles.field}>
               <span>Company</span>
               <select value={linkCompanyId} onChange={(event) => setLinkCompanyId(event.target.value)}>
                 <option value="">Choose company…</option>
-                {snapshot.companies.map((company) => (
+                {snapshot.employers.map((company) => (
                   <option key={company.id} value={company.id}>{company.name}</option>
                 ))}
               </select>
@@ -280,7 +288,7 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
                 action: "assignManagerRole",
                 input: {
                   managerId: roleManagerId,
-                  companyId: roleCompanyId,
+                  employerId: roleCompanyId,
                   siteId: roleSiteId || null,
                 },
               });
@@ -305,7 +313,7 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
                 }}
               >
                 <option value="">Choose company…</option>
-                {snapshot.companies.map((company) => (
+                {snapshot.employers.map((company) => (
                   <option key={company.id} value={company.id}>{company.name}</option>
                 ))}
               </select>
