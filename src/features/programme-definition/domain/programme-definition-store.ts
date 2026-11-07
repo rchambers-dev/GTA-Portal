@@ -368,6 +368,12 @@ const PARAM_LABELS: Record<keyof ProgrammeDeliveryParameters, string> = {
   fundingBandPounds: "Funding band",
   fixedCostLines: "Fixed cost lines",
   rplNotes: "RPL notes",
+  controlTag: "Control tag",
+  publishedMinimumOtjHours: "Published minimum OTJ hours",
+  calendarWeeks: "Calendar weeks",
+  plannedSessions: "Planned sessions",
+  phase: "Phase",
+  decisionsLog: "Decisions log",
 };
 
 function describeParameterChanges(

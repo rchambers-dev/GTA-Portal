@@ -67,6 +67,12 @@ function resourceRowToRecord(row: ResourceRow): ProgrammeResourceRecord {
   };
 }
 
+function learnerReleaseTimingFromRow(row: AttachmentRow): LearnerReleaseTiming | null {
+  if (row.audience !== "LEARNER_VISIBLE") return null;
+  const timing = row.learner_release_timing || "";
+  return isLearnerReleaseTiming(timing) ? timing : "WITH_SESSION";
+}
+
 function attachmentRowToRecord(
   row: AttachmentRow,
 ): ProgrammeResourceAttachmentRecord {
@@ -82,12 +88,7 @@ function attachmentRowToRecord(
     spineItemId: row.spine_item_id,
     role: row.role,
     audience: row.audience,
-    learnerReleaseTiming:
-      row.audience === "LEARNER_VISIBLE"
-        ? isLearnerReleaseTiming(row.learner_release_timing || "")
-          ? row.learner_release_timing
-          : "WITH_SESSION"
-        : null,
+    learnerReleaseTiming: learnerReleaseTimingFromRow(row),
     sortOrder: Number(row.sort_order) || 0,
     metadata: asMetadata(row.metadata),
     createdAt: row.created_at,

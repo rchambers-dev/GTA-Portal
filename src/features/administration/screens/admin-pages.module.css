@@ -302,8 +302,30 @@
   box-shadow: 0 1px 0 color-mix(in srgb, var(--color-navy-900, #0f172a) 20%, transparent);
 }
 
-.primaryBtn:hover {
+.primaryBtn:hover:not(:disabled) {
   filter: brightness(1.06);
+}
+
+.primaryBtn:disabled,
+.secondaryBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+fieldset:disabled {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-inline-size: 0;
+}
+
+.field input:disabled,
+.field select:disabled,
+fieldset:disabled .field input,
+fieldset:disabled .field select {
+  background: var(--color-grey-50);
+  color: var(--color-grey-600);
+  cursor: not-allowed;
 }
 
 .secondaryBtn {
