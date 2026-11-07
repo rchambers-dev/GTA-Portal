@@ -2399,13 +2399,15 @@ textarea.detailFieldInput {
 .entryGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  align-items: stretch;
+  gap: 0.45rem;
+  min-width: 0;
 }
 
 .entryRow {
   display: flex;
   align-items: flex-end;
-  gap: var(--space-2);
+  gap: 0.35rem;
 }
 
 .entryRow .field {
@@ -2413,29 +2415,52 @@ textarea.detailFieldInput {
   min-width: 0;
 }
 
-.addEntryPill,
-.removeEntryPill {
+.entryRemove,
+.entryAdd {
   flex: 0 0 auto;
-  min-height: 2.65rem;
   border-radius: 999px;
-  padding: 0.45rem 0.9rem;
-  font: inherit;
-  font-size: 0.88rem;
   font-weight: 700;
+  line-height: 1;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.addEntryPill {
-  border: 1.5px solid var(--color-navy-700);
-  background: var(--color-navy-700);
-  color: var(--color-white);
+.entryRemove {
+  width: 1.65rem;
+  height: 1.65rem;
+  margin-bottom: 0.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--color-red-600);
+  font-size: 1.05rem;
+  padding: 0;
 }
 
-.removeEntryPill {
-  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+.entryAdd {
+  align-self: flex-end;
+  min-width: 1.65rem;
+  height: 1.5rem;
+  padding: 0 0.45rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 28%, var(--border-subtle));
   background: var(--bg-surface);
   color: var(--color-navy-800);
+  font-size: 0.95rem;
+}
+
+.confirmDialog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1.5px solid color-mix(in srgb, var(--color-red-600) 35%, var(--border-subtle));
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.confirmTitle {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
 }
 
 .jobTitleOption input {

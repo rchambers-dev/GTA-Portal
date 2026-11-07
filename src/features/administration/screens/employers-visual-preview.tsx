@@ -4,6 +4,7 @@ import { useReducer } from "react";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./admin-pages.module.css";
 import {
+  confirmationKey,
   employerMeta,
   employerPreviewReducer,
   initialEmployerPreviewState,
@@ -73,7 +74,7 @@ export function EmployersVisualPreview({
           >
             <h2 className={styles.formGroupTitle}>Add employer</h2>
             <p className={styles.formGroupMeta}>
-              Company name is required. Phone and postcode belong to the company. Site and manager are optional. Use the pill buttons to add more than one.
+              Company name is required. Phone and postcode belong to the company. Site and manager are optional and stay under the employer.
             </p>
             <div className={styles.formGrid}>
               <label className={styles.field}>
@@ -102,17 +103,48 @@ export function EmployersVisualPreview({
                   }
                 />
               </label>
+              <RepeatableEntries kind="site" entries={state.sites} dispatch={dispatch} />
+              <RepeatableEntries kind="manager" entries={state.managers} dispatch={dispatch} />
             </div>
-            <RepeatableEntries
-              kind="site"
-              entries={state.sites}
-              dispatch={dispatch}
-            />
-            <RepeatableEntries
-              kind="manager"
-              entries={state.managers}
-              dispatch={dispatch}
-            />
+            {state.pendingRemove ? (
+              <div
+                className={styles.confirmDialog}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="entry-remove-title"
+                aria-describedby="entry-remove-copy"
+                onKeyDown={(event) => {
+                  if (confirmationKey(event.key) === "cancel") {
+                    event.preventDefault();
+                    dispatch({ type: "cancel-remove" });
+                  }
+                }}
+              >
+                <h3 id="entry-remove-title" className={styles.confirmTitle}>
+                  Are you sure?
+                </h3>
+                <p id="entry-remove-copy" className={styles.formGroupMeta}>
+                  Remove this {state.pendingRemove.kind} from the preview. Nothing is deleted from the portal.
+                </p>
+                <div className={styles.formActions}>
+                  <button
+                    type="button"
+                    className={styles.secondaryBtn}
+                    autoFocus
+                    onClick={() => dispatch({ type: "cancel-remove" })}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.primaryBtn}
+                    onClick={() => dispatch({ type: "confirm-remove" })}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ) : null}
             {state.notice ? <p className={styles.formGroupMeta}>{state.notice}</p> : null}
             <div className={styles.formActions}>
               <button
@@ -164,7 +196,6 @@ function RepeatableEntries({
   dispatch: (action: EmployerPreviewAction) => void;
 }) {
   const noun = kind === "site" ? "Site" : "Manager";
-  const addLabel = kind === "site" ? "+ Add site" : "+ Add manager";
   return (
     <div className={styles.entryGroup}>
       {entries.map((entry, index) => {
@@ -187,30 +218,25 @@ function RepeatableEntries({
                 }
               />
             </label>
-            {index === 0 ? (
-              <button
-                type="button"
-                className={styles.addEntryPill}
-                onClick={() => dispatch(kind === "site" ? { type: "add-site" } : { type: "add-manager" })}
-              >
-                {addLabel}
-              </button>
-            ) : null}
             <button
               type="button"
-              className={styles.removeEntryPill}
+              className={styles.entryRemove}
               aria-label={`Remove ${noun.toLowerCase()} ${number}`}
-              onClick={() =>
-                dispatch(
-                  kind === "site" ? { type: "remove-site", id: entry.id } : { type: "remove-manager", id: entry.id },
-                )
-              }
+              onClick={() => dispatch({ type: "request-remove", kind, id: entry.id })}
             >
-              Remove
+              ×
             </button>
           </div>
         );
       })}
+      <button
+        type="button"
+        className={styles.entryAdd}
+        aria-label={`Add another ${noun.toLowerCase()}`}
+        onClick={() => dispatch(kind === "site" ? { type: "add-site" } : { type: "add-manager" })}
+      >
+        +
+      </button>
     </div>
   );
 }
