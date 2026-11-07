@@ -7,6 +7,10 @@ import {
 } from "@/features/apprentice-lifecycle/domain/progress-framing";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
+import {
+  canReadMasterRecords,
+  proxyApprenticeSelect,
+} from "@/app/api/admin/store/record-access";
 
 type ApprenticeRow = {
   id: string;
@@ -47,19 +51,18 @@ export async function GET() {
   const session = await requireProxyAccess();
   if (session instanceof NextResponse) return session;
 
+  const master = canReadMasterRecords(session);
   const supabase = createSupabaseAdminClient();
   const { data, error } = await supabase
     .from("apprentice_programmes")
-    .select(
-      "id, apprentice_id, programme_name, start_date, original_planned_end_date, status, actual_progress_percent, notes, apprentices(id, display_name, apprentice_reference, email)",
-    )
+    .select(proxyApprenticeSelect(master))
     .order("updated_at", { ascending: false });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const rows = ((data ?? []) as ProgrammeRow[]).map((row) => {
+  const rows = ((data ?? []) as unknown as ProgrammeRow[]).map((row) => {
     const apprentice = firstJoined(row.apprentices);
     const framing = calculateProgressFraming({
       startDate: row.start_date,
@@ -71,7 +74,7 @@ export async function GET() {
       apprenticeId: row.apprentice_id,
       displayName: apprentice?.display_name ?? "Unknown apprentice",
       apprenticeReference: apprentice?.apprentice_reference ?? "",
-      email: apprentice?.email ?? "",
+      email: master ? (apprentice?.email ?? "") : "",
       programmeName: row.programme_name,
       startDate: row.start_date,
       originalPlannedEndDate: row.original_planned_end_date,
@@ -102,6 +105,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "enrolmentId is required" }, { status: 400 });
   }
 
+  const master = canReadMasterRecords(session);
   const supabase = createSupabaseAdminClient();
   const update: Record<string, unknown> = {
     actual_progress_percent: body.actualProgressPercent,
@@ -112,9 +116,7 @@ export async function POST(request: Request) {
     .from("apprentice_programmes")
     .update(update)
     .eq("id", body.enrolmentId)
-    .select(
-      "id, apprentice_id, programme_name, start_date, original_planned_end_date, status, actual_progress_percent, notes, apprentices(id, display_name, apprentice_reference, email)",
-    )
+    .select(proxyApprenticeSelect(master))
     .single();
 
   if (error || !data) {
@@ -124,7 +126,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const row = data as ProgrammeRow;
+  const row = data as unknown as ProgrammeRow;
   await supabase.from("proxy_write_audit").insert({
     actor_profile_id: session.account.id,
     apprentice_id: row.apprentice_id,
@@ -152,7 +154,7 @@ export async function POST(request: Request) {
       apprenticeId: row.apprentice_id,
       displayName: apprentice?.display_name ?? "Unknown apprentice",
       apprenticeReference: apprentice?.apprentice_reference ?? "",
-      email: apprentice?.email ?? "",
+      email: master ? (apprentice?.email ?? "") : "",
       programmeName: row.programme_name,
       startDate: row.start_date,
       originalPlannedEndDate: row.original_planned_end_date,
