@@ -5,13 +5,33 @@ import { STAFF_BASE_NAV, MENTOR_NAV_SECTIONS, CURRICULUM_NAV } from "./nav-manif
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
 
 function marketingSection(workspace: "administration" | "management") {
+  const records = PERMISSIONS.ADMIN_RECORDS_MANAGE;
+  const base = `/${workspace}/marketing`;
   return {
     title: "Marketing & Recruitment",
     items: [
+      { href: base, label: "Overview", permission: records },
+      { href: `${base}/employers`, label: "Employers & vacancies", permission: records },
+      { href: `${base}/calendar`, label: "Activity calendar", permission: records },
+      { href: `${base}/actions`, label: "Actions", permission: records },
       {
-        href: `/${workspace}/marketing`,
-        label: "Overview",
-        permission: PERMISSIONS.ADMIN_RECORDS_MANAGE,
+        href: `/reports?from=${workspace}-marketing`,
+        label: "Reports",
+        permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW,
+      },
+      { href: `${base}/settings`, label: "Settings", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
+    ],
+  };
+}
+
+function reviewsSection(workspace: "administration" | "management") {
+  return {
+    title: "Reviews",
+    items: [
+      {
+        href: `/reviews?from=${workspace}`,
+        label: "Review queue",
+        permission: PERMISSIONS.REVIEWS_MANAGE,
       },
     ],
   };
@@ -60,9 +80,10 @@ function onboardingSection(workspace: "administration" | "management") {
     title: "Onboarding",
     items: [
       { href: base, label: "Overview", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/apprentices`, label: "Apprentices", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/interviews`, label: "Interviews", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/apprentice`, label: "Add apprentice", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/employer`, label: "Add employer", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-      { href: `${base}/directory`, label: "Directory", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
     ],
   };
 }
@@ -138,7 +159,14 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
     if (isMentorStaffSession(session)) {
       sections.push(...MENTOR_NAV_SECTIONS);
     } else {
-      sections.push({ title: "Staff Workspace", items: STAFF_BASE_NAV });
+      sections.push({
+        title: "Staff Workspace",
+        items: STAFF_BASE_NAV.filter((item) => !item.href.startsWith("/reviews")),
+      });
+      sections.push({
+        title: "Reviews",
+        items: STAFF_BASE_NAV.filter((item) => item.href.startsWith("/reviews")),
+      });
     }
 
     if (hasPermission(session, PERMISSIONS.CURRICULUM_MANAGEMENT_VIEW)) {
@@ -184,6 +212,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       staffSection("management"),
       marketingSection("management"),
       onboardingSection("management"),
+      reviewsSection("management"),
     ]);
   }
 
@@ -203,6 +232,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       staffSection("administration"),
       marketingSection("administration"),
       onboardingSection("administration"),
+      reviewsSection("administration"),
     ]);
   }
 

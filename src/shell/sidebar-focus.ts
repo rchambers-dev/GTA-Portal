@@ -6,6 +6,7 @@ export const SIDEBAR_FOCUS_GROUPS = [
   "Marketing & Recruitment",
   "Staff",
   "Apprenticeship Management",
+  "Reviews",
 ] as const;
 
 export type SidebarFocusGroup = (typeof SIDEBAR_FOCUS_GROUPS)[number];

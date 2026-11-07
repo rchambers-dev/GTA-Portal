@@ -43,16 +43,41 @@ describe("sidebar grouping", () => {
       const staff = sections.find((section) => section.title === "Staff");
       const onboarding = sections.find((section) => section.title === "Onboarding");
       const marketing = sections.find((section) => section.title === "Marketing & Recruitment");
+      const reviews = sections.find((section) => section.title === "Reviews");
       expect(staff?.items.map((item) => item.label)).toEqual(["Staff Records"]);
       expect(staff?.items[0]?.href).toBe(`/staff-records?from=${workspace}`);
       expect(staff?.items[0]?.permission).toBe(PERMISSIONS.ADMIN_USERS_MANAGE);
       expect(onboarding?.items.map((item) => item.label)).toEqual([
         "Overview",
+        "Apprentices",
+        "Interviews",
         "Add apprentice",
         "Add employer",
-        "Directory",
       ]);
-      expect(marketing?.items.map((item) => item.label)).toEqual(["Overview"]);
+      expect(onboarding?.items.map((item) => item.href)).toEqual([
+        `/${workspace}/onboarding`,
+        `/${workspace}/onboarding/apprentices`,
+        `/${workspace}/onboarding/interviews`,
+        `/${workspace}/onboarding/apprentice`,
+        `/${workspace}/onboarding/employer`,
+      ]);
+      expect(marketing?.items.map((item) => item.label)).toEqual([
+        "Overview",
+        "Employers & vacancies",
+        "Activity calendar",
+        "Actions",
+        "Reports",
+        "Settings",
+      ]);
+      expect(marketing?.items.map((item) => item.permission)).toEqual([
+        PERMISSIONS.ADMIN_RECORDS_MANAGE,
+        PERMISSIONS.ADMIN_RECORDS_MANAGE,
+        PERMISSIONS.ADMIN_RECORDS_MANAGE,
+        PERMISSIONS.ADMIN_RECORDS_MANAGE,
+        PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW,
+        PERMISSIONS.ADMIN_USERS_MANAGE,
+      ]);
+      expect(reviews).toBeUndefined();
       const apprenticeship = sections.find((section) => section.title === "Apprenticeship Management");
       const expected =
         workspace === "administration"
@@ -86,6 +111,23 @@ describe("sidebar grouping", () => {
       expect(leaves.filter((href) => href === `/${workspace}/staff`)).toEqual([]);
       expect(new Set(leaves).size).toBe(leaves.length);
     }
+  });
+
+  it("shows the existing review queue only to reviews.manage", () => {
+    const hidden = resolveNavigation(
+      session("management", [PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW, PERMISSIONS.ADMIN_RECORDS_MANAGE]),
+    );
+    expect(hidden.some((section) => section.title === "Reviews")).toBe(false);
+    const shown = resolveNavigation(
+      session("administration", [
+        PERMISSIONS.ADMIN_WORKSPACE_VIEW,
+        PERMISSIONS.REVIEWS_MANAGE,
+      ]),
+    );
+    const reviews = shown.find((section) => section.title === "Reviews");
+    expect(reviews?.items.map((item) => item.label)).toEqual(["Review queue"]);
+    expect(reviews?.items[0]?.href).toBe("/reviews?from=administration");
+    expect(reviews?.items[0]?.permission).toBe(PERMISSIONS.REVIEWS_MANAGE);
   });
 
   it("hides the Staff group when the child permission is absent", () => {

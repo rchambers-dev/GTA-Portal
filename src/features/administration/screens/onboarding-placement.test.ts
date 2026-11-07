@@ -95,28 +95,35 @@ describe("onboarding placement", () => {
     expect(routes).toContain('redirect("/management/onboarding/directory/apprentices")');
     expect(routes).toContain('redirect("/management/onboarding/directory/employers")');
     expect(routes).toContain("return <AdminEnrolmentsScreen />");
-    expect(routes).toContain("return <MarketingOverview />");
+    expect(routes).toContain('return renderMarketing("administration", segment);');
     const page = readFileSync(path.join(process.cwd(), "src/app/apprentices/page.tsx"), "utf8");
     expect(page).toContain("requireApprenticeWorkspaceAccess");
   });
 
-  it("adds a Marketing overview shell and no marketing feature pages", () => {
+  it("keeps one employer list and labels pages that are not built", () => {
     const nav = readFileSync(
       path.join(process.cwd(), "src/shell/workspaces/resolve-navigation.ts"),
       "utf8",
     );
     expect(nav).toContain('title: "Marketing & Recruitment"');
-    expect(nav).toContain('href: `/${workspace}/marketing`');
-    expect(nav).not.toContain("/interviews");
-    expect(nav).not.toContain("/calendar");
-    expect(nav).not.toContain('label: "Reports"');
-    expect(nav).not.toContain('label: "Settings"');
-    const html = renderToStaticMarkup(createElement(MarketingOverview));
+    expect(nav).toContain('label: "Employers & vacancies"');
+    expect(nav).not.toContain('label: "Directory"');
+    const html = renderToStaticMarkup(
+      createElement(MarketingOverview, { workspace: "administration" }),
+    );
     expect(html).toContain("Marketing &amp; Recruitment");
-    expect(html).toContain("Marketing &amp; Recruitment is not configured");
     expect(html).toContain("EXAMPLE DATA");
     expect(html).toContain("Saving is disabled");
-    expect(html).not.toContain("Stage 1");
+    expect(html).toContain("Not built");
     expect(html).not.toContain("supabase");
+    const employers = renderToStaticMarkup(
+      createElement(OnboardingDirectory, {
+        initialView: "employers",
+        lockView: true,
+        title: "Employers & vacancies",
+      }),
+    );
+    expect(employers).toContain("Example Motors");
+    expect(employers).not.toContain(">Apprentices<");
   });
 });
