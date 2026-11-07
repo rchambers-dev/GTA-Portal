@@ -5,14 +5,8 @@ import { isTutorSession, tutorFromEmail } from "./tutors.js";
 
 export { isOfficeSession, isAdminSession, isTutorSession, tutorFromEmail };
 
-const url = String(
-  import.meta.env.NODE_SUPABASE_URL ||
-    "https://gzeeofbhcgbgcbykdvez.supabase.co",
-).trim();
-const key = String(
-  import.meta.env.NODE_SUPABASE_ANON_KEY ||
-    "sb_publishable_LCBgN5P6X2QlS-2igEw-NA_1VuKV4Rk",
-).trim();
+const url = String(import.meta.env.NODE_SUPABASE_URL || "").trim();
+const key = String(import.meta.env.NODE_SUPABASE_ANON_KEY || "").trim();
 const REMEMBER_KEY = "review-assistant-remember";
 const EMAIL_KEY = "review-assistant-email";
 const AUTH_STORAGE_KEY = "review-assistant-auth";
@@ -63,6 +57,8 @@ export function supabaseClient(remember = rememberLoginEnabled()) {
 }
 
 export async function currentSession() {
+  const portalSession = globalThis.__PORTAL_REVIEW_SESSION__;
+  if (portalSession?.user) return portalSession;
   const supabase = supabaseClient();
   if (!supabase) return null;
   const { data, error } = await supabase.auth.getSession();

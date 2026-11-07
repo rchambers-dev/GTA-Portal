@@ -32,13 +32,13 @@ export function loadEnv() {
       process.env.NODE_SUPABASE_URL ||
       process.env.NEXT_PUBLIC_SUPABASE_URL ||
       process.env.SUPABASE_URL ||
-      "https://gzeeofbhcgbgcbykdvez.supabase.co",
+      "",
     supabaseAnonKey:
       process.env.NODE_SUPABASE_ANON_KEY ||
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
       process.env.SUPABASE_PUBLISHABLE_KEY ||
       process.env.SUPABASE_ANON_KEY ||
-      "sb_publishable_LCBgN5P6X2QlS-2igEw-NA_1VuKV4Rk",
+      "",
     supabaseSecretKey: process.env.SUPABASE_SECRET_KEY || "",
   };
 }

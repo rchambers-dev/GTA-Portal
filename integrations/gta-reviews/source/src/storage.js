@@ -752,6 +752,12 @@ function isDesktopHost() {
   return /^(localhost|127\.0\.0\.1)$/.test(hostname);
 }
 
+// Portal sign-in has no Review Assistant Supabase project. Load and save go
+// to the portal server copy. The browser cache below is still only a cache.
+function portalSessionActive() {
+  return Boolean(globalThis.__PORTAL_REVIEW_SESSION__?.user);
+}
+
 function realPeopleCount(state) {
   return peopleCount({
     learners: (state?.learners || []).filter((item) => !item.isTest),
@@ -778,7 +784,7 @@ async function isTutorRole() {
 
 async function loadFromTutorApi() {
   const supabase = supabaseClient();
-  if (!supabase) return null;
+  if (!supabase && !portalSessionActive()) return null;
   
   let response;
   try {
@@ -801,6 +807,7 @@ async function loadFromTutorApi() {
 }
 
 async function loadFromSupabase() {
+  if (portalSessionActive()) return null;
   const supabase = supabaseClient();
   if (!supabase) return null;
   const { data } = await supabase.from("app_state").select("payload").eq("id", "default").maybeSingle();
@@ -814,7 +821,7 @@ async function loadFromSupabase() {
 
 async function saveToTutorApi(state) {
   const supabase = supabaseClient();
-  if (!supabase) return;
+  if (!supabase && !portalSessionActive()) return;
   
   const response = await apiFetch("/api/tutor-state", {
     method: "POST",
@@ -909,10 +916,12 @@ export async function loadRemoteState({ includeApi = true } = {}) {
     remote = null;
   }
   
-  if (includeApi && isDesktopHost() && !useTutorApi) {
+  if (includeApi && !useTutorApi && (isDesktopHost() || portalSessionActive())) {
     try {
-      // This branch runs only on the desktop host, which does not check a bearer token.
-      const response = await apiFetch("/api/state", { auth: "none" });
+      // Desktop does not check a bearer token. The portal session does.
+      const response = await apiFetch("/api/state", {
+        auth: portalSessionActive() ? "required" : "none",
+      });
       if (response.ok) {
         const payload = await response.json();
         if (payload?.state != null) {
@@ -1168,7 +1177,7 @@ async function saveStateImpl(state, { quiet = false, conflictPrompt = false } = 
     } else {
       const response = await apiFetch("/api/state", {
         method: "PUT",
-        auth: isDesktopHost() ? "none" : "if-present",
+        auth: portalSessionActive() ? "required" : isDesktopHost() ? "none" : "if-present",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sent),
       });

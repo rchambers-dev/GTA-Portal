@@ -87,3 +87,9 @@ scripts/*-stderr.txt
 ../GTA Website/**
 ../Other Portal/
 ../Other Portal/**
+
+# Disposable Review Assistant server file. Not production and not a browser store.
+.review-assistant/
+integrations/gta-reviews/node_modules/
+integrations/gta-reviews/dist/
+integrations/gta-reviews/data/

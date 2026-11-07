@@ -83,14 +83,14 @@ describe("review assistant access", () => {
     expect(source).toContain("export function versionOf");
     expect(source).toContain("export function conflictBody");
     expect(source).toContain("save_app_state_if_version");
-    for (const missing of [
+    for (const present of [
       "integrations/gta-reviews/server/runtime.js",
       "integrations/gta-reviews/shared/log-error.js",
       "integrations/gta-reviews/shared/app-build.js",
       "integrations/gta-reviews/server/build.js",
       "integrations/gta-reviews/public/appearance.js",
     ]) {
-      expect(() => readFileSync(path.join(process.cwd(), missing), "utf8")).toThrow();
+      expect(readFileSync(path.join(process.cwd(), present), "utf8").length).toBeGreaterThan(0);
     }
   });
 });

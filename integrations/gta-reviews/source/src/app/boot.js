@@ -91,6 +91,13 @@ export async function startAuthBoot() {
     throw new Error("App modules are not bound: bootstrap");
   }
   if (!authConfigured()) {
+    const portalSession = globalThis.__PORTAL_REVIEW_SESSION__;
+    if (portalSession?.user) {
+      applySignedInSession(portalSession);
+      appStarted = true;
+      await openSignedInApp(portalSession);
+      return;
+    }
     applySignedInSession(null);
     showLoginError(
       "Add your Supabase URL and anon key to a .env file, then restart the app.",
