@@ -89,10 +89,14 @@ describe("apprentice register", () => {
     );
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    expect(result.writes.map((write) => write.table)).toEqual([
-      "apprentices",
-      "review_apprentice_details",
-    ]);
+    expect(result.writes).toHaveLength(1);
+    expect(result.writes[0].op).toBe("rpc");
+    if (result.writes[0].op !== "rpc") return;
+    expect(result.writes[0].fn).toBe("create_review_apprentice");
+    expect(result.writes[0].args.p_row).toMatchObject({
+      display_name: "Alex Patel",
+      source_company_name: "",
+    });
     expect(result.snapshot.apprentices[0]).toMatchObject({
       displayName: "Alex Patel",
       portalEntry: "reviews",
@@ -105,12 +109,12 @@ describe("apprentice register", () => {
       sourceCompanyName: "",
     });
     const apprenticeWrite = result.writes[0];
-    if (apprenticeWrite.op !== "insert") throw new Error("expected insert");
-    expect(apprenticeWrite.row).toMatchObject({
-      email: "",
-      date_of_birth: null,
-      portal_entry: "reviews",
+    if (apprenticeWrite.op !== "rpc") throw new Error("expected one create call");
+    expect(apprenticeWrite.args.p_row).toMatchObject({
+      display_name: "Alex Patel",
+      apprentice_reference: result.snapshot.apprentices[0].apprenticeReference,
     });
+    expect(apprenticeWrite.args.p_row).not.toHaveProperty("email");
     expect(JSON.stringify(result.writes)).not.toMatch(/apprentice_programmes|profiles|auth/);
   });
 
@@ -157,11 +161,19 @@ describe("apprentice register", () => {
       link: { employerId, siteId: null, managerRoleId: null },
     });
     if (!linked.ok) throw new Error(linked.error);
-    expect(linked.writes[0].op === "versioned_update" && linked.writes[0].row).toEqual({
-      employer_id: employerId,
-      site_id: null,
-      manager_role_id: null,
-      version: 2,
+    expect(linked.writes).toHaveLength(1);
+    expect(linked.writes[0]).toMatchObject({
+      op: "rpc",
+      fn: "apply_review_apprentice_change",
+      args: {
+        p_expected_version: 1,
+        p_display_name: null,
+        p_fields: {
+          employer_id: employerId,
+          site_id: null,
+          manager_role_id: null,
+        },
+      },
     });
     const stale = reduceDirectory(linked.snapshot, {
       action: "updateReviewDetails",
@@ -178,13 +190,61 @@ describe("apprentice register", () => {
       patch: { tutorName: "Newer tutor" },
     });
     if (!fresh.ok) throw new Error(fresh.error);
-    const detailWrite = fresh.writes.find((write) => write.op === "versioned_update");
-    if (!detailWrite || detailWrite.op !== "versioned_update") throw new Error("missing update");
-    expect(detailWrite.row).toEqual({ tutor_name: "Newer tutor", version: 3 });
-    expect(detailWrite.row).not.toHaveProperty("employer_id");
+    const detailWrite = fresh.writes[0];
+    if (!detailWrite || detailWrite.op !== "rpc") throw new Error("missing update");
+    expect(detailWrite.args.p_fields).toEqual({ tutor_name: "Newer tutor" });
+    expect(detailWrite.args.p_display_name).toBeNull();
+    expect(detailWrite.args.p_expected_version).toBe(2);
+    expect(detailWrite.args.p_fields).not.toHaveProperty("employer_id");
     expect(fresh.snapshot.reviewDetails[0].employerId).toBe(employerId);
     expect(fresh.snapshot.reviewDetails[0].sourceContactEmail).toBe("");
     expect(apprenticesForEmployer(fresh.snapshot, employerId)).toHaveLength(1);
+  });
+
+  it("keeps a name change inside the same versioned call", () => {
+    resetIds();
+    const created = reduceDirectory(
+      emptyDirectory(),
+      { action: "createReviewApprentice", input: { fullName: "Riley Learner" } },
+      createId,
+    );
+    if (!created.ok) throw new Error(created.error);
+    expect(created.writes).toHaveLength(1);
+    expect(created.writes[0].op).toBe("rpc");
+    const renamed = reduceDirectory(created.snapshot, {
+      action: "updateReviewDetails",
+      apprenticeId: created.snapshot.apprentices[0].id,
+      expectedVersion: 1,
+      patch: { fullName: "Riley Learner Updated" },
+    });
+    if (!renamed.ok) throw new Error(renamed.error);
+    expect(renamed.writes).toHaveLength(1);
+    if (renamed.writes[0].op !== "rpc") throw new Error("expected one call");
+    expect(renamed.writes[0].args.p_display_name).toBe("Riley Learner Updated");
+    expect(renamed.writes[0].args.p_expected_version).toBe(1);
+  });
+
+  it("attaches review details to an existing apprentice who has none", () => {
+    const snapshot = emptyDirectory();
+    snapshot.apprentices.push({
+      id: "person-1",
+      displayName: "Existing Apprentice",
+      apprenticeReference: "GTA-2026-00001",
+      portalEntry: "onboarding",
+    });
+    const saved = reduceDirectory(snapshot, {
+      action: "updateReviewDetails",
+      apprenticeId: "person-1",
+      expectedVersion: 0,
+      patch: { tutorName: "Tutor Example" },
+    });
+    if (!saved.ok) throw new Error(saved.error);
+    expect(saved.snapshot.apprentices).toHaveLength(1);
+    expect(saved.snapshot.reviewDetails[0]).toMatchObject({
+      apprenticeId: "person-1",
+      version: 1,
+      tutorName: "Tutor Example",
+    });
   });
 
   it("rejects a manager from another employer", () => {

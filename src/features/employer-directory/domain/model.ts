@@ -114,17 +114,9 @@ export type DirectoryFailure = {
 export type DirectoryWrite =
   | { op: "insert"; table: DirectoryTable; row: Record<string, unknown> }
   | {
-      op: "versioned_update";
-      table: "review_apprentice_details";
-      apprenticeId: string;
-      expectedVersion: number;
-      row: Record<string, unknown>;
-    }
-  | {
-      op: "update";
-      table: "apprentices";
-      id: string;
-      row: Record<string, unknown>;
+      op: "rpc";
+      fn: "create_review_apprentice" | "apply_review_apprentice_change";
+      args: Record<string, unknown>;
     }
   | {
       op: "delete";

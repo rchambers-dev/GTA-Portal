@@ -92,6 +92,41 @@ vi.mock("@/adapters/supabase/client", () => ({
       };
       return api;
     },
+    rpc(fn: string, args: Record<string, unknown>) {
+      if (fn === "create_review_apprentice") {
+        const row = args.p_row as Record<string, unknown>;
+        tables.apprentices.push({
+          id: row.id,
+          display_name: row.display_name,
+          apprentice_reference: row.apprentice_reference,
+          portal_entry: "reviews",
+        });
+        tables.review_apprentice_details.push({
+          apprentice_id: row.id,
+          version: 1,
+          employer_id: null,
+        });
+        inserts.push({ table: "apprentices", row });
+        inserts.push({ table: "review_apprentice_details", row });
+        return Promise.resolve({ data: null, error: null });
+      }
+      const detail = tables.review_apprentice_details.find(
+        (item) => item.apprentice_id === args.p_apprentice_id,
+      );
+      const fields = (args.p_fields ?? {}) as Record<string, unknown>;
+      if (!detail || detail.version !== args.p_expected_version) {
+        return Promise.resolve({
+          data: null,
+          error: { message: "version_conflict", code: "40001" },
+        });
+      }
+      Object.assign(detail, fields, { version: Number(detail.version) + 1 });
+      if (typeof args.p_display_name === "string") {
+        const person = tables.apprentices.find((item) => item.id === args.p_apprentice_id);
+        if (person) person.display_name = args.p_display_name;
+      }
+      return Promise.resolve({ data: detail.version, error: null });
+    },
   }),
 }));
 

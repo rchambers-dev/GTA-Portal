@@ -417,11 +417,17 @@ function createReviewApprentice(
       reviewDetails: [...snapshot.reviewDetails, details],
     },
     [
-      { op: "insert", table: "apprentices", row: apprenticeToDb(person) },
       {
-        op: "insert",
-        table: "review_apprentice_details",
-        row: detailsToDb(details),
+        op: "rpc",
+        fn: "create_review_apprentice",
+        args: {
+          p_row: {
+            id: person.id,
+            display_name: person.displayName,
+            apprentice_reference: person.apprenticeReference,
+            ...detailsToDb(details),
+          },
+        },
       },
     ],
   );
@@ -433,13 +439,19 @@ function updateReviewDetails(
   expectedVersion: number,
   patch: ReviewDetailPatch,
 ): DirectorySuccess | DirectoryFailure {
-  const current = snapshot.reviewDetails.find(
+  const person = snapshot.apprentices.find((row) => row.id === apprenticeId);
+  if (!person) return fail(404, "Apprentice not found.", { code: "not_found" });
+  const stored = snapshot.reviewDetails.find(
     (detail) => detail.apprenticeId === apprenticeId,
   );
-  const person = snapshot.apprentices.find((row) => row.id === apprenticeId);
-  if (!current || !person) {
-    return fail(404, "Apprentice not found.", { code: "not_found" });
+  if (!stored && expectedVersion !== 0) {
+    return fail(
+      409,
+      "This apprentice was saved by someone else. Reload before changing these fields.",
+      { code: "version_conflict" },
+    );
   }
+  const current = stored ?? emptyReviewDetails(apprenticeId);
   if (current.version !== expectedVersion) {
     return fail(
       409,
@@ -475,35 +487,26 @@ function updateReviewDetails(
     displayName: built.fullName,
   };
   const detailRow = changedDetailColumns(current, nextDetails, patch);
-  detailRow.version = nextDetails.version;
-  const writes: DirectoryWrite[] = [
-    {
-      op: "versioned_update",
-      table: "review_apprentice_details",
-      apprenticeId,
-      expectedVersion,
-      row: detailRow,
-    },
-  ];
-  if (nextPerson.displayName !== person.displayName) {
-    writes.push({
-      op: "update",
-      table: "apprentices",
-      id: apprenticeId,
-      row: { display_name: nextPerson.displayName },
-    });
-  }
   return succeed(
     {
       ...snapshot,
       apprentices: snapshot.apprentices.map((row) =>
         row.id === apprenticeId ? nextPerson : row,
       ),
-      reviewDetails: snapshot.reviewDetails.map((row) =>
-        row.apprenticeId === apprenticeId ? nextDetails : row,
-      ),
+      reviewDetails: stored
+        ? snapshot.reviewDetails.map((row) =>
+            row.apprenticeId === apprenticeId ? nextDetails : row,
+          )
+        : [...snapshot.reviewDetails, nextDetails],
     },
-    writes,
+    [
+      reviewChangeWrite(
+        apprenticeId,
+        expectedVersion,
+        nextPerson.displayName !== person.displayName ? nextPerson.displayName : null,
+        detailRow,
+      ),
+    ],
   );
 }
 
@@ -513,10 +516,19 @@ function linkReviewApprentice(
   expectedVersion: number,
   link: ReviewLink,
 ): DirectorySuccess | DirectoryFailure {
-  const current = snapshot.reviewDetails.find(
+  const person = snapshot.apprentices.find((row) => row.id === apprenticeId);
+  if (!person) return fail(404, "Apprentice not found.", { code: "not_found" });
+  const stored = snapshot.reviewDetails.find(
     (detail) => detail.apprenticeId === apprenticeId,
   );
-  if (!current) return fail(404, "Apprentice not found.", { code: "not_found" });
+  if (!stored && expectedVersion !== 0) {
+    return fail(
+      409,
+      "This apprentice was saved by someone else. Reload before changing the employer link.",
+      { code: "version_conflict" },
+    );
+  }
+  const current = stored ?? emptyReviewDetails(apprenticeId);
   if (current.version !== expectedVersion) {
     return fail(
       409,
@@ -564,25 +576,60 @@ function linkReviewApprentice(
   return succeed(
     {
       ...snapshot,
-      reviewDetails: snapshot.reviewDetails.map((row) =>
-        row.apprenticeId === apprenticeId ? next : row,
-      ),
+      reviewDetails: stored
+        ? snapshot.reviewDetails.map((row) =>
+            row.apprenticeId === apprenticeId ? next : row,
+          )
+        : [...snapshot.reviewDetails, next],
     },
     [
-      {
-        op: "versioned_update",
-        table: "review_apprentice_details",
-        apprenticeId,
-        expectedVersion,
-        row: {
-          employer_id: employerId,
-          site_id: siteId,
-          manager_role_id: managerRoleId,
-          version: next.version,
-        },
-      },
+      reviewChangeWrite(apprenticeId, expectedVersion, null, {
+        employer_id: employerId,
+        site_id: siteId,
+        manager_role_id: managerRoleId,
+      }),
     ],
   );
+}
+
+function emptyReviewDetails(apprenticeId: string): ReviewDetails {
+  return {
+    apprenticeId,
+    version: 0,
+    sourceCompanyName: "",
+    sourcePostcode: "",
+    releaseDay: "",
+    tutorName: "",
+    apprenticeshipLabel: "",
+    apprenticeshipStartDate: null,
+    apprenticeshipEndDate: null,
+    reviewerName: "",
+    sourceContactName: "",
+    sourceContactEmail: "",
+    sourceContactPhone: "",
+    plannedReviewDate: null,
+    employerId: null,
+    siteId: null,
+    managerRoleId: null,
+  };
+}
+
+function reviewChangeWrite(
+  apprenticeId: string,
+  expectedVersion: number,
+  displayName: string | null,
+  fields: Record<string, unknown>,
+): DirectoryWrite {
+  return {
+    op: "rpc",
+    fn: "apply_review_apprentice_change",
+    args: {
+      p_apprentice_id: apprenticeId,
+      p_expected_version: expectedVersion,
+      p_display_name: displayName,
+      p_fields: fields,
+    },
+  };
 }
 
 function changedDetailColumns(
@@ -709,30 +756,6 @@ function roleToDb(role: ManagerRole): Record<string, unknown> {
     employer_id: role.employerId,
     site_id: role.siteId,
     responsibility: role.responsibility,
-  };
-}
-
-function apprenticeToDb(person: ApprenticePerson): Record<string, unknown> {
-  return {
-    id: person.id,
-    display_name: person.displayName,
-    apprentice_reference: person.apprenticeReference,
-    email: "",
-    phone: "",
-    date_of_birth: null,
-    uln: "",
-    address_line1: "",
-    address_line2: "",
-    town: "",
-    postcode: "",
-    emergency_contact_name: "",
-    emergency_contact_phone: "",
-    emergency_contact_relationship: "",
-    support_notes: "",
-    intake_status: "in_progress",
-    portal_entry: person.portalEntry,
-    pack: {},
-    notes: "",
   };
 }
 

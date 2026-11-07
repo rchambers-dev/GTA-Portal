@@ -210,7 +210,13 @@ export function AddApprenticeForm({
         }}
       >
         <section className={styles.formGroup}>
-          <h2 className={styles.formGroupTitle}>{existing ? "Apprentice details" : "Add apprentice"}</h2>
+          <div className={styles.formGroupHead}>
+            <h2 className={styles.formGroupTitle}>{existing ? "Apprentice details" : "Add apprentice"}</h2>
+            <span className={styles.formGroupBadge}>{existing ? "Existing record" : "New apprentice"}</span>
+          </div>
+          <p className={styles.formGroupMeta}>
+            Full name is the only required field. Leave anything unknown blank. This does not create a login or an enrolment.
+          </p>
           <div className={styles.formGrid}>
             <label className={styles.field}>
               <span>Full name <em className={styles.fieldRequired}>required</em></span>
@@ -278,7 +284,10 @@ export function AddApprenticeForm({
           </p>
         </section>
         <section className={styles.formGroup}>
-          <h2 className={styles.formGroupTitle}>Employer, site and manager</h2>
+          <div className={styles.formGroupHead}>
+            <h2 className={styles.formGroupTitle}>Employer, site and manager</h2>
+            <span className={styles.formGroupBadge}>Optional link</span>
+          </div>
           <p className={styles.formGroupMeta}>Optional. Choose an existing employer. Leave this empty when it is unknown.</p>
           <div className={styles.formGrid}>
             <label className={styles.field}>
@@ -332,7 +341,7 @@ export function AddApprenticeForm({
             </label>
           </div>
         </section>
-        {error ? <p className={styles.error}>{error}</p> : null}
+        {error ? <p className={styles.error} role="alert">{error}</p> : null}
         <div className={styles.formActions}>
           <button type="button" className={styles.secondaryBtn} onClick={onCancel}>Cancel</button>
           <button type="submit" className={styles.primaryBtn} disabled={busy}>

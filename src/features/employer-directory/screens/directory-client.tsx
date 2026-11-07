@@ -123,8 +123,8 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
     >
       <div className={styles.stack}>
         {loading ? <p className={styles.empty}>Loading directory…</p> : null}
-        {error ? <p className={styles.error}>{error}</p> : null}
-        {notice ? <p className={styles.success}>{notice}</p> : null}
+        {error ? <p className={styles.error} role="alert">{error}</p> : null}
+        {notice ? <p className={styles.success} role="status">{notice}</p> : null}
         {duplicate ? (
           <button type="button" className={styles.secondaryBtn} onClick={() => void submit(duplicate)}>
             Save as a separate record
@@ -132,7 +132,10 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
         ) : null}
 
         <section className={styles.formGroup}>
-          <h2 className={styles.formGroupTitle}>Companies</h2>
+          <div className={styles.formGroupHead}>
+            <h2 className={styles.formGroupTitle}>Employers</h2>
+            <span className={styles.formGroupBadge}>{snapshot.employers.length}</span>
+          </div>
           <p className={styles.formGroupMeta}>Name is required. Legal name and company number can stay blank.</p>
           <form
             className={styles.formGrid}
@@ -145,38 +148,45 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
               <span>Company name <em className={styles.fieldRequired}>required</em></span>
               <input value={companyName} onChange={(event) => setCompanyName(event.target.value)} />
             </label>
-            <button type="submit" className={styles.primaryBtn}>Add company</button>
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.primaryBtn}>Add employer</button>
+            </div>
           </form>
-          <ul>
+          <div className={styles.employerList}>
             {snapshot.employers.map((company) => (
-              <li key={company.id}>
-                <strong>{company.name}</strong>
-                {company.status === "inactive" ? " · Inactive" : ""}
-                <div>
-                  <GapList
-                    gaps={[
-                      !company.legalName ? "Legal name" : "",
-                      !company.companyNumber ? "Company number" : "",
-                    ].filter(Boolean)}
-                  />
+              <article key={company.id} className={styles.employerCard} data-open="false">
+                <div className={styles.employerCardHeader}>
+                  <div className={styles.employerCardMain}>
+                    <strong className={styles.employerName}>{company.name}</strong>
+                    <span>{company.status === "inactive" ? "Inactive" : "Active"}</span>
+                    <GapList
+                      gaps={[
+                        !company.legalName ? "Legal name" : "",
+                        !company.companyNumber ? "Company number" : "",
+                      ].filter(Boolean)}
+                    />
+                    <span>
+                      Sites: {sitesForEmployer(snapshot, company.id).map((site) => site.label).join(", ") || "none linked"}
+                      {" · "}
+                      Managers: {rolesForEmployer(snapshot, company.id).length}
+                      {" · "}
+                      Apprentices: {apprenticesForEmployer(snapshot, company.id).length}
+                    </span>
+                  </div>
                 </div>
-                <div className={styles.fieldHint}>
-                  Sites: {sitesForEmployer(snapshot, company.id).map((site) => site.label).join(", ") || "none linked"}
-                  {" · "}
-                  Managers: {rolesForEmployer(snapshot, company.id).length}
-                  {" · "}
-                  Apprentices: {apprenticesForEmployer(snapshot, company.id).length}
-                </div>
-              </li>
+              </article>
             ))}
-          </ul>
+          </div>
           {snapshot.employers.length === 0 && !loading ? (
             <p className={styles.empty}>No companies yet.</p>
           ) : null}
         </section>
 
         <section className={styles.formGroup}>
-          <h2 className={styles.formGroupTitle}>Sites</h2>
+          <div className={styles.formGroupHead}>
+            <h2 className={styles.formGroupTitle}>Sites</h2>
+            <span className={styles.formGroupBadge}>{snapshot.sites.length}</span>
+          </div>
           <p className={styles.formGroupMeta}>A label is required. Address and postcode can stay blank. A learner postcode is never turned into a site.</p>
           <form
             className={styles.formGrid}
@@ -200,31 +210,38 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
               <span>Postcode</span>
               <input value={sitePostcode} onChange={(event) => setSitePostcode(event.target.value)} />
             </label>
-            <button type="submit" className={styles.primaryBtn}>Add site</button>
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.primaryBtn}>Add site</button>
+            </div>
           </form>
-          <ul>
+          <div className={styles.employerList}>
             {snapshot.sites.map((site) => (
-              <li key={site.id}>
-                <strong>{site.label}</strong>
-                <div>
-                  <GapList
-                    gaps={[
-                      !site.addressLine1 ? "Address" : "",
-                      !site.town ? "Town" : "",
-                      !site.postcode ? "Postcode" : "",
-                    ].filter(Boolean)}
-                  />
+              <article key={site.id} className={styles.employerCard} data-open="false">
+                <div className={styles.employerCardHeader}>
+                  <div className={styles.employerCardMain}>
+                    <strong className={styles.employerName}>{site.label}</strong>
+                    <GapList
+                      gaps={[
+                        !site.addressLine1 ? "Address" : "",
+                        !site.town ? "Town" : "",
+                        !site.postcode ? "Postcode" : "",
+                      ].filter(Boolean)}
+                    />
+                    <span>
+                      Employers here: {employersForSite(snapshot, site.id).map((company) => company.name).join(", ") || "none"}
+                    </span>
+                  </div>
                 </div>
-                <div className={styles.fieldHint}>
-                  Employers here: {employersForSite(snapshot, site.id).map((company) => company.name).join(", ") || "none"}
-                </div>
-              </li>
+              </article>
             ))}
-          </ul>
+          </div>
         </section>
 
         <section className={styles.formGroup}>
-          <h2 className={styles.formGroupTitle}>Link a company to a site</h2>
+          <div className={styles.formGroupHead}>
+            <h2 className={styles.formGroupTitle}>Link an employer to a site</h2>
+            <span className={styles.formGroupBadge}>Many to many</span>
+          </div>
           <form
             className={styles.formGrid}
             onSubmit={(event) => {
@@ -250,12 +267,17 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
                 ))}
               </select>
             </label>
-            <button type="submit" className={styles.primaryBtn}>Link</button>
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.primaryBtn}>Link</button>
+            </div>
           </form>
         </section>
 
         <section className={styles.formGroup}>
-          <h2 className={styles.formGroupTitle}>Managers</h2>
+          <div className={styles.formGroupHead}>
+            <h2 className={styles.formGroupTitle}>Managers</h2>
+            <span className={styles.formGroupBadge}>{snapshot.managers.length}</span>
+          </div>
           <p className={styles.formGroupMeta}>Name is required. Email and phone can stay blank. The same name does not become the same person.</p>
           <form
             className={styles.formGrid}
@@ -268,18 +290,22 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
               <span>Manager name <em className={styles.fieldRequired}>required</em></span>
               <input value={managerName} onChange={(event) => setManagerName(event.target.value)} />
             </label>
-            <button type="submit" className={styles.primaryBtn}>Add manager</button>
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.primaryBtn}>Add manager</button>
+            </div>
           </form>
-          <ul>
+          <div className={styles.employerList}>
             {snapshot.managers.map((manager) => (
-              <li key={manager.id}>
-                <strong>{manager.fullName}</strong>
-                <div>
-                  <GapList gaps={[!manager.email ? "Email" : "", !manager.phone ? "Phone" : ""].filter(Boolean)} />
+              <article key={manager.id} className={styles.employerCard} data-open="false">
+                <div className={styles.employerCardHeader}>
+                  <div className={styles.employerCardMain}>
+                    <strong className={styles.employerName}>{manager.fullName}</strong>
+                    <GapList gaps={[!manager.email ? "Email" : "", !manager.phone ? "Phone" : ""].filter(Boolean)} />
+                  </div>
                 </div>
-              </li>
+              </article>
             ))}
-          </ul>
+          </div>
           <form
             className={styles.formGrid}
             onSubmit={(event) => {
@@ -327,7 +353,9 @@ export function EmployerDirectoryScreen({ eyebrow }: { eyebrow: string }) {
                 ))}
               </select>
             </label>
-            <button type="submit" className={styles.primaryBtn}>Add responsibility</button>
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.primaryBtn}>Add responsibility</button>
+            </div>
           </form>
         </section>
       </div>

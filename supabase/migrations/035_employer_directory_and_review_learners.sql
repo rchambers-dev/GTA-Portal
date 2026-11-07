@@ -10,27 +10,26 @@
 -- scratch database before applying. Do not copy production credentials into a
 -- preview environment. Preview currently has no separate Supabase scope.
 --
--- Exact reversal, only when the new tables are empty and no apprentice has
--- portal_entry = 'reviews'. Do not run this on the live database now.
---   drop table if exists public.review_apprentice_details;
---   drop table if exists public.employer_manager_roles;
---   drop table if exists public.employer_managers;
---   drop table if exists public.employer_site_memberships;
---   drop table if exists public.employer_sites;
---   alter table public.apprentices drop constraint if exists apprentices_portal_entry_check;
---   alter table public.apprentices drop column if exists portal_entry;
--- Refuse to drop employer_uuid if any apprentice_programmes.employer_uuid is not null.
--- Never drop public.apprentices or public.employers.
+-- Reversal is supabase/rollback/035_employer_directory_reversal.sql.
+-- That script refuses to run when new rows exist. It is not an exact restore:
+-- it does not drop employer_uuid (that column can already exist) and it does
+-- not drop or rewrite touch_updated_at (this migration does not replace an
+-- existing function). Do not run it on the live database now.
 
-create or replace function public.touch_updated_at()
-returns trigger
-language plpgsql
-as $$
+do $$
 begin
-  new.updated_at = now();
-  return new;
-end;
-$$;
+  if to_regprocedure('public.touch_updated_at()') is null then
+    create function public.touch_updated_at()
+    returns trigger
+    language plpgsql
+    as $fn$
+    begin
+      new.updated_at = now();
+      return new;
+    end;
+    $fn$;
+  end if;
+end $$;
 
 alter table public.apprentices
   add column if not exists portal_entry text not null default 'onboarding';
@@ -148,13 +147,16 @@ returns trigger
 language plpgsql
 as $$
 begin
-  if new.site_id is not null and not exists (
-    select 1 from public.employer_site_memberships link
+  if new.site_id is not null then
+    perform 1
+    from public.employer_site_memberships link
     where link.employer_id = new.employer_id
       and link.site_id = new.site_id
-  ) then
-    raise exception 'Manager site is not linked to that employer'
-      using errcode = '23514';
+    for key share;
+    if not found then
+      raise exception 'Manager site is not linked to that employer'
+        using errcode = '23514';
+    end if;
   end if;
   return new;
 end;
@@ -177,13 +179,16 @@ begin
     raise exception 'Choose an employer before a site or manager'
       using errcode = '23514';
   end if;
-  if new.site_id is not null and not exists (
-    select 1 from public.employer_site_memberships link
+  if new.site_id is not null then
+    perform 1
+    from public.employer_site_memberships link
     where link.employer_id = new.employer_id
       and link.site_id = new.site_id
-  ) then
-    raise exception 'Apprentice site is not linked to the selected employer'
-      using errcode = '23514';
+    for key share;
+    if not found then
+      raise exception 'Apprentice site is not linked to the selected employer'
+        using errcode = '23514';
+    end if;
   end if;
   if new.manager_role_id is not null then
     select role.employer_id, role.site_id
@@ -207,6 +212,248 @@ drop trigger if exists review_apprentice_link_guard on public.review_apprentice_
 create trigger review_apprentice_link_guard
 before insert or update on public.review_apprentice_details
 for each row execute function public.review_apprentice_link_guard();
+
+create or replace function public.employer_site_membership_delete_guard()
+returns trigger
+language plpgsql
+as $$
+begin
+  if exists (
+    select 1
+    from public.employer_manager_roles role
+    where role.employer_id = old.employer_id
+      and role.site_id = old.site_id
+    for update
+  ) then
+    raise exception 'This site is still used by a manager responsibility'
+      using errcode = '23514';
+  end if;
+  if exists (
+    select 1
+    from public.review_apprentice_details detail
+    where detail.employer_id = old.employer_id
+      and detail.site_id = old.site_id
+    for update
+  ) then
+    raise exception 'This site is still linked to an apprentice'
+      using errcode = '23514';
+  end if;
+  return old;
+end;
+$$;
+
+drop trigger if exists employer_site_membership_delete_guard
+  on public.employer_site_memberships;
+create trigger employer_site_membership_delete_guard
+before delete on public.employer_site_memberships
+for each row execute function public.employer_site_membership_delete_guard();
+
+create or replace function public.create_review_apprentice(p_row jsonb)
+returns void
+language plpgsql
+as $$
+begin
+  insert into public.apprentices (
+    id, display_name, apprentice_reference, portal_entry
+  ) values (
+    (p_row->>'id')::uuid,
+    p_row->>'display_name',
+    p_row->>'apprentice_reference',
+    'reviews'
+  );
+  insert into public.review_apprentice_details (
+    apprentice_id,
+    version,
+    source_company_name,
+    source_postcode,
+    release_day,
+    tutor_name,
+    apprenticeship_label,
+    apprenticeship_start_date,
+    apprenticeship_end_date,
+    reviewer_name,
+    source_contact_name,
+    source_contact_email,
+    source_contact_phone,
+    planned_review_date
+  ) values (
+    (p_row->>'id')::uuid,
+    1,
+    coalesce(p_row->>'source_company_name', ''),
+    coalesce(p_row->>'source_postcode', ''),
+    coalesce(p_row->>'release_day', ''),
+    coalesce(p_row->>'tutor_name', ''),
+    coalesce(p_row->>'apprenticeship_label', ''),
+    nullif(p_row->>'apprenticeship_start_date', '')::date,
+    nullif(p_row->>'apprenticeship_end_date', '')::date,
+    coalesce(p_row->>'reviewer_name', ''),
+    coalesce(p_row->>'source_contact_name', ''),
+    coalesce(p_row->>'source_contact_email', ''),
+    coalesce(p_row->>'source_contact_phone', ''),
+    nullif(p_row->>'planned_review_date', '')::date
+  );
+end;
+$$;
+
+create or replace function public.apply_review_apprentice_change(
+  p_apprentice_id uuid,
+  p_expected_version integer,
+  p_display_name text,
+  p_fields jsonb
+)
+returns integer
+language plpgsql
+as $$
+declare
+  new_version integer;
+begin
+  perform 1
+  from public.apprentices
+  where id = p_apprentice_id
+  for update;
+  if not found then
+    raise exception 'Apprentice not found'
+      using errcode = 'P0002';
+  end if;
+
+  if p_expected_version = 0 and not exists (
+    select 1
+    from public.review_apprentice_details
+    where apprentice_id = p_apprentice_id
+  ) then
+    insert into public.review_apprentice_details (apprentice_id, version)
+    values (p_apprentice_id, 1);
+    new_version := 1;
+  else
+    update public.review_apprentice_details
+    set
+      source_company_name = case
+        when p_fields ? 'source_company_name' then p_fields->>'source_company_name'
+        else source_company_name end,
+      source_postcode = case
+        when p_fields ? 'source_postcode' then p_fields->>'source_postcode'
+        else source_postcode end,
+      release_day = case
+        when p_fields ? 'release_day' then p_fields->>'release_day'
+        else release_day end,
+      tutor_name = case
+        when p_fields ? 'tutor_name' then p_fields->>'tutor_name'
+        else tutor_name end,
+      apprenticeship_label = case
+        when p_fields ? 'apprenticeship_label' then p_fields->>'apprenticeship_label'
+        else apprenticeship_label end,
+      apprenticeship_start_date = case
+        when p_fields ? 'apprenticeship_start_date'
+          then nullif(p_fields->>'apprenticeship_start_date', '')::date
+        else apprenticeship_start_date end,
+      apprenticeship_end_date = case
+        when p_fields ? 'apprenticeship_end_date'
+          then nullif(p_fields->>'apprenticeship_end_date', '')::date
+        else apprenticeship_end_date end,
+      reviewer_name = case
+        when p_fields ? 'reviewer_name' then p_fields->>'reviewer_name'
+        else reviewer_name end,
+      source_contact_name = case
+        when p_fields ? 'source_contact_name' then p_fields->>'source_contact_name'
+        else source_contact_name end,
+      source_contact_email = case
+        when p_fields ? 'source_contact_email' then p_fields->>'source_contact_email'
+        else source_contact_email end,
+      source_contact_phone = case
+        when p_fields ? 'source_contact_phone' then p_fields->>'source_contact_phone'
+        else source_contact_phone end,
+      planned_review_date = case
+        when p_fields ? 'planned_review_date'
+          then nullif(p_fields->>'planned_review_date', '')::date
+        else planned_review_date end,
+      employer_id = case
+        when p_fields ? 'employer_id' then nullif(p_fields->>'employer_id', '')::uuid
+        else employer_id end,
+      site_id = case
+        when p_fields ? 'site_id' then nullif(p_fields->>'site_id', '')::uuid
+        else site_id end,
+      manager_role_id = case
+        when p_fields ? 'manager_role_id' then nullif(p_fields->>'manager_role_id', '')::uuid
+        else manager_role_id end,
+      version = version + 1
+    where apprentice_id = p_apprentice_id
+      and version = p_expected_version
+    returning version into new_version;
+  end if;
+
+  if new_version is null then
+    raise exception 'version_conflict'
+      using errcode = '40001';
+  end if;
+
+  if p_expected_version = 0 and new_version = 1 and p_fields is not null then
+    update public.review_apprentice_details
+    set
+      source_company_name = case
+        when p_fields ? 'source_company_name' then p_fields->>'source_company_name'
+        else source_company_name end,
+      source_postcode = case
+        when p_fields ? 'source_postcode' then p_fields->>'source_postcode'
+        else source_postcode end,
+      release_day = case
+        when p_fields ? 'release_day' then p_fields->>'release_day'
+        else release_day end,
+      tutor_name = case
+        when p_fields ? 'tutor_name' then p_fields->>'tutor_name'
+        else tutor_name end,
+      apprenticeship_label = case
+        when p_fields ? 'apprenticeship_label' then p_fields->>'apprenticeship_label'
+        else apprenticeship_label end,
+      apprenticeship_start_date = case
+        when p_fields ? 'apprenticeship_start_date'
+          then nullif(p_fields->>'apprenticeship_start_date', '')::date
+        else apprenticeship_start_date end,
+      apprenticeship_end_date = case
+        when p_fields ? 'apprenticeship_end_date'
+          then nullif(p_fields->>'apprenticeship_end_date', '')::date
+        else apprenticeship_end_date end,
+      reviewer_name = case
+        when p_fields ? 'reviewer_name' then p_fields->>'reviewer_name'
+        else reviewer_name end,
+      source_contact_name = case
+        when p_fields ? 'source_contact_name' then p_fields->>'source_contact_name'
+        else source_contact_name end,
+      source_contact_email = case
+        when p_fields ? 'source_contact_email' then p_fields->>'source_contact_email'
+        else source_contact_email end,
+      source_contact_phone = case
+        when p_fields ? 'source_contact_phone' then p_fields->>'source_contact_phone'
+        else source_contact_phone end,
+      planned_review_date = case
+        when p_fields ? 'planned_review_date'
+          then nullif(p_fields->>'planned_review_date', '')::date
+        else planned_review_date end,
+      employer_id = case
+        when p_fields ? 'employer_id' then nullif(p_fields->>'employer_id', '')::uuid
+        else employer_id end,
+      site_id = case
+        when p_fields ? 'site_id' then nullif(p_fields->>'site_id', '')::uuid
+        else site_id end,
+      manager_role_id = case
+        when p_fields ? 'manager_role_id' then nullif(p_fields->>'manager_role_id', '')::uuid
+        else manager_role_id end
+    where apprentice_id = p_apprentice_id
+      and version = 1;
+  end if;
+
+  if p_display_name is not null then
+    update public.apprentices
+    set display_name = p_display_name
+    where id = p_apprentice_id;
+  end if;
+
+  return new_version;
+exception
+  when unique_violation then
+    raise exception 'version_conflict'
+      using errcode = '40001';
+end;
+$$;
 
 drop trigger if exists touch_employer_sites_updated_at on public.employer_sites;
 create trigger touch_employer_sites_updated_at
@@ -253,9 +500,20 @@ begin
       loop
         execute format('revoke all on table public.%I from %I', table_name, role_name);
       end loop;
+      execute format(
+        'revoke all on function public.create_review_apprentice(jsonb) from %I',
+        role_name
+      );
+      execute format(
+        'revoke all on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) from %I',
+        role_name
+      );
     end if;
   end loop;
 end $$;
+
+revoke all on function public.create_review_apprentice(jsonb) from public;
+revoke all on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) from public;
 
 comment on table public.review_apprentice_details is
   'Review-only facts for an existing apprentice. The person row is public.apprentices. version must match on update.';

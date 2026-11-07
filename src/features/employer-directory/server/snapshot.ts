@@ -165,20 +165,15 @@ export async function applyDirectoryWrites(
       if (error) throw error;
       continue;
     }
-    if (write.op === "update") {
-      const { error } = await supabase.from(write.table).update(write.row).eq("id", write.id);
-      if (error) throw error;
-      continue;
-    }
-    if (write.op === "versioned_update") {
-      const { data, error } = await supabase
-        .from(write.table)
-        .update(write.row)
-        .eq("apprentice_id", write.apprenticeId)
-        .eq("version", write.expectedVersion)
-        .select("apprentice_id");
-      if (error) throw error;
-      if (!data || data.length === 0) throw new VersionConflictError();
+    if (write.op === "rpc") {
+      const { error } = await supabase.rpc(write.fn, write.args);
+      if (error) {
+        const message = error.message || "";
+        if (message.includes("version_conflict") || error.code === "40001") {
+          throw new VersionConflictError();
+        }
+        throw error;
+      }
       continue;
     }
     if (write.table === "employer_site_memberships") {

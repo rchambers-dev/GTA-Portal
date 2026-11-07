@@ -90,4 +90,139 @@ describe("canonical directory migration", () => {
     );
     expect(tables.rows).toEqual([]);
   });
+
+  it("rolls a failed review create back and rejects a stale name change", async () => {
+    const db = await database();
+    await expect(
+      db.query(
+        `select public.create_review_apprentice($1::jsonb)`,
+        [JSON.stringify({
+          id: "11111111-1111-4111-8111-111111111111",
+          display_name: "Broken Entry",
+          apprentice_reference: "GTA-2026-01999",
+          release_day: "Notaday",
+        })],
+      ),
+    ).rejects.toThrow(/release_day/i);
+    const people = await db.query("select id from public.apprentices");
+    expect(people.rows).toHaveLength(0);
+
+    const person = await db.query<{ id: string }>(
+      `insert into public.apprentices (display_name, apprentice_reference, portal_entry)
+       values ('Casey Learner', 'GTA-2026-01001', 'onboarding') returning id`,
+    );
+    await db.query(
+      `insert into public.review_apprentice_details (apprentice_id, tutor_name)
+       values ($1, 'First tutor')`,
+      [person.rows[0].id],
+    );
+    await expect(
+      db.query(
+        `select public.apply_review_apprentice_change($1, 1, 'Changed Name', '{"tutor_name":"Second tutor"}'::jsonb)`,
+        [person.rows[0].id],
+      ),
+    ).resolves.toBeTruthy();
+    await expect(
+      db.query(
+        `select public.apply_review_apprentice_change($1, 1, 'Should Not Stick', '{"tutor_name":"Third tutor"}'::jsonb)`,
+        [person.rows[0].id],
+      ),
+    ).rejects.toThrow(/version_conflict/);
+    const row = await db.query<{ display_name: string; tutor_name: string; version: number }>(
+      `select apprentice.display_name, detail.tutor_name, detail.version
+       from public.apprentices apprentice
+       join public.review_apprentice_details detail on detail.apprentice_id = apprentice.id`,
+    );
+    expect(row.rows[0]).toMatchObject({
+      display_name: "Changed Name",
+      tutor_name: "Second tutor",
+      version: 2,
+    });
+  });
+
+  it("refuses to remove a company-site link that an apprentice or manager still uses", async () => {
+    const db = await database();
+    const employer = await db.query<{ id: string }>(
+      "insert into public.employers (name) values ('Alpha Ltd') returning id",
+    );
+    const site = await db.query<{ id: string }>(
+      "insert into public.employer_sites (label) values ('Yard') returning id",
+    );
+    await db.query(
+      "insert into public.employer_site_memberships (employer_id, site_id) values ($1, $2)",
+      [employer.rows[0].id, site.rows[0].id],
+    );
+    const manager = await db.query<{ id: string }>(
+      "insert into public.employer_managers (full_name) values ('Alex Manager') returning id",
+    );
+    await db.query(
+      `insert into public.employer_manager_roles (manager_id, employer_id, site_id)
+       values ($1, $2, $3)`,
+      [manager.rows[0].id, employer.rows[0].id, site.rows[0].id],
+    );
+    await expect(
+      db.query(
+        "delete from public.employer_site_memberships where employer_id = $1 and site_id = $2",
+        [employer.rows[0].id, site.rows[0].id],
+      ),
+    ).rejects.toThrow(/manager responsibility/i);
+    const guard = await db.query<{ def: string }>(
+      "select pg_get_functiondef('public.employer_manager_role_site_guard()'::regprocedure) as def",
+    );
+    expect(guard.rows[0].def.toLowerCase()).toContain("for key share");
+  });
+
+  it("refuses reversal while reviews rows exist and does not drop a pre-existing touch function or employer_uuid", async () => {
+    const db = new PGlite();
+    await db.exec(`
+      create function public.touch_updated_at()
+      returns trigger language plpgsql as $fn$
+      begin
+        new.updated_at = now();
+        return new;
+      end;
+      $fn$;
+      comment on function public.touch_updated_at() is 'preexisting';
+      create table public.employers (id uuid primary key default gen_random_uuid(), name text not null);
+      create table public.apprentices (
+        id uuid primary key default gen_random_uuid(),
+        display_name text not null,
+        apprentice_reference text not null unique
+      );
+      create table public.apprentice_programmes (
+        id uuid primary key default gen_random_uuid(),
+        employer_uuid uuid
+      );
+    `);
+    await db.exec(migration);
+    const comment = await db.query<{ comment: string | null }>(
+      `select obj_description('public.touch_updated_at()'::regprocedure, 'pg_proc') as comment`,
+    );
+    expect(comment.rows[0].comment).toBe("preexisting");
+    await db.query(
+      `insert into public.apprentices (display_name, apprentice_reference, portal_entry)
+       values ('Casey Learner', 'GTA-2026-01001', 'reviews')`,
+    );
+    const rollback = readFileSync(
+      path.resolve("supabase/rollback/035_employer_directory_reversal.sql"),
+      "utf8",
+    );
+    await expect(db.exec(rollback)).rejects.toThrow(/Refusing reversal/);
+    await db.query(`delete from public.apprentices`);
+    await db.exec(rollback);
+    const portalEntry = await db.query(
+      `select 1 from information_schema.columns
+       where table_schema = 'public' and table_name = 'apprentices' and column_name = 'portal_entry'`,
+    );
+    expect(portalEntry.rows).toHaveLength(0);
+    const employerUuid = await db.query(
+      `select 1 from information_schema.columns
+       where table_schema = 'public' and table_name = 'apprentice_programmes' and column_name = 'employer_uuid'`,
+    );
+    expect(employerUuid.rows).toHaveLength(1);
+    const touch = await db.query<{ comment: string | null }>(
+      `select obj_description('public.touch_updated_at()'::regprocedure, 'pg_proc') as comment`,
+    );
+    expect(touch.rows[0].comment).toBe("preexisting");
+  });
 });
