@@ -12,6 +12,7 @@ import type {
   AdminPortalUser,
   AdminTeachingGroupRecord,
 } from "@/features/administration/domain/types";
+import { employerUuidFromLegacyId } from "@/features/administration/domain/employer-uuid";
 import type {
   CohortInput,
   EnrolmentInput,
@@ -151,6 +152,10 @@ function mapEnrolment(row: ApprenticeProgrammeRow): AdminApprenticeEnrolment {
     cohortId: row.cohort_id,
     teachingGroupId: row.teaching_group_id ?? null,
     employerId: row.employer_id,
+    employerUuid:
+      typeof (row as { employer_uuid?: string | null }).employer_uuid === "string"
+        ? (row as { employer_uuid: string }).employer_uuid
+        : null,
     employerName: row.employer_name,
     workplaceContact: row.workplace_contact,
     mentorName: row.mentor_name,
@@ -508,6 +513,7 @@ export async function POST(request: Request) {
         cohort_id: input.cohortId,
         teaching_group_id: null,
         employer_id: input.employerId,
+        employer_uuid: employerUuidFromLegacyId(input.employerId),
         employer_name: input.employerName,
         workplace_contact: input.workplaceContact.trim(),
         mentor_name: input.mentorName.trim(),
@@ -614,7 +620,10 @@ export async function POST(request: Request) {
     update.gta_programme_version_id = patch.gtaProgrammeVersionId;
   }
   if (patch.cohortId !== undefined) update.cohort_id = patch.cohortId;
-  if (patch.employerId != null) update.employer_id = patch.employerId;
+  if (patch.employerId != null) {
+    update.employer_id = patch.employerId;
+    update.employer_uuid = employerUuidFromLegacyId(patch.employerId);
+  }
   if (patch.employerName != null) update.employer_name = patch.employerName;
   if (patch.workplaceContact != null) update.workplace_contact = patch.workplaceContact.trim();
   if (patch.mentorName != null) update.mentor_name = patch.mentorName.trim();

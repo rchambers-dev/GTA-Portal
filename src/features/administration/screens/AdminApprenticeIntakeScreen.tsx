@@ -353,7 +353,7 @@ export function AdminApprenticeIntakeScreen() {
       (e) => e.id === createForm.employerId,
     );
     if (!employer) {
-      setError("Choose a garage / employer.");
+      setError("Choose an employer.");
       return;
     }
     if (!createForm.apprenticeshipStartDate) {
@@ -556,19 +556,19 @@ export function AdminApprenticeIntakeScreen() {
               <span className={styles.formGroupBadge}>Where they go</span>
             </div>
             <p className={styles.formGroupMeta}>
-              Choose the garage, apprenticeship, then this apprentice&apos;s
+              Choose the employer, apprenticeship, then this apprentice&apos;s
               own start date. Intake / cohort is an administrative grouping —
               it does not set their apprenticeship dates. Pin a GTA Programme
               Version next, then a compatible teaching group supplies tutor
               and college days.
             </p>
             <div className={styles.formGrid}>
-              <FormField label="Garage / employer">
+              <FormField label="Employer">
                 <Select
                   value={createForm.employerId}
-                  placeholder="Choose garage…"
+                  placeholder="Choose employer…"
                   options={[
-                    { value: "", label: "Choose garage…" },
+                    { value: "", label: "Choose employer…" },
                     ...store.employers
                       .filter((e) => e.status === "active")
                       .map((e) => ({
@@ -590,7 +590,7 @@ export function AdminApprenticeIntakeScreen() {
               </FormField>
               <FormField
                 label="Workplace mentor"
-                hint="Filled from the garage contact — edit if this apprentice has a different mentor"
+                hint="Filled from the employer contact — edit if this apprentice has a different mentor"
               >
                 <TextInput
                   value={createForm.mentorName}
