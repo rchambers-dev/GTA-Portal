@@ -29,7 +29,9 @@ select kind, name, detail from (
   join pg_namespace n on n.oid = p.pronamespace
   where n.nspname = 'public'
   union all
-  select 'trigger', c.relname || '.' || t.tgname, pg_get_triggerdef(t.oid)
+  select 'trigger', c.relname || '.' || t.tgname,
+         pg_get_triggerdef(t.oid) || '|enabled=' || t.tgenabled::text
+           || '|comment=' || coalesce(obj_description(t.oid, 'pg_trigger'), '')
   from pg_trigger t
   join pg_class c on c.oid = t.tgrelid
   where not t.tgisinternal and c.relnamespace = 'public'::regnamespace
@@ -496,6 +498,19 @@ describe("canonical directory migration", () => {
         return new;
       end;
       $fn$;
+      create function public.apprentice_display_name_version_guard()
+      returns trigger language plpgsql as $fn$
+      begin
+        return new;
+      end;
+      $fn$;
+      create trigger apprentice_display_name_version_guard
+      before update of display_name on public.apprentices
+      for each row execute function public.apprentice_display_name_version_guard();
+      alter table public.apprentices disable trigger apprentice_display_name_version_guard;
+      comment on trigger apprentice_display_name_version_guard
+        on public.apprentices is 'disabled on purpose';
+      grant select on public.apprentices to anon;
     `);
     const beforePrior = await catalog(prior);
     await prior.exec(migration);
@@ -525,7 +540,28 @@ describe("migration 035 on PostgreSQL 16", () => {
           ["-h", dataDir, "-p", "5434", "-U", "postgres", "-d", "postgres", "-v", "ON_ERROR_STOP=1", "-c", sql],
           { encoding: "utf8" },
         );
+      const reversal = readFileSync(
+        path.resolve("supabase/rollback/035_employer_directory_reversal.sql"),
+        "utf8",
+      );
+      expect(reversal).not.toMatch(/^\s*update\s+pg_(class|proc)\b/im);
       psql(`
+        create role migration_owner nosuperuser nocreatedb nocreaterole login;
+        create role staff_reader nosuperuser nocreatedb nocreaterole;
+        grant usage, create on schema public to migration_owner;
+      `);
+      const asOwner = (sql: string) =>
+        psql(`
+          set role migration_owner;
+          do $$
+          begin
+            if (select rolsuper from pg_roles where rolname = current_user) then
+              raise exception 'migration executor is superuser';
+            end if;
+          end $$;
+          ${sql}
+        `);
+      asOwner(`
         create table public.employers (id uuid primary key default gen_random_uuid(), name text not null);
         create table public.apprentices (
           id uuid primary key default gen_random_uuid(),
@@ -540,11 +576,24 @@ describe("migration 035 on PostgreSQL 16", () => {
           return new;
         end;
         $fn$;
+        create function public.apprentice_display_name_version_guard()
+        returns trigger language plpgsql as $fn$
+        begin
+          return new;
+        end;
+        $fn$;
+        create trigger apprentice_display_name_version_guard
+        before update of display_name on public.apprentices
+        for each row execute function public.apprentice_display_name_version_guard();
+        alter table public.apprentices disable trigger apprentice_display_name_version_guard;
+        comment on trigger apprentice_display_name_version_guard
+          on public.apprentices is 'disabled on purpose';
+        grant select on table public.apprentices to staff_reader;
       `);
       const before = psql(catalogSql);
-      psql(migration);
-      psql(readFileSync(path.resolve("supabase/rollback/035_go_no_go.sql"), "utf8"));
-      psql(readFileSync(path.resolve("supabase/rollback/035_employer_directory_reversal.sql"), "utf8"));
+      asOwner(migration);
+      asOwner(readFileSync(path.resolve("supabase/rollback/035_go_no_go.sql"), "utf8"));
+      asOwner(reversal);
       expect(psql(catalogSql)).toBe(before);
     } finally {
       if (dataDir) {

@@ -188,6 +188,22 @@ begin
       case when trg is null then null else pg_get_triggerdef(trg) end
     )
     on conflict do nothing;
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values (
+      'trigger_enabled',
+      trg_name || '|' || trg_table,
+      trg is not null,
+      case when trg is null then null else (select t.tgenabled::text from pg_trigger t where t.oid = trg) end
+    )
+    on conflict do nothing;
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values (
+      'trigger_comment',
+      trg_name || '|' || trg_table,
+      trg is not null,
+      case when trg is null then null else obj_description(trg, 'pg_trigger') end
+    )
+    on conflict do nothing;
   end loop;
 
   foreach con_name in array array[
@@ -824,32 +840,101 @@ begin
         'review_apprentice_details'
       ]
       loop
-        execute format('revoke all on table public.%I from %I', table_name, role_name);
+        if not exists (
+          select 1 from public.migration_035_prestate
+          where object_kind = 'table'
+            and object_name = 'public.' || table_name
+            and existed
+        ) then
+          execute format('revoke all on table public.%I from %I', table_name, role_name);
+        end if;
       end loop;
-      execute format(
-        'revoke all on function public.create_review_apprentice(jsonb) from %I',
-        role_name
-      );
-      execute format(
-        'revoke all on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) from %I',
-        role_name
-      );
-      execute format(
-        'revoke all on function public.rename_apprentice(uuid, text, integer) from %I',
-        role_name
-      );
+      if not exists (
+        select 1 from public.migration_035_prestate
+        where object_kind = 'function'
+          and object_name = 'public.create_review_apprentice(jsonb)'
+          and existed
+      ) then
+        execute format(
+          'revoke all on function public.create_review_apprentice(jsonb) from %I',
+          role_name
+        );
+      end if;
+      if not exists (
+        select 1 from public.migration_035_prestate
+        where object_kind = 'function'
+          and object_name = 'public.apply_review_apprentice_change(uuid,integer,text,jsonb)'
+          and existed
+      ) then
+        execute format(
+          'revoke all on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) from %I',
+          role_name
+        );
+      end if;
+      if not exists (
+        select 1 from public.migration_035_prestate
+        where object_kind = 'function'
+          and object_name = 'public.rename_apprentice(uuid,text,integer)'
+          and existed
+      ) then
+        execute format(
+          'revoke all on function public.rename_apprentice(uuid, text, integer) from %I',
+          role_name
+        );
+      end if;
     end if;
   end loop;
   if exists (select 1 from pg_roles where rolname = 'service_role') then
-    grant execute on function public.create_review_apprentice(jsonb) to service_role;
-    grant execute on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) to service_role;
-    grant execute on function public.rename_apprentice(uuid, text, integer) to service_role;
+    if not exists (
+      select 1 from public.migration_035_prestate
+      where object_kind = 'function'
+        and object_name = 'public.create_review_apprentice(jsonb)'
+        and existed
+    ) then
+      grant execute on function public.create_review_apprentice(jsonb) to service_role;
+    end if;
+    if not exists (
+      select 1 from public.migration_035_prestate
+      where object_kind = 'function'
+        and object_name = 'public.apply_review_apprentice_change(uuid,integer,text,jsonb)'
+        and existed
+    ) then
+      grant execute on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) to service_role;
+    end if;
+    if not exists (
+      select 1 from public.migration_035_prestate
+      where object_kind = 'function'
+        and object_name = 'public.rename_apprentice(uuid,text,integer)'
+        and existed
+    ) then
+      grant execute on function public.rename_apprentice(uuid, text, integer) to service_role;
+    end if;
   end if;
 end $$;
 
-revoke all on function public.create_review_apprentice(jsonb) from public;
-revoke all on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) from public;
-revoke all on function public.rename_apprentice(uuid, text, integer) from public;
+do $$
+begin
+  if not exists (
+    select 1 from public.migration_035_prestate
+    where object_kind = 'function' and object_name = 'public.create_review_apprentice(jsonb)' and existed
+  ) then
+    revoke all on function public.create_review_apprentice(jsonb) from public;
+  end if;
+  if not exists (
+    select 1 from public.migration_035_prestate
+    where object_kind = 'function'
+      and object_name = 'public.apply_review_apprentice_change(uuid,integer,text,jsonb)'
+      and existed
+  ) then
+    revoke all on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) from public;
+  end if;
+  if not exists (
+    select 1 from public.migration_035_prestate
+    where object_kind = 'function' and object_name = 'public.rename_apprentice(uuid,text,integer)' and existed
+  ) then
+    revoke all on function public.rename_apprentice(uuid, text, integer) from public;
+  end if;
+end $$;
 
 comment on table public.review_apprentice_details is
   'Review-only facts for an existing apprentice. The person row is public.apprentices. version must match on update.';
