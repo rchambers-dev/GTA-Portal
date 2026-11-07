@@ -293,21 +293,23 @@ begin
     execute format('drop index if exists %s', row_record.object_name);
   end loop;
 
-  -- Child tables first. No CASCADE: a later foreign key or view aborts the transaction.
+  -- Fixed child-to-parent order. ORDINALITY keeps it stable after ANALYZE.
+  -- No CASCADE: a later foreign key or view aborts the transaction.
   for row_record in
-    select drop_name as object_name
+    select ordered.drop_name as object_name
     from unnest(array[
       'public.review_apprentice_details',
       'public.employer_manager_roles',
       'public.employer_site_memberships',
       'public.employer_managers',
       'public.employer_sites'
-    ]) as drop_name
+    ]) with ordinality as ordered(drop_name, drop_ord)
     join public.migration_035_prestate state
       on state.object_kind = 'table'
-     and state.object_name = drop_name
+     and state.object_name = ordered.drop_name
      and state.existed = false
-    where not (drop_name = any (kept_tables))
+    where not (ordered.drop_name = any (kept_tables))
+    order by ordered.drop_ord
   loop
     execute format('drop table if exists %s', row_record.object_name);
   end loop;

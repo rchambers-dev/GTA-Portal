@@ -568,6 +568,40 @@ describe("canonical directory migration", () => {
     expect(later.rows[0].name).toBe("later_work");
     expect(sites.rows[0].name).toBe("employer_sites");
   });
+
+  it("reverses an analyzed empty database in fixed order and still refuses a later dependency", async () => {
+    const rollback = readFileSync(
+      path.resolve("supabase/rollback/035_employer_directory_reversal.sql"),
+      "utf8",
+    );
+    const db = await baseDatabase();
+    await assumeMigrationOwner(db);
+    const before = await catalog(db);
+    await db.exec(migration);
+    await db.exec(`
+      analyze;
+      set enable_nestloop = off;
+      set enable_mergejoin = off;
+    `);
+    await db.exec(rollback);
+    expect(await catalog(db)).toBe(before);
+
+    const linked = await database();
+    await linked.exec(`
+      create table public.later_work (
+        id uuid primary key default gen_random_uuid(),
+        site_id uuid references public.employer_sites (id)
+      );
+      analyze;
+      set enable_nestloop = off;
+      set enable_mergejoin = off;
+    `);
+    await expect(linked.exec(rollback)).rejects.toThrow(/depend|cannot drop/i);
+    const later = await linked.query(`select to_regclass('public.later_work') as name`);
+    const sites = await linked.query(`select to_regclass('public.employer_sites') as name`);
+    expect(later.rows[0].name).toBe("later_work");
+    expect(sites.rows[0].name).toBe("employer_sites");
+  });
 });
 
 const pgBin = "/usr/lib/postgresql/16/bin";

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
+import { canManageEmployerDirectory } from "@/features/employer-directory/server/access";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 import type {
@@ -446,6 +447,11 @@ export async function POST(request: Request) {
     const patch = body.patch;
     const update: Record<string, unknown> = {};
     if (patch.displayName != null) {
+      // rename_apprentice runs as the service role and does not see the caller.
+      // The same staff record-management gate as the directory API applies here.
+      if (!(session instanceof NextResponse) && !canManageEmployerDirectory(session)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
       const renamed = await supabase.rpc("rename_apprentice", {
         p_apprentice_id: body.id,
         p_display_name: patch.displayName.trim(),
