@@ -1,4 +1,6 @@
-import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { PGlite } from "@electric-sql/pglite";
 import { describe, expect, it } from "vitest";
@@ -7,6 +9,75 @@ const migration = readFileSync(
   path.resolve("supabase/migrations/035_employer_directory_and_review_learners.sql"),
   "utf8",
 );
+
+const catalogSql = `
+select kind, name, detail from (
+  select 'table'::text as kind, c.relname as name,
+         c.relrowsecurity::text || ',' || c.relforcerowsecurity::text || ',' || coalesce(c.relacl::text, '') as detail
+  from pg_class c
+  join pg_namespace n on n.oid = c.relnamespace
+  where n.nspname = 'public' and c.relkind = 'r'
+  union all
+  select 'column', table_name || '.' || column_name,
+         data_type || '|' || is_nullable || '|' || coalesce(column_default, '')
+  from information_schema.columns
+  where table_schema = 'public'
+  union all
+  select 'routine', p.proname || '(' || pg_get_function_identity_arguments(p.oid) || ')',
+         md5(pg_get_functiondef(p.oid)) || '|' || coalesce(p.proacl::text, '')
+  from pg_proc p
+  join pg_namespace n on n.oid = p.pronamespace
+  where n.nspname = 'public'
+  union all
+  select 'trigger', c.relname || '.' || t.tgname, pg_get_triggerdef(t.oid)
+  from pg_trigger t
+  join pg_class c on c.oid = t.tgrelid
+  where not t.tgisinternal and c.relnamespace = 'public'::regnamespace
+  union all
+  select 'index', c.relname, pg_get_indexdef(c.oid)
+  from pg_class c
+  join pg_namespace n on n.oid = c.relnamespace
+  where n.nspname = 'public' and c.relkind = 'i'
+  union all
+  select 'constraint', conname, pg_get_constraintdef(oid)
+  from pg_constraint
+  where connamespace = 'public'::regnamespace
+) catalog
+order by 1, 2, 3
+`;
+
+async function catalog(db: PGlite): Promise<string> {
+  const rows = await db.query<{ kind: string; name: string; detail: string }>(catalogSql);
+  return JSON.stringify(rows.rows);
+}
+
+async function baseDatabase(): Promise<PGlite> {
+  const db = new PGlite();
+  await db.exec(`
+    create schema if not exists public;
+    do $$
+    begin
+      if not exists (select 1 from pg_roles where rolname = 'anon') then
+        create role anon;
+      end if;
+      if not exists (select 1 from pg_roles where rolname = 'authenticated') then
+        create role authenticated;
+      end if;
+    end $$;
+    alter default privileges in schema public grant all on tables to anon, authenticated;
+    create table public.employers (
+      id uuid primary key default gen_random_uuid(),
+      name text not null
+    );
+    create table public.apprentices (
+      id uuid primary key default gen_random_uuid(),
+      display_name text not null,
+      apprentice_reference text not null unique
+    );
+    create table public.apprentice_programmes (id uuid primary key default gen_random_uuid());
+  `);
+  return db;
+}
 
 async function database(): Promise<PGlite> {
   const db = new PGlite();
@@ -308,7 +379,7 @@ describe("canonical directory migration", () => {
       "utf8",
     );
     const lockAt = rollback.indexOf("lock table public.apprentices");
-    const countAt = rollback.indexOf("select count(*) into detail_count");
+    const countAt = rollback.indexOf("select count(*) from public.review_apprentice_details");
     expect(lockAt).toBeGreaterThan(-1);
     expect(countAt).toBeGreaterThan(lockAt);
     const db = await database();
@@ -339,5 +410,151 @@ describe("canonical directory migration", () => {
         end if;
       end $$;
     `);
+    const protectedTable = await db.query<{ secured: boolean; anon_select: boolean }>(`
+      select c.relrowsecurity as secured,
+             has_table_privilege('anon', 'public.migration_035_prestate', 'select') as anon_select
+      from pg_class c
+      join pg_namespace n on n.oid = c.relnamespace
+      where n.nspname = 'public' and c.relname = 'migration_035_prestate'
+    `);
+    expect(protectedTable.rows[0]).toEqual({ secured: true, anon_select: false });
+    await expect(
+      db.exec(`
+        begin;
+        set local role anon;
+        select * from public.migration_035_prestate;
+        rollback;
+      `),
+    ).rejects.toThrow(/permission denied|row-level security/i);
+  });
+
+  it("runs the read-only checklist on an unmigrated database and after apply", async () => {
+    const checklist = readFileSync(
+      path.resolve("supabase/rollback/035_go_no_go.sql"),
+      "utf8",
+    );
+    const empty = new PGlite();
+    await empty.exec("create schema if not exists public");
+    const before = await empty.query<{ check_name: string; observed: string }>(checklist);
+    expect(before.rows.map((row) => row.check_name)).toEqual(
+      expect.arrayContaining([
+        "live_backup_verified",
+        "directory_rows",
+        "reviews_entry_apprentices",
+        "base_registers",
+      ]),
+    );
+    expect(before.rows.find((row) => row.check_name === "directory_rows")?.observed).toContain(
+      "details=absent",
+    );
+    expect(before.rows.find((row) => row.check_name === "reviews_entry_apprentices")?.observed).toBe(
+      "apprentices_absent",
+    );
+    const applied = await database();
+    const after = await applied.query<{ check_name: string; observed: string }>(checklist);
+    expect(after.rows.find((row) => row.check_name === "directory_rows")?.observed).toContain(
+      "details=0",
+    );
+    expect(after.rows.find((row) => row.check_name === "reviews_entry_apprentices")?.observed).toBe(
+      "0",
+    );
+    expect(after.rows.find((row) => row.check_name === "prestate_captured")?.observed).toBe(
+      "present",
+    );
+  });
+
+  it("restores an empty database catalog and a database that already had objects", async () => {
+    const rollback = readFileSync(
+      path.resolve("supabase/rollback/035_employer_directory_reversal.sql"),
+      "utf8",
+    );
+    const fresh = await baseDatabase();
+    const beforeFresh = await catalog(fresh);
+    await fresh.exec(migration);
+    await fresh.exec(rollback);
+    expect(await catalog(fresh)).toBe(beforeFresh);
+
+    const prior = await baseDatabase();
+    await prior.exec(`
+      create function public.touch_updated_at()
+      returns trigger language plpgsql as $fn$
+      begin
+        new.updated_at = now();
+        return new;
+      end;
+      $fn$;
+      comment on function public.touch_updated_at() is 'preexisting-marker';
+      alter table public.apprentice_programmes add column employer_uuid uuid;
+      comment on column public.apprentice_programmes.employer_uuid is 'already here';
+      create table public.employer_sites (
+        id uuid primary key default gen_random_uuid(),
+        legacy_marker text not null default 'keep'
+      );
+      create function public.employer_manager_role_site_guard()
+      returns trigger language plpgsql as $fn$
+      begin
+        return new;
+      end;
+      $fn$;
+    `);
+    const beforePrior = await catalog(prior);
+    await prior.exec(migration);
+    await prior.exec(rollback);
+    expect(await catalog(prior)).toBe(beforePrior);
+  });
+});
+
+const pgBin = "/usr/lib/postgresql/16/bin";
+
+describe("migration 035 on PostgreSQL 16", () => {
+  it("matches the catalog after apply and reverse on a real server", () => {
+    let dataDir = "";
+    try {
+      dataDir = mkdtempSync(path.join(tmpdir(), "gta-pg-"));
+      execFileSync(`${pgBin}/initdb`, ["-D", dataDir, "-U", "postgres", "--auth=trust"], {
+        stdio: "ignore",
+      });
+      execFileSync(
+        `${pgBin}/pg_ctl`,
+        ["-D", dataDir, "-o", `-p 5434 -k ${dataDir}`, "-l", path.join(dataDir, "server.log"), "start"],
+        { stdio: "ignore" },
+      );
+      const psql = (sql: string) =>
+        execFileSync(
+          "psql",
+          ["-h", dataDir, "-p", "5434", "-U", "postgres", "-d", "postgres", "-v", "ON_ERROR_STOP=1", "-c", sql],
+          { encoding: "utf8" },
+        );
+      psql(`
+        create table public.employers (id uuid primary key default gen_random_uuid(), name text not null);
+        create table public.apprentices (
+          id uuid primary key default gen_random_uuid(),
+          display_name text not null,
+          apprentice_reference text not null unique
+        );
+        create table public.apprentice_programmes (id uuid primary key default gen_random_uuid());
+        create function public.touch_updated_at()
+        returns trigger language plpgsql as $fn$
+        begin
+          new.updated_at = now();
+          return new;
+        end;
+        $fn$;
+      `);
+      const before = psql(catalogSql);
+      psql(migration);
+      psql(readFileSync(path.resolve("supabase/rollback/035_go_no_go.sql"), "utf8"));
+      psql(readFileSync(path.resolve("supabase/rollback/035_employer_directory_reversal.sql"), "utf8"));
+      expect(psql(catalogSql)).toBe(before);
+    } finally {
+      if (dataDir) {
+        try {
+          execFileSync(`${pgBin}/pg_ctl`, ["-D", dataDir, "stop", "-m", "immediate"], { stdio: "ignore" });
+        } catch {
+          // The server may not have started.
+        }
+        rmSync(dataDir, { recursive: true, force: true });
+      }
+    }
   });
 });

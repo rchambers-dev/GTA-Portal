@@ -1,49 +1,98 @@
--- READ ONLY. Do not apply migration 035 or its reversal from this file.
--- Each row is a check. Any row with decision = 'no-go' means do not migrate
--- and do not reverse. This script does not take locks and does not look at
--- a backup. live_backup_verified stays not_verified_by_this_script until a
--- person restores a backup to a scratch database and records that elsewhere.
+-- READ ONLY. This file does not create, lock, or alter anything.
+-- It is valid before migration 035 and after it. Missing directory tables
+-- and a missing portal_entry column are reported as absent; they are not errors.
+-- live_backup_verified stays not_verified_by_this_script. A parent-side
+-- metadata snapshot is not a full backup and is not a verified restore.
 
 select 'live_backup_verified' as check_name,
        'not_verified_by_this_script' as observed,
        'no-go' as decision,
-       'A logical backup of apprentices, employers, apprentice_programmes, and any already-applied directory tables must be restored to a scratch database before a live apply or reversal. This script cannot see that backup.' as detail
+       'Restore a logical backup of apprentices, employers, apprentice_programmes, profiles, and any directory tables to a scratch database before a live apply or reversal. This script cannot see that backup.' as detail
 
 union all
 select 'maintenance_window',
        'writes_not_locked_by_this_script',
        'no-go',
-       'Apply and reversal take SHARE ROW EXCLUSIVE on apprentices, employers, and apprentice_programmes, and on the directory tables when they exist. That blocks writes and allows reads. Confirm no other migration is running and staff can pause saves for the duration.'
+       'Apply and reversal take SHARE ROW EXCLUSIVE on the base registers and, when present, the directory tables. Writes wait. Reads continue. Confirm no other migration is running.'
+
+union all
+select 'base_registers',
+       concat(
+         'apprentices=', case when to_regclass('public.apprentices') is null then 'absent' else 'present' end,
+         ' employers=', case when to_regclass('public.employers') is null then 'absent' else 'present' end,
+         ' programmes=', case when to_regclass('public.apprentice_programmes') is null then 'absent' else 'present' end
+       ),
+       case
+         when to_regclass('public.apprentices') is null
+           or to_regclass('public.employers') is null
+           or to_regclass('public.apprentice_programmes') is null
+         then 'no-go'
+         else 'go'
+       end,
+       'Migration 035 locks these three tables. Apply is no-go when any of them is absent.'
 
 union all
 select 'prestate_captured',
        case when to_regclass('public.migration_035_prestate') is null then 'absent' else 'present' end,
-       case when to_regclass('public.migration_035_prestate') is null then 'capture_during_apply' else 'go_for_reversal_only_if_counts_are_zero' end,
-       'The apply script writes this table under its write lock. Reversal refuses to drop columns without it. Absence is expected before the first apply.'
+       case
+         when to_regclass('public.migration_035_prestate') is null then 'expected_before_apply'
+         else 'present_after_apply'
+       end,
+       'Absence is expected before the first apply. Reversal refuses to run without this table. The table has row security enabled and no grants for anon, authenticated, or service_role.'
 
 union all
 select 'directory_rows',
        concat(
-         'details=', coalesce((select count(*) from public.review_apprentice_details), 0),
-         ' sites=', coalesce((select count(*) from public.employer_sites), 0),
-         ' memberships=', coalesce((select count(*) from public.employer_site_memberships), 0),
-         ' managers=', coalesce((select count(*) from public.employer_managers), 0),
-         ' roles=', coalesce((select count(*) from public.employer_manager_roles), 0)
+         'details=', case
+           when to_regclass('public.review_apprentice_details') is null then 'absent'
+           else coalesce((xpath('//*[local-name()="c"]/text()', query_to_xml('select count(*)::text as c from public.review_apprentice_details', false, true, '')))[1]::text, '0')
+         end,
+         ' sites=', case
+           when to_regclass('public.employer_sites') is null then 'absent'
+           else coalesce((xpath('//*[local-name()="c"]/text()', query_to_xml('select count(*)::text as c from public.employer_sites', false, true, '')))[1]::text, '0')
+         end,
+         ' memberships=', case
+           when to_regclass('public.employer_site_memberships') is null then 'absent'
+           else coalesce((xpath('//*[local-name()="c"]/text()', query_to_xml('select count(*)::text as c from public.employer_site_memberships', false, true, '')))[1]::text, '0')
+         end,
+         ' managers=', case
+           when to_regclass('public.employer_managers') is null then 'absent'
+           else coalesce((xpath('//*[local-name()="c"]/text()', query_to_xml('select count(*)::text as c from public.employer_managers', false, true, '')))[1]::text, '0')
+         end,
+         ' roles=', case
+           when to_regclass('public.employer_manager_roles') is null then 'absent'
+           else coalesce((xpath('//*[local-name()="c"]/text()', query_to_xml('select count(*)::text as c from public.employer_manager_roles', false, true, '')))[1]::text, '0')
+         end
        ),
-       'inspect',
-       'Reversal is no-go when any of these counts are not zero. Missing tables count as zero only after the apply has not created them; this query errors if a table is missing, which means reversal is not applicable yet.'
+       case
+         when to_regclass('public.review_apprentice_details') is null then 'not_applied'
+         else 'inspect_counts'
+       end,
+       'Before apply, absent is expected. After apply, reversal is no-go when any count is not zero.'
 
 union all
 select 'reviews_entry_apprentices',
-       coalesce((
-         select count(*)::text from public.apprentices where portal_entry = 'reviews'
-       ), 'portal_entry_absent'),
-       'inspect',
-       'Reversal is no-go when this count is not zero. portal_entry_absent means the column is not there yet.'
+       case
+         when to_regclass('public.apprentices') is null then 'apprentices_absent'
+         when not exists (
+           select 1 from information_schema.columns
+           where table_schema = 'public' and table_name = 'apprentices' and column_name = 'portal_entry'
+         ) then 'column_absent'
+         else coalesce((xpath('//*[local-name()="c"]/text()', query_to_xml('select count(*)::text as c from public.apprentices where portal_entry = ''reviews''', false, true, '')))[1]::text, '0')
+       end,
+       case
+         when to_regclass('public.apprentices') is null then 'no-go'
+         when not exists (
+           select 1 from information_schema.columns
+           where table_schema = 'public' and table_name = 'apprentices' and column_name = 'portal_entry'
+         ) then 'column_absent_expected_before_apply'
+         else 'inspect_count'
+       end,
+       'The count query runs only when portal_entry exists. Reversal is no-go when the count is not zero.'
 
 union all
 select 'preserved_registers',
-       'apprentices_and_employers_not_dropped',
+       'apprentices_employers_and_programmes_are_not_dropped',
        'go',
-       'Neither apply nor reversal drops public.apprentices, public.employers, programmes, or profiles. touch_updated_at is left unchanged when it already exists. employer_uuid is dropped only when prestate says this migration added it.'
+       'Reversal never drops public.apprentices, public.employers, or public.apprentice_programmes. It restores captured function bodies, triggers, comments, row security, and access lists for objects that already existed.'
 ;

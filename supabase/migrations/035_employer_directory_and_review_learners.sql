@@ -32,90 +32,227 @@ create table if not exists public.migration_035_prestate (
   primary key (object_kind, object_name)
 );
 
+alter table public.migration_035_prestate enable row level security;
+revoke all on table public.migration_035_prestate from public;
+do $$
+declare
+  role_name text;
+begin
+  foreach role_name in array array['anon', 'authenticated', 'service_role']
+  loop
+    if exists (select 1 from pg_roles where rolname = role_name) then
+      execute format('revoke all on table public.migration_035_prestate from %I', role_name);
+    end if;
+  end loop;
+end $$;
+
+-- Capture runs once. A repeated apply must not overwrite the original prestate.
 insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
-select
-  'function',
-  'public.touch_updated_at()',
-  to_regprocedure('public.touch_updated_at()') is not null,
-  null
+select 'table', 'public.migration_035_prestate', false, null
 where not exists (
   select 1 from public.migration_035_prestate
-  where object_kind = 'function' and object_name = 'public.touch_updated_at()'
+  where object_kind = 'table' and object_name = 'public.migration_035_prestate'
 );
 
 do $$
+declare
+  sig text;
+  proc regprocedure;
+  tbl text;
+  rel regclass;
+  idx text;
+  index_oid regclass;
+  trg_name text;
+  trg_table text;
+  trg oid;
+  con_name text;
+  col_table text;
+  col_name text;
+  comment_text text;
 begin
-  if to_regprocedure('public.touch_updated_at()') is not null then
-    execute $capture$
-      update public.migration_035_prestate
-      set definition = pg_get_functiondef('public.touch_updated_at()'::regprocedure)
-      where object_kind = 'function'
-        and object_name = 'public.touch_updated_at()'
-        and definition is null
-    $capture$;
+  foreach sig in array array[
+    'public.touch_updated_at()',
+    'public.employer_manager_role_site_guard()',
+    'public.review_apprentice_link_guard()',
+    'public.employer_site_membership_delete_guard()',
+    'public.create_review_apprentice(jsonb)',
+    'public.apply_review_apprentice_change(uuid,integer,text,jsonb)',
+    'public.apprentice_display_name_version_guard()',
+    'public.rename_apprentice(uuid,text,integer)'
+  ]
+  loop
+    proc := to_regprocedure(sig);
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values (
+      'function',
+      sig,
+      proc is not null,
+      case when proc is null then null else pg_get_functiondef(proc) end
+    )
+    on conflict do nothing;
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values (
+      'function_acl',
+      sig,
+      proc is not null,
+      case when proc is null then null else (
+        select p.proacl::text from pg_proc p where p.oid = proc
+      ) end
+    )
+    on conflict do nothing;
+  end loop;
+
+  foreach tbl in array array[
+    'public.employer_sites',
+    'public.employer_site_memberships',
+    'public.employer_managers',
+    'public.employer_manager_roles',
+    'public.review_apprentice_details',
+    'public.apprentices',
+    'public.employers',
+    'public.apprentice_programmes'
+  ]
+  loop
+    rel := to_regclass(tbl);
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values ('table', tbl, rel is not null, null)
+    on conflict do nothing;
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values (
+      'acl',
+      tbl,
+      rel is not null,
+      case when rel is null then null else (
+        select c.relacl::text from pg_class c where c.oid = rel
+      ) end
+    )
+    on conflict do nothing;
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values (
+      'rls',
+      tbl,
+      rel is not null,
+      case when rel is null then null else (
+        select c.relrowsecurity::text || ',' || c.relforcerowsecurity::text
+        from pg_class c where c.oid = rel
+      ) end
+    )
+    on conflict do nothing;
+  end loop;
+
+  foreach idx in array array[
+    'public.employer_manager_roles_employer_wide_uidx',
+    'public.employer_manager_roles_site_uidx',
+    'public.review_apprentice_details_employer_id_idx',
+    'public.employer_site_memberships_site_id_idx'
+  ]
+  loop
+    index_oid := to_regclass(idx);
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values (
+      'index',
+      idx,
+      index_oid is not null,
+      case when index_oid is null then null else pg_get_indexdef(index_oid) end
+    )
+    on conflict do nothing;
+  end loop;
+
+  for trg_table, trg_name in
+    select v.tbl, v.name
+    from (values
+      ('public.employer_manager_roles', 'employer_manager_role_site_guard'),
+      ('public.review_apprentice_details', 'review_apprentice_link_guard'),
+      ('public.employer_site_memberships', 'employer_site_membership_delete_guard'),
+      ('public.apprentices', 'apprentice_display_name_version_guard'),
+      ('public.employer_sites', 'touch_employer_sites_updated_at'),
+      ('public.employer_managers', 'touch_employer_managers_updated_at'),
+      ('public.employer_manager_roles', 'touch_employer_manager_roles_updated_at'),
+      ('public.review_apprentice_details', 'touch_review_apprentice_details_updated_at')
+    ) as v(tbl, name)
+  loop
+    trg := null;
+    if to_regclass(trg_table) is not null then
+      select t.oid into trg
+      from pg_trigger t
+      join pg_class c on c.oid = t.tgrelid
+      where c.oid = to_regclass(trg_table)
+        and t.tgname = trg_name
+        and not t.tgisinternal;
+    end if;
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    values (
+      'trigger',
+      trg_name || '|' || trg_table,
+      trg is not null,
+      case when trg is null then null else pg_get_triggerdef(trg) end
+    )
+    on conflict do nothing;
+  end loop;
+
+  foreach con_name in array array[
+    'apprentices_portal_entry_check',
+    'apprentice_programmes_employer_uuid_fkey'
+  ]
+  loop
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    select
+      'constraint',
+      con_name,
+      exists (
+        select 1 from pg_constraint
+        where conname = con_name
+          and connamespace = 'public'::regnamespace
+      ),
+      (
+        select pg_get_constraintdef(oid)
+        from pg_constraint
+        where conname = con_name
+          and connamespace = 'public'::regnamespace
+        limit 1
+      )
+    on conflict do nothing;
+  end loop;
+
+  for col_table, col_name in
+    select v.tbl, v.col
+    from (values
+      ('apprentices', 'portal_entry'),
+      ('apprentice_programmes', 'employer_uuid')
+    ) as v(tbl, col)
+  loop
+    insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+    select
+      'column',
+      'public.' || col_table || '.' || col_name,
+      exists (
+        select 1 from information_schema.columns
+        where table_schema = 'public' and table_name = col_table and column_name = col_name
+      ),
+      (
+        select col_description(to_regclass('public.' || col_table), a.attnum)
+        from pg_attribute a
+        where a.attrelid = to_regclass('public.' || col_table)
+          and a.attname = col_name
+          and not a.attisdropped
+      )
+    on conflict do nothing;
+  end loop;
+
+  if to_regclass('public.review_apprentice_details') is not null then
+    comment_text := obj_description('public.review_apprentice_details'::regclass, 'pg_class');
+  else
+    comment_text := null;
   end if;
+  insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+  values (
+    'comment',
+    'table:public.review_apprentice_details',
+    to_regclass('public.review_apprentice_details') is not null,
+    comment_text
+  )
+  on conflict do nothing;
 end $$;
-
-insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
-select
-  'column',
-  'public.apprentices.portal_entry',
-  exists (
-    select 1 from information_schema.columns
-    where table_schema = 'public' and table_name = 'apprentices' and column_name = 'portal_entry'
-  ),
-  null
-where not exists (
-  select 1 from public.migration_035_prestate
-  where object_kind = 'column' and object_name = 'public.apprentices.portal_entry'
-);
-
-insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
-select
-  'column',
-  'public.apprentice_programmes.employer_uuid',
-  exists (
-    select 1 from information_schema.columns
-    where table_schema = 'public'
-      and table_name = 'apprentice_programmes'
-      and column_name = 'employer_uuid'
-  ),
-  null
-where not exists (
-  select 1 from public.migration_035_prestate
-  where object_kind = 'column' and object_name = 'public.apprentice_programmes.employer_uuid'
-);
-
-insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
-select
-  'constraint',
-  'apprentice_programmes_employer_uuid_fkey',
-  exists (select 1 from pg_constraint where conname = 'apprentice_programmes_employer_uuid_fkey'),
-  null
-where not exists (
-  select 1 from public.migration_035_prestate
-  where object_kind = 'constraint' and object_name = 'apprentice_programmes_employer_uuid_fkey'
-);
-
-insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
-select 'acl', 'public.apprentices', true, c.relacl::text
-from pg_class c
-join pg_namespace n on n.oid = c.relnamespace
-where n.nspname = 'public' and c.relname = 'apprentices'
-  and not exists (
-    select 1 from public.migration_035_prestate
-    where object_kind = 'acl' and object_name = 'public.apprentices'
-  );
-
-insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
-select 'acl', 'public.employers', true, c.relacl::text
-from pg_class c
-join pg_namespace n on n.oid = c.relnamespace
-where n.nspname = 'public' and c.relname = 'employers'
-  and not exists (
-    select 1 from public.migration_035_prestate
-    where object_kind = 'acl' and object_name = 'public.employers'
-  );
 
 do $$
 begin
