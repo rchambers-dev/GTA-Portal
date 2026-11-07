@@ -14,22 +14,30 @@ export type DirectoryView = "apprentices" | "employers";
  */
 export function OnboardingDirectory({
   initialView = "apprentices",
+  lockView = false,
+  eyebrow = "Onboarding",
+  title = "Directory",
+  description = "Example records only. Saving is disabled.",
+  notice = "EXAMPLE DATA. Saving is disabled. Search filters this example list only.",
 }: {
   initialView?: DirectoryView;
+  /** When set, the list stays on one record type. The other type is the same directory, opened from its own page. */
+  lockView?: boolean;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  notice?: string;
 }) {
   const [view, setView] = useState<DirectoryView>(initialView);
   const [query, setQuery] = useState("");
 
   return (
-    <ApprenticePageShell
-      eyebrow="Onboarding"
-      title="Directory"
-      description="Example records only. Saving is disabled."
-    >
+    <ApprenticePageShell eyebrow={eyebrow} title={title} description={description}>
       <div className={styles.stack} data-directory-view={view}>
         <p className={styles.previewBanner} role="status">
-          EXAMPLE DATA. Saving is disabled. Search filters this example list only.
+          {notice}
         </p>
+        {lockView ? null : (
         <div className={styles.overviewFilters} role="group" aria-label="Directory">
           <button
             type="button"
@@ -48,6 +56,7 @@ export function OnboardingDirectory({
             Employers
           </button>
         </div>
+        )}
         <label className={styles.registrySearch}>
           <span className={styles.registrySearchLabel}>Search directory</span>
           <input
