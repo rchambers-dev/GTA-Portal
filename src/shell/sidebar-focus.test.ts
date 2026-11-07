@@ -107,15 +107,33 @@ describe("sidebar category toggle", () => {
     expect(focusAfterNavigation(dismissed, null)).toEqual({ focused: null, dismissed: null });
   });
 
-  it("uses a tappable category button and decorative chevrons", () => {
+  it("uses distinct category icons, wrapping labels, and a collapsed rail", () => {
     const css = readFileSync(
       path.join(process.cwd(), "src/shell/SidebarNavigation.module.css"),
       "utf8",
     );
     expect(css).toMatch(/\.categoryButton[\s\S]*min-height:\s*2\.75rem/);
-    expect(css).toContain(".chevronTrail");
+    expect(css).toMatch(/\.categoryButton[\s\S]*text-transform:\s*none/);
+    expect(css).toMatch(/\.categoryLabel\s*\{[^}]*white-space:\s*normal/s);
+    expect(css).not.toMatch(/\.categoryLabel\s*\{[^}]*text-overflow:\s*ellipsis/s);
+    expect(css).toMatch(/\.chevronTrail\s*\{[^}]*display:\s*none/s);
+    expect(css).toContain(".sidebarSlot:hover .chevronTrail");
+    expect(css).toContain(".sidebarSlot:hover,");
     const html = renderNav("/administration/dashboard", null);
-    expect(html).toContain('aria-hidden="true"');
-    expect(html).toContain("<button");
+    const icons = [...html.matchAll(/data-category-icon="([^"]+)"([\s\S]*?)<\/span>/g)].map(
+      (match) => [match[1], match[2]] as const,
+    );
+    expect(icons.map(([name]) => name)).toEqual([
+      "Apprenticeship Management",
+      "Staff",
+      "Marketing",
+      "Onboarding",
+    ]);
+    expect(new Set(icons.map(([, svg]) => svg)).size).toBe(4);
+    expect(html).toContain('title="Apprenticeship Management"');
+    expect(html).toContain('aria-label="Onboarding, show pages"');
+    const open = renderNav("/administration/onboarding", "Onboarding");
+    expect(open).toContain('aria-label="Onboarding, return to main navigation"');
+    expect(open).toContain('data-chevron="left"');
   });
 });
