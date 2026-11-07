@@ -2307,6 +2307,95 @@ textarea.detailFieldInput {
   user-select: none;
 }
 
+.previewBanner {
+  margin: 0;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--color-amber-100);
+  color: var(--color-navy-800);
+  font-weight: 700;
+}
+
+.registryToolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.registrySearch {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.registrySearchLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.registrySearch input {
+  width: 100%;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 999px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+  padding: 0.55rem 1rem;
+}
+
+.registrySearch input:focus,
+.registrySearch input:focus-visible {
+  outline: 2px solid var(--color-navy-600);
+  outline-offset: 1px;
+}
+
+.pillList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pillRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  margin: 0;
+  padding: 0.72rem 1.15rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 16%, var(--border-subtle));
+  border-radius: 999px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.pillName {
+  font-weight: 700;
+}
+
+.pillMeta {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  text-align: end;
+}
+
+.addPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 18%, var(--border-subtle));
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+}
+
 .jobTitleOption input {
   margin: 0;
 }

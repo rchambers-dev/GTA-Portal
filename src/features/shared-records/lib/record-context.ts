@@ -36,11 +36,11 @@ const FROM_RETURN: Record<string, { href: string; label: string }> = {
   lifecycle: { href: "/apprentices/lifecycle", label: "Back to lifecycle board" },
   mentor: { href: "/apprentices/lifecycle", label: "Back to lifecycle board" },
   "mentor-apprentices": {
-    href: "/apprentices",
+    href: "/administration/intake",
     label: "Back to apprentices",
   },
   apprentices: {
-    href: "/apprentices",
+    href: "/administration/intake",
     label: "Back to apprentices",
   },
   "progress-monitoring": {
@@ -110,12 +110,12 @@ export function getReturnLink(from: string | null): {
   label: string;
 } {
   if (!from) {
-    return { href: "/apprentices", label: "Back to apprentices" };
+    return { href: "/administration/intake", label: "Back to apprentices" };
   }
   return (
     FROM_RETURN[from] ?? {
-      href: "/apprentices",
-      label: "Back to previous view",
+      href: "/administration/intake",
+      label: "Back to apprentices",
     }
   );
 }

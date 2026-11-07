@@ -6,8 +6,9 @@ type Props = {
 };
 
 /**
- * Progress Mentor "Apprentices" nav uses the shared pack search entry.
- * Avoids a second caseload page duplicating apprentice pack information.
+ * Progress Mentor "Apprentices" still uses the shared lookup URL.
+ * That URL now opens the Apprentices page after its own session check.
+ * Lifecycle and pack pages are unchanged.
  */
 export default async function MentorApprenticesPage({ searchParams }: Props) {
   await requireMentorWorkspace("/workspaces/progress-mentor/apprentices");

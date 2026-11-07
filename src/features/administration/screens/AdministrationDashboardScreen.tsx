@@ -151,7 +151,7 @@ export function AdministrationDashboardScreen() {
               href="/administration/employers"
               data-tone="green"
             >
-              Employer records
+              Employers
             </Link>
             <Link
               className={apprenticeStyles.shortcut}
@@ -159,13 +159,6 @@ export function AdministrationDashboardScreen() {
               data-tone="navy"
             >
               Programme records
-            </Link>
-            <Link
-              className={apprenticeStyles.shortcut}
-              href="/apprentices?from=administration"
-              data-tone="navy"
-            >
-              Apprentices
             </Link>
             <Link
               className={apprenticeStyles.shortcut}

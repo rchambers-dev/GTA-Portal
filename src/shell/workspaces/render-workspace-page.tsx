@@ -293,7 +293,7 @@ export async function renderWorkspacePage(
       case "dashboard":
         return <AdministrationDashboardScreen />;
       case "users":
-        redirect("/apprentices?from=administration");
+        redirect("/administration/intake");
       case "enrolments":
         return <AdminEnrolmentsScreen />;
       case "accounts":
