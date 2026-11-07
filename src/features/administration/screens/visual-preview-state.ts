@@ -135,6 +135,11 @@ export function apprenticePreviewReducer(
   }
 }
 
+export type PendingEntryRemoval = {
+  kind: "site" | "manager";
+  id: string;
+};
+
 export type EmployerPreviewState = {
   query: string;
   addOpen: boolean;
@@ -144,6 +149,7 @@ export type EmployerPreviewState = {
   sites: DraftEntry[];
   managers: DraftEntry[];
   entrySeq: number;
+  pendingRemove: PendingEntryRemoval | null;
   rows: ExampleEmployer[];
   notice: string;
 };
@@ -161,7 +167,15 @@ export type EmployerPreviewAction =
   | { type: "add-manager" }
   | { type: "set-manager"; id: string; label: string }
   | { type: "remove-manager"; id: string }
+  | { type: "request-remove"; kind: "site" | "manager"; id: string }
+  | { type: "cancel-remove" }
+  | { type: "confirm-remove" }
   | { type: "add-local" };
+
+/** Escape closes the remove confirmation without changing entries. */
+export function confirmationKey(key: string): "cancel" | null {
+  return key === "Escape" ? "cancel" : null;
+}
 
 function blankEmployerEntries(): Pick<EmployerPreviewState, "sites" | "managers" | "entrySeq"> {
   return {
@@ -219,6 +233,7 @@ export function initialEmployerPreviewState(): EmployerPreviewState {
     phone: "",
     postcode: "",
     ...blankEmployerEntries(),
+    pendingRemove: null,
     rows: EXAMPLE_EMPLOYERS.map((row) => ({
       ...row,
       sites: [...row.sites],
@@ -255,6 +270,7 @@ export function employerPreviewReducer(
             phone: "",
             postcode: "",
             ...blankEmployerEntries(),
+            pendingRemove: null,
             notice: "",
           }
         : { ...state, addOpen: true, notice: "" };
@@ -266,6 +282,7 @@ export function employerPreviewReducer(
         phone: "",
         postcode: "",
         ...blankEmployerEntries(),
+        pendingRemove: null,
         notice: "",
       };
     case "set-name":
@@ -300,7 +317,21 @@ export function employerPreviewReducer(
       return { ...state, managers: withEntry(state.managers, action.id, action.label) };
     case "remove-manager": {
       const next = withoutEntry(state.managers, action.id, "manager", state.entrySeq);
-      return { ...state, entrySeq: next.entrySeq, managers: next.entries };
+      return { ...state, entrySeq: next.entrySeq, managers: next.entries, pendingRemove: null };
+    }
+    case "request-remove":
+      return { ...state, pendingRemove: { kind: action.kind, id: action.id } };
+    case "cancel-remove":
+      return { ...state, pendingRemove: null };
+    case "confirm-remove": {
+      if (!state.pendingRemove) return state;
+      const { kind, id } = state.pendingRemove;
+      if (kind === "site") {
+        const next = withoutEntry(state.sites, id, "site", state.entrySeq);
+        return { ...state, pendingRemove: null, entrySeq: next.entrySeq, sites: next.entries };
+      }
+      const next = withoutEntry(state.managers, id, "manager", state.entrySeq);
+      return { ...state, pendingRemove: null, entrySeq: next.entrySeq, managers: next.entries };
     }
     case "add-local": {
       const name = state.name.trim();
@@ -312,6 +343,7 @@ export function employerPreviewReducer(
         phone: "",
         postcode: "",
         ...blankEmployerEntries(),
+        pendingRemove: null,
         notice: "Not saved. Saving is disabled.",
         rows: [
           ...state.rows,
