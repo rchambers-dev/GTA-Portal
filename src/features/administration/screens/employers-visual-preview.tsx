@@ -77,7 +77,7 @@ export function EmployersVisualPreview({
           >
             <h2 className={styles.formGroupTitle}>Add employer</h2>
             <p className={styles.formGroupMeta}>
-              Company name is required. Phone and postcode belong to the company. Site and manager are optional and stay under the employer.
+              Company name is required. Phone number and postcode belong to the company. A manager can also be the contact. You can enter a different contact instead. Site and manager are optional.
             </p>
             <div className={styles.formGrid}>
               <label className={styles.field}>
@@ -103,6 +103,35 @@ export function EmployersVisualPreview({
                   value={state.postcode}
                   onChange={(event) =>
                     dispatch({ type: "set-postcode", postcode: event.target.value })
+                  }
+                />
+              </label>
+              <label className={styles.field}>
+                <span>Employer contact name</span>
+                <input
+                  value={state.contactName}
+                  onChange={(event) =>
+                    dispatch({ type: "set-contact-name", contactName: event.target.value })
+                  }
+                />
+              </label>
+              <label className={styles.field}>
+                <span>Employer contact email</span>
+                <input
+                  type="email"
+                  value={state.contactEmail}
+                  onChange={(event) =>
+                    dispatch({ type: "set-contact-email", contactEmail: event.target.value })
+                  }
+                />
+              </label>
+              <label className={styles.field}>
+                <span>Employer contact phone</span>
+                <input
+                  type="tel"
+                  value={state.contactPhone}
+                  onChange={(event) =>
+                    dispatch({ type: "set-contact-phone", contactPhone: event.target.value })
                   }
                 />
               </label>

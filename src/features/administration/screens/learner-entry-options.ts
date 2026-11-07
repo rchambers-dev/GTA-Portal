@@ -1,7 +1,10 @@
+import { COLLEGE_WEEKDAYS } from "@/features/administration/domain/college-days";
+
 /**
  * Option labels copied from GTA-Onboarding-Marketing
  * src/domain/labels.ts at c92f678134499f5d23733bc24720da9971d43254.
  * Site here is the recruitment training site, not an employer yard.
+ * Release day uses the portal's existing college weekdays.
  * Values start blank in this preview so a choice is not written until selected.
  */
 
@@ -43,6 +46,18 @@ export const EMPLOYER_STATUSES = [
   { value: "confirmed", label: "Confirmed" },
 ] as const;
 
+export const RELEASE_DAYS = COLLEGE_WEEKDAYS.map((day) => ({
+  value: day,
+  label: day,
+}));
+
+/**
+ * The visual preview has no authorised staff list.
+ * Tutor and reviewer stay empty until that list is wired.
+ * Both dropdowns share this list, so one person can be chosen in both.
+ */
+export const PREVIEW_STAFF_OPTIONS: readonly { value: string; label: string }[] = [];
+
 export const LEARNER_FIELD_ORDER = [
   "firstName",
   "lastName",
@@ -55,5 +70,12 @@ export const LEARNER_FIELD_ORDER = [
   "employerStatus",
   "employerId",
   "intendedIntakeDate",
+  "releaseDay",
+  "gtaTutor",
+  "apprenticeshipStartDate",
+  "apprenticeshipPlannedEndDate",
+  "gtaReviewer",
+  "plannedReviewDate",
+  "futureReviews",
   "notes",
 ] as const;
