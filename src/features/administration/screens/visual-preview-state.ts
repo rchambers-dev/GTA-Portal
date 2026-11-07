@@ -177,6 +177,18 @@ export function confirmationKey(key: string): "cancel" | null {
   return key === "Escape" ? "cancel" : null;
 }
 
+/** Keeps Tab inside the modal. A missing current index starts at the first control. */
+export function nextModalFocus(current: number, count: number, shift: boolean): number {
+  if (count <= 1) return 0;
+  const index = current < 0 ? 0 : current;
+  if (shift) return index <= 0 ? count - 1 : index - 1;
+  return index >= count - 1 ? 0 : index + 1;
+}
+
+function isProtectedInitialEntry(entries: DraftEntry[], id: string): boolean {
+  return entries[0]?.id === id;
+}
+
 function blankEmployerEntries(): Pick<EmployerPreviewState, "sites" | "managers" | "entrySeq"> {
   return {
     sites: [{ id: "site-1", label: "" }],
@@ -302,6 +314,7 @@ export function employerPreviewReducer(
     case "set-site":
       return { ...state, sites: withEntry(state.sites, action.id, action.label) };
     case "remove-site": {
+      if (isProtectedInitialEntry(state.sites, action.id)) return state;
       const next = withoutEntry(state.sites, action.id, "site", state.entrySeq);
       return { ...state, entrySeq: next.entrySeq, sites: next.entries };
     }
@@ -316,16 +329,22 @@ export function employerPreviewReducer(
     case "set-manager":
       return { ...state, managers: withEntry(state.managers, action.id, action.label) };
     case "remove-manager": {
+      if (isProtectedInitialEntry(state.managers, action.id)) return state;
       const next = withoutEntry(state.managers, action.id, "manager", state.entrySeq);
       return { ...state, entrySeq: next.entrySeq, managers: next.entries, pendingRemove: null };
     }
-    case "request-remove":
+    case "request-remove": {
+      const entries = action.kind === "site" ? state.sites : state.managers;
+      if (isProtectedInitialEntry(entries, action.id)) return state;
       return { ...state, pendingRemove: { kind: action.kind, id: action.id } };
+    }
     case "cancel-remove":
       return { ...state, pendingRemove: null };
     case "confirm-remove": {
       if (!state.pendingRemove) return state;
       const { kind, id } = state.pendingRemove;
+      const entries = kind === "site" ? state.sites : state.managers;
+      if (isProtectedInitialEntry(entries, id)) return { ...state, pendingRemove: null };
       if (kind === "site") {
         const next = withoutEntry(state.sites, id, "site", state.entrySeq);
         return { ...state, pendingRemove: null, entrySeq: next.entrySeq, sites: next.entries };

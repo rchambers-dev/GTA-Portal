@@ -11,6 +11,7 @@ import {
   employerPreviewReducer,
   initialApprenticePreviewState,
   initialEmployerPreviewState,
+  nextModalFocus,
   visibleApprentices,
   visibleEmployers,
 } from "./visual-preview-state";
@@ -159,12 +160,16 @@ describe("employers visual behaviour", () => {
     expect(html).toContain("EX1 1EX");
     expect(html).toContain("Example yard");
     expect(html).toContain("Example Manager");
-    expect(html).toContain('aria-label="Add another site"');
-    expect(html).toContain('aria-label="Add another manager"');
+    expect(html).toContain('aria-label="Add site"');
+    expect(html).toContain('aria-label="Add manager"');
+    expect(html).toContain(">Add site<");
+    expect(html).toContain(">Add manager<");
     expect(addPillsSitBesideHeadings(html)).toBe(true);
     expect(readFileSync(path.join(process.cwd(), "src/features/administration/screens/admin-pages.module.css"), "utf8")).toMatch(
-      /\.entryAdd\s*\{[^}]*width:\s*1\.35rem;[^}]*height:\s*1\.35rem;/s,
+      /\.entryAdd\s*\{[^}]*width:\s*auto;[^}]*height:\s*1\.35rem;/s,
     );
+    expect(html).not.toContain('aria-label="Remove site 1"');
+    expect(html).not.toContain('aria-label="Remove manager 1"');
     expect(html).not.toContain("Are you sure?");
     expect(html).not.toContain("Add apprentice");
     expect(html).not.toContain("garage");
@@ -209,13 +214,21 @@ describe("employers visual behaviour", () => {
       id: state.managers[1].id,
       label: "Example Deputy",
     });
-    state = employerPreviewReducer(state, { type: "remove-manager", id: state.managers[0].id });
+    const protectedManager = employerPreviewReducer(state, {
+      type: "remove-manager",
+      id: state.managers[0].id,
+    });
+    expect(protectedManager.managers.map((entry) => entry.label)).toEqual([
+      "Example Lead",
+      "Example Deputy",
+    ]);
+    state = employerPreviewReducer(state, { type: "remove-manager", id: state.managers[1].id });
     const saved = employerPreviewReducer(state, { type: "add-local" });
     const added = saved.rows.find((row) => row.name === "Example Workshop");
     expect(added?.sites).toEqual(["Example bay edited", "Example store"]);
-    expect(added?.managers).toEqual(["Example Deputy"]);
+    expect(added?.managers).toEqual(["Example Lead"]);
     expect(added?.sites).not.toContain("Example ramp");
-    expect(added?.managers).not.toContain("Example Lead");
+    expect(added?.managers).not.toContain("Example Deputy");
     expect(saved.notice).toBe("Not saved. Saving is disabled.");
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
@@ -229,7 +242,10 @@ describe("employers visual behaviour", () => {
             { id: "site-1", label: "Example bay edited" },
             { id: "site-2", label: "Example store" },
           ],
-          managers: [{ id: "manager-1", label: "Example Deputy" }],
+          managers: [
+            { id: "manager-1", label: "Example Lead" },
+            { id: "manager-2", label: "Example Deputy" },
+          ],
           rows: [
             ...initialEmployerPreviewState().rows,
             {
@@ -244,12 +260,14 @@ describe("employers visual behaviour", () => {
         },
       }),
     );
-    expect(html).toContain('aria-label="Add another site"');
-    expect(html).toContain('aria-label="Add another manager"');
+    expect(html).toContain('aria-label="Add site"');
+    expect(html).toContain('aria-label="Add manager"');
     expect(html).toContain("Example bay edited, Example store");
     expect(html).toContain("Example Deputy");
     expect(html).toContain('aria-label="Remove site 2"');
-    expect(html).toContain('aria-label="Remove manager 1"');
+    expect(html).toContain('aria-label="Remove manager 2"');
+    expect(html).not.toContain('aria-label="Remove site 1"');
+    expect(html).not.toContain('aria-label="Remove manager 1"');
     expect(html).not.toContain("Example ramp");
     expect(html).toContain('value="Example bay edited"');
     expect(html).toContain('value="Example store"');
@@ -281,6 +299,23 @@ describe("employers visual behaviour", () => {
       id: state.managers[1].id,
       label: "Example Deputy",
     });
+    const blocked = employerPreviewReducer(state, {
+      type: "request-remove",
+      kind: "site",
+      id: state.sites[0].id,
+    });
+    expect(blocked.pendingRemove).toBeNull();
+    expect(blocked.sites.map((entry) => entry.label)).toEqual(["Example bay", "Example ramp"]);
+    const blockedManager = employerPreviewReducer(blocked, {
+      type: "request-remove",
+      kind: "manager",
+      id: blocked.managers[0].id,
+    });
+    expect(blockedManager.pendingRemove).toBeNull();
+    expect(blockedManager.managers.map((entry) => entry.label)).toEqual([
+      "Example Lead",
+      "Example Deputy",
+    ]);
     const asked = employerPreviewReducer(state, {
       type: "request-remove",
       kind: "site",
@@ -295,15 +330,17 @@ describe("employers visual behaviour", () => {
     expect(kept.managers.map((entry) => entry.label)).toEqual(["Example Lead", "Example Deputy"]);
     expect(confirmationKey("Escape")).toBe("cancel");
     expect(confirmationKey("Enter")).toBeNull();
+    expect(nextModalFocus(1, 2, false)).toBe(0);
+    expect(nextModalFocus(0, 2, true)).toBe(1);
     const askedAgain = employerPreviewReducer(kept, {
       type: "request-remove",
-      kind: "manager",
-      id: kept.managers[0].id,
+      kind: "site",
+      id: kept.sites[1].id,
     });
     const removed = employerPreviewReducer(askedAgain, { type: "confirm-remove" });
     expect(removed.pendingRemove).toBeNull();
-    expect(removed.managers.map((entry) => entry.label)).toEqual(["Example Deputy"]);
-    expect(removed.sites.map((entry) => entry.label)).toEqual(["Example bay", "Example ramp"]);
+    expect(removed.sites.map((entry) => entry.label)).toEqual(["Example bay"]);
+    expect(removed.managers.map((entry) => entry.label)).toEqual(["Example Lead", "Example Deputy"]);
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
 
@@ -319,6 +356,10 @@ describe("employers visual behaviour", () => {
     expect(html).toContain("Cancel");
     expect(html).toContain(">Remove<");
     expect(html).toContain('role="dialog"');
+    expect(html).toContain('data-modal-backdrop="entry-remove"');
+    const form = html.split('data-add-panel="employer"')[1]?.split("</form>")[0] ?? "";
+    expect(form).not.toContain('role="dialog"');
+    expect(form).not.toContain("data-modal-backdrop");
     expect(html).toContain('value="Example bay"');
     expect(html).toContain('value="Example ramp"');
     expect(html).toContain('value="Example Lead"');
