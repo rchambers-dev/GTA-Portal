@@ -9,6 +9,7 @@ import {
   proxyApprenticeSelect,
   redactApprenticeContacts,
   redactEnrolmentContacts,
+  staffHierarchyError,
 } from "./record-access";
 
 function session(partial: {
@@ -140,5 +141,40 @@ describe("master record access", () => {
         }),
       ),
     ).toBe(false);
+  });
+
+  it("stops an administrator promoting themselves or a superior", () => {
+    expect(
+      staffHierarchyError({
+        actorId: "admin-1",
+        actorRole: "Administrator",
+        targetId: "admin-1",
+        targetRole: "Administrator",
+        requestedRole: "Owner",
+      }),
+    ).toMatch(/own role/);
+    expect(
+      staffHierarchyError({
+        actorId: "admin-1",
+        actorRole: "Administrator",
+        targetId: "owner-1",
+        targetRole: "Owner",
+        requestedRole: "Tutor",
+      }),
+    ).toMatch(/rank/);
+    expect(
+      staffHierarchyError({
+        actorId: "admin-1",
+        actorRole: "Administrator",
+        requestedRole: "Management",
+      }),
+    ).toMatch(/rank/);
+    expect(
+      staffHierarchyError({
+        actorId: "admin-1",
+        actorRole: "Administrator",
+        requestedRole: "Tutor",
+      }),
+    ).toBeNull();
   });
 });

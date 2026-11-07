@@ -56,6 +56,7 @@ export function StaffPermissionsScreen() {
   const [selectedStaff, setSelectedStaff] = useState<string[]>([]);
   const [directStaff, setDirectStaff] = useState("");
   const [effectiveStaff, setEffectiveStaff] = useState("");
+  const [confirmWiden, setConfirmWiden] = useState(false);
   const router = useRouter();
 
   async function reload() {
@@ -200,16 +201,25 @@ export function StaffPermissionsScreen() {
           >
             Save workspace default
           </button>
+          <label className={styles.note}>
+            <input
+              type="checkbox"
+              checked={confirmWiden}
+              onChange={(event) => setConfirmWiden(event.target.checked)}
+            />
+            Clear deletes this workspace page map only and restores role-baseline access. That can widen access to every registered page you omitted. Bundles and direct assignments stay.
+          </label>
           <button
             type="button"
+            disabled={!confirmWiden}
             onClick={() =>
               void run(
-                () => postAction({ action: "clearWorkspace", workspaceId: workspace }),
-                "Workspace page map cleared. Existing access is restored.",
+                () => postAction({ action: "clearWorkspace", workspaceId: workspace, confirmWiden: true }),
+                "Workspace page map cleared. Role-baseline access is restored. This can be wider than the map you deleted.",
               )
             }
           >
-            Clear and restore current access
+            Clear workspace map and restore role baseline
           </button>
         </div>
       </section>

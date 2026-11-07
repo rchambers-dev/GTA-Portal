@@ -11,6 +11,8 @@ import {
   type StaffPerson,
   type WorkspacePageDefault,
 } from "./model";
+import { pagesForWorkspace } from "./registry";
+import { roleRank } from "@/features/administration/domain/account-access";
 
 export class PageAccessCommandError extends Error {
   status: number;
@@ -23,6 +25,30 @@ export class PageAccessCommandError extends Error {
 function assertEditor(session: EffectiveSession) {
   if (!canEditPageAccess(session)) {
     throw new PageAccessCommandError("Access denied.", 403);
+  }
+}
+
+const WORKSPACE_RANK: Record<string, number> = {
+  staff: 35,
+  quality: 40,
+  safeguarding: 40,
+  administration: 60,
+  management: 80,
+};
+
+function assertWorkspaceMapAuthority(session: EffectiveSession, workspaceId: WorkspaceId) {
+  if (roleRank(session.account.baseRole) >= 100) return;
+  if (session.account.workspace === workspaceId) {
+    throw new PageAccessCommandError(
+      "You cannot change the page map for your own workspace.",
+      403,
+    );
+  }
+  if ((WORKSPACE_RANK[workspaceId] ?? 100) >= roleRank(session.account.baseRole)) {
+    throw new PageAccessCommandError(
+      "You cannot change a page map that applies to your rank or higher.",
+      403,
+    );
   }
 }
 
@@ -53,6 +79,7 @@ export function saveWorkspaceDefault(
   }
   const cleaned = normaliseGrants(grants);
   assertGrants(session, cleaned);
+  assertWorkspaceMapAuthority(session, workspaceId);
   const next: WorkspacePageDefault = {
     workspaceId,
     configured: true,
@@ -69,12 +96,29 @@ export function saveWorkspaceDefault(
   };
 }
 
+export function pagesRestoredByClear(config: PageAccessConfig, workspaceId: WorkspaceId) {
+  const saved = config.workspaceDefaults.find((item) => item.workspaceId === workspaceId);
+  if (!saved) return [];
+  const granted = new Set(saved.grants.map((grant) => grant.pageId));
+  return pagesForWorkspace(workspaceId)
+    .filter((page) => !granted.has(page.id))
+    .map((page) => page.label);
+}
+
 export function clearWorkspaceDefault(
   config: PageAccessConfig,
   session: EffectiveSession,
   workspaceId: WorkspaceId,
+  confirmWiden = false,
 ): PageAccessConfig {
   assertEditor(session);
+  assertWorkspaceMapAuthority(session, workspaceId);
+  const restored = pagesRestoredByClear(config, workspaceId);
+  if (restored.length > 0 && !confirmWiden) {
+    throw new PageAccessCommandError(
+      `Clear deletes only this workspace page map and restores role-baseline access. It can widen access to: ${restored.join(", ")}. Confirm that widening before clearing. Page bundles and direct assignments stay.`,
+    );
+  }
   return {
     ...config,
     workspaceDefaults: config.workspaceDefaults.filter((item) => item.workspaceId !== workspaceId),
@@ -93,7 +137,8 @@ export function savePageBundle(
   const grants = normaliseGrants(input.grants);
   assertGrants(session, grants);
   const staffIds = [...new Set(input.staffIds)];
-  assertTargets(session, staffIds, directory);
+  const previous = config.bundles.find((item) => item.id === input.id);
+  assertTargets(session, [...new Set([...(previous?.staffIds ?? []), ...staffIds])], directory);
   const bundle: PageBundle = {
     id: input.id || randomUUID(),
     name,
@@ -113,8 +158,11 @@ export function deletePageBundle(
   config: PageAccessConfig,
   session: EffectiveSession,
   bundleId: string,
+  directory: StaffPerson[],
 ): PageAccessConfig {
   assertEditor(session);
+  const previous = config.bundles.find((item) => item.id === bundleId);
+  assertTargets(session, previous?.staffIds ?? [], directory);
   return { ...config, bundles: config.bundles.filter((item) => item.id !== bundleId) };
 }
 

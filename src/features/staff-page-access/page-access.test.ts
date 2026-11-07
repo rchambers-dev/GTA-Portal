@@ -5,8 +5,9 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { buildEffectiveSession } from "@/lib/permissions/effective-permissions";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import type { PortalAccount, WorkspaceId } from "@/lib/portal/types";
-import { saveDirectAssignment, savePageBundle, saveWorkspaceDefault, clearWorkspaceDefault } from "./commands";
+import { saveDirectAssignment, savePageBundle, saveWorkspaceDefault, clearWorkspaceDefault, deletePageBundle } from "./commands";
 import { decidePageAccess, pageApiAllowed, pageGrantSnapshot, pageNavAllowed } from "./enforce";
+import { pageById } from "./registry";
 import { emptyPageAccessConfig, effectivePages } from "./model";
 import { readPageAccessConfig, writePageAccessConfig } from "./store";
 
@@ -45,6 +46,25 @@ const admin = buildEffectiveSession(
   [],
 );
 
+const owner = buildEffectiveSession(
+  account({
+    id: "owner-1",
+    name: "Example Owner",
+    workspace: "administration",
+    baseRole: "Owner",
+    permissions: [
+      PERMISSIONS.ADMIN_USERS_MANAGE,
+      PERMISSIONS.ADMIN_RECORDS_MANAGE,
+      PERMISSIONS.ADMIN_WORKSPACE_VIEW,
+      PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW,
+      PERMISSIONS.REVIEWS_MANAGE,
+      PERMISSIONS.LIFECYCLE_KANBAN_VIEW,
+      PERMISSIONS.MODULES_DELIVER,
+    ],
+  }),
+  [],
+);
+
 const tutor = buildEffectiveSession(
   account({
     id: "tutor-1",
@@ -67,6 +87,7 @@ beforeEach(() => {
   dir = mkdtempSync(path.join(tmpdir(), "page-access-"));
   process.env.STAFF_PAGE_ACCESS_FILE = path.join(dir, "config.json");
   delete admin.pageGrants;
+  delete owner.pageGrants;
   delete tutor.pageGrants;
 });
 
@@ -115,6 +136,13 @@ describe("staff page access", () => {
     });
     expect(decidePageAccess(tutor, "/reviews").read).toBe(false);
     expect(pageNavAllowed(tutor, "/reviews?from=tutor")).toBe(false);
+    const bundleId = config.bundles[0]?.id || "";
+    config = deletePageBundle(config, admin, bundleId, directory);
+    tutor.pageGrants = pageGrantSnapshot(config, tutor.account);
+    expect(decidePageAccess(tutor, "/staff/programme-delivery").edit).toBe(true);
+    expect(effectivePages(config, { id: "tutor-1", workspace: "staff" }).find((item) => item.page.id === "staff.delivery")?.origins).toEqual([
+      "direct assignment",
+    ]);
   });
 
   it("refuses self assignment, apprentice targets, and edit on a read-only page", () => {
@@ -133,7 +161,7 @@ describe("staff page access", () => {
         [{ id: "learner-1", name: "Example Learner", role: "Apprentice", workspace: "apprentice" }],
       ),
     ).toThrow(/Apprentice/);
-    const saved = saveWorkspaceDefault(emptyPageAccessConfig(), admin, "administration", [
+    const saved = saveWorkspaceDefault(emptyPageAccessConfig(), owner, "administration", [
       { pageId: "administration.dashboard", level: "edit" },
     ]);
     expect(saved.workspaceDefaults[0]?.grants).toEqual([
@@ -153,20 +181,80 @@ describe("staff page access", () => {
     expect(() => saveWorkspaceDefault(emptyPageAccessConfig(), proxyOnly, "administration", [])).toThrow(
       /Access denied/,
     );
-    let config = saveWorkspaceDefault(emptyPageAccessConfig(), admin, "administration", [
+    let config = saveWorkspaceDefault(emptyPageAccessConfig(), owner, "administration", [
       { pageId: "records.store", level: "read" },
     ]);
     writePageAccessConfig(config);
-    admin.pageGrants = pageGrantSnapshot(config, admin.account);
-    expect(pageApiAllowed(admin, "/api/admin/store", "edit")).toEqual({
+    owner.pageGrants = pageGrantSnapshot(config, owner.account);
+    expect(pageApiAllowed(owner, "/api/admin/store", "edit")).toEqual({
       ok: false,
       error: "Page access does not allow this action.",
     });
-    config = clearWorkspaceDefault(config, admin, "administration");
+    expect(() => clearWorkspaceDefault(config, owner, "administration")).toThrow(/widen access/);
+    config = clearWorkspaceDefault(config, owner, "administration", true);
     writePageAccessConfig(config);
-    admin.pageGrants = pageGrantSnapshot(config, admin.account);
-    expect(pageApiAllowed(admin, "/api/admin/store", "edit").ok).toBe(true);
+    owner.pageGrants = pageGrantSnapshot(config, owner.account);
+    expect(pageApiAllowed(owner, "/api/admin/store", "edit").ok).toBe(true);
     expect(decidePageAccess(admin, "/staff-permissions").enforced).toBe(false);
+    expect(decidePageAccess(admin, "/api/staff-page-access").enforced).toBe(false);
+  });
+
+  it("denies an unregistered route once the workspace map is on, and refuses a peer", () => {
+    const config = saveWorkspaceDefault(emptyPageAccessConfig(), owner, "administration", [
+      { pageId: "administration.dashboard", level: "read" },
+    ]);
+    owner.pageGrants = pageGrantSnapshot(config, owner.account);
+    expect(decidePageAccess(owner, "/administration/not-a-real-page")).toMatchObject({
+      enforced: true,
+      read: false,
+      edit: false,
+    });
+    expect(() =>
+      saveDirectAssignment(
+        emptyPageAccessConfig(),
+        buildEffectiveSession(
+          account({
+            id: "manager-1",
+            workspace: "management",
+            baseRole: "Management",
+            permissions: [PERMISSIONS.ADMIN_USERS_MANAGE, PERMISSIONS.ADMIN_RECORDS_MANAGE],
+          }),
+          [],
+        ),
+        "peer-1",
+        [],
+        [{ id: "peer-1", name: "Other Manager", role: "Management", workspace: "management" }],
+      ),
+    ).toThrow(/rank/);
+    expect(() =>
+      saveWorkspaceDefault(emptyPageAccessConfig(), admin, "administration", [
+        { pageId: "administration.dashboard", level: "read" },
+      ]),
+    ).toThrow(/own workspace/);
+  });
+
+  it("keeps Reviews saves behind page Edit and does not treat records.manage as Edit", () => {
+    const config = saveWorkspaceDefault(emptyPageAccessConfig(), owner, "administration", [
+      { pageId: "reviews.assistant", level: "read" },
+      { pageId: "reviews.api.state", level: "read" },
+    ]);
+    const reader = buildEffectiveSession(
+      account({
+        id: "office-1",
+        workspace: "administration",
+        baseRole: "Administrator",
+        permissions: [PERMISSIONS.ADMIN_RECORDS_MANAGE, PERMISSIONS.REVIEWS_MANAGE],
+      }),
+      [],
+    );
+    reader.pageGrants = pageGrantSnapshot(config, reader.account);
+    expect(pageApiAllowed(reader, "/api/reviews-assistant/state", "read").ok).toBe(true);
+    expect(pageApiAllowed(reader, "/api/reviews-assistant/state", "edit")).toEqual({
+      ok: false,
+      error: "Page access does not allow this action.",
+    });
+    expect(pageApiAllowed(reader, "/reviews/assistant", "edit").ok).toBe(false);
+    expect(pageById("reviews.assistant")?.editable).toBe(true);
   });
 
   it("refuses a records page from someone who does not hold that capability", () => {

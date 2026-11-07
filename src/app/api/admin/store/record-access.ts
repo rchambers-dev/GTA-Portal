@@ -1,3 +1,4 @@
+import { canManagePortalAccount } from "@/features/administration/domain/account-access";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 import type { EffectiveSession } from "@/lib/portal/types";
@@ -30,6 +31,46 @@ export function isStaffAccountAction(action: string): boolean {
     action === "setPortalEnvironment" ||
     action === "revealApprenticePassword"
   );
+}
+
+/**
+ * admin.users.manage is not enough. The actor must outrank the target and
+ * the requested role, and cannot change their own role or workspace.
+ */
+export function staffHierarchyError(input: {
+  actorId: string;
+  actorRole: string;
+  targetId?: string | null;
+  targetRole?: string | null;
+  requestedRole?: string | null;
+  changesWorkspace?: boolean;
+}): string | null {
+  const self = Boolean(input.targetId && input.targetId === input.actorId);
+  if (self && (input.requestedRole || input.changesWorkspace)) {
+    return "You cannot change your own role or workspace.";
+  }
+  if (self && !canManagePortalAccount(input.actorRole, input.actorRole)) {
+    return "You cannot change your own account.";
+  }
+  if (
+    input.targetRole &&
+    !self &&
+    !canManagePortalAccount(input.actorRole, input.targetRole)
+  ) {
+    return "You cannot change an account at or above your rank.";
+  }
+  if (input.requestedRole && !canManagePortalAccount(input.actorRole, input.requestedRole)) {
+    return "You cannot assign a role at or above your rank.";
+  }
+  return null;
+}
+
+export function staffActionPagePath(workspace: string, action: string): string {
+  const management = workspace === "management";
+  if (action === "revealApprenticePassword") {
+    return management ? "/management/accounts" : "/administration/accounts";
+  }
+  return management ? "/management/staff" : "/administration/staff";
 }
 
 type EnrolmentContacts = {

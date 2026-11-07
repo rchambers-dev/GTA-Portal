@@ -11,6 +11,7 @@ import { getStandalonePorts } from "@/adapters/standalone";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 import type { EffectiveSession } from "@/lib/portal/types";
+import { pageApiAllowed } from "@/features/staff-page-access/enforce";
 
 export function canAuthorProgramme(session: EffectiveSession): boolean {
   if (session.account.workspace === "apprentice") return false;
@@ -20,9 +21,9 @@ export function canAuthorProgramme(session: EffectiveSession): boolean {
   );
 }
 
-export async function requireCurriculumAuthoringAccess(): Promise<
-  EffectiveSession | NextResponse
-> {
+export async function requireCurriculumAuthoringAccess(
+  request?: Request,
+): Promise<EffectiveSession | NextResponse> {
   const session = await getStandalonePorts().auth.getEffectiveSession();
   if (!session) {
     return NextResponse.json(
@@ -35,6 +36,11 @@ export async function requireCurriculumAuthoringAccess(): Promise<
       { ok: false, error: "Forbidden" },
       { status: 403 },
     );
+  }
+  const pathname = request ? new URL(request.url).pathname : "";
+  const page = pageApiAllowed(session, pathname, request && request.method !== "GET" ? "edit" : "read");
+  if (!page.ok) {
+    return NextResponse.json({ ok: false, error: page.error }, { status: 403 });
   }
   return session;
 }

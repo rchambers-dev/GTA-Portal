@@ -1,4 +1,4 @@
-import { canManagePortalAccount } from "@/features/administration/domain/account-access";
+import { roleRank } from "@/features/administration/domain/account-access";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 import type { EffectiveSession } from "@/lib/portal/types";
@@ -35,8 +35,8 @@ export function assignmentTargetError(
   if (BLOCKED_WORKSPACES.has(target.workspace) || BLOCKED_ROLES.has(target.role)) {
     return "Apprentice and Employer logins are not given staff page access.";
   }
-  if (!canManagePortalAccount(session.account.baseRole, target.role)) {
-    return "You cannot change page access for someone at or above your rank.";
+  if (roleRank(target.role) >= roleRank(session.account.baseRole)) {
+    return "You cannot change page access for yourself or anyone at or above your rank.";
   }
   return null;
 }

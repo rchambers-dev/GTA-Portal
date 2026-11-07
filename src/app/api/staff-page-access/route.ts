@@ -79,6 +79,7 @@ export async function POST(request: Request) {
     name?: string;
     staffIds?: string[];
     staffId?: string;
+    confirmWiden?: boolean;
   };
   const directory = await loadStaffDirectory();
   const config = readPageAccessConfig();
@@ -87,7 +88,7 @@ export async function POST(request: Request) {
     if (body.action === "saveWorkspace" && body.workspaceId) {
       next = saveWorkspaceDefault(config, session, body.workspaceId, body.grants ?? []);
     } else if (body.action === "clearWorkspace" && body.workspaceId) {
-      next = clearWorkspaceDefault(config, session, body.workspaceId);
+      next = clearWorkspaceDefault(config, session, body.workspaceId, body.confirmWiden === true);
     } else if (body.action === "saveBundle") {
       next = savePageBundle(
         config,
@@ -101,7 +102,7 @@ export async function POST(request: Request) {
         directory,
       );
     } else if (body.action === "deleteBundle" && body.bundleId) {
-      next = deletePageBundle(config, session, body.bundleId);
+      next = deletePageBundle(config, session, body.bundleId, directory);
     } else if (body.action === "saveDirect" && body.staffId) {
       next = saveDirectAssignment(config, session, body.staffId, body.grants ?? [], directory);
     } else if (body.action === "clearDirect" && body.staffId) {

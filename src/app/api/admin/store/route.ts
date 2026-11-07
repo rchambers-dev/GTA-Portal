@@ -53,6 +53,7 @@ import {
   isStaffAccountAction,
   redactApprenticeContacts,
   redactEnrolmentContacts,
+  staffActionPagePath,
 } from "./record-access";
 
 type ApprenticeRow = {
@@ -398,10 +399,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  if (!isStaffAccountAction(body.action)) {
-    const pageWrite = pageApiAllowed(session, "/api/admin/store", "edit");
-    if (!pageWrite.ok) return NextResponse.json({ error: pageWrite.error }, { status: 403 });
-  }
+  const pageWrite = pageApiAllowed(
+    session,
+    isStaffAccountAction(body.action)
+      ? staffActionPagePath(session.account.workspace, body.action)
+      : "/api/admin/store",
+    "edit",
+  );
+  if (!pageWrite.ok) return NextResponse.json({ error: pageWrite.error }, { status: 403 });
 
   const actorFallback =
     session.account.name?.trim() ||

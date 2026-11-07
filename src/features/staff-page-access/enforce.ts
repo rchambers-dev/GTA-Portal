@@ -1,6 +1,6 @@
 import type { EffectiveSession, PageGrantSnapshot } from "@/lib/portal/types";
 import { effectivePages, isWorkspaceConfigured, type PageAccessConfig } from "./model";
-import { matchPortalPage } from "./registry";
+import { isExemptPath, matchPortalPage } from "./registry";
 
 export type PageDecision = {
   enforced: boolean;
@@ -24,16 +24,18 @@ export function pageGrantSnapshot(
   };
 }
 
+const OPEN: PageDecision = { enforced: false, read: true, edit: true, pageId: null };
+
 export function decidePageAccess(session: EffectiveSession, pathname: string): PageDecision {
-  if (pathname.startsWith("/staff-permissions")) {
+  if (isExemptPath(pathname)) {
     return { enforced: false, read: true, edit: false, pageId: null };
   }
   const grants = session.pageGrants;
-  if (!grants?.configured) {
-    return { enforced: false, read: true, edit: true, pageId: null };
-  }
+  if (!grants?.configured) return OPEN;
   const page = matchPortalPage(pathname, session.account.workspace);
-  if (!page) return { enforced: false, read: true, edit: true, pageId: null };
+  if (!page) {
+    return { enforced: true, read: false, edit: false, pageId: null };
+  }
   return {
     enforced: true,
     read: grants.readable.includes(page.id),
