@@ -119,6 +119,18 @@ describe("sidebar category toggle", () => {
     expect(css).toMatch(/\.chevronTrail\s*\{[^}]*display:\s*none/s);
     expect(css).toContain(".sidebarSlot:hover .chevronTrail");
     expect(css).toContain(".sidebarSlot:hover,");
+    expect(css).toContain(".sidebarSlot:hover .categoryButtonOpen .icon");
+    expect(css).toContain(".sidebar:focus-within .categoryButtonOpen .icon");
+    expect(css).toMatch(/\.categoryButtonOpen \.icon[\s\S]*display:\s*none/);
+    expect(css).toMatch(/\.categoryButtonOpen \.categoryLabel[\s\S]*text-align:\s*center/);
+    expect(css).toMatch(/\.categoryButtonOpen \.chevronTrail[\s\S]*left:\s*0\.4rem/);
+    expect(css).not.toMatch(/\.categoryButton \.icon\s*\{[^}]*display:\s*none/);
+    const source = readFileSync(
+      path.join(process.cwd(), "src/shell/SidebarNavigation.tsx"),
+      "utf8",
+    );
+    expect(source).toContain("logoMark");
+    expect(source).toContain('data-chevron={open ? "left" : "right"}');
     const html = renderNav("/administration/dashboard", null);
     const icons = [...html.matchAll(/data-category-icon="([^"]+)"([\s\S]*?)<\/span>/g)].map(
       (match) => [match[1], match[2]] as const,
