@@ -81,7 +81,9 @@ describe("apprentices visual behaviour", () => {
     );
     expect(html).toContain('data-add-panel="apprentice"');
     expect(html).toContain("Full name");
-    expect(html).toContain("Example Yard Co");
+    expect(html).toContain('aria-haspopup="listbox"');
+    expect(html).toContain("Not linked");
+    expect(html).not.toContain("<select");
     expect(html).toContain("Cancel");
     expect(html).not.toContain("Phone number");
     expect(html).not.toContain(">Postcode<");
@@ -369,24 +371,74 @@ describe("employers visual behaviour", () => {
 });
 
 describe("employer list row corners", () => {
-  it("uses a rounded rectangle for employer rows and leaves apprentice pills unchanged", () => {
+  it("uses the same 8px rounded rectangle for employer and apprentice rows", () => {
     const css = readFileSync(
       path.join(process.cwd(), "src/features/administration/screens/admin-pages.module.css"),
       "utf8",
     );
-    expect(css).toMatch(/\.pillRow\s*\{[^}]*border-radius:\s*999px;/s);
     expect(css).toMatch(/\.employerRow\s*\{\s*border-radius:\s*8px;\s*\}/);
     const employerHtml = renderToStaticMarkup(createElement(EmployersVisualPreview));
     const apprenticeHtml = renderToStaticMarkup(createElement(ApprenticesVisualPreview));
     expect(employerHtml).toContain(styles.employerRow);
-    expect(employerHtml).toContain(styles.pillRow);
     expect(employerHtml).toContain("Example Motors");
-    expect(apprenticeHtml).toContain(styles.pillRow);
-    expect(apprenticeHtml).not.toContain(styles.employerRow);
-    expect(readFileSync(
+    expect(apprenticeHtml).toContain(styles.employerRow);
+    expect(apprenticeHtml).toContain("Alex Example");
+  });
+});
+
+describe("apprentice employer dropdown", () => {
+  const selectSource = readFileSync(
+    path.join(process.cwd(), "src/components/ui/Select.tsx"),
+    "utf8",
+  );
+
+  it("shows Not linked, Example Motors, and Example Yard Co through the app listbox", () => {
+    const preview = readFileSync(
       path.join(process.cwd(), "src/features/administration/screens/apprentices-visual-preview.tsx"),
       "utf8",
-    )).not.toContain("employerRow");
+    );
+    expect(preview).toContain('from "@/components/ui"');
+    expect(preview).toContain("Not linked");
+    expect(preview).not.toContain("<select");
+    for (const employerId of ["", "example-motors", "example-yard-co"]) {
+      const html = renderToStaticMarkup(
+        createElement(ApprenticesVisualPreview, {
+          initialState: { ...initialApprenticePreviewState(), addOpen: true, employerId },
+        }),
+      );
+      const label =
+        employerId === "example-motors"
+          ? "Example Motors"
+          : employerId === "example-yard-co"
+            ? "Example Yard Co"
+            : "Not linked";
+      expect(html).toContain('aria-haspopup="listbox"');
+      expect(html).toContain(label);
+    }
+  });
+
+  it("keeps a chosen employer in local state and does not write", () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    let state = apprenticePreviewReducer(initialApprenticePreviewState(), { type: "toggle-add" });
+    state = apprenticePreviewReducer(state, { type: "set-name", fullName: "Sam Example" });
+    state = apprenticePreviewReducer(state, { type: "set-employer", employerId: "example-motors" });
+    state = apprenticePreviewReducer(state, { type: "add-local" });
+    expect(state.rows.find((row) => row.fullName === "Sam Example")?.employerId).toBe(
+      "example-motors",
+    );
+    expect(fetchSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+  });
+
+  it("reuses the app dropdown keyboard and outside-click behaviour", () => {
+    expect(selectSource).toContain('aria-haspopup="listbox"');
+    expect(selectSource).toContain("ArrowDown");
+    expect(selectSource).toContain("ArrowUp");
+    expect(selectSource).toContain('event.key === "Enter"');
+    expect(selectSource).toContain('event.key === "Escape"');
+    expect(selectSource).toContain('document.addEventListener("mousedown"');
+    expect(selectSource).toContain("rootRef.current?.contains");
+    expect(selectSource).toContain("data-selected");
   });
 });
 
