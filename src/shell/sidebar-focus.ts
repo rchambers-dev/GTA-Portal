@@ -3,9 +3,10 @@ import type { NavSection } from "@/lib/portal/types";
 /** Category headings that collapse to a button. Other titled sections stay expanded. */
 export const SIDEBAR_FOCUS_GROUPS = [
   "Onboarding",
-  "Marketing",
+  "Marketing & Recruitment",
   "Staff",
   "Apprenticeship Management",
+  "Reviews",
 ] as const;
 
 export type SidebarFocusGroup = (typeof SIDEBAR_FOCUS_GROUPS)[number];

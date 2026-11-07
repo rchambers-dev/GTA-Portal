@@ -195,8 +195,9 @@ function CategoryButton({
 
 function categoryIconHref(title: string): string {
   if (title === "Onboarding") return "/category/onboarding";
-  if (title === "Marketing") return "/category/marketing";
+  if (title === "Marketing" || title === "Marketing & Recruitment") return "/category/marketing";
   if (title === "Staff") return "/category/staff";
+  if (title === "Reviews") return "/reviews";
   return "/category/apprenticeship";
 }
 
