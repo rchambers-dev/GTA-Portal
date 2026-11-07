@@ -1,0 +1,566 @@
+{
+  "repository": "https://github.com/rchambers-dev/GTA_Reviews",
+  "branch": "main",
+  "commit": "b7947d875a5d5f36f886ac06717b2df8049b5e3a",
+  "method": "Remote metadata/tree; existing saved source recovered ONLY when exact Git blob hash matches pinned tree. No checkout or source behaviour investigation.",
+  "files": [
+    {
+      "repo_path": "src/analytics.js",
+      "git_blob_sha": "1bd99d70d1f23485c80852c966e2d3589e76a1e6",
+      "sha256": "bc0da855d99925e2abfced6697e8d36ce2840b8e592e36daaad5fe551b37315f",
+      "box_path": "/workspace/reference-reviews-integration/source/src/analytics.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/analytics.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/analytics.js"
+    },
+    {
+      "repo_path": "src/app/dom.js",
+      "git_blob_sha": "8e8acfec945797bc8e59f9f0804110cbff2cdf49",
+      "sha256": "4999b5c500ea9286542392acdd219159d7fc6e611ed4a1ef8ca7df09849df81b",
+      "box_path": "/workspace/reference-reviews-integration/source/src/app/dom.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/app/dom.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/app/dom.js"
+    },
+    {
+      "repo_path": "src/app/ui-state.js",
+      "git_blob_sha": "144a050be4ec9678fe614d7275dc89f945ea042d",
+      "sha256": "73b909c1cf7addf6574cbc7f2257ea8c639f6caa90eceb6b231279b8ae869792",
+      "box_path": "/workspace/reference-reviews-integration/source/src/app/ui-state.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/app/ui-state.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/app/ui-state.js"
+    },
+    {
+      "repo_path": "src/features/out-round.js",
+      "git_blob_sha": "80374e50a8f5f5a2cf91ae8d1e3a69e4e9097fb0",
+      "sha256": "a8da2230d03a354f33624dc33ffc466eba1711bdcd8eb884c7793541db2ecd10",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/out-round.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/out-round.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/out-round.js"
+    },
+    {
+      "repo_path": "src/features/planner/appointments.js",
+      "git_blob_sha": "d1d5349e8007d723d78dca137b3c86d0bd3948f7",
+      "sha256": "f6e14f21c302419247af4c0a57490386cd2ca595776faee090626430dd924cd3",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/planner/appointments.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/planner/appointments.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/planner/appointments.js"
+    },
+    {
+      "repo_path": "src/features/planner/calendar.js",
+      "git_blob_sha": "8c17b233f1ed0ba43361e7f8727b78f8f0e1a267",
+      "sha256": "0a5f289c05fc1f3c060c1118bf0aefcb385c74c1860dd39d450d460f77bc0483",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/planner/calendar.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/planner/calendar.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/planner/calendar.js"
+    },
+    {
+      "repo_path": "src/features/planner/day-view.js",
+      "git_blob_sha": "acddb11dc1d8fff1a85b42958bfc6c68df448792",
+      "sha256": "2971369830b9778821548c6f6c55d689467f509417803e2f402f1b7adf2e57b9",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/planner/day-view.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/planner/day-view.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/planner/day-view.js"
+    },
+    {
+      "repo_path": "src/features/planner/map.js",
+      "git_blob_sha": "46344b47d40186d7a3dc70eae5923e1cca0baaf5",
+      "sha256": "dba8e1ceb5b7997578094cccd90a5a237a36054bfcfd91e355457736284250f4",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/planner/map.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/planner/map.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/planner/map.js"
+    },
+    {
+      "repo_path": "src/features/planner/notes.js",
+      "git_blob_sha": "8eeef5c798e06698c3bf75dc118c0107f7a6c9f7",
+      "sha256": "46643d2597fa596b756f8e371a9143438290bc73a13e80d2c84ec8cf559c095a",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/planner/notes.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/planner/notes.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/planner/notes.js"
+    },
+    {
+      "repo_path": "src/features/planner/roster-drag.js",
+      "git_blob_sha": "a1ec71666a06661ddc672cd76261c7cc6cd0dc6c",
+      "sha256": "98fe1562f5489118ddea0fe2df862813377d9d25e045389b243f52184570995b",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/planner/roster-drag.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/planner/roster-drag.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/planner/roster-drag.js"
+    },
+    {
+      "repo_path": "src/features/planner/status.js",
+      "git_blob_sha": "5e26657152c0cd54b9284e4965da4a82be27e1ca",
+      "sha256": "9c010082d4d6c22f32397e0dff15f7337fbe7ce150ca636d125cb5fd4a00eb46",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/planner/status.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/planner/status.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/planner/status.js"
+    },
+    {
+      "repo_path": "src/features/records/add-learner.js",
+      "git_blob_sha": "3c4e01643a313f1bb7f879b4ad3d828785caca26",
+      "sha256": "5cc3bb735324af499aae8ded9e088c760c479de098874a7edaee4bd745076771",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/records/add-learner.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/records/add-learner.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/records/add-learner.js"
+    },
+    {
+      "repo_path": "src/features/records/archive.js",
+      "git_blob_sha": "62a33b61978875fc1907d8843865f716ad608c39",
+      "sha256": "3f9a6100431419f18aa144766c22915210d30c7725e10a676227ae3d7b98f1b5",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/records/archive.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/records/archive.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/records/archive.js"
+    },
+    {
+      "repo_path": "src/features/records/details-editor.js",
+      "git_blob_sha": "3f2e005405a1ce21449707ec03cd4a5de909a82f",
+      "sha256": "053ada63de0b494eb7ff06afbd05015c65bc3b8a0c9e51984d928bc6aaa2a8d7",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/records/details-editor.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/records/details-editor.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/records/details-editor.js"
+    },
+    {
+      "repo_path": "src/features/records/learner-sheet.js",
+      "git_blob_sha": "1fec0657f85a6695d13e39c757f5f313a7a81b21",
+      "sha256": "e92485e5c8037f10dba5c0c2750e5aaf0fe8c9158d3423b89d80ad4f833b3706",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/records/learner-sheet.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/records/learner-sheet.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/records/learner-sheet.js"
+    },
+    {
+      "repo_path": "src/features/records/records-list.js",
+      "git_blob_sha": "a5d5b24b7403c4c97a7f78d33c9b9b4c3e20831a",
+      "sha256": "19b0b25810be69251836b41ef777292b2e3403accdf0ec5167e4feb374b88c8e",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/records/records-list.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/records/records-list.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/records/records-list.js"
+    },
+    {
+      "repo_path": "src/features/records/validate-learner.js",
+      "git_blob_sha": "8f6de76004a57250e9569d41d65c6291f78e8d59",
+      "sha256": "373dabf9621312f10e00b32fac9ad9df6797db038ce0626652871e02971fc28f",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/records/validate-learner.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/records/validate-learner.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/records/validate-learner.js"
+    },
+    {
+      "repo_path": "src/features/reports-modal.js",
+      "git_blob_sha": "caecaef00e39025bdbb9cb01e15a87c9d3de0fb9",
+      "sha256": "43d66c9937e23a2c7e721e2203bf2e1cef95a71066bb657899e0785ba420079a",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/reports-modal.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/reports-modal.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/reports-modal.js"
+    },
+    {
+      "repo_path": "src/features/review-workflow/actions.js",
+      "git_blob_sha": "b4abec841e3d6257a30ce9c9d0ee228f82172947",
+      "sha256": "370e477538d8e4e498e57f4b456172fc7ae8921fa51937f33fe87eea25827cb1",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/review-workflow/actions.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/review-workflow/actions.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/review-workflow/actions.js"
+    },
+    {
+      "repo_path": "src/features/review-workflow/attachments.js",
+      "git_blob_sha": "34582c7f2307700404a26fbcde995ac9679af42a",
+      "sha256": "780b50b0cc2d37b84f6e1a147e4f9147cbf303acb101c14caeea5bc2a563eb72",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/review-workflow/attachments.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/review-workflow/attachments.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/review-workflow/attachments.js"
+    },
+    {
+      "repo_path": "src/features/review-workflow/preview.js",
+      "git_blob_sha": "d80ba0a9f2db525f6d43bee72a6c9bd6c1a23d6f",
+      "sha256": "942ab595e24fc84249857261599fe0a4f13835c3496136956fd880b5e185b446",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/review-workflow/preview.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/review-workflow/preview.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/review-workflow/preview.js"
+    },
+    {
+      "repo_path": "src/features/review-workflow/runtime.js",
+      "git_blob_sha": "25c7f148d06c99e7fae9db694510136c7d35893c",
+      "sha256": "81beb134b2dc51a4ae26d8de2b87591c09713c3b39f10bcf7013d1beb08250fa",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/review-workflow/runtime.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/review-workflow/runtime.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/review-workflow/runtime.js"
+    },
+    {
+      "repo_path": "src/features/review-workflow/workflow-form.js",
+      "git_blob_sha": "31dbbd664bdbe8d70d0cbb129fd0010eabb6a095",
+      "sha256": "692e846db2aa198ec3fd871030c80e4e6c8890472edf78ac10e1d8cf15e4c559",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/review-workflow/workflow-form.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/review-workflow/workflow-form.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/review-workflow/workflow-form.js"
+    },
+    {
+      "repo_path": "src/features/review-workflow/workflow-saves.js",
+      "git_blob_sha": "1d2d75e3dd806236b91dd75d18fc79d879a9a257",
+      "sha256": "c58a87d21b61ccfe16cea1879448478e9a773ce5302292f767321757894aea71",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/review-workflow/workflow-saves.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/review-workflow/workflow-saves.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/review-workflow/workflow-saves.js"
+    },
+    {
+      "repo_path": "src/features/tutor-review/date-picker.js",
+      "git_blob_sha": "252c98ae64b8207cce17e74c3226038311d07cd1",
+      "sha256": "c8ecb9fca9f822c48e2a4bd5200bb355eb066b54f50d1bdcdc66c5e4b30e4e7c",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/tutor-review/date-picker.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/tutor-review/date-picker.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/tutor-review/date-picker.js"
+    },
+    {
+      "repo_path": "src/features/tutor-review/form-html.js",
+      "git_blob_sha": "6451f0dc3461c9302c3fb7a5da8f780ae8931330",
+      "sha256": "5126e859f7e25cffbbbdf960d50486440e241ecdef09999ca038106ee2de2b4a",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/tutor-review/form-html.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/tutor-review/form-html.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/tutor-review/form-html.js"
+    },
+    {
+      "repo_path": "src/features/tutor-review/help.js",
+      "git_blob_sha": "335e1bb177aa70175ec7b496e12eaa65877d6729",
+      "sha256": "22910dd950847298c7947568fbb597657fef7830e660246aa3f0e351fd4afc12",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/tutor-review/help.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/tutor-review/help.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/tutor-review/help.js"
+    },
+    {
+      "repo_path": "src/features/tutor-review/improve.js",
+      "git_blob_sha": "443a0b8ef1abe2a84d65c33918396243e33dd90e",
+      "sha256": "c42e99a33b61745d3ffaa03bad8fe8180fe4c63531b4f250f8cbac6b7b073c36",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/tutor-review/improve.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/tutor-review/improve.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/tutor-review/improve.js"
+    },
+    {
+      "repo_path": "src/features/tutor-review/validation.js",
+      "git_blob_sha": "ca67db4f07f904607b141686b3823d3ec13e780b",
+      "sha256": "8d0ac5579eb343daf60e3a0c8fd0668184a76c47e3b386d5a71d3c7d45558387",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/tutor-review/validation.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/features/tutor-review/validation.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/tutor-review/validation.js"
+    },
+    {
+      "repo_path": "src/geo.js",
+      "git_blob_sha": "14f7e754ac68ce1e8dbdee9dbac3adf9649dedad",
+      "sha256": "5be7779930df54deff6a706d8322ecdb72bb8bc0292888db2038f67c4b6b27e3",
+      "box_path": "/workspace/reference-reviews-integration/source/src/geo.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/geo.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/geo.js"
+    },
+    {
+      "repo_path": "src/lib/dates.js",
+      "git_blob_sha": "7977b3b518de165a050a9311835524eaf933990b",
+      "sha256": "a742d7a7551deb4c3ebf0a66abda9f35939471e52b0e90eb411e80a31199896a",
+      "box_path": "/workspace/reference-reviews-integration/source/src/lib/dates.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/lib/dates.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/lib/dates.js"
+    },
+    {
+      "repo_path": "src/lib/form-bytes.js",
+      "git_blob_sha": "6b86783c22fc9194a6bff80b0a2e36c1efe0ad4b",
+      "sha256": "247572fa63e5a55a69ca8898aa3acd3c7b46314ad5e6874316625450368036e7",
+      "box_path": "/workspace/reference-reviews-integration/source/src/lib/form-bytes.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/lib/form-bytes.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/lib/form-bytes.js"
+    },
+    {
+      "repo_path": "src/lib/format.js",
+      "git_blob_sha": "12d8a0d33c6328ac692a87910ef5368c5a533b71",
+      "sha256": "b44453c9dec607233a35a06760050e17883c97a55322740f3a5f8a25509e9a81",
+      "box_path": "/workspace/reference-reviews-integration/source/src/lib/format.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/lib/format.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/lib/format.js"
+    },
+    {
+      "repo_path": "src/lib/html.js",
+      "git_blob_sha": "2c37d798e968e8cf640ecdda70443ee688acbdf9",
+      "sha256": "63b2bc65e98bca08222dbe22b1c3541982b77a12776b8cf47818ce1c2632f678",
+      "box_path": "/workspace/reference-reviews-integration/source/src/lib/html.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/lib/html.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/lib/html.js"
+    },
+    {
+      "repo_path": "src/lib/learners.js",
+      "git_blob_sha": "d5da27448c84abfb5b79046608473db5e2f3bc6e",
+      "sha256": "118e56ab0ef702efef05aaa07d4e6137d043bcc8f9ec74cfaf495868bc17b2a9",
+      "box_path": "/workspace/reference-reviews-integration/source/src/lib/learners.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/lib/learners.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/lib/learners.js"
+    },
+    {
+      "repo_path": "src/lib/search.js",
+      "git_blob_sha": "06daf6e57a2f47faad380901859cb8a1b07b601b",
+      "sha256": "1b2c10e3fd36acf6b70189bfe510d63a156fa3592ced0b756b9b9c155a32fd48",
+      "box_path": "/workspace/reference-reviews-integration/source/src/lib/search.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/lib/search.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/lib/search.js"
+    },
+    {
+      "repo_path": "src/plan/rebook-panel.js",
+      "git_blob_sha": "f669948fcd2fe4b8156fa974e3fe4e1a9058f052",
+      "sha256": "965c6266d6e118470e698c1346ff83d2e43a8c27732345fd75812899b1f055a1",
+      "box_path": "/workspace/reference-reviews-integration/source/src/plan/rebook-panel.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/plan/rebook-panel.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/plan/rebook-panel.js"
+    },
+    {
+      "repo_path": "src/planner.js",
+      "git_blob_sha": "863ffdb31148bde5265ed01da36bbcb646dd8955",
+      "sha256": "08e8fe85032412b9f765e1f5c07baee0d7ee4ad6537edc3fca5e92a525a0c4ac",
+      "box_path": "/workspace/reference-reviews-integration/source/src/planner.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/planner.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/planner.js"
+    },
+    {
+      "repo_path": "src/review-pdf.js",
+      "git_blob_sha": "820e66dcd9f002b80b0b8b2f07daceef55e0f261",
+      "sha256": "391ccd110302aa77ac37ef68b51c41dc2c1498a19478b9866430911d90975d4d",
+      "box_path": "/workspace/reference-reviews-integration/source/src/review-pdf.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/review-pdf.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/review-pdf.js"
+    },
+    {
+      "repo_path": "src/review-photo.js",
+      "git_blob_sha": "bfc98e6f5d7b6e6999e7732e82c577e2ca09db98",
+      "sha256": "8871740c95aa7e3f8c8b5c70c9ff21f438d1c7736a808ee06cb35b5bf0a34f65",
+      "box_path": "/workspace/reference-reviews-integration/source/src/review-photo.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/review-photo.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/review-photo.js"
+    },
+    {
+      "repo_path": "src/review-word.js",
+      "git_blob_sha": "3d3cad2a7c49e8f3e44b8bb335e51fc73a685daf",
+      "sha256": "0fd403b0d002e3086f8cbcbe02a7c02d038ae99011786ba177e294f02f9deab8",
+      "box_path": "/workspace/reference-reviews-integration/source/src/review-word.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/review-word.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/review-word.js"
+    },
+    {
+      "repo_path": "src/reviews.js",
+      "git_blob_sha": "9aeaf1439a30f3597aaeece4bfb521bdf31d9a97",
+      "sha256": "b8c2968962809aeb520c5c27674436adb4305f1749ed0fa1f2e3b0ec25813935",
+      "box_path": "/workspace/reference-reviews-integration/source/src/reviews.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/reviews.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/reviews.js"
+    },
+    {
+      "repo_path": "src/safe-error.js",
+      "git_blob_sha": "0e636a6519377025c69db37b2f64b8dcdc85b46e",
+      "sha256": "a1f0259f56399929beb4469f7c2431595c65a3b5bad1100987ed75c1c52c1a69",
+      "box_path": "/workspace/reference-reviews-integration/source/src/safe-error.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/safe-error.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/safe-error.js"
+    },
+    {
+      "repo_path": "src/session-lock.js",
+      "git_blob_sha": "2585bf43824a73fdb3ace982b00b8bc9371f45fd",
+      "sha256": "c409c85dbb4574e169aca2d74ae654e937c14c6088bb27e550bd815e7ba06550",
+      "box_path": "/workspace/reference-reviews-integration/source/src/session-lock.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/session-lock.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/session-lock.js"
+    },
+    {
+      "repo_path": "src/staff.js",
+      "git_blob_sha": "4fc46e4e3384904f3eee2cd147a0aeb1c5b879fb",
+      "sha256": "746b10231cee131b608a5f2780a5e1a92d332c7cd414948103846843c2da8df2",
+      "box_path": "/workspace/reference-reviews-integration/source/src/staff.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/staff.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/staff.js"
+    },
+    {
+      "repo_path": "src/style.css",
+      "git_blob_sha": "43c13d9c00687754e90c7cbd2c9fbd449ec9ebbd",
+      "sha256": "46e456c496791ed4795752862baf2ab1cf22234f54d66d80aeb07f8760ec79e6",
+      "box_path": "/workspace/reference-reviews-integration/source/src/style.css",
+      "recovered_from": "/workspace/gta-reviews/repo/src/style.css",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/style.css"
+    },
+    {
+      "repo_path": "src/tutor-ai.js",
+      "git_blob_sha": "0a1270a697e70f3f62bb5f8d5194c0efa52b56f5",
+      "sha256": "95d5a9911a7344375bb36d6f9e3e5284cd99c8bd4c3a83d27dd0be29980d9f7e",
+      "box_path": "/workspace/reference-reviews-integration/source/src/tutor-ai.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/tutor-ai.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/tutor-ai.js"
+    },
+    {
+      "repo_path": "src/tutors.js",
+      "git_blob_sha": "2a00f76b23499b703df63e10d7ca073ce24f9823",
+      "sha256": "a43b4159cff170b7163dcd6b09453ad48548baae4d81959fc9e257b2d213ae85",
+      "box_path": "/workspace/reference-reviews-integration/source/src/tutors.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/tutors.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/tutors.js"
+    },
+    {
+      "repo_path": "src/visits.js",
+      "git_blob_sha": "1f3d8081958e9d4e29161d264069160d6d48a89e",
+      "sha256": "898d73b20ba6745e0ec3725b6a8a3ee313496fe59273945fe24f05cbccc780a4",
+      "box_path": "/workspace/reference-reviews-integration/source/src/visits.js",
+      "recovered_from": "/workspace/gta-reviews/repo/src/visits.js",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/visits.js"
+    },
+    {
+      "repo_path": "index.html",
+      "git_blob_sha": "6cd654150683380164df11d9e17bf01481eba41f",
+      "sha256": "bb7ee26964ca0d6fa1eba9dfe83fe8b674069a08318f7c11d444764f404d216e",
+      "box_path": "/workspace/reference-reviews-integration/source/index.html",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/index.html"
+    },
+    {
+      "repo_path": "package.json",
+      "git_blob_sha": "ee74374d1bb0d66aceee79471396f645e6862aee",
+      "sha256": "ac7d2f8e293cf80213d1ca4fd00576ade4881b5d0e403703fe4833e9123654b2",
+      "box_path": "/workspace/reference-reviews-integration/source/package.json",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/package.json"
+    },
+    {
+      "repo_path": "src/app/account-state.js",
+      "git_blob_sha": "9419163d433d2c1b714904b841dcfc0638b56df1",
+      "sha256": "b2e7652ea8971273a15b805713ebcb24c2c604f6a913f38ea9785c4dc386a6b4",
+      "box_path": "/workspace/reference-reviews-integration/source/src/app/account-state.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/app/account-state.js"
+    },
+    {
+      "repo_path": "src/app/auth-ui.js",
+      "git_blob_sha": "0323f3a0504e83d95783c26f025c27d65337fa4b",
+      "sha256": "490f7250cb828671b661e3bf5c060bbe32cde62d400af558248919461803d2dd",
+      "box_path": "/workspace/reference-reviews-integration/source/src/app/auth-ui.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/app/auth-ui.js"
+    },
+    {
+      "repo_path": "src/app/boot.js",
+      "git_blob_sha": "7a57f07273f8570b705db44e71996fd5038d51c8",
+      "sha256": "7de1069574c2d7b40877e0f3b011050ab66a1d122bb28e263a12cb192e0f834d",
+      "box_path": "/workspace/reference-reviews-integration/source/src/app/boot.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/app/boot.js"
+    },
+    {
+      "repo_path": "src/app/feedback.js",
+      "git_blob_sha": "82289038a4a6b3e9d19ece0e763a0d0347633efe",
+      "sha256": "9708fcb05bbb2bd502a830d72d59bd9aa1c50b31c6d569b42ff8226a7c61c835",
+      "box_path": "/workspace/reference-reviews-integration/source/src/app/feedback.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/app/feedback.js"
+    },
+    {
+      "repo_path": "src/app/persist.js",
+      "git_blob_sha": "81651799a0c8898b8e0d74753f16d396f73424e7",
+      "sha256": "6753093fb1b3da0bd251c26aea54ccbaf100e23ccbc720b0dada2625b0b481b5",
+      "box_path": "/workspace/reference-reviews-integration/source/src/app/persist.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/app/persist.js"
+    },
+    {
+      "repo_path": "src/auth.js",
+      "git_blob_sha": "678b66ba484efc34c5bfca2398ea0b896cc4b180",
+      "sha256": "1497a71c21f6e2c55c31a629e5d98071220683f40de28643b6aa0939b44f15b8",
+      "box_path": "/workspace/reference-reviews-integration/source/src/auth.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/auth.js"
+    },
+    {
+      "repo_path": "src/features/planner/routes.js",
+      "git_blob_sha": "09d3a3e34f3f1f58f95f3554db0bc5ee9505b775",
+      "sha256": "8fe0729e1cf020a805840bb28ff5b723d92b1b3465e56493266532a77b5f7beb",
+      "box_path": "/workspace/reference-reviews-integration/source/src/features/planner/routes.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/features/planner/routes.js"
+    },
+    {
+      "repo_path": "src/main.js",
+      "git_blob_sha": "f210f9243f880e0b84fbaced61905eea2676b995",
+      "sha256": "e3e75f5d66a5a99940ff244767abab4f028143bc800227caee478cc7a5eac1d0",
+      "box_path": "/workspace/reference-reviews-integration/source/src/main.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/main.js"
+    },
+    {
+      "repo_path": "src/plan-locks.js",
+      "git_blob_sha": "d844013f36608201b1cd4409731a965c1b43245a",
+      "sha256": "597b225950266610b60f8f399e5dbcc2d3a5e48fd1b5b147ba01e791d58f7420",
+      "box_path": "/workspace/reference-reviews-integration/source/src/plan-locks.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/plan-locks.js"
+    },
+    {
+      "repo_path": "src/storage.js",
+      "git_blob_sha": "7480e7e5bf3fac3bcabdfd204139ea3c2842a462",
+      "sha256": "09686e309f6fe4351c6a8ec5a5043536d2bfb2b6b48d8959f297f3ff14e46810",
+      "box_path": "/workspace/reference-reviews-integration/source/src/storage.js",
+      "recovered_from": "cursor-github remote get_file_contents",
+      "source_url": "https://github.com/rchambers-dev/GTA_Reviews/blob/b7947d875a5d5f36f886ac06717b2df8049b5e3a/src/storage.js"
+    }
+  ],
+  "missing_source_files": [],
+  "excluded": "env files, credentials, backups, database dumps, app_state, learner records, server/API source, deployment configuration; no semantic parity claim",
+  "existing_comparison_evidence_inventory_not_transferred": [
+    "/workspace/gta-reviews/portal-r5-evidence/035_go_no_go.sql",
+    "/workspace/gta-reviews/portal-r5-evidence/captured_scoped_before.sql",
+    "/workspace/gta-reviews/portal-r5-evidence/reviewer-pg16-results.json",
+    "/workspace/gta-reviews/portal-r5-evidence/test_trigger_metadata.py",
+    "/workspace/gta-reviews/portal-r5-evidence/run_pg16_review.py",
+    "/workspace/gta-reviews/portal-r5-evidence/fresh_after.sql",
+    "/workspace/gta-reviews/portal-r5-evidence/035_employer_directory_reversal.sql",
+    "/workspace/gta-reviews/portal-r5-evidence/captured_scoped_after.sql",
+    "/workspace/gta-reviews/portal-r5-evidence/trigger-metadata-result.json",
+    "/workspace/gta-reviews/portal-r5-evidence/035_employer_directory_and_review_learners.sql",
+    "/workspace/gta-reviews/portal-r5-evidence/fresh_before.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/035_go_no_go.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/reviewer-pg16-results.json",
+    "/workspace/gta-reviews/portal-r6-evidence/disabled_trigger_grant_after.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/test_function_acl.py",
+    "/workspace/gta-reviews/portal-r6-evidence/disabled_trigger_grant_before.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/function-acl-results.json",
+    "/workspace/gta-reviews/portal-r6-evidence/run_pg16_review.py",
+    "/workspace/gta-reviews/portal-r6-evidence/fresh_after.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/035_employer_directory_reversal.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/supplied_baseline_after.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/035_employer_directory_and_review_learners.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/supplied_baseline_before.sql",
+    "/workspace/gta-reviews/portal-r6-evidence/fresh_before.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/035_go_no_go.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/035_post_apply_readback.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/reviewer-pg16-results.json",
+    "/workspace/gta-reviews/portal-r7-evidence/drop-order-results.json",
+    "/workspace/gta-reviews/portal-r7-evidence/disabled_trigger_grant_after.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/disabled_trigger_grant_before.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/run_pg16_review.py",
+    "/workspace/gta-reviews/portal-r7-evidence/fresh_after.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/035_employer_directory_reversal.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/supplied_baseline_after.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/035_employer_directory_and_review_learners.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/supplied_baseline_before.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/035_execution_contract.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/check_inverse_guard.py",
+    "/workspace/gta-reviews/portal-r7-evidence/fresh_before.sql",
+    "/workspace/gta-reviews/portal-r7-evidence/check_drop_order.py",
+    "/workspace/gta-reviews/portal-r8-evidence/035_go_no_go.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/035_post_apply_readback.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/reviewer-pg16-results.json",
+    "/workspace/gta-reviews/portal-r8-evidence/drop-order-results.json",
+    "/workspace/gta-reviews/portal-r8-evidence/blob-verification.json",
+    "/workspace/gta-reviews/portal-r8-evidence/disabled_trigger_grant_after.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/disabled_trigger_grant_before.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/run_pg16_review.py",
+    "/workspace/gta-reviews/portal-r8-evidence/fresh_after.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/035_employer_directory_reversal.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/route.ts",
+    "/workspace/gta-reviews/portal-r8-evidence/supplied_baseline_after.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/035_employer_directory_and_review_learners.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/supplied_baseline_before.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/035_execution_contract.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/access.ts",
+    "/workspace/gta-reviews/portal-r8-evidence/check_inverse_guard.py",
+    "/workspace/gta-reviews/portal-r8-evidence/fresh_before.sql",
+    "/workspace/gta-reviews/portal-r8-evidence/check_drop_order.py",
+    "/workspace/gta-reviews/portal-r9-evidence/employer-directory-route.ts",
+    "/workspace/gta-reviews/portal-r9-evidence/unchanged-boundaries.json",
+    "/workspace/gta-reviews/portal-r9-evidence/sql035-identity.json",
+    "/workspace/gta-reviews/portal-r9-evidence/staff-handlers.ts",
+    "/workspace/gta-reviews/portal-r9-evidence/admin-store-route.ts",
+    "/workspace/gta-reviews/portal-r9-evidence/cohort-handlers.ts",
+    "/workspace/gta-reviews/portal-r9-evidence/access.ts"
+  ]
+}

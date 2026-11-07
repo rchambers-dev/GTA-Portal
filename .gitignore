@@ -88,5 +88,9 @@ scripts/*-stderr.txt
 ../Other Portal/
 ../Other Portal/**
 
-# Disposable staff page-access config. Not a production migration.
+# Local checkpoints only. Not the production store.
 .staff-page-access/
+.review-assistant/
+integrations/gta-reviews/node_modules/
+integrations/gta-reviews/dist/
+integrations/gta-reviews/data/

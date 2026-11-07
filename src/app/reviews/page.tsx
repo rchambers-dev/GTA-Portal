@@ -1,9 +1,13 @@
-import { renderSharedQueuePage } from "@/shell/guards/shared-record-page";
+import { redirect } from "next/navigation";
+import { getStandalonePorts } from "@/adapters/standalone";
+import { reviewAssistantAccess } from "@/features/review-assistant/access";
+import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
+import { assertRouteAccess } from "@/shell/guards/require-route-access";
 
 export default async function ReviewsQueuePage() {
-  return renderSharedQueuePage(
-    "/reviews",
-    "Reviews",
-    "Shared reviews queue — open a row to the canonical review or apprentice record. Workspace dashboards link here; do not duplicate this list per role.",
-  );
+  const session = await getStandalonePorts().auth.getEffectiveSession();
+  if (!session) redirect(getUnauthenticatedRedirect("/reviews"));
+  assertRouteAccess(session, "/reviews");
+  if (reviewAssistantAccess(session) !== "denied") redirect("/reviews/assistant");
+  redirect("/staff/dashboard");
 }
