@@ -14,6 +14,42 @@ export function NavIcon({ href }: { href: string }) {
     "aria-hidden": true as const,
   };
 
+  if (key === "/category/onboarding") {
+    return (
+      <svg {...common}>
+        <circle cx="9" cy="8" r="3.5" />
+        <path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
+        <path d="M18 5v6M15 8h6" />
+      </svg>
+    );
+  }
+  if (key === "/category/marketing") {
+    return (
+      <svg {...common}>
+        <path d="M5 10v4h3l8 4V6L8 10H5z" />
+        <path d="M16 10.2a3.2 3.2 0 0 1 0 3.6" />
+      </svg>
+    );
+  }
+  if (key === "/category/staff") {
+    return (
+      <svg {...common}>
+        <circle cx="9" cy="8" r="3.5" />
+        <path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
+        <path d="M16 7h5M16 11h5M16 15h3" />
+      </svg>
+    );
+  }
+  if (key === "/category/apprenticeship") {
+    return (
+      <svg {...common}>
+        <path d="M22 10 12 5 2 10l10 5 10-5z" />
+        <path d="M6 12.5v4.2c0 .7 2.7 2.3 6 2.3s6-1.6 6-2.3v-4.2" />
+        <path d="M22 10v6" />
+      </svg>
+    );
+  }
+
   if (key.includes("/learning")) {
     return (
       <svg {...common}>

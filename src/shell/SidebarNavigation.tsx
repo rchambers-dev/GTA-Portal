@@ -128,7 +128,10 @@ export function SidebarSections({
         const showItems = !group || open;
         const current = activeHref(pathname, showItems ? section.items : []);
         return (
-          <div key={section.title ?? "default"} className={styles.section}>
+          <div
+            key={section.title ?? "default"}
+            className={group ? `${styles.section} ${styles.sectionGroup}` : styles.section}
+          >
             {section.title && group ? (
               <CategoryButton title={section.title} open={Boolean(open)} onToggle={onToggle} />
             ) : section.title ? (
@@ -162,23 +165,26 @@ function CategoryButton({
       type="button"
       className={open ? styles.categoryButtonOpen : styles.categoryButton}
       aria-expanded={open}
+      aria-label={open ? `${title}, return to main navigation` : `${title}, show pages`}
+      title={title}
       onClick={() => onToggle(title)}
     >
-      {open ? (
-        <span className={styles.icon} data-chevron="left">
-          <NavChevron direction="left" />
-        </span>
-      ) : (
-        <span className={styles.icon} aria-hidden />
-      )}
-      <span className={styles.label}>{title}</span>
-      {open ? null : (
-        <span className={styles.chevronTrail} data-chevron="right">
-          <NavChevron direction="right" />
-        </span>
-      )}
+      <span className={styles.icon} data-category-icon={title}>
+        <NavIcon href={categoryIconHref(title)} />
+      </span>
+      <span className={styles.categoryLabel}>{title}</span>
+      <span className={styles.chevronTrail} data-chevron={open ? "left" : "right"}>
+        <NavChevron direction={open ? "left" : "right"} />
+      </span>
     </button>
   );
+}
+
+function categoryIconHref(title: string): string {
+  if (title === "Onboarding") return "/category/onboarding";
+  if (title === "Marketing") return "/category/marketing";
+  if (title === "Staff") return "/category/staff";
+  return "/category/apprenticeship";
 }
 
 function NavChevron({ direction }: { direction: "left" | "right" }) {

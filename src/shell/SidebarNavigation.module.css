@@ -115,9 +115,7 @@
   margin-top: var(--space-4);
 }
 
-.sectionTitle,
-.categoryButton,
-.categoryButtonOpen {
+.sectionTitle {
   margin: 0 0 var(--space-2);
   padding: 0 0.75rem;
   font-size: 0.68rem;
@@ -133,46 +131,87 @@
     max-height 0.22s ease;
 }
 
+.sectionGroup + .sectionGroup {
+  margin-top: var(--space-1);
+}
+
 .categoryButton,
 .categoryButtonOpen {
   display: grid;
-  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  grid-template-columns: 2.5rem 0fr auto;
   align-items: center;
-  column-gap: 0.65rem;
+  justify-content: center;
+  column-gap: 0;
   width: 100%;
   min-height: 2.75rem;
+  height: auto;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0.35rem 0;
   border: 0;
   border-radius: var(--radius-md);
   background: transparent;
+  color: var(--text-muted-inverse);
   font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.25;
   text-align: left;
+  text-transform: none;
   cursor: pointer;
+}
+
+.sidebarSlot:hover .categoryButton,
+.sidebarSlot:hover .categoryButtonOpen,
+.sidebar:focus-within .categoryButton,
+.sidebar:focus-within .categoryButtonOpen {
+  justify-content: stretch;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  column-gap: 0.65rem;
+  padding-right: 0.65rem;
+}
+
+.categoryButton:hover,
+.categoryButtonOpen:hover {
+  background: rgb(255 255 255 / 0.06);
+  color: var(--text-inverse);
 }
 
 .categoryButtonOpen {
   color: var(--text-inverse);
 }
 
+.categoryLabel {
+  min-width: 0;
+  opacity: 0;
+  overflow: visible;
+  white-space: normal;
+  text-overflow: unset;
+  line-height: 1.25;
+}
+
+.sidebarSlot:hover .categoryLabel,
+.sidebar:focus-within .categoryLabel {
+  opacity: 1;
+}
+
 .chevronTrail {
-  display: grid;
+  display: none;
   place-items: center;
   width: 1.5rem;
   height: 1.5rem;
 }
 
-.sidebarSlot:not(:hover):not(:focus-within) .chevronTrail {
-  grid-column: 1;
+.sidebarSlot:hover .chevronTrail,
+.sidebar:focus-within .chevronTrail {
+  display: grid;
 }
 
 .sidebarSlot:hover .sectionTitle,
-.sidebar:focus-within .sectionTitle,
-.sidebarSlot:hover .categoryButton,
-.sidebarSlot:hover .categoryButtonOpen,
-.sidebar:focus-within .categoryButton,
-.sidebar:focus-within .categoryButtonOpen {
+.sidebar:focus-within .sectionTitle {
   opacity: 1;
-  max-height: 2.75rem;
+  max-height: 2rem;
 }
 
 .list {
