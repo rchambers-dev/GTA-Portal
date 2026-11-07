@@ -77,7 +77,7 @@ export function EmployersVisualPreview({
           >
             <h2 className={styles.formGroupTitle}>Add employer</h2>
             <p className={styles.formGroupMeta}>
-              Company name is required. Phone number and postcode belong to the company. Contact name, email, and phone are separate from the manager. Site and manager are optional.
+              Company name is required. Phone number and postcode belong to the company. A manager can also be the contact. You can enter a different contact instead. Site and manager are optional.
             </p>
             <div className={styles.formGrid}>
               <label className={styles.field}>

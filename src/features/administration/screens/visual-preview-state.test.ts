@@ -166,7 +166,7 @@ describe("employers visual behaviour", () => {
     fetchSpy.mockRestore();
   });
 
-  it("keeps employer contact details separate from the manager", () => {
+  it("allows the manager or a different person as the employer contact", () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
     let state = employerPreviewReducer(initialEmployerPreviewState(), { type: "toggle-add" });
     state = employerPreviewReducer(state, { type: "set-name", name: "Example Workshop" });
@@ -197,6 +197,21 @@ describe("employers visual behaviour", () => {
       managers: ["Example Manager"],
     });
     expect(added?.contactName).not.toBe(added?.managers[0]);
+    let samePerson = employerPreviewReducer(initialEmployerPreviewState(), { type: "toggle-add" });
+    samePerson = employerPreviewReducer(samePerson, { type: "set-name", name: "Example Yard Contact" });
+    samePerson = employerPreviewReducer(samePerson, {
+      type: "set-manager",
+      id: samePerson.managers[0].id,
+      label: "Example Manager",
+    });
+    samePerson = employerPreviewReducer(samePerson, {
+      type: "set-contact-name",
+      contactName: "Example Manager",
+    });
+    const reused = employerPreviewReducer(samePerson, { type: "add-local" });
+    const reusedRow = reused.rows.find((row) => row.name === "Example Yard Contact");
+    expect(reusedRow?.contactName).toBe("Example Manager");
+    expect(reusedRow?.managers).toEqual(["Example Manager"]);
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
     const html = renderToStaticMarkup(
@@ -209,6 +224,7 @@ describe("employers visual behaviour", () => {
     expect(html).toContain("Employer contact name");
     expect(html).toContain("Employer contact email");
     expect(html).toContain("Employer contact phone");
+    expect(html).toContain("A manager can also be the contact");
     expect(html.indexOf("Employer contact name")).toBeGreaterThan(html.indexOf("Postcode"));
   });
 
