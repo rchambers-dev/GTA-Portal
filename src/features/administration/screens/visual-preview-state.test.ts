@@ -11,6 +11,7 @@ import {
   EMPLOYER_STATUSES,
   ENQUIRY_SOURCES,
   LEARNER_FIELD_ORDER,
+  RELEASE_DAYS,
   RESPONSIVENESS_OPTIONS,
   TRAINING_SITES,
 } from "./learner-entry-options";
@@ -162,6 +163,52 @@ describe("employers visual behaviour", () => {
     expect(savedLocally.notice).toBe("Not saved. Saving is disabled.");
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
+  });
+
+  it("keeps employer contact details separate from the manager", () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    let state = employerPreviewReducer(initialEmployerPreviewState(), { type: "toggle-add" });
+    state = employerPreviewReducer(state, { type: "set-name", name: "Example Workshop" });
+    state = employerPreviewReducer(state, { type: "set-postcode", postcode: "EX4 4EX" });
+    state = employerPreviewReducer(state, { type: "set-phone", phone: "00000 400400" });
+    state = employerPreviewReducer(state, {
+      type: "set-manager",
+      id: state.managers[0].id,
+      label: "Example Manager",
+    });
+    state = employerPreviewReducer(state, { type: "set-contact-name", contactName: "Jo Example" });
+    state = employerPreviewReducer(state, {
+      type: "set-contact-email",
+      contactEmail: "jo@example.test",
+    });
+    state = employerPreviewReducer(state, {
+      type: "set-contact-phone",
+      contactPhone: "00000 500500",
+    });
+    const saved = employerPreviewReducer(state, { type: "add-local" });
+    const added = saved.rows.find((row) => row.name === "Example Workshop");
+    expect(added).toMatchObject({
+      postcode: "EX4 4EX",
+      phone: "00000 400400",
+      contactName: "Jo Example",
+      contactEmail: "jo@example.test",
+      contactPhone: "00000 500500",
+      managers: ["Example Manager"],
+    });
+    expect(added?.contactName).not.toBe(added?.managers[0]);
+    expect(fetchSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+    const html = renderToStaticMarkup(
+      createElement(EmployersVisualPreview, {
+        initialState: { ...initialEmployerPreviewState(), addOpen: true },
+      }),
+    );
+    expect(html).toContain("Postcode");
+    expect(html).toContain("Phone number");
+    expect(html).toContain("Employer contact name");
+    expect(html).toContain("Employer contact email");
+    expect(html).toContain("Employer contact phone");
+    expect(html.indexOf("Employer contact name")).toBeGreaterThan(html.indexOf("Postcode"));
   });
 
   it("renders company phone and postcode on the employer page only", () => {
@@ -481,12 +528,30 @@ describe("apprentice employer dropdown", () => {
     );
     const order = [...html.matchAll(/data-entry-field="([^"]+)"/g)].map((match) => match[1]);
     expect(order).toEqual([...LEARNER_FIELD_ORDER]);
-    expect(html.match(/aria-haspopup="listbox"/g)?.length).toBe(6);
+    expect(html.match(/aria-haspopup="listbox"/g)?.length).toBe(8);
     expect(html).not.toContain("<select");
     expect(html).toContain(">None<");
     expect(html).not.toContain(">Doncaster<");
     expect(html).not.toContain(">Autocare<");
     expect(html).not.toContain(">Responsive<");
+    expect(html).toContain("Release day");
+    expect(html).toContain("GTA tutor");
+    expect(html).toContain("Apprenticeship start date");
+    expect(html).toContain("Apprenticeship planned end date");
+    expect(html).toContain("GTA reviewer");
+    expect(html).toContain("Planned review date");
+    expect(html).toContain("Future reviews");
+    expect(html).toContain("Enter the planned review date first");
+    expect(html).toContain('disabled=""');
+    expect(html).not.toContain("Reiss Chambers");
+    expect(html).not.toContain("standard / route");
+    expect(RELEASE_DAYS.map((item) => item.label)).toEqual([
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+    ]);
     expect(html).not.toContain("Phone number");
     expect(TRAINING_SITES.map((item) => item.label)).toEqual(["Doncaster", "Sheffield"]);
     expect(APPRENTICESHIPS.map((item) => item.label)).toEqual([
@@ -530,6 +595,12 @@ describe("apprentice employer dropdown", () => {
       employerStatus: "confirmed",
       employerId: "example-motors",
       intendedIntakeDate: "2026-09-01",
+      releaseDay: "Tuesday",
+      gtaTutor: "Tutor example",
+      apprenticeshipStartDate: "2026-09-07",
+      apprenticeshipPlannedEndDate: "2028-09-06",
+      gtaReviewer: "Reviewer example",
+      plannedReviewDate: "2026-12-01",
       notes: "Preview note",
     } as const;
     for (const [field, value] of Object.entries(entered)) {
@@ -541,7 +612,15 @@ describe("apprentice employer dropdown", () => {
     }
     state = apprenticePreviewReducer(state, { type: "add-local" });
     const added = state.rows.find((row) => row.fullName === "Sam Example");
-    expect(added).toMatchObject(entered);
+    expect(added).toMatchObject({
+      ...entered,
+      releaseDay: "Tuesday",
+      gtaTutor: "Tutor example",
+      apprenticeshipStartDate: "2026-09-07",
+      apprenticeshipPlannedEndDate: "2028-09-06",
+      gtaReviewer: "Reviewer example",
+      plannedReviewDate: "2026-12-01",
+    });
     expect(state.site).toBe("");
     expect(state.originalEntryDate).toBe("");
     expect(fetchSpy).not.toHaveBeenCalled();

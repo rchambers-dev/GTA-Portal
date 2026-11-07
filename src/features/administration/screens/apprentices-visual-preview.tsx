@@ -8,6 +8,7 @@ import {
   APPRENTICESHIPS,
   EMPLOYER_STATUSES,
   ENQUIRY_SOURCES,
+  RELEASE_DAYS,
   RESPONSIVENESS_OPTIONS,
   TRAINING_SITES,
 } from "./learner-entry-options";
@@ -166,6 +167,57 @@ export function ApprenticesVisualPreview({
                     value={state.intendedIntakeDate}
                     dispatch={dispatch}
                   />
+                  <ChoiceEntry
+                    field="releaseDay"
+                    label="Release day"
+                    value={state.releaseDay}
+                    options={RELEASE_DAYS}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="gtaTutor"
+                    label="GTA tutor"
+                    value={state.gtaTutor}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="apprenticeshipStartDate"
+                    label="Apprenticeship start date"
+                    type="date"
+                    value={state.apprenticeshipStartDate}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="apprenticeshipPlannedEndDate"
+                    label="Apprenticeship planned end date"
+                    type="date"
+                    value={state.apprenticeshipPlannedEndDate}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="gtaReviewer"
+                    label="GTA reviewer"
+                    value={state.gtaReviewer}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="plannedReviewDate"
+                    label="Planned review date"
+                    type="date"
+                    value={state.plannedReviewDate}
+                    dispatch={dispatch}
+                  />
+                  <div className={styles.learnerField} data-entry-field="futureReviews">
+                    <span>Future reviews</span>
+                    <Select
+                      aria-label="Future reviews"
+                      value=""
+                      disabled
+                      placeholder="Enter the planned review date first"
+                      options={[]}
+                      onChange={() => undefined}
+                    />
+                  </div>
                 </div>
                 <label className={styles.learnerField} data-entry-field="notes">
                   <span>Notes</span>

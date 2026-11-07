@@ -9,6 +9,9 @@ export type ExampleEmployer = {
   name: string;
   phone: string;
   postcode: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
   sites: string[];
   managers: string[];
 };
@@ -30,6 +33,12 @@ export type ApprenticeEntryFields = {
   employerStatus: string;
   employerId: string;
   intendedIntakeDate: string;
+  releaseDay: string;
+  gtaTutor: string;
+  apprenticeshipStartDate: string;
+  apprenticeshipPlannedEndDate: string;
+  gtaReviewer: string;
+  plannedReviewDate: string;
   notes: string;
 };
 
@@ -51,6 +60,12 @@ export function blankApprenticeEntry(): ApprenticeEntryFields {
     employerStatus: "",
     employerId: "",
     intendedIntakeDate: "",
+    releaseDay: "",
+    gtaTutor: "",
+    apprenticeshipStartDate: "",
+    apprenticeshipPlannedEndDate: "",
+    gtaReviewer: "",
+    plannedReviewDate: "",
     notes: "",
   };
 }
@@ -61,6 +76,9 @@ export const EXAMPLE_EMPLOYERS: ExampleEmployer[] = [
     name: "Example Motors",
     phone: "00000 100100",
     postcode: "EX1 1EX",
+    contactName: "",
+    contactEmail: "",
+    contactPhone: "",
     sites: ["Example yard"],
     managers: ["Example Manager"],
   },
@@ -69,6 +87,9 @@ export const EXAMPLE_EMPLOYERS: ExampleEmployer[] = [
     name: "Example Yard Co",
     phone: "00000 200200",
     postcode: "EX2 2EX",
+    contactName: "",
+    contactEmail: "",
+    contactPhone: "",
     sites: ["Example yard"],
     managers: [],
   },
@@ -161,6 +182,12 @@ export function apprenticePreviewReducer(
         employerStatus: state.employerStatus,
         employerId: state.employerId,
         intendedIntakeDate: state.intendedIntakeDate,
+        releaseDay: state.releaseDay,
+        gtaTutor: state.gtaTutor.trim(),
+        apprenticeshipStartDate: state.apprenticeshipStartDate,
+        apprenticeshipPlannedEndDate: state.apprenticeshipPlannedEndDate,
+        gtaReviewer: state.gtaReviewer.trim(),
+        plannedReviewDate: state.plannedReviewDate,
         notes: state.notes.trim(),
       };
       return {
@@ -194,6 +221,9 @@ export type EmployerPreviewState = {
   name: string;
   phone: string;
   postcode: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
   sites: DraftEntry[];
   managers: DraftEntry[];
   entrySeq: number;
@@ -209,6 +239,9 @@ export type EmployerPreviewAction =
   | { type: "set-name"; name: string }
   | { type: "set-phone"; phone: string }
   | { type: "set-postcode"; postcode: string }
+  | { type: "set-contact-name"; contactName: string }
+  | { type: "set-contact-email"; contactEmail: string }
+  | { type: "set-contact-phone"; contactPhone: string }
   | { type: "add-site" }
   | { type: "set-site"; id: string; label: string }
   | { type: "remove-site"; id: string }
@@ -278,6 +311,9 @@ export function employerMeta(row: ExampleEmployer): string {
   return [
     row.phone,
     row.postcode,
+    row.contactName ?? "",
+    row.contactEmail ?? "",
+    row.contactPhone ?? "",
     sites.length > 0 ? sites.join(", ") : "No site",
     managers.length > 0 ? managers.join(", ") : "No manager",
   ]
@@ -292,6 +328,9 @@ export function initialEmployerPreviewState(): EmployerPreviewState {
     name: "",
     phone: "",
     postcode: "",
+    contactName: "",
+    contactEmail: "",
+    contactPhone: "",
     ...blankEmployerEntries(),
     pendingRemove: null,
     rows: EXAMPLE_EMPLOYERS.map((row) => ({
@@ -307,7 +346,16 @@ export function visibleEmployers(state: EmployerPreviewState): ExampleEmployer[]
   const query = state.query.trim().toLowerCase();
   if (!query) return state.rows;
   return state.rows.filter((row) =>
-    [row.name, row.phone, row.postcode, ...row.sites, ...row.managers]
+    [
+      row.name,
+      row.phone,
+      row.postcode,
+      row.contactName ?? "",
+      row.contactEmail ?? "",
+      row.contactPhone ?? "",
+      ...row.sites,
+      ...row.managers,
+    ]
       .join(" ")
       .toLowerCase()
       .includes(query),
@@ -329,6 +377,9 @@ export function employerPreviewReducer(
             name: "",
             phone: "",
             postcode: "",
+            contactName: "",
+            contactEmail: "",
+            contactPhone: "",
             ...blankEmployerEntries(),
             pendingRemove: null,
             notice: "",
@@ -341,6 +392,9 @@ export function employerPreviewReducer(
         name: "",
         phone: "",
         postcode: "",
+        contactName: "",
+        contactEmail: "",
+        contactPhone: "",
         ...blankEmployerEntries(),
         pendingRemove: null,
         notice: "",
@@ -351,6 +405,12 @@ export function employerPreviewReducer(
       return { ...state, phone: action.phone };
     case "set-postcode":
       return { ...state, postcode: action.postcode };
+    case "set-contact-name":
+      return { ...state, contactName: action.contactName };
+    case "set-contact-email":
+      return { ...state, contactEmail: action.contactEmail };
+    case "set-contact-phone":
+      return { ...state, contactPhone: action.contactPhone };
     case "add-site": {
       const entrySeq = state.entrySeq + 1;
       return {
@@ -409,6 +469,9 @@ export function employerPreviewReducer(
         name: "",
         phone: "",
         postcode: "",
+        contactName: "",
+        contactEmail: "",
+        contactPhone: "",
         ...blankEmployerEntries(),
         pendingRemove: null,
         notice: "Not saved. Saving is disabled.",
@@ -419,6 +482,9 @@ export function employerPreviewReducer(
             name,
             phone: state.phone.trim(),
             postcode: state.postcode.trim(),
+            contactName: state.contactName.trim(),
+            contactEmail: state.contactEmail.trim(),
+            contactPhone: state.contactPhone.trim(),
             sites: filledLabels(state.sites),
             managers: filledLabels(state.managers),
           },
