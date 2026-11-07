@@ -1,6 +1,7 @@
 "use client";
 
 import { useReducer } from "react";
+import { Select } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./admin-pages.module.css";
 import {
@@ -85,22 +86,21 @@ export function ApprenticesVisualPreview({
                   }
                 />
               </label>
-              <label className={styles.field}>
+              <div className={styles.field}>
                 <span>Employer</span>
-                <select
+                <Select
+                  aria-label="Employer"
                   value={state.employerId}
-                  onChange={(event) =>
-                    dispatch({ type: "set-employer", employerId: event.target.value })
-                  }
-                >
-                  <option value="">Not linked</option>
-                  {state.employers.map((employer) => (
-                    <option key={employer.id} value={employer.id}>
-                      {employer.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  options={[
+                    { value: "", label: "Not linked" },
+                    ...state.employers.map((employer) => ({
+                      value: employer.id,
+                      label: employer.name,
+                    })),
+                  ]}
+                  onChange={(employerId) => dispatch({ type: "set-employer", employerId })}
+                />
+              </div>
             </div>
             {state.notice ? <p className={styles.formGroupMeta}>{state.notice}</p> : null}
             <div className={styles.formActions}>
@@ -131,7 +131,7 @@ export function ApprenticesVisualPreview({
         ) : (
           <ul className={styles.pillList}>
             {rows.map((row) => (
-              <li key={row.id} className={styles.pillRow}>
+              <li key={row.id} className={`${styles.pillRow} ${styles.employerRow}`}>
                 <span className={styles.pillName}>{row.fullName}</span>
                 <span className={styles.pillMeta}>
                   {employerName(row.employerId, state.employers)}
