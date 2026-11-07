@@ -4,9 +4,12 @@ import { useReducer } from "react";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./admin-pages.module.css";
 import {
+  employerMeta,
   employerPreviewReducer,
   initialEmployerPreviewState,
   visibleEmployers,
+  type DraftEntry,
+  type EmployerPreviewAction,
   type EmployerPreviewState,
 } from "./visual-preview-state";
 
@@ -70,7 +73,7 @@ export function EmployersVisualPreview({
           >
             <h2 className={styles.formGroupTitle}>Add employer</h2>
             <p className={styles.formGroupMeta}>
-              Company name is required. Phone and postcode belong to the company. Site and manager are optional and stay under the employer.
+              Company name is required. Phone and postcode belong to the company. Site and manager are optional. Use the pill buttons to add more than one.
             </p>
             <div className={styles.formGrid}>
               <label className={styles.field}>
@@ -99,25 +102,17 @@ export function EmployersVisualPreview({
                   }
                 />
               </label>
-              <label className={styles.field}>
-                <span>Site</span>
-                <input
-                  value={state.site}
-                  placeholder="Optional"
-                  onChange={(event) => dispatch({ type: "set-site", site: event.target.value })}
-                />
-              </label>
-              <label className={styles.field}>
-                <span>Manager</span>
-                <input
-                  value={state.manager}
-                  placeholder="Optional"
-                  onChange={(event) =>
-                    dispatch({ type: "set-manager", manager: event.target.value })
-                  }
-                />
-              </label>
             </div>
+            <RepeatableEntries
+              kind="site"
+              entries={state.sites}
+              dispatch={dispatch}
+            />
+            <RepeatableEntries
+              kind="manager"
+              entries={state.managers}
+              dispatch={dispatch}
+            />
             {state.notice ? <p className={styles.formGroupMeta}>{state.notice}</p> : null}
             <div className={styles.formActions}>
               <button
@@ -149,16 +144,73 @@ export function EmployersVisualPreview({
             {rows.map((row) => (
               <li key={row.id} className={styles.pillRow}>
                 <span className={styles.pillName}>{row.name}</span>
-                <span className={styles.pillMeta}>
-                  {[row.phone, row.postcode, row.site || "No site", row.manager || "No manager"]
-                    .filter(Boolean)
-                    .join(" · ")}
-                </span>
+                <span className={styles.pillMeta}>{employerMeta(row)}</span>
               </li>
             ))}
           </ul>
         )}
       </div>
     </ApprenticePageShell>
+  );
+}
+
+function RepeatableEntries({
+  kind,
+  entries,
+  dispatch,
+}: {
+  kind: "site" | "manager";
+  entries: DraftEntry[];
+  dispatch: (action: EmployerPreviewAction) => void;
+}) {
+  const noun = kind === "site" ? "Site" : "Manager";
+  const addLabel = kind === "site" ? "+ Add site" : "+ Add manager";
+  return (
+    <div className={styles.entryGroup}>
+      {entries.map((entry, index) => {
+        const number = index + 1;
+        const fieldLabel = number === 1 ? noun : `${noun} ${number}`;
+        return (
+          <div key={entry.id} className={styles.entryRow}>
+            <label className={styles.field}>
+              <span>{fieldLabel}</span>
+              <input
+                value={entry.label}
+                placeholder="Optional"
+                aria-label={fieldLabel}
+                onChange={(event) =>
+                  dispatch(
+                    kind === "site"
+                      ? { type: "set-site", id: entry.id, label: event.target.value }
+                      : { type: "set-manager", id: entry.id, label: event.target.value },
+                  )
+                }
+              />
+            </label>
+            {index === 0 ? (
+              <button
+                type="button"
+                className={styles.addEntryPill}
+                onClick={() => dispatch(kind === "site" ? { type: "add-site" } : { type: "add-manager" })}
+              >
+                {addLabel}
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className={styles.removeEntryPill}
+              aria-label={`Remove ${noun.toLowerCase()} ${number}`}
+              onClick={() =>
+                dispatch(
+                  kind === "site" ? { type: "remove-site", id: entry.id } : { type: "remove-manager", id: entry.id },
+                )
+              }
+            >
+              Remove
+            </button>
+          </div>
+        );
+      })}
+    </div>
   );
 }
