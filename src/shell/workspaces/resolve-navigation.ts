@@ -17,6 +17,43 @@ function marketingSection(workspace: "administration" | "management") {
   };
 }
 
+function apprenticeshipManagementSection(workspace: "administration" | "management") {
+  const records = PERMISSIONS.ADMIN_RECORDS_MANAGE;
+  const setup = PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP;
+  const items =
+    workspace === "administration"
+      ? [
+          { href: "/administration/programmes", label: "Apprenticeships", permission: records },
+          { href: "/administration/cohorts", label: "Cohorts", permission: records },
+          { href: "/administration/teaching-groups", label: "Teaching Groups", permission: records },
+          { href: "/administration/enrolments", label: "Apprentice Enrolments", permission: records },
+        ]
+      : [
+          { href: "/management/programmes-records", label: "Apprenticeships", permission: records },
+          { href: "/management/cohorts", label: "Cohorts", permission: records },
+          { href: "/management/teaching-groups", label: "Teaching Groups", permission: records },
+          { href: "/management/enrolments", label: "Apprentice Enrolments", permission: records },
+          { href: "/management/programme-builder", label: "Programme Builder", permission: setup },
+          { href: "/management/course-builder", label: "Course Builder", permission: setup },
+          { href: "/management/apprentice-funding", label: "Apprentice funding (RPL / KSB)", permission: setup },
+          { href: "/management/apprentice-tnp", label: "Apprentice TNP1", permission: setup },
+        ];
+  return { title: "Apprenticeship Management", items };
+}
+
+function staffSection(workspace: "administration" | "management") {
+  return {
+    title: "Staff",
+    items: [
+      {
+        href: `/staff-records?from=${workspace}`,
+        label: "Staff Records",
+        permission: PERMISSIONS.ADMIN_USERS_MANAGE,
+      },
+    ],
+  };
+}
+
 function onboardingSection(workspace: "administration" | "management") {
   const base = `/${workspace}/onboarding`;
   return {
@@ -137,22 +174,14 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       {
         items: [
           { href: "/management/dashboard", label: "Management Dashboard", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
-          { href: "/management/programmes-records", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/cohorts", label: "Cohorts", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/teaching-groups", label: "Teaching Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/enrolments", label: "Apprentice Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/programme-builder", label: "Programme Builder", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
-          { href: "/management/course-builder", label: "Course Builder", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
-          { href: "/management/apprentice-funding", label: "Apprentice funding (RPL / KSB)", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
-          { href: "/management/apprentice-tnp", label: "Apprentice TNP1", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
           { href: "/management/apprentice-brag", label: "Apprentice progression BRAG", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
-          { href: "/management/staff", label: "Staff", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
-          { href: "/staff-records?from=management", label: "Staff Records", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/management/shared-drive", label: "Shared Drive", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
           { href: "/management/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
           { href: "/management/safeguarding", label: "Safeguarding", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
         ],
       },
+      apprenticeshipManagementSection("management"),
+      staffSection("management"),
       marketingSection("management"),
       onboardingSection("management"),
     ]);
@@ -164,18 +193,14 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       {
         items: [
           { href: "/administration/dashboard", label: "Administration Dashboard", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
-          { href: "/administration/cohorts", label: "Cohorts", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/teaching-groups", label: "Teaching Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/programmes", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/enrolments", label: "Apprentice Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/staff", label: "Staff", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
-          { href: "/staff-records?from=administration", label: "Staff Records", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/administration/accounts", label: "Apprentice Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/administration/shared-drive", label: "Shared Drive", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
           { href: "/administration/safeguarding", label: "Safeguarding", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
         ],
       },
+      apprenticeshipManagementSection("administration"),
+      staffSection("administration"),
       marketingSection("administration"),
       onboardingSection("administration"),
     ]);
