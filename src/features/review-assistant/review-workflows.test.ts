@@ -47,7 +47,7 @@ const office = buildEffectiveSession(
 
 const tutor = buildEffectiveSession(
   account({
-    name: "Anne-Marie Sanderson",
+    name: "Example Tutor",
     workspace: "staff",
     baseRole: "Tutor",
     permissions: [PERMISSIONS.REVIEWS_MANAGE],
@@ -90,7 +90,7 @@ describe("review assistant server copy", () => {
         body: JSON.stringify({
           appBuild: "out-165",
           version: 1,
-          learners: [{ id: "example-1", name: "Example Learner", tutor: "Anne-Marie Sanderson" }],
+          learners: [{ id: "example-1", name: "Example Learner", tutor: "Example Tutor" }],
           savedReviews: [],
         }),
       }),
@@ -102,7 +102,7 @@ describe("review assistant server copy", () => {
         body: JSON.stringify({
           appBuild: "out-165",
           version: 1,
-          learners: [{ id: "example-1", name: "Changed", tutor: "Anne-Marie Sanderson" }],
+          learners: [{ id: "example-1", name: "Changed", tutor: "Example Tutor" }],
         }),
       }),
     );
@@ -117,8 +117,8 @@ describe("review assistant server copy", () => {
       {
         version: 1,
         learners: [
-          { id: "mine", name: "Example Learner", tutor: "Anne-Marie Sanderson" },
-          { id: "other", name: "Other Learner", tutor: "John Pearson" },
+          { id: "mine", name: "Example Learner", tutor: "Example Tutor" },
+          { id: "other", name: "Other Learner", tutor: "Example Colleague" },
         ],
         savedReviews: [
           { id: "review-mine", learnerId: "mine", status: "sent", tutorNotes: "" },
@@ -130,7 +130,7 @@ describe("review assistant server copy", () => {
       1,
     );
     const keyOf = (value: string) => value.trim().toLowerCase();
-    const visible = filterStateForTutor(readReviewState(), "anne-marie sanderson", keyOf);
+    const visible = filterStateForTutor(readReviewState(), "example tutor", keyOf);
     expect(visible.learners?.map((learner) => learner.id)).toEqual(["mine"]);
     expect(visible.savedReviews?.map((review) => review.id)).toEqual(["review-mine"]);
     expect(visible.settings).toMatchObject({ email: "", officePostcode: "" });
@@ -144,7 +144,7 @@ describe("review assistant server copy", () => {
           { id: "review-other", learnerId: "other", status: "completed", tutorNotes: "nope" },
         ],
       },
-      "anne-marie sanderson",
+      "example tutor",
       keyOf,
     );
     expect(merged.savedReviews?.find((review) => review.id === "review-mine")).toMatchObject({
@@ -170,7 +170,7 @@ describe("review assistant server copy", () => {
   it("stores an attachment on the server and hides another tutor's file", async () => {
     saveReviewState(
       {
-        learners: [{ id: "mine", tutor: "Anne-Marie Sanderson" }],
+        learners: [{ id: "mine", tutor: "Example Tutor" }],
         savedReviews: [{ id: "review-mine", learnerId: "mine", attachment: { id: "will-replace" } }],
       },
       1,
@@ -194,7 +194,7 @@ describe("review assistant server copy", () => {
     getEffectiveSession.mockResolvedValue(
       buildEffectiveSession(
         account({
-          name: "John Pearson",
+          name: "Example Colleague",
           workspace: "staff",
           baseRole: "Tutor",
           permissions: [PERMISSIONS.REVIEWS_MANAGE],

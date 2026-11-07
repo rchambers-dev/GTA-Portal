@@ -2,7 +2,7 @@ export const GTA_STAFF = [
   {
     name: "Lucy Butler",
     title: "Administration",
-    email: "lucybutler@doncastergta.co.uk",
+    email: "",
   },
 ];
 

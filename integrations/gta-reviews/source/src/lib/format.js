@@ -103,7 +103,7 @@ export function extraRouteEmails(value, defaultRouteEmail = DEFAULT_ROUTE_EMAIL)
 }
 
 export function routeEmailAddresses(settingsEmail, defaultRouteEmail = DEFAULT_ROUTE_EMAIL) {
-  return [defaultRouteEmail, ...extraRouteEmails(settingsEmail, defaultRouteEmail)];
+  return [defaultRouteEmail, ...extraRouteEmails(settingsEmail, defaultRouteEmail)].filter(Boolean);
 }
 
 export function routeMailtoHref(

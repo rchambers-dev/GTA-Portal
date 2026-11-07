@@ -83,6 +83,14 @@ describe("review assistant access", () => {
     expect(source).toContain("export function versionOf");
     expect(source).toContain("export function conflictBody");
     expect(source).toContain("save_app_state_if_version");
+    const bundle = readFileSync(
+      path.join(process.cwd(), "public/review-assistant/app.js"),
+      "utf8",
+    );
+    expect(bundle).not.toContain("gzeeofbhcgbgcbykdvez");
+    expect(bundle).not.toContain("doncastergta.co.uk");
+    expect(bundle).not.toContain("reiss.kc@gmail.com");
+    expect(bundle).toContain("__PORTAL_REVIEW_SESSION__");
     for (const present of [
       "integrations/gta-reviews/server/runtime.js",
       "integrations/gta-reviews/shared/log-error.js",

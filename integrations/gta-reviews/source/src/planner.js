@@ -156,7 +156,7 @@ export function applyLearnerProfile(learner, patch = {}) {
 }
 
 export const DEFAULT_GTA_REVIEWER = "Reiss Chambers";
-export const DEFAULT_ROUTE_EMAIL = "reiss.kc@gmail.com";
+export const DEFAULT_ROUTE_EMAIL = "";
 
 export function clearLearnerPlannedDates(item) {
   if (!item) return item;
