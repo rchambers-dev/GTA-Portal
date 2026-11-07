@@ -2,8 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import type { NavItem, NavSection } from "@/lib/portal/types";
 import { usePortalSession } from "./session/PortalSessionProvider";
 import { NavIcon } from "./nav-icons";
+import {
+  activeHref,
+  focusAfterNavigation,
+  groupForPath,
+  initialFocus,
+  isFocusGroup,
+  itemPath,
+  toggleHeading,
+  type FocusState,
+} from "./sidebar-focus";
 import { resolveNavigation } from "./workspaces/resolve-navigation";
 import { workspaceLabel } from "./workspaces/workspace-stubs";
 import styles from "./SidebarNavigation.module.css";
@@ -52,6 +64,12 @@ export function SidebarNavigation() {
   const { session } = usePortalSession();
   const navigation = resolveNavigation(session);
   const workspace = session.account.workspace;
+  const owner = groupForPath(navigation, pathname);
+  const [focus, setFocus] = useState<FocusState>(() => initialFocus(navigation, pathname));
+
+  useEffect(() => {
+    setFocus((current) => focusAfterNavigation(current, owner));
+  }, [owner]);
 
   return (
     <div className={styles.sidebarSlot}>
@@ -71,49 +89,12 @@ export function SidebarNavigation() {
         </div>
 
         <nav className={styles.nav}>
-          {navigation.map((section) => (
-            <div key={section.title ?? "default"} className={styles.section}>
-              {section.title ? (
-                <p className={styles.sectionTitle}>{section.title}</p>
-              ) : null}
-              <ul className={styles.list}>
-                {section.items.map((item) => {
-                  const itemPath = item.href.split("?")[0] ?? item.href;
-                  const isPremium = itemPath.includes("/cv");
-                  const active =
-                    pathname === itemPath ||
-                    (itemPath !== "/staff/dashboard" &&
-                      itemPath !== "/apprentice/dashboard" &&
-                      itemPath !== "/" &&
-                      pathname.startsWith(itemPath));
-                  return (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        className={active ? styles.linkActive : styles.link}
-                        aria-current={active ? "page" : undefined}
-                        onClick={(event) => {
-                          // Drop focus so :focus-within doesn't pin the rail open
-                          // after navigating; hover still expands it.
-                          event.currentTarget.blur();
-                        }}
-                      >
-                        <span className={styles.icon}>
-                          <NavIcon href={item.href} />
-                        </span>
-                        <span className={styles.label}>{item.label}</span>
-                        {isPremium ? (
-                          <span className={styles.premiumBadge} aria-hidden>
-                            <PremiumCogIcon />
-                          </span>
-                        ) : null}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
+          <SidebarSections
+            navigation={navigation}
+            pathname={pathname}
+            focused={focus.focused}
+            onToggle={(title) => setFocus((current) => toggleHeading(current, title))}
+          />
         </nav>
 
         <div className={styles.footer}>
@@ -121,5 +102,126 @@ export function SidebarNavigation() {
         </div>
       </aside>
     </div>
+  );
+}
+
+export function SidebarSections({
+  navigation,
+  pathname,
+  focused,
+  onToggle,
+}: {
+  navigation: NavSection[];
+  pathname: string;
+  focused: string | null;
+  onToggle: (title: string) => void;
+}) {
+  const visible = focused
+    ? navigation.filter((section) => section.title === focused)
+    : navigation;
+
+  return (
+    <>
+      {visible.map((section) => {
+        const group = isFocusGroup(section);
+        const open = group && section.title === focused;
+        const showItems = !group || open;
+        const current = activeHref(pathname, showItems ? section.items : []);
+        return (
+          <div key={section.title ?? "default"} className={styles.section}>
+            {section.title && group ? (
+              <CategoryButton title={section.title} open={Boolean(open)} onToggle={onToggle} />
+            ) : section.title ? (
+              <p className={styles.sectionTitle}>{section.title}</p>
+            ) : null}
+            {showItems ? (
+              <ul className={styles.list}>
+                {section.items.map((item) => (
+                  <NavLeaf key={item.href} item={item} active={item.href === current} />
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
+function CategoryButton({
+  title,
+  open,
+  onToggle,
+}: {
+  title: string;
+  open: boolean;
+  onToggle: (title: string) => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={open ? styles.categoryButtonOpen : styles.categoryButton}
+      aria-expanded={open}
+      onClick={() => onToggle(title)}
+    >
+      {open ? (
+        <span className={styles.icon} data-chevron="left">
+          <NavChevron direction="left" />
+        </span>
+      ) : (
+        <span className={styles.icon} aria-hidden />
+      )}
+      <span className={styles.label}>{title}</span>
+      {open ? null : (
+        <span className={styles.chevronTrail} data-chevron="right">
+          <NavChevron direction="right" />
+        </span>
+      )}
+    </button>
+  );
+}
+
+function NavChevron({ direction }: { direction: "left" | "right" }) {
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.9}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      {direction === "right" ? <path d="M9 6l6 6-6 6" /> : <path d="M15 6l-6 6 6 6" />}
+    </svg>
+  );
+}
+
+function NavLeaf({ item, active }: { item: NavItem; active: boolean }) {
+  const path = itemPath(item.href);
+  const isPremium = path.includes("/cv");
+  return (
+    <li>
+      <Link
+        href={item.href}
+        className={active ? styles.linkActive : styles.link}
+        aria-current={active ? "page" : undefined}
+        onClick={(event) => {
+          event.currentTarget.blur();
+        }}
+      >
+        <span className={styles.icon}>
+          <NavIcon href={item.href} />
+        </span>
+        <span className={styles.label}>{item.label}</span>
+        {isPremium ? (
+          <span className={styles.premiumBadge} aria-hidden>
+            <PremiumCogIcon />
+          </span>
+        ) : null}
+      </Link>
+    </li>
   );
 }

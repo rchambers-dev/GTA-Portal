@@ -115,7 +115,9 @@
   margin-top: var(--space-4);
 }
 
-.sectionTitle {
+.sectionTitle,
+.categoryButton,
+.categoryButtonOpen {
   margin: 0 0 var(--space-2);
   padding: 0 0.75rem;
   font-size: 0.68rem;
@@ -131,10 +133,46 @@
     max-height 0.22s ease;
 }
 
+.categoryButton,
+.categoryButtonOpen {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 0.65rem;
+  width: 100%;
+  min-height: 2.75rem;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  font-family: var(--font-display);
+  text-align: left;
+  cursor: pointer;
+}
+
+.categoryButtonOpen {
+  color: var(--text-inverse);
+}
+
+.chevronTrail {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.sidebarSlot:not(:hover):not(:focus-within) .chevronTrail {
+  grid-column: 1;
+}
+
 .sidebarSlot:hover .sectionTitle,
-.sidebar:focus-within .sectionTitle {
+.sidebar:focus-within .sectionTitle,
+.sidebarSlot:hover .categoryButton,
+.sidebarSlot:hover .categoryButtonOpen,
+.sidebar:focus-within .categoryButton,
+.sidebar:focus-within .categoryButtonOpen {
   opacity: 1;
-  max-height: 2rem;
+  max-height: 2.75rem;
 }
 
 .list {
