@@ -7,6 +7,14 @@ import styles from "./admin-pages.module.css";
 import { ApprenticesVisualPreview } from "./apprentices-visual-preview";
 import { EmployersVisualPreview } from "./employers-visual-preview";
 import {
+  APPRENTICESHIPS,
+  EMPLOYER_STATUSES,
+  ENQUIRY_SOURCES,
+  LEARNER_FIELD_ORDER,
+  RESPONSIVENESS_OPTIONS,
+  TRAINING_SITES,
+} from "./learner-entry-options";
+import {
   apprenticePreviewReducer,
   confirmationKey,
   employerPreviewReducer,
@@ -33,8 +41,9 @@ describe("apprentices visual behaviour", () => {
     const opened = apprenticePreviewReducer(initialApprenticePreviewState(), { type: "toggle-add" });
     expect(opened.addOpen).toBe(true);
     const chosen = apprenticePreviewReducer(opened, {
-      type: "set-employer",
-      employerId: "example-motors",
+      type: "set-entry",
+      field: "employerId",
+      value: "example-motors",
     });
     expect(chosen.employerId).toBe("example-motors");
     const cancelled = apprenticePreviewReducer(chosen, { type: "cancel-add" });
@@ -47,8 +56,9 @@ describe("apprentices visual behaviour", () => {
   it("keeps a chosen employer on the local row and still does not persist", () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
     let state = apprenticePreviewReducer(initialApprenticePreviewState(), { type: "toggle-add" });
-    state = apprenticePreviewReducer(state, { type: "set-name", fullName: "Sam Example" });
-    state = apprenticePreviewReducer(state, { type: "set-employer", employerId: "example-yard-co" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "firstName", value: "Sam" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "lastName", value: "Example" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "employerId", value: "example-yard-co" });
     state = apprenticePreviewReducer(state, { type: "add-local" });
     const added = state.rows.find((row) => row.fullName === "Sam Example");
     expect(added?.employerId).toBe("example-yard-co");
@@ -80,7 +90,8 @@ describe("apprentices visual behaviour", () => {
       }),
     );
     expect(html).toContain('data-add-panel="apprentice"');
-    expect(html).toContain("Full name");
+    expect(html).toContain("First name");
+    expect(html).toContain("Last name");
     expect(html).toContain("Manual entry");
     expect(html).toContain("Add apprentice");
     expect(html).toContain("Notes");
@@ -403,7 +414,8 @@ describe("apprentice employer dropdown", () => {
       "utf8",
     );
     expect(preview).toContain('from "@/components/ui"');
-    expect(preview).toContain("Not linked");
+    expect(preview).toContain("Employer, if known");
+    expect(preview).toContain('label: "None"');
     expect(preview).not.toContain("<select");
     for (const employerId of ["", "example-motors", "example-yard-co"]) {
       const html = renderToStaticMarkup(
@@ -416,7 +428,7 @@ describe("apprentice employer dropdown", () => {
           ? "Example Motors"
           : employerId === "example-yard-co"
             ? "Example Yard Co"
-            : "Not linked";
+            : "None";
       expect(html).toContain('aria-haspopup="listbox"');
       expect(html).toContain(label);
     }
@@ -425,8 +437,9 @@ describe("apprentice employer dropdown", () => {
   it("keeps a chosen employer in local state and does not write", () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
     let state = apprenticePreviewReducer(initialApprenticePreviewState(), { type: "toggle-add" });
-    state = apprenticePreviewReducer(state, { type: "set-name", fullName: "Sam Example" });
-    state = apprenticePreviewReducer(state, { type: "set-employer", employerId: "example-motors" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "firstName", value: "Sam" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "lastName", value: "Example" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "employerId", value: "example-motors" });
     state = apprenticePreviewReducer(state, { type: "add-local" });
     expect(state.rows.find((row) => row.fullName === "Sam Example")?.employerId).toBe(
       "example-motors",
@@ -446,15 +459,91 @@ describe("apprentice employer dropdown", () => {
     expect(css).toMatch(/\.learnerActions \.primaryBtn[\s\S]*border-radius:\s*999px;/);
     const fetchSpy = vi.spyOn(globalThis, "fetch");
     let state = apprenticePreviewReducer(initialApprenticePreviewState(), { type: "toggle-add" });
-    state = apprenticePreviewReducer(state, { type: "set-notes", notes: "Left blank on purpose" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "notes", value: "Left blank on purpose" });
     state = apprenticePreviewReducer(state, { type: "add-local" });
-    expect(state.notice).toBe("Full name is required.");
+    expect(state.notice).toBe("First name and last name are required.");
     expect(state.notes).toBe("Left blank on purpose");
     expect(state.rows).toHaveLength(initialApprenticePreviewState().rows.length);
-    state = apprenticePreviewReducer(state, { type: "set-name", fullName: "Sam Example" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "firstName", value: "Sam" });
+    state = apprenticePreviewReducer(state, { type: "set-entry", field: "lastName", value: "Example" });
     state = apprenticePreviewReducer(state, { type: "add-local" });
     expect(state.notes).toBe("");
     expect(state.rows.some((row) => row.fullName === "Sam Example")).toBe(true);
+    expect(fetchSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+  });
+
+  it("shows every sales form field in order and keeps the entered values locally", () => {
+    const html = renderToStaticMarkup(
+      createElement(ApprenticesVisualPreview, {
+        initialState: { ...initialApprenticePreviewState(), addOpen: true },
+      }),
+    );
+    const order = [...html.matchAll(/data-entry-field="([^"]+)"/g)].map((match) => match[1]);
+    expect(order).toEqual([...LEARNER_FIELD_ORDER]);
+    expect(html.match(/aria-haspopup="listbox"/g)?.length).toBe(6);
+    expect(html).not.toContain("<select");
+    expect(html).toContain(">None<");
+    expect(html).not.toContain(">Doncaster<");
+    expect(html).not.toContain(">Autocare<");
+    expect(html).not.toContain(">Responsive<");
+    expect(html).not.toContain("Phone number");
+    expect(TRAINING_SITES.map((item) => item.label)).toEqual(["Doncaster", "Sheffield"]);
+    expect(APPRENTICESHIPS.map((item) => item.label)).toEqual([
+      "Autocare",
+      "Light Vehicle",
+      "Heavy Vehicle",
+      "Vehicle Paint",
+      "Vehicle Panel",
+      "Business Admin",
+      "Customer Service",
+    ]);
+    expect(ENQUIRY_SOURCES.map((item) => item.label)).toEqual([
+      "Website",
+      "Social media",
+      "School event",
+      "Google",
+      "Word of mouth",
+      "Leaflet",
+      "Flyer",
+      "GTA prospectus",
+      "Other",
+    ]);
+    expect(RESPONSIVENESS_OPTIONS.map((item) => item.label)).toEqual(["Responsive", "Unresponsive"]);
+    expect(EMPLOYER_STATUSES.map((item) => item.label)).toEqual([
+      "Employer needed",
+      "Identified but unconfirmed",
+      "Confirmed",
+    ]);
+
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    let state = apprenticePreviewReducer(initialApprenticePreviewState(), { type: "toggle-add" });
+    const entered = {
+      firstName: "Sam",
+      lastName: "Example",
+      externalLearnerId: "EX-44",
+      site: "sheffield",
+      apprenticeship: "light_vehicle",
+      originalEntryDate: "2026-01-15",
+      enquirySource: "website",
+      responsiveness: "responsive",
+      employerStatus: "confirmed",
+      employerId: "example-motors",
+      intendedIntakeDate: "2026-09-01",
+      notes: "Preview note",
+    } as const;
+    for (const [field, value] of Object.entries(entered)) {
+      state = apprenticePreviewReducer(state, {
+        type: "set-entry",
+        field: field as keyof typeof entered,
+        value,
+      });
+    }
+    state = apprenticePreviewReducer(state, { type: "add-local" });
+    const added = state.rows.find((row) => row.fullName === "Sam Example");
+    expect(added).toMatchObject(entered);
+    expect(state.site).toBe("");
+    expect(state.originalEntryDate).toBe("");
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
   });

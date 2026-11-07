@@ -5,10 +5,18 @@ import { Select } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./admin-pages.module.css";
 import {
+  APPRENTICESHIPS,
+  EMPLOYER_STATUSES,
+  ENQUIRY_SOURCES,
+  RESPONSIVENESS_OPTIONS,
+  TRAINING_SITES,
+} from "./learner-entry-options";
+import {
   apprenticePreviewReducer,
   employerName,
   initialApprenticePreviewState,
   visibleApprentices,
+  type ApprenticeEntryFields,
   type ApprenticePreviewState,
 } from "./visual-preview-state";
 
@@ -66,7 +74,7 @@ export function ApprenticesVisualPreview({
             <p className={styles.learnerKicker}>Manual entry</p>
             <h2 className={styles.learnerHeading}>Add apprentice</h2>
             <p className={styles.learnerMuted}>
-              Full name is the only required detail. Leave anything unknown blank. No account or enrolment is created. Saving is disabled.
+              First name and last name are required. Leave anything unknown blank. No account or enrolment is created. Saving is disabled.
             </p>
             <article className={styles.learnerCard}>
               <form
@@ -76,39 +84,96 @@ export function ApprenticesVisualPreview({
                 }}
               >
                 <div className={styles.learnerGrid}>
-                  <label className={styles.learnerField}>
-                    <span>
-                      Full name <em className={styles.fieldRequired}>required</em>
-                    </span>
-                    <input
-                      value={state.fullName}
-                      required
-                      onChange={(event) =>
-                        dispatch({ type: "set-name", fullName: event.target.value })
-                      }
-                    />
-                  </label>
-                  <div className={styles.learnerField}>
-                    <span>Employer</span>
-                    <Select
-                      aria-label="Employer"
-                      value={state.employerId}
-                      options={[
-                        { value: "", label: "Not linked" },
-                        ...state.employers.map((employer) => ({
-                          value: employer.id,
-                          label: employer.name,
-                        })),
-                      ]}
-                      onChange={(employerId) => dispatch({ type: "set-employer", employerId })}
-                    />
-                  </div>
+                  <TextEntry
+                    field="firstName"
+                    label="First name"
+                    required
+                    value={state.firstName}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="lastName"
+                    label="Last name"
+                    required
+                    value={state.lastName}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="externalLearnerId"
+                    label="Existing learner ID, if supplied"
+                    value={state.externalLearnerId}
+                    dispatch={dispatch}
+                  />
+                  <ChoiceEntry
+                    field="site"
+                    label="Site"
+                    value={state.site}
+                    options={TRAINING_SITES}
+                    dispatch={dispatch}
+                  />
+                  <ChoiceEntry
+                    field="apprenticeship"
+                    label="Apprenticeship"
+                    value={state.apprenticeship}
+                    options={APPRENTICESHIPS}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="originalEntryDate"
+                    label="Original first contact or entry date"
+                    type="date"
+                    value={state.originalEntryDate}
+                    dispatch={dispatch}
+                  />
+                  <ChoiceEntry
+                    field="enquirySource"
+                    label="Enquiry source"
+                    value={state.enquirySource}
+                    options={ENQUIRY_SOURCES}
+                    dispatch={dispatch}
+                  />
+                  <ChoiceEntry
+                    field="responsiveness"
+                    label="Responsiveness"
+                    value={state.responsiveness}
+                    options={RESPONSIVENESS_OPTIONS}
+                    dispatch={dispatch}
+                  />
+                  <ChoiceEntry
+                    field="employerStatus"
+                    label="Employer status"
+                    value={state.employerStatus}
+                    options={EMPLOYER_STATUSES}
+                    dispatch={dispatch}
+                  />
+                  <ChoiceEntry
+                    field="employerId"
+                    label="Employer, if known"
+                    value={state.employerId}
+                    options={[
+                      { value: "", label: "None" },
+                      ...state.employers.map((employer) => ({
+                        value: employer.id,
+                        label: employer.name,
+                      })),
+                    ]}
+                    dispatch={dispatch}
+                  />
+                  <TextEntry
+                    field="intendedIntakeDate"
+                    label="Intended intake, optional"
+                    type="date"
+                    value={state.intendedIntakeDate}
+                    dispatch={dispatch}
+                  />
                 </div>
-                <label className={styles.learnerField}>
+                <label className={styles.learnerField} data-entry-field="notes">
                   <span>Notes</span>
                   <textarea
                     value={state.notes}
-                    onChange={(event) => dispatch({ type: "set-notes", notes: event.target.value })}
+                    onChange={(event) =>
+                      dispatch({ type: "set-entry", field: "notes", value: event.target.value })
+                    }
                   />
                 </label>
                 {state.notice ? <p className={styles.learnerMuted}>{state.notice}</p> : null}
@@ -153,5 +218,63 @@ export function ApprenticesVisualPreview({
         )}
       </div>
     </ApprenticePageShell>
+  );
+}
+
+function TextEntry({
+  field,
+  label,
+  value,
+  dispatch,
+  required = false,
+  type = "text",
+}: {
+  field: keyof ApprenticeEntryFields;
+  label: string;
+  value: string;
+  dispatch: (action: { type: "set-entry"; field: keyof ApprenticeEntryFields; value: string }) => void;
+  required?: boolean;
+  type?: "text" | "date";
+}) {
+  return (
+    <label className={styles.learnerField} data-entry-field={field}>
+      <span>
+        {label}
+        {required ? <em className={styles.fieldRequired}> required</em> : null}
+      </span>
+      <input
+        type={type}
+        value={value}
+        required={required}
+        onChange={(event) => dispatch({ type: "set-entry", field, value: event.target.value })}
+      />
+    </label>
+  );
+}
+
+function ChoiceEntry({
+  field,
+  label,
+  value,
+  options,
+  dispatch,
+}: {
+  field: keyof ApprenticeEntryFields;
+  label: string;
+  value: string;
+  options: readonly { value: string; label: string }[];
+  dispatch: (action: { type: "set-entry"; field: keyof ApprenticeEntryFields; value: string }) => void;
+}) {
+  return (
+    <div className={styles.learnerField} data-entry-field={field}>
+      <span>{label}</span>
+      <Select
+        aria-label={label}
+        value={value}
+        placeholder="Select…"
+        options={[...options]}
+        onChange={(next) => dispatch({ type: "set-entry", field, value: next })}
+      />
+    </div>
   );
 }
