@@ -81,12 +81,17 @@ describe("apprentices visual behaviour", () => {
     );
     expect(html).toContain('data-add-panel="apprentice"');
     expect(html).toContain("Full name");
+    expect(html).toContain("Manual entry");
+    expect(html).toContain("Add apprentice");
+    expect(html).toContain("Notes");
+    expect(html).toContain("<textarea");
     expect(html).toContain('aria-haspopup="listbox"');
     expect(html).toContain("Not linked");
     expect(html).not.toContain("<select");
-    expect(html).toContain("Cancel");
     expect(html).not.toContain("Phone number");
-    expect(html).not.toContain(">Postcode<");
+    expect(html).not.toContain("Postcode");
+    expect(html).toContain("Cancel");
+    expect(html).not.toContain("createLearner");
   });
 });
 
@@ -426,6 +431,30 @@ describe("apprentice employer dropdown", () => {
     expect(state.rows.find((row) => row.fullName === "Sam Example")?.employerId).toBe(
       "example-motors",
     );
+    expect(fetchSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+  });
+
+  it("matches the sales add-learner card and keeps notes local", () => {
+    const css = readFileSync(
+      path.join(process.cwd(), "src/features/administration/screens/admin-pages.module.css"),
+      "utf8",
+    );
+    expect(css).toMatch(/\.learnerCard\s*\{[^}]*border-radius:\s*22px;/s);
+    expect(css).toMatch(/\.learnerGrid\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);[^}]*gap:\s*12px;/s);
+    expect(css).toMatch(/\.learnerField span\s*\{[^}]*font-size:\s*14px;/s);
+    expect(css).toMatch(/\.learnerActions \.primaryBtn[\s\S]*border-radius:\s*999px;/);
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    let state = apprenticePreviewReducer(initialApprenticePreviewState(), { type: "toggle-add" });
+    state = apprenticePreviewReducer(state, { type: "set-notes", notes: "Left blank on purpose" });
+    state = apprenticePreviewReducer(state, { type: "add-local" });
+    expect(state.notice).toBe("Full name is required.");
+    expect(state.notes).toBe("Left blank on purpose");
+    expect(state.rows).toHaveLength(initialApprenticePreviewState().rows.length);
+    state = apprenticePreviewReducer(state, { type: "set-name", fullName: "Sam Example" });
+    state = apprenticePreviewReducer(state, { type: "add-local" });
+    expect(state.notes).toBe("");
+    expect(state.rows.some((row) => row.fullName === "Sam Example")).toBe(true);
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
   });

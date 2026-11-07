@@ -62,60 +62,71 @@ export function ApprenticesVisualPreview({
         </div>
 
         {state.addOpen ? (
-          <form
-            className={styles.addPanel}
-            data-add-panel="apprentice"
-            onSubmit={(event) => {
-              event.preventDefault();
-              dispatch({ type: "add-local" });
-            }}
-          >
-            <h2 className={styles.formGroupTitle}>Add apprentice</h2>
-            <p className={styles.formGroupMeta}>
-              Full name is the apprentice field. Choose an employer if one should be linked. Nothing is written to the portal.
+          <section className={styles.learnerAdd} data-add-panel="apprentice">
+            <p className={styles.learnerKicker}>Manual entry</p>
+            <h2 className={styles.learnerHeading}>Add apprentice</h2>
+            <p className={styles.learnerMuted}>
+              Full name is the only required detail. Leave anything unknown blank. No account or enrolment is created. Saving is disabled.
             </p>
-            <div className={styles.formGrid}>
-              <label className={styles.field}>
-                <span>
-                  Full name <em className={styles.fieldRequired}>required</em>
-                </span>
-                <input
-                  value={state.fullName}
-                  onChange={(event) =>
-                    dispatch({ type: "set-name", fullName: event.target.value })
-                  }
-                />
-              </label>
-              <div className={styles.field}>
-                <span>Employer</span>
-                <Select
-                  aria-label="Employer"
-                  value={state.employerId}
-                  options={[
-                    { value: "", label: "Not linked" },
-                    ...state.employers.map((employer) => ({
-                      value: employer.id,
-                      label: employer.name,
-                    })),
-                  ]}
-                  onChange={(employerId) => dispatch({ type: "set-employer", employerId })}
-                />
-              </div>
-            </div>
-            {state.notice ? <p className={styles.formGroupMeta}>{state.notice}</p> : null}
-            <div className={styles.formActions}>
-              <button
-                type="button"
-                className={styles.secondaryBtn}
-                onClick={() => dispatch({ type: "cancel-add" })}
+            <article className={styles.learnerCard}>
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  dispatch({ type: "add-local" });
+                }}
               >
-                Cancel
-              </button>
-              <button type="submit" className={styles.primaryBtn}>
-                Add apprentice
-              </button>
-            </div>
-          </form>
+                <div className={styles.learnerGrid}>
+                  <label className={styles.learnerField}>
+                    <span>
+                      Full name <em className={styles.fieldRequired}>required</em>
+                    </span>
+                    <input
+                      value={state.fullName}
+                      required
+                      onChange={(event) =>
+                        dispatch({ type: "set-name", fullName: event.target.value })
+                      }
+                    />
+                  </label>
+                  <div className={styles.learnerField}>
+                    <span>Employer</span>
+                    <Select
+                      aria-label="Employer"
+                      value={state.employerId}
+                      options={[
+                        { value: "", label: "Not linked" },
+                        ...state.employers.map((employer) => ({
+                          value: employer.id,
+                          label: employer.name,
+                        })),
+                      ]}
+                      onChange={(employerId) => dispatch({ type: "set-employer", employerId })}
+                    />
+                  </div>
+                </div>
+                <label className={styles.learnerField}>
+                  <span>Notes</span>
+                  <textarea
+                    value={state.notes}
+                    onChange={(event) => dispatch({ type: "set-notes", notes: event.target.value })}
+                  />
+                </label>
+                {state.notice ? <p className={styles.learnerMuted}>{state.notice}</p> : null}
+                <div className={styles.learnerActions}>
+                  <button
+                    type="button"
+                    className={styles.secondaryBtn}
+                    onClick={() => dispatch({ type: "cancel-add" })}
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" className={styles.primaryBtn}>
+                    Add apprentice
+                  </button>
+                </div>
+              </form>
+            </article>
+          </section>
         ) : null}
 
         {!state.addOpen && state.notice ? (

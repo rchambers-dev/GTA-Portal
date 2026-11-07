@@ -2495,6 +2495,106 @@ textarea.detailFieldInput {
   color: var(--text-primary);
 }
 
+/* Add apprentice follows the Sales and Marketing add-learner card:
+   src/app/(app)/learners/new/page.tsx and src/app/globals.css
+   at c92f678134499f5d23733bc24720da9971d43254.
+   Colours stay on the portal tokens. */
+.learnerAdd {
+  display: flex;
+  flex-direction: column;
+}
+
+.learnerKicker {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.learnerHeading {
+  margin: 4px 0;
+  color: var(--text-primary);
+  font-size: 34px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.learnerMuted {
+  margin: 0 0 14px;
+  color: var(--text-secondary);
+}
+
+.learnerCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 22px;
+  box-shadow: var(--shadow-md);
+  padding: 18px;
+}
+
+.learnerGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.learnerField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+  min-width: 0;
+}
+
+.learnerField span {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-primary);
+}
+
+.learnerField input,
+.learnerField textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-grey-200);
+  background: var(--color-grey-50);
+  border-radius: 14px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.learnerField textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.learnerActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.learnerActions .primaryBtn,
+.learnerActions .secondaryBtn {
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+
+@media (max-width: 800px) {
+  .learnerGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .learnerHeading {
+    font-size: 28px;
+  }
+}
+
 .jobTitleOption input {
   margin: 0;
 }

@@ -58,6 +58,7 @@ export type ApprenticePreviewState = {
   addOpen: boolean;
   fullName: string;
   employerId: string;
+  notes: string;
   rows: ExampleApprentice[];
   employers: ExampleEmployer[];
   notice: string;
@@ -69,6 +70,7 @@ export type ApprenticePreviewAction =
   | { type: "cancel-add" }
   | { type: "set-name"; fullName: string }
   | { type: "set-employer"; employerId: string }
+  | { type: "set-notes"; notes: string }
   | { type: "add-local" };
 
 export function initialApprenticePreviewState(): ApprenticePreviewState {
@@ -77,6 +79,7 @@ export function initialApprenticePreviewState(): ApprenticePreviewState {
     addOpen: false,
     fullName: "",
     employerId: "",
+    notes: "",
     rows: EXAMPLE_APPRENTICES.map((row) => ({ ...row })),
     employers: EXAMPLE_EMPLOYERS.map((row) => ({
       ...row,
@@ -105,14 +108,16 @@ export function apprenticePreviewReducer(
       return { ...state, query: action.query };
     case "toggle-add":
       return state.addOpen
-        ? { ...state, addOpen: false, fullName: "", employerId: "", notice: "" }
+        ? { ...state, addOpen: false, fullName: "", employerId: "", notes: "", notice: "" }
         : { ...state, addOpen: true, notice: "" };
     case "cancel-add":
-      return { ...state, addOpen: false, fullName: "", employerId: "", notice: "" };
+      return { ...state, addOpen: false, fullName: "", employerId: "", notes: "", notice: "" };
     case "set-name":
       return { ...state, fullName: action.fullName };
     case "set-employer":
       return { ...state, employerId: action.employerId };
+    case "set-notes":
+      return { ...state, notes: action.notes };
     case "add-local": {
       const fullName = state.fullName.trim();
       if (!fullName) {
@@ -123,6 +128,7 @@ export function apprenticePreviewReducer(
         addOpen: false,
         fullName: "",
         employerId: "",
+        notes: "",
         notice: "Not saved. Saving is disabled.",
         rows: [
           ...state.rows,
