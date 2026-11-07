@@ -189,11 +189,25 @@ async function requireAdminAccess() {
   return session;
 }
 
+/**
+ * Canonical apprentice and employer master records, including email and
+ * intake fields, use the staff record-management gate. The service-role
+ * client does not apply the caller's identity. Enrolment, programme, cohort,
+ * and proxy progress writes stay on requireAdminAccess.
+ */
+function requireCanonicalRecordAccess(session: Exclude<Awaited<ReturnType<typeof requireAdminAccess>>, NextResponse>) {
+  if (!canManageEmployerDirectory(session)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+  return null;
+}
+
 export async function GET() {
   const session = await requireAdminAccess();
   if (session instanceof NextResponse) return session;
 
   const supabase = createSupabaseAdminClient();
+  const recordStaff = canManageEmployerDirectory(session);
   const [
     { data: apprentices, error: apprenticesError },
     { data: enrolments, error: enrolmentsError },
@@ -203,11 +217,21 @@ export async function GET() {
     employersResult,
     programmesResult,
   ] = await Promise.all([
-    supabase.from("apprentices").select("*").order("display_name", { ascending: true }),
-    supabase
-      .from("apprentice_programmes")
-      .select("*, apprentices(*)")
-      .order("updated_at", { ascending: false }),
+    recordStaff
+      ? supabase.from("apprentices").select("*").order("display_name", { ascending: true })
+      : Promise.resolve({ data: [], error: null }),
+    (recordStaff
+      ? supabase
+          .from("apprentice_programmes")
+          .select("*, apprentices(*)")
+          .order("updated_at", { ascending: false })
+      : supabase
+          .from("apprentice_programmes")
+          .select("*")
+          .order("updated_at", { ascending: false })) as unknown as Promise<{
+      data: ApprenticeProgrammeRow[] | null;
+      error: { message: string } | null;
+    }>,
     supabase.from("cohorts").select("*").order("start_date", { ascending: false }),
     supabase
       .from("cohort_teaching_groups")
@@ -217,7 +241,7 @@ export async function GET() {
       .from("cohort_change_log")
       .select("*")
       .order("created_at", { ascending: false }),
-    loadEmployers(supabase),
+    recordStaff ? loadEmployers(supabase) : Promise.resolve({ employers: [], error: null }),
     loadProgrammes(supabase),
   ]);
 
@@ -300,12 +324,25 @@ export async function GET() {
     );
   }
 
+  const mappedEnrolments = (enrolments ?? []).map((row) =>
+    mapEnrolment(row as ApprenticeProgrammeRow),
+  );
   return NextResponse.json({
-    apprentices: (apprentices ?? []).map((row) => mapApprentice(row as ApprenticeRow)),
-    enrolments: (enrolments ?? []).map((row) =>
-      mapEnrolment(row as ApprenticeProgrammeRow),
-    ),
-    employers: employersResult.employers,
+    apprentices: recordStaff
+      ? (apprentices ?? []).map((row) => mapApprentice(row as ApprenticeRow))
+      : [],
+    enrolments: recordStaff
+      ? mappedEnrolments
+      : mappedEnrolments.map((row) => ({
+          ...row,
+          email: "",
+          phone: "",
+          dateOfBirth: "",
+          uln: "",
+          workplaceContact: "",
+          mentorName: "",
+        })),
+    employers: recordStaff ? employersResult.employers : [],
     programmes: programmesResult.programmes,
     cohorts,
     teachingGroups,
@@ -379,12 +416,13 @@ export async function POST(request: Request) {
     session.account.email?.trim() ||
     "Administrator";
 
-  if (
-    body.action === "createEmployer" ||
-    body.action === "updateEmployer" ||
-    body.action === "createProgramme" ||
-    body.action === "updateProgramme"
-  ) {
+  if (body.action === "createEmployer" || body.action === "updateEmployer") {
+    const denied = requireCanonicalRecordAccess(session);
+    if (denied) return denied;
+    return handleCatalogueAction(supabase, body);
+  }
+
+  if (body.action === "createProgramme" || body.action === "updateProgramme") {
     return handleCatalogueAction(supabase, body);
   }
 
@@ -411,6 +449,8 @@ export async function POST(request: Request) {
   }
 
   if (body.action === "createApprentice") {
+    const denied = requireCanonicalRecordAccess(session);
+    if (denied) return denied;
     const input = body.input;
     const { data, error } = await supabase
       .from("apprentices")
@@ -444,14 +484,12 @@ export async function POST(request: Request) {
   }
 
   if (body.action === "updateApprentice") {
+    const denied = requireCanonicalRecordAccess(session);
+    if (denied) return denied;
     const patch = body.patch;
     const update: Record<string, unknown> = {};
     if (patch.displayName != null) {
       // rename_apprentice runs as the service role and does not see the caller.
-      // The same staff record-management gate as the directory API applies here.
-      if (!(session instanceof NextResponse) && !canManageEmployerDirectory(session)) {
-        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-      }
       const renamed = await supabase.rpc("rename_apprentice", {
         p_apprentice_id: body.id,
         p_display_name: patch.displayName.trim(),

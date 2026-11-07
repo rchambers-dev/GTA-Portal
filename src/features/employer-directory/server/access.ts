@@ -11,9 +11,11 @@ import type { EffectiveSession, PortalAccount } from "@/lib/portal/types";
 /**
  * Owner decision, 16:52 GMT: employer and apprentice record management is
  * limited to staff who have admin.records.manage. reviews.manage is not enough.
- * Apprentice and Employer are the canonical portal roles in PORTAL_ROLE_RANK,
- * and their workspaces are apprentice and employer. A stray permission on
- * those accounts does not admit them.
+ * That includes creating an apprentice, editing any master field (name, email,
+ * intake status, address), and creating or editing an employer. Apprentice and
+ * Employer are the canonical portal roles in PORTAL_ROLE_RANK, and their
+ * workspaces are apprentice and employer. A stray permission on those accounts
+ * does not admit them. Enrolment and programme placement stay on their own gate.
  */
 export function isApprenticeOrEmployerAccount(account: PortalAccount): boolean {
   if (account.workspace === "apprentice" || account.workspace === "employer") {

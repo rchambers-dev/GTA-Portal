@@ -4,6 +4,7 @@ import type { PortalAccount, WorkspaceId } from "@/lib/portal/types";
 
 const getEffectiveSession = vi.fn();
 const rpcCalls: string[] = [];
+const writes: string[] = [];
 
 const apprenticeRow = {
   id: "apprentice-1",
@@ -36,7 +37,7 @@ vi.mock("@/adapters/standalone", () => ({
 
 vi.mock("@/adapters/supabase/client", () => ({
   createSupabaseAdminClient: () => ({
-    from() {
+    from(table: string) {
       const api = {
         select() {
           return api;
@@ -44,7 +45,12 @@ vi.mock("@/adapters/supabase/client", () => ({
         eq() {
           return api;
         },
+        insert() {
+          writes.push(`insert:${table}`);
+          return api;
+        },
         update() {
+          writes.push(`update:${table}`);
           return api;
         },
         single() {
@@ -94,6 +100,7 @@ function renameRequest() {
 describe("legacy apprentice rename", () => {
   beforeEach(() => {
     rpcCalls.length = 0;
+    writes.length = 0;
     getEffectiveSession.mockReset();
   });
 
@@ -126,6 +133,61 @@ describe("legacy apprentice rename", () => {
       expect(response.status).toBe(403);
     }
     expect(rpcCalls).toEqual([]);
+    expect(writes).toEqual([]);
+  });
+
+  it("does not write when displayName is omitted or when creating an apprentice or employer", async () => {
+    const { POST } = await import("./route");
+    const bodies = [
+      {
+        action: "updateApprentice",
+        id: "apprentice-1",
+        patch: { email: "proxy@example.invalid", intakeStatus: "ready" },
+      },
+      {
+        action: "createApprentice",
+        input: { displayName: "Should Not Create", email: "new@example.invalid", intakeStatus: "in_progress" },
+      },
+      {
+        action: "createEmployer",
+        input: { name: "Should Not Create" },
+      },
+      {
+        action: "updateEmployer",
+        id: "employer-1",
+        patch: { contactEmail: "proxy@example.invalid" },
+      },
+    ];
+    for (const actor of [
+      session({
+        workspace: "staff",
+        baseRole: "Tutor",
+        permissions: ["records.proxy.write"],
+      }),
+      session({
+        workspace: "apprentice",
+        baseRole: "Apprentice",
+        permissions: ["admin.records.manage"],
+      }),
+      session({
+        workspace: "employer",
+        baseRole: "Employer",
+        permissions: ["admin.records.manage"],
+      }),
+    ]) {
+      for (const body of bodies) {
+        getEffectiveSession.mockResolvedValueOnce(actor);
+        const response = await POST(
+          new Request("http://localhost/api/admin/store", {
+            method: "POST",
+            body: JSON.stringify(body),
+          }),
+        );
+        expect(response.status).toBe(403);
+      }
+    }
+    expect(writes).toEqual([]);
+    expect(rpcCalls).toEqual([]);
   });
 
   it("renames for staff who have record-management permission", async () => {
@@ -142,26 +204,54 @@ describe("legacy apprentice rename", () => {
     expect(rpcCalls).toEqual(["rename_apprentice"]);
   });
 
-  it("still accepts an onboarding field update from a records proxy writer", async () => {
+  it("lets record staff create an apprentice and edit a non-name field", async () => {
     const { POST } = await import("./route");
     getEffectiveSession.mockResolvedValue(
       session({
         workspace: "administration",
         baseRole: "Administrator",
-        permissions: ["records.proxy.write"],
+        permissions: ["admin.records.manage"],
       }),
     );
-    const response = await POST(
+    const created = await POST(
+      new Request("http://localhost/api/admin/store", {
+        method: "POST",
+        body: JSON.stringify({
+          action: "createApprentice",
+          input: {
+            displayName: "New Example",
+            apprenticeReference: "",
+            email: "new.example@example.invalid",
+            phone: "",
+            dateOfBirth: "",
+            uln: "",
+            addressLine1: "",
+            addressLine2: "",
+            town: "",
+            postcode: "",
+            emergencyContactName: "",
+            emergencyContactPhone: "",
+            emergencyContactRelationship: "",
+            supportNotes: "",
+            intakeStatus: "in_progress",
+            notes: "",
+          },
+        }),
+      }),
+    );
+    expect(created.status).toBe(200);
+    const edited = await POST(
       new Request("http://localhost/api/admin/store", {
         method: "POST",
         body: JSON.stringify({
           action: "updateApprentice",
           id: "apprentice-1",
-          patch: { intakeStatus: "ready" },
+          patch: { email: "updated.example@example.invalid", intakeStatus: "ready" },
         }),
       }),
     );
-    expect(response.status).toBe(200);
+    expect(edited.status).toBe(200);
+    expect(writes).toEqual(["insert:apprentices", "update:apprentices"]);
     expect(rpcCalls).toEqual([]);
   });
 });
