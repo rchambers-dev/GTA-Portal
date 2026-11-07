@@ -32,7 +32,7 @@ const sections: NavSection[] = [
     items: [{ href: "/staff-records?from=administration", label: "Staff Records", permission: "admin.users.manage" }],
   },
   {
-    title: "Marketing",
+    title: "Marketing & Recruitment",
     items: [{ href: "/administration/marketing", label: "Overview", permission: "admin.records.manage" }],
   },
   {
@@ -68,7 +68,7 @@ describe("sidebar category toggle", () => {
 
     const normal = renderNav("/administration/dashboard", null);
     expect(normal).toContain(">Onboarding<");
-    expect(normal).toContain(">Marketing<");
+    expect(normal).toContain(">Marketing &amp; Recruitment<");
     expect(normal).toContain(">Staff<");
     expect(normal).toContain(">Apprenticeship Management<");
     expect(normal).toContain("Administration Dashboard");
@@ -82,7 +82,7 @@ describe("sidebar category toggle", () => {
     expect(focused).toContain("Add apprentice");
     expect(focused).toContain("Directory");
     expect(focused).not.toContain("Administration Dashboard");
-    expect(focused).not.toContain(">Marketing<");
+    expect(focused).not.toContain(">Marketing &amp; Recruitment<");
     expect(focused).toContain('aria-expanded="true"');
     expect(focused).toContain('data-chevron="left"');
     expect(focused).not.toContain('data-chevron="right"');
@@ -119,6 +119,18 @@ describe("sidebar category toggle", () => {
     expect(css).toMatch(/\.chevronTrail\s*\{[^}]*display:\s*none/s);
     expect(css).toContain(".sidebarSlot:hover .chevronTrail");
     expect(css).toContain(".sidebarSlot:hover,");
+    expect(css).toContain(".sidebarSlot:hover .categoryButtonOpen .icon");
+    expect(css).toContain(".sidebar:focus-within .categoryButtonOpen .icon");
+    expect(css).toMatch(/\.categoryButtonOpen \.icon[\s\S]*display:\s*none/);
+    expect(css).toMatch(/\.categoryButtonOpen \.categoryLabel[\s\S]*text-align:\s*center/);
+    expect(css).toMatch(/\.categoryButtonOpen \.chevronTrail[\s\S]*left:\s*0\.4rem/);
+    expect(css).not.toMatch(/\.categoryButton \.icon\s*\{[^}]*display:\s*none/);
+    const source = readFileSync(
+      path.join(process.cwd(), "src/shell/SidebarNavigation.tsx"),
+      "utf8",
+    );
+    expect(source).toContain("logoMark");
+    expect(source).toContain('data-chevron={open ? "left" : "right"}');
     const html = renderNav("/administration/dashboard", null);
     const icons = [...html.matchAll(/data-category-icon="([^"]+)"([\s\S]*?)<\/span>/g)].map(
       (match) => [match[1], match[2]] as const,
@@ -126,7 +138,7 @@ describe("sidebar category toggle", () => {
     expect(icons.map(([name]) => name)).toEqual([
       "Apprenticeship Management",
       "Staff",
-      "Marketing",
+      "Marketing &amp; Recruitment",
       "Onboarding",
     ]);
     expect(new Set(icons.map(([, svg]) => svg)).size).toBe(4);

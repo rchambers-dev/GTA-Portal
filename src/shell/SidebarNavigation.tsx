@@ -16,6 +16,7 @@ import {
   toggleHeading,
   type FocusState,
 } from "./sidebar-focus";
+import { pointerActivationRetainsFocus, shouldIgnorePointerFocus } from "./sidebar-rail";
 import { resolveNavigation } from "./workspaces/resolve-navigation";
 import { workspaceLabel } from "./workspaces/workspace-stubs";
 import styles from "./SidebarNavigation.module.css";
@@ -57,7 +58,9 @@ function PremiumCogIcon() {
 
 /**
  * Portal navigation for the signed-in workspace.
- * Collapsed icon rail by default; expands fully on hover / keyboard focus.
+ * Collapsed icon rail by default. Hover or keyboard focus expands it.
+ * A mouse click does not leave focus on a category button, so the rail
+ * collapses again once the pointer leaves.
  */
 export function SidebarNavigation() {
   const pathname = usePathname();
@@ -167,7 +170,17 @@ function CategoryButton({
       aria-expanded={open}
       aria-label={open ? `${title}, return to main navigation` : `${title}, show pages`}
       title={title}
-      onClick={() => onToggle(title)}
+      onPointerDown={(event) => {
+        if (shouldIgnorePointerFocus(event.pointerType, event.button)) {
+          event.preventDefault();
+        }
+      }}
+      onClick={(event) => {
+        onToggle(title);
+        if (!pointerActivationRetainsFocus(event.detail)) {
+          event.currentTarget.blur();
+        }
+      }}
     >
       <span className={styles.icon} data-category-icon={title}>
         <NavIcon href={categoryIconHref(title)} />
@@ -182,8 +195,9 @@ function CategoryButton({
 
 function categoryIconHref(title: string): string {
   if (title === "Onboarding") return "/category/onboarding";
-  if (title === "Marketing") return "/category/marketing";
+  if (title === "Marketing & Recruitment") return "/category/marketing";
   if (title === "Staff") return "/category/staff";
+  if (title === "Reviews") return "/reviews";
   return "/category/apprenticeship";
 }
 

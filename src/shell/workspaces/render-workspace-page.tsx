@@ -45,6 +45,7 @@ import { EmployersVisualPreview } from "@/features/administration/screens/employ
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
 import { OnboardingOverview } from "@/features/administration/screens/OnboardingOverview";
+import { RecruitmentGapScreen } from "@/features/administration/screens/RecruitmentGapScreen";
 import { SharedDriveScreen } from "@/features/shared-drive";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
@@ -74,6 +75,34 @@ function renderOnboarding(
   segment: string,
 ) {
   if (segment === "onboarding") return <OnboardingOverview workspace={workspace} />;
+  if (segment === "onboarding/apprentices") {
+    return (
+      <OnboardingDirectory
+        initialView="apprentices"
+        lockView
+        title="Apprentices"
+        description="The same example apprentice records as the Onboarding directory. Saving is disabled."
+      />
+    );
+  }
+  if (segment === "onboarding/interviews") {
+    return (
+      <RecruitmentGapScreen
+        eyebrow="Onboarding"
+        title="Interviews"
+        description="Interview groups are not built. Nothing on this page can be booked or saved."
+        gaps={[
+          "Groups are Mondays, with at most 8 learners, not eight timeslots.",
+          "England and Wales bank-holiday Mondays are excluded.",
+          "Cancelling a place asks whether that seat is released.",
+          "A no-show is not a failed assessment.",
+          "Three failures, then six calendar months, then one further attempt.",
+          "An employer is not required before an interview.",
+          "A pass does not open Stage 2.",
+        ]}
+      />
+    );
+  }
   if (segment === "onboarding/apprentice") return <ApprenticesVisualPreview mode="form" />;
   if (segment === "onboarding/employer") return <EmployersVisualPreview mode="form" />;
   if (segment === "onboarding/directory" || segment === "onboarding/directory/apprentices") {
@@ -81,6 +110,60 @@ function renderOnboarding(
   }
   if (segment === "onboarding/directory/employers") {
     return <OnboardingDirectory initialView="employers" />;
+  }
+  return null;
+}
+
+function renderMarketing(workspace: "administration" | "management", segment: string) {
+  if (segment === "marketing") return <MarketingOverview workspace={workspace} />;
+  if (segment === "marketing/employers") {
+    return (
+      <OnboardingDirectory
+        initialView="employers"
+        lockView
+        eyebrow="Marketing & Recruitment"
+        title="Employers & vacancies"
+        description="These are the same example employer records as Onboarding. Vacancy places are not a separate list."
+        notice="EXAMPLE DATA. Saving is disabled. Vacancy statuses, allocation, and withdrawal reopening are not built."
+      />
+    );
+  }
+  if (segment === "marketing/calendar") {
+    return (
+      <RecruitmentGapScreen
+        eyebrow="Marketing & Recruitment"
+        title="Activity calendar"
+        description="The shared activity calendar is not built. This is not the programme-week calendar."
+        gaps={[
+          "A row would have a title, audience, date, owner, status, and notes.",
+          "Participant attendance tracking is not part of this calendar.",
+          "Apprentices reached is unresolved and is not shown as zero.",
+        ]}
+      />
+    );
+  }
+  if (segment === "marketing/actions") {
+    return (
+      <RecruitmentGapScreen
+        eyebrow="Marketing & Recruitment"
+        title="Actions"
+        description="Recruitment actions are not built. This is not the progress-mentor Action Centre."
+        gaps={[
+          "An action would record the decision, owner, deadline, impact check, and status.",
+          "Nothing on this page sends a message or an invite.",
+        ]}
+      />
+    );
+  }
+  if (segment === "marketing/settings") {
+    return (
+      <RecruitmentGapScreen
+        eyebrow="Marketing & Recruitment"
+        title="Settings"
+        description="Recruitment settings are not built. This page does not change access or delete records."
+        gaps={["Invites, role assignment, and permanent deletion are not available here."]}
+      />
+    );
   }
   return null;
 }
@@ -330,8 +413,14 @@ export async function renderWorkspacePage(
       case "intake":
         redirect("/administration/onboarding/directory/apprentices");
       case "marketing":
-        return <MarketingOverview />;
+      case "marketing/employers":
+      case "marketing/calendar":
+      case "marketing/actions":
+      case "marketing/settings":
+        return renderMarketing("administration", segment);
       case "onboarding":
+      case "onboarding/apprentices":
+      case "onboarding/interviews":
       case "onboarding/apprentice":
       case "onboarding/employer":
       case "onboarding/directory":
@@ -382,8 +471,14 @@ export async function renderWorkspacePage(
       case "intake":
         redirect("/management/onboarding/directory/apprentices");
       case "marketing":
-        return <MarketingOverview />;
+      case "marketing/employers":
+      case "marketing/calendar":
+      case "marketing/actions":
+      case "marketing/settings":
+        return renderMarketing("management", segment);
       case "onboarding":
+      case "onboarding/apprentices":
+      case "onboarding/interviews":
       case "onboarding/apprentice":
       case "onboarding/employer":
       case "onboarding/directory":

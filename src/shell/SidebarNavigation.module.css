@@ -6,6 +6,8 @@
   transition: width 0.22s var(--ease-out, ease);
 }
 
+/* Keyboard focus expands the rail. A pointer click must not leave focus
+   inside it, or the unpinned rail stays open after the pointer leaves. */
 .sidebarSlot:hover,
 .sidebarSlot:focus-within {
   width: var(--sidebar-width);
@@ -170,6 +172,42 @@
   grid-template-columns: 2.5rem minmax(0, 1fr) auto;
   column-gap: 0.65rem;
   padding-right: 0.65rem;
+}
+
+/* Open heading, expanded only: hide the category icon, keep the back arrow
+   on the left, and center the label on the button itself. Equal side padding
+   leaves the arrow in the left inset without shifting the label. The collapsed
+   rail still uses the icon column above. Closed rows are unchanged. */
+.sidebarSlot:hover .categoryButtonOpen,
+.sidebar:focus-within .categoryButtonOpen {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0;
+  padding-left: 2.25rem;
+  padding-right: 2.25rem;
+  text-align: center;
+}
+
+.sidebarSlot:hover .categoryButtonOpen .icon,
+.sidebar:focus-within .categoryButtonOpen .icon {
+  display: none;
+}
+
+.sidebarSlot:hover .categoryButtonOpen .categoryLabel,
+.sidebar:focus-within .categoryButtonOpen .categoryLabel {
+  width: 100%;
+  text-align: center;
+}
+
+.sidebarSlot:hover .categoryButtonOpen .chevronTrail,
+.sidebar:focus-within .categoryButtonOpen .chevronTrail {
+  position: absolute;
+  left: 0.4rem;
+  right: auto;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .categoryButton:hover,

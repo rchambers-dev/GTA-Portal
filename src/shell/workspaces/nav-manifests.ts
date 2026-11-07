@@ -48,7 +48,7 @@ export const MENTOR_NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    title: "Reviews & Actions",
+    title: "Reviews",
     items: [
       {
         href: "/workspaces/progress-mentor/reviews",
@@ -56,14 +56,19 @@ export const MENTOR_NAV_SECTIONS: NavSection[] = [
         permission: PERMISSIONS.REVIEWS_MANAGE,
       },
       {
-        href: "/workspaces/progress-mentor/actions",
-        label: "Action Centre",
-        permission: PERMISSIONS.ACTIONS_MANAGE,
-      },
-      {
         href: "/workspaces/progress-mentor/training-plans",
         label: "Training Plans",
         permission: PERMISSIONS.REVIEWS_MANAGE,
+      },
+    ],
+  },
+  {
+    title: "Actions",
+    items: [
+      {
+        href: "/workspaces/progress-mentor/actions",
+        label: "Action Centre",
+        permission: PERMISSIONS.ACTIONS_MANAGE,
       },
     ],
   },
