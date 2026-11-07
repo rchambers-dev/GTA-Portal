@@ -140,6 +140,34 @@ export function initialApprenticePreviewState(): ApprenticePreviewState {
   };
 }
 
+type Listener = () => void;
+
+export function createPreviewStore<State, Action>(
+  createInitial: () => State,
+  reducer: (state: State, action: Action) => State,
+) {
+  let state = createInitial();
+  const listeners = new Set<Listener>();
+  return {
+    subscribe(listener: Listener) {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    getState() {
+      return state;
+    },
+    dispatch(action: Action) {
+      state = reducer(state, action);
+      listeners.forEach((listener) => listener());
+    },
+  };
+}
+
+export const apprenticePreviewStore = createPreviewStore(
+  initialApprenticePreviewState,
+  apprenticePreviewReducer,
+);
+
 export function visibleApprentices(state: ApprenticePreviewState): ExampleApprentice[] {
   const query = state.query.trim().toLowerCase();
   if (!query) return state.rows;
@@ -495,3 +523,8 @@ export function employerPreviewReducer(
       return state;
   }
 }
+
+export const employerPreviewStore = createPreviewStore(
+  initialEmployerPreviewState,
+  employerPreviewReducer,
+);

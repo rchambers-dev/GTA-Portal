@@ -2595,6 +2595,56 @@ textarea.detailFieldInput {
   }
 }
 
+.overviewFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.overviewChip,
+.overviewChipActive {
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 8px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.overviewChipActive {
+  background: var(--color-navy-700);
+  color: white;
+  border-color: var(--color-navy-700);
+}
+
+.overviewStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.overviewStat {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+}
+
+.overviewMain {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 0.8fr);
+  gap: 12px;
+}
+
+@media (max-width: 800px) {
+  .overviewStats,
+  .overviewMain {
+    grid-template-columns: 1fr;
+  }
+}
+
 .jobTitleOption input {
   margin: 0;
 }

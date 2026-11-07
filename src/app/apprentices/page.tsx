@@ -15,6 +15,6 @@ export default async function ApprenticesIndexPage({ searchParams }: Props) {
   const params = await searchParams;
   const fromRaw = params.from;
   const from = typeof fromRaw === "string" ? fromRaw.trim() : "";
-  if (from === "management") redirect("/management/intake");
-  redirect("/administration/intake");
+  if (from === "management") redirect("/management/onboarding/directory/apprentices");
+  redirect("/administration/onboarding/directory/apprentices");
 }
