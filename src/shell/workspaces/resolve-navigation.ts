@@ -5,14 +5,21 @@ import { STAFF_BASE_NAV, MENTOR_NAV_SECTIONS, CURRICULUM_NAV } from "./nav-manif
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
 
 function marketingSection(workspace: "administration" | "management") {
+  const records = PERMISSIONS.ADMIN_RECORDS_MANAGE;
+  const base = `/${workspace}/marketing`;
   return {
-    title: "Marketing",
+    title: "Marketing & Recruitment",
     items: [
+      { href: base, label: "Overview", permission: records },
+      { href: `${base}/employers`, label: "Employers & vacancies", permission: records },
+      { href: `${base}/calendar`, label: "Activity calendar", permission: records },
+      { href: `${base}/actions`, label: "Actions", permission: records },
       {
-        href: `/${workspace}/marketing`,
-        label: "Overview",
-        permission: PERMISSIONS.ADMIN_RECORDS_MANAGE,
+        href: `/reports?from=${workspace}-marketing`,
+        label: "Reports",
+        permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW,
       },
+      { href: `${base}/settings`, label: "Settings", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
     ],
   };
 }
@@ -60,6 +67,8 @@ function onboardingSection(workspace: "administration" | "management") {
     title: "Onboarding",
     items: [
       { href: base, label: "Overview", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/apprentices`, label: "Apprentices", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/interviews`, label: "Interviews", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/apprentice`, label: "Add apprentice", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/employer`, label: "Add employer", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/directory`, label: "Directory", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },

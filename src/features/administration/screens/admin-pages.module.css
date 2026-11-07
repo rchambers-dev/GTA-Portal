@@ -814,6 +814,15 @@ fieldset:disabled .field select {
   background: var(--bg-surface);
 }
 
+.gapList {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--text-secondary);
+}
+
 .tableWrap {
   overflow-x: auto;
 }

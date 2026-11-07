@@ -6,6 +6,7 @@ import { describe, expect, it } from "vitest";
 import { ApprenticesVisualPreview } from "./apprentices-visual-preview";
 import { EmployersVisualPreview } from "./employers-visual-preview";
 import { MarketingOverview } from "./MarketingOverview";
+import { RecruitmentGapScreen } from "./RecruitmentGapScreen";
 import { OnboardingDirectory } from "./OnboardingDirectory";
 import { OnboardingOverview } from "./OnboardingOverview";
 import { LEARNER_FIELD_ORDER } from "./learner-entry-options";
@@ -95,27 +96,49 @@ describe("onboarding placement", () => {
     expect(routes).toContain('redirect("/management/onboarding/directory/apprentices")');
     expect(routes).toContain('redirect("/management/onboarding/directory/employers")');
     expect(routes).toContain("return <AdminEnrolmentsScreen />");
-    expect(routes).toContain("return <MarketingOverview />");
+    expect(routes).toContain("return renderMarketing(\"administration\", segment);");
+    expect(routes).toContain("return renderMarketing(\"management\", segment);");
     const page = readFileSync(path.join(process.cwd(), "src/app/apprentices/page.tsx"), "utf8");
     expect(page).toContain("requireApprenticeWorkspaceAccess");
   });
 
-  it("adds a Marketing overview shell and no marketing feature pages", () => {
+  it("splits Onboarding and Marketing & Recruitment without a second employer list", () => {
     const nav = readFileSync(
       path.join(process.cwd(), "src/shell/workspaces/resolve-navigation.ts"),
       "utf8",
     );
-    expect(nav).toContain('title: "Marketing"');
-    expect(nav).toContain('href: `/${workspace}/marketing`');
-    expect(nav).not.toContain("/interviews");
-    expect(nav).not.toContain("/calendar");
-    expect(nav).not.toContain('label: "Reports"');
-    expect(nav).not.toContain('label: "Settings"');
-    const html = renderToStaticMarkup(createElement(MarketingOverview));
-    expect(html).toContain("Marketing is not configured");
+    expect(nav).toContain('title: "Marketing & Recruitment"');
+    expect(nav).toContain("const base = `/${workspace}/marketing`");
+    expect(nav).toContain('label: "Employers & vacancies"');
+    expect(nav).toContain("PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW");
+    expect(nav).toContain("PERMISSIONS.ADMIN_USERS_MANAGE");
+    const html = renderToStaticMarkup(
+      createElement(MarketingOverview, { workspace: "administration" }),
+    );
+    expect(html).toContain("Marketing &amp; Recruitment");
     expect(html).toContain("EXAMPLE DATA");
     expect(html).toContain("Saving is disabled");
-    expect(html).not.toContain("Stage 1");
+    expect(html).toContain("not built");
     expect(html).not.toContain("supabase");
+    const employers = renderToStaticMarkup(
+      createElement(OnboardingDirectory, {
+        initialView: "employers",
+        lockView: true,
+        title: "Employers & vacancies",
+      }),
+    );
+    expect(employers).toContain("Example Motors");
+    expect(employers).not.toContain(">Apprentices<");
+    const interviews = renderToStaticMarkup(
+      createElement(RecruitmentGapScreen, {
+        eyebrow: "Onboarding",
+        title: "Interviews",
+        description: "Interview groups are not built.",
+        gaps: ["A pass does not open Stage 2."],
+      }),
+    );
+    expect(interviews).toContain("NOT BUILT");
+    expect(interviews).toContain("A pass does not open Stage 2.");
+    expect(interviews).not.toContain("supabase");
   });
 });
