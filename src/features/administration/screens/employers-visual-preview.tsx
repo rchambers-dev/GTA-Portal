@@ -138,7 +138,7 @@ export function EmployersVisualPreview({
         ) : (
           <ul className={styles.pillList}>
             {rows.map((row) => (
-              <li key={row.id} className={styles.pillRow}>
+              <li key={row.id} className={`${styles.pillRow} ${styles.employerRow}`}>
                 <span className={styles.pillName}>{row.name}</span>
                 <span className={styles.pillMeta}>{employerMeta(row)}</span>
               </li>

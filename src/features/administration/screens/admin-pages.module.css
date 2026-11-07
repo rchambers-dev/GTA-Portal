@@ -2376,6 +2376,10 @@ textarea.detailFieldInput {
   box-shadow: var(--shadow-sm);
 }
 
+.employerRow {
+  border-radius: 8px;
+}
+
 .pillName {
   font-weight: 700;
 }
