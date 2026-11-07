@@ -32,6 +32,7 @@ import {
 } from "../domain/teaching-group-placement";
 import type { AdminApprenticeRecord, AdminCohortRecord } from "../domain/types";
 import { useAdminStore } from "../hooks/useAdminStore";
+import { ApprenticesVisualPreview } from "./apprentices-visual-preview";
 import styles from "./admin-pages.module.css";
 
 type PersonalForm = Omit<ApprenticeInput, "intakeStatus">;
@@ -242,7 +243,8 @@ function IntakeInlineField({
  * Apprentice Intake — same create form as Temp Portal: account + placement
  * on one page. Extra personal fields can be finished afterwards.
  */
-export function AdminApprenticeIntakeScreen() {
+/** Live intake implementation, kept for later wiring. Not rendered while the layout preview is on. */
+export function AdminApprenticeIntakeScreenLive() {
   const store = useAdminStore();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
@@ -1247,4 +1249,9 @@ export function AdminApprenticeIntakeScreen() {
       </div>
     </ApprenticePageShell>
   );
+}
+
+/** Signed-in intake routes show the layout preview. Saving stays off until layout approval. */
+export function AdminApprenticeIntakeScreen() {
+  return <ApprenticesVisualPreview />;
 }

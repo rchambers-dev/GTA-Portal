@@ -123,7 +123,7 @@ export function AdministrationDashboardScreen() {
               href="/administration/intake"
               data-tone="amber"
             >
-              Apprentice Intake
+              Apprentices
             </Link>
             <Link
               className={apprenticeStyles.shortcut}
