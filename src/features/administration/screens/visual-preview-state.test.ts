@@ -101,19 +101,28 @@ describe("employers visual behaviour", () => {
     state = employerPreviewReducer(state, { type: "set-name", name: "Example Workshop" });
     state = employerPreviewReducer(state, { type: "set-phone", phone: "00000 300300" });
     state = employerPreviewReducer(state, { type: "set-postcode", postcode: "EX3 3EX" });
-    state = employerPreviewReducer(state, { type: "set-site", site: "Example bay" });
-    state = employerPreviewReducer(state, { type: "set-manager", manager: "Example Lead" });
+    state = employerPreviewReducer(state, {
+      type: "set-site",
+      id: state.sites[0].id,
+      label: "Example bay",
+    });
+    state = employerPreviewReducer(state, {
+      type: "set-manager",
+      id: state.managers[0].id,
+      label: "Example Lead",
+    });
     const cancelled = employerPreviewReducer(state, { type: "cancel-add" });
     expect(cancelled.addOpen).toBe(false);
     expect(cancelled.phone).toBe("");
+    expect(cancelled.sites.map((entry) => entry.label)).toEqual([""]);
     expect(cancelled.rows.some((row) => row.name === "Example Workshop")).toBe(false);
     const savedLocally = employerPreviewReducer(state, { type: "add-local" });
     const added = savedLocally.rows.find((row) => row.name === "Example Workshop");
     expect(added).toMatchObject({
       phone: "00000 300300",
       postcode: "EX3 3EX",
-      site: "Example bay",
-      manager: "Example Lead",
+      sites: ["Example bay"],
+      managers: ["Example Lead"],
     });
     expect(savedLocally.notice).toBe("Not saved. Saving is disabled.");
     expect(fetchSpy).not.toHaveBeenCalled();
@@ -135,8 +144,93 @@ describe("employers visual behaviour", () => {
     expect(html).toContain("EX1 1EX");
     expect(html).toContain("Example yard");
     expect(html).toContain("Example Manager");
+    expect(html).toContain("+ Add site");
+    expect(html).toContain("+ Add manager");
     expect(html).not.toContain("Add apprentice");
     expect(html).not.toContain("garage");
+  });
+
+  it("adds, edits, and removes extra sites and managers without a write", () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch");
+    let state = employerPreviewReducer(initialEmployerPreviewState(), { type: "toggle-add" });
+    state = employerPreviewReducer(state, { type: "set-name", name: "Example Workshop" });
+    state = employerPreviewReducer(state, {
+      type: "set-site",
+      id: state.sites[0].id,
+      label: "Example bay",
+    });
+    state = employerPreviewReducer(state, { type: "add-site" });
+    state = employerPreviewReducer(state, {
+      type: "set-site",
+      id: state.sites[1].id,
+      label: "Example ramp",
+    });
+    state = employerPreviewReducer(state, { type: "add-site" });
+    state = employerPreviewReducer(state, {
+      type: "set-site",
+      id: state.sites[2].id,
+      label: "Example store",
+    });
+    state = employerPreviewReducer(state, {
+      type: "set-site",
+      id: state.sites[0].id,
+      label: "Example bay edited",
+    });
+    const removedSiteId = state.sites[1].id;
+    state = employerPreviewReducer(state, { type: "remove-site", id: removedSiteId });
+    state = employerPreviewReducer(state, {
+      type: "set-manager",
+      id: state.managers[0].id,
+      label: "Example Lead",
+    });
+    state = employerPreviewReducer(state, { type: "add-manager" });
+    state = employerPreviewReducer(state, {
+      type: "set-manager",
+      id: state.managers[1].id,
+      label: "Example Deputy",
+    });
+    state = employerPreviewReducer(state, { type: "remove-manager", id: state.managers[0].id });
+    const saved = employerPreviewReducer(state, { type: "add-local" });
+    const added = saved.rows.find((row) => row.name === "Example Workshop");
+    expect(added?.sites).toEqual(["Example bay edited", "Example store"]);
+    expect(added?.managers).toEqual(["Example Deputy"]);
+    expect(added?.sites).not.toContain("Example ramp");
+    expect(added?.managers).not.toContain("Example Lead");
+    expect(saved.notice).toBe("Not saved. Saving is disabled.");
+    expect(fetchSpy).not.toHaveBeenCalled();
+    fetchSpy.mockRestore();
+
+    const html = renderToStaticMarkup(
+      createElement(EmployersVisualPreview, {
+        initialState: {
+          ...initialEmployerPreviewState(),
+          addOpen: true,
+          sites: [
+            { id: "site-1", label: "Example bay edited" },
+            { id: "site-2", label: "Example store" },
+          ],
+          managers: [{ id: "manager-1", label: "Example Deputy" }],
+          rows: [
+            ...initialEmployerPreviewState().rows,
+            {
+              id: "local-employer-9",
+              name: "Example Workshop",
+              phone: "00000 300300",
+              postcode: "EX3 3EX",
+              sites: ["Example bay edited", "Example store"],
+              managers: ["Example Deputy"],
+            },
+          ],
+        },
+      }),
+    );
+    expect(html).toContain("+ Add site");
+    expect(html).toContain("+ Add manager");
+    expect(html).toContain("Example bay edited, Example store");
+    expect(html).toContain("Example Deputy");
+    expect(html).toContain('aria-label="Remove site 2"');
+    expect(html).toContain('aria-label="Remove manager 1"');
+    expect(html).not.toContain("Example ramp");
   });
 });
 

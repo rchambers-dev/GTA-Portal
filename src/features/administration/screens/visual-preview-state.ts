@@ -9,8 +9,13 @@ export type ExampleEmployer = {
   name: string;
   phone: string;
   postcode: string;
-  site: string;
-  manager: string;
+  sites: string[];
+  managers: string[];
+};
+
+export type DraftEntry = {
+  id: string;
+  label: string;
 };
 
 export type ExampleApprentice = {
@@ -25,16 +30,16 @@ export const EXAMPLE_EMPLOYERS: ExampleEmployer[] = [
     name: "Example Motors",
     phone: "00000 100100",
     postcode: "EX1 1EX",
-    site: "Example yard",
-    manager: "Example Manager",
+    sites: ["Example yard"],
+    managers: ["Example Manager"],
   },
   {
     id: "example-yard-co",
     name: "Example Yard Co",
     phone: "00000 200200",
     postcode: "EX2 2EX",
-    site: "Example yard",
-    manager: "",
+    sites: ["Example yard"],
+    managers: [],
   },
 ];
 
@@ -73,7 +78,11 @@ export function initialApprenticePreviewState(): ApprenticePreviewState {
     fullName: "",
     employerId: "",
     rows: EXAMPLE_APPRENTICES.map((row) => ({ ...row })),
-    employers: EXAMPLE_EMPLOYERS.map((row) => ({ ...row })),
+    employers: EXAMPLE_EMPLOYERS.map((row) => ({
+      ...row,
+      sites: [...row.sites],
+      managers: [...row.managers],
+    })),
     notice: "",
   };
 }
@@ -132,8 +141,9 @@ export type EmployerPreviewState = {
   name: string;
   phone: string;
   postcode: string;
-  site: string;
-  manager: string;
+  sites: DraftEntry[];
+  managers: DraftEntry[];
+  entrySeq: number;
   rows: ExampleEmployer[];
   notice: string;
 };
@@ -145,9 +155,61 @@ export type EmployerPreviewAction =
   | { type: "set-name"; name: string }
   | { type: "set-phone"; phone: string }
   | { type: "set-postcode"; postcode: string }
-  | { type: "set-site"; site: string }
-  | { type: "set-manager"; manager: string }
+  | { type: "add-site" }
+  | { type: "set-site"; id: string; label: string }
+  | { type: "remove-site"; id: string }
+  | { type: "add-manager" }
+  | { type: "set-manager"; id: string; label: string }
+  | { type: "remove-manager"; id: string }
   | { type: "add-local" };
+
+function blankEmployerEntries(): Pick<EmployerPreviewState, "sites" | "managers" | "entrySeq"> {
+  return {
+    sites: [{ id: "site-1", label: "" }],
+    managers: [{ id: "manager-1", label: "" }],
+    entrySeq: 1,
+  };
+}
+
+function filledLabels(entries: DraftEntry[]): string[] {
+  return entries.map((entry) => entry.label.trim()).filter(Boolean);
+}
+
+function withEntry(
+  entries: DraftEntry[],
+  id: string,
+  label: string,
+): DraftEntry[] {
+  return entries.map((entry) => (entry.id === id ? { ...entry, label } : entry));
+}
+
+function withoutEntry(
+  entries: DraftEntry[],
+  id: string,
+  kind: "site" | "manager",
+  entrySeq: number,
+): { entries: DraftEntry[]; entrySeq: number } {
+  const remaining = entries.filter((entry) => entry.id !== id);
+  if (remaining.length > 0) return { entries: remaining, entrySeq };
+  const nextSeq = entrySeq + 1;
+  return {
+    entries: [{ id: `${kind}-${nextSeq}`, label: "" }],
+    entrySeq: nextSeq,
+  };
+}
+
+export function employerMeta(row: ExampleEmployer): string {
+  const sites = row.sites.map((item) => item.trim()).filter(Boolean);
+  const managers = row.managers.map((item) => item.trim()).filter(Boolean);
+  return [
+    row.phone,
+    row.postcode,
+    sites.length > 0 ? sites.join(", ") : "No site",
+    managers.length > 0 ? managers.join(", ") : "No manager",
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
 
 export function initialEmployerPreviewState(): EmployerPreviewState {
   return {
@@ -156,9 +218,12 @@ export function initialEmployerPreviewState(): EmployerPreviewState {
     name: "",
     phone: "",
     postcode: "",
-    site: "",
-    manager: "",
-    rows: EXAMPLE_EMPLOYERS.map((row) => ({ ...row })),
+    ...blankEmployerEntries(),
+    rows: EXAMPLE_EMPLOYERS.map((row) => ({
+      ...row,
+      sites: [...row.sites],
+      managers: [...row.managers],
+    })),
     notice: "",
   };
 }
@@ -167,7 +232,7 @@ export function visibleEmployers(state: EmployerPreviewState): ExampleEmployer[]
   const query = state.query.trim().toLowerCase();
   if (!query) return state.rows;
   return state.rows.filter((row) =>
-    [row.name, row.phone, row.postcode, row.site, row.manager]
+    [row.name, row.phone, row.postcode, ...row.sites, ...row.managers]
       .join(" ")
       .toLowerCase()
       .includes(query),
@@ -189,8 +254,7 @@ export function employerPreviewReducer(
             name: "",
             phone: "",
             postcode: "",
-            site: "",
-            manager: "",
+            ...blankEmployerEntries(),
             notice: "",
           }
         : { ...state, addOpen: true, notice: "" };
@@ -201,8 +265,7 @@ export function employerPreviewReducer(
         name: "",
         phone: "",
         postcode: "",
-        site: "",
-        manager: "",
+        ...blankEmployerEntries(),
         notice: "",
       };
     case "set-name":
@@ -211,10 +274,34 @@ export function employerPreviewReducer(
       return { ...state, phone: action.phone };
     case "set-postcode":
       return { ...state, postcode: action.postcode };
+    case "add-site": {
+      const entrySeq = state.entrySeq + 1;
+      return {
+        ...state,
+        entrySeq,
+        sites: [...state.sites, { id: `site-${entrySeq}`, label: "" }],
+      };
+    }
     case "set-site":
-      return { ...state, site: action.site };
+      return { ...state, sites: withEntry(state.sites, action.id, action.label) };
+    case "remove-site": {
+      const next = withoutEntry(state.sites, action.id, "site", state.entrySeq);
+      return { ...state, entrySeq: next.entrySeq, sites: next.entries };
+    }
+    case "add-manager": {
+      const entrySeq = state.entrySeq + 1;
+      return {
+        ...state,
+        entrySeq,
+        managers: [...state.managers, { id: `manager-${entrySeq}`, label: "" }],
+      };
+    }
     case "set-manager":
-      return { ...state, manager: action.manager };
+      return { ...state, managers: withEntry(state.managers, action.id, action.label) };
+    case "remove-manager": {
+      const next = withoutEntry(state.managers, action.id, "manager", state.entrySeq);
+      return { ...state, entrySeq: next.entrySeq, managers: next.entries };
+    }
     case "add-local": {
       const name = state.name.trim();
       if (!name) return { ...state, notice: "Company name is required." };
@@ -224,8 +311,7 @@ export function employerPreviewReducer(
         name: "",
         phone: "",
         postcode: "",
-        site: "",
-        manager: "",
+        ...blankEmployerEntries(),
         notice: "Not saved. Saving is disabled.",
         rows: [
           ...state.rows,
@@ -234,8 +320,8 @@ export function employerPreviewReducer(
             name,
             phone: state.phone.trim(),
             postcode: state.postcode.trim(),
-            site: state.site.trim(),
-            manager: state.manager.trim(),
+            sites: filledLabels(state.sites),
+            managers: filledLabels(state.managers),
           },
         ],
       };

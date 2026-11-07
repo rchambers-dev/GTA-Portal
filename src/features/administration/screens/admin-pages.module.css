@@ -2396,6 +2396,48 @@ textarea.detailFieldInput {
   background: var(--bg-surface);
 }
 
+.entryGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.entryRow {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.entryRow .field {
+  flex: 1;
+  min-width: 0;
+}
+
+.addEntryPill,
+.removeEntryPill {
+  flex: 0 0 auto;
+  min-height: 2.65rem;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.addEntryPill {
+  border: 1.5px solid var(--color-navy-700);
+  background: var(--color-navy-700);
+  color: var(--color-white);
+}
+
+.removeEntryPill {
+  border: 1.5px solid color-mix(in srgb, var(--color-navy-700) 22%, var(--border-subtle));
+  background: var(--bg-surface);
+  color: var(--color-navy-800);
+}
+
 .jobTitleOption input {
   margin: 0;
 }
