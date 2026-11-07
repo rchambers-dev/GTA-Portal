@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer } from "react";
+import { useReducer, useSyncExternalStore } from "react";
 import { Select } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./admin-pages.module.css";
@@ -15,6 +15,7 @@ import {
 } from "./learner-entry-options";
 import {
   apprenticePreviewReducer,
+  apprenticePreviewStore,
   employerName,
   initialApprenticePreviewState,
   visibleApprentices,
@@ -28,50 +29,55 @@ import {
  */
 export function ApprenticesVisualPreview({
   initialState,
+  mode = "page",
+  query,
 }: {
   initialState?: ApprenticePreviewState;
+  /** page keeps the combined preview. form and list are the relocated views. */
+  mode?: "page" | "form" | "list";
+  query?: string;
 } = {}) {
-  const [state, dispatch] = useReducer(
+  const shared = useSyncExternalStore(
+    apprenticePreviewStore.subscribe,
+    apprenticePreviewStore.getState,
+    apprenticePreviewStore.getState,
+  );
+  const [local, localDispatch] = useReducer(
     apprenticePreviewReducer,
     initialState,
     (seed) => seed ?? initialApprenticePreviewState(),
   );
-  const rows = visibleApprentices(state);
+  const isolated = initialState !== undefined;
+  const state = isolated ? local : shared;
+  const dispatch = isolated ? localDispatch : apprenticePreviewStore.dispatch;
+  const rows = visibleApprentices({ ...state, query: query ?? state.query });
+  const formOpen = mode === "form" || state.addOpen;
+  const showList = mode !== "form";
+  const showSearch = mode !== "form" && query === undefined;
 
-  return (
-    <ApprenticePageShell
-      eyebrow="Apprentices"
-      title="Apprentices"
-      description="Search the list, or open Add apprentice. Example data only. Saving is disabled."
-      actions={
-        <button
-          type="button"
-          className={styles.primaryBtn}
-          aria-expanded={state.addOpen}
-          onClick={() => dispatch({ type: "toggle-add" })}
-        >
-          {state.addOpen ? "Close" : "Add apprentice"}
-        </button>
-      }
-    >
-      <div className={styles.stack} data-visual="apprentices">
-        <p className={styles.previewBanner} role="status">
-          EXAMPLE DATA. Saving is disabled. Phone and postcode belong on the employer, not here.
-        </p>
+  const body = (
+      <div className={styles.stack} data-visual="apprentices" data-preview-mode={mode}>
+        {mode === "list" ? null : (
+          <p className={styles.previewBanner} role="status">
+            EXAMPLE DATA. Saving is disabled. Phone and postcode belong on the employer, not here.
+          </p>
+        )}
 
-        <div className={styles.registryToolbar}>
-          <label className={styles.registrySearch}>
-            <span className={styles.registrySearchLabel}>Search apprentices</span>
-            <input
-              type="search"
-              value={state.query}
-              placeholder="Search by apprentice or employer"
-              onChange={(event) => dispatch({ type: "search", query: event.target.value })}
-            />
-          </label>
-        </div>
+        {showSearch ? (
+          <div className={styles.registryToolbar}>
+            <label className={styles.registrySearch}>
+              <span className={styles.registrySearchLabel}>Search apprentices</span>
+              <input
+                type="search"
+                value={query ?? state.query}
+                placeholder="Search by apprentice or employer"
+                onChange={(event) => dispatch({ type: "search", query: event.target.value })}
+              />
+            </label>
+          </div>
+        ) : null}
 
-        {state.addOpen ? (
+        {formOpen ? (
           <section className={styles.learnerAdd} data-add-panel="apprentice">
             <p className={styles.learnerKicker}>Manual entry</p>
             <h2 className={styles.learnerHeading}>Add apprentice</h2>
@@ -249,29 +255,58 @@ export function ApprenticesVisualPreview({
           </section>
         ) : null}
 
-        {!state.addOpen && state.notice ? (
+        {state.notice ? (
           <p className={styles.formGroupMeta} role="status">
             {state.notice}
           </p>
         ) : null}
 
-        {rows.length === 0 ? (
-          <p className={styles.empty} role="status">
-            No apprentices match this search.
-          </p>
-        ) : (
-          <ul className={styles.pillList}>
-            {rows.map((row) => (
-              <li key={row.id} className={`${styles.pillRow} ${styles.employerRow}`}>
-                <span className={styles.pillName}>{row.fullName}</span>
-                <span className={styles.pillMeta}>
-                  {employerName(row.employerId, state.employers)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
+        {showList ? (
+          rows.length === 0 ? (
+            <p className={styles.empty} role="status">
+              No apprentices match this search.
+            </p>
+          ) : (
+            <ul className={styles.pillList} data-directory-list="apprentices">
+              {rows.map((row) => (
+                <li key={row.id} className={`${styles.pillRow} ${styles.employerRow}`}>
+                  <span className={styles.pillName}>{row.fullName}</span>
+                  <span className={styles.pillMeta}>
+                    {employerName(row.employerId, state.employers)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )
+        ) : null}
       </div>
+  );
+
+  if (mode === "list") return body;
+
+  return (
+    <ApprenticePageShell
+      eyebrow={mode === "form" ? "Onboarding" : "Apprentices"}
+      title={mode === "form" ? "Add apprentice" : "Apprentices"}
+      description={
+        mode === "form"
+          ? "Example data only. Saving is disabled."
+          : "Search the list, or open Add apprentice. Example data only. Saving is disabled."
+      }
+      actions={
+        mode === "page" ? (
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            aria-expanded={state.addOpen}
+            onClick={() => dispatch({ type: "toggle-add" })}
+          >
+            {state.addOpen ? "Close" : "Add apprentice"}
+          </button>
+        ) : null
+      }
+    >
+      {body}
     </ApprenticePageShell>
   );
 }

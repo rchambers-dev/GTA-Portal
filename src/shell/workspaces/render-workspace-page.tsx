@@ -34,14 +34,17 @@ import type { EffectiveSession } from "@/lib/portal/types";
 import {
   AdministrationDashboardScreen,
   AdminEnrolmentsScreen,
-  AdminEmployersScreen,
   AdminCohortsScreen,
   AdminTeachingGroupsScreen,
-  AdminApprenticeIntakeScreen,
   AdminProgrammesScreen,
   AdminUsersScreen,
   AdminStaffScreen,
 } from "@/features/administration";
+import { ApprenticesVisualPreview } from "@/features/administration/screens/apprentices-visual-preview";
+import { EmployersVisualPreview } from "@/features/administration/screens/employers-visual-preview";
+import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
+import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
+import { OnboardingOverview } from "@/features/administration/screens/OnboardingOverview";
 import { SharedDriveScreen } from "@/features/shared-drive";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { getUnauthenticatedRedirect } from "@/lib/auth/routing";
@@ -65,6 +68,22 @@ const STAFF_SHARED_REDIRECTS: Record<string, string> = {
   resources: "/staff/programme-delivery",
   "curriculum-feedback": "/staff/programme-delivery",
 };
+
+function renderOnboarding(
+  workspace: "administration" | "management",
+  segment: string,
+) {
+  if (segment === "onboarding") return <OnboardingOverview workspace={workspace} />;
+  if (segment === "onboarding/apprentice") return <ApprenticesVisualPreview mode="form" />;
+  if (segment === "onboarding/employer") return <EmployersVisualPreview mode="form" />;
+  if (segment === "onboarding/directory" || segment === "onboarding/directory/apprentices") {
+    return <OnboardingDirectory initialView="apprentices" />;
+  }
+  if (segment === "onboarding/directory/employers") {
+    return <OnboardingDirectory initialView="employers" />;
+  }
+  return null;
+}
 
 function renderDocumentsPage(
   audience: "apprentice" | "employer",
@@ -293,7 +312,7 @@ export async function renderWorkspacePage(
       case "dashboard":
         return <AdministrationDashboardScreen />;
       case "users":
-        redirect("/administration/intake");
+        redirect("/administration/onboarding/directory/apprentices");
       case "enrolments":
         return <AdminEnrolmentsScreen />;
       case "accounts":
@@ -301,7 +320,7 @@ export async function renderWorkspacePage(
           <AdminUsersScreen scope="apprentice" eyebrow="Administration" />
         );
       case "employers":
-        return <AdminEmployersScreen />;
+        redirect("/administration/onboarding/directory/employers");
       case "programmes":
         return <AdminProgrammesScreen />;
       case "cohorts":
@@ -309,7 +328,16 @@ export async function renderWorkspacePage(
       case "teaching-groups":
         return <AdminTeachingGroupsScreen />;
       case "intake":
-        return <AdminApprenticeIntakeScreen />;
+        redirect("/administration/onboarding/directory/apprentices");
+      case "marketing":
+        return <MarketingOverview />;
+      case "onboarding":
+      case "onboarding/apprentice":
+      case "onboarding/employer":
+      case "onboarding/directory":
+      case "onboarding/directory/apprentices":
+      case "onboarding/directory/employers":
+        return renderOnboarding("administration", segment);
       case "staff":
         return <AdminStaffScreen eyebrow="Administration" />;
       case "shared-drive":
@@ -340,7 +368,7 @@ export async function renderWorkspacePage(
       case "staff":
         return <AdminStaffScreen eyebrow="Management" />;
       case "employers":
-        return <AdminEmployersScreen />;
+        redirect("/management/onboarding/directory/employers");
       case "programmes-records":
         return <AdminProgrammesScreen />;
       case "programme-builder":
@@ -352,7 +380,16 @@ export async function renderWorkspacePage(
       case "teaching-groups":
         return <AdminTeachingGroupsScreen />;
       case "intake":
-        return <AdminApprenticeIntakeScreen />;
+        redirect("/management/onboarding/directory/apprentices");
+      case "marketing":
+        return <MarketingOverview />;
+      case "onboarding":
+      case "onboarding/apprentice":
+      case "onboarding/employer":
+      case "onboarding/directory":
+      case "onboarding/directory/apprentices":
+      case "onboarding/directory/employers":
+        return renderOnboarding("management", segment);
       case "enrolments":
         return <AdminEnrolmentsScreen />;
       case "apprentice-funding":

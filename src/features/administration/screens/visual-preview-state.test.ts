@@ -666,16 +666,19 @@ describe("lookup route and menu", () => {
   it("redirects the old lookup URL after the existing session guard", () => {
     const page = read("src/app/apprentices/page.tsx");
     expect(page).toContain("requireApprenticeWorkspaceAccess");
-    expect(page).toContain('redirect("/administration/intake")');
-    expect(page).toContain('redirect("/management/intake")');
+    expect(page).toContain('redirect("/administration/onboarding/directory/apprentices")');
+    expect(page).toContain('redirect("/management/onboarding/directory/apprentices")');
     expect(page).not.toContain("ApprenticePackSearchScreen");
   });
 
   it("keeps one Apprentices label in each staff menu and names Employers", () => {
     const nav = read("src/shell/workspaces/resolve-navigation.ts");
     expect(nav).not.toContain("/apprentices?from=");
-    expect(nav.match(/label: "Apprentices"/g)).toHaveLength(2);
-    expect(nav).toContain('label: "Employers"');
+    expect(nav).toContain('title: "Onboarding"');
+    expect(nav).toContain('label: "Add apprentice"');
+    expect(nav).toContain('label: "Add employer"');
+    expect(nav).toContain('label: "Directory"');
+    expect(nav).not.toContain('label: "Employers"');
     expect(nav).not.toContain("Employer Records");
     expect(nav).toContain('label: "Apprentice Enrolments"');
   });

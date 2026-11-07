@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./admin-pages.module.css";
@@ -8,6 +8,7 @@ import {
   confirmationKey,
   employerMeta,
   employerPreviewReducer,
+  employerPreviewStore,
   initialEmployerPreviewState,
   nextModalFocus,
   visibleEmployers,
@@ -22,51 +23,54 @@ import {
  */
 export function EmployersVisualPreview({
   initialState,
+  mode = "page",
+  query,
 }: {
   initialState?: EmployerPreviewState;
+  mode?: "page" | "form" | "list";
+  query?: string;
 } = {}) {
-  const [state, dispatch] = useReducer(
+  const shared = useSyncExternalStore(
+    employerPreviewStore.subscribe,
+    employerPreviewStore.getState,
+    employerPreviewStore.getState,
+  );
+  const [local, localDispatch] = useReducer(
     employerPreviewReducer,
     initialState,
     (seed) => seed ?? initialEmployerPreviewState(),
   );
-  const rows = visibleEmployers(state);
+  const isolated = initialState !== undefined;
+  const state = isolated ? local : shared;
+  const dispatch = isolated ? localDispatch : employerPreviewStore.dispatch;
+  const rows = visibleEmployers({ ...state, query: query ?? state.query });
+  const formOpen = mode === "form" || state.addOpen;
+  const showList = mode !== "form";
+  const showSearch = mode !== "form" && query === undefined;
 
-  return (
-    <>
-    <ApprenticePageShell
-      eyebrow="Employers"
-      title="Employers"
-      description="Search companies, or open Add employer. Example data only. Saving is disabled."
-      actions={
-        <button
-          type="button"
-          className={styles.primaryBtn}
-          aria-expanded={state.addOpen}
-          onClick={() => dispatch({ type: "toggle-add" })}
-        >
-          {state.addOpen ? "Close" : "Add employer"}
-        </button>
-      }
-    >
-      <div className={styles.stack} data-visual="employers">
-        <p className={styles.previewBanner} role="status">
-          EXAMPLE DATA. Saving is disabled. Phone number and postcode are company details.
-        </p>
+  const body = (
+      <div className={styles.stack} data-visual="employers" data-preview-mode={mode}>
+        {mode === "list" ? null : (
+          <p className={styles.previewBanner} role="status">
+            EXAMPLE DATA. Saving is disabled. Phone number and postcode are company details.
+          </p>
+        )}
 
-        <div className={styles.registryToolbar}>
-          <label className={styles.registrySearch}>
-            <span className={styles.registrySearchLabel}>Search employers</span>
-            <input
-              type="search"
-              value={state.query}
-              placeholder="Search by company, phone, postcode, site, or manager"
-              onChange={(event) => dispatch({ type: "search", query: event.target.value })}
-            />
-          </label>
-        </div>
+        {showSearch ? (
+          <div className={styles.registryToolbar}>
+            <label className={styles.registrySearch}>
+              <span className={styles.registrySearchLabel}>Search employers</span>
+              <input
+                type="search"
+                value={query ?? state.query}
+                placeholder="Search by company, phone, postcode, site, or manager"
+                onChange={(event) => dispatch({ type: "search", query: event.target.value })}
+              />
+            </label>
+          </div>
+        ) : null}
 
-        {state.addOpen ? (
+        {formOpen ? (
           <form
             className={styles.addPanel}
             data-add-panel="employer"
@@ -154,34 +158,61 @@ export function EmployersVisualPreview({
           </form>
         ) : null}
 
-        {!state.addOpen && state.notice ? (
+        {state.notice ? (
           <p className={styles.formGroupMeta} role="status">
             {state.notice}
           </p>
         ) : null}
 
-        {rows.length === 0 ? (
-          <p className={styles.empty} role="status">
-            No employers match this search.
-          </p>
-        ) : (
-          <ul className={styles.pillList}>
-            {rows.map((row) => (
-              <li key={row.id} className={`${styles.pillRow} ${styles.employerRow}`}>
-                <span className={styles.pillName}>{row.name}</span>
-                <span className={styles.pillMeta}>{employerMeta(row)}</span>
-              </li>
-            ))}
-          </ul>
-        )}
+        {showList ? (
+          rows.length === 0 ? (
+            <p className={styles.empty} role="status">
+              No employers match this search.
+            </p>
+          ) : (
+            <ul className={styles.pillList} data-directory-list="employers">
+              {rows.map((row) => (
+                <li key={row.id} className={`${styles.pillRow} ${styles.employerRow}`}>
+                  <span className={styles.pillName}>{row.name}</span>
+                  <span className={styles.pillMeta}>{employerMeta(row)}</span>
+                </li>
+              ))}
+            </ul>
+          )
+        ) : null}
       </div>
-    </ApprenticePageShell>
-    {state.pendingRemove ? (
-      <RemoveEntryModal
-        kind={state.pendingRemove.kind}
-        dispatch={dispatch}
-      />
-    ) : null}
+  );
+
+  if (mode === "list") return body;
+
+  return (
+    <>
+      <ApprenticePageShell
+        eyebrow={mode === "form" ? "Onboarding" : "Employers"}
+        title={mode === "form" ? "Add employer" : "Employers"}
+        description={
+          mode === "form"
+            ? "Example data only. Saving is disabled."
+            : "Search companies, or open Add employer. Example data only. Saving is disabled."
+        }
+        actions={
+          mode === "page" ? (
+            <button
+              type="button"
+              className={styles.primaryBtn}
+              aria-expanded={state.addOpen}
+              onClick={() => dispatch({ type: "toggle-add" })}
+            >
+              {state.addOpen ? "Close" : "Add employer"}
+            </button>
+          ) : null
+        }
+      >
+        {body}
+      </ApprenticePageShell>
+      {state.pendingRemove ? (
+        <RemoveEntryModal kind={state.pendingRemove.kind} dispatch={dispatch} />
+      ) : null}
     </>
   );
 }

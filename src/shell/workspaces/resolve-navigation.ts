@@ -4,6 +4,32 @@ import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { STAFF_BASE_NAV, MENTOR_NAV_SECTIONS, CURRICULUM_NAV } from "./nav-manifests";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
 
+function marketingSection(workspace: "administration" | "management") {
+  return {
+    title: "Marketing",
+    items: [
+      {
+        href: `/${workspace}/marketing`,
+        label: "Overview",
+        permission: PERMISSIONS.ADMIN_RECORDS_MANAGE,
+      },
+    ],
+  };
+}
+
+function onboardingSection(workspace: "administration" | "management") {
+  const base = `/${workspace}/onboarding`;
+  return {
+    title: "Onboarding",
+    items: [
+      { href: base, label: "Overview", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/apprentice`, label: "Add apprentice", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/employer`, label: "Add employer", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/directory`, label: "Directory", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+    ],
+  };
+}
+
 function filterSection(
   session: EffectiveSession,
   section: NavSection,
@@ -111,11 +137,9 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       {
         items: [
           { href: "/management/dashboard", label: "Management Dashboard", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
-          { href: "/management/employers", label: "Employers", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/programmes-records", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/cohorts", label: "Cohorts", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/teaching-groups", label: "Teaching Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/management/intake", label: "Apprentices", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/enrolments", label: "Apprentice Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/programme-builder", label: "Programme Builder", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
           { href: "/management/course-builder", label: "Course Builder", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
@@ -129,6 +153,8 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/management/safeguarding", label: "Safeguarding", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
         ],
       },
+      marketingSection("management"),
+      onboardingSection("management"),
     ]);
   }
 
@@ -140,9 +166,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/administration/dashboard", label: "Administration Dashboard", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
           { href: "/administration/cohorts", label: "Cohorts", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/teaching-groups", label: "Teaching Groups", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/employers", label: "Employers", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/programmes", label: "Apprenticeships", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-          { href: "/administration/intake", label: "Apprentices", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/enrolments", label: "Apprentice Enrolments", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/staff", label: "Staff", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/staff-records?from=administration", label: "Staff Records", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
@@ -152,6 +176,8 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/administration/safeguarding", label: "Safeguarding", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
         ],
       },
+      marketingSection("administration"),
+      onboardingSection("administration"),
     ]);
   }
 
