@@ -133,13 +133,14 @@ vi.mock("@/adapters/supabase/client", () => ({
 function session(input: {
   workspace: PortalAccount["workspace"];
   permissions: string[];
+  baseRole?: string;
 }) {
   const account: PortalAccount = {
     id: "user-1",
     name: "Test User",
     initials: "TU",
     email: "test.user@example.invalid",
-    baseRole: input.workspace,
+    baseRole: input.baseRole ?? "Administrator",
     responsibilities: [],
     workspace: input.workspace,
     permissions: input.permissions,
@@ -155,13 +156,35 @@ describe("employer directory route", () => {
     getEffectiveSession.mockReset();
   });
 
-  it("denies apprentice, employer, and tutor sessions", async () => {
-    const { POST } = await import("./route");
+  it("denies reviews-only tutors and apprentice or employer accounts even with a stray records permission", async () => {
+    const { GET, POST } = await import("./route");
+    getEffectiveSession.mockResolvedValueOnce(null);
+    const signedOut = await GET();
+    expect(signedOut.status).toBe(401);
+
     for (const denied of [
-      session({ workspace: "apprentice", permissions: ["apprentice.workspace.own"] }),
-      session({ workspace: "employer", permissions: ["employer.workspace.view"] }),
-      session({ workspace: "staff", permissions: ["staff.workspace.view"] }),
+      session({
+        workspace: "staff",
+        baseRole: "Tutor",
+        permissions: ["reviews.manage", "staff.workspace.view"],
+      }),
+      session({
+        workspace: "apprentice",
+        baseRole: "Apprentice",
+        permissions: ["admin.records.manage", "apprentice.workspace.own"],
+      }),
+      session({
+        workspace: "employer",
+        baseRole: "Employer",
+        permissions: ["admin.records.manage", "employer.workspace.view"],
+      }),
+      session({
+        workspace: "staff",
+        baseRole: "Apprentice",
+        permissions: ["admin.records.manage"],
+      }),
     ]) {
+      getEffectiveSession.mockResolvedValueOnce(denied);
       getEffectiveSession.mockResolvedValueOnce(denied);
       const response = await POST(
         new Request("http://localhost/api/employer-directory", {
@@ -240,10 +263,14 @@ describe("employer directory route", () => {
     expect(inserts.some((insert) => insert.table === "apprentice_programmes")).toBe(false);
   });
 
-  it("lets reviews.manage link a learner without creating another company", async () => {
+  it("lets a records manager link a learner without creating another company", async () => {
     const { POST } = await import("./route");
     getEffectiveSession.mockResolvedValue(
-      session({ workspace: "staff", permissions: ["reviews.manage"] }),
+      session({
+        workspace: "management",
+        baseRole: "Management",
+        permissions: ["admin.records.manage"],
+      }),
     );
     await POST(
       new Request("http://localhost/api/employer-directory", {

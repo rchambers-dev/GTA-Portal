@@ -1,19 +1,29 @@
 -- READ ONLY. This file does not create, lock, or alter anything.
--- It is valid before migration 035 and after it. Missing directory tables
--- and a missing portal_entry column are reported as absent; they are not errors.
--- live_backup_verified stays not_verified_by_this_script. A parent-side
--- metadata snapshot is not a full backup and is not a verified restore.
+-- evidence_kind = measurement is computed from the database.
+-- evidence_kind = attestation is a fixed operator statement. This script
+-- cannot verify a backup, a maintenance window, or the live tool's transaction
+-- mode. Those stay no-go until a person records proof outside this file.
+-- A parent metadata snapshot is not a full backup and is not a verified restore.
 
 select 'live_backup_verified' as check_name,
        'not_verified_by_this_script' as observed,
        'no-go' as decision,
-       'Restore a logical backup of apprentices, employers, apprentice_programmes, profiles, and any directory tables to a scratch database before a live apply or reversal. This script cannot see that backup.' as detail
+       'attestation' as evidence_kind,
+       'Operator must restore a logical backup to a scratch database. This row is not a measurement.' as detail
 
 union all
 select 'maintenance_window',
-       'writes_not_locked_by_this_script',
+       'not_observed_by_this_script',
        'no-go',
-       'Apply and reversal take SHARE ROW EXCLUSIVE on the base registers and, when present, the directory tables. Writes wait. Reads continue. Confirm no other migration is running.'
+       'attestation',
+       'Operator must confirm writes can wait. This script does not take locks and does not see other sessions.'
+
+union all
+select 'tool_transaction',
+       'not_observed_by_this_script',
+       'no-go',
+       'attestation',
+       'Local files contain no BEGIN/COMMIT. A statement-split runner releases LOCK at statement end. apply_migration is the sanctioned history path. execute_sql atomicity is not proven here.'
 
 union all
 select 'base_registers',
@@ -29,7 +39,27 @@ select 'base_registers',
          then 'no-go'
          else 'go'
        end,
-       'Migration 035 locks these three tables. Apply is no-go when any of them is absent.'
+       'measurement',
+       'Measured with to_regclass. Apply is no-go when any base register is absent.'
+
+union all
+select 'executor_privileges',
+       concat(
+         'current_user=', current_user,
+         ' session_user=', session_user,
+         ' current_super=', coalesce((select rolsuper::text from pg_roles where rolname = current_user), 'missing'),
+         ' session_super=', coalesce((select rolsuper::text from pg_roles where rolname = session_user), 'missing'),
+         ' public_create=', has_schema_privilege(current_user, 'public', 'CREATE')::text
+       ),
+       case
+         when coalesce((select rolsuper from pg_roles where rolname = current_user), true)
+           or coalesce((select rolsuper from pg_roles where rolname = session_user), true)
+           or not has_schema_privilege(current_user, 'public', 'CREATE')
+         then 'no-go'
+         else 'measured'
+       end,
+       'measurement',
+       'Measured from pg_roles and has_schema_privilege. Not an attestation of BYPASSRLS.'
 
 union all
 select 'prestate_captured',
@@ -38,7 +68,8 @@ select 'prestate_captured',
          when to_regclass('public.migration_035_prestate') is null then 'expected_before_apply'
          else 'present_after_apply'
        end,
-       'Absence is expected before the first apply. Reversal refuses to run without this table. The table has row security enabled and no grants for anon, authenticated, or service_role.'
+       'measurement',
+       'Absence is expected before the first apply. Reversal refuses without this table.'
 
 union all
 select 'directory_rows',
@@ -68,7 +99,8 @@ select 'directory_rows',
          when to_regclass('public.review_apprentice_details') is null then 'not_applied'
          else 'inspect_counts'
        end,
-       'Before apply, absent is expected. After apply, reversal is no-go when any count is not zero.'
+       'measurement',
+       'Counts are measured only when the table exists. Absent is expected before apply.'
 
 union all
 select 'reviews_entry_apprentices',
@@ -88,11 +120,30 @@ select 'reviews_entry_apprentices',
          ) then 'column_absent_expected_before_apply'
          else 'inspect_count'
        end,
-       'The count query runs only when portal_entry exists. Reversal is no-go when the count is not zero.'
+       'measurement',
+       'The count runs only when portal_entry exists.'
+
+union all
+select 'employer_uuid_populated',
+       case
+         when to_regclass('public.apprentice_programmes') is null then 'programmes_absent'
+         when not exists (
+           select 1 from information_schema.columns
+           where table_schema = 'public' and table_name = 'apprentice_programmes' and column_name = 'employer_uuid'
+         ) then 'column_absent'
+         else coalesce((xpath('//*[local-name()="c"]/text()', query_to_xml('select count(*)::text as c from public.apprentice_programmes where employer_uuid is not null', false, true, '')))[1]::text, '0')
+       end,
+       case
+         when to_regclass('public.apprentice_programmes') is null then 'no-go'
+         else 'measured'
+       end,
+       'measurement',
+       'Reversal will not drop a migration-added employer_uuid column while this count is not zero.'
 
 union all
 select 'preserved_registers',
        'apprentices_employers_and_programmes_are_not_dropped',
        'go',
-       'Reversal never drops public.apprentices, public.employers, or public.apprentice_programmes. It restores captured function bodies, triggers, comments, row security, and access lists for objects that already existed.'
+       'attestation',
+       'This sentence describes the script. It is not a live catalog measurement.'
 ;

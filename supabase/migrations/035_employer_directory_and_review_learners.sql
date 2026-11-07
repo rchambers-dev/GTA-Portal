@@ -19,6 +19,48 @@
 -- Do not run it on the live database until the go/no-go checklist passes
 -- and a backup has been verified outside this script.
 
+-- Execution gate. These settings apply for the surrounding transaction.
+-- This file has no BEGIN/COMMIT: Supabase apply_migration opens one transaction
+-- and records migration history. Do not insert into schema_migrations here.
+-- A statement-at-a-time runner releases the lock at the end of that statement
+-- and is not atomic. Parent must prove the live execute_sql tool uses one
+-- transaction before using it for this file. This repository does not claim that.
+select set_config('lock_timeout', '4s', true);
+select set_config('statement_timeout', '120s', true);
+
+do $$
+declare
+  super_now boolean;
+  super_session boolean;
+begin
+  select rolsuper into super_now from pg_roles where rolname = current_user;
+  select rolsuper into super_session from pg_roles where rolname = session_user;
+  if coalesce(super_now, true) or coalesce(super_session, true) then
+    raise exception
+      'Refusing migration 035. current_user=% (rolsuper=%) session_user=% (rolsuper=%) must both be non-superuser.',
+      current_user, super_now, session_user, super_session;
+  end if;
+  if to_regclass('public.apprentices') is null
+     or to_regclass('public.employers') is null
+     or to_regclass('public.apprentice_programmes') is null then
+    raise exception 'Refusing migration 035. apprentices, employers, and apprentice_programmes must already exist.';
+  end if;
+  if pg_get_userbyid((select relowner from pg_class where oid = 'public.apprentices'::regclass))
+       is distinct from current_user
+     or pg_get_userbyid((select relowner from pg_class where oid = 'public.employers'::regclass))
+       is distinct from current_user
+     or pg_get_userbyid((select relowner from pg_class where oid = 'public.apprentice_programmes'::regclass))
+       is distinct from current_user
+  then
+    raise exception
+      'Refusing migration 035. current_user % does not own apprentices, employers, and apprentice_programmes.',
+      current_user;
+  end if;
+  if not has_schema_privilege(current_user, 'public', 'CREATE') then
+    raise exception 'Refusing migration 035. current_user % lacks CREATE on schema public.', current_user;
+  end if;
+end $$;
+
 lock table public.apprentices in share row exclusive mode;
 lock table public.employers in share row exclusive mode;
 lock table public.apprentice_programmes in share row exclusive mode;

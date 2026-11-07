@@ -1,19 +1,31 @@
 import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
+import {
+  PORTAL_ROLE_RANK,
+  roleRank,
+} from "@/features/administration/domain/account-access";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
-import type { EffectiveSession } from "@/lib/portal/types";
+import type { EffectiveSession, PortalAccount } from "@/lib/portal/types";
 
 /**
- * Directory and review-learner writes are staff catalogue actions.
- * Apprentice and employer logins do not receive this permission in the role packs.
- * Authorization uses profiles.permissions, never user-editable metadata.
+ * Owner decision, 16:52 GMT: employer and apprentice record management is
+ * limited to staff who have admin.records.manage. reviews.manage is not enough.
+ * Apprentice and Employer are the canonical portal roles in PORTAL_ROLE_RANK,
+ * and their workspaces are apprentice and employer. A stray permission on
+ * those accounts does not admit them.
  */
+export function isApprenticeOrEmployerAccount(account: PortalAccount): boolean {
+  if (account.workspace === "apprentice" || account.workspace === "employer") {
+    return true;
+  }
+  const rank = roleRank(account.baseRole);
+  return rank > 0 && rank <= PORTAL_ROLE_RANK.Employer;
+}
+
 export function canManageEmployerDirectory(session: EffectiveSession): boolean {
-  return (
-    hasPermission(session, PERMISSIONS.ADMIN_RECORDS_MANAGE) ||
-    hasPermission(session, PERMISSIONS.REVIEWS_MANAGE)
-  );
+  if (!hasPermission(session, PERMISSIONS.ADMIN_RECORDS_MANAGE)) return false;
+  return !isApprenticeOrEmployerAccount(session.account);
 }
 
 export async function requireEmployerDirectoryAccess(): Promise<

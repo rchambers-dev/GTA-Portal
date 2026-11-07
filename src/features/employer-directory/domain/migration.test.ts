@@ -81,31 +81,45 @@ async function baseDatabase(): Promise<PGlite> {
   return db;
 }
 
-async function database(): Promise<PGlite> {
-  const db = new PGlite();
+async function assumeMigrationOwner(db: PGlite): Promise<void> {
   await db.exec(`
-    create schema if not exists public;
     do $$
+    declare
+      rel record;
+      fn record;
     begin
-      if not exists (select 1 from pg_roles where rolname = 'anon') then
-        create role anon;
+      if not exists (select 1 from pg_roles where rolname = 'migration_owner') then
+        create role migration_owner nosuperuser nocreatedb nocreaterole;
       end if;
-      if not exists (select 1 from pg_roles where rolname = 'authenticated') then
-        create role authenticated;
-      end if;
+      grant usage, create on schema public to migration_owner;
+      for rel in
+        select c.relname
+        from pg_class c
+        join pg_namespace n on n.oid = c.relnamespace
+        where n.nspname = 'public' and c.relkind = 'r'
+      loop
+        execute format('alter table public.%I owner to migration_owner', rel.relname);
+      end loop;
+      for fn in
+        select p.proname, pg_get_function_identity_arguments(p.oid) as args
+        from pg_proc p
+        join pg_namespace n on n.oid = p.pronamespace
+        where n.nspname = 'public'
+      loop
+        execute format(
+          'alter function public.%I(%s) owner to migration_owner',
+          fn.proname,
+          fn.args
+        );
+      end loop;
     end $$;
-    alter default privileges in schema public grant all on tables to anon, authenticated;
-    create table public.employers (
-      id uuid primary key default gen_random_uuid(),
-      name text not null
-    );
-    create table public.apprentices (
-      id uuid primary key default gen_random_uuid(),
-      display_name text not null,
-      apprentice_reference text not null unique
-    );
-    create table public.apprentice_programmes (id uuid primary key default gen_random_uuid());
+    set session authorization migration_owner;
   `);
+}
+
+async function database(): Promise<PGlite> {
+  const db = await baseDatabase();
+  await assumeMigrationOwner(db);
   await db.exec(migration);
   return db;
 }
@@ -267,6 +281,7 @@ describe("canonical directory migration", () => {
         employer_uuid uuid
       );
     `);
+    await assumeMigrationOwner(db);
     const beforeAcl = await db.query<{ acl: string | null }>(
       `select c.relacl::text as acl
        from pg_class c
@@ -471,6 +486,7 @@ describe("canonical directory migration", () => {
       "utf8",
     );
     const fresh = await baseDatabase();
+    await assumeMigrationOwner(fresh);
     const beforeFresh = await catalog(fresh);
     await fresh.exec(migration);
     await fresh.exec(rollback);
@@ -512,10 +528,45 @@ describe("canonical directory migration", () => {
         on public.apprentices is 'disabled on purpose';
       grant select on public.apprentices to anon;
     `);
+    await assumeMigrationOwner(prior);
     const beforePrior = await catalog(prior);
     await prior.exec(migration);
     await prior.exec(rollback);
     expect(await catalog(prior)).toBe(beforePrior);
+  });
+
+  it("refuses to drop a populated employer_uuid or a later dependency without cascade", async () => {
+    const rollback = readFileSync(
+      path.resolve("supabase/rollback/035_employer_directory_reversal.sql"),
+      "utf8",
+    );
+    const populated = await database();
+    const employer = await populated.query<{ id: string }>(
+      "insert into public.employers (name) values ('Kept Co') returning id",
+    );
+    await populated.query(
+      "insert into public.apprentice_programmes (employer_uuid) values ($1)",
+      [employer.rows[0].id],
+    );
+    await expect(populated.exec(rollback)).rejects.toThrow(/employer_uuid has values/i);
+    const stillThere = await populated.query(
+      `select 1 from information_schema.columns
+       where table_schema = 'public' and table_name = 'apprentice_programmes' and column_name = 'employer_uuid'`,
+    );
+    expect(stillThere.rows).toHaveLength(1);
+
+    const linked = await database();
+    await linked.exec(
+      `create table public.later_work (
+         id uuid primary key default gen_random_uuid(),
+         site_id uuid references public.employer_sites (id)
+       )`,
+    );
+    await expect(linked.exec(rollback)).rejects.toThrow(/depend|cannot drop/i);
+    const later = await linked.query(`select to_regclass('public.later_work') as name`);
+    const sites = await linked.query(`select to_regclass('public.employer_sites') as name`);
+    expect(later.rows[0].name).toBe("later_work");
+    expect(sites.rows[0].name).toBe("employer_sites");
   });
 });
 
@@ -534,10 +585,10 @@ describe("migration 035 on PostgreSQL 16", () => {
         ["-D", dataDir, "-o", `-p 5434 -k ${dataDir}`, "-l", path.join(dataDir, "server.log"), "start"],
         { stdio: "ignore" },
       );
-      const psql = (sql: string) =>
+      const psql = (user: string, sql: string) =>
         execFileSync(
           "psql",
-          ["-h", dataDir, "-p", "5434", "-U", "postgres", "-d", "postgres", "-v", "ON_ERROR_STOP=1", "-c", sql],
+          ["-h", dataDir, "-p", "5434", "-U", user, "-d", "postgres", "-v", "ON_ERROR_STOP=1", "-c", sql],
           { encoding: "utf8" },
         );
       const reversal = readFileSync(
@@ -545,23 +596,18 @@ describe("migration 035 on PostgreSQL 16", () => {
         "utf8",
       );
       expect(reversal).not.toMatch(/^\s*update\s+pg_(class|proc)\b/im);
-      psql(`
+      expect(migration).not.toMatch(/^\s*begin\s*;/im);
+      expect(migration).not.toMatch(/^\s*commit\s*;/im);
+      psql(
+        "postgres",
+        `
         create role migration_owner nosuperuser nocreatedb nocreaterole login;
         create role staff_reader nosuperuser nocreatedb nocreaterole;
         grant usage, create on schema public to migration_owner;
-      `);
-      const asOwner = (sql: string) =>
-        psql(`
-          set role migration_owner;
-          do $$
-          begin
-            if (select rolsuper from pg_roles where rolname = current_user) then
-              raise exception 'migration executor is superuser';
-            end if;
-          end $$;
-          ${sql}
-        `);
-      asOwner(`
+      `,
+      );
+      const owner = (sql: string) => psql("migration_owner", sql);
+      owner(`
         create table public.employers (id uuid primary key default gen_random_uuid(), name text not null);
         create table public.apprentices (
           id uuid primary key default gen_random_uuid(),
@@ -590,11 +636,29 @@ describe("migration 035 on PostgreSQL 16", () => {
           on public.apprentices is 'disabled on purpose';
         grant select on table public.apprentices to staff_reader;
       `);
-      const before = psql(catalogSql);
-      asOwner(migration);
-      asOwner(readFileSync(path.resolve("supabase/rollback/035_go_no_go.sql"), "utf8"));
-      asOwner(reversal);
-      expect(psql(catalogSql)).toBe(before);
+      const before = psql("postgres", catalogSql);
+      owner(migration);
+      owner(readFileSync(path.resolve("supabase/rollback/035_go_no_go.sql"), "utf8"));
+      owner(reversal);
+      expect(psql("postgres", catalogSql)).toBe(before);
+      owner("select set_config('lock_timeout', '7s', true)");
+      expect(owner("select current_setting('lock_timeout')")).toMatch(/\b0\b/);
+      owner("create table public.split_probe(id int)");
+      expect(() => owner("select 1/0")).toThrow();
+      expect(owner("select coalesce(to_regclass('public.split_probe')::text, 'absent')")).toContain(
+        "split_probe",
+      );
+      expect(() =>
+        owner(`
+          begin;
+          create table public.atomic_probe(id int);
+          do $$ begin raise exception 'abort'; end $$;
+          commit;
+        `),
+      ).toThrow(/abort/);
+      expect(owner("select coalesce(to_regclass('public.atomic_probe')::text, 'absent')")).toContain(
+        "absent",
+      );
     } finally {
       if (dataDir) {
         try {

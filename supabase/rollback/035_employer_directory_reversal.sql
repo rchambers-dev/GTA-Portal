@@ -18,6 +18,44 @@
 -- and public.apprentice_programmes are never dropped. The prestate table is
 -- dropped only at the end, because this migration created it.
 
+-- Same execution gate as migration 035. No BEGIN/COMMIT in this file.
+-- Run it only as one transaction. Do not write supabase_migrations by hand.
+select set_config('lock_timeout', '4s', true);
+select set_config('statement_timeout', '120s', true);
+
+do $$
+declare
+  super_now boolean;
+  super_session boolean;
+begin
+  select rolsuper into super_now from pg_roles where rolname = current_user;
+  select rolsuper into super_session from pg_roles where rolname = session_user;
+  if coalesce(super_now, true) or coalesce(super_session, true) then
+    raise exception
+      'Refusing reversal 035. current_user=% (rolsuper=%) session_user=% (rolsuper=%) must both be non-superuser.',
+      current_user, super_now, session_user, super_session;
+  end if;
+  if to_regclass('public.apprentices') is null
+     or to_regclass('public.employers') is null
+     or to_regclass('public.apprentice_programmes') is null then
+    raise exception 'Refusing reversal 035. The three base registers must exist.';
+  end if;
+  if pg_get_userbyid((select relowner from pg_class where oid = 'public.apprentices'::regclass))
+       is distinct from current_user
+     or pg_get_userbyid((select relowner from pg_class where oid = 'public.employers'::regclass))
+       is distinct from current_user
+     or pg_get_userbyid((select relowner from pg_class where oid = 'public.apprentice_programmes'::regclass))
+       is distinct from current_user
+  then
+    raise exception
+      'Refusing reversal 035. current_user % does not own the three base registers.',
+      current_user;
+  end if;
+  if not has_schema_privilege(current_user, 'public', 'CREATE') then
+    raise exception 'Refusing reversal 035. current_user % lacks CREATE on schema public.', current_user;
+  end if;
+end $$;
+
 do $$
 declare
   detail_count bigint := 0;
@@ -255,15 +293,23 @@ begin
     execute format('drop index if exists %s', row_record.object_name);
   end loop;
 
+  -- Child tables first. No CASCADE: a later foreign key or view aborts the transaction.
   for row_record in
-    select object_name
-    from public.migration_035_prestate
-    where object_kind = 'table'
-      and existed = false
-      and object_name <> 'public.migration_035_prestate'
-      and not (object_name = any (kept_tables))
+    select drop_name as object_name
+    from unnest(array[
+      'public.review_apprentice_details',
+      'public.employer_manager_roles',
+      'public.employer_site_memberships',
+      'public.employer_managers',
+      'public.employer_sites'
+    ]) as drop_name
+    join public.migration_035_prestate state
+      on state.object_kind = 'table'
+     and state.object_name = drop_name
+     and state.existed = false
+    where not (drop_name = any (kept_tables))
   loop
-    execute format('drop table if exists %s cascade', row_record.object_name);
+    execute format('drop table if exists %s', row_record.object_name);
   end loop;
 
   for row_record in
@@ -290,6 +336,17 @@ begin
       execute 'alter table public.apprentices drop column if exists portal_entry';
     elsif row_record.object_name = 'public.apprentice_programmes.employer_uuid'
        and to_regclass('public.apprentice_programmes') is not null then
+      if exists (
+        select 1 from information_schema.columns
+        where table_schema = 'public'
+          and table_name = 'apprentice_programmes'
+          and column_name = 'employer_uuid'
+      ) and exists (
+        select 1 from public.apprentice_programmes where employer_uuid is not null
+      ) then
+        raise exception
+          'Refusing reversal. apprentice_programmes.employer_uuid has values, so the column added by migration 035 will not be dropped.';
+      end if;
       execute 'alter table public.apprentice_programmes drop column if exists employer_uuid';
     end if;
   end loop;
