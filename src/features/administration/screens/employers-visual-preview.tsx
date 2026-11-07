@@ -1,6 +1,7 @@
 "use client";
 
-import { useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
+import { createPortal } from "react-dom";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import styles from "./admin-pages.module.css";
 import {
@@ -8,6 +9,7 @@ import {
   employerMeta,
   employerPreviewReducer,
   initialEmployerPreviewState,
+  nextModalFocus,
   visibleEmployers,
   type DraftEntry,
   type EmployerPreviewAction,
@@ -31,6 +33,7 @@ export function EmployersVisualPreview({
   const rows = visibleEmployers(state);
 
   return (
+    <>
     <ApprenticePageShell
       eyebrow="Employers"
       title="Employers"
@@ -106,45 +109,6 @@ export function EmployersVisualPreview({
               <RepeatableEntries kind="site" entries={state.sites} dispatch={dispatch} />
               <RepeatableEntries kind="manager" entries={state.managers} dispatch={dispatch} />
             </div>
-            {state.pendingRemove ? (
-              <div
-                className={styles.confirmDialog}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="entry-remove-title"
-                aria-describedby="entry-remove-copy"
-                onKeyDown={(event) => {
-                  if (confirmationKey(event.key) === "cancel") {
-                    event.preventDefault();
-                    dispatch({ type: "cancel-remove" });
-                  }
-                }}
-              >
-                <h3 id="entry-remove-title" className={styles.confirmTitle}>
-                  Are you sure?
-                </h3>
-                <p id="entry-remove-copy" className={styles.formGroupMeta}>
-                  Remove this {state.pendingRemove.kind} from the preview. Nothing is deleted from the portal.
-                </p>
-                <div className={styles.formActions}>
-                  <button
-                    type="button"
-                    className={styles.secondaryBtn}
-                    autoFocus
-                    onClick={() => dispatch({ type: "cancel-remove" })}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.primaryBtn}
-                    onClick={() => dispatch({ type: "confirm-remove" })}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ) : null}
             {state.notice ? <p className={styles.formGroupMeta}>{state.notice}</p> : null}
             <div className={styles.formActions}>
               <button
@@ -183,6 +147,13 @@ export function EmployersVisualPreview({
         )}
       </div>
     </ApprenticePageShell>
+    {state.pendingRemove ? (
+      <RemoveEntryModal
+        kind={state.pendingRemove.kind}
+        dispatch={dispatch}
+      />
+    ) : null}
+    </>
   );
 }
 
@@ -196,6 +167,7 @@ function RepeatableEntries({
   dispatch: (action: EmployerPreviewAction) => void;
 }) {
   const noun = kind === "site" ? "Site" : "Manager";
+  const addLabel = kind === "site" ? "Add site" : "Add manager";
   return (
     <div className={styles.entryGroup}>
       <div className={styles.entryHeading} data-entry-heading={kind}>
@@ -204,10 +176,10 @@ function RepeatableEntries({
           type="button"
           className={styles.entryAdd}
           data-entry-add={kind}
-          aria-label={`Add another ${noun.toLowerCase()}`}
+          aria-label={addLabel}
           onClick={() => dispatch(kind === "site" ? { type: "add-site" } : { type: "add-manager" })}
         >
-          +
+          {addLabel}
         </button>
       </div>
       {entries.map((entry, index) => {
@@ -230,17 +202,99 @@ function RepeatableEntries({
                 }
               />
             </label>
-            <button
-              type="button"
-              className={styles.entryRemove}
-              aria-label={`Remove ${noun.toLowerCase()} ${number}`}
-              onClick={() => dispatch({ type: "request-remove", kind, id: entry.id })}
-            >
-              ×
-            </button>
+            {index > 0 ? (
+              <button
+                type="button"
+                className={styles.entryRemove}
+                aria-label={`Remove ${noun.toLowerCase()} ${number}`}
+                onClick={() => dispatch({ type: "request-remove", kind, id: entry.id })}
+              >
+                ×
+              </button>
+            ) : null}
           </div>
         );
       })}
     </div>
   );
+}
+
+function RemoveEntryModal({
+  kind,
+  dispatch,
+}: {
+  kind: "site" | "manager";
+  dispatch: (action: EmployerPreviewAction) => void;
+}) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const dialog = dialogRef.current;
+    const buttons = () => [...(dialog?.querySelectorAll<HTMLButtonElement>("button") ?? [])];
+    buttons()[0]?.focus();
+
+    function onKey(event: KeyboardEvent) {
+      if (confirmationKey(event.key) === "cancel") {
+        event.preventDefault();
+        dispatch({ type: "cancel-remove" });
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = buttons();
+      if (items.length === 0) return;
+      const index = items.indexOf(document.activeElement as HTMLButtonElement);
+      const next = nextModalFocus(index, items.length, event.shiftKey);
+      event.preventDefault();
+      items[next]?.focus();
+    }
+
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      if (previous && document.contains(previous)) previous.focus();
+    };
+  }, [dispatch]);
+
+  const modal = (
+    <div className={styles.modalBackdrop} data-modal-backdrop="entry-remove">
+      <div
+        ref={dialogRef}
+        className={styles.modalDialog}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="entry-remove-title"
+        aria-describedby="entry-remove-copy"
+        data-modal="entry-remove"
+        tabIndex={-1}
+      >
+        <h3 id="entry-remove-title" className={styles.confirmTitle}>
+          Are you sure?
+        </h3>
+        <p id="entry-remove-copy" className={styles.formGroupMeta}>
+          Remove this {kind} from the preview. Nothing is deleted from the portal.
+        </p>
+        <div className={styles.formActions}>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            data-confirm-cancel
+            onClick={() => dispatch({ type: "cancel-remove" })}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            onClick={() => dispatch({ type: "confirm-remove" })}
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (typeof document === "undefined") return modal;
+  return createPortal(modal, document.body);
 }
