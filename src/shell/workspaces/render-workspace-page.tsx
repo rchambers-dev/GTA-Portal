@@ -43,6 +43,7 @@ import {
 import { ApprenticesVisualPreview } from "@/features/administration/screens/apprentices-visual-preview";
 import { EmployersVisualPreview } from "@/features/administration/screens/employers-visual-preview";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
+import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
 import { OnboardingOverview } from "@/features/administration/screens/OnboardingOverview";
 import { SharedDriveScreen } from "@/features/shared-drive";
 import { getStandalonePorts } from "@/adapters/standalone";
@@ -328,6 +329,8 @@ export async function renderWorkspacePage(
         return <AdminTeachingGroupsScreen />;
       case "intake":
         redirect("/administration/onboarding/directory/apprentices");
+      case "marketing":
+        return <MarketingOverview />;
       case "onboarding":
       case "onboarding/apprentice":
       case "onboarding/employer":
@@ -378,6 +381,8 @@ export async function renderWorkspacePage(
         return <AdminTeachingGroupsScreen />;
       case "intake":
         redirect("/management/onboarding/directory/apprentices");
+      case "marketing":
+        return <MarketingOverview />;
       case "onboarding":
       case "onboarding/apprentice":
       case "onboarding/employer":

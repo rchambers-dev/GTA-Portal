@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { ApprenticesVisualPreview } from "./apprentices-visual-preview";
 import { EmployersVisualPreview } from "./employers-visual-preview";
+import { MarketingOverview } from "./MarketingOverview";
 import { OnboardingDirectory } from "./OnboardingDirectory";
 import { OnboardingOverview } from "./OnboardingOverview";
 import { LEARNER_FIELD_ORDER } from "./learner-entry-options";
@@ -94,7 +95,27 @@ describe("onboarding placement", () => {
     expect(routes).toContain('redirect("/management/onboarding/directory/apprentices")');
     expect(routes).toContain('redirect("/management/onboarding/directory/employers")');
     expect(routes).toContain("return <AdminEnrolmentsScreen />");
+    expect(routes).toContain("return <MarketingOverview />");
     const page = readFileSync(path.join(process.cwd(), "src/app/apprentices/page.tsx"), "utf8");
     expect(page).toContain("requireApprenticeWorkspaceAccess");
+  });
+
+  it("adds a Marketing overview shell and no marketing feature pages", () => {
+    const nav = readFileSync(
+      path.join(process.cwd(), "src/shell/workspaces/resolve-navigation.ts"),
+      "utf8",
+    );
+    expect(nav).toContain('title: "Marketing"');
+    expect(nav).toContain('href: `/${workspace}/marketing`');
+    expect(nav).not.toContain("/interviews");
+    expect(nav).not.toContain("/calendar");
+    expect(nav).not.toContain('label: "Reports"');
+    expect(nav).not.toContain('label: "Settings"');
+    const html = renderToStaticMarkup(createElement(MarketingOverview));
+    expect(html).toContain("Marketing is not configured");
+    expect(html).toContain("EXAMPLE DATA");
+    expect(html).toContain("Saving is disabled");
+    expect(html).not.toContain("Stage 1");
+    expect(html).not.toContain("supabase");
   });
 });

@@ -4,6 +4,19 @@ import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { STAFF_BASE_NAV, MENTOR_NAV_SECTIONS, CURRICULUM_NAV } from "./nav-manifests";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
 
+function marketingSection(workspace: "administration" | "management") {
+  return {
+    title: "Marketing",
+    items: [
+      {
+        href: `/${workspace}/marketing`,
+        label: "Overview",
+        permission: PERMISSIONS.ADMIN_RECORDS_MANAGE,
+      },
+    ],
+  };
+}
+
 function onboardingSection(workspace: "administration" | "management") {
   const base = `/${workspace}/onboarding`;
   return {
@@ -140,6 +153,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/management/safeguarding", label: "Safeguarding", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
         ],
       },
+      marketingSection("management"),
       onboardingSection("management"),
     ]);
   }
@@ -162,6 +176,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/administration/safeguarding", label: "Safeguarding", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
         ],
       },
+      marketingSection("administration"),
       onboardingSection("administration"),
     ]);
   }
