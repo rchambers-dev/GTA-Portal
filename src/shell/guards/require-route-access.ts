@@ -6,6 +6,7 @@ import {
 } from "@/lib/permissions/route-access";
 import { hasPermission, hasProgrammeScope } from "@/lib/permissions/effective-permissions";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
+import { decidePageAccess } from "@/features/staff-page-access/enforce";
 
 const CURRICULUM_DEMO_PROGRAMME = "Accident Repair Technician";
 
@@ -14,6 +15,11 @@ export function assertRouteAccess(
   pathname: string,
 ): void {
   if (!canAccessRoute(session, pathname)) {
+    redirect(getRedirectForDeniedRoute(session, pathname));
+  }
+
+  const pageAccess = decidePageAccess(session, pathname);
+  if (pageAccess.enforced && !pageAccess.read) {
     redirect(getRedirectForDeniedRoute(session, pathname));
   }
 

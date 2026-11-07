@@ -3,6 +3,7 @@ import { hasPermission } from "@/lib/permissions/effective-permissions";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { STAFF_BASE_NAV, MENTOR_NAV_SECTIONS, CURRICULUM_NAV } from "./nav-manifests";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
+import { pageNavAllowed } from "@/features/staff-page-access/enforce";
 
 function marketingSection(workspace: "administration" | "management") {
   const records = PERMISSIONS.ADMIN_RECORDS_MANAGE;
@@ -70,6 +71,11 @@ function staffSection(workspace: "administration" | "management") {
         label: "Staff Records",
         permission: PERMISSIONS.ADMIN_USERS_MANAGE,
       },
+      {
+        href: `/staff-permissions?from=${workspace}`,
+        label: "Permissions",
+        permission: PERMISSIONS.ADMIN_USERS_MANAGE,
+      },
     ],
   };
 }
@@ -92,8 +98,8 @@ function filterSection(
   session: EffectiveSession,
   section: NavSection,
 ): NavSection | null {
-  const items = section.items.filter((item) =>
-    hasPermission(session, item.permission),
+  const items = section.items.filter(
+    (item) => hasPermission(session, item.permission) && pageNavAllowed(session, item.href),
   );
   if (items.length === 0) return null;
   return { ...section, items };

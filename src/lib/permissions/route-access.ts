@@ -22,6 +22,7 @@ export const ROUTE_RULES: RouteRule[] = [
   { pattern: /^\/curriculum/, permission: PERMISSIONS.CURRICULUM_MANAGEMENT_VIEW },
   // Must sit above `/staff` — employment files are management/admin, not tutor workspace
   { pattern: /^\/staff-records/, permission: PERMISSIONS.ADMIN_USERS_MANAGE },
+  { pattern: /^\/staff-permissions/, permission: PERMISSIONS.ADMIN_USERS_MANAGE },
   { pattern: /^\/staff/, permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
   { pattern: /^\/workspaces\/progress-mentor/, permission: PERMISSIONS.APPRENTICE_CASELOAD_VIEW },
   { pattern: /^\/apprentices\/lifecycle/, permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },

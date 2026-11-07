@@ -55,11 +55,19 @@ export type PortalAuditEvent = {
   metadata?: Record<string, string>;
 };
 
+export type PageGrantSnapshot = {
+  configured: boolean;
+  readable: string[];
+  editable: string[];
+};
+
 export type EffectiveSession = {
   account: PortalAccount;
   permissions: string[];
   activeTemporaryAssignments: TemporaryAssignment[];
   temporaryAccessLabels: string[];
+  /** Present when the server has evaluated the workspace page map. Absent means legacy access. */
+  pageGrants?: PageGrantSnapshot;
 };
 
 export type NavItem = {

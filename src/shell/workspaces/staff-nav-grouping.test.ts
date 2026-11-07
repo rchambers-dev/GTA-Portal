@@ -44,7 +44,7 @@ describe("sidebar grouping", () => {
       const onboarding = sections.find((section) => section.title === "Onboarding");
       const marketing = sections.find((section) => section.title === "Marketing & Recruitment");
       const reviews = sections.find((section) => section.title === "Reviews");
-      expect(staff?.items.map((item) => item.label)).toEqual(["Staff Records"]);
+      expect(staff?.items.map((item) => item.label)).toEqual(["Staff Records", "Permissions"]);
       expect(staff?.items[0]?.href).toBe(`/staff-records?from=${workspace}`);
       expect(staff?.items[0]?.permission).toBe(PERMISSIONS.ADMIN_USERS_MANAGE);
       expect(onboarding?.items.map((item) => item.label)).toEqual([
