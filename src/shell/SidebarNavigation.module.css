@@ -6,6 +6,8 @@
   transition: width 0.22s var(--ease-out, ease);
 }
 
+/* Keyboard focus expands the rail. A pointer click must not leave focus
+   inside it, or the unpinned rail stays open after the pointer leaves. */
 .sidebarSlot:hover,
 .sidebarSlot:focus-within {
   width: var(--sidebar-width);
