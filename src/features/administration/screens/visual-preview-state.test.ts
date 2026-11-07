@@ -11,6 +11,7 @@ import {
   EMPLOYER_STATUSES,
   ENQUIRY_SOURCES,
   LEARNER_FIELD_ORDER,
+  PREVIEW_STAFF_OPTIONS,
   RELEASE_DAYS,
   RESPONSIVENESS_OPTIONS,
   TRAINING_SITES,
@@ -528,7 +529,10 @@ describe("apprentice employer dropdown", () => {
     );
     const order = [...html.matchAll(/data-entry-field="([^"]+)"/g)].map((match) => match[1]);
     expect(order).toEqual([...LEARNER_FIELD_ORDER]);
-    expect(html.match(/aria-haspopup="listbox"/g)?.length).toBe(8);
+    expect(html.match(/aria-haspopup="listbox"/g)?.length).toBe(10);
+    expect(PREVIEW_STAFF_OPTIONS).toEqual([]);
+    expect(html).toContain('aria-label="GTA tutor"');
+    expect(html).toContain('aria-label="GTA reviewer"');
     expect(html).not.toContain("<select");
     expect(html).toContain(">None<");
     expect(html).not.toContain(">Doncaster<");
@@ -596,10 +600,10 @@ describe("apprentice employer dropdown", () => {
       employerId: "example-motors",
       intendedIntakeDate: "2026-09-01",
       releaseDay: "Tuesday",
-      gtaTutor: "Tutor example",
+      gtaTutor: "same-person",
       apprenticeshipStartDate: "2026-09-07",
       apprenticeshipPlannedEndDate: "2028-09-06",
-      gtaReviewer: "Reviewer example",
+      gtaReviewer: "same-person",
       plannedReviewDate: "2026-12-01",
       notes: "Preview note",
     } as const;
@@ -615,10 +619,10 @@ describe("apprentice employer dropdown", () => {
     expect(added).toMatchObject({
       ...entered,
       releaseDay: "Tuesday",
-      gtaTutor: "Tutor example",
+      gtaTutor: "same-person",
       apprenticeshipStartDate: "2026-09-07",
       apprenticeshipPlannedEndDate: "2028-09-06",
-      gtaReviewer: "Reviewer example",
+      gtaReviewer: "same-person",
       plannedReviewDate: "2026-12-01",
     });
     expect(state.site).toBe("");

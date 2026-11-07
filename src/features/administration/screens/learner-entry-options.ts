@@ -51,6 +51,13 @@ export const RELEASE_DAYS = COLLEGE_WEEKDAYS.map((day) => ({
   label: day,
 }));
 
+/**
+ * The visual preview has no authorised staff list.
+ * Tutor and reviewer stay empty until that list is wired.
+ * Both dropdowns share this list, so one person can be chosen in both.
+ */
+export const PREVIEW_STAFF_OPTIONS: readonly { value: string; label: string }[] = [];
+
 export const LEARNER_FIELD_ORDER = [
   "firstName",
   "lastName",

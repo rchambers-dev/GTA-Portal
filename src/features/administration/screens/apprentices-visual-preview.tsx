@@ -8,6 +8,7 @@ import {
   APPRENTICESHIPS,
   EMPLOYER_STATUSES,
   ENQUIRY_SOURCES,
+  PREVIEW_STAFF_OPTIONS,
   RELEASE_DAYS,
   RESPONSIVENESS_OPTIONS,
   TRAINING_SITES,
@@ -174,10 +175,11 @@ export function ApprenticesVisualPreview({
                     options={RELEASE_DAYS}
                     dispatch={dispatch}
                   />
-                  <TextEntry
+                  <ChoiceEntry
                     field="gtaTutor"
                     label="GTA tutor"
                     value={state.gtaTutor}
+                    options={PREVIEW_STAFF_OPTIONS}
                     dispatch={dispatch}
                   />
                   <TextEntry
@@ -194,10 +196,11 @@ export function ApprenticesVisualPreview({
                     value={state.apprenticeshipPlannedEndDate}
                     dispatch={dispatch}
                   />
-                  <TextEntry
+                  <ChoiceEntry
                     field="gtaReviewer"
                     label="GTA reviewer"
                     value={state.gtaReviewer}
+                    options={PREVIEW_STAFF_OPTIONS}
                     dispatch={dispatch}
                   />
                   <TextEntry
