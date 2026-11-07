@@ -86,6 +86,20 @@ describe("apprentices visual behaviour", () => {
   });
 });
 
+function addPillsSitBesideHeadings(html: string): boolean {
+  const buttons = [...html.matchAll(/<button\b[^>]*data-entry-add="(site|manager)"[^>]*>/g)];
+  if (buttons.length !== 2) return false;
+  const classes = buttons.map((match) => match[0].match(/class="([^"]+)"/)?.[1]);
+  if (!classes[0] || classes[0] !== classes[1]) return false;
+  for (const kind of ["site", "manager"] as const) {
+    const heading = html.split(`data-entry-heading="${kind}"`)[1]?.split(`data-entry-row="${kind}"`)[0] ?? "";
+    if (!heading.includes(`data-entry-add="${kind}"`) || heading.includes("<input")) return false;
+    const row = html.split(`data-entry-row="${kind}"`)[1]?.split(`data-entry-heading=`)[0] ?? "";
+    if (row.includes(`data-entry-add="${kind}"`)) return false;
+  }
+  return true;
+}
+
 describe("employers visual behaviour", () => {
   it("searches by company postcode and keeps phone on the company", () => {
     const searched = employerPreviewReducer(initialEmployerPreviewState(), {
@@ -147,6 +161,10 @@ describe("employers visual behaviour", () => {
     expect(html).toContain("Example Manager");
     expect(html).toContain('aria-label="Add another site"');
     expect(html).toContain('aria-label="Add another manager"');
+    expect(addPillsSitBesideHeadings(html)).toBe(true);
+    expect(readFileSync(path.join(process.cwd(), "src/features/administration/screens/admin-pages.module.css"), "utf8")).toMatch(
+      /\.entryAdd\s*\{[^}]*width:\s*1\.35rem;[^}]*height:\s*1\.35rem;/s,
+    );
     expect(html).not.toContain("Are you sure?");
     expect(html).not.toContain("Add apprentice");
     expect(html).not.toContain("garage");
@@ -235,6 +253,7 @@ describe("employers visual behaviour", () => {
     expect(html).not.toContain("Example ramp");
     expect(html).toContain('value="Example bay edited"');
     expect(html).toContain('value="Example store"');
+    expect(addPillsSitBesideHeadings(html)).toBe(true);
   });
 
   it("keeps every site and manager until removal is confirmed", () => {

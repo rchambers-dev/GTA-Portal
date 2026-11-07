@@ -198,13 +198,25 @@ function RepeatableEntries({
   const noun = kind === "site" ? "Site" : "Manager";
   return (
     <div className={styles.entryGroup}>
+      <div className={styles.entryHeading} data-entry-heading={kind}>
+        <span className={styles.entryHeadingText}>{noun}</span>
+        <button
+          type="button"
+          className={styles.entryAdd}
+          data-entry-add={kind}
+          aria-label={`Add another ${noun.toLowerCase()}`}
+          onClick={() => dispatch(kind === "site" ? { type: "add-site" } : { type: "add-manager" })}
+        >
+          +
+        </button>
+      </div>
       {entries.map((entry, index) => {
         const number = index + 1;
-        const fieldLabel = number === 1 ? noun : `${noun} ${number}`;
+        const fieldLabel = `${noun} ${number}`;
         return (
-          <div key={entry.id} className={styles.entryRow}>
+          <div key={entry.id} className={styles.entryRow} data-entry-row={kind}>
             <label className={styles.field}>
-              <span>{fieldLabel}</span>
+              {number > 1 ? <span>{fieldLabel}</span> : null}
               <input
                 value={entry.label}
                 placeholder="Optional"
@@ -229,14 +241,6 @@ function RepeatableEntries({
           </div>
         );
       })}
-      <button
-        type="button"
-        className={styles.entryAdd}
-        aria-label={`Add another ${noun.toLowerCase()}`}
-        onClick={() => dispatch(kind === "site" ? { type: "add-site" } : { type: "add-manager" })}
-      >
-        +
-      </button>
     </div>
   );
 }
