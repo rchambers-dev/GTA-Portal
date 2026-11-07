@@ -194,6 +194,15 @@ describe("canonical directory migration", () => {
         employer_uuid uuid
       );
     `);
+    const beforeAcl = await db.query<{ acl: string | null }>(
+      `select c.relacl::text as acl
+       from pg_class c
+       join pg_namespace n on n.oid = c.relnamespace
+       where n.nspname = 'public' and c.relname = 'apprentices'`,
+    );
+    const beforeTouch = await db.query<{ def: string }>(
+      `select pg_get_functiondef('public.touch_updated_at()'::regprocedure) as def`,
+    );
     await db.exec(migration);
     const comment = await db.query<{ comment: string | null }>(
       `select obj_description('public.touch_updated_at()'::regprocedure, 'pg_proc') as comment`,
@@ -224,5 +233,111 @@ describe("canonical directory migration", () => {
       `select obj_description('public.touch_updated_at()'::regprocedure, 'pg_proc') as comment`,
     );
     expect(touch.rows[0].comment).toBe("preexisting");
+    const afterTouch = await db.query<{ def: string }>(
+      `select pg_get_functiondef('public.touch_updated_at()'::regprocedure) as def`,
+    );
+    expect(afterTouch.rows[0].def).toBe(beforeTouch.rows[0].def);
+    const afterAcl = await db.query<{ acl: string | null }>(
+      `select c.relacl::text as acl
+       from pg_class c
+       join pg_namespace n on n.oid = c.relnamespace
+       where n.nspname = 'public' and c.relname = 'apprentices'`,
+    );
+    expect(afterAcl.rows[0].acl).toBe(beforeAcl.rows[0].acl);
+    const fkey = await db.query(
+      `select 1 from pg_constraint where conname = 'apprentice_programmes_employer_uuid_fkey'`,
+    );
+    expect(fkey.rows).toHaveLength(0);
+    const prestate = await db.query(
+      `select 1 from information_schema.tables
+       where table_schema = 'public' and table_name = 'migration_035_prestate'`,
+    );
+    expect(prestate.rows).toHaveLength(0);
+  });
+
+  it("blocks a direct rename when review details exist and keeps the shared version", async () => {
+    const db = await database();
+    const person = await db.query<{ id: string }>(
+      `insert into public.apprentices (display_name, apprentice_reference, portal_entry)
+       values ('Casey Learner', 'GTA-2026-01001', 'onboarding') returning id`,
+    );
+    await db.query(
+      `insert into public.review_apprentice_details (apprentice_id) values ($1)`,
+      [person.rows[0].id],
+    );
+    await expect(
+      db.query(`update public.apprentices set display_name = 'Direct Rename' where id = $1`, [
+        person.rows[0].id,
+      ]),
+    ).rejects.toThrow(/version_conflict/);
+    const renamed = await db.query<{ rename_apprentice: number }>(
+      `select public.rename_apprentice($1, 'Versioned Rename', 1) as rename_apprentice`,
+      [person.rows[0].id],
+    );
+    expect(renamed.rows[0].rename_apprentice).toBe(2);
+    await expect(
+      db.query(`select public.rename_apprentice($1, 'Stale Rename', 1)`, [person.rows[0].id]),
+    ).rejects.toThrow(/version_conflict/);
+    const kept = await db.query<{ display_name: string; version: number }>(
+      `select apprentice.display_name, detail.version
+       from public.apprentices apprentice
+       join public.review_apprentice_details detail on detail.apprentice_id = apprentice.id
+       where apprentice.id = $1`,
+      [person.rows[0].id],
+    );
+    expect(kept.rows[0]).toEqual({ display_name: "Versioned Rename", version: 2 });
+
+    const plain = await db.query<{ id: string }>(
+      `insert into public.apprentices (display_name, apprentice_reference)
+       values ('Plain Intake', 'GTA-2026-01002') returning id`,
+    );
+    await db.query(`update public.apprentices set display_name = 'Intake Edit' where id = $1`, [
+      plain.rows[0].id,
+    ]);
+    await db.query(`select public.rename_apprentice($1, 'Intake Rename', null)`, [plain.rows[0].id]);
+    const plainName = await db.query<{ display_name: string }>(
+      `select display_name from public.apprentices where id = $1`,
+      [plain.rows[0].id],
+    );
+    expect(plainName.rows[0].display_name).toBe("Intake Rename");
+  });
+
+  it("locks before counting in reversal and reports that no live backup was checked", async () => {
+    const rollback = readFileSync(
+      path.resolve("supabase/rollback/035_employer_directory_reversal.sql"),
+      "utf8",
+    );
+    const lockAt = rollback.indexOf("lock table public.apprentices");
+    const countAt = rollback.indexOf("select count(*) into detail_count");
+    expect(lockAt).toBeGreaterThan(-1);
+    expect(countAt).toBeGreaterThan(lockAt);
+    const db = await database();
+    const checklist = readFileSync(
+      path.resolve("supabase/rollback/035_go_no_go.sql"),
+      "utf8",
+    );
+    const checks = await db.query<{ check_name: string; observed: string; decision: string }>(
+      checklist,
+    );
+    expect(checks.rows).toContainEqual(
+      expect.objectContaining({
+        check_name: "live_backup_verified",
+        observed: "not_verified_by_this_script",
+        decision: "no-go",
+      }),
+    );
+    await db.exec(`
+      do $$
+      begin
+        lock table public.review_apprentice_details in share row exclusive mode;
+        if not exists (
+          select 1 from pg_locks
+          where relation = 'public.review_apprentice_details'::regclass
+            and mode = 'ShareRowExclusiveLock'
+        ) then
+          raise exception 'write lock was not held';
+        end if;
+      end $$;
+    `);
   });
 });

@@ -11,10 +11,111 @@
 -- preview environment. Preview currently has no separate Supabase scope.
 --
 -- Reversal is supabase/rollback/035_employer_directory_reversal.sql.
--- That script refuses to run when new rows exist. It is not an exact restore:
--- it does not drop employer_uuid (that column can already exist) and it does
--- not drop or rewrite touch_updated_at (this migration does not replace an
--- existing function). Do not run it on the live database now.
+-- Read-only go/no-go queries are supabase/rollback/035_go_no_go.sql.
+-- This file locks the existing apprentice, employer, and programme tables
+-- against writes, then records what already existed in
+-- public.migration_035_prestate. It does not replace touch_updated_at when
+-- that function is already there, and it does not take a backup.
+-- Do not run it on the live database until the go/no-go checklist passes
+-- and a backup has been verified outside this script.
+
+lock table public.apprentices in share row exclusive mode;
+lock table public.employers in share row exclusive mode;
+lock table public.apprentice_programmes in share row exclusive mode;
+
+create table if not exists public.migration_035_prestate (
+  object_kind text not null,
+  object_name text not null,
+  existed boolean not null,
+  definition text,
+  captured_at timestamptz not null default now(),
+  primary key (object_kind, object_name)
+);
+
+insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+select
+  'function',
+  'public.touch_updated_at()',
+  to_regprocedure('public.touch_updated_at()') is not null,
+  null
+where not exists (
+  select 1 from public.migration_035_prestate
+  where object_kind = 'function' and object_name = 'public.touch_updated_at()'
+);
+
+do $$
+begin
+  if to_regprocedure('public.touch_updated_at()') is not null then
+    execute $capture$
+      update public.migration_035_prestate
+      set definition = pg_get_functiondef('public.touch_updated_at()'::regprocedure)
+      where object_kind = 'function'
+        and object_name = 'public.touch_updated_at()'
+        and definition is null
+    $capture$;
+  end if;
+end $$;
+
+insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+select
+  'column',
+  'public.apprentices.portal_entry',
+  exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'apprentices' and column_name = 'portal_entry'
+  ),
+  null
+where not exists (
+  select 1 from public.migration_035_prestate
+  where object_kind = 'column' and object_name = 'public.apprentices.portal_entry'
+);
+
+insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+select
+  'column',
+  'public.apprentice_programmes.employer_uuid',
+  exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'apprentice_programmes'
+      and column_name = 'employer_uuid'
+  ),
+  null
+where not exists (
+  select 1 from public.migration_035_prestate
+  where object_kind = 'column' and object_name = 'public.apprentice_programmes.employer_uuid'
+);
+
+insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+select
+  'constraint',
+  'apprentice_programmes_employer_uuid_fkey',
+  exists (select 1 from pg_constraint where conname = 'apprentice_programmes_employer_uuid_fkey'),
+  null
+where not exists (
+  select 1 from public.migration_035_prestate
+  where object_kind = 'constraint' and object_name = 'apprentice_programmes_employer_uuid_fkey'
+);
+
+insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+select 'acl', 'public.apprentices', true, c.relacl::text
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where n.nspname = 'public' and c.relname = 'apprentices'
+  and not exists (
+    select 1 from public.migration_035_prestate
+    where object_kind = 'acl' and object_name = 'public.apprentices'
+  );
+
+insert into public.migration_035_prestate (object_kind, object_name, existed, definition)
+select 'acl', 'public.employers', true, c.relacl::text
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+where n.nspname = 'public' and c.relname = 'employers'
+  and not exists (
+    select 1 from public.migration_035_prestate
+    where object_kind = 'acl' and object_name = 'public.employers'
+  );
 
 do $$
 begin
@@ -442,6 +543,7 @@ begin
   end if;
 
   if p_display_name is not null then
+    perform set_config('gta.review_name_write', p_apprentice_id::text, true);
     update public.apprentices
     set display_name = p_display_name
     where id = p_apprentice_id;
@@ -452,6 +554,93 @@ exception
   when unique_violation then
     raise exception 'version_conflict'
       using errcode = '40001';
+end;
+$$;
+
+create or replace function public.apprentice_display_name_version_guard()
+returns trigger
+language plpgsql
+as $$
+begin
+  if new.display_name is not distinct from old.display_name then
+    return new;
+  end if;
+  if not exists (
+    select 1
+    from public.review_apprentice_details detail
+    where detail.apprentice_id = new.id
+  ) then
+    return new;
+  end if;
+  if current_setting('gta.review_name_write', true) is distinct from new.id::text then
+    raise exception 'version_conflict'
+      using errcode = '40001';
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists apprentice_display_name_version_guard on public.apprentices;
+create trigger apprentice_display_name_version_guard
+before update of display_name on public.apprentices
+for each row execute function public.apprentice_display_name_version_guard();
+
+create or replace function public.rename_apprentice(
+  p_apprentice_id uuid,
+  p_display_name text,
+  p_expected_version integer
+)
+returns integer
+language plpgsql
+as $$
+declare
+  current_version integer;
+begin
+  if p_display_name is null or length(btrim(p_display_name)) = 0 then
+    raise exception 'Full name is required'
+      using errcode = '23514';
+  end if;
+
+  perform 1
+  from public.apprentices
+  where id = p_apprentice_id
+  for update;
+  if not found then
+    raise exception 'Apprentice not found'
+      using errcode = 'P0002';
+  end if;
+
+  select detail.version
+    into current_version
+  from public.review_apprentice_details detail
+  where detail.apprentice_id = p_apprentice_id
+  for update;
+
+  if found then
+    if p_expected_version is null or p_expected_version is distinct from current_version then
+      raise exception 'version_conflict'
+        using errcode = '40001';
+    end if;
+    update public.review_apprentice_details
+    set version = version + 1
+    where apprentice_id = p_apprentice_id
+      and version = current_version;
+    perform set_config('gta.review_name_write', p_apprentice_id::text, true);
+    update public.apprentices
+    set display_name = btrim(p_display_name)
+    where id = p_apprentice_id;
+    return current_version + 1;
+  end if;
+
+  if p_expected_version is not null then
+    raise exception 'version_conflict'
+      using errcode = '40001';
+  end if;
+
+  update public.apprentices
+  set display_name = btrim(p_display_name)
+  where id = p_apprentice_id;
+  return null;
 end;
 $$;
 
@@ -508,12 +697,22 @@ begin
         'revoke all on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) from %I',
         role_name
       );
+      execute format(
+        'revoke all on function public.rename_apprentice(uuid, text, integer) from %I',
+        role_name
+      );
     end if;
   end loop;
+  if exists (select 1 from pg_roles where rolname = 'service_role') then
+    grant execute on function public.create_review_apprentice(jsonb) to service_role;
+    grant execute on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) to service_role;
+    grant execute on function public.rename_apprentice(uuid, text, integer) to service_role;
+  end if;
 end $$;
 
 revoke all on function public.create_review_apprentice(jsonb) from public;
 revoke all on function public.apply_review_apprentice_change(uuid, integer, text, jsonb) from public;
+revoke all on function public.rename_apprentice(uuid, text, integer) from public;
 
 comment on table public.review_apprentice_details is
   'Review-only facts for an existing apprentice. The person row is public.apprentices. version must match on update.';

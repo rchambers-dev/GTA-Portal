@@ -321,7 +321,12 @@ export async function POST(request: Request) {
 
   const body = (await request.json()) as
     | { action: "createApprentice"; input: ApprenticeInput }
-    | { action: "updateApprentice"; id: string; patch: Partial<ApprenticeInput> }
+    | {
+        action: "updateApprentice";
+        id: string;
+        patch: Partial<ApprenticeInput>;
+        expectedReviewVersion?: number | null;
+      }
     | { action: "createEnrolment"; input: EnrolmentInput }
     | { action: "updateEnrolment"; id: string; patch: Partial<EnrolmentInput> }
     | { action: "createEmployer"; input: EmployerInput }
@@ -440,7 +445,26 @@ export async function POST(request: Request) {
   if (body.action === "updateApprentice") {
     const patch = body.patch;
     const update: Record<string, unknown> = {};
-    if (patch.displayName != null) update.display_name = patch.displayName.trim();
+    if (patch.displayName != null) {
+      const renamed = await supabase.rpc("rename_apprentice", {
+        p_apprentice_id: body.id,
+        p_display_name: patch.displayName.trim(),
+        p_expected_version: body.expectedReviewVersion ?? null,
+      });
+      if (renamed.error) {
+        const message = renamed.error.message || "";
+        if (message.includes("version_conflict") || renamed.error.code === "40001") {
+          return NextResponse.json(
+            {
+              error: "This apprentice was saved by someone else. Reload before renaming them.",
+              code: "version_conflict",
+            },
+            { status: 409 },
+          );
+        }
+        return NextResponse.json({ error: message || "Unable to rename apprentice" }, { status: 500 });
+      }
+    }
     if (patch.apprenticeReference != null) {
       update.apprentice_reference = patch.apprenticeReference.trim();
     }
@@ -465,12 +489,11 @@ export async function POST(request: Request) {
     if (patch.intakeStatus != null) update.intake_status = patch.intakeStatus;
     if (patch.notes != null) update.notes = patch.notes.trim();
 
-    const { data, error } = await supabase
-      .from("apprentices")
-      .update(update)
-      .eq("id", body.id)
-      .select("*")
-      .single();
+    const apprenticeQuery =
+      Object.keys(update).length === 0
+        ? supabase.from("apprentices").select("*").eq("id", body.id).single()
+        : supabase.from("apprentices").update(update).eq("id", body.id).select("*").single();
+    const { data, error } = await apprenticeQuery;
 
     if (error || !data) {
       return NextResponse.json({ error: error?.message ?? "Unable to update apprentice" }, { status: 500 });

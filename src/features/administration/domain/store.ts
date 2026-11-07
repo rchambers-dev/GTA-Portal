@@ -237,6 +237,7 @@ export async function createApprentice(input: ApprenticeInput): Promise<AdminApp
 export async function updateApprentice(
   idValue: string,
   patch: Partial<ApprenticeInput>,
+  options?: { expectedReviewVersion?: number | null },
 ): Promise<AdminApprenticeRecord | null> {
   ensureHydrated();
   if (isLiveAdminStoreEnabled()) {
@@ -244,8 +245,20 @@ export async function updateApprentice(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ action: "updateApprentice", id: idValue, patch }),
+      body: JSON.stringify({
+        action: "updateApprentice",
+        id: idValue,
+        patch,
+        expectedReviewVersion:
+          patch.displayName == null ? undefined : options?.expectedReviewVersion ?? null,
+      }),
     });
+    if (response.status === 409) {
+      const payload = (await response.json().catch(() => ({}))) as { error?: string };
+      throw new Error(
+        payload.error || "This apprentice was saved by someone else. Reload before renaming them.",
+      );
+    }
     if (!response.ok) return null;
     const data = (await response.json()) as { apprentice: AdminApprenticeRecord };
     snapshot = {

@@ -1082,9 +1082,35 @@ export function AdminApprenticeIntakeScreen() {
                 label="Full name"
                 value={active.displayName}
                 required
-                onCommit={(next) =>
-                  updateApprentice(active.id, { displayName: next })
-                }
+                onCommit={(next) => {
+                  const expectedReviewVersion =
+                    directory.reviewDetails.find((row) => row.apprenticeId === active.id)
+                      ?.version ?? null;
+                  void updateApprentice(
+                    active.id,
+                    { displayName: next },
+                    { expectedReviewVersion },
+                  ).then(
+                    (saved) => {
+                      if (!saved || expectedReviewVersion == null) return;
+                      setDirectory((current) => ({
+                        ...current,
+                        reviewDetails: current.reviewDetails.map((row) =>
+                          row.apprenticeId === active.id
+                            ? { ...row, version: row.version + 1 }
+                            : row,
+                        ),
+                      }));
+                    },
+                    (err: unknown) => {
+                      setError(
+                        err instanceof Error
+                          ? err.message
+                          : "Unable to rename the apprentice.",
+                      );
+                    },
+                  );
+                }}
               />
               <IntakeInlineField
                 label="Apprentice reference"
