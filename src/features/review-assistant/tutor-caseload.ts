@@ -69,12 +69,12 @@ function learnerIdsForTutor(state: ReviewState, tutorKey: string, keyOf: KeyOf) 
   return ids;
 }
 
-export function mergeTutorReviewUpdates(
+export async function mergeTutorReviewUpdates(
   fullState: ReviewState,
   updates: ReviewState,
   tutorKey: string,
   keyOf: KeyOf,
-  allowAttachment: (id: string, learnerId: string) => boolean = () => false,
+  allowAttachment: (id: string, learnerId: string) => boolean | Promise<boolean> = () => false,
 ) {
   const learnerIds = learnerIdsForTutor(fullState, tutorKey, keyOf);
   if (!updates.savedReviews) return fullState;
@@ -93,7 +93,7 @@ export function mergeTutorReviewUpdates(
       throw error;
     }
     const returned = validated.returnedAttachment as { id?: string } | undefined;
-    if (returned?.id && !allowAttachment(returned.id, String(existing.learnerId || ""))) {
+    if (returned?.id && !(await allowAttachment(returned.id, String(existing.learnerId || "")))) {
       const error = new Error("That attachment is not bound to this learner.");
       (error as Error & { status: number }).status = 403;
       throw error;

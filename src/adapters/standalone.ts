@@ -2,8 +2,7 @@ import { supabaseAuthAdapter } from "@/adapters/supabase/auth";
 import { supabaseApprenticeDataAdapter } from "@/adapters/supabase/apprentice-data";
 import type { AuthPort, ApprenticeLifecycleDataPort } from "@/features/apprentice-lifecycle/ports";
 import type { EffectiveSession } from "@/lib/portal/types";
-import { pageGrantSnapshot } from "@/features/staff-page-access/enforce";
-import { readPageAccessConfig } from "@/features/staff-page-access/store";
+import { pageGrantsFromStore } from "@/features/staff-page-access/enforce";
 
 export type StandaloneAuthPort = AuthPort & {
   getEffectiveSession(): Promise<EffectiveSession | null>;
@@ -27,7 +26,7 @@ export function getStandalonePorts(): StandalonePorts {
         if (!session || session.pageGrants) return session;
         return {
           ...session,
-          pageGrants: pageGrantSnapshot(readPageAccessConfig(), session.account),
+          pageGrants: pageGrantsFromStore(session.account),
         };
       },
     },

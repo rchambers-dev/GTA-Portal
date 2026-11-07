@@ -10,6 +10,9 @@ import { decidePageAccess, pageApiAllowed, pageGrantSnapshot, pageNavAllowed } f
 import { pageById } from "./registry";
 import { emptyPageAccessConfig, effectivePages } from "./model";
 import { readPageAccessConfig, writePageAccessConfig } from "./store";
+import { writeFileSync } from "node:fs";
+import { includeStaffDirectory } from "@/app/api/admin/store/record-access";
+import { pageGrantsFromStore } from "./enforce";
 
 function account(input: {
   id?: string;
@@ -254,7 +257,39 @@ describe("staff page access", () => {
       error: "Page access does not allow this action.",
     });
     expect(pageApiAllowed(reader, "/reviews/assistant", "edit").ok).toBe(false);
-    expect(pageById("reviews.assistant")?.editable).toBe(true);
+    expect(pageApiAllowed(reader, "/api/reviews-assistant/state", "edit").ok).toBe(false);
+    expect(pageApiAllowed(reader, "/api/reviews-assistant/review-attachment", "read").ok).toBe(true);
+    const queueOnly = buildEffectiveSession(
+      account({
+        id: "office-2",
+        workspace: "administration",
+        baseRole: "Administrator",
+        permissions: [PERMISSIONS.ADMIN_RECORDS_MANAGE, PERMISSIONS.REVIEWS_MANAGE, PERMISSIONS.ADMIN_USERS_MANAGE],
+      }),
+      [],
+    );
+    queueOnly.pageGrants = pageGrantSnapshot(
+      saveWorkspaceDefault(emptyPageAccessConfig(), owner, "administration", [
+        { pageId: "reviews.queue", level: "edit" },
+        { pageId: "records.store", level: "read" },
+      ]),
+      queueOnly.account,
+    );
+    expect(pageApiAllowed(queueOnly, "/api/reviews-assistant/state", "edit").ok).toBe(false);
+    expect(includeStaffDirectory(queueOnly)).toBe(false);
+    expect(pageById("reviews.api.state")).toBeUndefined();
+  });
+
+  it("treats a missing page-access file as unconfigured and a corrupt file as closed", () => {
+    expect(readPageAccessConfig().workspaceDefaults).toEqual([]);
+    expect(pageGrantsFromStore(admin.account).configured).toBe(false);
+    writeFileSync(process.env.STAFF_PAGE_ACCESS_FILE || "", "{");
+    expect(pageGrantsFromStore(admin.account)).toEqual({
+      configured: true,
+      readable: [],
+      editable: [],
+    });
+    expect(decidePageAccess({ ...admin, pageGrants: pageGrantsFromStore(admin.account) }, "/administration/dashboard").read).toBe(false);
   });
 
   it("refuses a records page from someone who does not hold that capability", () => {

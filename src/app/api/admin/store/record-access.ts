@@ -1,4 +1,6 @@
-import { canManagePortalAccount } from "@/features/administration/domain/account-access";
+import { pageApiAllowed } from "@/features/staff-page-access/enforce";
+import { assignableRoles, roleRank } from "@/features/administration/domain/account-access";
+import type { AdminPortalRole } from "@/features/administration/domain/types";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 import type { EffectiveSession } from "@/lib/portal/types";
@@ -46,23 +48,27 @@ export function staffHierarchyError(input: {
   changesWorkspace?: boolean;
 }): string | null {
   const self = Boolean(input.targetId && input.targetId === input.actorId);
-  if (self && (input.requestedRole || input.changesWorkspace)) {
-    return "You cannot change your own role or workspace.";
-  }
-  if (self && !canManagePortalAccount(input.actorRole, input.actorRole)) {
-    return "You cannot change your own account.";
-  }
-  if (
-    input.targetRole &&
-    !self &&
-    !canManagePortalAccount(input.actorRole, input.targetRole)
-  ) {
+  if (self) return "You cannot change your own account.";
+  const belowActor = (role: string) => roleRank(role) > 0 && roleRank(role) < roleRank(input.actorRole);
+  if (input.targetRole && !belowActor(input.targetRole)) {
     return "You cannot change an account at or above your rank.";
   }
-  if (input.requestedRole && !canManagePortalAccount(input.actorRole, input.requestedRole)) {
+  if (
+    input.requestedRole &&
+    !assignableRoles(input.actorRole).includes(input.requestedRole as AdminPortalRole)
+  ) {
     return "You cannot assign a role at or above your rank.";
   }
   return null;
+}
+
+export function includeStaffDirectory(session: EffectiveSession): boolean {
+  if (!canMutateStaffAccounts(session)) return false;
+  return pageApiAllowed(
+    session,
+    staffActionPagePath(session.account.workspace, "updateStaffProfile"),
+    "read",
+  ).ok;
 }
 
 export function staffActionPagePath(workspace: string, action: string): string {

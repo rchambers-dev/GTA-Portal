@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { readReviewState, saveReviewState, type ReviewState } from "./state-store";
+import { getReviewRepository } from "./repository";
+import type { ReviewState } from "./state-store";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,7 +19,7 @@ export function listTutorFeedback(state: ReviewState) {
     .filter((item): item is { id: string; email: string; message: string; at: string } => Boolean(item));
 }
 
-export function addTutorFeedback(input: { email?: string; message?: unknown }) {
+export async function addTutorFeedback(input: { email?: string; message?: unknown; actorId?: string }) {
   if (typeof input.message !== "string") {
     const error = new Error("Message must be a string.");
     (error as Error & { status: number }).status = 400;
@@ -42,9 +43,10 @@ export function addTutorFeedback(input: { email?: string; message?: unknown }) {
     throw error;
   }
   const item = { id: randomUUID(), email, message, at: new Date().toISOString() };
-  const state = readReviewState();
+  const repo = getReviewRepository();
+  const state = await repo.readDocument();
   const items = [...listTutorFeedback(state), item];
-  const saved = saveReviewState({ ...state, tutorFeedback: items }, state.version || 1);
+  const saved = await repo.saveDocument({ ...state, tutorFeedback: items }, state.version || 1, input.actorId || "");
   if (saved.status === 409) {
     const error = new Error("Data was modified elsewhere. Please reload and try again.");
     (error as Error & { status: number }).status = 409;

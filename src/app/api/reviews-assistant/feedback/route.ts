@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { addTutorFeedback, listTutorFeedback } from "@/features/review-assistant/feedback";
-import { readReviewState } from "@/features/review-assistant/state-store";
+import { getReviewRepository } from "@/features/review-assistant/repository";
 import { requireReviewActor, reviewPageDenied } from "@/features/review-assistant/source-runtime";
 
 export const runtime = "nodejs";
@@ -16,7 +16,7 @@ export async function GET() {
       { status: 403 },
     );
   }
-  return NextResponse.json({ items: listTutorFeedback(readReviewState()) });
+  return NextResponse.json({ items: listTutorFeedback(await getReviewRepository().readDocument()) });
 }
 
 export async function POST(request: Request) {

@@ -281,7 +281,7 @@ export async function handleStaffAction(
     const email = input.email.trim().toLowerCase();
     const displayName = input.displayName.trim();
     const role = requestedRole;
-    const workspace = input.workspace || workspaceForRole(role);
+    const workspace = workspaceForRole(role);
     const jobTitles = normalizeJobTitles(input.jobTitles ?? []);
     const password = (input.password ?? "").trim() || generateTempPassword();
 
@@ -462,12 +462,17 @@ export async function handleStaffAction(
         }
       }
     }
+    const nextRole = body.patch.role ?? (current?.base_role as AdminPortalRole | undefined);
+    if (body.patch.workspace != null && nextRole && body.patch.workspace !== workspaceForRole(nextRole)) {
+      return NextResponse.json(
+        { error: "Workspace must follow the role." },
+        { status: 403 },
+      );
+    }
     if (body.patch.role != null) {
       update.base_role = body.patch.role;
       update.permissions = permissionsForStaffRole(body.patch.role);
-    }
-    if (body.patch.workspace != null) {
-      update.workspace = body.patch.workspace;
+      update.workspace = workspaceForRole(body.patch.role);
     }
 
     const { data, error } = await supabase

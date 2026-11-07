@@ -3107,7 +3107,7 @@ function fillReviewsTutorFilter(people) {
   const options = [
     `<option value="">All tutors</option>`,
     ...knownTutors().map(
-      (name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`,
+      (name) => `<option value="${escapeHtml(name)}">${escapeHtml(tutorLabel(name))}</option>`,
     ),
   ];
   if (unset) options.push(`<option value="__none__">No tutor set</option>`);
@@ -3236,7 +3236,7 @@ function renderBlockedTutors() {
       const key = tutorLookupKey(name);
       const on = blocked.has(key);
       const trade = tutorRecord(name)?.trade || "";
-      return `<label class="app-check settings-tutor-row"><input type="checkbox" data-block-tutor="${escapeHtml(key)}" ${on ? "checked" : ""} /><span class="app-check-box" aria-hidden="true"></span><span class="settings-tutor-copy"><strong>${escapeHtml(name)}</strong>${trade ? `<span class="meta">${escapeHtml(trade)}</span>` : ""}</span></label>`;
+      return `<label class="app-check settings-tutor-row"><input type="checkbox" data-block-tutor="${escapeHtml(key)}" ${on ? "checked" : ""} /><span class="app-check-box" aria-hidden="true"></span><span class="settings-tutor-copy"><strong>${escapeHtml(tutorLabel(name))}</strong>${trade ? `<span class="meta">${escapeHtml(trade)}</span>` : ""}</span></label>`;
     })
     .join("");
 }

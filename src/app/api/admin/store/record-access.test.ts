@@ -152,7 +152,7 @@ describe("master record access", () => {
         targetRole: "Administrator",
         requestedRole: "Owner",
       }),
-    ).toMatch(/own role/);
+    ).toMatch(/own account/);
     expect(
       staffHierarchyError({
         actorId: "admin-1",
@@ -176,5 +176,21 @@ describe("master record access", () => {
         requestedRole: "Tutor",
       }),
     ).toBeNull();
+    expect(
+      staffHierarchyError({
+        actorId: "manager-1",
+        actorRole: "Management",
+        requestedRole: "Management",
+      }),
+    ).toMatch(/rank/);
+    expect(
+      staffHierarchyError({
+        actorId: "manager-1",
+        actorRole: "Management",
+        targetId: "manager-2",
+        targetRole: "Management",
+        requestedRole: "Tutor",
+      }),
+    ).toMatch(/rank/);
   });
 });

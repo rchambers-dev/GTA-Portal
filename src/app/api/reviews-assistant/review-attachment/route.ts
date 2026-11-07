@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { readAttachmentBinding, readReviewAttachment, saveReviewAttachment } from "@/features/review-assistant/attachments";
-import { readReviewState } from "@/features/review-assistant/state-store";
+import { getReviewRepository } from "@/features/review-assistant/repository";
 import { requireReviewActor, reviewPageDenied, tutorNameKey } from "@/features/review-assistant/source-runtime";
 import { learnerAssignedToTutor, tutorMayReadAttachment } from "@/features/review-assistant/tutor-caseload";
 
@@ -23,11 +22,12 @@ export async function GET(request: Request) {
   if (!id) return NextResponse.json({ error: "Missing attachment id." }, { status: 400 });
   const denied = reviewPageDenied(actor.session, "/api/reviews-assistant/review-attachment", "read");
   if (denied) return denied;
-  const binding = readAttachmentBinding(id);
+  const repo = getReviewRepository();
+  const binding = await repo.attachmentBinding(id);
   if (actor.access === "tutor") {
     const keyOf = await tutorNameKey();
     const allowed = tutorMayReadAttachment(
-      readReviewState(),
+      await repo.readDocument(),
       keyOf(actor.session.account.name),
       id,
       keyOf,
@@ -41,7 +41,8 @@ export async function GET(request: Request) {
     }
   }
   try {
-    const stored = readReviewAttachment(id);
+    const stored = await repo.readAttachment(id);
+    if (!stored.bytes) throw Object.assign(new Error("Attached review not found."), { status: 404 });
     const filename = String(url.searchParams.get("name") || id)
       .replace(/[<>:"/\\|?*]+/g, "")
       .replace(/\s+/g, "_")
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
   if (actor.access === "tutor") {
     const keyOf = await tutorNameKey();
     const allowed = learnerAssignedToTutor(
-      readReviewState(),
+      await getReviewRepository().readDocument(),
       keyOf(actor.session.account.name),
       learnerId,
       keyOf,
@@ -86,7 +87,7 @@ export async function POST(request: Request) {
     const filename = String(url.searchParams.get("name") || request.headers.get("x-filename") || "review.pdf");
     const type = String(request.headers.get("content-type") || "application/pdf");
     const bytes = Buffer.from(await request.arrayBuffer());
-    const attachment = saveReviewAttachment({
+    const attachment = await getReviewRepository().saveAttachment({
       filename,
       type,
       bytes,

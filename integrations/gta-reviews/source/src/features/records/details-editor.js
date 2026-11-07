@@ -572,7 +572,7 @@ function comboSelectOptions(kind, current) {
       .sort((a, b) => a.localeCompare(b))
       .map(
         (name) =>
-          `<option value="${escapeHtml(name)}"${name === value ? " selected" : ""}>${escapeHtml(name)}</option>`,
+          `<option value="${escapeHtml(name)}"${name === value ? " selected" : ""}>${escapeHtml(kind === "tutor" ? tutorLabel(name) : name)}</option>`,
       ),
     `<option value="__new__">Add a new ${kind === "tutor" ? "tutor" : "apprenticeship"}</option>`,
   ].join("");

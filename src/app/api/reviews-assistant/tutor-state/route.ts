@@ -5,8 +5,8 @@ import {
   reviewPageDenied,
   tutorNameKey,
 } from "@/features/review-assistant/source-runtime";
-import { readReviewState, saveReviewState, type ReviewState } from "@/features/review-assistant/state-store";
-import { readAttachmentBinding } from "@/features/review-assistant/attachments";
+import type { ReviewState } from "@/features/review-assistant/state-store";
+import { getReviewRepository } from "@/features/review-assistant/repository";
 import { filterStateForTutor, mergeTutorReviewUpdates } from "@/features/review-assistant/tutor-caseload";
 import { conflictBody, sameSavedContent, versionOf } from "@/features/review-assistant/version-rules";
 
@@ -27,8 +27,9 @@ export async function GET() {
   const denied = reviewPageDenied(session, "/api/reviews-assistant/tutor-state", "read");
   if (denied) return denied;
   const keyOf = await tutorNameKey();
+  const stored = await getReviewRepository().readDocument();
   return NextResponse.json({
-    state: filterStateForTutor(readReviewState(), keyOf(session.account.name), keyOf),
+    state: filterStateForTutor(stored, keyOf(session.account.name), keyOf),
   });
 }
 
@@ -43,7 +44,8 @@ export async function POST(request: Request) {
   delete updates.appBuild;
   const keyOf = await tutorNameKey();
   const tutorKey = keyOf(session.account.name);
-  const stored = readReviewState();
+  const repo = getReviewRepository();
+  const stored = await repo.readDocument();
   const storedVersion = versionOf(stored);
   const clientVersion = Number(updates.version) || 1;
   if (clientVersion !== storedVersion) {
@@ -54,13 +56,12 @@ export async function POST(request: Request) {
   }
   let merged: ReviewState;
   try {
-    merged = mergeTutorReviewUpdates(stored, updates, tutorKey, keyOf, (id, learnerId) => {
-      const binding = readAttachmentBinding(id);
-      return Boolean(
-        binding &&
-          binding.learnerId === learnerId &&
-          binding.actorId === session.account.id,
-      );
+    merged = await mergeTutorReviewUpdates(stored, updates, tutorKey, keyOf, async (id, learnerId) => {
+      return getReviewRepository()
+        .attachmentBinding(id)
+        .then((binding) =>
+          Boolean(binding && binding.learnerId === learnerId && binding.actorId === session.account.id),
+        );
     });
   } catch (error) {
     const status = (error as { status?: number }).status || 400;
@@ -78,14 +79,15 @@ export async function POST(request: Request) {
     });
   }
   merged.version = storedVersion;
-  const saved = saveReviewState(merged, storedVersion);
+  const saved = await repo.saveDocument(merged, storedVersion, session.account.id);
   if (saved.status === 409) {
+    const latest = await repo.readDocument();
     return NextResponse.json(
-      conflictBody(clientVersion, versionOf(readReviewState()), filterStateForTutor(readReviewState(), tutorKey, keyOf)),
+      conflictBody(clientVersion, versionOf(latest), filterStateForTutor(latest, tutorKey, keyOf)),
       { status: 409 },
     );
   }
-  const next = readReviewState();
+  const next = await repo.readDocument();
   return NextResponse.json({
     state: filterStateForTutor(next, tutorKey, keyOf),
     version: saved.body.version,

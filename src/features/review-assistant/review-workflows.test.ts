@@ -69,12 +69,14 @@ let dir = "";
 
 beforeEach(() => {
   dir = mkdtempSync(path.join(tmpdir(), "review-workflows-"));
+  process.env.REVIEW_ASSISTANT_STORE = "file";
   process.env.REVIEW_ASSISTANT_STATE_FILE = path.join(dir, "state.json");
   process.env.REVIEW_ASSISTANT_ATTACHMENTS_DIR = path.join(dir, "attachments");
   getEffectiveSession.mockReset();
 });
 
 afterEach(() => {
+  delete process.env.REVIEW_ASSISTANT_STORE;
   delete process.env.REVIEW_ASSISTANT_STATE_FILE;
   delete process.env.REVIEW_ASSISTANT_ATTACHMENTS_DIR;
   rmSync(dir, { recursive: true, force: true });
@@ -136,7 +138,7 @@ describe("review assistant server copy", () => {
     expect(visible.settings).toMatchObject({ email: "", officePostcode: "" });
     expect(visible.tutorFeedback).toEqual([]);
 
-    const merged = mergeTutorReviewUpdates(
+    const merged = await mergeTutorReviewUpdates(
       readReviewState(),
       {
         savedReviews: [
@@ -224,7 +226,7 @@ describe("review assistant server copy", () => {
       actorId: "other-tutor",
       learnerId: "other",
     });
-    expect(() =>
+    await expect(
       mergeTutorReviewUpdates(
         readReviewState(),
         { savedReviews: [{ id: "review-mine", returnedAttachment: { id: foreign.id } }] },
@@ -232,7 +234,7 @@ describe("review assistant server copy", () => {
         (value) => value.trim().toLowerCase(),
         (id, learnerId) => id === saved.id && learnerId === "mine",
       ),
-    ).toThrow(/not bound/);
+    ).rejects.toThrow(/not bound/);
   });
 
   it("refuses a review save when the page grant is read only", async () => {
@@ -241,7 +243,7 @@ describe("review assistant server copy", () => {
       ...office,
       pageGrants: {
         configured: true,
-        readable: ["reviews.api.state"],
+        readable: ["reviews.assistant"],
         editable: [],
       },
     });

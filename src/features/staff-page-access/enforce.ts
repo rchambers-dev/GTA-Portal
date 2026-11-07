@@ -1,6 +1,7 @@
 import type { EffectiveSession, PageGrantSnapshot } from "@/lib/portal/types";
 import { effectivePages, isWorkspaceConfigured, type PageAccessConfig } from "./model";
 import { isExemptPath, matchPortalPage } from "./registry";
+import { PageAccessConfigUnavailable, readPageAccessConfig } from "./store";
 
 export type PageDecision = {
   enforced: boolean;
@@ -22,6 +23,20 @@ export function pageGrantSnapshot(
     readable: pages.map((item) => item.page.id),
     editable: pages.filter((item) => item.level === "edit").map((item) => item.page.id),
   };
+}
+
+/** Broken config closes access. A missing file stays unconfigured and legacy-open. */
+export function pageGrantsFromStore(
+  account: { id: string; workspace: EffectiveSession["account"]["workspace"] },
+): PageGrantSnapshot {
+  try {
+    return pageGrantSnapshot(readPageAccessConfig(), account);
+  } catch (error) {
+    if (error instanceof PageAccessConfigUnavailable) {
+      return { configured: true, readable: [], editable: [] };
+    }
+    throw error;
+  }
 }
 
 const OPEN: PageDecision = { enforced: false, read: true, edit: true, pageId: null };

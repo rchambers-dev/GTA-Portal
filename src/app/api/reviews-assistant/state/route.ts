@@ -5,7 +5,11 @@ import {
   requireReviewActor,
   reviewPageDenied,
 } from "@/features/review-assistant/source-runtime";
-import { readReviewState, saveReviewState, type ReviewState } from "@/features/review-assistant/state-store";
+import {
+  getReviewRepository,
+  ReviewStoreNotConfigured,
+} from "@/features/review-assistant/repository";
+import type { ReviewState } from "@/features/review-assistant/state-store";
 import { versionOf } from "@/features/review-assistant/version-rules";
 
 export const runtime = "nodejs";
@@ -27,7 +31,14 @@ export async function GET() {
   if (session instanceof NextResponse) return session;
   const denied = reviewPageDenied(session, "/api/reviews-assistant/state", "read");
   if (denied) return denied;
-  return NextResponse.json({ state: readReviewState() });
+  try {
+    return NextResponse.json({ state: await getReviewRepository().readDocument() });
+  } catch (error) {
+    if (error instanceof ReviewStoreNotConfigured) {
+      return NextResponse.json({ error: error.message }, { status: 503 });
+    }
+    throw error;
+  }
 }
 
 export async function POST(request: Request) {
@@ -39,15 +50,23 @@ export async function POST(request: Request) {
   const outdated = await rejectOutdatedBuild(body.appBuild);
   if (outdated) return outdated;
   delete body.appBuild;
-  const stored = readReviewState();
-  const expected = Number(body.version) || 1;
-  if (expected !== versionOf(stored)) {
-    const conflict = saveReviewState(body, expected);
-    return NextResponse.json(conflict.body, { status: conflict.status });
+  try {
+    const repo = getReviewRepository();
+    const stored = await repo.readDocument();
+    const expected = Number(body.version) || 1;
+    if (expected !== versionOf(stored)) {
+      const conflict = await repo.saveDocument(body, expected, session.account.id);
+      return NextResponse.json(conflict.body, { status: conflict.status });
+    }
+    await preserveOfficeDocument(body, stored);
+    const result = await repo.saveDocument(body, expected, session.account.id);
+    return NextResponse.json(result.body, { status: result.status });
+  } catch (error) {
+    if (error instanceof ReviewStoreNotConfigured) {
+      return NextResponse.json({ error: error.message }, { status: 503 });
+    }
+    throw error;
   }
-  await preserveOfficeDocument(body, stored);
-  const result = saveReviewState(body, expected);
-  return NextResponse.json(result.body, { status: result.status });
 }
 
 export const PUT = POST;

@@ -1,32 +1,23 @@
-export const GTA_TUTORS = [
-  { name: "John Pearson", trade: "Bodyshop", email: "" },
-  {
-    name: "Andrew Ross",
-    trade: "Bodyshop",
-    email: "",
-    emails: [],
-    aliases: ["Andy Ross"],
-  },
-  { name: "Mike Hepworth", trade: "Mechanical", email: "" },
-  { name: "Marc Hadfield", trade: "Mechanical", email: "" },
-  { name: "Mark Illingworth", trade: "Mechanical", email: "" },
-  { name: "Tony Reid", trade: "Mechanical", email: "" },
-  { name: "Martin Farthing", trade: "Mechanical", email: "" },
-  { name: "Dan Hanmer", trade: "Mechanical", email: "", aliases: ["Dan Hammer"] },
-  { name: "Robert Mason", trade: "Mechanical", email: "", aliases: ["Rob Mason"] },
-  {
-    name: "Murtala Kasimu",
-    trade: "Mechanical",
-    email: "",
-    aliases: ["Murtai Kasimu", "Mtalas Kasimu", "Murtai", "Mtalas"],
-  },
-  {
-    name: "Anne-Marie Sanderson",
-    trade: "Business administration",
-    email: "",
-    aliases: ["Anne Marie Sanderson", "Annemarie Sanderson", "Ann-Marie Sanderson"],
-  },
-];
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function portalStaff() {
+  const value = globalThis.__PORTAL_REVIEW_STAFF__;
+  if (!Array.isArray(value)) return null;
+  return value.filter((item) => item && UUID.test(String(item.id || "")) && String(item.name || "").trim());
+}
+
+export function portalTutorMode() {
+  return portalStaff() !== null;
+}
+
+export function tutorLabel(value) {
+  const staff = portalStaff();
+  const text = String(value || "").trim();
+  if (!staff) return text;
+  return staff.find((item) => item.id === text)?.name || "Unassigned";
+}
+
+export const GTA_TUTORS = [];
 
 export function tutorMatchKey(value) {
   return String(value || "")
@@ -40,11 +31,8 @@ export function tutorMatchKey(value) {
 export function canonTutorName(value) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
   if (!text) return "";
-  const key = tutorMatchKey(text);
-  for (const tutor of GTA_TUTORS) {
-    const names = [tutor.name, ...(tutor.aliases || [])];
-    if (names.some((name) => tutorMatchKey(name) === key)) return tutor.name;
-  }
+  const staff = portalStaff();
+  if (staff) return staff.some((item) => item.id === text) ? text : "";
   if (/[A-Z]/.test(text) && /[a-z]/.test(text)) return text;
   return text.toLowerCase().replace(/\b([a-z])/g, (letter) => letter.toUpperCase());
 }
@@ -70,7 +58,9 @@ export function isTutorSession(session) {
 }
 
 export function officialTutorNames() {
-  return GTA_TUTORS.map((tutor) => tutor.name);
+  const staff = portalStaff();
+  if (staff) return staff.map((item) => item.id);
+  return [];
 }
 
 export function tutorRecord(name) {
@@ -79,6 +69,8 @@ export function tutorRecord(name) {
 }
 
 export function mergedTutorNames(...groups) {
+  const staff = portalStaff();
+  if (staff) return staff.map((item) => item.id).sort((a, b) => a.localeCompare(b));
   const names = new Map();
   for (const tutor of GTA_TUTORS) {
     names.set(tutorMatchKey(tutor.name), tutor.name);

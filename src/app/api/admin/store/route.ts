@@ -53,6 +53,7 @@ import {
   isStaffAccountAction,
   redactApprenticeContacts,
   redactEnrolmentContacts,
+  includeStaffDirectory,
   staffActionPagePath,
 } from "./record-access";
 
@@ -312,7 +313,6 @@ export async function GET() {
   }
 
   const master = canReadMasterRecords(session);
-  const staffAccounts = canMutateStaffAccounts(session);
   return NextResponse.json({
     apprentices: master
       ? (apprentices ?? []).map((row) => mapApprentice(row as ApprenticeRow))
@@ -327,7 +327,7 @@ export async function GET() {
     teachingGroupMemberships: membershipsResult.memberships,
     gtaProgrammeVersions: versionsResult.versions,
     cohortChangeLogs,
-    users: staffAccounts ? usersResult.users : [],
+    users: includeStaffDirectory(session) ? usersResult.users : [],
   });
 }
 
