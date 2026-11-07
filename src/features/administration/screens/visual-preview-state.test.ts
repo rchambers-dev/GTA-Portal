@@ -3,6 +3,7 @@ import path from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
+import styles from "./admin-pages.module.css";
 import { ApprenticesVisualPreview } from "./apprentices-visual-preview";
 import { EmployersVisualPreview } from "./employers-visual-preview";
 import {
@@ -364,6 +365,28 @@ describe("employers visual behaviour", () => {
     expect(html).toContain('value="Example ramp"');
     expect(html).toContain('value="Example Lead"');
     expect(html).toContain('value="Example Deputy"');
+  });
+});
+
+describe("employer list row corners", () => {
+  it("uses a rounded rectangle for employer rows and leaves apprentice pills unchanged", () => {
+    const css = readFileSync(
+      path.join(process.cwd(), "src/features/administration/screens/admin-pages.module.css"),
+      "utf8",
+    );
+    expect(css).toMatch(/\.pillRow\s*\{[^}]*border-radius:\s*999px;/s);
+    expect(css).toMatch(/\.employerRow\s*\{\s*border-radius:\s*8px;\s*\}/);
+    const employerHtml = renderToStaticMarkup(createElement(EmployersVisualPreview));
+    const apprenticeHtml = renderToStaticMarkup(createElement(ApprenticesVisualPreview));
+    expect(employerHtml).toContain(styles.employerRow);
+    expect(employerHtml).toContain(styles.pillRow);
+    expect(employerHtml).toContain("Example Motors");
+    expect(apprenticeHtml).toContain(styles.pillRow);
+    expect(apprenticeHtml).not.toContain(styles.employerRow);
+    expect(readFileSync(
+      path.join(process.cwd(), "src/features/administration/screens/apprentices-visual-preview.tsx"),
+      "utf8",
+    )).not.toContain("employerRow");
   });
 });
 
