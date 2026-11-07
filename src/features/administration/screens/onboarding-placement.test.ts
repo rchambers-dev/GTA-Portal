@@ -105,14 +105,15 @@ describe("onboarding placement", () => {
       path.join(process.cwd(), "src/shell/workspaces/resolve-navigation.ts"),
       "utf8",
     );
-    expect(nav).toContain('title: "Marketing"');
+    expect(nav).toContain('title: "Marketing & Recruitment"');
     expect(nav).toContain('href: `/${workspace}/marketing`');
     expect(nav).not.toContain("/interviews");
     expect(nav).not.toContain("/calendar");
     expect(nav).not.toContain('label: "Reports"');
     expect(nav).not.toContain('label: "Settings"');
     const html = renderToStaticMarkup(createElement(MarketingOverview));
-    expect(html).toContain("Marketing is not configured");
+    expect(html).toContain("Marketing &amp; Recruitment");
+    expect(html).toContain("Marketing &amp; Recruitment is not configured");
     expect(html).toContain("EXAMPLE DATA");
     expect(html).toContain("Saving is disabled");
     expect(html).not.toContain("Stage 1");

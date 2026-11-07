@@ -6,7 +6,7 @@ import { isMentorStaffSession } from "@/lib/permissions/workspace";
 
 function marketingSection(workspace: "administration" | "management") {
   return {
-    title: "Marketing",
+    title: "Marketing & Recruitment",
     items: [
       {
         href: `/${workspace}/marketing`,
