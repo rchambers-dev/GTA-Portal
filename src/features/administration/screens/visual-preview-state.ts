@@ -18,11 +18,42 @@ export type DraftEntry = {
   label: string;
 };
 
-export type ExampleApprentice = {
+export type ApprenticeEntryFields = {
+  firstName: string;
+  lastName: string;
+  externalLearnerId: string;
+  site: string;
+  apprenticeship: string;
+  originalEntryDate: string;
+  enquirySource: string;
+  responsiveness: string;
+  employerStatus: string;
+  employerId: string;
+  intendedIntakeDate: string;
+  notes: string;
+};
+
+export type ExampleApprentice = ApprenticeEntryFields & {
   id: string;
   fullName: string;
-  employerId: string;
 };
+
+export function blankApprenticeEntry(): ApprenticeEntryFields {
+  return {
+    firstName: "",
+    lastName: "",
+    externalLearnerId: "",
+    site: "",
+    apprenticeship: "",
+    originalEntryDate: "",
+    enquirySource: "",
+    responsiveness: "",
+    employerStatus: "",
+    employerId: "",
+    intendedIntakeDate: "",
+    notes: "",
+  };
+}
 
 export const EXAMPLE_EMPLOYERS: ExampleEmployer[] = [
   {
@@ -44,8 +75,13 @@ export const EXAMPLE_EMPLOYERS: ExampleEmployer[] = [
 ];
 
 export const EXAMPLE_APPRENTICES: ExampleApprentice[] = [
-  { id: "example-alex", fullName: "Alex Example", employerId: "" },
-  { id: "example-jordan", fullName: "Jordan Example", employerId: "example-motors" },
+  { id: "example-alex", fullName: "Alex Example", ...blankApprenticeEntry() },
+  {
+    id: "example-jordan",
+    fullName: "Jordan Example",
+    ...blankApprenticeEntry(),
+    employerId: "example-motors",
+  },
 ];
 
 export function employerName(employerId: string, employers: ExampleEmployer[]): string {
@@ -53,12 +89,9 @@ export function employerName(employerId: string, employers: ExampleEmployer[]): 
   return employers.find((row) => row.id === employerId)?.name ?? "Not linked";
 }
 
-export type ApprenticePreviewState = {
+export type ApprenticePreviewState = ApprenticeEntryFields & {
   query: string;
   addOpen: boolean;
-  fullName: string;
-  employerId: string;
-  notes: string;
   rows: ExampleApprentice[];
   employers: ExampleEmployer[];
   notice: string;
@@ -68,18 +101,14 @@ export type ApprenticePreviewAction =
   | { type: "search"; query: string }
   | { type: "toggle-add" }
   | { type: "cancel-add" }
-  | { type: "set-name"; fullName: string }
-  | { type: "set-employer"; employerId: string }
-  | { type: "set-notes"; notes: string }
+  | { type: "set-entry"; field: keyof ApprenticeEntryFields; value: string }
   | { type: "add-local" };
 
 export function initialApprenticePreviewState(): ApprenticePreviewState {
   return {
     query: "",
     addOpen: false,
-    fullName: "",
-    employerId: "",
-    notes: "",
+    ...blankApprenticeEntry(),
     rows: EXAMPLE_APPRENTICES.map((row) => ({ ...row })),
     employers: EXAMPLE_EMPLOYERS.map((row) => ({
       ...row,
@@ -108,31 +137,44 @@ export function apprenticePreviewReducer(
       return { ...state, query: action.query };
     case "toggle-add":
       return state.addOpen
-        ? { ...state, addOpen: false, fullName: "", employerId: "", notes: "", notice: "" }
+        ? { ...state, addOpen: false, ...blankApprenticeEntry(), notice: "" }
         : { ...state, addOpen: true, notice: "" };
     case "cancel-add":
-      return { ...state, addOpen: false, fullName: "", employerId: "", notes: "", notice: "" };
-    case "set-name":
-      return { ...state, fullName: action.fullName };
-    case "set-employer":
-      return { ...state, employerId: action.employerId };
-    case "set-notes":
-      return { ...state, notes: action.notes };
+      return { ...state, addOpen: false, ...blankApprenticeEntry(), notice: "" };
+    case "set-entry":
+      return { ...state, [action.field]: action.value };
     case "add-local": {
-      const fullName = state.fullName.trim();
-      if (!fullName) {
-        return { ...state, notice: "Full name is required." };
+      const firstName = state.firstName.trim();
+      const lastName = state.lastName.trim();
+      if (!firstName || !lastName) {
+        return { ...state, notice: "First name and last name are required." };
       }
+      const entry: ApprenticeEntryFields = {
+        firstName,
+        lastName,
+        externalLearnerId: state.externalLearnerId.trim(),
+        site: state.site,
+        apprenticeship: state.apprenticeship,
+        originalEntryDate: state.originalEntryDate,
+        enquirySource: state.enquirySource,
+        responsiveness: state.responsiveness,
+        employerStatus: state.employerStatus,
+        employerId: state.employerId,
+        intendedIntakeDate: state.intendedIntakeDate,
+        notes: state.notes.trim(),
+      };
       return {
         ...state,
         addOpen: false,
-        fullName: "",
-        employerId: "",
-        notes: "",
+        ...blankApprenticeEntry(),
         notice: "Not saved. Saving is disabled.",
         rows: [
           ...state.rows,
-          { id: `local-apprentice-${state.rows.length + 1}`, fullName, employerId: state.employerId },
+          {
+            id: `local-apprentice-${state.rows.length + 1}`,
+            fullName: `${firstName} ${lastName}`,
+            ...entry,
+          },
         ],
       };
     }
