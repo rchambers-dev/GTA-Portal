@@ -368,7 +368,13 @@ export function openAccountSettings() {
   });
 }
 
+function portalSettingsPage() {
+  return /\/reviews\/settings\/?$/.test(globalThis.location?.pathname || "");
+}
+
 export function closeAccountSettings({ force = false } = {}) {
+  // The portal route is the page. Outside clicks and Escape must not dismiss it.
+  if (!force && portalSettingsPage()) return;
   if (!force && passwordChangeNeeded()) {
     forcePasswordChange();
     return;

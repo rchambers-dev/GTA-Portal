@@ -22,10 +22,31 @@ function slugFromPath(pathname: string) {
 
 function showOriginalPage(slug: string) {
   const setPage = globalThis.__PORTAL_SET_REVIEW_PAGE__;
-  if (typeof setPage !== "function") return;
-  setPage(slug === "learners" || slug === "settings" ? "records" : slug, { skipHash: true });
-  if (slug === "settings") globalThis.__PORTAL_OPEN_REVIEW_SETTINGS__?.();
-  else globalThis.__PORTAL_CLOSE_REVIEW_SETTINGS__?.();
+  const root = globalThis.__REVIEW_ROOT;
+  if (typeof setPage !== "function" || !root) return;
+  const settings = slug === "settings";
+  root.classList.toggle("is-settings-page", settings);
+  setPage(slug === "learners" || settings ? "records" : slug, { skipHash: true });
+  const modal = root.querySelector("#settings-modal");
+  if (!(modal instanceof HTMLElement)) return;
+  const card = modal.querySelector("[data-settings-card]");
+  if (settings) {
+    modal.hidden = false;
+    modal.classList.add("open");
+    if (card instanceof HTMLElement) {
+      card.setAttribute("role", "region");
+      card.removeAttribute("aria-modal");
+    }
+    modal.querySelectorAll("[data-settings-close]").forEach((button) => {
+      if (button instanceof HTMLElement) button.hidden = true;
+    });
+  } else {
+    if (card instanceof HTMLElement) {
+      card.setAttribute("role", "dialog");
+      card.setAttribute("aria-modal", "true");
+    }
+    globalThis.__PORTAL_CLOSE_REVIEW_SETTINGS__?.();
+  }
 }
 
 export function ReviewOriginalHost({
@@ -93,6 +114,7 @@ export function ReviewOriginalHost({
   return (
     <>
       <link rel="stylesheet" href="/review-assistant/app.scoped.css" />
+      <link rel="stylesheet" href="/review-assistant/portal-skin.css" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link
