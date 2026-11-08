@@ -19,6 +19,13 @@ export function tutorLabel(value) {
 
 export const GTA_TUTORS = [];
 
+export function defaultGtaReviewer() {
+  const session = globalThis.__PORTAL_REVIEW_SESSION__;
+  const staff = globalThis.__PORTAL_REVIEW_STAFF__;
+  if (!session?.user || !Array.isArray(staff)) return "";
+  return staff.find((item) => item.id === session.user.id)?.name || "";
+}
+
 export function tutorMatchKey(value) {
   return String(value || "")
     .trim()

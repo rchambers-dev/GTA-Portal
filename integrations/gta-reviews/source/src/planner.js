@@ -155,7 +155,7 @@ export function applyLearnerProfile(learner, patch = {}) {
   return learner;
 }
 
-export const DEFAULT_GTA_REVIEWER = "Reiss Chambers";
+export const DEFAULT_GTA_REVIEWER = "";
 export const DEFAULT_ROUTE_EMAIL = "";
 
 export function clearLearnerPlannedDates(item) {

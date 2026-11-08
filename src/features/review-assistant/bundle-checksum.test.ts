@@ -24,6 +24,8 @@ describe("review assistant bundle", () => {
     expect(hash(shipped)).toBe(hash(built));
     const html = readFileSync(path.join(process.cwd(), "public/review-assistant/index.html"), "utf8");
     expect(shipped.toString("utf8")).not.toContain("John Pearson");
+    expect(shipped.toString("utf8")).not.toContain("Reiss Chambers");
+    expect(html).not.toContain("Reiss Chambers");
     expect(html).not.toContain("John Pearson");
     expect(shipped.toString("utf8")).toContain("__PORTAL_REVIEW_STAFF__");
   });

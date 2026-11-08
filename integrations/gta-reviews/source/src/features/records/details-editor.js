@@ -180,7 +180,7 @@ export const LEARNER_INFO_FIELDS = [
     attr: "gta-reviewer",
     label: "GTA reviewer",
     type: "text",
-    placeholder: "e.g. Reiss Chambers",
+    placeholder: "Reviewer name",
     missing: "GTA reviewer",
   },
   {

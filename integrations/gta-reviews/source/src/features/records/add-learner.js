@@ -24,6 +24,7 @@ import {
   startOfLocalDay,
   toDateKey,
 } from "../../planner.js";
+import { defaultGtaReviewer } from "../../tutors.js";
 import { state } from "../planner/status.js";
 import {
   currentComboValue,
@@ -123,7 +124,7 @@ function existingLearnerForAdd(name, postcode) {
 export function resetAddLearnerForm() {
   form.reset();
   const reviewer = form.querySelector("[data-add-gta-reviewer]");
-  if (reviewer) reviewer.value = DEFAULT_GTA_REVIEWER;
+  if (reviewer) reviewer.value = defaultGtaReviewer();
   refreshPlannedCycleSelect(form, "add");
   refreshAddLearnerCombos({ tutor: "", apprenticeship: "" }, { force: true });
 }
