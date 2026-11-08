@@ -125,9 +125,17 @@ describe("sidebar grouping", () => {
       ]),
     );
     const reviews = shown.find((section) => section.title === "Reviews");
-    expect(reviews?.items.map((item) => item.label)).toEqual(["Review queue"]);
-    expect(reviews?.items[0]?.href).toBe("/reviews?from=administration");
-    expect(reviews?.items[0]?.permission).toBe(PERMISSIONS.REVIEWS_MANAGE);
+    expect(reviews?.items.map((item) => item.label)).toEqual([
+      "Learners",
+      "Plan",
+      "Out",
+      "Reviews",
+      "Archive",
+      "Analytics",
+      "Settings",
+    ]);
+    expect(reviews?.items[0]?.href).toBe("/reviews/learners");
+    expect(reviews?.items.every((item) => item.permission === PERMISSIONS.REVIEWS_MANAGE)).toBe(true);
   });
 
   it("hides the Staff group when the child permission is absent", () => {

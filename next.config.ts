@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       { source: "/api/review-form/word-template", destination: "/api/reviews-assistant/review-form/word-template" },
       { source: "/api/feedback", destination: "/api/reviews-assistant/feedback" },
       { source: "/api/tutor-reword", destination: "/api/reviews-assistant/tutor-reword" },
+      { source: "/forms/:path*", destination: "/review-assistant/forms/:path*" },
     ];
   },
 };

@@ -25,16 +25,23 @@ function marketingSection(workspace: "administration" | "management") {
   };
 }
 
-function reviewsSection(workspace: "administration" | "management") {
+const ORIGINAL_REVIEW_NAV = [
+  { href: "/reviews/learners", label: "Learners" },
+  { href: "/reviews/plan", label: "Plan" },
+  { href: "/reviews/out", label: "Out" },
+  { href: "/reviews/reviews", label: "Reviews" },
+  { href: "/reviews/archive", label: "Archive" },
+  { href: "/reviews/analytics", label: "Analytics" },
+  { href: "/reviews/settings", label: "Settings" },
+] as const;
+
+function reviewsSection() {
   return {
     title: "Reviews",
-    items: [
-      {
-        href: `/reviews?from=${workspace}`,
-        label: "Review queue",
-        permission: PERMISSIONS.REVIEWS_MANAGE,
-      },
-    ],
+    items: ORIGINAL_REVIEW_NAV.map((item) => ({
+      ...item,
+      permission: PERMISSIONS.REVIEWS_MANAGE,
+    })),
   };
 }
 
@@ -218,7 +225,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       staffSection("management"),
       marketingSection("management"),
       onboardingSection("management"),
-      reviewsSection("management"),
+      reviewsSection(),
     ]);
   }
 
@@ -238,7 +245,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       staffSection("administration"),
       marketingSection("administration"),
       onboardingSection("administration"),
-      reviewsSection("administration"),
+      reviewsSection(),
     ]);
   }
 

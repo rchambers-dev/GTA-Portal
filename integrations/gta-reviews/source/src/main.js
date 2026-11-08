@@ -3243,7 +3243,18 @@ function renderBlockedTutors() {
     .join("");
 }
 
+function portalReviewSlug() {
+  return location.pathname.replace(/\/$/, "").match(
+    /^\/reviews\/(learners|plan|out|reviews|archive|analytics|settings)$/,
+  )?.[1] || "";
+}
+
 function pageFromHash() {
+  const slug = portalReviewSlug();
+  if (slug === "learners" || slug === "settings") return "records";
+  if (slug === "plan" || slug === "out" || slug === "reviews" || slug === "archive" || slug === "analytics") {
+    return slug;
+  }
   if (location.hash === "#plan") return "plan";
   if (location.hash === "#out") return "out";
   if (location.hash === "#reviews") return "reviews";
@@ -3368,8 +3379,18 @@ function setPage(page, { skipHash = false } = {}) {
     button.classList.toggle("on", button.dataset.navPage === uiState.currentPage);
   });
   if (!skipHash) {
-    const hash = pageHash(uiState.currentPage);
-    if (location.hash !== hash) history.replaceState(null, "", hash);
+    if (portalReviewSlug()) {
+      const slug = portalReviewSlug() === "settings" && uiState.currentPage === "records"
+        ? "settings"
+        : uiState.currentPage === "records"
+          ? "learners"
+          : uiState.currentPage;
+      const next = `/reviews/${slug}`;
+      if (location.pathname.replace(/\/$/, "") !== next) globalThis.__PORTAL_REVIEW_NAVIGATE__?.(next);
+    } else {
+      const hash = pageHash(uiState.currentPage);
+      if (location.hash !== hash) history.replaceState(null, "", hash);
+    }
   }
   document.querySelector(".app-shell")?.classList.toggle("records-wide", uiState.currentPage !== "plan");
   document.querySelector(".app-shell")?.classList.toggle("plan-wide", uiState.currentPage === "plan");
@@ -4013,10 +4034,12 @@ async function prepareLoadedWorkspace() {
     const date = dateFromKey(viewKey);
     rememberSelectedDay({ day: weekdayName(date), dateKey: viewKey, date });
   }
-  if (tutorMode) uiState.currentPage = "reviews";
-  else if (officeMode) uiState.currentPage = "records";
-  else if (phoneOutMode()) uiState.currentPage = "out";
-  setPage(uiState.currentPage);
+  if (!portalReviewSlug()) {
+    if (tutorMode) uiState.currentPage = "reviews";
+    else if (officeMode) uiState.currentPage = "records";
+    else if (phoneOutMode()) uiState.currentPage = "out";
+  }
+  setPage(uiState.currentPage, { skipHash: Boolean(portalReviewSlug()) });
   if (location.hash === "#settings") {
     showSettingsTab("plan");
     openAccountSettings();
@@ -4042,7 +4065,12 @@ bootstrap({
   resetUiState,
   getState: () => state,
 });
-startAuthBoot();
+startAuthBoot().finally(() => {
+  globalThis.__PORTAL_SET_REVIEW_PAGE__ = setPage;
+  globalThis.__PORTAL_OPEN_REVIEW_SETTINGS__ = openAccountSettings;
+  globalThis.__PORTAL_CLOSE_REVIEW_SETTINGS__ = () => closeAccountSettings({ force: true });
+  window.dispatchEvent(new Event("review-assistant-ready"));
+});
 
 window.addEventListener("unhandledrejection", (event) => {
   console.error("Unhandled promise rejection:", event.reason);

@@ -120,12 +120,18 @@ function loadAppearance() {
   }
 }
 
+function portalReviewRoot() {
+  return document.querySelector(".gta-review-app");
+}
+
 export function applyAppearance(next = loadAppearance()) {
   const appearance = { ...defaultAppearance, ...next };
-  const root = document.documentElement;
-  root.dataset.text = appearance.text;
-  root.dataset.font = appearance.font;
-  root.dataset.theme = appearance.theme;
+  const roots = [document.documentElement, portalReviewRoot()].filter(Boolean);
+  for (const root of roots) {
+    root.dataset.text = appearance.text;
+    root.dataset.font = appearance.font;
+    root.dataset.theme = appearance.theme;
+  }
   localStorage.setItem(APPEARANCE_KEY, JSON.stringify(appearance));
   document.querySelectorAll("[data-appearance-text]").forEach((button) => {
     button.classList.toggle("on", button.dataset.appearanceText === appearance.text);
@@ -156,7 +162,9 @@ function phoneSettingsLayout() {
 }
 
 export function applyPhoneSettingsClass() {
-  document.documentElement.classList.toggle("phone-settings", phoneSettingsLayout());
+  const on = phoneSettingsLayout();
+  document.documentElement.classList.toggle("phone-settings", on);
+  portalReviewRoot()?.classList.toggle("phone-settings", on);
 }
 
 const SETTINGS_TITLES = {
@@ -350,6 +358,7 @@ export function openAccountSettings() {
   modal.hidden = false;
   document.querySelector("#account-settings")?.setAttribute("aria-expanded", "true");
   document.body.classList.add("settings-open");
+  portalReviewRoot()?.classList.add("settings-open");
   applyAppearance();
   if (passwordChangeNeeded()) showSettingsTab("account");
   else if (phoneSettingsLayout()) showSettingsHome();
@@ -367,6 +376,7 @@ export function closeAccountSettings({ force = false } = {}) {
   resetPasswordForm();
   const modal = document.querySelector("[data-settings-modal]");
   modal?.classList.remove("open");
+  portalReviewRoot()?.classList.remove("settings-open");
   document.querySelector("#account-settings")?.setAttribute("aria-expanded", "false");
   document.body.classList.remove("settings-open");
   setTimeout(() => {
@@ -403,6 +413,7 @@ export function applySignedInSession(session) {
   adminMode = !tutorMode && isAdminSession(signedInSession);
   officeMode = !tutorMode && !adminMode && isOfficeSession(signedInSession);
   document.body.classList.toggle("signed-out", !session);
+  portalReviewRoot()?.classList.toggle("signed-out", !session);
   applyTutorShell();
   syncSettingsHomeEmail();
   applyPasswordLock();

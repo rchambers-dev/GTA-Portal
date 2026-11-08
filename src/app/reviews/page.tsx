@@ -8,6 +8,6 @@ export default async function ReviewsQueuePage() {
   const session = await getStandalonePorts().auth.getEffectiveSession();
   if (!session) redirect(getUnauthenticatedRedirect("/reviews"));
   assertRouteAccess(session, "/reviews");
-  if (reviewAssistantAccess(session) !== "denied") redirect("/reviews/assistant");
+  if (reviewAssistantAccess(session) !== "denied") redirect("/reviews/learners");
   redirect("/staff/dashboard");
 }
