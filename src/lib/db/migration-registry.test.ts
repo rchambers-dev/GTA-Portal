@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { migrationDecision } from "../../../scripts/migration-registry.mjs";
 
 const appliedSha = "283720831f5fd05170212dd3b637eecf135498c176a20e48fd49ae01cf70654d";
+const portalSha = "ea74b46c607e7cb50d60f9e2ad0928fdeb44fe7f7291ba507afdea99af7bae87";
 
 describe("migration registry", () => {
   it("keeps the applied 035 identity and refuses a different 035", () => {
@@ -16,7 +17,16 @@ describe("migration registry", () => {
     expect(migrationDecision("035_review_assistant_store.sql", sha)).toMatchObject({ action: "skip" });
     expect(migrationDecision("035_review_assistant_store.sql", "different")).toMatchObject({ action: "refuse" });
     expect(migrationDecision("035_employer_directory.sql", "abc")).toMatchObject({ action: "refuse" });
-    expect(migrationDecision("036_review_assistant_portal.sql", "abc")).toMatchObject({ action: "skip" });
+    const portal = readFileSync(
+      path.join(process.cwd(), "supabase/migrations/036_review_assistant_portal.sql"),
+    );
+    expect(createHash("sha256").update(portal).digest("hex")).toBe(portalSha);
+    expect(migrationDecision("036_review_assistant_portal.sql", portalSha).reason).toContain(
+      "20261108004631_review_assistant_portal_integration_036",
+    );
+    expect(migrationDecision("036_review_assistant_portal.sql", portalSha)).toMatchObject({ action: "skip" });
+    expect(migrationDecision("036_review_assistant_portal.sql", "abc")).toMatchObject({ action: "refuse" });
+    expect(migrationDecision("036_other.sql", "abc")).toMatchObject({ action: "refuse" });
     expect(migrationDecision("035_review_assistant_store_rollback.sql", "abc")).toMatchObject({ action: "skip" });
     expect(migrationDecision("036_review_assistant_portal_rollback.sql", "abc")).toMatchObject({ action: "skip" });
     expect(migrationDecision("034_independent_teaching_groups.sql", "abc")).toMatchObject({ action: "apply" });
