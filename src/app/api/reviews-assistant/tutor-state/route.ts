@@ -60,7 +60,11 @@ export async function POST(request: Request) {
       const binding = await getReviewRepository().attachmentBinding(id);
       if (!binding) return false;
       const canonical = binding.portalApprenticeId || binding.learnerId;
-      return canonical === learnerId && allowed.has(canonical);
+      return (
+        binding.actorId === session.account.id &&
+        canonical === learnerId &&
+        allowed.has(canonical)
+      );
     });
   } catch (error) {
     const status = (error as { status?: number }).status || 400;

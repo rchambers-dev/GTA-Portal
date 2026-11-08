@@ -143,7 +143,7 @@ export function closePdfPreview() {
 
 async function renderPdfPages(blob, container) {
   const data = await blob.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data }).promise;
+  const pdf = await pdfjsLib.getDocument({ data, wasmUrl: "/pdfjs-wasm/" }).promise;
   container.innerHTML = "";
   const width = Math.max(container.clientWidth - 24, 320);
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {

@@ -42,10 +42,11 @@ afterEach(() => {
   complete.mockReset();
 });
 
-describe("review reword opt-in", () => {
-  it("stays off when a generic AI key is present", async () => {
+describe("review reword stays off", () => {
+  it("does not call a model or the rate function when a generic key or the opt-in flag is set", async () => {
     process.env.AI_API_KEY = "present-but-not-for-reviews";
     process.env.OPENAI_API_KEY = "present-but-not-for-reviews";
+    process.env.REVIEW_ASSISTANT_AI = "on";
     getEffectiveSession.mockResolvedValue(tutor);
     const { POST } = await import("@/app/api/reviews-assistant/tutor-reword/route");
     const response = await POST(
@@ -55,31 +56,10 @@ describe("review reword opt-in", () => {
       }),
     );
     expect(response.status).toBe(503);
+    const body = (await response.json()) as { error: string };
+    expect(body.error).toMatch(/disabled/);
+    expect(body.error).toMatch(/two hours/);
     expect(rpc).not.toHaveBeenCalled();
-    expect(complete).not.toHaveBeenCalled();
-  });
-
-  it("asks the applied rate limit before any model call and denies when the cap is hit", async () => {
-    process.env.REVIEW_ASSISTANT_AI = "on";
-    process.env.AI_API_KEY = "present-but-not-for-reviews";
-    getEffectiveSession.mockResolvedValue(tutor);
-    rpc.mockResolvedValue({ data: false, error: null });
-    const { POST } = await import("@/app/api/reviews-assistant/tutor-reword/route");
-    const response = await POST(
-      new Request("http://localhost/api/reviews-assistant/tutor-reword", {
-        method: "POST",
-        body: JSON.stringify({ text: "Met the target." }),
-      }),
-    );
-    expect(response.status).toBe(429);
-    expect(rpc).toHaveBeenCalledWith(
-      "rate_limit_hit",
-      expect.objectContaining({
-        actor_id: tutor.account.id,
-        bucket_key: "review-reword-day",
-        max_hits: 100,
-      }),
-    );
     expect(complete).not.toHaveBeenCalled();
   });
 });

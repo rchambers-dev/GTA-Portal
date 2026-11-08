@@ -172,8 +172,18 @@ const fileReviewRepository: ReviewRepository = {
   async readDocument() {
     return readReviewState();
   },
-  async saveDocument(next, expectedVersion) {
-    return saveReviewState(next, expectedVersion);
+  async saveDocument(next, expectedVersion): Promise<DocumentSave> {
+    const result = saveReviewState(next, expectedVersion);
+    if (result.status !== 200) return { status: 409, body: result.body };
+    return {
+      status: 200,
+      body: {
+        ok: true,
+        unchanged: "unchanged" in result.body ? result.body.unchanged : undefined,
+        version: Number(result.body.version) || expectedVersion,
+        savedAt: String(result.body.savedAt || ""),
+      },
+    };
   },
   async documentHistory() {
     return [];

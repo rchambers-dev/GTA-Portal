@@ -67,6 +67,7 @@ const types = {
   ".mjs": "text/javascript",
   ".svg": "image/svg+xml",
   ".png": "image/png",
+  ".wasm": "application/wasm",
 };
 
 function fileFor(urlPath) {
@@ -76,6 +77,15 @@ function fileFor(urlPath) {
     clean.replace(/^\/forms\//, "forms/"),
     clean.replace(/^\//, ""),
   ];
+  if (clean.startsWith("/pdfjs-wasm/")) {
+    const name = path.basename(clean);
+    const asset = path.join(root, "integrations/gta-reviews/node_modules/pdfjs-dist/wasm", name);
+    try {
+      return { full: asset, body: readFileSync(asset) };
+    } catch {
+      return null;
+    }
+  }
   if (clean === "/pdf.worker.min.mjs") {
     const worker = path.join(root, "integrations/gta-reviews/node_modules/pdfjs-dist/build/pdf.worker.min.mjs");
     try {

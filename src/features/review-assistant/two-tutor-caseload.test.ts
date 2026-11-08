@@ -175,4 +175,51 @@ describe("two tutors on one review document", () => {
     );
     expect(hidden.status).toBe(403);
   });
+
+  it("refuses to link another tutor's upload even when both hold the same apprentice", async () => {
+    loadReviewApprentices.mockImplementation(async (session: { account: { id: string } }) => {
+      if (session.account.id === tutorAId || session.account.id === tutorBId) {
+        return [{ id: apprenticeA, name: "Apprentice A" }];
+      }
+      return [];
+    });
+    const attachmentRoute = await import("@/app/api/reviews-assistant/review-attachment/route");
+    const tutorRoute = await import("@/app/api/reviews-assistant/tutor-state/route");
+    getEffectiveSession.mockResolvedValue(tutor(tutorAId, "Same Display Name"));
+    const uploaded = await attachmentRoute.POST(
+      new Request(`http://localhost/api/reviews-assistant/review-attachment?learner=${apprenticeA}&name=note.pdf`, {
+        method: "POST",
+        headers: { "content-type": "application/pdf" },
+        body: Buffer.from("%PDF-1.4"),
+      }),
+    );
+    expect(uploaded.status).toBe(200);
+    const { attachment } = (await uploaded.json()) as { attachment: { id: string } };
+    const visible = await tutorRoute.GET();
+    const version = ((await visible.json()) as { state: { version: number } }).state.version;
+    getEffectiveSession.mockResolvedValue(tutor(tutorBId, "Same Display Name"));
+    const linked = await tutorRoute.POST(
+      new Request("http://localhost/api/reviews-assistant/tutor-state", {
+        method: "POST",
+        body: JSON.stringify({
+          appBuild: "out-165",
+          version,
+          savedReviews: [{ id: "review-a", returnedAttachment: { id: attachment.id } }],
+        }),
+      }),
+    );
+    expect(linked.status).toBe(403);
+    getEffectiveSession.mockResolvedValue(tutor(tutorAId, "Same Display Name"));
+    const own = await tutorRoute.POST(
+      new Request("http://localhost/api/reviews-assistant/tutor-state", {
+        method: "POST",
+        body: JSON.stringify({
+          appBuild: "out-165",
+          version,
+          savedReviews: [{ id: "review-a", returnedAttachment: { id: attachment.id } }],
+        }),
+      }),
+    );
+    expect(own.status).toBe(200);
+  });
 });

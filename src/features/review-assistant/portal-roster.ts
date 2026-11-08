@@ -48,6 +48,17 @@ export async function loadReviewStaff(session: EffectiveSession): Promise<Review
   }
 }
 
+/** An assignment counts only while it is active and its end date has not passed. */
+export function assignmentGrantsCaseload(
+  row: { active?: boolean | null; ended_at?: string | null },
+  now = new Date(),
+) {
+  if (row.active !== true) return false;
+  if (row.ended_at == null || row.ended_at === "") return true;
+  const ended = new Date(row.ended_at);
+  return !Number.isNaN(ended.getTime()) && ended.getTime() > now.getTime();
+}
+
 export async function loadReviewApprentices(session: EffectiveSession): Promise<ReviewDirectoryPerson[]> {
   const access = reviewAssistantAccess(session);
   if (access === "denied") return [];
@@ -66,12 +77,15 @@ export async function loadReviewApprentices(session: EffectiveSession): Promise<
     }
     const assignments = await supabase
       .from("staff_assignments")
-      .select("learner_programme_id")
+      .select("apprentice_programme_id, active, ended_at")
       .eq("profile_id", session.account.id)
-      .eq("role", "tutor")
-      .eq("active", true);
+      .eq("role", "tutor");
     if (assignments.error || !assignments.data?.length) return [];
-    const programmeIds = assignments.data.map((row) => row.learner_programme_id).filter(Boolean);
+    const now = new Date();
+    const programmeIds = assignments.data
+      .filter((row) => assignmentGrantsCaseload(row, now))
+      .map((row) => row.apprentice_programme_id)
+      .filter(Boolean);
     const programmes = await supabase
       .from("apprentice_programmes")
       .select("apprentice_id")
