@@ -1,5 +1,8 @@
 -- MANUAL ONLY. scripts/run-migration.mjs will not run this file.
--- Quiesce Portal writers before starting. The locks below last for this transaction only.
+-- Quiesce Portal writers before starting. This file does not lock storage.objects or storage.buckets.
+-- A table lock there would block every bucket and can fail when postgres is not the storage owner.
+-- Only the Portal tables this script drops are locked. Reviews object rows are locked only when
+-- this role already has UPDATE on storage.objects.
 -- Refuses when attachment rows, page-access config, or Reviews bucket objects exist.
 -- Deletes a bucket only when this migration created it and it is empty.
 -- Does not drop the applied 035 structure. History is not a backup.
@@ -15,11 +18,12 @@ BEGIN
   IF to_regclass('public.staff_page_access') IS NOT NULL THEN
     LOCK TABLE public.staff_page_access IN ACCESS EXCLUSIVE MODE;
   END IF;
-  IF to_regclass('storage.objects') IS NOT NULL THEN
-    LOCK TABLE storage.objects IN ACCESS EXCLUSIVE MODE;
-  END IF;
-  IF to_regclass('storage.buckets') IS NOT NULL THEN
-    LOCK TABLE storage.buckets IN ACCESS EXCLUSIVE MODE;
+  IF to_regclass('storage.objects') IS NOT NULL
+     AND has_table_privilege(current_user, 'storage.objects', 'UPDATE') THEN
+    PERFORM 1
+    FROM storage.objects
+    WHERE bucket_id IN ('review-app', 'review-attachments')
+    FOR UPDATE;
   END IF;
 END;
 $lock$;

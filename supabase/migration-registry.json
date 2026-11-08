@@ -22,5 +22,6 @@
   ],
   "ownedNumbers": {
     "035": "035_review_assistant_store.sql"
-  }
+  },
+  "applyPathLimit": "scripts/run-migration.mjs is the only tool that reads this registry. The hosted SQL editor, the Supabase dashboard migration runner, and the Supabase MCP apply_migration tool do not. PR #1 remains held and its own 035 must not be applied through any of those paths."
 }

@@ -9,6 +9,10 @@ const registry = JSON.parse(
  * Applied identities are skipped only when the bytes still match.
  * A different file that reuses an owned number is refused.
  * Held files and rollbacks are never sent.
+ *
+ * This file is not consulted by the Supabase dashboard, the hosted SQL editor,
+ * or the Supabase MCP apply_migration tool. Those paths can still apply a
+ * different file numbered 035, including the held PR #1 migration.
  */
 export function migrationDecision(filename, sha256) {
   if (registry.neverAutoApply.includes(filename) || filename.includes("rollback")) {

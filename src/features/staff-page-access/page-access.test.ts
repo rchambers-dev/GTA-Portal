@@ -311,6 +311,15 @@ describe("staff page access", () => {
       [],
     );
     expect((await pageGrantsFromStore(learner.account)).configured).toBe(false);
+    process.env.STAFF_PAGE_ACCESS_STORE = "postgres";
+    process.env.REVIEW_DATABASE_URL = "postgres://127.0.0.1/not-used";
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://example.supabase.co";
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "local-test-key";
+    expect(await pageGrantsFromStore(admin.account)).toEqual({
+      configured: true,
+      readable: [],
+      editable: [],
+    });
     delete process.env.VERCEL;
     delete process.env.STAFF_PAGE_ACCESS_STORE;
     if (previousDatabase) process.env.REVIEW_DATABASE_URL = previousDatabase;
