@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { getReviewRepository } from "@/features/review-assistant/repository";
-import { requireReviewActor, reviewPageDenied, tutorNameKey } from "@/features/review-assistant/source-runtime";
+import { requireReviewActor, reviewPageDenied } from "@/features/review-assistant/source-runtime";
 import { learnerAssignedToTutor, tutorMayReadAttachment } from "@/features/review-assistant/tutor-caseload";
+import { loadReviewApprentices } from "@/features/review-assistant/portal-roster";
 
 export const runtime = "nodejs";
 
@@ -24,20 +25,18 @@ export async function GET(request: Request) {
   if (denied) return denied;
   const repo = getReviewRepository();
   const binding = await repo.attachmentBinding(id);
+  const allowedIds = new Set((await loadReviewApprentices(actor.session)).map((item) => item.id));
   if (actor.access === "tutor") {
-    const keyOf = await tutorNameKey();
-    const allowed = tutorMayReadAttachment(
-      await repo.readDocument(),
-      keyOf(actor.session.account.name),
-      id,
-      keyOf,
-      binding,
-    );
-    if (!allowed) {
+    if (!tutorMayReadAttachment(allowedIds, binding)) {
       return NextResponse.json(
         { error: "Access denied. You can only access attachments for learners assigned to you." },
         { status: 403 },
       );
+    }
+  } else if (actor.access === "office") {
+    const canonical = binding?.portalApprenticeId || binding?.learnerId || "";
+    if (!canonical || !allowedIds.has(canonical)) {
+      return NextResponse.json({ error: "Choose a Portal apprentice. This screen does not create one." }, { status: 403 });
     }
   }
   try {
@@ -68,20 +67,17 @@ export async function POST(request: Request) {
   if (!learnerId) {
     return NextResponse.json({ error: "Attachment must be bound to a learner." }, { status: 400 });
   }
-  if (actor.access === "tutor") {
-    const keyOf = await tutorNameKey();
-    const allowed = learnerAssignedToTutor(
-      await getReviewRepository().readDocument(),
-      keyOf(actor.session.account.name),
-      learnerId,
-      keyOf,
+  const allowedIds = new Set((await loadReviewApprentices(actor.session)).map((item) => item.id));
+  if (!learnerAssignedToTutor(allowedIds, learnerId)) {
+    return NextResponse.json(
+      {
+        error:
+          actor.access === "tutor"
+            ? "Access denied. You can only upload reviews for learners assigned to you."
+            : "Choose a Portal apprentice. This screen does not create one.",
+      },
+      { status: actor.access === "tutor" ? 403 : 400 },
     );
-    if (!allowed) {
-      return NextResponse.json(
-        { error: "Access denied. You can only upload reviews for learners assigned to you." },
-        { status: 403 },
-      );
-    }
   }
   try {
     const filename = String(url.searchParams.get("name") || request.headers.get("x-filename") || "review.pdf");
@@ -93,6 +89,7 @@ export async function POST(request: Request) {
       bytes,
       actorId: actor.session.account.id,
       learnerId,
+      portalApprenticeId: learnerId,
     });
     return NextResponse.json({ attachment });
   } catch (error) {

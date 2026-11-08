@@ -10,7 +10,7 @@ import {
   ReviewStoreNotConfigured,
 } from "@/features/review-assistant/repository";
 import type { ReviewState } from "@/features/review-assistant/state-store";
-import { reviewLearnerIdError } from "@/features/review-assistant/portal-roster";
+import { learnerIdsOutside, loadReviewApprentices } from "@/features/review-assistant/portal-roster";
 import { versionOf } from "@/features/review-assistant/version-rules";
 
 export const runtime = "nodejs";
@@ -51,7 +51,10 @@ export async function POST(request: Request) {
   const outdated = await rejectOutdatedBuild(body.appBuild);
   if (outdated) return outdated;
   delete body.appBuild;
-  const learnerError = await reviewLearnerIdError(session, body);
+  const learnerError = learnerIdsOutside(
+    (await loadReviewApprentices(session)).map((item) => item.id),
+    body,
+  );
   if (learnerError) return NextResponse.json({ error: learnerError }, { status: 400 });
   try {
     const repo = getReviewRepository();

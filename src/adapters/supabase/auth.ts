@@ -3,7 +3,7 @@ import type { User } from "@supabase/supabase-js";
 import type { SessionUser } from "@/features/apprentice-lifecycle/types";
 import type { EffectiveSession, PortalAccount, WorkspaceId } from "@/lib/portal/types";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
-import { pageGrantsFromStore } from "@/features/staff-page-access/enforce";
+import { pageGrantsFromStore } from "@/features/staff-page-access/grants-from-store";
 import { createSupabaseServerClient } from "./client";
 
 type ProfileRow = {

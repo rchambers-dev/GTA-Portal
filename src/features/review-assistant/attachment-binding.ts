@@ -9,7 +9,7 @@ export type PreparedAttachment = {
   type: string;
   reviewLearnerId: string;
   actorId: string;
-  portalApprenticeId: null;
+  portalApprenticeId: string | null;
   bytes: Buffer;
 };
 
@@ -37,6 +37,7 @@ export function prepareReviewAttachment(input: {
   bytes: Buffer;
   actorId: string;
   learnerId: string;
+  portalApprenticeId?: string | null;
 }): PreparedAttachment {
   const trimmed = String(input.filename || "").trim();
   if (!trimmed || trimmed.length > 255) reject("Filename too long (max 255 characters).");
@@ -45,6 +46,10 @@ export function prepareReviewAttachment(input: {
   if (!ALLOWED_TYPES.has(type)) reject("Attach a PDF or image of the review.");
   if (!input.actorId?.trim()) reject("Attachment must be bound to a learner.");
   const reviewLearnerId = exactReviewLearnerId(input.learnerId);
+  const portalApprenticeId =
+    input.portalApprenticeId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(input.portalApprenticeId)
+      ? input.portalApprenticeId
+      : null;
   if (!input.bytes?.length) reject("That file was empty.");
   if (input.bytes.length > 20 * 1024 * 1024) reject("That file is too large to attach.");
   const extension = type === "application/pdf" ? ".pdf" : type === "image/png" ? ".png" : type === "image/webp" ? ".webp" : ".jpg";
@@ -55,7 +60,7 @@ export function prepareReviewAttachment(input: {
     type,
     reviewLearnerId,
     actorId: input.actorId,
-    portalApprenticeId: null,
+    portalApprenticeId,
     bytes: input.bytes,
   };
 }

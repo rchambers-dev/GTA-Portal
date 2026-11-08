@@ -32,6 +32,7 @@ export type StoredAttachment = {
   type: string;
   actorId: string;
   learnerId: string;
+  portalApprenticeId?: string | null;
   bytes?: Buffer;
 };
 
@@ -57,9 +58,10 @@ export interface ReviewRepository {
     bytes: Buffer;
     actorId: string;
     learnerId: string;
+    portalApprenticeId?: string | null;
   }): Promise<StoredAttachment>;
   readAttachment(id: string): Promise<StoredAttachment>;
-  attachmentBinding(id: string): Promise<{ actorId: string; learnerId: string } | null>;
+  attachmentBinding(id: string): Promise<{ actorId: string; learnerId: string; portalApprenticeId: string | null } | null>;
 }
 
 const memoryDocuments = new Map<string, { current: ReviewState; history: HistoryEntry[] }>();
@@ -151,7 +153,11 @@ export const memoryReviewRepository: ReviewRepository = {
   async attachmentBinding(id) {
     const found = memoryAttachments.get(id);
     if (!found) return null;
-    return { actorId: found.actorId, learnerId: found.learnerId };
+    return {
+      actorId: found.actorId,
+      learnerId: found.learnerId,
+      portalApprenticeId: found.portalApprenticeId ?? null,
+    };
   },
 };
 
@@ -185,7 +191,11 @@ const fileReviewRepository: ReviewRepository = {
   async attachmentBinding(id) {
     const binding = readAttachmentBinding(id);
     if (!binding) return null;
-    return { actorId: binding.actorId, learnerId: binding.learnerId };
+    return {
+      actorId: binding.actorId,
+      learnerId: binding.learnerId,
+      portalApprenticeId: binding.portalApprenticeId ?? null,
+    };
   },
 };
 
@@ -324,11 +334,15 @@ export const supabaseReviewRepository: ReviewRepository = {
     const client = supabaseAdmin();
     const { data, error } = await client
       .from("review_assistant_attachments")
-      .select("actor_id, review_learner_id")
+      .select("actor_id, review_learner_id, portal_apprentice_id")
       .eq("id", id)
       .maybeSingle();
     if (error || !data?.actor_id || !data.review_learner_id) return null;
-    return { actorId: String(data.actor_id), learnerId: String(data.review_learner_id) };
+    return {
+      actorId: String(data.actor_id),
+      learnerId: String(data.review_learner_id),
+      portalApprenticeId: data.portal_apprentice_id ? String(data.portal_apprentice_id) : null,
+    };
   },
 };
 
@@ -428,12 +442,16 @@ export const postgresReviewRepository: ReviewRepository = {
   async attachmentBinding(id) {
     return withReviewPostgres(async (db) => {
       const result = await db.query(
-        "select actor_id, review_learner_id from public.review_assistant_attachments where id = $1",
+        "select actor_id, review_learner_id, portal_apprentice_id from public.review_assistant_attachments where id = $1",
         [id],
       );
       const row = result.rows[0];
       if (!row?.actor_id || !row.review_learner_id) return null;
-      return { actorId: String(row.actor_id), learnerId: String(row.review_learner_id) };
+      return {
+        actorId: String(row.actor_id),
+        learnerId: String(row.review_learner_id),
+        portalApprenticeId: row.portal_apprentice_id ? String(row.portal_apprentice_id) : null,
+      };
     });
   },
 };

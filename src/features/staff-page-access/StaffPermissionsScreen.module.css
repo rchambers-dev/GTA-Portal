@@ -49,9 +49,43 @@
 
 .pageRow {
   display: grid;
-  grid-template-columns: minmax(12rem, 1.4fr) auto auto minmax(8rem, 1fr);
-  gap: var(--space-2);
+  grid-template-columns: minmax(14rem, 1.6fr) 7rem 7rem minmax(10rem, 1fr);
+  gap: var(--space-3);
   align-items: center;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-subtle, var(--line, #d7d1c7));
+}
+
+.pageLabel {
+  font-weight: 650;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.permission {
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+
+.primaryBtn {
+  appearance: none;
+  border: 1.5px solid var(--color-navy-700);
+  border-radius: var(--radius-md);
+  background: var(--color-navy-700);
+  color: var(--color-white);
+  font-weight: 700;
+  padding: 0.65rem 1.05rem;
+  cursor: pointer;
+}
+
+.primaryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .note {

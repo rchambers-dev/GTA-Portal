@@ -10,12 +10,20 @@ import { readReviewState, saveReviewState } from "./state-store";
 import { filterStateForTutor, mergeTutorReviewUpdates } from "./tutor-caseload";
 
 const getEffectiveSession = vi.fn();
+const { loadReviewApprentices } = vi.hoisted(() => ({ loadReviewApprentices: vi.fn() }));
 
 vi.mock("@/adapters/standalone", () => ({
   getStandalonePorts: () => ({
     auth: { getEffectiveSession: () => getEffectiveSession() },
   }),
 }));
+
+vi.mock("@/features/review-assistant/portal-roster", async () => {
+  const actual = await vi.importActual<typeof import("@/features/review-assistant/portal-roster")>(
+    "@/features/review-assistant/portal-roster",
+  );
+  return { ...actual, loadReviewApprentices };
+});
 
 function account(input: {
   name: string;
@@ -73,6 +81,17 @@ beforeEach(() => {
   process.env.REVIEW_ASSISTANT_STATE_FILE = path.join(dir, "state.json");
   process.env.REVIEW_ASSISTANT_ATTACHMENTS_DIR = path.join(dir, "attachments");
   getEffectiveSession.mockReset();
+  loadReviewApprentices.mockImplementation(async (session: { account: { name: string; workspace: string } }) => {
+    if (session.account.name === "Example Colleague") return [{ id: "other", name: "Other Learner" }];
+    if (session.account.workspace === "administration") {
+      return [
+        { id: "example-1", name: "Example Learner" },
+        { id: "mine", name: "Example Learner" },
+        { id: "other", name: "Other Learner" },
+      ];
+    }
+    return [{ id: "mine", name: "Example Learner" }];
+  });
 });
 
 afterEach(() => {
@@ -131,8 +150,7 @@ describe("review assistant server copy", () => {
       },
       1,
     );
-    const keyOf = (value: string) => value.trim().toLowerCase();
-    const visible = filterStateForTutor(readReviewState(), "example tutor", keyOf);
+    const visible = filterStateForTutor(readReviewState(), new Set(["mine"]));
     expect(visible.learners?.map((learner) => learner.id)).toEqual(["mine"]);
     expect(visible.savedReviews?.map((review) => review.id)).toEqual(["review-mine"]);
     expect(visible.settings).toMatchObject({ email: "", officePostcode: "" });
@@ -146,8 +164,7 @@ describe("review assistant server copy", () => {
           { id: "review-other", learnerId: "other", status: "completed", tutorNotes: "nope" },
         ],
       },
-      "example tutor",
-      keyOf,
+      new Set(["mine"]),
     );
     expect(merged.savedReviews?.find((review) => review.id === "review-mine")).toMatchObject({
       status: "returned",
@@ -230,8 +247,7 @@ describe("review assistant server copy", () => {
       mergeTutorReviewUpdates(
         readReviewState(),
         { savedReviews: [{ id: "review-mine", returnedAttachment: { id: foreign.id } }] },
-        "example tutor",
-        (value) => value.trim().toLowerCase(),
+        new Set(["mine"]),
         (id, learnerId) => id === saved.id && learnerId === "mine",
       ),
     ).rejects.toThrow(/not bound/);

@@ -12,7 +12,7 @@ import { emptyPageAccessConfig, effectivePages } from "./model";
 import { readPageAccessConfig, writePageAccessConfig } from "./store";
 import { writeFileSync } from "node:fs";
 import { includeStaffDirectory } from "@/app/api/admin/store/record-access";
-import { pageGrantsFromStore } from "./enforce";
+import { pageGrantsFromStore } from "./grants-from-store";
 
 function account(input: {
   id?: string;

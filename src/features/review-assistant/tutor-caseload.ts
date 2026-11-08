@@ -16,23 +16,21 @@ export const TUTOR_WRITABLE_REVIEW_FIELDS = [
   "tutorSignedAt",
 ] as const;
 
-type KeyOf = (value: string) => string;
-
-function learnersFor(state: ReviewState, tutorKey: string, keyOf: KeyOf) {
-  return (state.learners || []).filter((learner) => keyOf(String(learner.tutor || "")) === tutorKey);
+function allowedLearner(id: unknown, allowedIds: ReadonlySet<string>) {
+  return allowedIds.has(String(id || ""));
 }
 
-export function filterStateForTutor(state: ReviewState, tutorKey: string, keyOf: KeyOf): ReviewState {
-  const learners = learnersFor(state, tutorKey, keyOf);
+/** Visibility follows canonical apprentice ids. The tutor name on a row is not permission. */
+export function filterStateForTutor(state: ReviewState, allowedIds: ReadonlySet<string>): ReviewState {
+  const learners = (state.learners || []).filter((learner) => allowedLearner(learner.id, allowedIds));
   const learnerIds = new Set(learners.map((learner) => learner.id).filter(Boolean));
-  const sameTutor = (learner: Record<string, unknown>) =>
-    keyOf(String(learner.tutor || "")) === tutorKey;
+  const sameCaseload = (learner: Record<string, unknown>) => allowedLearner(learner.id, allowedIds);
   return {
     ...state,
     learners,
     savedReviews: (state.savedReviews || []).filter((review) => learnerIds.has(review.learnerId)),
-    followUps: (state.followUps || []).filter(sameTutor),
-    archive: (state.archive || []).filter(sameTutor),
+    followUps: (state.followUps || []).filter(sameCaseload),
+    archive: (state.archive || []).filter(sameCaseload),
     analyticsEvents: (state.analyticsEvents || []).filter((event) =>
       learnerIds.has(event.learnerId),
     ),
@@ -59,30 +57,18 @@ export function filterStateForTutor(state: ReviewState, tutorKey: string, keyOf:
   };
 }
 
-function learnerIdsForTutor(state: ReviewState, tutorKey: string, keyOf: KeyOf) {
-  const ids = new Set<unknown>();
-  for (const list of [state.learners, state.followUps, state.archive]) {
-    for (const learner of list || []) {
-      if (learner?.id && keyOf(String(learner.tutor || "")) === tutorKey) ids.add(learner.id);
-    }
-  }
-  return ids;
-}
-
 export async function mergeTutorReviewUpdates(
   fullState: ReviewState,
   updates: ReviewState,
-  tutorKey: string,
-  keyOf: KeyOf,
+  allowedIds: ReadonlySet<string>,
   allowAttachment: (id: string, learnerId: string) => boolean | Promise<boolean> = () => false,
 ) {
-  const learnerIds = learnerIdsForTutor(fullState, tutorKey, keyOf);
   if (!updates.savedReviews) return fullState;
   const reviewsById = new Map((fullState.savedReviews || []).map((review) => [review.id, review]));
   for (const update of updates.savedReviews) {
     if (!update.id) continue;
     const existing = reviewsById.get(update.id);
-    if (!existing || !learnerIds.has(existing.learnerId)) continue;
+    if (!existing || !allowedIds.has(String(existing.learnerId || ""))) continue;
     const validated: Record<string, unknown> = {};
     for (const field of TUTOR_WRITABLE_REVIEW_FIELDS) {
       if (field in update) validated[field] = update[field];
@@ -103,19 +89,57 @@ export async function mergeTutorReviewUpdates(
   return { ...fullState, savedReviews: Array.from(reviewsById.values()) };
 }
 
-export function learnerAssignedToTutor(
-  state: ReviewState,
-  tutorKey: string,
-  learnerId: string,
-  keyOf: KeyOf,
+export function learnerAssignedToTutor(allowedIds: ReadonlySet<string>, learnerId: string) {
+  return Boolean(learnerId) && allowedIds.has(learnerId);
+}
+
+function sameJson(left: unknown, right: unknown) {
+  return JSON.stringify(left ?? null) === JSON.stringify(right ?? null);
+}
+
+/**
+ * A tutor save may change reviews for their canonical apprentices only.
+ * Every other learner and review in the shared document must stay as stored.
+ */
+export function tutorScopeError(
+  before: ReviewState,
+  after: ReviewState,
+  allowedIds: ReadonlySet<string>,
 ) {
-  if (!tutorKey || !learnerId) return false;
-  for (const list of [state.learners, state.followUps, state.archive]) {
-    const learner = (list || []).find((item) => item?.id === learnerId);
-    if (!learner) continue;
-    return keyOf(String(learner.tutor || "")) === tutorKey;
+  for (const listName of ["learners", "followUps", "archive"] as const) {
+    const previous = before[listName] || [];
+    const next = after[listName] || [];
+    for (const item of previous) {
+      if (allowedIds.has(String(item?.id || ""))) continue;
+      const found = next.find((candidate) => candidate?.id === item?.id);
+      if (!sameJson(found, item)) return "You can only update reviews for your assigned apprentices.";
+    }
+    for (const item of next) {
+      if (allowedIds.has(String(item?.id || ""))) continue;
+      if (!previous.some((candidate) => candidate?.id === item?.id)) {
+        return "Choose a Portal apprentice. This screen does not create one.";
+      }
+    }
   }
-  return false;
+  const previousReviews = new Map((before.savedReviews || []).map((review) => [review.id, review]));
+  for (const review of after.savedReviews || []) {
+    const prior = previousReviews.get(review.id);
+    if (!prior) {
+      if (!allowedIds.has(String(review.learnerId || ""))) {
+        return "Choose a Portal apprentice. This screen does not create one.";
+      }
+      continue;
+    }
+    if (!sameJson(prior, review) && !allowedIds.has(String(prior.learnerId || ""))) {
+      return "You can only update reviews for your assigned apprentices.";
+    }
+  }
+  for (const review of before.savedReviews || []) {
+    if (allowedIds.has(String(review.learnerId || ""))) continue;
+    const next = (after.savedReviews || []).find((item) => item.id === review.id);
+    if (!sameJson(next, review)) return "You can only update reviews for your assigned apprentices.";
+  }
+  return null;
 }
 
 const ATTACHMENT_FIELDS = ["attachment", "previousAttachment", "returnedAttachment"] as const;
@@ -130,15 +154,14 @@ export function reviewsReferencingAttachment(state: ReviewState, attachmentId: s
 }
 
 export function tutorMayReadAttachment(
-  state: ReviewState,
-  tutorKey: string,
-  attachmentId: string,
-  keyOf: KeyOf,
-  binding: { learnerId?: string; actorId?: string } | null,
+  allowedIds: ReadonlySet<string>,
+  binding: { learnerId?: string; portalApprenticeId?: string | null } | null,
 ) {
-  if (!binding?.learnerId) return false;
-  if (!learnerAssignedToTutor(state, tutorKey, binding.learnerId, keyOf)) return false;
-  return reviewsReferencingAttachment(state, attachmentId).every(
-    (review) => review.learnerId === binding.learnerId,
+  if (!binding?.learnerId && !binding?.portalApprenticeId) return false;
+  const canonical = String(binding.portalApprenticeId || "");
+  const reviewLearnerId = String(binding.learnerId || "");
+  return (
+    (canonical && allowedIds.has(canonical)) ||
+    (reviewLearnerId && allowedIds.has(reviewLearnerId))
   );
 }

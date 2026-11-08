@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { useRouter } from "next/navigation";
 import type { WorkspaceId } from "@/lib/portal/types";
 import styles from "./StaffPermissionsScreen.module.css";
@@ -54,8 +54,11 @@ export function StaffPermissionsScreen() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [bundleName, setBundleName] = useState("");
+  const [bundleId, setBundleId] = useState("");
   const [selectedStaff, setSelectedStaff] = useState<string[]>([]);
+  const [bundleDraft, setBundleDraft] = useState<Record<string, "read" | "edit" | "none">>({});
   const [directStaff, setDirectStaff] = useState("");
+  const [directDraft, setDirectDraft] = useState<Record<string, "read" | "edit" | "none">>({});
   const [effectiveStaff, setEffectiveStaff] = useState("");
   const [confirmWiden, setConfirmWiden] = useState(false);
   const router = useRouter();
@@ -95,6 +98,16 @@ export function StaffPermissionsScreen() {
     setDraft(next);
   }, [pages, savedDefault]);
 
+  useEffect(() => {
+    if (!data) return;
+    const grants = data.config.direct.find((item) => item.staffId === directStaff)?.grants ?? [];
+    const next: Record<string, "read" | "edit" | "none"> = {};
+    for (const page of data.pages) {
+      next[page.id] = grants.find((item) => item.pageId === page.id)?.level ?? "none";
+    }
+    setDirectDraft(next);
+  }, [data, directStaff]);
+
   async function run(action: () => Promise<void>, success: string) {
     setError("");
     setMessage("");
@@ -122,6 +135,69 @@ export function StaffPermissionsScreen() {
   if (!data) return <p className={styles.description}>Loading page access.</p>;
 
   const effective = data.effective.find((item) => item.staffId === effectiveStaff);
+  const directPerson = data.directory.find((person) => person.id === directStaff);
+  const directPages = data.pages.filter((page) =>
+    directPerson ? page.workspaces.includes(directPerson.workspace) : false,
+  );
+
+  function setLevel(
+    setter: Dispatch<SetStateAction<Record<string, "read" | "edit" | "none">>>,
+    pageId: string,
+    level: "read" | "edit" | "none",
+  ) {
+    setter((current) => ({ ...current, [pageId]: level }));
+  }
+
+  function matrix(
+    label: string,
+    sourcePages: PageInfo[],
+    source: Record<string, "read" | "edit" | "none">,
+    setter: Dispatch<SetStateAction<Record<string, "read" | "edit" | "none">>>,
+  ) {
+    return (
+      <div className={styles.list} role="group" aria-label={label}>
+        {sourcePages.map((page) => (
+          <div className={styles.pageRow} key={`${label}-${page.id}`}>
+            <span className={styles.pageLabel}>
+              {page.label}
+              {page.sensitivity ? ` · ${page.sensitivity}` : ""}
+            </span>
+            <label className={styles.check}>
+              <input
+                type="checkbox"
+                aria-label={`${page.label} Read`}
+                checked={source[page.id] === "read" || source[page.id] === "edit"}
+                onChange={(event) =>
+                  setLevel(setter, page.id, event.target.checked ? "read" : "none")
+                }
+              />
+              <span>Read</span>
+            </label>
+            {page.editable ? (
+              <label className={styles.check}>
+                <input
+                  type="checkbox"
+                  aria-label={`${page.label} Edit`}
+                  checked={source[page.id] === "edit"}
+                  onChange={(event) =>
+                    setLevel(
+                      setter,
+                      page.id,
+                      event.target.checked ? "edit" : source[page.id] === "edit" ? "read" : source[page.id] || "none",
+                    )
+                  }
+                />
+                <span>Edit</span>
+              </label>
+            ) : (
+              <span className={styles.note}>No edit</span>
+            )}
+            <span className={styles.permission}>{page.requiredPermission}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className={styles.root}>
@@ -154,47 +230,7 @@ export function StaffPermissionsScreen() {
             ))}
           </select>
         </label>
-        <div className={styles.list}>
-          {pages.map((page) => (
-            <div className={styles.pageRow} key={page.id}>
-              <span>
-                {page.label}
-                {page.sensitivity ? ` · ${page.sensitivity}` : ""}
-              </span>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={draft[page.id] === "read" || draft[page.id] === "edit"}
-                  onChange={(event) =>
-                    setDraft((current) => ({
-                      ...current,
-                      [page.id]: event.target.checked ? "read" : "none",
-                    }))
-                  }
-                />
-                Read
-              </label>
-              {page.editable ? (
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={draft[page.id] === "edit"}
-                    onChange={(event) =>
-                      setDraft((current) => ({
-                        ...current,
-                        [page.id]: event.target.checked ? "edit" : current[page.id] === "edit" ? "read" : current[page.id] || "none",
-                      }))
-                    }
-                  />
-                  Edit
-                </label>
-              ) : (
-                <span className={styles.note}>No edit</span>
-              )}
-              <span className={styles.note}>{page.requiredPermission}</span>
-            </div>
-          ))}
-        </div>
+        {matrix("Workspace default pages", pages, draft, setDraft)}
         <div className={styles.actions}>
           <button
             type="button"
@@ -256,17 +292,23 @@ export function StaffPermissionsScreen() {
             ))}
           </select>
         </label>
+        <p className={styles.note}>Choose Read or Edit for the pages in this bundle. This list is separate from the workspace default.</p>
+        {matrix("Bundle pages", data.pages, bundleDraft, setBundleDraft)}
         <button
           type="button"
+          className={styles.primaryBtn}
           onClick={() =>
             void run(async () => {
               await send({
                 action: "saveBundle",
+                bundleId: bundleId || undefined,
                 name: bundleName,
-                grants: grantsFromDraft(draft),
+                grants: grantsFromDraft(bundleDraft),
                 staffIds: selectedStaff,
               });
               setBundleName("");
+              setBundleId("");
+              setBundleDraft({});
             }, "Page bundle saved.")
           }
         >
@@ -276,8 +318,23 @@ export function StaffPermissionsScreen() {
           {data.config.bundles.map((bundle) => (
             <div className={styles.row} key={bundle.id}>
               <span>
-                {bundle.name} · {bundle.grants.length} pages · {bundle.staffIds.length} staff
+                {bundle.name} · {bundle.grants.map((grant) => `${data.pages.find((page) => page.id === grant.pageId)?.label || grant.pageId} ${grant.level}`).join(", ") || "no pages"} · {bundle.staffIds.length} staff
               </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setBundleId(bundle.id);
+                  setBundleName(bundle.name);
+                  setSelectedStaff(bundle.staffIds);
+                  const next: Record<string, "read" | "edit" | "none"> = {};
+                  for (const page of data.pages) {
+                    next[page.id] = bundle.grants.find((grant) => grant.pageId === page.id)?.level ?? "none";
+                  }
+                  setBundleDraft(next);
+                }}
+              >
+                Edit
+              </button>
               <button
                 type="button"
                 onClick={() =>
@@ -312,16 +369,19 @@ export function StaffPermissionsScreen() {
             ))}
           </select>
         </label>
+        <p className={styles.note}>These Read and Edit choices apply only to the selected person.</p>
+        {matrix("Direct pages", directPages, directDraft, setDirectDraft)}
         <div className={styles.actions}>
           <button
             type="button"
+            className={styles.primaryBtn}
             disabled={!directStaff}
             onClick={() =>
               void run(
                 () => send({
                   action: "saveDirect",
                   staffId: directStaff,
-                  grants: grantsFromDraft(draft),
+                  grants: grantsFromDraft(directDraft),
                 }),
                 "Direct page assignment saved.",
               )
@@ -363,9 +423,11 @@ export function StaffPermissionsScreen() {
           <div className={styles.list}>
             {effective.pages.length === 0 ? <p className={styles.note}>No pages are granted yet.</p> : null}
             {effective.pages.map((page) => (
-              <p key={page.pageId} className={styles.note}>
-                {page.label} · {page.level} · {page.origins.join(", ")}
-              </p>
+              <div key={page.pageId} className={styles.pageRow}>
+                <span className={styles.pageLabel}>{page.label}</span>
+                <span className={styles.check}>{page.level}</span>
+                <span className={styles.permission}>{page.origins.join(", ")}</span>
+              </div>
             ))}
           </div>
         ) : null}

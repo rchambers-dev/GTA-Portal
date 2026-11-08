@@ -66,6 +66,7 @@ describe("durable review store", () => {
     expect(binding).toEqual({
       actorId: "22222222-2222-2222-2222-222222222222",
       learnerId: "33333333-3333-3333-3333-333333333333",
+      portalApprenticeId: null,
     });
     const loaded = await memoryReviewRepository.readAttachment(saved.id);
     expect(loaded.bytes?.subarray(0, 5).toString()).toBe("%PDF-");

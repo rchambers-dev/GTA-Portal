@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { resolveAiProvider } from "@/lib/ai/client";
-import { getAiConfig } from "@/lib/ai/config";
+import { consumeReviewRewordQuota, reviewRewordEnabled } from "@/features/review-assistant/reword-quota";
 import { requireReviewActor, reviewPageDenied } from "@/features/review-assistant/source-runtime";
 
 export const runtime = "nodejs";
@@ -23,12 +23,15 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
-  const config = getAiConfig();
-  if (!config.apiKey) {
+  if (!reviewRewordEnabled()) {
     return NextResponse.json(
-      { error: "AI wording is not configured on this server." },
-      { status: 500 },
+      { error: "AI wording is turned off. It stays off until REVIEW_ASSISTANT_AI=on is chosen." },
+      { status: 503 },
     );
+  }
+  const quota = await consumeReviewRewordQuota(actor.session.account.id);
+  if (!quota.ok) {
+    return NextResponse.json({ error: quota.error }, { status: 429 });
   }
   try {
     const result = await resolveAiProvider().complete({
@@ -44,10 +47,16 @@ export async function POST(request: Request) {
     });
     const rewritten = String(result.text || "").trim();
     if (!rewritten) {
-      return NextResponse.json({ error: "AI wording is not configured on this server." }, { status: 500 });
+      return NextResponse.json(
+        { error: "AI wording is turned off. It stays off until REVIEW_ASSISTANT_AI=on is chosen." },
+        { status: 503 },
+      );
     }
     return NextResponse.json({ text: rewritten });
   } catch {
-    return NextResponse.json({ error: "AI wording is not configured on this server." }, { status: 500 });
+    return NextResponse.json(
+      { error: "AI wording is turned off. It stays off until REVIEW_ASSISTANT_AI=on is chosen." },
+      { status: 503 },
+    );
   }
 }

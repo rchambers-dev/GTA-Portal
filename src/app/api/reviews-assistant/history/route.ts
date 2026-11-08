@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireReviewActor, reviewPageDenied } from "@/features/review-assistant/source-runtime";
 import { getReviewRepository, ReviewStoreNotConfigured } from "@/features/review-assistant/repository";
-import { reviewLearnerIdError } from "@/features/review-assistant/portal-roster";
+import { learnerIdsOutside, loadReviewApprentices } from "@/features/review-assistant/portal-roster";
 import { versionOf } from "@/features/review-assistant/version-rules";
 
 export const runtime = "nodejs";
@@ -46,7 +46,10 @@ export async function POST(request: Request) {
     const history = await repo.documentHistory();
     const entry = history.find((item) => item.version === version);
     if (!entry) return NextResponse.json({ error: "That version was not found." }, { status: 404 });
-    const learnerError = await reviewLearnerIdError(actor.session, entry.payload);
+    const learnerError = learnerIdsOutside(
+      (await loadReviewApprentices(actor.session)).map((item) => item.id),
+      entry.payload,
+    );
     if (learnerError) return NextResponse.json({ error: learnerError }, { status: 400 });
     const stored = await repo.readDocument();
     const result = await repo.saveDocument(entry.payload, versionOf(stored), actor.session.account.id);

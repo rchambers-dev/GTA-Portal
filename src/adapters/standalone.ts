@@ -2,7 +2,7 @@ import { supabaseAuthAdapter } from "@/adapters/supabase/auth";
 import { supabaseApprenticeDataAdapter } from "@/adapters/supabase/apprentice-data";
 import type { AuthPort, ApprenticeLifecycleDataPort } from "@/features/apprentice-lifecycle/ports";
 import type { EffectiveSession } from "@/lib/portal/types";
-import { pageGrantsFromStore } from "@/features/staff-page-access/enforce";
+import { pageGrantsFromStore } from "@/features/staff-page-access/grants-from-store";
 
 export type StandaloneAuthPort = AuthPort & {
   getEffectiveSession(): Promise<EffectiveSession | null>;

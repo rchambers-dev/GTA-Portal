@@ -41,6 +41,7 @@ export type AttachmentBinding = {
   id: string;
   actorId: string;
   learnerId: string;
+  portalApprenticeId?: string | null;
 };
 
 function metaPath(id: string) {
@@ -66,12 +67,14 @@ export function saveReviewAttachment({
   bytes,
   actorId,
   learnerId,
+  portalApprenticeId = null,
 }: {
   filename: string;
   type: string;
   bytes: Buffer;
   actorId: string;
   learnerId: string;
+  portalApprenticeId?: string | null;
 }) {
   const trimmed = filename.trim();
   if (trimmed.length > 255) {
@@ -112,9 +115,9 @@ export function saveReviewAttachment({
   const meta = metaPath(id);
   writeFileSync(
     /*turbopackIgnore: true*/ meta,
-    JSON.stringify({ id, actorId, learnerId } satisfies AttachmentBinding),
+    JSON.stringify({ id, actorId, learnerId, portalApprenticeId } satisfies AttachmentBinding),
   );
-  return { id, filename: safeName(trimmed) || id, type: contentType, actorId, learnerId };
+  return { id, filename: safeName(trimmed) || id, type: contentType, actorId, learnerId, portalApprenticeId };
 }
 
 export function readReviewAttachment(id: string) {
