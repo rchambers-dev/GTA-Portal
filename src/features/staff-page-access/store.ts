@@ -1,3 +1,4 @@
+import { withDirectPg } from "@/lib/db/direct-pool";
 import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { createClient } from "@supabase/supabase-js";
@@ -101,32 +102,34 @@ export function writePageAccessConfig(config: PageAccessConfig) {
 }
 
 async function withPagePostgres<T>(fn: (db: { query: (sql: string, params?: unknown[]) => Promise<{ rows: Array<Record<string, unknown>> }> }) => Promise<T>): Promise<T> {
-  const url = process.env.REVIEW_DATABASE_URL?.trim();
-  if (!url) throw new PageAccessConfigUnavailable();
-  const { Client } = await import("pg");
-  const client = new Client({ connectionString: url });
-  await client.connect();
+  if (!process.env.REVIEW_DATABASE_URL?.trim()) throw new PageAccessConfigUnavailable();
   try {
-    return await fn(client);
+    return await withDirectPg(fn);
   } catch (error) {
     if (error instanceof PageAccessConflict || error instanceof PageAccessConfigUnavailable) throw error;
     const status = (error as { status?: number }).status;
     if (status === 400 || status === 409) throw error;
     throw new PageAccessConfigUnavailable();
-  } finally {
-    await client.end();
   }
 }
 
+let pageAccessCache: { at: number; record: PageAccessRecord } | null = null;
+
+function cachedPageAccess(record: PageAccessRecord) {
+  pageAccessCache = { at: Date.now(), record };
+  return record;
+}
+
 async function loadPostgresRecord(): Promise<PageAccessRecord> {
-  return withPagePostgres(async (db) => {
+  if (pageAccessCache && Date.now() - pageAccessCache.at < 5000) return pageAccessCache.record;
+  return cachedPageAccess(await withPagePostgres(async (db) => {
     const result = await db.query(
       "select payload, version from public.staff_page_access where id = 'default'",
     );
     const row = result.rows[0];
     if (!row) return { config: emptyPageAccessConfig(), version: 0 };
     return { config: configShape(row.payload as PageAccessConfig), version: Number(row.version) };
-  });
+  }));
 }
 
 async function savePostgresRecord(config: PageAccessConfig, expectedVersion: number, actorId: string): Promise<PageAccessRecord> {
@@ -146,6 +149,7 @@ async function savePostgresRecord(config: PageAccessConfig, expectedVersion: num
       }
       throw new PageAccessConfigUnavailable();
     }
+    pageAccessCache = null;
     if (saved !== 1) throw new PageAccessConflict();
     const loaded = await db.query(
       "select payload, version from public.staff_page_access where id = 'default'",
@@ -187,13 +191,15 @@ async function saveSupabaseRecord(config: PageAccessConfig, expectedVersion: num
   return loadSupabaseRecord();
 }
 
+function supabaseConfigured() {
+  return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() && process.env.SUPABASE_SERVICE_ROLE_KEY?.trim());
+}
+
 /** Missing config is version 0 and leaves legacy access. A read failure throws. */
 export async function loadPageAccessRecord(): Promise<PageAccessRecord> {
   if (useFileStore()) return readFileRecord();
+  if (process.env.STAFF_PAGE_ACCESS_STORE !== "postgres" && supabaseConfigured()) return loadSupabaseRecord();
   if (process.env.REVIEW_DATABASE_URL?.trim()) return loadPostgresRecord();
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() && process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
-    return loadSupabaseRecord();
-  }
   throw new PageAccessConfigUnavailable();
 }
 
@@ -213,9 +219,9 @@ export async function savePageAccessConfig(
     renameSync(temporary, target);
     return { version: next.version, config };
   }
-  if (process.env.REVIEW_DATABASE_URL?.trim()) return savePostgresRecord(config, expectedVersion, actorId);
-  if (process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() && process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
+  if (process.env.STAFF_PAGE_ACCESS_STORE !== "postgres" && supabaseConfigured()) {
     return saveSupabaseRecord(config, expectedVersion, actorId);
   }
+  if (process.env.REVIEW_DATABASE_URL?.trim()) return savePostgresRecord(config, expectedVersion, actorId);
   throw new PageAccessConfigUnavailable();
 }

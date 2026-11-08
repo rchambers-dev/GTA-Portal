@@ -39,6 +39,7 @@ SET search_path = ''
 AS $record$
 BEGIN
   -- Source parity: 30 days and 500 snapshots, Portal rows only.
+  -- This is not a backup. Export before any rollback. See supabase/manual/review-assistant-export-restore.sql.
   IF (
     SELECT h.payload
     FROM public.app_state_history AS h
@@ -218,10 +219,15 @@ GRANT EXECUTE ON FUNCTION public.rate_limit_hit(uuid, text, timestamp with time 
   TO service_role;
 
 -- Portal attachment catalogue. Source had no such table.
--- A null portal_apprentice_id means the file is not bound to a canonical apprentice.
--- A non-null actor must be a Portal profile when public.profiles exists.
+-- review_learner_id is the Review Assistant learner id exactly as submitted.
+-- It is text because those ids are not portal UUIDs. Do not coerce it.
+-- portal_apprentice_id is a separate optional canonical apprentices.id.
+-- It stays null until a reviewed link is made. A non-null actor must be a Portal profile.
+-- Migration number 035 is already applied as 20261108000601_review_assistant_empty_structure_035.
+-- Do not renumber this file onto 035. This file is held and is not applied.
 CREATE TABLE public.review_assistant_attachments (
   id text NOT NULL,
+  review_learner_id text NOT NULL,
   portal_apprentice_id uuid,
   actor_id uuid,
   filename text NOT NULL,
@@ -237,12 +243,22 @@ CREATE TABLE public.review_assistant_attachments (
   ),
   CONSTRAINT review_assistant_attachments_type_check CHECK (
     content_type IN ('application/pdf', 'image/jpeg', 'image/png', 'image/webp')
+  ),
+  CONSTRAINT review_assistant_attachments_learner_check CHECK (
+    length(btrim(review_learner_id)) > 0
+    AND length(review_learner_id) <= 200
+    AND review_learner_id !~ '[[:cntrl:]]'
   )
 );
 
 ALTER TABLE public.review_assistant_attachments ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON TABLE public.review_assistant_attachments FROM PUBLIC, anon, authenticated, service_role;
 GRANT SELECT, INSERT, DELETE ON TABLE public.review_assistant_attachments TO service_role;
+
+COMMENT ON COLUMN public.review_assistant_attachments.review_learner_id IS
+  'Exact Review Assistant learner id. Not a portal apprentice id and not rewritten.';
+COMMENT ON COLUMN public.review_assistant_attachments.portal_apprentice_id IS
+  'Optional canonical apprentices.id. Leave null unless a reviewed link sets it. Do not copy review_learner_id here.';
 
 CREATE FUNCTION reviews_private.attachment_binding_guard()
 RETURNS trigger
@@ -407,6 +423,21 @@ $bucket$;
 
 REVOKE ALL ON FUNCTION reviews_private.ensure_private_bucket(text, bigint)
   FROM PUBLIC, anon, authenticated, service_role;
+
+-- The migration role must already be allowed to insert into storage.buckets.
+-- This does not grant that privilege and does not weaken storage RLS.
+-- On hosted Supabase the storage schema is owned by supabase_storage_admin.
+-- Apply this file in one transaction as the postgres role. If INSERT is denied, stop.
+DO $bucket_privilege$
+BEGIN
+  IF to_regclass('storage.buckets') IS NULL THEN
+    RAISE EXCEPTION 'storage.buckets is not available';
+  END IF;
+  IF NOT has_table_privilege(current_user, 'storage.buckets', 'INSERT') THEN
+    RAISE EXCEPTION 'role % cannot insert storage buckets; do not grant anon or authenticated to work around this', current_user;
+  END IF;
+END;
+$bucket_privilege$;
 
 SELECT reviews_private.ensure_private_bucket('review-app', 52428800);
 SELECT reviews_private.ensure_private_bucket('review-attachments', 26214400);

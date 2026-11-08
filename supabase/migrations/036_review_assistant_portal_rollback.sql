@@ -1,10 +1,28 @@
--- NOT APPLIED. Manual recovery for 036_review_assistant_portal.sql only.
--- Run this file by itself. One transaction. It refuses when attachment rows,
--- page-access config, or objects in the Reviews buckets exist. It deletes a
--- bucket only when reviews_private.storage_provision says this migration
--- created it. Pre-existing buckets stay. Structure tables from 035 stay.
+-- MANUAL ONLY. scripts/run-migration.mjs will not run this file.
+-- Quiesce Portal writers before starting. The locks below last for this transaction only.
+-- Refuses when attachment rows, page-access config, or Reviews bucket objects exist.
+-- Deletes a bucket only when this migration created it and it is empty.
+-- Does not drop the applied 035 structure. History is not a backup.
+-- Export first with supabase/manual/review-assistant-export-restore.sql.
 
 BEGIN;
+
+DO $lock$
+BEGIN
+  IF to_regclass('public.review_assistant_attachments') IS NOT NULL THEN
+    LOCK TABLE public.review_assistant_attachments IN ACCESS EXCLUSIVE MODE;
+  END IF;
+  IF to_regclass('public.staff_page_access') IS NOT NULL THEN
+    LOCK TABLE public.staff_page_access IN ACCESS EXCLUSIVE MODE;
+  END IF;
+  IF to_regclass('storage.objects') IS NOT NULL THEN
+    LOCK TABLE storage.objects IN ACCESS EXCLUSIVE MODE;
+  END IF;
+  IF to_regclass('storage.buckets') IS NOT NULL THEN
+    LOCK TABLE storage.buckets IN ACCESS EXCLUSIVE MODE;
+  END IF;
+END;
+$lock$;
 
 DO $refuse$
 BEGIN

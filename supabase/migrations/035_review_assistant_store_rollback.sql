@@ -1,10 +1,24 @@
--- NOT APPLIED. Manual recovery for 035_review_assistant_store.sql only.
--- Run this file by itself. It opens one transaction and stops before any drop
--- when a structure table holds a row, or when 036 objects are still present.
--- It does not delete buckets, attachment rows, or staff page-access config.
--- Roll back 036 first. Do not use this after live use without a fresh empty check.
+-- MANUAL ONLY. scripts/run-migration.mjs will not run this file.
+-- Quiesce Portal writers before starting. The locks below last for this transaction only.
+-- app_state_history is not a backup. Export first with supabase/manual/review-assistant-export-restore.sql.
+-- This script refuses when any row exists. It does not export and it does not delete rows.
+-- The applied forward file 035_review_assistant_store.sql is unchanged.
 
 BEGIN;
+
+DO $lock$
+BEGIN
+  IF to_regclass('public.app_state') IS NOT NULL THEN
+    LOCK TABLE public.app_state IN ACCESS EXCLUSIVE MODE;
+  END IF;
+  IF to_regclass('public.app_state_history') IS NOT NULL THEN
+    LOCK TABLE public.app_state_history IN ACCESS EXCLUSIVE MODE;
+  END IF;
+  IF to_regclass('public.tutor_reword_rate') IS NOT NULL THEN
+    LOCK TABLE public.tutor_reword_rate IN ACCESS EXCLUSIVE MODE;
+  END IF;
+END;
+$lock$;
 
 DO $refuse$
 BEGIN

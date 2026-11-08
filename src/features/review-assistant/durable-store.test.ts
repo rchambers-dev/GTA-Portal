@@ -104,7 +104,8 @@ describe("durable review store", () => {
     expect(adapter).not.toContain('.schema("reviews_private")');
     const manifest = readFileSync(path.join(process.cwd(), "supabase/migrations/REVIEW_SQL_SHA256.txt"), "utf8");
     expect(manifest).toContain("283720831f5fd05170212dd3b637eecf135498c176a20e48fd49ae01cf70654d");
-    expect(manifest).toContain("e2b3acd0bcd35031b33e1ac98b95319dcca2563829906e9fc6dcb68b28f65e78");
+    expect(manifest).toContain("ea74b46c607e7cb50d60f9e2ad0928fdeb44fe7f7291ba507afdea99af7bae87");
+    expect(portal).toContain("review_learner_id text NOT NULL");
     expect(adapter).toContain('client.rpc("save_app_state_if_version"');
     expect(adapter).toContain("public.save_app_state_if_version");
     const structureRollback = readFileSync(

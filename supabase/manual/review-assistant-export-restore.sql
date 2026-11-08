@@ -1,0 +1,29 @@
+-- NOT A MIGRATION. scripts/run-migration.mjs does not read this directory.
+-- NOT RUN by this repository. Do not execute it against cjtgjxgghfiskqnuttzd from an agent.
+--
+-- Operator plan for a data-preserving copy before any rollback.
+-- Run it only after Portal writers are stopped, and only as the database owner.
+-- app_state_history is not a backup: the save function keeps 30 days and at most 500
+-- Portal snapshots, so older history is already gone.
+--
+-- Export, after writers are quiet:
+--   pg_dump --data-only --table=public.app_state --table=public.app_state_history
+--           --table=public.tutor_reword_rate --table=public.review_assistant_attachments
+--           --table=public.staff_page_access
+--   Then copy the private objects in storage buckets review-app and review-attachments
+--   with a storage export. Do not make those buckets public.
+--
+-- Restore is a separate reviewed operation. Reload the dump into an empty database
+-- that already has the matching structure, then upload the same object names.
+-- Do not use the rollback files as a restore. They refuse when rows or objects exist
+-- and they do not keep a copy.
+--
+-- The statements below are examples for the operator to run by hand. They only read.
+
+-- select count(*) from public.app_state;
+-- select count(*) from public.app_state_history;
+-- select count(*) from public.tutor_reword_rate;
+-- select id, review_learner_id, portal_apprentice_id, storage_bucket, storage_path
+--   from public.review_assistant_attachments
+--   order by created_at;
+-- select id, version, updated_at from public.staff_page_access;

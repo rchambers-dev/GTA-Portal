@@ -306,6 +306,11 @@ describe("staff page access", () => {
       readable: [],
       editable: [],
     });
+    const learner = buildEffectiveSession(
+      account({ workspace: "apprentice", baseRole: "Apprentice", permissions: [] }),
+      [],
+    );
+    expect((await pageGrantsFromStore(learner.account)).configured).toBe(false);
     delete process.env.VERCEL;
     delete process.env.STAFF_PAGE_ACCESS_STORE;
     if (previousDatabase) process.env.REVIEW_DATABASE_URL = previousDatabase;

@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { afterAll, expect, it } from "vitest";
 import { Client } from "pg";
+import { endDirectPg } from "@/lib/db/direct-pool";
 import { emptyPageAccessConfig } from "@/features/staff-page-access/model";
 import { PageAccessConflict, loadPageAccessRecord, savePageAccessConfig } from "@/features/staff-page-access/store";
 import { getReviewRepository } from "./repository";
@@ -80,7 +81,8 @@ function stubSql() {
   `;
 }
 
-afterAll(() => {
+afterAll(async () => {
+  await endDirectPg();
   for (const database of [DATABASE, BUCKET_DATABASE]) {
     try {
       psqlCommand("postgres", `drop database if exists ${database} with (force)`);
@@ -90,7 +92,7 @@ afterAll(() => {
   }
 });
 
-it("proves the public service-role wrapper on a disposable database", async () => {
+it("proves the public SQL function on local Postgres, not PostgREST or Storage", async () => {
   psqlCommand(
     "postgres",
     `
@@ -200,19 +202,26 @@ it("proves the public service-role wrapper on a disposable database", async () =
     await expect(
       query(
         service,
-        "insert into public.review_assistant_attachments (id, portal_apprentice_id, actor_id, filename, content_type, size_bytes, storage_path) values ('file-1', null, 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'note.pdf', 'application/pdf', 12, 'file-1')",
+        "insert into public.review_assistant_attachments (id, review_learner_id, portal_apprentice_id, actor_id, filename, content_type, size_bytes, storage_path) values ('file-1', 'review-learner-42', null, 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'note.pdf', 'application/pdf', 12, 'file-1')",
       ),
     ).rejects.toThrow(/not a Portal profile/);
     await query(
       service,
-      "insert into public.review_assistant_attachments (id, portal_apprentice_id, actor_id, filename, content_type, size_bytes, storage_path) values ('file-2', null, $1, 'note.pdf', 'application/pdf', 12, 'file-2')",
+      "insert into public.review_assistant_attachments (id, review_learner_id, portal_apprentice_id, actor_id, filename, content_type, size_bytes, storage_path) values ('file-2', 'review-learner-42', null, $1, 'note.pdf', 'application/pdf', 12, 'file-2')",
       [PROFILE_ID],
     );
+    const reread = await query(
+      service,
+      "select review_learner_id, portal_apprentice_id from public.review_assistant_attachments where id = 'file-2'",
+    );
+    expect(reread.rows[0]?.review_learner_id).toBe("review-learner-42");
+    expect(reread.rows[0]?.portal_apprentice_id).toBeNull();
   } finally {
     if (previousDatabase) process.env.REVIEW_DATABASE_URL = previousDatabase;
     else delete process.env.REVIEW_DATABASE_URL;
     if (previousStore) process.env.STAFF_PAGE_ACCESS_STORE = previousStore;
     else delete process.env.STAFF_PAGE_ACCESS_STORE;
+    await endDirectPg();
   }
 
   expect(commandFailure(DATABASE, ["-f", portalRollback])).toMatch(/holds rows|holds objects/);

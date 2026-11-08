@@ -1,7 +1,9 @@
-# Not applied. SHA-256 of the forward SQL after the PostgREST wrapper fix.
-# Supersedes held hash e5a3a1dc301deb475a5862094dd1d0ebc9b0df0c2e6f801a25aae7375b2a5231.
+# 035 forward SQL is applied and must stay byte-for-byte.
+# Hosted identity: 20261108000601_review_assistant_empty_structure_035
+# Applied at 2026-11-08T00:06:01Z on cjtgjxgghfiskqnuttzd. Counts were 0/0/0.
+# 036 is held and was not applied. Its hash changed after the learner-id column.
 # reviews_private stays out of the Data API exposed schemas.
 035_review_assistant_store.sql 283720831f5fd05170212dd3b637eecf135498c176a20e48fd49ae01cf70654d
-036_review_assistant_portal.sql e2b3acd0bcd35031b33e1ac98b95319dcca2563829906e9fc6dcb68b28f65e78
-035_review_assistant_store_rollback.sql a062c57593d7bc9e03eb18e40fe3112770cacdda2dfd709c59ce8f215ec661d6
-036_review_assistant_portal_rollback.sql aef33e39a235bab83fcaf01f82b5155ac8122bb8e69645efdd94e6e01d4cd3c6
+036_review_assistant_portal.sql ea74b46c607e7cb50d60f9e2ad0928fdeb44fe7f7291ba507afdea99af7bae87
+035_review_assistant_store_rollback.sql 5b94b199195e9326175c64f2f00a15cb3f0e89808a588d3f9667a93c77245058
+036_review_assistant_portal_rollback.sql 0b9db0185cf81b5c6ee821aee8c75172beb7d70aeae08b69cbc549ea6a53f6cd

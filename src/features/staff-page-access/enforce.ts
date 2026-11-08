@@ -34,6 +34,9 @@ export async function pageGrantsFromStore(
     return pageGrantSnapshot(loaded.config, account);
   } catch (error) {
     if (error instanceof PageAccessConfigUnavailable) {
+      if (account.workspace === "apprentice" || account.workspace === "employer") {
+        return { configured: false, readable: [], editable: [] };
+      }
       return { configured: true, readable: [], editable: [] };
     }
     throw error;

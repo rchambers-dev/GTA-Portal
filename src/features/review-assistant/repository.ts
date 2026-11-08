@@ -1,26 +1,27 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { withDirectPg } from "@/lib/db/direct-pool";
 import { canonicalActorId } from "@/lib/portal/actor-id";
-import { conflictBody, sameSavedContent, versionOf } from "./version-rules";
-import {
-  readReviewState,
-  saveReviewState,
-  type ReviewState,
-} from "./state-store";
+import { commitReviewAttachment, prepareReviewAttachment } from "./attachment-binding";
 import {
   readAttachmentBinding,
   readReviewAttachment,
   saveReviewAttachment,
 } from "./attachments";
+import { REVIEW_ATTACHMENT_BUCKET, REVIEW_DOCUMENT_ID } from "./repository-constants";
+import {
+  readReviewState,
+  saveReviewState,
+  type ReviewState,
+} from "./state-store";
+import { conflictBody, sameSavedContent, versionOf } from "./version-rules";
 
-export const REVIEW_ATTACHMENT_BUCKET = "review-attachments";
-export const REVIEW_APP_BUCKET = "review-app";
-export const REVIEW_DOCUMENT_ID = "default";
+export { REVIEW_APP_BUCKET, REVIEW_ATTACHMENT_BUCKET, REVIEW_DOCUMENT_ID } from "./repository-constants";
 
 export class ReviewStoreNotConfigured extends Error {
   status = 503;
   constructor() {
     super(
-      "Review store is not configured. Set REVIEW_DATABASE_URL or the Supabase service-role URL and key, then apply the reviewed 035 and 036 SQL. Saves call public.save_app_state_if_version. reviews_private stays unexposed. The file store is test-only.",
+      "Review store is not configured. Production uses the Supabase adapter. REVIEW_ASSISTANT_STORE=postgres is a direct database mode and is refused in production. The file store is test-only.",
     );
   }
 }
@@ -256,40 +257,56 @@ export const supabaseReviewRepository: ReviewRepository = {
     }));
   },
   async saveAttachment(input) {
-    if (!input.actorId || !input.learnerId) {
-      throw Object.assign(new Error("Attachment must be bound to a learner."), { status: 400 });
-    }
-    if (input.bytes.length > 20 * 1024 * 1024) {
-      throw Object.assign(new Error("That file is too large to attach."), { status: 400 });
-    }
-    const id = `${crypto.randomUUID()}${input.filename.toLowerCase().endsWith(".pdf") ? ".pdf" : ""}`;
+    const prepared = prepareReviewAttachment(input);
     const client = supabaseAdmin();
-    const uploaded = await client.storage.from(REVIEW_ATTACHMENT_BUCKET).upload(id, input.bytes, {
-      contentType: input.type,
-      upsert: false,
-    });
-    if (uploaded.error) throw new ReviewStoreNotConfigured();
-    const { error } = await client.from("review_assistant_attachments").insert({
-      id,
-      portal_apprentice_id: /^[0-9a-f-]{36}$/i.test(input.learnerId) ? input.learnerId : null,
-      actor_id: canonicalActorId(input.actorId),
-      filename: input.filename,
-      content_type: input.type,
-      size_bytes: input.bytes.length,
-      storage_bucket: REVIEW_ATTACHMENT_BUCKET,
-      storage_path: id,
-    });
-    if (error) throw new ReviewStoreNotConfigured();
-    return { id, filename: input.filename, type: input.type, actorId: input.actorId, learnerId: input.learnerId };
+    await commitReviewAttachment(
+      prepared,
+      {
+        async upload(path, bytes, contentType) {
+          const uploaded = await client.storage.from(REVIEW_ATTACHMENT_BUCKET).upload(path, bytes, {
+            contentType,
+            upsert: false,
+          });
+          if (uploaded.error) throw new ReviewStoreNotConfigured();
+        },
+        async remove(path) {
+          const removed = await client.storage.from(REVIEW_ATTACHMENT_BUCKET).remove([path]);
+          if (removed.error) throw removed.error;
+        },
+      },
+      async (row) => {
+        const { error } = await client.from("review_assistant_attachments").insert({
+          id: row.id,
+          review_learner_id: row.reviewLearnerId,
+          portal_apprentice_id: row.portalApprenticeId,
+          actor_id: canonicalActorId(row.actorId),
+          filename: row.filename,
+          content_type: row.type,
+          size_bytes: row.bytes.length,
+          storage_bucket: REVIEW_ATTACHMENT_BUCKET,
+          storage_path: row.id,
+        });
+        if (error) throw new ReviewStoreNotConfigured();
+      },
+    );
+    return {
+      id: prepared.id,
+      filename: prepared.filename,
+      type: prepared.type,
+      actorId: prepared.actorId,
+      learnerId: prepared.reviewLearnerId,
+    };
   },
   async readAttachment(id) {
     const client = supabaseAdmin();
     const { data, error } = await client
       .from("review_assistant_attachments")
-      .select("id, actor_id, portal_apprentice_id, filename, content_type, storage_path")
+      .select("id, actor_id, review_learner_id, filename, content_type, storage_path")
       .eq("id", id)
       .maybeSingle();
-    if (error || !data) throw Object.assign(new Error("Attached review not found."), { status: 404 });
+    if (error || !data?.review_learner_id) {
+      throw Object.assign(new Error("Attached review not found."), { status: 404 });
+    }
     const downloaded = await client.storage.from(REVIEW_ATTACHMENT_BUCKET).download(data.storage_path);
     if (downloaded.error || !downloaded.data) {
       throw Object.assign(new Error("Attached review not found."), { status: 404 });
@@ -299,7 +316,7 @@ export const supabaseReviewRepository: ReviewRepository = {
       filename: data.filename,
       type: data.content_type,
       actorId: data.actor_id,
-      learnerId: data.portal_apprentice_id || "",
+      learnerId: String(data.review_learner_id),
       bytes: Buffer.from(await downloaded.data.arrayBuffer()),
     };
   },
@@ -307,11 +324,11 @@ export const supabaseReviewRepository: ReviewRepository = {
     const client = supabaseAdmin();
     const { data, error } = await client
       .from("review_assistant_attachments")
-      .select("actor_id, portal_apprentice_id")
+      .select("actor_id, review_learner_id")
       .eq("id", id)
       .maybeSingle();
-    if (error || !data?.actor_id) return null;
-    return { actorId: String(data.actor_id), learnerId: String(data.portal_apprentice_id || "") };
+    if (error || !data?.actor_id || !data.review_learner_id) return null;
+    return { actorId: String(data.actor_id), learnerId: String(data.review_learner_id) };
   },
 };
 
@@ -329,15 +346,14 @@ type QueryResult = { rows: Array<Record<string, unknown>> };
 type Queryable = { query: (sql: string, params?: unknown[]) => Promise<QueryResult> };
 
 async function withReviewPostgres<T>(fn: (db: Queryable) => Promise<T>): Promise<T> {
-  const url = process.env.REVIEW_DATABASE_URL?.trim();
-  if (!url) throw new ReviewStoreNotConfigured();
-  const { Client } = await import("pg");
-  const client = new Client({ connectionString: url });
-  await client.connect();
+  if (!process.env.REVIEW_DATABASE_URL?.trim()) throw new ReviewStoreNotConfigured();
   try {
-    return await fn(client);
-  } finally {
-    await client.end();
+    return await withDirectPg(fn);
+  } catch (error) {
+    if (error instanceof ReviewStoreNotConfigured) throw error;
+    const status = (error as { status?: number }).status;
+    if (status === 400 || status === 409 || status === 500) throw error;
+    throw reviewSaveError(error instanceof Error ? error.message : "");
   }
 }
 
@@ -407,17 +423,17 @@ export const postgresReviewRepository: ReviewRepository = {
     throw new ReviewStoreNotConfigured();
   },
   async readAttachment() {
-    throw Object.assign(new Error("Attached review not found."), { status: 404 });
+    throw new ReviewStoreNotConfigured();
   },
   async attachmentBinding(id) {
     return withReviewPostgres(async (db) => {
       const result = await db.query(
-        "select actor_id, portal_apprentice_id from public.review_assistant_attachments where id = $1",
+        "select actor_id, review_learner_id from public.review_assistant_attachments where id = $1",
         [id],
       );
       const row = result.rows[0];
-      if (!row?.actor_id) return null;
-      return { actorId: String(row.actor_id), learnerId: String(row.portal_apprentice_id || "") };
+      if (!row?.actor_id || !row.review_learner_id) return null;
+      return { actorId: String(row.actor_id), learnerId: String(row.review_learner_id) };
     });
   },
 };
@@ -429,9 +445,13 @@ export function getReviewRepository(): ReviewRepository {
     if (production) throw new ReviewStoreNotConfigured();
     return mode === "memory" ? memoryReviewRepository : fileReviewRepository;
   }
-  if (process.env.REVIEW_DATABASE_URL?.trim()) return postgresReviewRepository;
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || !process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
-    throw new ReviewStoreNotConfigured();
+  if (mode === "postgres") {
+    if (production || !process.env.REVIEW_DATABASE_URL?.trim()) throw new ReviewStoreNotConfigured();
+    return postgresReviewRepository;
   }
-  return supabaseReviewRepository;
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() && process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
+    return supabaseReviewRepository;
+  }
+  if (!production && process.env.REVIEW_DATABASE_URL?.trim()) return postgresReviewRepository;
+  throw new ReviewStoreNotConfigured();
 }
