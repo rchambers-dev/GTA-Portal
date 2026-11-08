@@ -71,34 +71,52 @@ describe("durable review store", () => {
     expect(loaded.bytes?.subarray(0, 5).toString()).toBe("%PDF-");
   });
 
-  it("names the empty Portal tables and private bucket in the unapplied migration", () => {
-    const sql = readFileSync(
+  it("keeps the source-shaped structure separate from the callable portal additions", () => {
+    const structure = readFileSync(
       path.join(process.cwd(), "supabase/migrations/035_review_assistant_store.sql"),
       "utf8",
     );
-    expect(sql).toContain("CREATE TABLE public.app_state");
-    expect(sql).toContain("payload jsonb DEFAULT '{}'::jsonb NOT NULL");
-    expect(sql).toContain("CREATE TABLE public.app_state_history");
-    expect(sql).toContain("GENERATED ALWAYS AS IDENTITY");
-    expect(sql).toContain("CREATE INDEX app_state_history_saved_at_desc");
-    expect(sql).toContain("CREATE TABLE public.tutor_reword_rate");
-    expect(sql).toContain("reviews_private.save_app_state_if_version");
-    expect(sql).toContain("reviews_private.record_app_state_history");
-    expect(sql).toContain("reviews_private.rate_limit_hit");
-    expect(sql).toContain("'review-app', 'review-app', false, 52428800");
-    expect(sql).toContain("'review-attachments', 'review-attachments', false, 26214400");
-    expect(sql).toContain(REVIEW_ATTACHMENT_BUCKET);
-    expect(sql).not.toMatch(/create\s+(or replace\s+)?function\s+public\.staff_password_change_default/i);
-    expect(sql).not.toMatch(/create\s+(or replace\s+)?function\s+public\.is_admin/i);
-    expect(sql).not.toMatch(/on\s+auth\.users/i);
-    expect(sql).not.toMatch(/create\s+(or replace\s+)?function\s+public\.rls_auto_enable/i);
-    const structure = sql.split("-- SECTION B")[0]?.toLowerCase() ?? "";
-    expect(structure).not.toContain("insert into public.app_state");
-    const rollback = readFileSync(
+    const portal = readFileSync(
+      path.join(process.cwd(), "supabase/migrations/036_review_assistant_portal.sql"),
+      "utf8",
+    );
+    const adapter = readFileSync(path.join(process.cwd(), "src/features/review-assistant/repository.ts"), "utf8");
+    expect(structure).toContain("CREATE TABLE public.app_state");
+    expect(structure).toContain("payload jsonb DEFAULT '{}'::jsonb NOT NULL");
+    expect(structure).toContain("CREATE TABLE public.app_state_history");
+    expect(structure).toContain("GENERATED ALWAYS AS IDENTITY");
+    expect(structure).toContain("CREATE INDEX app_state_history_saved_at_desc");
+    expect(structure).toContain("CREATE TABLE public.tutor_reword_rate");
+    expect(structure).not.toContain("save_app_state_if_version");
+    expect(structure).not.toContain("storage.buckets");
+    expect(portal).toContain("CREATE FUNCTION public.save_app_state_if_version");
+    expect(portal).toContain("SECURITY INVOKER");
+    expect(portal).toContain("expected_version + 1");
+    expect(portal).toContain("interval '30 days'");
+    expect(portal).toContain("OFFSET 500");
+    expect(portal).toContain("REVOKE ALL ON FUNCTION reviews_private.record_app_state_history(uuid, integer, jsonb)");
+    expect(portal).not.toContain("GRANT EXECUTE ON FUNCTION reviews_private.record_app_state_history");
+    expect(portal).not.toContain("save_app_state_if_version(\n  expected_version integer,\n  next_payload jsonb\n)");
+    expect(portal).toContain("incompatible settings");
+    expect(portal).toContain(REVIEW_ATTACHMENT_BUCKET);
+    expect(portal).not.toMatch(/^\s*(alter|set)\s+.*pgrst/im);
+    expect(portal).not.toMatch(/create\s+(or replace\s+)?function\s+public\.is_admin/i);
+    expect(adapter).not.toContain('.schema("reviews_private")');
+    const manifest = readFileSync(path.join(process.cwd(), "supabase/migrations/REVIEW_SQL_SHA256.txt"), "utf8");
+    expect(manifest).toContain("283720831f5fd05170212dd3b637eecf135498c176a20e48fd49ae01cf70654d");
+    expect(manifest).toContain("e2b3acd0bcd35031b33e1ac98b95319dcca2563829906e9fc6dcb68b28f65e78");
+    expect(adapter).toContain('client.rpc("save_app_state_if_version"');
+    expect(adapter).toContain("public.save_app_state_if_version");
+    const structureRollback = readFileSync(
       path.join(process.cwd(), "supabase/migrations/035_review_assistant_store_rollback.sql"),
       "utf8",
     );
-    expect(rollback).toContain("DROP TABLE IF EXISTS public.app_state");
-    expect(rollback).toContain("DROP SCHEMA IF EXISTS reviews_private");
+    const portalRollback = readFileSync(
+      path.join(process.cwd(), "supabase/migrations/036_review_assistant_portal_rollback.sql"),
+      "utf8",
+    );
+    expect(structureRollback).toContain("rollback refused: public.app_state holds rows");
+    expect(portalRollback).toContain("rollback refused: a Reviews bucket holds objects");
+    expect(portalRollback).toContain("created_by_this_migration = true");
   });
 });

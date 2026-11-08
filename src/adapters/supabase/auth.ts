@@ -128,7 +128,7 @@ export const supabaseAuthAdapter = {
     if (!session) return null;
     return {
       ...session,
-      pageGrants: pageGrantsFromStore(session.account),
+      pageGrants: await pageGrantsFromStore(session.account),
     };
   },
 

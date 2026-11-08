@@ -26,7 +26,7 @@ export function getStandalonePorts(): StandalonePorts {
         if (!session || session.pageGrants) return session;
         return {
           ...session,
-          pageGrants: pageGrantsFromStore(session.account),
+          pageGrants: await pageGrantsFromStore(session.account),
         };
       },
     },

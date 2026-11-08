@@ -24,6 +24,7 @@ type Effective = {
 };
 
 type Payload = {
+  version: number;
   config: {
     workspaceDefaults: { workspaceId: WorkspaceId; grants: Grant[] }[];
     bundles: Bundle[];
@@ -37,7 +38,7 @@ type Payload = {
 
 const WORKSPACES: WorkspaceId[] = ["administration", "management", "staff", "quality", "safeguarding"];
 
-async function postAction(body: unknown) {
+async function postAction(body: Record<string, unknown>) {
   const response = await fetch("/api/staff-page-access", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -104,6 +105,7 @@ export function StaffPermissionsScreen() {
       router.refresh();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not save.");
+      await reload();
     }
   }
 
@@ -111,6 +113,10 @@ export function StaffPermissionsScreen() {
     return Object.entries(source)
       .filter((entry): entry is [string, "read" | "edit"] => entry[1] === "read" || entry[1] === "edit")
       .map(([pageId, level]) => ({ pageId, level }));
+  }
+
+  function send(body: Record<string, unknown>) {
+    return postAction({ ...body, expectedVersion: data?.version ?? 0 });
   }
 
   if (!data) return <p className={styles.description}>Loading page access.</p>;
@@ -194,7 +200,7 @@ export function StaffPermissionsScreen() {
             type="button"
             onClick={() =>
               void run(
-                () => postAction({ action: "saveWorkspace", workspaceId: workspace, grants: grantsFromDraft(draft) }),
+                () => send({ action: "saveWorkspace", workspaceId: workspace, grants: grantsFromDraft(draft) }),
                 "Workspace default saved. The page map is now on for this workspace.",
               )
             }
@@ -214,7 +220,7 @@ export function StaffPermissionsScreen() {
             disabled={!confirmWiden}
             onClick={() =>
               void run(
-                () => postAction({ action: "clearWorkspace", workspaceId: workspace, confirmWiden: true }),
+                () => send({ action: "clearWorkspace", workspaceId: workspace, confirmWiden: true }),
                 "Workspace page map cleared. Role-baseline access is restored. This can be wider than the map you deleted.",
               )
             }
@@ -254,7 +260,7 @@ export function StaffPermissionsScreen() {
           type="button"
           onClick={() =>
             void run(async () => {
-              await postAction({
+              await send({
                 action: "saveBundle",
                 name: bundleName,
                 grants: grantsFromDraft(draft),
@@ -276,7 +282,7 @@ export function StaffPermissionsScreen() {
                 type="button"
                 onClick={() =>
                   void run(
-                    () => postAction({ action: "deleteBundle", bundleId: bundle.id }),
+                    () => send({ action: "deleteBundle", bundleId: bundle.id }),
                     "Page bundle removed.",
                   )
                 }
@@ -312,7 +318,7 @@ export function StaffPermissionsScreen() {
             disabled={!directStaff}
             onClick={() =>
               void run(
-                () => postAction({
+                () => send({
                   action: "saveDirect",
                   staffId: directStaff,
                   grants: grantsFromDraft(draft),
@@ -328,7 +334,7 @@ export function StaffPermissionsScreen() {
             disabled={!directStaff}
             onClick={() =>
               void run(
-                () => postAction({ action: "clearDirect", staffId: directStaff }),
+                () => send({ action: "clearDirect", staffId: directStaff }),
                 "Direct assignment cleared.",
               )
             }

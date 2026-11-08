@@ -280,16 +280,37 @@ describe("staff page access", () => {
     expect(pageById("reviews.api.state")).toBeUndefined();
   });
 
-  it("treats a missing page-access file as unconfigured and a corrupt file as closed", () => {
+  it("treats a missing page-access file as unconfigured and a corrupt file as closed", async () => {
     expect(readPageAccessConfig().workspaceDefaults).toEqual([]);
-    expect(pageGrantsFromStore(admin.account).configured).toBe(false);
+    expect((await pageGrantsFromStore(admin.account)).configured).toBe(false);
     writeFileSync(process.env.STAFF_PAGE_ACCESS_FILE || "", "{");
-    expect(pageGrantsFromStore(admin.account)).toEqual({
+    expect(await pageGrantsFromStore(admin.account)).toEqual({
       configured: true,
       readable: [],
       editable: [],
     });
-    expect(decidePageAccess({ ...admin, pageGrants: pageGrantsFromStore(admin.account) }, "/administration/dashboard").read).toBe(false);
+    expect(decidePageAccess({ ...admin, pageGrants: await pageGrantsFromStore(admin.account) }, "/administration/dashboard").read).toBe(false);
+  });
+
+  it("closes access when production has no durable page-access store", async () => {
+    const previousDatabase = process.env.REVIEW_DATABASE_URL;
+    const previousUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const previousKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    process.env.VERCEL = "1";
+    process.env.STAFF_PAGE_ACCESS_STORE = "file";
+    delete process.env.REVIEW_DATABASE_URL;
+    delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+    expect(await pageGrantsFromStore(admin.account)).toEqual({
+      configured: true,
+      readable: [],
+      editable: [],
+    });
+    delete process.env.VERCEL;
+    delete process.env.STAFF_PAGE_ACCESS_STORE;
+    if (previousDatabase) process.env.REVIEW_DATABASE_URL = previousDatabase;
+    if (previousUrl) process.env.NEXT_PUBLIC_SUPABASE_URL = previousUrl;
+    if (previousKey) process.env.SUPABASE_SERVICE_ROLE_KEY = previousKey;
   });
 
   it("refuses a records page from someone who does not hold that capability", () => {

@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { canonicalActorId } from "@/lib/portal/actor-id";
 import { conflictBody, sameSavedContent, versionOf } from "./version-rules";
 import {
   readReviewState,
@@ -19,7 +20,7 @@ export class ReviewStoreNotConfigured extends Error {
   status = 503;
   constructor() {
     super(
-      "Review store is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY, then apply the reviewed supabase/migrations/035_review_assistant_store.sql. The file store is test-only.",
+      "Review store is not configured. Set REVIEW_DATABASE_URL or the Supabase service-role URL and key, then apply the reviewed 035 and 036 SQL. Saves call public.save_app_state_if_version. reviews_private stays unexposed. The file store is test-only.",
     );
   }
 }
@@ -45,7 +46,7 @@ export type HistoryEntry = {
 };
 
 export interface ReviewRepository {
-  kind: "memory" | "file" | "supabase";
+  kind: "memory" | "file" | "supabase" | "postgres";
   readDocument(): Promise<ReviewState>;
   saveDocument(next: ReviewState, expectedVersion: number, actorId: string): Promise<DocumentSave>;
   documentHistory(): Promise<HistoryEntry[]>;
@@ -226,15 +227,15 @@ export const supabaseReviewRepository: ReviewRepository = {
     }
     const saved: ReviewState = { ...next, version: storedVersion + 1, savedAt: new Date().toISOString() };
     delete saved.appBuild;
+    const actor = canonicalActorId(actorId);
     const client = supabaseAdmin();
-    const actor = /^[0-9a-f-]{36}$/i.test(actorId) ? actorId : null;
-    const { data, error } = await client.schema("reviews_private").rpc("save_app_state_if_version", {
+    const { data, error } = await client.rpc("save_app_state_if_version", {
       expected_version: expectedVersion,
       next_payload: saved,
       actor_id: actor,
     });
-    if (error) throw new ReviewStoreNotConfigured();
-    if (data !== 1) {
+    if (error) throw reviewSaveError(error.message);
+    if (Number(data) !== 1) {
       const latest = await this.readDocument();
       return { status: 409, body: conflictBody(expectedVersion, versionOf(latest), latest) };
     }
@@ -271,7 +272,7 @@ export const supabaseReviewRepository: ReviewRepository = {
     const { error } = await client.from("review_assistant_attachments").insert({
       id,
       portal_apprentice_id: /^[0-9a-f-]{36}$/i.test(input.learnerId) ? input.learnerId : null,
-      actor_id: input.actorId,
+      actor_id: canonicalActorId(input.actorId),
       filename: input.filename,
       content_type: input.type,
       size_bytes: input.bytes.length,
@@ -314,6 +315,113 @@ export const supabaseReviewRepository: ReviewRepository = {
   },
 };
 
+function reviewSaveError(message: string) {
+  if (/must equal the expected version plus one/i.test(message)) {
+    return Object.assign(new Error("Review version must move forward by one."), { status: 400 });
+  }
+  if (/not a Portal profile/i.test(message)) {
+    return Object.assign(new Error("Review actor is not a Portal profile."), { status: 400 });
+  }
+  return new ReviewStoreNotConfigured();
+}
+
+type QueryResult = { rows: Array<Record<string, unknown>> };
+type Queryable = { query: (sql: string, params?: unknown[]) => Promise<QueryResult> };
+
+async function withReviewPostgres<T>(fn: (db: Queryable) => Promise<T>): Promise<T> {
+  const url = process.env.REVIEW_DATABASE_URL?.trim();
+  if (!url) throw new ReviewStoreNotConfigured();
+  const { Client } = await import("pg");
+  const client = new Client({ connectionString: url });
+  await client.connect();
+  try {
+    return await fn(client);
+  } finally {
+    await client.end();
+  }
+}
+
+async function readPostgresDocument(db: Queryable): Promise<ReviewState> {
+  const result = await db.query(
+    "select payload, updated_at from public.app_state where id = $1",
+    [REVIEW_DOCUMENT_ID],
+  );
+  const row = result.rows[0];
+  if (!row) return emptyDocument();
+  const payload = (row.payload || {}) as ReviewState;
+  payload.version = versionOf(payload);
+  payload.savedAt = String(row.updated_at || "");
+  return payload;
+}
+
+export const postgresReviewRepository: ReviewRepository = {
+  kind: "postgres",
+  readDocument() {
+    return withReviewPostgres(readPostgresDocument);
+  },
+  async saveDocument(next, expectedVersion, actorId) {
+    const actor = canonicalActorId(actorId);
+    return withReviewPostgres(async (db) => {
+      const stored = await readPostgresDocument(db);
+      const storedVersion = versionOf(stored);
+      if (expectedVersion !== storedVersion) {
+        return { status: 409, body: conflictBody(expectedVersion, storedVersion, stored) };
+      }
+      if (sameSavedContent(next, stored)) {
+        return {
+          status: 200,
+          body: { ok: true, unchanged: true, version: storedVersion, savedAt: stored.savedAt || "" },
+        };
+      }
+      const saved: ReviewState = { ...next, version: storedVersion + 1, savedAt: new Date().toISOString() };
+      delete saved.appBuild;
+      try {
+        const result = await db.query(
+          "select public.save_app_state_if_version($1, $2::jsonb, $3::uuid) as saved",
+          [expectedVersion, JSON.stringify(saved), actor],
+        );
+        if (Number(result.rows[0]?.saved) !== 1) {
+          const latest = await readPostgresDocument(db);
+          return { status: 409, body: conflictBody(expectedVersion, versionOf(latest), latest) };
+        }
+        return { status: 200, body: { ok: true, version: versionOf(saved), savedAt: saved.savedAt || "" } };
+      } catch (error) {
+        throw reviewSaveError(error instanceof Error ? error.message : "");
+      }
+    });
+  },
+  async documentHistory() {
+    return withReviewPostgres(async (db) => {
+      const result = await db.query(
+        "select version, payload, saved_at, user_id from public.app_state_history order by saved_at asc, id asc",
+      );
+      return result.rows.map((row) => ({
+        version: Number(row.version),
+        payload: row.payload as ReviewState,
+        savedAt: String(row.saved_at || ""),
+        actorId: String(row.user_id || ""),
+      }));
+    });
+  },
+  async saveAttachment() {
+    throw new ReviewStoreNotConfigured();
+  },
+  async readAttachment() {
+    throw Object.assign(new Error("Attached review not found."), { status: 404 });
+  },
+  async attachmentBinding(id) {
+    return withReviewPostgres(async (db) => {
+      const result = await db.query(
+        "select actor_id, portal_apprentice_id from public.review_assistant_attachments where id = $1",
+        [id],
+      );
+      const row = result.rows[0];
+      if (!row?.actor_id) return null;
+      return { actorId: String(row.actor_id), learnerId: String(row.portal_apprentice_id || "") };
+    });
+  },
+};
+
 export function getReviewRepository(): ReviewRepository {
   const mode = process.env.REVIEW_ASSISTANT_STORE;
   const production = process.env.VERCEL === "1" || process.env.NODE_ENV === "production";
@@ -321,6 +429,7 @@ export function getReviewRepository(): ReviewRepository {
     if (production) throw new ReviewStoreNotConfigured();
     return mode === "memory" ? memoryReviewRepository : fileReviewRepository;
   }
+  if (process.env.REVIEW_DATABASE_URL?.trim()) return postgresReviewRepository;
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || !process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
     throw new ReviewStoreNotConfigured();
   }

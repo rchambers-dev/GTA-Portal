@@ -13,7 +13,12 @@ import {
 import { loadStaffDirectory } from "@/features/staff-page-access/directory";
 import { effectivePages } from "@/features/staff-page-access/model";
 import { PORTAL_PAGES, pagesForWorkspace } from "@/features/staff-page-access/registry";
-import { readPageAccessConfig, writePageAccessConfig } from "@/features/staff-page-access/store";
+import {
+  loadPageAccessRecord,
+  PageAccessConfigUnavailable,
+  PageAccessConflict,
+  savePageAccessConfig,
+} from "@/features/staff-page-access/store";
 import type { WorkspaceId } from "@/lib/portal/types";
 
 export const runtime = "nodejs";
@@ -41,9 +46,19 @@ function publicPages() {
 export async function GET() {
   const session = await editorOrResponse();
   if (session instanceof NextResponse) return session;
-  const config = readPageAccessConfig();
+  let loaded;
+  try {
+    loaded = await loadPageAccessRecord();
+  } catch (error) {
+    if (error instanceof PageAccessConfigUnavailable) {
+      return NextResponse.json({ error: error.message }, { status: 503 });
+    }
+    throw error;
+  }
+  const config = loaded.config;
   const directory = await loadStaffDirectory();
   return NextResponse.json({
+    version: loaded.version,
     config,
     pages: publicPages(),
     directory,
@@ -80,9 +95,22 @@ export async function POST(request: Request) {
     staffIds?: string[];
     staffId?: string;
     confirmWiden?: boolean;
+    expectedVersion?: number;
   };
+  if (typeof body.expectedVersion !== "number") {
+    return NextResponse.json({ error: "Reload page access before saving." }, { status: 400 });
+  }
   const directory = await loadStaffDirectory();
-  const config = readPageAccessConfig();
+  let loaded;
+  try {
+    loaded = await loadPageAccessRecord();
+  } catch (error) {
+    if (error instanceof PageAccessConfigUnavailable) {
+      return NextResponse.json({ error: error.message }, { status: 503 });
+    }
+    throw error;
+  }
+  const config = loaded.config;
   try {
     let next = config;
     if (body.action === "saveWorkspace" && body.workspaceId) {
@@ -110,11 +138,18 @@ export async function POST(request: Request) {
     } else {
       return NextResponse.json({ error: "Unknown action." }, { status: 400 });
     }
-    writePageAccessConfig(next);
-    return NextResponse.json({ ok: true, config: next });
+    const saved = await savePageAccessConfig(next, body.expectedVersion, session.account.id);
+    return NextResponse.json({ ok: true, version: saved.version, config: saved.config });
   } catch (error) {
-    if (error instanceof PageAccessCommandError) {
+    if (error instanceof PageAccessCommandError || error instanceof PageAccessConflict) {
       return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+    if (error instanceof PageAccessConfigUnavailable) {
+      return NextResponse.json({ error: error.message }, { status: 503 });
+    }
+    const status = (error as { status?: number }).status;
+    if (status === 400) {
+      return NextResponse.json({ error: error instanceof Error ? error.message : "Could not save." }, { status: 400 });
     }
     return NextResponse.json({ error: "An error occurred." }, { status: 500 });
   }
