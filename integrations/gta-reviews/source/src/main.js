@@ -6,6 +6,7 @@ import {
 } from "./staff.js";
 import {
   tutorFromEmail,
+  tutorLabel,
   tutorRecord,
 } from "./tutors.js";
 import {
@@ -2324,6 +2325,7 @@ form.addEventListener("submit", (event) => {
   const info = readLearnerInfo(form, "add");
   const result = addNewLearner({
     name: document.querySelector("#learner-name").value.trim(),
+    portalApprenticeId: document.querySelector("#learner-portal-apprentice")?.value || "",
     company: document.querySelector("#learner-company")?.value,
     postcode: document.querySelector("#learner-postcode").value,
     collegeDay: document.querySelector("#learner-college").value,

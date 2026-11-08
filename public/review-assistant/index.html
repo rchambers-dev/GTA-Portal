@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Outfit:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <script src="/review-assistant/appearance.js"></script>
+    <script src="/appearance.js"></script>
   </head>
   <body class="signed-out">
     <main class="login-screen" id="login-screen">
@@ -152,7 +152,16 @@
             <div id="records-add-body" class="records-add-body">
             <form id="learner-form" class="records-details" autocomplete="off">
               <div class="records-fields">
-                <label>
+                <label data-portal-apprentice-field hidden>
+                  Portal apprentice
+                  <select id="learner-portal-apprentice" data-add-portal-apprentice>
+                    <option value="" disabled hidden selected>Choose an apprentice</option>
+                  </select>
+                </label>
+                <p class="meta" data-portal-apprentice-empty hidden>
+                  No Portal apprentices are available to review. This screen does not create an apprentice record.
+                </p>
+                <label data-free-name-field>
                   Apprentice name
                   <input
                     id="learner-name"
@@ -192,18 +201,6 @@
                   GTA tutor
                   <select data-add-tutor data-combo="tutor">
                     <option value="" disabled hidden selected>Choose tutor</option>
-                    <option>John Pearson</option>
-                    <option>Andrew Ross</option>
-                    <option>Mike Hepworth</option>
-                    <option>Marc Hadfield</option>
-                    <option>Mark Illingworth</option>
-                    <option>Tony Reid</option>
-                    <option>Martin Farthing</option>
-                    <option>Dan Hanmer</option>
-                    <option>Robert Mason</option>
-                    <option>Murtala Kasimu</option>
-                    <option>Anne-Marie Sanderson</option>
-                    <option value="__new__">Add a new tutor</option>
                   </select>
                   <input data-add-tutor-new class="combo-new" hidden placeholder="Type the tutor’s name" />
                 </label>
@@ -818,7 +815,7 @@
         </div>
       </div>
     </div>
-    <link rel="stylesheet" href="/review-assistant/app.css" />
-    <script type="module" src="/review-assistant/app.js"></script>
+    <link rel="stylesheet" href="/app.css?v=out-137" />
+    <script type="module" src="/app.js?v=out-165"></script>
   </body>
 </html>

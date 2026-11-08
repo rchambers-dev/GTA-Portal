@@ -8,6 +8,7 @@ import {
 import type { ReviewState } from "@/features/review-assistant/state-store";
 import { getReviewRepository } from "@/features/review-assistant/repository";
 import { filterStateForTutor, mergeTutorReviewUpdates } from "@/features/review-assistant/tutor-caseload";
+import { reviewLearnerIdError } from "@/features/review-assistant/portal-roster";
 import { conflictBody, sameSavedContent, versionOf } from "@/features/review-assistant/version-rules";
 
 export const runtime = "nodejs";
@@ -70,6 +71,8 @@ export async function POST(request: Request) {
       { status },
     );
   }
+  const learnerError = await reviewLearnerIdError(session, merged);
+  if (learnerError) return NextResponse.json({ error: learnerError }, { status: 400 });
   if (sameSavedContent(merged, stored)) {
     return NextResponse.json({
       state: filterStateForTutor(stored, tutorKey, keyOf),

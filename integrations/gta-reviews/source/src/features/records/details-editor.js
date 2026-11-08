@@ -34,7 +34,7 @@ import {
   tutorLookupKey,
 } from "../../planner.js";
 import { createSavedReview, findSavedReview, setReviewHolder } from "../../reviews.js";
-import { mergedTutorNames, officialTutorNames } from "../../tutors.js";
+import { mergedTutorNames, officialTutorNames, portalTutorMode, tutorLabel } from "../../tutors.js";
 import { cssEscape } from "../../lib/html.js";
 import {
   activeAwaitingDateKey,
@@ -574,7 +574,9 @@ function comboSelectOptions(kind, current) {
         (name) =>
           `<option value="${escapeHtml(name)}"${name === value ? " selected" : ""}>${escapeHtml(kind === "tutor" ? tutorLabel(name) : name)}</option>`,
       ),
-    `<option value="__new__">Add a new ${kind === "tutor" ? "tutor" : "apprenticeship"}</option>`,
+    kind === "tutor" && portalTutorMode()
+      ? ""
+      : `<option value="__new__">Add a new ${kind === "tutor" ? "tutor" : "apprenticeship"}</option>`,
   ].join("");
 }
 

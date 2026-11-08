@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { resolveAiProvider } from "@/lib/ai/client";
+import { getAiConfig } from "@/lib/ai/config";
 import { requireReviewActor, reviewPageDenied } from "@/features/review-assistant/source-runtime";
 
 export const runtime = "nodejs";
@@ -21,8 +23,31 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
-  return NextResponse.json(
-    { error: "AI wording is not configured on this server." },
-    { status: 500 },
-  );
+  const config = getAiConfig();
+  if (!config.apiKey) {
+    return NextResponse.json(
+      { error: "AI wording is not configured on this server." },
+      { status: 500 },
+    );
+  }
+  try {
+    const result = await resolveAiProvider().complete({
+      messages: [
+        {
+          role: "system",
+          content: "Rewrite the tutor's review wording. Keep the facts. Do not add people, dates, or results that were not written.",
+        },
+        { role: "user", content: text },
+      ],
+      temperature: 0.2,
+      maxTokens: 800,
+    });
+    const rewritten = String(result.text || "").trim();
+    if (!rewritten) {
+      return NextResponse.json({ error: "AI wording is not configured on this server." }, { status: 500 });
+    }
+    return NextResponse.json({ text: rewritten });
+  } catch {
+    return NextResponse.json({ error: "AI wording is not configured on this server." }, { status: 500 });
+  }
 }

@@ -3,6 +3,7 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { reviewAssistantAccess } from "@/features/review-assistant/access";
+import { loadReviewApprentices, loadReviewStaff, portalScriptJson } from "@/features/review-assistant/portal-roster";
 import { reviewPageDenied } from "@/features/review-assistant/source-runtime";
 
 export const runtime = "nodejs";
@@ -31,8 +32,12 @@ export async function GET() {
       },
     },
   };
+  const staff = await loadReviewStaff(session);
+  const apprentices = await loadReviewApprentices(session);
   const bridge = `<script>
-window.__PORTAL_REVIEW_SESSION__=${JSON.stringify(portalSession).replace(/</g, "\\u003c")};
+window.__PORTAL_REVIEW_SESSION__=${portalScriptJson(portalSession)};
+window.__PORTAL_REVIEW_STAFF__=${portalScriptJson(staff)};
+window.__PORTAL_REVIEW_APPRENTICES__=${portalScriptJson(apprentices)};
 const portalFetch=window.fetch.bind(window);
 window.fetch=function(input,init){
   const raw=typeof input==="string"?input:(input&&input.url)||"";

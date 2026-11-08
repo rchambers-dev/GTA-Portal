@@ -11,6 +11,8 @@ const status = JSON.parse(readFileSync("/tmp/supabase-native-start.json", "utf8"
 if (status.runtime !== "native" || !String(status.env.API_URL).startsWith("http://127.0.0.1:")) {
   throw new Error("Refusing to drive the UI against a non-local stack.");
 }
+const staff = [{ id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", name: "Synthetic Fixture Tutor" }];
+const apprentices = [{ id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc", name: "Synthetic Fixture Apprentice" }];
 const supabase = createClient(status.env.API_URL, status.env.SERVICE_ROLE_KEY, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
@@ -25,6 +27,13 @@ async function currentDocument() {
   return result.data?.payload || { version: 1, learners: [], savedReviews: [], settings: {} };
 }
 
+await (async () => {
+  const stored = await currentDocument();
+  await supabase.from("app_state").update({
+    payload: { ...stored, version: Number(stored.version) || 1, learners: [], savedReviews: [], followUps: [], archive: [] },
+  }).eq("id", "default");
+})();
+
 async function saveDocument(next) {
   const stored = await currentDocument();
   const expected = Number(stored.version) || 1;
@@ -32,6 +41,9 @@ async function saveDocument(next) {
   if (incoming !== expected) {
     return { status: 409, body: { error: "Version conflict", clientVersion: incoming, storedVersion: expected, state: stored } };
   }
+  const allowed = new Set(apprentices.map((item) => item.id));
+  const unknown = (next.learners || []).some((item) => item?.id && !allowed.has(item.id));
+  if (unknown) return { status: 400, body: { error: "Choose a Portal apprentice. This screen does not create one." } };
   const saved = { ...next, version: expected + 1, savedAt: new Date().toISOString() };
   const rpc = await supabase.rpc("save_app_state_if_version", {
     expected_version: expected,
@@ -64,6 +76,14 @@ function fileFor(urlPath) {
     clean.replace(/^\/forms\//, "forms/"),
     clean.replace(/^\//, ""),
   ];
+  if (clean === "/pdf.worker.min.mjs") {
+    const worker = path.join(root, "integrations/gta-reviews/node_modules/pdfjs-dist/build/pdf.worker.min.mjs");
+    try {
+      return { full: worker, body: readFileSync(worker) };
+    } catch {
+      return null;
+    }
+  }
   for (const relative of candidates) {
     const full = path.normalize(path.join(publicDir, relative));
     if (full.startsWith(publicDir)) {
@@ -103,7 +123,7 @@ const server = createServer(async (request, response) => {
           email: "synthetic.fixture@example.test",
           app_metadata: { role: "admin", password_changed: true },
         },
-      })};</script></head>`,
+      }).replace(/</g, "\\u003c")};window.__PORTAL_REVIEW_STAFF__=${JSON.stringify(staff).replace(/</g, "\\u003c")};window.__PORTAL_REVIEW_APPRENTICES__=${JSON.stringify(apprentices).replace(/</g, "\\u003c")};</script></head>`,
     );
     response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
     response.end(html);
@@ -138,9 +158,14 @@ const browser = await chromium.launch({
   args: ["--no-sandbox"],
 });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+page.on("pageerror", (error) => console.log("PAGE", error.message));
+let consoleCount = 0;
+page.on("console", (message) => {
+  if (consoleCount++ < 25) console.log("C", message.type(), message.text().slice(0, 180));
+});
 await page.route("**/*", (route) => {
   const target = route.request().url();
-  if (target.startsWith(`${origin}/`) || target.startsWith("data:")) return route.continue();
+  if (target.startsWith(`${origin}/`) || target.startsWith("data:") || target.startsWith("blob:")) return route.continue();
   return route.abort();
 });
 try {
@@ -150,27 +175,67 @@ try {
   record("original UI signed in", signedIn, signedIn ? "login screen hidden" : "still signed out");
   await page.screenshot({ path: path.join(artifacts, "review-ui-signed-in.png"), fullPage: true });
 
+  const injected = await page.evaluate(() => ({
+    staff: globalThis.__PORTAL_REVIEW_STAFF__ || null,
+    apprentices: globalThis.__PORTAL_REVIEW_APPRENTICES__ || null,
+  }));
+  record("roster injected", Array.isArray(injected.staff) && injected.staff.length === 1, JSON.stringify(injected));
   await page.click("#records-add-toggle");
-  await page.waitForSelector("#learner-name", { state: "visible", timeout: 10000 });
-  await page.fill("#learner-name", "Synthetic Fixture Colleague");
+  await page.waitForSelector("#learner-portal-apprentice", { state: "visible", timeout: 10000 });
+  const tutorOptions = await page.locator("[data-add-tutor] option").allTextContents();
+  record("canonical tutor roster", tutorOptions.includes("Synthetic Fixture Tutor") && !tutorOptions.includes("John Pearson"), tutorOptions.join(", "));
+  const apprenticeOptions = await page.locator("#learner-portal-apprentice option").evaluateAll((nodes) =>
+    nodes.map((node) => `${node.value}:${node.textContent}`),
+  );
+  record("apprentice options", apprenticeOptions.some((item) => item.includes("Synthetic Fixture Apprentice")), apprenticeOptions.join(" | ") || "none");
+  if (apprenticeOptions.some((item) => item.startsWith(apprentices[0].id))) {
+    await page.selectOption("#learner-portal-apprentice", apprentices[0].id);
+  }
   await page.fill("#learner-company", "Synthetic Fixture Workshop");
   await page.fill("#learner-postcode", "DN1 1AA");
   await page.selectOption("#learner-college", "Monday");
-  await page.locator("[data-add-tutor]").selectOption({ index: 1 });
+  if (tutorOptions.includes("Synthetic Fixture Tutor")) {
+    await page.locator("[data-add-tutor]").selectOption(staff[0].id);
+  }
   await page.click("#learner-form button[type=submit]");
   await page.waitForTimeout(1500);
   const listed = await page.locator("body").innerText();
-  record("create learner", listed.includes("Synthetic Fixture Colleague"), "name visible after add");
+  record("create learner", listed.includes("Synthetic Fixture Apprentice"), "canonical apprentice visible after add");
   await page.screenshot({ path: path.join(artifacts, "review-ui-learner-added.png"), fullPage: true });
 
-  await page.reload({ waitUntil: "networkidle" });
+  await page.reload({ waitUntil: "domcontentloaded" });
   await page.waitForTimeout(1000);
   const reloaded = await page.locator("body").innerText();
   record(
     "reload",
-    reloaded.includes("Synthetic Fixture Colleague") && reloaded.includes("Synthetic Fixture Learner"),
-    "both synthetic names visible after reload",
+    reloaded.includes("Synthetic Fixture Apprentice"),
+    "canonical apprentice visible after reload",
   );
+  await page.getByRole("button", { name: "Show learner details" }).first().click({ timeout: 8000 });
+  await page.locator("[data-records-company]").fill("Synthetic Fixture Workshop Edited");
+  await page.locator("#records-list").getByRole("button", { name: "Save details" }).click();
+  await page.waitForTimeout(1200);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await page.getByRole("button", { name: "Show learner details" }).first().click({ timeout: 8000 });
+  const company = await page.locator("[data-records-company]").inputValue();
+  record("edit details", company === "Synthetic Fixture Workshop Edited", company);
+  const preview = page.locator("[data-preview-review-form]").first();
+  await preview.click();
+  await page.locator("#pdf-preview-layer").waitFor({ state: "visible", timeout: 15000 });
+  await page.click("#pdf-preview-populate-pdf");
+  await page.waitForTimeout(2000);
+  await page.screenshot({ path: path.join(artifacts, "review-ui-filled-pdf.png"), fullPage: true });
+  const previewTitle = await page.locator("#pdf-preview-title").innerText();
+  const previewBody = await page.locator("#pdf-preview").innerText();
+  record("filled PDF preview", previewBody.includes("Synthetic Fixture Apprentice"), previewTitle);
+  await page.click("#pdf-preview-populate-word");
+  await page.waitForTimeout(1500);
+  const wordStatus = await page.locator("#status").innerText().catch(() => "");
+  record("filled Word preview", /Word/i.test(wordStatus), wordStatus || "no status");
+  await page.screenshot({ path: path.join(artifacts, "review-ui-filled-word.png"), fullPage: true });
+  await page.locator("#pdf-preview-layer").evaluate((node) => {
+    node.hidden = true;
+  });
 
   const conflict = await page.evaluate(async () => {
     const response = await fetch("/api/state", {
@@ -184,30 +249,6 @@ try {
 
   await page.click("[data-nav-page=plan]");
   await page.waitForTimeout(800);
-  await page.click("[data-roster-tab=waiting]");
-  let openedEdit = false;
-  try {
-    await page.locator("[data-edit-details]").first().click({ timeout: 3000 });
-    openedEdit = true;
-  } catch {
-    openedEdit = false;
-  }
-  const editButton = page.locator("[data-edit-details]");
-  if (openedEdit && await editButton.count()) {
-    await editButton.first().click();
-    const company = page.locator("[name=company], #learner-company").last();
-    await company.fill("Synthetic Fixture Workshop Edited");
-    const saveButton = page.getByRole("button", { name: /Save details|Save/ });
-    if (await saveButton.count()) await saveButton.first().click();
-    await page.waitForTimeout(1000);
-    await page.reload({ waitUntil: "domcontentloaded" });
-    const edited = await page.locator("body").innerText();
-    record("edit learner", edited.includes("Synthetic Fixture Workshop Edited"), "edited workplace visible after reload");
-    await page.click("[data-nav-page=plan]");
-    await page.waitForTimeout(500);
-  } else {
-    record("edit learner", false, "Edit details button was not rendered on the waiting list");
-  }
   const planVisible = await page.locator("#page-plan").isVisible();
   record("planner page", planVisible, planVisible ? "plan page visible" : "plan page hidden");
   await page.screenshot({ path: path.join(artifacts, "review-ui-planner.png"), fullPage: true });
@@ -221,14 +262,8 @@ try {
   await writeFile(path.join(artifacts, "review-form-template.docx"), word);
   record("DOCX template", word.subarray(0, 2).toString() === "PK", `${word.length} bytes`);
 
-  await page.locator("#pdf-preview-layer").evaluate((node) => {
-    node.hidden = false;
-  });
-  await page.click("#pdf-preview-populate-pdf");
-  await page.waitForTimeout(1000);
-  await page.screenshot({ path: path.join(artifacts, "review-ui-pdf-preview.png"), fullPage: true });
-  const previewText = await page.locator("#pdf-preview").innerText();
-  record("PDF preview control", previewText.includes("Preview PDF"), "preview dialog opened");
+  const history = await supabase.from("app_state_history").select("version");
+  record("history rows", !history.error && (history.data?.length || 0) > 0, history.error?.message || `${history.data?.length || 0} rows`);
 } catch (error) {
   record("browser flow", false, error instanceof Error ? error.message : String(error));
   await page.screenshot({ path: path.join(artifacts, "review-ui-error.png"), fullPage: true }).catch(() => undefined);
