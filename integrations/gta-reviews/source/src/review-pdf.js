@@ -1,5 +1,6 @@
 import { PDFDocument, StandardFonts } from "pdf-lib";
 import { fetchFormBytes } from "./lib/form-bytes.js";
+import { tutorLabel } from "./tutors.js";
 import {
   DEFAULT_GTA_REVIEWER,
   formatUkDateKey,
@@ -200,7 +201,7 @@ export function section1Values(learner) {
     reviewDate: "",
     apprenticeship: profile.apprenticeship,
     releaseDay: learner?.collegeDay || "",
-    gtaTutor: profile.tutor,
+    gtaTutor: tutorLabel(profile.tutor),
     gtaReviewer: profile.gtaReviewer || DEFAULT_GTA_REVIEWER,
     startDate: formatUkDateKey(profile.apprenticeshipStartDate),
     endDate: formatUkDateKey(profile.apprenticeshipEndDate),
