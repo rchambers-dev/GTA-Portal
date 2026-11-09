@@ -3,8 +3,20 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import { AddApprenticeForm } from "./AddApprenticeForm";
 
+vi.mock("next/link", () => ({
+  default: ({
+    href,
+    children,
+    ...props
+  }: {
+    href: string;
+    children?: import("react").ReactNode;
+  }) => createElement("a", { ...props, href }, children),
+}));
+
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: () => undefined }),
+  usePathname: () => "/administration/onboarding/apprentice",
 }));
 
 vi.mock("./add-apprentice-actions", () => ({
@@ -49,6 +61,7 @@ describe("Add apprentice page", () => {
     expect(html).toContain("In learning");
     expect(html).toContain("No programme");
     expect(html).toContain("GTA-000169");
+    expect(html).toContain('href="/administration/onboarding/apprentice/GTA-000169"');
     expect(html).toContain("Autocare L2 (ST0499)");
     expect(html).toContain(">Add apprentice<");
     expect(html).toContain("Search apprentices");
