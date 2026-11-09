@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
+import { canManageApprenticeProgramme } from "../domain/apprentice-programme";
+import { loadApprenticeProgramme } from "../domain/apprentice-programme-repository";
 import { loadApprenticeLearner } from "../domain/apprentice-tutor-repository";
 import { canAssignApprenticeTutor } from "../domain/apprentice-tutor";
 import { ApprenticeLearnerView } from "./ApprenticeLearnerView";
@@ -15,9 +17,11 @@ export async function ApprenticeLearnerScreen({
   workspace: "administration" | "management";
   gtaId: string;
 }) {
-  const [session, page] = await Promise.all([
-    getSupabaseEffectiveSession(),
+  const session = await getSupabaseEffectiveSession();
+  const canManageProgramme = canManageApprenticeProgramme(session);
+  const [page, programme] = await Promise.all([
     loadApprenticeLearner(gtaId),
+    loadApprenticeProgramme(gtaId, { canManage: canManageProgramme }),
   ]);
 
   return (
@@ -25,7 +29,9 @@ export async function ApprenticeLearnerScreen({
       <ApprenticeLearnerView
         workspace={workspace}
         canAssign={canAssignApprenticeTutor(session)}
+        canManageProgramme={canManageProgramme}
         page={page}
+        programme={programme}
       />
     </Suspense>
   );
