@@ -51,6 +51,8 @@ describe("Add apprentice page", () => {
     expect(html).toContain("GTA-000169");
     expect(html).toContain("Autocare L2 (ST0499)");
     expect(html).toContain(">Add apprentice<");
+    expect(html).toContain("Search apprentices");
+    expect(html).toContain("Search by GTA ID, name, programme, or status");
     expect(html).not.toContain("EXAMPLE DATA");
     expect(html).not.toContain("Saving is disabled");
     expect(html).not.toContain("Future reviews");

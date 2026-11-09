@@ -145,6 +145,23 @@ export function formatApprenticeName(person: {
     .join(" ");
 }
 
+/** Search covers the GTA ID, name, programme label, and status. */
+export function apprenticeMatchesQuery(row: ApprenticeListItem, query: string): boolean {
+  const term = query.trim().toLowerCase();
+  if (!term) return true;
+  const haystack = [
+    row.gtaId,
+    formatApprenticeName(row),
+    row.programmeLabel,
+    row.status,
+    apprenticeStatusLabel(row.status),
+  ]
+    .filter((part): part is string => Boolean(part))
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(term);
+}
+
 /**
  * Administrator and Management may add. Tutors, and anyone else, may not.
  * The nav uses the same records permission; RLS checks base_role.
