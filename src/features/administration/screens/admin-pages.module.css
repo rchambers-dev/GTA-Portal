@@ -2399,6 +2399,24 @@ textarea.detailFieldInput {
   text-align: end;
 }
 
+.apprenticeRow {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  border-radius: 8px;
+}
+
+.apprenticeRow .pillMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  justify-content: flex-end;
+}
+
+.assignedId {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
 .addPanel {
   display: flex;
   flex-direction: column;
