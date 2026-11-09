@@ -6,6 +6,7 @@ import { insertApprenticeRecord } from "./apprentice-repository";
 import {
   canAddApprentice,
   explainApprenticeWriteError,
+  apprenticeMatchesQuery,
   formatProgrammeChoice,
   toApprenticeInsert,
   validateNewApprentice,
@@ -30,6 +31,25 @@ function actor(baseRole: string, permissions: string[]) {
 }
 
 describe("add apprentice record", () => {
+  it("matches an apprentice on GTA ID, name, programme, or status", () => {
+    const row = {
+      gtaId: "GTA-000169",
+      firstName: "Alex",
+      middleNames: null,
+      lastName: "Example",
+      programmeId,
+      programmeLabel: "Autocare L2 (ST0499)",
+      status: "in_learning",
+      createdAt: "2026-11-09T12:00:00.000Z",
+      updatedAt: "2026-11-09T12:00:00.000Z",
+    };
+    expect(apprenticeMatchesQuery(row, "gta-000169")).toBe(true);
+    expect(apprenticeMatchesQuery(row, "alex example")).toBe(true);
+    expect(apprenticeMatchesQuery(row, "st0499")).toBe(true);
+    expect(apprenticeMatchesQuery(row, "in learning")).toBe(true);
+    expect(apprenticeMatchesQuery(row, "jordan")).toBe(false);
+  });
+
   it("shows the programme name with its Skills England code", () => {
     expect(formatProgrammeChoice("Autocare Level 2", "ST0499")).toBe(
       "Autocare L2 (ST0499)",
@@ -205,6 +225,7 @@ describe("add apprentice record", () => {
     );
     expect(route).toContain('if (segment === "onboarding/apprentice") return <AddApprenticeScreen />;');
     expect(route).not.toContain('ApprenticesVisualPreview mode="form"');
-    expect(route).toContain("<EmployersVisualPreview mode=\"form\" />");
+    expect(route).toContain('if (segment === "onboarding/employer") return <EmployersScreen />;');
+    expect(route).not.toContain('EmployersVisualPreview mode="form"');
   });
 });

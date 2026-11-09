@@ -671,14 +671,16 @@ describe("lookup route and menu", () => {
     expect(page).not.toContain("ApprenticePackSearchScreen");
   });
 
-  it("keeps one Apprentices label in each staff menu and names Employers", () => {
+  it("keeps Add apprentice in Onboarding and names Employers", () => {
     const nav = read("src/shell/workspaces/resolve-navigation.ts");
     expect(nav).not.toContain("/apprentices?from=");
     expect(nav).toContain('title: "Onboarding"');
     expect(nav).toContain('label: "Add apprentice"');
-    expect(nav).toContain('label: "Add employer"');
-    expect(nav).toContain('label: "Directory"');
-    expect(nav).not.toContain('label: "Employers"');
+    expect(nav).toContain('label: "Employers",');
+    expect(nav).not.toContain('label: "Add employer"');
+    expect(nav).not.toContain('label: "Apprentices",');
+    expect(nav).not.toContain("`${base}/apprentices`");
+    expect(nav).not.toContain('label: "Directory"');
     expect(nav).not.toContain("Employer Records");
     expect(nav).toContain('label: "Apprentice Enrolments"');
   });

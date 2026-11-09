@@ -80,10 +80,9 @@ function onboardingSection(workspace: "administration" | "management") {
     title: "Onboarding",
     items: [
       { href: base, label: "Overview", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-      { href: `${base}/apprentices`, label: "Apprentices", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-      { href: `${base}/interviews`, label: "Interviews", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/apprentice`, label: "Add apprentice", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-      { href: `${base}/employer`, label: "Add employer", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/employer`, label: "Employers", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/interviews`, label: "Interviews", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
     ],
   };
 }

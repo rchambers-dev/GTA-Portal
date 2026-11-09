@@ -9,6 +9,7 @@ import {
   APPRENTICE_STATUSES,
   APPRENTICE_STATUS_LABELS,
   DEFAULT_APPRENTICE_STATUS,
+  apprenticeMatchesQuery,
   apprenticeStatusLabel,
   formatApprenticeName,
   formatProgrammeChoice,
@@ -46,12 +47,14 @@ export function AddApprenticeForm({
   const [assignedGtaId, setAssignedGtaId] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [added, setAdded] = useState<ApprenticeListItem[]>([]);
+  const [query, setQuery] = useState("");
 
   const knownIds = new Set(apprentices.map((row) => row.gtaId));
   const rows = [
     ...added.filter((row) => !knownIds.has(row.gtaId)),
     ...apprentices,
   ];
+  const visible = rows.filter((row) => apprenticeMatchesQuery(row, query));
 
   function setField(field: keyof typeof EMPTY_FORM, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -224,13 +227,27 @@ export function AddApprenticeForm({
           <h2 id="apprentice-list-heading" className={styles.formGroupTitle}>
             Apprentices
           </h2>
+          <label className={styles.registrySearch}>
+            <span className={styles.registrySearchLabel}>Search apprentices</span>
+            <input
+              type="search"
+              value={query}
+              data-apprentice-search=""
+              placeholder="Search by GTA ID, name, programme, or status"
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </label>
           {rows.length === 0 ? (
             <p className={styles.empty} role="status">
               No apprentices yet.
             </p>
+          ) : visible.length === 0 ? (
+            <p className={styles.empty} role="status">
+              No apprentices match this search.
+            </p>
           ) : (
             <ul className={styles.pillList} data-apprentice-list="live">
-              {rows.map((row) => (
+              {visible.map((row) => (
                 <li key={row.gtaId} className={`${styles.pillRow} ${styles.apprenticeRow}`}>
                   <span className={styles.pillName}>{formatApprenticeName(row)}</span>
                   <span className={styles.pillMeta}>

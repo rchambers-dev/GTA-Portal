@@ -346,6 +346,11 @@ fieldset:disabled .field select {
   color: var(--color-red-800, #991b1b);
 }
 
+.compactBtn {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+}
+
 .searchField {
   display: flex;
   flex-direction: column;
@@ -2389,6 +2394,33 @@ textarea.detailFieldInput {
   border-radius: 8px;
 }
 
+.employerRow.pillRow {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.employerRow .pillMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  justify-content: flex-end;
+}
+
+.employerBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.rowButton {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
 .pillName {
   font-weight: 700;
 }
@@ -2572,6 +2604,10 @@ textarea.detailFieldInput {
   gap: 6px;
   margin-bottom: 12px;
   min-width: 0;
+}
+
+.learnerFieldWide {
+  grid-column: 1 / -1;
 }
 
 .learnerField span {

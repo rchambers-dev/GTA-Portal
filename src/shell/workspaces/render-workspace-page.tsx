@@ -41,7 +41,7 @@ import {
   AdminStaffScreen,
 } from "@/features/administration";
 import { AddApprenticeScreen } from "@/features/administration/screens/AddApprenticeScreen";
-import { EmployersVisualPreview } from "@/features/administration/screens/employers-visual-preview";
+import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
 import { OnboardingOverview } from "@/features/administration/screens/OnboardingOverview";
@@ -76,14 +76,7 @@ function renderOnboarding(
 ) {
   if (segment === "onboarding") return <OnboardingOverview workspace={workspace} />;
   if (segment === "onboarding/apprentices") {
-    return (
-      <OnboardingDirectory
-        initialView="apprentices"
-        lockView
-        title="Apprentices"
-        description="The same example apprentice records as the Onboarding directory. Saving is disabled."
-      />
-    );
+    redirect(`/${workspace}/onboarding/apprentice`);
   }
   if (segment === "onboarding/interviews") {
     return (
@@ -104,7 +97,7 @@ function renderOnboarding(
     );
   }
   if (segment === "onboarding/apprentice") return <AddApprenticeScreen />;
-  if (segment === "onboarding/employer") return <EmployersVisualPreview mode="form" />;
+  if (segment === "onboarding/employer") return <EmployersScreen />;
   if (segment === "onboarding/directory" || segment === "onboarding/directory/apprentices") {
     return <OnboardingDirectory initialView="apprentices" />;
   }
