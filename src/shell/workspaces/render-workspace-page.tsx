@@ -40,7 +40,7 @@ import {
   AdminUsersScreen,
   AdminStaffScreen,
 } from "@/features/administration";
-import { ApprenticesVisualPreview } from "@/features/administration/screens/apprentices-visual-preview";
+import { AddApprenticeScreen } from "@/features/administration/screens/AddApprenticeScreen";
 import { EmployersVisualPreview } from "@/features/administration/screens/employers-visual-preview";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
@@ -103,7 +103,7 @@ function renderOnboarding(
       />
     );
   }
-  if (segment === "onboarding/apprentice") return <ApprenticesVisualPreview mode="form" />;
+  if (segment === "onboarding/apprentice") return <AddApprenticeScreen />;
   if (segment === "onboarding/employer") return <EmployersVisualPreview mode="form" />;
   if (segment === "onboarding/directory" || segment === "onboarding/directory/apprentices") {
     return <OnboardingDirectory initialView="apprentices" />;
