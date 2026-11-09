@@ -590,6 +590,10 @@ fieldset:disabled .field select {
   color: var(--color-navy-800, #1e3a5f);
 }
 
+.learnerCard h3.formGroupTitle {
+  margin-top: 18px;
+}
+
 .formGroupBadge {
   display: inline-flex;
   align-items: center;
@@ -2764,4 +2768,101 @@ a.tabActive {
 
 .learnerFacts dd {
   margin: 0;
+}
+
+.dateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 16px;
+}
+
+.dateSpan {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 16px;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.dateValue {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+.dateNotes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 0;
+}
+
+.changeList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.changeCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: color-mix(in srgb, var(--bg-surface) 92%, var(--color-navy-50, white));
+}
+
+.changeCard h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.changeHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.preWrap {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.checkRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0;
+  font-weight: 650;
+}
+
+.checkRow input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.2rem;
+  flex: none;
+}
+
+.checkRow small {
+  display: block;
+  margin-top: 2px;
+  font-weight: 550;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+@media (max-width: 800px) {
+  .dateGrid,
+  .dateSpan {
+    grid-template-columns: 1fr;
+  }
 }

@@ -5,7 +5,9 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Select } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
+import type { ApprenticeProgrammePage } from "../domain/apprentice-programme";
 import { assignApprenticeTutorAction } from "./apprentice-tutor-actions";
+import { ApprenticeProgrammePanel } from "./ApprenticeProgrammePanel";
 import type { ApprenticeLearnerPage } from "../domain/apprentice-tutor-repository";
 import {
   LEARNER_SECTIONS,
@@ -23,11 +25,15 @@ import styles from "./admin-pages.module.css";
 export function ApprenticeLearnerView({
   workspace,
   canAssign,
+  canManageProgramme,
   page,
+  programme,
 }: {
   workspace: "administration" | "management";
   canAssign: boolean;
+  canManageProgramme: boolean;
   page: ApprenticeLearnerPage;
+  programme: ApprenticeProgrammePage | null;
 }) {
   const pathname = usePathname() ?? apprenticeLearnerPath(workspace, page.requestedId);
   const searchParams = useSearchParams();
@@ -85,6 +91,18 @@ export function ApprenticeLearnerView({
                 tutorHistory={page.tutorHistory}
                 tutorOptions={page.tutorOptions}
               />
+            ) : section === "programme" ? (
+              programme ? (
+                <ApprenticeProgrammePanel
+                  canManage={canManageProgramme}
+                  apprentice={apprentice}
+                  programme={programme}
+                />
+              ) : (
+                <p className={styles.error} role="alert">
+                  Programme details could not be loaded.
+                </p>
+              )
             ) : (
               <OverviewPanel apprentice={apprentice} />
             )}
@@ -114,8 +132,6 @@ function OverviewPanel({ apprentice }: { apprentice: ApprenticeLearnerRecord }) 
         <dd className={styles.assignedId} data-learner-gta-id={apprentice.gtaId}>
           {apprentice.gtaId}
         </dd>
-        <dt>Programme</dt>
-        <dd data-learner-programme={apprentice.programmeLabel}>{apprentice.programmeLabel}</dd>
         <dt>Status</dt>
         <dd data-learner-status={apprentice.statusLabel}>{apprentice.statusLabel}</dd>
       </dl>

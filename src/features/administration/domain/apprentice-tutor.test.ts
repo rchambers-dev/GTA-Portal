@@ -115,9 +115,13 @@ describe("apprentice tutor rule", () => {
     );
     expect(learnerSectionFromQuery(null)).toBe("overview");
     expect(learnerSectionFromQuery("tutor")).toBe("tutor");
+    expect(learnerSectionFromQuery("programme")).toBe("programme");
     expect(learnerSectionFromQuery("employer")).toBe("overview");
     expect(learnerSectionHref("/administration/onboarding/apprentice/GTA-000002", "overview")).toBe(
       "/administration/onboarding/apprentice/GTA-000002",
+    );
+    expect(learnerSectionHref("/administration/onboarding/apprentice/GTA-000002", "programme")).toBe(
+      "/administration/onboarding/apprentice/GTA-000002?tab=programme",
     );
     expect(learnerSectionHref("/administration/onboarding/apprentice/GTA-000002", "tutor")).toBe(
       "/administration/onboarding/apprentice/GTA-000002?tab=tutor",
@@ -324,6 +328,8 @@ describe("apprentice tutor rule", () => {
       gtaId: "GTA-000002",
       name: "Jack Elliot",
       programmeLabel: "Vehicle Damage Panel L3 (ST0403)",
+      programmeName: "Vehicle Damage Panel Level 3",
+      standardCode: "ST0403",
       statusLabel: "In learning",
     });
     expect(page.currentTutor).toMatchObject({

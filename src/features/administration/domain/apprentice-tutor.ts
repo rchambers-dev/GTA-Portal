@@ -40,6 +40,7 @@ const MONTHS = [
  */
 export const LEARNER_SECTIONS = [
   { id: "overview", label: "Overview" },
+  { id: "programme", label: "Programme" },
   { id: "tutor", label: "Tutor" },
 ] as const;
 
@@ -89,6 +90,8 @@ export type ApprenticeLearnerRecord = {
   gtaId: string;
   name: string;
   programmeLabel: string;
+  programmeName: string | null;
+  standardCode: string | null;
   status: string;
   statusLabel: string;
 };
@@ -342,6 +345,8 @@ export function learnerRecordFromRow(
       lastName: row.last_name,
     }),
     programmeLabel,
+    programmeName: programme?.name.trim() || null,
+    standardCode: programme?.standardCode.trim() || null,
     status: row.status,
     statusLabel: apprenticeStatusLabel(row.status),
   };
