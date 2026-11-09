@@ -41,6 +41,8 @@ import {
   AdminStaffScreen,
 } from "@/features/administration";
 import { AddApprenticeScreen } from "@/features/administration/screens/AddApprenticeScreen";
+import { ApprenticeLearnerScreen } from "@/features/administration/screens/ApprenticeLearnerScreen";
+import { apprenticeLearnerGtaId } from "@/features/administration/domain/apprentice-tutor";
 import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
@@ -381,6 +383,15 @@ export async function renderWorkspacePage(
   if (workspace === "employer" && segment === "commitments") {
     // Legacy path — Documents hub replaces employer commitments.
     redirect("/employer/documents");
+  }
+
+  if (workspace === "administration" || workspace === "management") {
+    const learnerGtaId = apprenticeLearnerGtaId(segment);
+    if (learnerGtaId) {
+      return (
+        <ApprenticeLearnerScreen workspace={workspace} gtaId={learnerGtaId} />
+      );
+    }
   }
 
   if (workspace === "administration") {

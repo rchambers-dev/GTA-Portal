@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { Select } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { addApprenticeAction } from "./add-apprentice-actions";
@@ -19,6 +20,10 @@ import {
   type ApprenticeListItem,
   type ApprenticeProgrammeOption,
 } from "../domain/apprentice-record";
+import {
+  apprenticeLearnerPath,
+  apprenticeListWorkspace,
+} from "../domain/apprentice-tutor";
 import styles from "./admin-pages.module.css";
 
 const EMPTY_FORM = {
@@ -41,6 +46,8 @@ export function AddApprenticeForm({
   loadError: string | null;
 }) {
   const router = useRouter();
+  const pathname = usePathname() ?? "";
+  const workspace = apprenticeListWorkspace(pathname);
   const [form, setForm] = useState(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<ApprenticeFieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -248,13 +255,19 @@ export function AddApprenticeForm({
           ) : (
             <ul className={styles.pillList} data-apprentice-list="live">
               {visible.map((row) => (
-                <li key={row.gtaId} className={`${styles.pillRow} ${styles.apprenticeRow}`}>
-                  <span className={styles.pillName}>{formatApprenticeName(row)}</span>
-                  <span className={styles.pillMeta}>
-                    <span className={styles.assignedId}>{row.gtaId}</span>
-                    <span>{row.programmeLabel ?? "No programme"}</span>
-                    <span>{apprenticeStatusLabel(row.status)}</span>
-                  </span>
+                <li key={row.gtaId}>
+                  <Link
+                    href={apprenticeLearnerPath(workspace, row.gtaId)}
+                    className={`${styles.pillRow} ${styles.apprenticeRow} ${styles.apprenticeLink}`}
+                    data-apprentice-id={row.gtaId}
+                  >
+                    <span className={styles.pillName}>{formatApprenticeName(row)}</span>
+                    <span className={styles.pillMeta}>
+                      <span className={styles.assignedId}>{row.gtaId}</span>
+                      <span>{row.programmeLabel ?? "No programme"}</span>
+                      <span>{apprenticeStatusLabel(row.status)}</span>
+                    </span>
+                  </Link>
                 </li>
               ))}
             </ul>

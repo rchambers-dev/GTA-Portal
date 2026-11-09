@@ -2727,3 +2727,41 @@ textarea.detailFieldInput {
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+a.tab,
+a.tabActive {
+  text-decoration: none;
+}
+
+.tab:focus-visible,
+.tabActive:focus-visible,
+.apprenticeLink:focus-visible {
+  outline: 2px solid var(--color-navy-600);
+  outline-offset: 2px;
+}
+
+.apprenticeLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.apprenticeLink:hover {
+  border-color: var(--color-navy-700);
+}
+
+.learnerFacts {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0.55rem 1rem;
+  margin: 0;
+}
+
+.learnerFacts dt {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.learnerFacts dd {
+  margin: 0;
+}
