@@ -298,6 +298,25 @@ describe("apprentice tutor rule", () => {
             },
           };
         }
+        if (table === "apprentice_employments") {
+          return {
+            select() {
+              return {
+                eq() {
+                  return {
+                    is() {
+                      return {
+                        async maybeSingle() {
+                          return { data: null, error: null };
+                        },
+                      };
+                    },
+                  };
+                },
+              };
+            },
+          };
+        }
         if (table === "programmes") {
           return {
             select() {
@@ -345,6 +364,7 @@ describe("apprentice tutor rule", () => {
     ]);
     expect(seen.role).toBe(true);
     expect(seen.responsibility).toBe(`{"${APPRENTICESHIP_TUTOR_RESPONSIBILITY}"}`);
+    expect(page.currentEmployment).toBeNull();
     expect(page.loadError).toBeNull();
   });
 

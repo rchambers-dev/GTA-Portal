@@ -77,6 +77,7 @@ function page(overrides: Partial<ApprenticeLearnerPage> = {}): ApprenticeLearner
       { id: tutorId, displayName: "Alex Tutor", email: "alex@example.com" },
       { id: adminId, displayName: "Anne Admin", email: "anne@example.com" },
     ],
+    currentEmployment: null,
     loadError: null,
     ...overrides,
   };
@@ -226,7 +227,29 @@ describe("learner page", () => {
     expect(html).toContain('href="/administration/onboarding/apprentice/GTA-000002?tab=programme"');
     expect(html).toContain('href="/administration/onboarding/apprentice/GTA-000002?tab=tutor"');
     expect(html).toContain('href="/administration/onboarding/apprentice"');
+    expect(html).toContain("No current employer");
     expect(html).not.toContain("data-tutor-assign");
+  });
+
+  it("shows the current employer, site, and manager on the overview", () => {
+    nav.search = "";
+    const html = render(
+      page({
+        currentEmployment: {
+          companyName: "BCA",
+          postcode: "DN2 4SF",
+          areaName: "Barnby Dun with Kirk Sandall",
+          siteName: null,
+          managerName: "Jane Ann Smith",
+          startDate: "2024-09-02",
+        },
+      }),
+    );
+    expect(html).toContain('data-learner-employer="BCA"');
+    expect(html).toContain('data-learner-site="DN2 4SF"');
+    expect(html).toContain("DN2 4SF · Barnby Dun with Kirk Sandall");
+    expect(html).toContain('data-learner-manager="Jane Ann Smith"');
+    expect(html).not.toContain("No current employer");
   });
 
   it("shows the programme, effective dates, and break tools to an administrator", () => {

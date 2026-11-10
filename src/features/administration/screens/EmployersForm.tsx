@@ -1,51 +1,81 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, type Dispatch, type FormEvent, type SetStateAction } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { Select } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import {
+  apprenticeLearnerPath,
+  apprenticeListWorkspace,
+  formatTutorDate,
+} from "../domain/apprentice-tutor";
+import { isUkPostcode, normaliseUkPostcode } from "../domain/postcode-area";
+import {
   addEmployerAction,
   addEmployerSiteAction,
+  lookupEmployerPostcodeAction,
   removeEmployerManagerAction,
-  removeEmployerSiteAction,
   renameEmployerAction,
   saveEmployerManagerAction,
+  setEmployerSiteActiveAction,
+  updateEmployerSiteAction,
 } from "./employer-actions";
 import {
-  EMPLOYER_AREAS,
+  DUPLICATE_POSTCODE,
+  LAST_SITE_MESSAGE,
+  POSTCODE_FORMAT_MESSAGE,
+  canDeactivateSite,
   employerMatchesQuery,
   employerSummary,
   formatManagerName,
   managerSiteLabel,
+  placementManagerLabel,
+  placementSiteLabel,
+  siteLabel,
   sortEmployers,
-  validateAreaName,
   validateCompanyName,
   validateManagerInput,
+  validateSiteInput,
   withManager,
   withSite,
   withoutManager,
-  withoutSite,
   type EmployerField,
   type EmployerFieldErrors,
   type EmployerListItem,
   type EmployerManager,
   type EmployerMutationResult,
+  type SiteInput,
 } from "../domain/employer-record";
 import styles from "./admin-pages.module.css";
+
+type SiteDraft = SiteInput & {
+  id: string | null;
+  areaEdited: boolean;
+};
 
 type ManagerDraft = {
   id: string | null;
   firstName: string;
+  middleNames: string;
   lastName: string;
   phone: string;
   email: string;
   siteId: string;
 };
 
+const BLANK_SITE: SiteDraft = {
+  id: null,
+  postcode: "",
+  areaName: "",
+  siteName: "",
+  areaEdited: false,
+};
+
 const BLANK_MANAGER: ManagerDraft = {
   id: null,
   firstName: "",
+  middleNames: "",
   lastName: "",
   phone: "",
   email: "",
@@ -64,11 +94,14 @@ export function EmployersForm({
   initialOpenId?: string | null;
 }) {
   const router = useRouter();
+  const pathname = usePathname() ?? "/administration/onboarding/employer";
+  const workspace = apprenticeListWorkspace(pathname);
   const [rows, setRows] = useState(employers);
   const [loaded, setLoaded] = useState(employers);
   const [query, setQuery] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const [companyNameError, setCompanyNameError] = useState<string | null>(null);
+  const [newSite, setNewSite] = useState<SiteDraft>(BLANK_SITE);
+  const [addErrors, setAddErrors] = useState<EmployerFieldErrors>({});
   const [addError, setAddError] = useState<string | null>(null);
   const [assignedId, setAssignedId] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(initialOpenId);
@@ -78,8 +111,8 @@ export function EmployersForm({
   );
   const [nameError, setNameError] = useState<string | null>(null);
   const [panelError, setPanelError] = useState<string | null>(null);
-  const [siteChoice, setSiteChoice] = useState("");
-  const [siteError, setSiteError] = useState<string | null>(null);
+  const [siteDraft, setSiteDraft] = useState<SiteDraft>(BLANK_SITE);
+  const [siteErrors, setSiteErrors] = useState<EmployerFieldErrors>({});
   const [managerDraft, setManagerDraft] = useState<ManagerDraft>(BLANK_MANAGER);
   const [managerErrors, setManagerErrors] = useState<EmployerFieldErrors>({});
 
@@ -100,8 +133,8 @@ export function EmployersForm({
     setNameDraft(employer.companyName);
     setNameError(null);
     setPanelError(null);
-    setSiteChoice("");
-    setSiteError(null);
+    setSiteDraft(BLANK_SITE);
+    setSiteErrors({});
     setManagerDraft(BLANK_MANAGER);
     setManagerErrors({});
   }
@@ -134,31 +167,41 @@ export function EmployersForm({
   async function onAddEmployer(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setAddError(null);
-    const parsed = validateCompanyName(companyName);
-    if (!parsed.ok) {
-      setCompanyNameError(parsed.fieldErrors.companyName ?? "Enter a company name.");
+    const company = validateCompanyName(companyName);
+    const site = validateSiteInput(newSite, []);
+    if (!company.ok || !site.ok) {
+      setAddErrors({
+        ...(company.ok ? {} : company.fieldErrors),
+        ...(site.ok ? {} : site.fieldErrors),
+      });
       setAssignedId(null);
       return;
     }
-    setCompanyNameError(null);
-    const result = await run(() => addEmployerAction({ companyName: parsed.companyName }));
+    setAddErrors({});
+    const result = await run(() =>
+      addEmployerAction({
+        companyName: company.companyName,
+        site: newSite,
+      }),
+    );
     if (!result) return;
     if (!result.ok) {
-      setCompanyNameError(result.fieldErrors.companyName ?? null);
+      setAddErrors(result.fieldErrors);
       setAddError(result.formError);
       setAssignedId(null);
       return;
     }
     setAssignedId(result.value.employerId);
     setCompanyName("");
+    setNewSite(BLANK_SITE);
     setQuery("");
     setRows((current) => sortEmployers([...current, result.value]));
     setOpenId(result.value.employerId);
     setNameDraft(result.value.companyName);
     setNameError(null);
     setPanelError(null);
-    setSiteChoice("");
-    setSiteError(null);
+    setSiteDraft(BLANK_SITE);
+    setSiteErrors({});
     setManagerDraft(BLANK_MANAGER);
     setManagerErrors({});
   }
@@ -193,46 +236,66 @@ export function EmployersForm({
     setNameDraft(result.value.companyName);
   }
 
-  async function onAddSite(event: FormEvent<HTMLFormElement>, employer: EmployerListItem) {
+  async function onSaveSite(event: FormEvent<HTMLFormElement>, employer: EmployerListItem) {
     event.preventDefault();
     setPanelError(null);
-    const available = availableAreas(employer);
-    const areaName = available.includes(siteChoice as (typeof EMPLOYER_AREAS)[number])
-      ? siteChoice
-      : (available[0] ?? "");
-    const parsed = validateAreaName(areaName);
+    const existingPostcodes = employer.sites
+      .filter((site) => site.id !== siteDraft.id)
+      .map((site) => site.postcode);
+    const parsed = validateSiteInput(siteDraft, existingPostcodes);
     if (!parsed.ok) {
-      setSiteError(parsed.fieldErrors.areaName ?? "Choose Doncaster, Hull, or Sheffield.");
+      setSiteErrors(parsed.fieldErrors);
       return;
     }
-    setSiteError(null);
+    setSiteErrors({});
     const result = await run(() =>
-      addEmployerSiteAction({ employerId: employer.employerId, areaName: parsed.areaName }),
+      siteDraft.id
+        ? updateEmployerSiteAction({
+            employerId: employer.employerId,
+            siteId: siteDraft.id,
+            site: siteDraft,
+            existingPostcodes,
+          })
+        : addEmployerSiteAction({
+            employerId: employer.employerId,
+            site: siteDraft,
+            existingPostcodes,
+          }),
     );
     if (!result || !result.ok) {
       if (result && !result.ok) {
-        setSiteError(result.fieldErrors.areaName ?? null);
+        setSiteErrors(result.fieldErrors);
         setPanelError(result.formError);
       }
       return;
     }
     replace(employer.employerId, withSite(employer, result.value));
-    setSiteChoice("");
+    setSiteDraft(BLANK_SITE);
   }
 
-  async function onRemoveSite(employer: EmployerListItem, siteId: string) {
+  async function onSetSiteActive(
+    employer: EmployerListItem,
+    siteId: string,
+    isActive: boolean,
+  ) {
     setPanelError(null);
-    setSiteError(null);
-    const result = await run(() => removeEmployerSiteAction({ siteId }));
+    setSiteErrors({});
+    if (!isActive && !canDeactivateSite(employer.sites, siteId)) {
+      setPanelError(LAST_SITE_MESSAGE);
+      return;
+    }
+    const result = await run(() =>
+      setEmployerSiteActiveAction({
+        employerId: employer.employerId,
+        siteId,
+        isActive,
+      }),
+    );
     if (!result || !result.ok) {
       if (result && !result.ok) setPanelError(result.formError);
       return;
     }
-    const next = withoutSite(employer, siteId);
-    replace(employer.employerId, next);
-    if (managerDraft.siteId === siteId) {
-      setManagerDraft((current) => ({ ...current, siteId: "" }));
-    }
+    replace(employer.employerId, withSite(employer, result.value));
   }
 
   async function onSaveManager(event: FormEvent<HTMLFormElement>, employer: EmployerListItem) {
@@ -279,7 +342,7 @@ export function EmployersForm({
     <ApprenticePageShell
       eyebrow="Onboarding"
       title="Add employers"
-      description="Company name is required. The database assigns the employer ID. Sites are Doncaster, Hull, or Sheffield."
+      description="Company name is required, and so is a first site with a postcode. The database assigns the employer ID."
     >
       <div className={styles.stack} data-employers="live">
         {loadError ? (
@@ -313,7 +376,7 @@ export function EmployersForm({
             <p className={styles.learnerKicker}>Manual entry</p>
             <h2 className={styles.learnerHeading}>Add employer</h2>
             <p className={styles.learnerMuted}>
-              Only the company name is saved. Sites and managers are added on the employer afterwards.
+              The first site is saved with the employer. The area fills in from the postcode, and you can change it.
             </p>
             <article className={styles.learnerCard}>
               <form onSubmit={onAddEmployer} noValidate>
@@ -328,19 +391,28 @@ export function EmployersForm({
                       required
                       disabled={pending}
                       autoComplete="organization"
-                      aria-invalid={companyNameError ? true : undefined}
-                      aria-describedby={companyNameError ? "companyName-error" : undefined}
+                      aria-invalid={addErrors.companyName ? true : undefined}
+                      aria-describedby={addErrors.companyName ? "companyName-error" : undefined}
                       onChange={(event) => {
                         setCompanyName(event.target.value);
-                        setCompanyNameError(null);
+                        setAddErrors((current) => clearField(current, "companyName"));
                       }}
                     />
-                    {companyNameError ? (
+                    {addErrors.companyName ? (
                       <p id="companyName-error" className={styles.error} role="alert">
-                        {companyNameError}
+                        {addErrors.companyName}
                       </p>
                     ) : null}
                   </label>
+                  <PostcodeFields
+                    idPrefix="new-site"
+                    draft={newSite}
+                    errors={addErrors}
+                    takenPostcodes={[]}
+                    pending={pending}
+                    onDraft={setNewSite}
+                    onErrors={setAddErrors}
+                  />
                 </div>
                 {addError ? (
                   <p className={styles.error} role="alert">
@@ -366,7 +438,7 @@ export function EmployersForm({
             <input
               type="search"
               value={query}
-              placeholder="Search by company, ID, site, or manager"
+              placeholder="Search by company, postcode, site, apprentice, or manager"
               onChange={(event) => setQuery(event.target.value)}
             />
           </label>
@@ -403,28 +475,48 @@ export function EmployersForm({
                     {open && openEmployer ? (
                       <EmployerEditor
                         employer={openEmployer}
+                        workspace={workspace}
                         canWrite={canWrite}
                         pending={pending}
                         nameDraft={nameDraft}
                         nameError={nameError}
                         panelError={panelError}
-                        siteChoice={siteChoice}
-                        siteError={siteError}
+                        siteDraft={siteDraft}
+                        siteErrors={siteErrors}
                         managerDraft={managerDraft}
                         managerErrors={managerErrors}
                         onNameDraft={setNameDraft}
                         onClearNameError={() => setNameError(null)}
-                        onSiteChoice={setSiteChoice}
+                        onSiteDraft={setSiteDraft}
+                        onSiteErrors={setSiteErrors}
                         onManagerDraft={setManagerDraft}
                         onManagerErrors={setManagerErrors}
                         onRename={(event) => onRename(event, openEmployer)}
-                        onAddSite={(event) => onAddSite(event, openEmployer)}
-                        onRemoveSite={(siteId) => onRemoveSite(openEmployer, siteId)}
+                        onSaveSite={(event) => onSaveSite(event, openEmployer)}
+                        onEditSite={(site) => {
+                          setSiteDraft({
+                            id: site.id,
+                            postcode: site.postcode,
+                            areaName: site.areaName,
+                            siteName: site.siteName ?? "",
+                            areaEdited: true,
+                          });
+                          setSiteErrors({});
+                          setPanelError(null);
+                        }}
+                        onCancelSite={() => {
+                          setSiteDraft(BLANK_SITE);
+                          setSiteErrors({});
+                        }}
+                        onSetSiteActive={(siteId, isActive) =>
+                          onSetSiteActive(openEmployer, siteId, isActive)
+                        }
                         onSaveManager={(event) => onSaveManager(event, openEmployer)}
                         onEditManager={(manager) => {
                           setManagerDraft({
                             id: manager.id,
                             firstName: manager.firstName,
+                            middleNames: manager.middleNames ?? "",
                             lastName: manager.lastName,
                             phone: manager.phone ?? "",
                             email: manager.email ?? "",
@@ -451,63 +543,71 @@ export function EmployersForm({
   );
 }
 
-function availableAreas(employer: EmployerListItem) {
-  const taken = new Set(employer.sites.map((site) => site.areaName));
-  return EMPLOYER_AREAS.filter((area) => !taken.has(area));
-}
-
 function EmployerEditor({
   employer,
+  workspace,
   canWrite,
   pending,
   nameDraft,
   nameError,
   panelError,
-  siteChoice,
-  siteError,
+  siteDraft,
+  siteErrors,
   managerDraft,
   managerErrors,
   onNameDraft,
   onClearNameError,
-  onSiteChoice,
+  onSiteDraft,
+  onSiteErrors,
   onManagerDraft,
   onManagerErrors,
   onRename,
-  onAddSite,
-  onRemoveSite,
+  onSaveSite,
+  onEditSite,
+  onCancelSite,
+  onSetSiteActive,
   onSaveManager,
   onEditManager,
   onCancelManager,
   onRemoveManager,
 }: {
   employer: EmployerListItem;
+  workspace: "administration" | "management";
   canWrite: boolean;
   pending: boolean;
   nameDraft: string;
   nameError: string | null;
   panelError: string | null;
-  siteChoice: string;
-  siteError: string | null;
+  siteDraft: SiteDraft;
+  siteErrors: EmployerFieldErrors;
   managerDraft: ManagerDraft;
   managerErrors: EmployerFieldErrors;
   onNameDraft: (value: string) => void;
   onClearNameError: () => void;
-  onSiteChoice: (value: string) => void;
+  onSiteDraft: Dispatch<SetStateAction<SiteDraft>>;
+  onSiteErrors: Dispatch<SetStateAction<EmployerFieldErrors>>;
   onManagerDraft: (value: ManagerDraft) => void;
   onManagerErrors: (value: EmployerFieldErrors) => void;
   onRename: (event: FormEvent<HTMLFormElement>) => void;
-  onAddSite: (event: FormEvent<HTMLFormElement>) => void;
-  onRemoveSite: (siteId: string) => void;
+  onSaveSite: (event: FormEvent<HTMLFormElement>) => void;
+  onEditSite: (site: EmployerListItem["sites"][number]) => void;
+  onCancelSite: () => void;
+  onSetSiteActive: (siteId: string, isActive: boolean) => void;
   onSaveManager: (event: FormEvent<HTMLFormElement>) => void;
   onEditManager: (manager: EmployerManager) => void;
   onCancelManager: () => void;
   onRemoveManager: (managerId: string) => void;
 }) {
-  const areas = availableAreas(employer);
-  const selectedArea = areas.some((area) => area === siteChoice) ? siteChoice : (areas[0] ?? "");
+  const activeCount = employer.sites.filter((site) => site.isActive).length;
+  const takenPostcodes = employer.sites
+    .filter((site) => site.id !== siteDraft.id)
+    .map((site) => site.postcode);
   const siteOptions = [
     { value: "", label: "No site" },
-    ...employer.sites.map((site) => ({ value: site.id, label: site.areaName })),
+    ...employer.sites.map((site) => ({
+      value: site.id,
+      label: siteLabel(site, { markInactive: true }),
+    })),
   ];
 
   function setManagerField(field: keyof ManagerDraft, value: string) {
@@ -515,9 +615,7 @@ function EmployerEditor({
     if (field === "id") return;
     const errorField = field as EmployerField;
     if (!managerErrors[errorField]) return;
-    const next = { ...managerErrors };
-    delete next[errorField];
-    onManagerErrors(next);
+    onManagerErrors(clearField(managerErrors, errorField));
   }
 
   return (
@@ -565,56 +663,96 @@ function EmployerEditor({
           Sites
         </h3>
         <p className={styles.formGroupMeta}>
-          Removing a site keeps its managers on the employer, without a site.
+          Each site needs a postcode. Deactivating a site keeps it here. The last active site stays on the employer.
         </p>
         {employer.sites.length === 0 ? (
           <p className={styles.empty}>No sites yet.</p>
         ) : (
           <ul className={styles.pillList} data-site-list={employer.employerId}>
             {employer.sites.map((site) => (
-              <li key={site.id} className={`${styles.pillRow} ${styles.employerRow}`} data-site-area={site.areaName}>
-                <span className={styles.pillName}>{site.areaName}</span>
+              <li
+                key={site.id}
+                className={`${styles.pillRow} ${styles.employerRow} ${site.isActive ? "" : styles.siteInactive}`}
+                data-site-postcode={site.postcode}
+                data-site-active={site.isActive ? "true" : "false"}
+              >
+                <span>
+                  <span className={styles.pillName}>{site.siteName || site.areaName}</span>
+                  <span className={styles.pillMeta}>
+                    <span>{site.postcode}</span>
+                    {site.siteName ? <span>{site.areaName}</span> : null}
+                    {site.isActive ? null : <span>Inactive</span>}
+                  </span>
+                </span>
                 {canWrite ? (
-                  <button
-                    type="button"
-                    className={`${styles.dangerBtn} ${styles.compactBtn}`}
-                    disabled={pending}
-                    onClick={() => onRemoveSite(site.id)}
-                  >
-                    Remove
-                  </button>
+                  <span className={styles.rowActions}>
+                    <button
+                      type="button"
+                      className={`${styles.secondaryBtn} ${styles.compactBtn}`}
+                      disabled={pending}
+                      onClick={() => onEditSite(site)}
+                    >
+                      Edit
+                    </button>
+                    {site.isActive && activeCount > 1 ? (
+                      <button
+                        type="button"
+                        className={`${styles.dangerBtn} ${styles.compactBtn}`}
+                        disabled={pending}
+                        onClick={() => onSetSiteActive(site.id, false)}
+                      >
+                        Deactivate
+                      </button>
+                    ) : null}
+                    {site.isActive ? null : (
+                      <button
+                        type="button"
+                        className={`${styles.secondaryBtn} ${styles.compactBtn}`}
+                        disabled={pending}
+                        onClick={() => onSetSiteActive(site.id, true)}
+                      >
+                        Make active
+                      </button>
+                    )}
+                  </span>
                 ) : null}
               </li>
             ))}
           </ul>
         )}
-        {canWrite && areas.length > 0 ? (
-          <form onSubmit={onAddSite} noValidate>
-            <div className={styles.learnerField} data-entry-field="areaName">
-              <span id={`area-${employer.employerId}-label`}>Site</span>
-              <Select
-                aria-label="Site"
-                value={selectedArea}
-                disabled={pending}
-                invalid={Boolean(siteError)}
-                options={areas.map((area) => ({ value: area, label: area }))}
-                onChange={onSiteChoice}
+        {canWrite && activeCount <= 1 ? (
+          <p className={styles.formGroupMeta}>{LAST_SITE_MESSAGE}</p>
+        ) : null}
+        {canWrite ? (
+          <form onSubmit={onSaveSite} noValidate data-site-form={siteDraft.id ? "edit" : "add"}>
+            <h4 className={styles.formGroupTitle}>{siteDraft.id ? "Edit site" : "Add site"}</h4>
+            <div className={styles.learnerGrid}>
+              <PostcodeFields
+                idPrefix={`site-${employer.employerId}`}
+                draft={siteDraft}
+                errors={siteErrors}
+                takenPostcodes={takenPostcodes}
+                pending={pending}
+                onDraft={onSiteDraft}
+                onErrors={onSiteErrors}
               />
-              {siteError ? (
-                <p className={styles.error} role="alert">
-                  {siteError}
-                </p>
-              ) : null}
             </div>
             <div className={styles.learnerActions}>
               <button type="submit" className={styles.secondaryBtn} disabled={pending}>
-                Add site
+                {siteDraft.id ? "Save site" : "Add site"}
               </button>
+              {siteDraft.id ? (
+                <button
+                  type="button"
+                  className={styles.secondaryBtn}
+                  disabled={pending}
+                  onClick={onCancelSite}
+                >
+                  Cancel
+                </button>
+              ) : null}
             </div>
           </form>
-        ) : null}
-        {canWrite && areas.length === 0 ? (
-          <p className={styles.formGroupMeta}>Doncaster, Hull, and Sheffield are already on this employer.</p>
         ) : null}
       </section>
 
@@ -675,6 +813,15 @@ function EmployerEditor({
                 error={managerErrors.firstName}
                 disabled={pending}
                 autoComplete="given-name"
+                onChange={setManagerField}
+              />
+              <ManagerText
+                field="middleNames"
+                label="Middle name"
+                value={managerDraft.middleNames}
+                error={managerErrors.middleNames}
+                disabled={pending}
+                autoComplete="additional-name"
                 onChange={setManagerField}
               />
               <ManagerText
@@ -742,7 +889,203 @@ function EmployerEditor({
           </form>
         ) : null}
       </section>
+
+      <section className={styles.stack} aria-labelledby={`apprentices-${employer.employerId}`}>
+        <h3 id={`apprentices-${employer.employerId}`} className={styles.formGroupTitle}>
+          Apprentices
+        </h3>
+        {employer.placements.length === 0 ? (
+          <p className={styles.empty}>No current apprentices.</p>
+        ) : (
+          <ul className={styles.pillList} data-placement-list={employer.employerId}>
+            {employer.placements.map((placement) => (
+              <li
+                key={placement.gtaId}
+                className={`${styles.pillRow} ${styles.employerRow}`}
+                data-placement-gta={placement.gtaId}
+              >
+                <span>
+                  <Link
+                    className={styles.placementLink}
+                    href={apprenticeLearnerPath(workspace, placement.gtaId)}
+                  >
+                    {placement.name}
+                  </Link>
+                </span>
+                <span className={styles.pillMeta}>
+                  <span>{placementSiteLabel(placement, employer.sites)}</span>
+                  <span>{placementManagerLabel(placement, employer.managers)}</span>
+                  <span>Started {formatTutorDate(placement.startDate)}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
+  );
+}
+
+function PostcodeFields({
+  idPrefix,
+  draft,
+  errors,
+  takenPostcodes,
+  pending,
+  onDraft,
+  onErrors,
+}: {
+  idPrefix: string;
+  draft: SiteDraft;
+  errors: EmployerFieldErrors;
+  takenPostcodes: readonly string[];
+  pending: boolean;
+  onDraft: Dispatch<SetStateAction<SiteDraft>>;
+  onErrors: Dispatch<SetStateAction<EmployerFieldErrors>>;
+}) {
+  const [lookupNote, setLookupNote] = useState<string | null>(null);
+  const [looking, setLooking] = useState(false);
+
+  useEffect(() => {
+    if (draft.areaEdited) return;
+    const normalised = normaliseUkPostcode(draft.postcode);
+    if (!isUkPostcode(normalised)) return;
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      void (async () => {
+        setLooking(true);
+        const result = await lookupEmployerPostcodeAction(normalised);
+        if (cancelled) return;
+        setLooking(false);
+        if (result.ok) {
+          setLookupNote(null);
+          onDraft((current) => {
+            if (current.areaEdited || normaliseUkPostcode(current.postcode) !== normalised) {
+              return current;
+            }
+            return { ...current, areaName: result.areaName };
+          });
+          return;
+        }
+        if (result.message !== POSTCODE_FORMAT_MESSAGE) setLookupNote(result.message);
+      })();
+    }, 400);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [draft.areaEdited, draft.postcode, onDraft]);
+
+  function onPostcodeChange(value: string) {
+    const previous = normaliseUkPostcode(draft.postcode);
+    const next = normaliseUkPostcode(value);
+    onDraft({
+      ...draft,
+      postcode: value,
+      areaEdited: previous === next ? draft.areaEdited : false,
+    });
+    onErrors(clearField(errors, "postcode"));
+    if (!isUkPostcode(next)) setLookupNote(null);
+  }
+
+  function onPostcodeBlur() {
+    const normalised = normaliseUkPostcode(draft.postcode);
+    if (!normalised) {
+      onErrors({ ...clearField(errors, "postcode"), postcode: "Enter a postcode." });
+      return;
+    }
+    if (!isUkPostcode(normalised)) {
+      onErrors({ ...clearField(errors, "postcode"), postcode: POSTCODE_FORMAT_MESSAGE });
+      setLookupNote(null);
+      return;
+    }
+    if (takenPostcodes.some((existing) => normaliseUkPostcode(existing) === normalised)) {
+      onErrors({ ...clearField(errors, "postcode"), postcode: DUPLICATE_POSTCODE });
+      return;
+    }
+    onErrors(clearField(errors, "postcode"));
+  }
+
+  const postcodeHintId = `${idPrefix}-postcode-hint`;
+  const areaHintId = `${idPrefix}-area-hint`;
+
+  return (
+    <>
+      <label className={styles.learnerField} data-entry-field="postcode">
+        <span>
+          Postcode <em className={styles.fieldRequired}>required</em>
+        </span>
+        <input
+          type="text"
+          value={draft.postcode}
+          required
+          disabled={pending}
+          autoComplete="postal-code"
+          spellCheck={false}
+          aria-invalid={errors.postcode ? true : undefined}
+          aria-describedby={postcodeHintId}
+          onChange={(event) => onPostcodeChange(event.target.value)}
+          onBlur={onPostcodeBlur}
+        />
+        {errors.postcode ? (
+          <p id={postcodeHintId} className={styles.error} role="alert">
+            {errors.postcode}
+          </p>
+        ) : looking ? (
+          <p id={postcodeHintId} className={styles.fieldHint} role="status">
+            Looking up the area…
+          </p>
+        ) : lookupNote ? (
+          <p id={postcodeHintId} className={styles.fieldHint} role="status" data-postcode-lookup={idPrefix}>
+            {lookupNote}
+          </p>
+        ) : (
+          <p id={postcodeHintId} className={styles.fieldHint}>
+            The area fills in from the postcode. You can change it.
+          </p>
+        )}
+      </label>
+      <label className={styles.learnerField} data-entry-field="areaName">
+        <span>
+          Area <em className={styles.fieldRequired}>required</em>
+        </span>
+        <input
+          type="text"
+          value={draft.areaName}
+          required
+          disabled={pending}
+          aria-invalid={errors.areaName ? true : undefined}
+          aria-describedby={errors.areaName ? areaHintId : undefined}
+          onChange={(event) => {
+            onDraft({ ...draft, areaName: event.target.value, areaEdited: true });
+            onErrors(clearField(errors, "areaName"));
+          }}
+        />
+        {errors.areaName ? (
+          <p id={areaHintId} className={styles.error} role="alert">
+            {errors.areaName}
+          </p>
+        ) : null}
+      </label>
+      <label className={`${styles.learnerField} ${styles.learnerFieldWide}`} data-entry-field="siteName">
+        <span>Site name</span>
+        <input
+          type="text"
+          value={draft.siteName}
+          disabled={pending}
+          aria-invalid={errors.siteName ? true : undefined}
+          onChange={(event) => {
+            onDraft({ ...draft, siteName: event.target.value });
+            onErrors(clearField(errors, "siteName"));
+          }}
+        />
+        {errors.siteName ? (
+          <p className={styles.error} role="alert">
+            {errors.siteName}
+          </p>
+        ) : null}
+      </label>
+    </>
   );
 }
 
@@ -758,7 +1101,7 @@ function ManagerText({
   inputMode,
   onChange,
 }: {
-  field: "firstName" | "lastName" | "phone" | "email";
+  field: "firstName" | "middleNames" | "lastName" | "phone" | "email";
   label: string;
   value: string;
   error?: string;
@@ -767,7 +1110,7 @@ function ManagerText({
   autoComplete: string;
   type?: "text" | "email";
   inputMode?: "tel";
-  onChange: (field: "firstName" | "lastName" | "phone" | "email", value: string) => void;
+  onChange: (field: "firstName" | "middleNames" | "lastName" | "phone" | "email", value: string) => void;
 }) {
   const errorId = error ? `${field}-error` : undefined;
   return (
@@ -794,4 +1137,11 @@ function ManagerText({
       ) : null}
     </label>
   );
+}
+
+function clearField(errors: EmployerFieldErrors, field: EmployerField): EmployerFieldErrors {
+  if (!errors[field]) return errors;
+  const next = { ...errors };
+  delete next[field];
+  return next;
 }
