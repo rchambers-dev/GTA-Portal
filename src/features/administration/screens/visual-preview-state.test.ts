@@ -671,12 +671,12 @@ describe("lookup route and menu", () => {
     expect(page).not.toContain("ApprenticePackSearchScreen");
   });
 
-  it("keeps Add apprentice in Onboarding and names Employers", () => {
+  it("keeps Add apprentice in Onboarding and names Add employers", () => {
     const nav = read("src/shell/workspaces/resolve-navigation.ts");
     expect(nav).not.toContain("/apprentices?from=");
     expect(nav).toContain('title: "Onboarding"');
     expect(nav).toContain('label: "Add apprentice"');
-    expect(nav).toContain('label: "Employers",');
+    expect(nav).toContain('label: "Add employers",');
     expect(nav).not.toContain('label: "Add employer"');
     expect(nav).not.toContain('label: "Apprentices",');
     expect(nav).not.toContain("`${base}/apprentices`");

@@ -50,7 +50,7 @@ describe("sidebar grouping", () => {
       expect(onboarding?.items.map((item) => item.label)).toEqual([
         "Overview",
         "Add apprentice",
-        "Employers",
+        "Add employers",
         "Interviews",
       ]);
       expect(onboarding?.items.map((item) => item.href)).toEqual([
