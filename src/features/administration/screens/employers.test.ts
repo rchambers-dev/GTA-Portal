@@ -58,6 +58,7 @@ describe("Employers page", () => {
     expect(html).toContain("Hull");
     expect(html).toContain("Sheffield");
     expect(html).toContain("Search employers");
+    expect(html).toContain(">Add employers<");
     expect(html).toContain(">Add employer<");
     expect(html).toContain("Save name");
     expect(html).toContain("Add site");

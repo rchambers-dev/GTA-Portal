@@ -4,7 +4,7 @@ import { canManageEmployers } from "../domain/employer-record";
 import { EmployersForm } from "./EmployersForm";
 
 /**
- * Onboarding → Employers.
+ * Onboarding → Add employers.
  * Loads and saves through the signed-in Supabase session so RLS applies.
  */
 export async function EmployersScreen() {
