@@ -12,8 +12,9 @@ import {
   canDeactivateSite,
   canManageEmployers,
   employerMatchesQuery,
+  formatSite,
   managerChoiceLabel,
-  placementSiteName,
+  placementLocation,
   placementsForSite,
   explainEmployerWriteError,
   toManagerInsert,
@@ -43,7 +44,6 @@ const doncasterSite = {
   id: siteId,
   postcode: "DN4 8DE",
   areaName: "Doncaster",
-  siteName: null,
   isActive: true,
 };
 
@@ -59,7 +59,6 @@ function sampleEmployer(): EmployerListItem {
         id: otherSiteId,
         postcode: "LS9 0PS",
         areaName: "Leeds",
-        siteName: "North yard",
         isActive: true,
       },
     ],
@@ -103,26 +102,26 @@ describe("employer record", () => {
   });
 
   it("requires a UK postcode and area, and rejects a duplicate postcode", () => {
-    const missing = validateSiteInput({ postcode: " ", areaName: "", siteName: "  " }, []);
+    const missing = validateSiteInput({ postcode: " ", areaName: "" }, []);
     expect(missing.ok).toBe(false);
     if (!missing.ok) {
       expect(missing.fieldErrors.postcode).toBe("Enter a postcode.");
-      expect(missing.fieldErrors.areaName).toBe("Enter an area.");
+      expect(missing.fieldErrors.areaName).toBe("Enter a location.");
     }
 
-    const bad = validateSiteInput({ postcode: "S25", areaName: "Dinnington", siteName: "" }, []);
+    const bad = validateSiteInput({ postcode: "S25", areaName: "Dinnington" }, []);
     expect(bad.ok).toBe(false);
     if (!bad.ok) expect(bad.fieldErrors.postcode).toBe(POSTCODE_FORMAT_MESSAGE);
 
     const duplicate = validateSiteInput(
-      { postcode: "dn4 8de", areaName: "Doncaster", siteName: "" },
+      { postcode: "dn4 8de", areaName: "Doncaster" },
       ["DN4 8DE"],
     );
     expect(duplicate.ok).toBe(false);
     if (!duplicate.ok) expect(duplicate.fieldErrors.postcode).toBe(DUPLICATE_POSTCODE);
 
     const saved = validateSiteInput(
-      { postcode: " s1 1aa ", areaName: " Sheffield ", siteName: "  " },
+      { postcode: " s1 1aa ", areaName: " Sheffield " },
       ["DN4 8DE"],
     );
     expect(saved.ok).toBe(true);
@@ -131,8 +130,9 @@ describe("employer record", () => {
       employer_id: "GTA-EMP-000001",
       postcode: "S1 1AA",
       area_name: "Sheffield",
-      site_name: null,
     });
+    expect(toSiteInsert("GTA-EMP-000001", saved.value)).not.toHaveProperty("site_name");
+    expect(formatSite({ postcode: "DN20 8LB", areaName: "Brigg" })).toBe("DN20 8LB, Brigg");
     expect(toSiteInsert("GTA-EMP-000001", saved.value)).not.toHaveProperty("employer_id_assigned");
   });
 
@@ -240,7 +240,7 @@ describe("employer record", () => {
     expect(employerMatchesQuery(employer, "example motors")).toBe(true);
     expect(employerMatchesQuery(employer, "gta-emp-000001")).toBe(true);
     expect(employerMatchesQuery(employer, "dn4 8de")).toBe(true);
-    expect(employerMatchesQuery(employer, "north yard")).toBe(true);
+    expect(employerMatchesQuery(employer, "leeds")).toBe(true);
     expect(employerMatchesQuery(employer, "jane ann smith")).toBe(true);
     expect(employerMatchesQuery(employer, "jack elliot")).toBe(true);
     expect(employerMatchesQuery(employer, "01302")).toBe(true);
@@ -256,7 +256,6 @@ describe("employer record", () => {
           employer_id: "GTA-EMP-000001",
           postcode: "HU1 1AA",
           area_name: "Hull",
-          site_name: null,
           is_active: true,
           created_at: savedEmployer.created_at,
           updated_at: savedEmployer.updated_at,
@@ -299,7 +298,8 @@ describe("employer record", () => {
     expect(rows[0]?.placements[0]?.name).toBe("Jack Elliot");
     expect(rows[0]?.placements[0]?.statusLabel).toBe("Status unavailable");
     expect(rows[0]?.pastPlacements).toEqual([]);
-    expect(placementSiteName(rows[0]!.placements[0]!, rows[0]!.sites)).toBe("No site name");
+    expect(placementLocation(rows[0]!.placements[0]!, rows[0]!.sites)).toBe("Hull");
+    expect(formatSite(rows[0]!.sites[0]!)).toBe("HU1 1AA, Hull");
   });
 
   it("splits past apprentices and filters either list by site", () => {
@@ -380,7 +380,6 @@ describe("employer record", () => {
                       employer_id: "GTA-EMP-000001",
                       postcode: "S1 1AA",
                       area_name: "Sheffield",
-                      site_name: null,
                       is_active: true,
                       created_at: savedEmployer.created_at,
                       updated_at: savedEmployer.updated_at,
@@ -398,15 +397,14 @@ describe("employer record", () => {
     const result = await createEmployerWithSiteRecord(supabase, "Example Motors", {
       postcode: "S1 1AA",
       areaName: "Sheffield",
-      siteName: null,
     });
     expect(rpcName).toBe("create_employer_with_site");
     expect(rpcArgs).toEqual({
       p_company_name: "Example Motors",
       p_postcode: "S1 1AA",
       p_area_name: "Sheffield",
-      p_site_name: null,
     });
+    expect(rpcArgs).not.toHaveProperty("p_site_name");
     expect(rpcArgs).not.toHaveProperty("employer_id");
     expect(result.ok).toBe(true);
     if (!result.ok) return;

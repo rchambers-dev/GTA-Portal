@@ -30,9 +30,9 @@ import {
   employerSummary,
   formatManagerName,
   managerSiteLabel,
+  placementLocation,
   placementManagerLabel,
   placementPostcode,
-  placementSiteName,
   placementsForSite,
   siteChoiceLabel,
   siteLabel,
@@ -71,7 +71,6 @@ const BLANK_SITE: SiteDraft = {
   id: null,
   postcode: "",
   areaName: "",
-  siteName: "",
   areaEdited: false,
 };
 
@@ -379,7 +378,7 @@ export function EmployersForm({
             <p className={styles.learnerKicker}>Manual entry</p>
             <h2 className={styles.learnerHeading}>Add employer</h2>
             <p className={styles.learnerMuted}>
-              The first site is saved with the employer. The area fills in from the postcode, and you can change it.
+              The first site is saved with the employer. The location fills in from the postcode, and you can change it.
             </p>
             <article className={styles.learnerCard}>
               <form onSubmit={onAddEmployer} noValidate>
@@ -501,7 +500,6 @@ export function EmployersForm({
                             id: site.id,
                             postcode: site.postcode,
                             areaName: site.areaName,
-                            siteName: site.siteName ?? "",
                             areaEdited: true,
                           });
                           setSiteErrors({});
@@ -680,10 +678,9 @@ function EmployerEditor({
                 data-site-active={site.isActive ? "true" : "false"}
               >
                 <span>
-                  <span className={styles.pillName}>{site.siteName || site.areaName}</span>
+                  <span className={styles.pillName}>{site.postcode}</span>
                   <span className={styles.pillMeta}>
-                    <span>{site.postcode}</span>
-                    {site.siteName ? <span>{site.areaName}</span> : null}
+                    <span>{site.areaName}</span>
                     {site.isActive ? null : <span>Inactive</span>}
                   </span>
                 </span>
@@ -940,8 +937,8 @@ function ApprenticesSection({
               <tr>
                 <th>Learner</th>
                 <th>GTA ID</th>
-                <th>Site</th>
                 <th>Postcode</th>
+                <th>Location</th>
                 <th>Manager</th>
                 <th>Start</th>
                 <th>Status</th>
@@ -963,8 +960,8 @@ function ApprenticesSection({
                     </Link>
                   </td>
                   <td>{placement.gtaId}</td>
-                  <td>{placementSiteName(placement, employer.sites)}</td>
                   <td>{placementPostcode(placement, employer.sites)}</td>
+                  <td>{placementLocation(placement, employer.sites)}</td>
                   <td>{placementManagerLabel(placement, employer.managers)}</td>
                   <td>{formatTutorDate(placement.startDate)}</td>
                   <td>{placement.statusLabel || "Status unavailable"}</td>
@@ -986,8 +983,8 @@ function ApprenticesSection({
               <tr>
                 <th>Learner</th>
                 <th>GTA ID</th>
-                <th>Site</th>
                 <th>Postcode</th>
+                <th>Location</th>
                 <th>Manager</th>
                 <th>Start</th>
                 <th>End</th>
@@ -1011,8 +1008,8 @@ function ApprenticesSection({
                     </Link>
                   </td>
                   <td>{placement.gtaId}</td>
-                  <td>{placementSiteName(placement, employer.sites)}</td>
                   <td>{placementPostcode(placement, employer.sites)}</td>
+                  <td>{placementLocation(placement, employer.sites)}</td>
                   <td>{placementManagerLabel(placement, employer.managers)}</td>
                   <td>{formatTutorDate(placement.startDate)}</td>
                   <td>{placement.endDate ? formatTutorDate(placement.endDate) : "No end date"}</td>
@@ -1135,7 +1132,7 @@ function PostcodeFields({
           </p>
         ) : looking ? (
           <p id={postcodeHintId} className={styles.fieldHint} role="status">
-            Looking up the area…
+            Looking up the location…
           </p>
         ) : lookupNote ? (
           <p id={postcodeHintId} className={styles.fieldHint} role="status" data-postcode-lookup={idPrefix}>
@@ -1143,13 +1140,13 @@ function PostcodeFields({
           </p>
         ) : (
           <p id={postcodeHintId} className={styles.fieldHint}>
-            The area fills in from the postcode. You can change it.
+            The location fills in from the postcode. You can change it.
           </p>
         )}
       </label>
       <label className={styles.learnerField} data-entry-field="areaName">
         <span>
-          Area <em className={styles.fieldRequired}>required</em>
+          Location <em className={styles.fieldRequired}>required</em>
         </span>
         <input
           type="text"
@@ -1166,24 +1163,6 @@ function PostcodeFields({
         {errors.areaName ? (
           <p id={areaHintId} className={styles.error} role="alert">
             {errors.areaName}
-          </p>
-        ) : null}
-      </label>
-      <label className={`${styles.learnerField} ${styles.learnerFieldWide}`} data-entry-field="siteName">
-        <span>Site name</span>
-        <input
-          type="text"
-          value={draft.siteName}
-          disabled={pending}
-          aria-invalid={errors.siteName ? true : undefined}
-          onChange={(event) => {
-            onDraft({ ...draft, siteName: event.target.value });
-            onErrors(clearField(errors, "siteName"));
-          }}
-        />
-        {errors.siteName ? (
-          <p className={styles.error} role="alert">
-            {errors.siteName}
           </p>
         ) : null}
       </label>

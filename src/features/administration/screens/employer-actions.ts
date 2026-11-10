@@ -90,7 +90,7 @@ export async function lookupEmployerPostcodeAction(
     if (!areaName) {
       return {
         ok: false,
-        message: "No area was found for that postcode. Enter the area yourself.",
+        message: "No location was found for that postcode. Enter the location yourself.",
       };
     }
     return {

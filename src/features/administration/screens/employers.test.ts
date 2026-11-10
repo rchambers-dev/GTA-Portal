@@ -46,21 +46,18 @@ const example: EmployerListItem = {
       id: siteId,
       postcode: "DN2 4SF",
       areaName: "Barnby Dun with Kirk Sandall",
-      siteName: null,
       isActive: true,
     },
     {
       id: leedsId,
       postcode: "LS9 0PS",
       areaName: "Leeds",
-      siteName: "North yard",
       isActive: true,
     },
     {
       id: inactiveId,
       postcode: "HD6 1XE",
       areaName: "Brighouse",
-      siteName: null,
       isActive: false,
     },
   ],
@@ -137,7 +134,7 @@ describe("Employers page", () => {
     expect(html).toContain("DN2 4SF");
     expect(html).toContain("Barnby Dun with Kirk Sandall");
     expect(html).toContain("LS9 0PS");
-    expect(html).toContain("North yard");
+    expect(html).toContain("Leeds");
     expect(html).toContain("HD6 1XE");
     expect(html).toContain("Inactive");
     expect(html).toContain("Jane Ann Smith");
@@ -149,7 +146,9 @@ describe("Employers page", () => {
     expect(html).toContain("2 Sep 2024");
     expect(html).toContain('data-current-apprentice="GTA-000002"');
     expect(html).toContain('data-current-apprentice="GTA-000110"');
-    expect(html).toContain("No site name");
+    expect(html).toContain("DN2 4SF, Barnby Dun with Kirk Sandall");
+    expect(html).not.toContain("No site name");
+    expect(html).not.toContain("Site name");
     expect(html).toContain('data-past-apprentice="GTA-000003"');
     expect(html).toContain("Learner withdrew");
     expect(html).toContain("All sites");

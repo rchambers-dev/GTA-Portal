@@ -9,16 +9,14 @@ import {
   siteChoiceLabel,
 } from "../domain/employer-record";
 import {
-  placementDetailArea,
   placementDetailEmail,
+  placementDetailLocation,
   placementDetailManager,
   placementDetailManagerSite,
   placementDetailPhone,
   placementDetailPostcode,
-  placementDetailSiteName,
   placementEmployerLabel,
   placementEndReasonLabel,
-  placementHistorySite,
   validatePlacementChange,
   validatePlacementEnd,
   validatePlacementStart,
@@ -147,7 +145,8 @@ export function LearnerEmployerPanel({
               <thead>
                 <tr>
                   <th>Employer</th>
-                  <th>Site</th>
+                  <th>Postcode</th>
+                  <th>Location</th>
                   <th>Manager</th>
                   <th>Start</th>
                   <th>End</th>
@@ -158,7 +157,8 @@ export function LearnerEmployerPanel({
                 {placements.history.map((row) => (
                   <tr key={row.id} data-past-placement={row.id}>
                     <td>{placementEmployerLabel(row)}</td>
-                    <td>{placementHistorySite(row)}</td>
+                    <td>{placementDetailPostcode(row)}</td>
+                    <td>{placementDetailLocation(row)}</td>
                     <td>{placementDetailManager(row)}</td>
                     <td>{formatTutorDate(row.startDate)}</td>
                     <td>{row.endDate ? formatTutorDate(row.endDate) : "No end date"}</td>
@@ -179,12 +179,10 @@ function PlacementFacts({ row }: { row: PlacementDetail }) {
     <dl className={styles.learnerFacts} data-current-placement={row.id}>
       <dt>Employer</dt>
       <dd data-placement-employer={placementEmployerLabel(row)}>{placementEmployerLabel(row)}</dd>
-      <dt>Site name</dt>
-      <dd data-placement-site-name={placementDetailSiteName(row)}>{placementDetailSiteName(row)}</dd>
       <dt>Postcode</dt>
       <dd data-placement-postcode={placementDetailPostcode(row)}>{placementDetailPostcode(row)}</dd>
-      <dt>Area</dt>
-      <dd data-placement-area={placementDetailArea(row)}>{placementDetailArea(row)}</dd>
+      <dt>Location</dt>
+      <dd data-placement-location={placementDetailLocation(row)}>{placementDetailLocation(row)}</dd>
       <dt>Manager</dt>
       <dd data-placement-manager={placementDetailManager(row)}>{placementDetailManager(row)}</dd>
       <dt>Manager&apos;s site</dt>

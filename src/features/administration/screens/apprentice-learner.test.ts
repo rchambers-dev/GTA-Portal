@@ -269,7 +269,6 @@ describe("learner page", () => {
           companyName: "BCA",
           postcode: "DN2 4SF",
           areaName: "Barnby Dun with Kirk Sandall",
-          siteName: null,
           managerName: "Jane Ann Smith",
           startDate: "2024-09-02",
         },
@@ -277,7 +276,7 @@ describe("learner page", () => {
     );
     expect(html).toContain('data-learner-employer="BCA"');
     expect(html).toContain('data-learner-site="DN2 4SF"');
-    expect(html).toContain("DN2 4SF · Barnby Dun with Kirk Sandall");
+    expect(html).toContain("DN2 4SF, Barnby Dun with Kirk Sandall");
     expect(html).toContain('data-learner-manager="Jane Ann Smith"');
     expect(html).not.toContain("No current employer");
   });
@@ -458,14 +457,13 @@ describe("learner page", () => {
           companyName: "BCA",
           postcode: "DN2 4SF",
           areaName: "Barnby Dun with Kirk Sandall",
-          siteName: null,
           managerName: "Jane Ann Smith",
           startDate: "2024-09-02",
         },
       }),
     );
     expect(html).toContain('href="/administration/onboarding/apprentice/GTA-000002?tab=employer"');
-    expect(html).toContain("BCA · DN2 4SF · Barnby Dun with Kirk Sandall · Jane Ann Smith");
+    expect(html).toContain("BCA · DN2 4SF, Barnby Dun with Kirk Sandall · Jane Ann Smith");
   });
 
   it("shows the current placement, a missing site, and keeps tutors from editing it", () => {
@@ -476,7 +474,6 @@ describe("learner page", () => {
       companyName: "BCA",
       employerFound: true,
       siteId: "site-1",
-      siteName: null,
       siteFound: true,
       postcode: "DN2 4SF",
       areaName: "Barnby Dun with Kirk Sandall",
@@ -485,8 +482,8 @@ describe("learner page", () => {
       managerFound: true,
       managerSiteId: null,
       managerSiteFound: false,
-      managerSiteName: null,
       managerSitePostcode: null,
+      managerSiteAreaName: null,
       email: "mick.reynolds@bca.com",
       phone: null,
       startDate: "2024-07-15",
@@ -512,9 +509,9 @@ describe("learner page", () => {
       },
     });
     expect(html).toContain('data-learner-section="employer"');
-    expect(html).toContain('data-placement-site-name="No site name"');
     expect(html).toContain('data-placement-postcode="DN2 4SF"');
-    expect(html).toContain('data-placement-area="Barnby Dun with Kirk Sandall"');
+    expect(html).toContain('data-placement-location="Barnby Dun with Kirk Sandall"');
+    expect(html).not.toContain("No site name");
     expect(html).toContain('data-placement-manager="Mick James Reynolds"');
     expect(html).toContain('data-placement-manager-site="No site"');
     expect(html).toContain('data-placement-email="mick.reynolds@bca.com"');
