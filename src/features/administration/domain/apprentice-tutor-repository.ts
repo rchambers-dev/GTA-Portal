@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { APPRENTICE_COLUMNS, isAssignedGtaId, type ApprenticeRow } from "./apprentice-record";
+import { formatManagerName, type CurrentApprenticeEmployment } from "./employer-record";
 import {
   APPRENTICESHIP_TUTOR_RESPONSIBILITY,
   eligibleTutorOptions,
@@ -27,7 +28,15 @@ export type ApprenticeLearnerPage = {
   currentTutor: TutorAssignment | null;
   tutorHistory: TutorAssignment[];
   tutorOptions: TutorOption[];
+  currentEmployment: CurrentApprenticeEmployment | null;
   loadError: string | null;
+};
+
+type EmploymentRow = {
+  employer_id: string;
+  site_id: string;
+  manager_id: string;
+  start_date: string;
 };
 
 type ProgrammeRow = {
@@ -41,6 +50,28 @@ type NameRow = {
   email: string | null;
 };
 
+function mapCurrentEmployment(
+  row: EmploymentRow,
+  employer: { company_name: string } | null,
+  site: { postcode: string; area_name: string; site_name: string | null } | null,
+  manager: { first_name: string; middle_names: string | null; last_name: string } | null,
+): CurrentApprenticeEmployment {
+  return {
+    companyName: employer?.company_name?.trim() || "Employer unavailable",
+    postcode: site?.postcode ?? "",
+    areaName: site?.area_name ?? "",
+    siteName: site?.site_name?.trim() || null,
+    managerName: manager
+      ? formatManagerName({
+          firstName: manager.first_name,
+          middleNames: manager.middle_names,
+          lastName: manager.last_name,
+        })
+      : "Manager unavailable",
+    startDate: row.start_date,
+  };
+}
+
 function emptyPage(requestedId: string, loadError: string | null): ApprenticeLearnerPage {
   return {
     requestedId,
@@ -48,6 +79,7 @@ function emptyPage(requestedId: string, loadError: string | null): ApprenticeLea
     currentTutor: null,
     tutorHistory: [],
     tutorOptions: [],
+    currentEmployment: null,
     loadError,
   };
 }
@@ -65,30 +97,34 @@ export async function readApprenticeLearner(
     return emptyPage(requestedId, "GTA IDs look like GTA-000002.");
   }
 
-  const [apprenticeResult, assignmentResult, roleTutorResult, responsibilityTutorResult] =
-    await Promise.all([
-      supabase
-        .from("apprentices")
-        .select(APPRENTICE_COLUMNS)
-        .eq("gta_id", requestedId)
-        .maybeSingle(),
-      supabase
-        .from("apprentice_tutors")
-        .select("id, tutor_id, start_date, end_date")
-        .eq("apprentice_id", requestedId),
-      supabase
-        .from("profiles")
-        .select(TUTOR_PROFILE_COLUMNS)
-        .eq("base_role", "Tutor"),
-      supabase
-        .from("profiles")
-        .select(TUTOR_PROFILE_COLUMNS)
-        .filter(
-          "responsibilities",
-          "cs",
-          `{"${APPRENTICESHIP_TUTOR_RESPONSIBILITY}"}`,
-        ),
-    ]);
+  const [
+    apprenticeResult,
+    assignmentResult,
+    roleTutorResult,
+    responsibilityTutorResult,
+    employmentResult,
+  ] = await Promise.all([
+    supabase
+      .from("apprentices")
+      .select(APPRENTICE_COLUMNS)
+      .eq("gta_id", requestedId)
+      .maybeSingle(),
+    supabase
+      .from("apprentice_tutors")
+      .select("id, tutor_id, start_date, end_date")
+      .eq("apprentice_id", requestedId),
+    supabase.from("profiles").select(TUTOR_PROFILE_COLUMNS).eq("base_role", "Tutor"),
+    supabase
+      .from("profiles")
+      .select(TUTOR_PROFILE_COLUMNS)
+      .filter("responsibilities", "cs", `{"${APPRENTICESHIP_TUTOR_RESPONSIBILITY}"}`),
+    supabase
+      .from("apprentice_employments")
+      .select("employer_id, site_id, manager_id, start_date")
+      .eq("gta_id", requestedId)
+      .is("end_date", null)
+      .maybeSingle(),
+  ]);
 
   const problems: string[] = [];
   if (apprenticeResult.error) {
@@ -103,6 +139,9 @@ export async function readApprenticeLearner(
     const message =
       roleTutorResult.error?.message ?? responsibilityTutorResult.error?.message;
     problems.push(`The tutor list could not be loaded. ${message}`);
+  }
+  if (employmentResult.error) {
+    problems.push(`The employer could not be loaded. ${employmentResult.error.message}`);
   }
 
   const apprenticeRow = apprenticeResult.error
@@ -133,19 +172,42 @@ export async function readApprenticeLearner(
     ...new Set(assignmentRows.map((row) => row.tutor_id).filter((id) => !names.has(id))),
   ];
   const programmeId = apprenticeRow?.programme_id ?? null;
+  const employment = employmentResult.error ? null : (employmentResult.data as EmploymentRow | null);
 
-  const [programmeResult, extraResult] = await Promise.all([
-    programmeId
-      ? supabase
-          .from("programmes")
-          .select("name, standard_code")
-          .eq("id", programmeId)
-          .maybeSingle()
-      : Promise.resolve({ data: null, error: null }),
-    missingIds.length > 0
-      ? supabase.from("profiles").select("id, display_name, email").in("id", missingIds)
-      : Promise.resolve({ data: [], error: null }),
-  ]);
+  const [programmeResult, extraResult, employerResult, siteResult, managerResult] =
+    await Promise.all([
+      programmeId
+        ? supabase
+            .from("programmes")
+            .select("name, standard_code")
+            .eq("id", programmeId)
+            .maybeSingle()
+        : Promise.resolve({ data: null, error: null }),
+      missingIds.length > 0
+        ? supabase.from("profiles").select("id, display_name, email").in("id", missingIds)
+        : Promise.resolve({ data: [], error: null }),
+      employment
+        ? supabase
+            .from("employers")
+            .select("company_name")
+            .eq("employer_id", employment.employer_id)
+            .maybeSingle()
+        : Promise.resolve({ data: null, error: null }),
+      employment
+        ? supabase
+            .from("employer_sites")
+            .select("postcode, area_name, site_name")
+            .eq("id", employment.site_id)
+            .maybeSingle()
+        : Promise.resolve({ data: null, error: null }),
+      employment
+        ? supabase
+            .from("employer_managers")
+            .select("first_name, middle_names, last_name")
+            .eq("id", employment.manager_id)
+            .maybeSingle()
+        : Promise.resolve({ data: null, error: null }),
+    ]);
 
   if (programmeResult.error) {
     problems.push(`The programme could not be loaded. ${programmeResult.error.message}`);
@@ -156,6 +218,11 @@ export async function readApprenticeLearner(
     for (const row of (extraResult.data ?? []) as NameRow[]) {
       names.set(row.id, { display_name: row.display_name, email: row.email });
     }
+  }
+  if (employerResult.error || siteResult.error || managerResult.error) {
+    const message =
+      employerResult.error?.message ?? siteResult.error?.message ?? managerResult.error?.message;
+    problems.push(`The employer could not be loaded. ${message}`);
   }
 
   const assignments = assignmentRows.map((row) =>
@@ -169,6 +236,23 @@ export async function readApprenticeLearner(
   const programme = programmeResult.error
     ? null
     : (programmeResult.data as ProgrammeRow | null);
+  const currentEmployment =
+    employment && !employerResult.error && !siteResult.error && !managerResult.error
+      ? mapCurrentEmployment(
+          employment,
+          employerResult.data as { company_name: string } | null,
+          siteResult.data as {
+            postcode: string;
+            area_name: string;
+            site_name: string | null;
+          } | null,
+          managerResult.data as {
+            first_name: string;
+            middle_names: string | null;
+            last_name: string;
+          } | null,
+        )
+      : null;
 
   return {
     requestedId,
@@ -180,6 +264,7 @@ export async function readApprenticeLearner(
     currentTutor: split.current,
     tutorHistory: split.history,
     tutorOptions,
+    currentEmployment,
     loadError: problems.length > 0 ? problems.join(" ") : null,
   };
 }

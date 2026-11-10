@@ -1,21 +1,24 @@
 /**
- * Shape of public.employers, employer_sites, and employer_managers.
+ * Shape of public.employers, employer_sites, employer_managers,
+ * and the current rows of apprentice_employments.
  * The database assigns employer_id. This page never sends one.
  */
 
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
-
-export const EMPLOYER_AREAS = ["Doncaster", "Hull", "Sheffield"] as const;
-
-export type EmployerArea = (typeof EMPLOYER_AREAS)[number];
+import { formatApprenticeName } from "./apprentice-record";
+import { isUkPostcode, normaliseUkPostcode } from "./postcode-area";
 
 /** Columns this page reads. employer_id is returned, never written. */
 export const EMPLOYER_COLUMNS = "employer_id, company_name, created_at, updated_at";
 
-export const EMPLOYER_SITE_COLUMNS = "id, employer_id, area_name, created_at, updated_at";
+export const EMPLOYER_SITE_COLUMNS =
+  "id, employer_id, postcode, area_name, site_name, is_active, created_at, updated_at";
 
 export const EMPLOYER_MANAGER_COLUMNS =
-  "id, employer_id, site_id, first_name, last_name, phone, email, created_at, updated_at";
+  "id, employer_id, site_id, first_name, middle_names, last_name, phone, email, created_at, updated_at";
+
+export const APPRENTICE_PLACEMENT_COLUMNS =
+  "gta_id, employer_id, site_id, manager_id, start_date";
 
 const EMPLOYER_ID_PATTERN = /^GTA-EMP-[0-9]{6}$/;
 const UUID_PATTERN =
@@ -25,28 +28,40 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const DUPLICATE_COMPANY_NAME =
   "An employer with this company name already exists.";
 
-export const DUPLICATE_SITE = "This employer already has that site.";
+export const DUPLICATE_POSTCODE =
+  "This employer already has a site with that postcode.";
+
+export const LAST_SITE_MESSAGE = "An employer must keep at least one site.";
+
+export const POSTCODE_FORMAT_MESSAGE = "Enter a UK postcode, such as S1 1AA.";
 
 export const EMPLOYER_WRITE_PERMISSION =
   "You do not have permission to change employers. Administrator and Management can change employers.";
 
-/** Insert body for public.employers. employer_id is omitted so the column default runs. */
-export type EmployerInsert = {
-  company_name: string;
-};
-
 export type EmployerSite = {
   id: string;
+  postcode: string;
   areaName: string;
+  siteName: string | null;
+  isActive: boolean;
 };
 
 export type EmployerManager = {
   id: string;
   siteId: string | null;
   firstName: string;
+  middleNames: string | null;
   lastName: string;
   phone: string | null;
   email: string | null;
+};
+
+export type ApprenticePlacement = {
+  gtaId: string;
+  name: string;
+  siteId: string;
+  managerId: string;
+  startDate: string;
 };
 
 export type EmployerListItem = {
@@ -56,12 +71,34 @@ export type EmployerListItem = {
   updatedAt: string;
   sites: EmployerSite[];
   managers: EmployerManager[];
+  placements: ApprenticePlacement[];
+};
+
+export type CurrentApprenticeEmployment = {
+  companyName: string;
+  postcode: string;
+  areaName: string;
+  siteName: string | null;
+  managerName: string;
+  startDate: string;
 };
 
 export type EmployerField = keyof EmployerFieldErrors;
 
 export type EmployerFieldErrors = Partial<
-  Record<"companyName" | "areaName" | "firstName" | "lastName" | "phone" | "email" | "siteId", string>
+  Record<
+    | "companyName"
+    | "postcode"
+    | "areaName"
+    | "siteName"
+    | "firstName"
+    | "middleNames"
+    | "lastName"
+    | "phone"
+    | "email"
+    | "siteId",
+    string
+  >
 >;
 
 export type EmployerMutationResult<T> =
@@ -78,7 +115,10 @@ export type EmployerRow = {
 export type EmployerSiteRow = {
   id: string;
   employer_id: string;
+  postcode: string;
   area_name: string;
+  site_name: string | null;
+  is_active: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -88,6 +128,7 @@ export type EmployerManagerRow = {
   employer_id: string;
   site_id: string | null;
   first_name: string;
+  middle_names: string | null;
   last_name: string;
   phone: string | null;
   email: string | null;
@@ -95,8 +136,36 @@ export type EmployerManagerRow = {
   updated_at: string;
 };
 
+export type ApprenticePlacementRow = {
+  gta_id: string;
+  employer_id: string;
+  site_id: string;
+  manager_id: string;
+  start_date: string;
+};
+
+export type ApprenticeNameRow = {
+  gta_id: string;
+  first_name: string;
+  middle_names: string | null;
+  last_name: string;
+};
+
+export type SiteInput = {
+  postcode: string;
+  areaName: string;
+  siteName: string;
+};
+
+export type ValidatedSite = {
+  postcode: string;
+  areaName: string;
+  siteName: string | null;
+};
+
 export type ManagerInput = {
   firstName: string;
+  middleNames: string;
   lastName: string;
   phone: string;
   email: string;
@@ -105,6 +174,7 @@ export type ManagerInput = {
 
 export type ValidatedManager = {
   firstName: string;
+  middleNames: string | null;
   lastName: string;
   phone: string | null;
   email: string | null;
@@ -115,10 +185,6 @@ type PortalActor = {
   account: { baseRole: string };
   permissions: readonly string[];
 };
-
-export function isEmployerArea(value: string): value is EmployerArea {
-  return (EMPLOYER_AREAS as readonly string[]).includes(value);
-}
 
 export function isAssignedEmployerId(value: string): boolean {
   return EMPLOYER_ID_PATTERN.test(value);
@@ -149,21 +215,32 @@ export function validateCompanyName(
   return { ok: true, companyName: trimmed };
 }
 
-export function toEmployerInsert(companyName: string): EmployerInsert {
-  return { company_name: companyName };
-}
+export function validateSiteInput(
+  input: SiteInput,
+  existingPostcodes: readonly string[],
+): { ok: true; value: ValidatedSite } | { ok: false; fieldErrors: EmployerFieldErrors } {
+  const fieldErrors: EmployerFieldErrors = {};
+  const postcode = normaliseUkPostcode(input.postcode);
+  const areaName = input.areaName.trim();
+  const siteName = input.siteName.trim();
 
-export function validateAreaName(
-  areaName: string,
-): { ok: true; areaName: EmployerArea } | { ok: false; fieldErrors: EmployerFieldErrors } {
-  const trimmed = areaName.trim();
-  if (!isEmployerArea(trimmed)) {
-    return {
-      ok: false,
-      fieldErrors: { areaName: "Choose Doncaster, Hull, or Sheffield." },
-    };
+  if (!postcode) {
+    fieldErrors.postcode = "Enter a postcode.";
+  } else if (!isUkPostcode(postcode)) {
+    fieldErrors.postcode = POSTCODE_FORMAT_MESSAGE;
+  } else if (
+    existingPostcodes.some((existing) => normaliseUkPostcode(existing) === postcode)
+  ) {
+    fieldErrors.postcode = DUPLICATE_POSTCODE;
   }
-  return { ok: true, areaName: trimmed };
+
+  if (!areaName) fieldErrors.areaName = "Enter an area.";
+
+  if (Object.keys(fieldErrors).length > 0) return { ok: false, fieldErrors };
+  return {
+    ok: true,
+    value: { postcode, areaName, siteName: siteName || null },
+  };
 }
 
 export function validateManagerInput(
@@ -172,6 +249,7 @@ export function validateManagerInput(
 ): { ok: true; value: ValidatedManager } | { ok: false; fieldErrors: EmployerFieldErrors } {
   const fieldErrors: EmployerFieldErrors = {};
   const firstName = input.firstName.trim();
+  const middleNames = input.middleNames.trim();
   const lastName = input.lastName.trim();
   const phone = input.phone.trim();
   const email = input.email.trim();
@@ -191,6 +269,7 @@ export function validateManagerInput(
     ok: true,
     value: {
       firstName,
+      middleNames: middleNames || null,
       lastName,
       phone: phone || null,
       email: email || null,
@@ -204,10 +283,29 @@ export function toManagerInsert(employerId: string, value: ValidatedManager) {
     employer_id: employerId,
     site_id: value.siteId,
     first_name: value.firstName,
+    middle_names: value.middleNames,
     last_name: value.lastName,
     phone: value.phone,
     email: value.email,
   };
+}
+
+export function toSiteInsert(employerId: string, value: ValidatedSite) {
+  return {
+    employer_id: employerId,
+    postcode: value.postcode,
+    area_name: value.areaName,
+    site_name: value.siteName,
+  };
+}
+
+/** An employer always keeps one active site. Deactivating the last one is refused. */
+export function canDeactivateSite(
+  sites: readonly Pick<EmployerSite, "id" | "isActive">[],
+  siteId: string,
+): boolean {
+  const active = sites.filter((site) => site.isActive);
+  return active.length > 1 && active.some((site) => site.id === siteId);
 }
 
 export function explainEmployerWriteError(error: {
@@ -233,11 +331,23 @@ export function explainEmployerWriteError(error: {
       formError: "The employer ID is assigned by the database and cannot be changed.",
     };
   }
-  if (message.includes("employer_sites_area_name_check")) {
-    return { fieldErrors: { areaName: "Choose Doncaster, Hull, or Sheffield." }, formError: null };
+  if (message.includes("employer_sites_postcode_format")) {
+    return { fieldErrors: { postcode: POSTCODE_FORMAT_MESSAGE }, formError: null };
   }
-  if (message.includes("employer_sites_employer_area_unique")) {
-    return { fieldErrors: { areaName: DUPLICATE_SITE }, formError: null };
+  if (
+    message.includes("employer_sites_area_name_not_blank") ||
+    message.includes("employer_sites_area_name_check")
+  ) {
+    return { fieldErrors: { areaName: "Enter an area." }, formError: null };
+  }
+  if (
+    message.includes("employer_sites_employer_postcode_unique") ||
+    message.includes("employer_sites_employer_area_unique")
+  ) {
+    return { fieldErrors: { postcode: DUPLICATE_POSTCODE }, formError: null };
+  }
+  if (message.includes("must have at least one site")) {
+    return { fieldErrors: {}, formError: LAST_SITE_MESSAGE };
   }
   if (
     message.includes("employer_managers_site_id_fkey") ||
@@ -254,14 +364,23 @@ export function explainEmployerWriteError(error: {
       formError: "That employer is no longer available. Refresh the list.",
     };
   }
-  if (error.code === "42501" || /row-level security|permission denied/i.test(message)) {
+  if (
+    error.code === "42501" ||
+    /row-level security|permission denied|not allowed/i.test(message)
+  ) {
     return { fieldErrors: {}, formError: EMPLOYER_WRITE_PERMISSION };
   }
   return { fieldErrors: {}, formError: fallback };
 }
 
 export function mapEmployerSite(row: EmployerSiteRow): EmployerSite {
-  return { id: row.id, areaName: row.area_name };
+  return {
+    id: row.id,
+    postcode: row.postcode,
+    areaName: row.area_name,
+    siteName: row.site_name?.trim() || null,
+    isActive: row.is_active,
+  };
 }
 
 export function mapEmployerManager(row: EmployerManagerRow): EmployerManager {
@@ -269,6 +388,7 @@ export function mapEmployerManager(row: EmployerManagerRow): EmployerManager {
     id: row.id,
     siteId: row.site_id,
     firstName: row.first_name,
+    middleNames: row.middle_names?.trim() || null,
     lastName: row.last_name,
     phone: row.phone,
     email: row.email,
@@ -276,14 +396,29 @@ export function mapEmployerManager(row: EmployerManagerRow): EmployerManager {
 }
 
 export function sortSites(sites: readonly EmployerSite[]): EmployerSite[] {
-  return [...sites].sort((a, b) => areaOrder(a.areaName) - areaOrder(b.areaName));
+  return [...sites].sort((a, b) => {
+    if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
+    return a.postcode.localeCompare(b.postcode, "en", { sensitivity: "base" });
+  });
 }
 
 export function sortManagers(managers: readonly EmployerManager[]): EmployerManager[] {
   return [...managers].sort((a, b) => {
     const last = a.lastName.localeCompare(b.lastName, "en", { sensitivity: "base" });
     if (last !== 0) return last;
-    return a.firstName.localeCompare(b.firstName, "en", { sensitivity: "base" });
+    const first = a.firstName.localeCompare(b.firstName, "en", { sensitivity: "base" });
+    if (first !== 0) return first;
+    return (a.middleNames ?? "").localeCompare(b.middleNames ?? "", "en", { sensitivity: "base" });
+  });
+}
+
+export function sortPlacements(
+  placements: readonly ApprenticePlacement[],
+): ApprenticePlacement[] {
+  return [...placements].sort((a, b) => {
+    const name = a.name.localeCompare(b.name, "en", { sensitivity: "base" });
+    if (name !== 0) return name;
+    return a.gtaId.localeCompare(b.gtaId, "en");
   });
 }
 
@@ -297,7 +432,10 @@ export function assembleEmployers(
   employers: readonly EmployerRow[],
   sites: readonly EmployerSiteRow[],
   managers: readonly EmployerManagerRow[],
+  placements: readonly ApprenticePlacementRow[] = [],
+  apprentices: readonly ApprenticeNameRow[] = [],
 ): EmployerListItem[] {
+  const names = new Map(apprentices.map((row) => [row.gta_id, row]));
   return sortEmployers(
     employers.map((employer) => ({
       employerId: employer.employer_id,
@@ -312,18 +450,42 @@ export function assembleEmployers(
           .filter((manager) => manager.employer_id === employer.employer_id)
           .map(mapEmployerManager),
       ),
+      placements: sortPlacements(
+        placements
+          .filter((placement) => placement.employer_id === employer.employer_id)
+          .map((placement) => {
+            const person = names.get(placement.gta_id);
+            return {
+              gtaId: placement.gta_id,
+              name: person
+                ? formatApprenticeName({
+                    firstName: person.first_name,
+                    middleNames: person.middle_names,
+                    lastName: person.last_name,
+                  })
+                : placement.gta_id,
+              siteId: placement.site_id,
+              managerId: placement.manager_id,
+              startDate: placement.start_date,
+            };
+          }),
+      ),
     })),
   );
 }
 
-export function employerFromRow(row: EmployerRow): EmployerListItem {
+export function employerFromRow(
+  row: EmployerRow,
+  sites: readonly EmployerSite[] = [],
+): EmployerListItem {
   return {
     employerId: row.employer_id,
     companyName: row.company_name,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
-    sites: [],
+    sites: sortSites(sites),
     managers: [],
+    placements: [],
   };
 }
 
@@ -331,17 +493,6 @@ export function withSite(employer: EmployerListItem, site: EmployerSite): Employ
   return {
     ...employer,
     sites: sortSites([...employer.sites.filter((item) => item.id !== site.id), site]),
-  };
-}
-
-/** Matches employer_sites delete: managers keep their row and lose the site. */
-export function withoutSite(employer: EmployerListItem, siteId: string): EmployerListItem {
-  return {
-    ...employer,
-    sites: employer.sites.filter((site) => site.id !== siteId),
-    managers: employer.managers.map((manager) =>
-      manager.siteId === siteId ? { ...manager, siteId: null } : manager,
-    ),
   };
 }
 
@@ -362,11 +513,25 @@ export function withoutManager(employer: EmployerListItem, managerId: string): E
   };
 }
 
-export function formatManagerName(manager: Pick<EmployerManager, "firstName" | "lastName">): string {
-  return [manager.firstName, manager.lastName]
-    .map((part) => part.trim())
+export function formatManagerName(
+  manager: Pick<EmployerManager, "firstName" | "middleNames" | "lastName">,
+): string {
+  return [manager.firstName, manager.middleNames, manager.lastName]
+    .map((part) => part?.trim() ?? "")
     .filter(Boolean)
     .join(" ");
+}
+
+export function siteLabel(
+  site: Pick<EmployerSite, "postcode" | "areaName" | "siteName" | "isActive">,
+  options?: { markInactive?: boolean },
+): string {
+  const parts = [site.siteName?.trim(), site.postcode, site.areaName].filter(
+    (part): part is string => Boolean(part),
+  );
+  const label = parts.join(" · ");
+  if (options?.markInactive && !site.isActive) return `${label} (inactive)`;
+  return label;
 }
 
 export function managerSiteLabel(
@@ -374,7 +539,24 @@ export function managerSiteLabel(
   sites: readonly EmployerSite[],
 ): string {
   if (!manager.siteId) return "No site";
-  return sites.find((site) => site.id === manager.siteId)?.areaName ?? "No site";
+  const site = sites.find((item) => item.id === manager.siteId);
+  return site ? siteLabel(site, { markInactive: true }) : "No site";
+}
+
+export function placementSiteLabel(
+  placement: Pick<ApprenticePlacement, "siteId">,
+  sites: readonly EmployerSite[],
+): string {
+  const site = sites.find((item) => item.id === placement.siteId);
+  return site ? siteLabel(site) : "Site unavailable";
+}
+
+export function placementManagerLabel(
+  placement: Pick<ApprenticePlacement, "managerId">,
+  managers: readonly EmployerManager[],
+): string {
+  const manager = managers.find((item) => item.id === placement.managerId);
+  return manager ? formatManagerName(manager) : "Manager unavailable";
 }
 
 export function employerMatchesQuery(employer: EmployerListItem, query: string): boolean {
@@ -383,12 +565,18 @@ export function employerMatchesQuery(employer: EmployerListItem, query: string):
   const haystack = [
     employer.employerId,
     employer.companyName,
-    ...employer.sites.map((site) => site.areaName),
+    ...employer.sites.flatMap((site) => [site.postcode, site.areaName, site.siteName]),
     ...employer.managers.flatMap((manager) => [
       formatManagerName(manager),
       manager.phone,
       manager.email,
       managerSiteLabel(manager, employer.sites),
+    ]),
+    ...employer.placements.flatMap((placement) => [
+      placement.name,
+      placement.gtaId,
+      placementSiteLabel(placement, employer.sites),
+      placementManagerLabel(placement, employer.managers),
     ]),
   ]
     .filter((part): part is string => Boolean(part))
@@ -398,13 +586,21 @@ export function employerMatchesQuery(employer: EmployerListItem, query: string):
 }
 
 export function employerSummary(employer: EmployerListItem): string {
-  const sites = employer.sites.map((site) => site.areaName).join(", ") || "No sites";
+  const sites =
+    employer.sites.map((site) => siteLabel(site, { markInactive: true })).join(", ") || "No sites";
   const managers =
     employer.managers.length === 1 ? "1 manager" : `${employer.managers.length} managers`;
-  return `${sites} · ${managers}`;
+  const apprentices =
+    employer.placements.length === 1
+      ? "1 apprentice"
+      : `${employer.placements.length} apprentices`;
+  return `${sites} · ${managers} · ${apprentices}`;
 }
 
-function areaOrder(areaName: string): number {
-  const index = EMPLOYER_AREAS.indexOf(areaName as EmployerArea);
-  return index === -1 ? EMPLOYER_AREAS.length : index;
+export function employmentSiteLabel(
+  employment: Pick<CurrentApprenticeEmployment, "siteName" | "postcode" | "areaName">,
+): string {
+  return [employment.siteName?.trim(), employment.postcode, employment.areaName]
+    .filter((part): part is string => Boolean(part))
+    .join(" · ");
 }

@@ -2,25 +2,28 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { insertEmployerRecord, renameEmployerRecord } from "./employer-repository";
+import { createEmployerWithSiteRecord, renameEmployerRecord } from "./employer-repository";
 import {
   DUPLICATE_COMPANY_NAME,
-  DUPLICATE_SITE,
+  DUPLICATE_POSTCODE,
+  LAST_SITE_MESSAGE,
+  POSTCODE_FORMAT_MESSAGE,
   assembleEmployers,
+  canDeactivateSite,
   canManageEmployers,
   employerMatchesQuery,
   explainEmployerWriteError,
-  toEmployerInsert,
   toManagerInsert,
-  validateAreaName,
+  toSiteInsert,
   validateCompanyName,
   validateManagerInput,
-  withoutSite,
+  validateSiteInput,
   type EmployerListItem,
   type ValidatedManager,
 } from "./employer-record";
 
 const siteId = "80f06b62-c953-4acd-aacf-630db3a861c4";
+const otherSiteId = "90f06b62-c953-4acd-aacf-630db3a861c4";
 
 function actor(baseRole: string, permissions: string[]) {
   return { account: { baseRole }, permissions };
@@ -33,47 +36,113 @@ const savedEmployer = {
   updated_at: "2026-11-09T12:00:00.000Z",
 };
 
+const doncasterSite = {
+  id: siteId,
+  postcode: "DN4 8DE",
+  areaName: "Doncaster",
+  siteName: null,
+  isActive: true,
+};
+
 function sampleEmployer(): EmployerListItem {
   return {
     employerId: "GTA-EMP-000001",
     companyName: "Example Motors",
     createdAt: savedEmployer.created_at,
     updatedAt: savedEmployer.updated_at,
-    sites: [{ id: siteId, areaName: "Doncaster" }],
+    sites: [
+      doncasterSite,
+      {
+        id: otherSiteId,
+        postcode: "LS9 0PS",
+        areaName: "Leeds",
+        siteName: "North yard",
+        isActive: true,
+      },
+    ],
     managers: [
       {
         id: "11111111-1111-4111-8111-111111111111",
         siteId,
         firstName: "Jane",
+        middleNames: "Ann",
         lastName: "Smith",
         phone: "01302 000000",
         email: "jane@example.test",
+      },
+    ],
+    placements: [
+      {
+        gtaId: "GTA-000002",
+        name: "Jack Elliot",
+        siteId,
+        managerId: "11111111-1111-4111-8111-111111111111",
+        startDate: "2024-09-02",
       },
     ],
   };
 }
 
 describe("employer record", () => {
-  it("saves a company name only and leaves the employer ID to the database", () => {
+  it("requires a company name and leaves the employer ID to the database", () => {
     const missing = validateCompanyName("  ");
     expect(missing.ok).toBe(false);
     if (!missing.ok) expect(missing.fieldErrors.companyName).toBe("Enter a company name.");
 
     const saved = validateCompanyName("  Example Motors  ");
     expect(saved.ok).toBe(true);
+  });
+
+  it("requires a UK postcode and area, and rejects a duplicate postcode", () => {
+    const missing = validateSiteInput({ postcode: " ", areaName: "", siteName: "  " }, []);
+    expect(missing.ok).toBe(false);
+    if (!missing.ok) {
+      expect(missing.fieldErrors.postcode).toBe("Enter a postcode.");
+      expect(missing.fieldErrors.areaName).toBe("Enter an area.");
+    }
+
+    const bad = validateSiteInput({ postcode: "S25", areaName: "Dinnington", siteName: "" }, []);
+    expect(bad.ok).toBe(false);
+    if (!bad.ok) expect(bad.fieldErrors.postcode).toBe(POSTCODE_FORMAT_MESSAGE);
+
+    const duplicate = validateSiteInput(
+      { postcode: "dn4 8de", areaName: "Doncaster", siteName: "" },
+      ["DN4 8DE"],
+    );
+    expect(duplicate.ok).toBe(false);
+    if (!duplicate.ok) expect(duplicate.fieldErrors.postcode).toBe(DUPLICATE_POSTCODE);
+
+    const saved = validateSiteInput(
+      { postcode: " s1 1aa ", areaName: " Sheffield ", siteName: "  " },
+      ["DN4 8DE"],
+    );
+    expect(saved.ok).toBe(true);
     if (!saved.ok) return;
-    expect(toEmployerInsert(saved.companyName)).toEqual({ company_name: "Example Motors" });
-    expect(toEmployerInsert(saved.companyName)).not.toHaveProperty("employer_id");
+    expect(toSiteInsert("GTA-EMP-000001", saved.value)).toEqual({
+      employer_id: "GTA-EMP-000001",
+      postcode: "S1 1AA",
+      area_name: "Sheffield",
+      site_name: null,
+    });
+    expect(toSiteInsert("GTA-EMP-000001", saved.value)).not.toHaveProperty("employer_id_assigned");
   });
 
-  it("only accepts Doncaster, Hull, and Sheffield", () => {
-    expect(validateAreaName("Leeds").ok).toBe(false);
-    expect(validateAreaName("Hull").ok).toBe(true);
+  it("refuses to deactivate the last active site", () => {
+    expect(canDeactivateSite([doncasterSite], siteId)).toBe(false);
+    expect(canDeactivateSite(sampleEmployer().sites, siteId)).toBe(true);
+    expect(canDeactivateSite([{ id: siteId, isActive: false }], siteId)).toBe(false);
   });
 
-  it("requires a manager name and keeps phone, email, and site optional", () => {
+  it("requires a manager name and keeps middle name, phone, email, and site optional", () => {
     const missing = validateManagerInput(
-      { firstName: " ", lastName: "", phone: "", email: "not-an-email", siteId: "other" },
+      {
+        firstName: " ",
+        middleNames: "",
+        lastName: "",
+        phone: "",
+        email: "not-an-email",
+        siteId: "other",
+      },
       [siteId],
     );
     expect(missing.ok).toBe(false);
@@ -85,7 +154,14 @@ describe("employer record", () => {
     }
 
     const saved = validateManagerInput(
-      { firstName: " Jane ", lastName: " Smith ", phone: "", email: "", siteId: "" },
+      {
+        firstName: " Jane ",
+        middleNames: " Ann ",
+        lastName: " Smith ",
+        phone: "",
+        email: "",
+        siteId: "",
+      },
       [],
     );
     expect(saved.ok).toBe(true);
@@ -95,6 +171,7 @@ describe("employer record", () => {
       employer_id: "GTA-EMP-000001",
       site_id: null,
       first_name: "Jane",
+      middle_names: "Ann",
       last_name: "Smith",
       phone: null,
       email: null,
@@ -110,7 +187,7 @@ describe("employer record", () => {
     expect(canManageEmployers(null)).toBe(false);
   });
 
-  it("turns the company-name unique index into a duplicate-name error", () => {
+  it("turns database constraints into field errors", () => {
     const duplicate = explainEmployerWriteError({
       code: "23505",
       message:
@@ -123,16 +200,23 @@ describe("employer record", () => {
     const site = explainEmployerWriteError({
       code: "23505",
       message:
-        'duplicate key value violates unique constraint "employer_sites_employer_area_unique"',
+        'duplicate key value violates unique constraint "employer_sites_employer_postcode_unique"',
     });
-    expect(site.fieldErrors.areaName).toBe(DUPLICATE_SITE);
+    expect(site.fieldErrors.postcode).toBe(DUPLICATE_POSTCODE);
 
     expect(
       explainEmployerWriteError({
         code: "23514",
-        message: 'violates check constraint "employer_sites_area_name_check"',
-      }).fieldErrors.areaName,
-    ).toMatch(/Doncaster, Hull, or Sheffield/);
+        message: 'violates check constraint "employer_sites_postcode_format"',
+      }).fieldErrors.postcode,
+    ).toBe(POSTCODE_FORMAT_MESSAGE);
+
+    expect(
+      explainEmployerWriteError({
+        code: "23514",
+        message: "Employer GTA-EMP-000001 must have at least one site (with a postcode)",
+      }).formError,
+    ).toBe(LAST_SITE_MESSAGE);
 
     expect(
       explainEmployerWriteError({
@@ -142,30 +226,29 @@ describe("employer record", () => {
     ).toMatch(/Administrator and Management/);
   });
 
-  it("searches company, ID, site, and manager", () => {
+  it("searches company, postcode, site, apprentice, and manager", () => {
     const employer = sampleEmployer();
     expect(employerMatchesQuery(employer, "example motors")).toBe(true);
     expect(employerMatchesQuery(employer, "gta-emp-000001")).toBe(true);
-    expect(employerMatchesQuery(employer, "doncaster")).toBe(true);
-    expect(employerMatchesQuery(employer, "jane smith")).toBe(true);
+    expect(employerMatchesQuery(employer, "dn4 8de")).toBe(true);
+    expect(employerMatchesQuery(employer, "north yard")).toBe(true);
+    expect(employerMatchesQuery(employer, "jane ann smith")).toBe(true);
+    expect(employerMatchesQuery(employer, "jack elliot")).toBe(true);
     expect(employerMatchesQuery(employer, "01302")).toBe(true);
     expect(employerMatchesQuery(employer, "hull")).toBe(false);
   });
 
-  it("clears a manager site when that site is removed", () => {
-    const next = withoutSite(sampleEmployer(), siteId);
-    expect(next.sites).toEqual([]);
-    expect(next.managers[0]?.siteId).toBeNull();
-  });
-
-  it("joins sites and managers onto their employer", () => {
+  it("joins sites, managers, and current apprentices onto their employer", () => {
     const rows = assembleEmployers(
       [savedEmployer],
       [
         {
           id: siteId,
           employer_id: "GTA-EMP-000001",
+          postcode: "HU1 1AA",
           area_name: "Hull",
+          site_name: null,
+          is_active: true,
           created_at: savedEmployer.created_at,
           updated_at: savedEmployer.updated_at,
         },
@@ -176,6 +259,7 @@ describe("employer record", () => {
           employer_id: "GTA-EMP-000001",
           site_id: siteId,
           first_name: "Jane",
+          middle_names: "Ann",
           last_name: "Smith",
           phone: null,
           email: null,
@@ -183,28 +267,61 @@ describe("employer record", () => {
           updated_at: savedEmployer.updated_at,
         },
       ],
+      [
+        {
+          gta_id: "GTA-000002",
+          employer_id: "GTA-EMP-000001",
+          site_id: siteId,
+          manager_id: "11111111-1111-4111-8111-111111111111",
+          start_date: "2024-09-02",
+        },
+      ],
+      [
+        {
+          gta_id: "GTA-000002",
+          first_name: "Jack",
+          middle_names: null,
+          last_name: "Elliot",
+        },
+      ],
     );
-    expect(rows[0]?.sites.map((site) => site.areaName)).toEqual(["Hull"]);
-    expect(rows[0]?.managers[0]?.lastName).toBe("Smith");
+    expect(rows[0]?.sites.map((site) => site.postcode)).toEqual(["HU1 1AA"]);
+    expect(rows[0]?.managers[0]?.middleNames).toBe("Ann");
+    expect(rows[0]?.placements[0]?.name).toBe("Jack Elliot");
   });
 
-  it("inserts without an employer ID and returns the ID the database assigned", async () => {
-    let inserted: Record<string, unknown> | null = null;
-    let selected = "";
+  it("creates the employer and first site through the database function", async () => {
+    let rpcName = "";
+    let rpcArgs: Record<string, unknown> | null = null;
     const supabase = {
+      async rpc(name: string, args: Record<string, unknown>) {
+        rpcName = name;
+        rpcArgs = args;
+        return { data: "GTA-EMP-000001", error: null };
+      },
       from(table: string) {
-        expect(table).toBe("employers");
         return {
-          insert(values: Record<string, unknown>) {
-            inserted = values;
+          select() {
             return {
-              select(columns: string) {
-                selected = columns;
-                return {
-                  async single() {
-                    return { data: savedEmployer, error: null };
-                  },
-                };
+              eq() {
+                if (table === "employers") {
+                  return { async single() { return { data: savedEmployer, error: null }; } };
+                }
+                return Promise.resolve({
+                  data: [
+                    {
+                      id: siteId,
+                      employer_id: "GTA-EMP-000001",
+                      postcode: "S1 1AA",
+                      area_name: "Sheffield",
+                      site_name: null,
+                      is_active: true,
+                      created_at: savedEmployer.created_at,
+                      updated_at: savedEmployer.updated_at,
+                    },
+                  ],
+                  error: null,
+                });
               },
             };
           },
@@ -212,22 +329,24 @@ describe("employer record", () => {
       },
     } as unknown as SupabaseClient;
 
-    const result = await insertEmployerRecord(supabase, "Example Motors");
-    expect(inserted).toEqual({ company_name: "Example Motors" });
-    expect(inserted).not.toHaveProperty("employer_id");
-    expect(selected).toContain("employer_id");
-    expect(selected).not.toContain("postcode");
-    expect(result).toEqual({
-      ok: true,
-      value: {
-        employerId: "GTA-EMP-000001",
-        companyName: "Example Motors",
-        createdAt: savedEmployer.created_at,
-        updatedAt: savedEmployer.updated_at,
-        sites: [],
-        managers: [],
-      },
+    const result = await createEmployerWithSiteRecord(supabase, "Example Motors", {
+      postcode: "S1 1AA",
+      areaName: "Sheffield",
+      siteName: null,
     });
+    expect(rpcName).toBe("create_employer_with_site");
+    expect(rpcArgs).toEqual({
+      p_company_name: "Example Motors",
+      p_postcode: "S1 1AA",
+      p_area_name: "Sheffield",
+      p_site_name: null,
+    });
+    expect(rpcArgs).not.toHaveProperty("employer_id");
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.value.employerId).toBe("GTA-EMP-000001");
+    expect(result.value.sites.map((site) => site.postcode)).toEqual(["S1 1AA"]);
+    expect(result.value.placements).toEqual([]);
   });
 
   it("renames by company name and does not send the employer ID", async () => {
@@ -282,6 +401,11 @@ describe("employer record", () => {
       "utf8",
     );
     expect(action).toContain("createSupabaseServerClient");
+    const repository = readFileSync(
+      path.join(root, "src/features/administration/domain/employer-repository.ts"),
+      "utf8",
+    );
+    expect(repository).toContain("create_employer_with_site");
     const route = readFileSync(
       path.join(root, "src/shell/workspaces/render-workspace-page.tsx"),
       "utf8",

@@ -9,6 +9,7 @@ import type { ApprenticeProgrammePage } from "../domain/apprentice-programme";
 import { assignApprenticeTutorAction } from "./apprentice-tutor-actions";
 import { ApprenticeProgrammePanel } from "./ApprenticeProgrammePanel";
 import type { ApprenticeLearnerPage } from "../domain/apprentice-tutor-repository";
+import { employmentSiteLabel, type CurrentApprenticeEmployment } from "../domain/employer-record";
 import {
   LEARNER_SECTIONS,
   apprenticeLearnerPath,
@@ -104,7 +105,7 @@ export function ApprenticeLearnerView({
                 </p>
               )
             ) : (
-              <OverviewPanel apprentice={apprentice} />
+              <OverviewPanel apprentice={apprentice} employment={page.currentEmployment} />
             )}
           </>
         ) : (
@@ -119,7 +120,13 @@ export function ApprenticeLearnerView({
   );
 }
 
-function OverviewPanel({ apprentice }: { apprentice: ApprenticeLearnerRecord }) {
+function OverviewPanel({
+  apprentice,
+  employment,
+}: {
+  apprentice: ApprenticeLearnerRecord;
+  employment: CurrentApprenticeEmployment | null;
+}) {
   return (
     <section className={styles.learnerCard} aria-labelledby="learner-overview-heading" data-learner-section="overview">
       <h2 id="learner-overview-heading" className={styles.formGroupTitle}>
@@ -134,6 +141,18 @@ function OverviewPanel({ apprentice }: { apprentice: ApprenticeLearnerRecord }) 
         </dd>
         <dt>Status</dt>
         <dd data-learner-status={apprentice.statusLabel}>{apprentice.statusLabel}</dd>
+        <dt>Employer</dt>
+        <dd data-learner-employer={employment?.companyName ?? ""}>
+          {employment?.companyName ?? "No current employer"}
+        </dd>
+        {employment ? (
+          <>
+            <dt>Site</dt>
+            <dd data-learner-site={employment.postcode}>{employmentSiteLabel(employment)}</dd>
+            <dt>Manager</dt>
+            <dd data-learner-manager={employment.managerName}>{employment.managerName}</dd>
+          </>
+        ) : null}
       </dl>
     </section>
   );
