@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   placementDetailEmail,
+  placementDetailLocation,
   placementDetailManager,
   placementDetailManagerSite,
   placementDetailPhone,
-  placementDetailSiteName,
   placementEndReasonLabel,
   validatePlacementChange,
   validatePlacementEnd,
@@ -31,7 +31,6 @@ function detail(overrides: Partial<PlacementDetail> = {}): PlacementDetail {
     companyName: "BCA",
     employerFound: true,
     siteId,
-    siteName: null,
     siteFound: true,
     postcode: "DN2 4SF",
     areaName: "Barnby Dun with Kirk Sandall",
@@ -40,8 +39,8 @@ function detail(overrides: Partial<PlacementDetail> = {}): PlacementDetail {
     managerFound: true,
     managerSiteId: null,
     managerSiteFound: false,
-    managerSiteName: null,
     managerSitePostcode: null,
+    managerSiteAreaName: null,
     email: null,
     phone: "01302 893277",
     startDate: "2024-07-15",
@@ -52,15 +51,25 @@ function detail(overrides: Partial<PlacementDetail> = {}): PlacementDetail {
 }
 
 describe("placement display", () => {
-  it("shows a missing site name, a manager with no site, and missing contact details", () => {
+  it("shows postcode and location, a manager with no site, and missing contact details", () => {
     const row = detail();
-    expect(placementDetailSiteName(row)).toBe("No site name");
+    expect(placementDetailLocation(row)).toBe("Barnby Dun with Kirk Sandall");
     expect(placementDetailManager(row)).toBe("Mick James Reynolds");
     expect(placementDetailManagerSite(row)).toBe("No site");
     expect(placementDetailEmail(row)).toBe("No email");
     expect(placementDetailPhone(row)).toBe("01302 893277");
     expect(placementEndReasonLabel({ endReason: null })).toBe("No end reason");
-    expect(placementDetailSiteName(detail({ siteFound: false }))).toBe("Site unavailable");
+    expect(placementDetailLocation(detail({ siteFound: false }))).toBe("No location");
+    expect(
+      placementDetailManagerSite(
+        detail({
+          managerSiteId: siteId,
+          managerSiteFound: true,
+          managerSitePostcode: "DN20 8LB",
+          managerSiteAreaName: "Brigg",
+        }),
+      ),
+    ).toBe("DN20 8LB, Brigg");
     expect(placementDetailManager(detail({ managerFound: false }))).toBe("Manager unavailable");
   });
 });
@@ -119,14 +128,15 @@ describe("placement repository", () => {
     expect(page.employers).toEqual([]);
     expect(page.current[0]).toMatchObject({
       companyName: "BCA",
-      siteName: null,
+      postcode: "DN2 4SF",
+      areaName: "Barnby Dun with Kirk Sandall",
       managerName: "Mick James Reynolds",
       managerSiteId: null,
       email: null,
       phone: "01302 893277",
     });
     expect(placementDetailManagerSite(page.current[0]!)).toBe("No site");
-    expect(placementDetailSiteName(page.current[0]!)).toBe("No site name");
+    expect(placementDetailLocation(page.current[0]!)).toBe("Barnby Dun with Kirk Sandall");
     expect(page.history[0]?.endReason).toBe("Learner withdrew");
     expect(tables).not.toContain("reasons");
   });
@@ -257,7 +267,6 @@ function rowsFor(table: string, canManage: boolean, filters: [string, string, un
         employer_id: employerId,
         postcode: "DN2 4SF",
         area_name: "Barnby Dun with Kirk Sandall",
-        site_name: null,
         is_active: true,
         created_at: "2026-11-09T12:00:00.000Z",
         updated_at: "2026-11-09T12:00:00.000Z",

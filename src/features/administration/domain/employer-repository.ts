@@ -103,7 +103,6 @@ export async function createEmployerWithSiteRecord(
     p_company_name: companyName,
     p_postcode: site.postcode,
     p_area_name: site.areaName,
-    p_site_name: site.siteName,
   });
 
   if (error) return readBackOrExplain(error, "employer");
@@ -188,7 +187,6 @@ export async function updateEmployerSiteRecord(
     .update({
       postcode: value.postcode,
       area_name: value.areaName,
-      site_name: value.siteName,
     })
     .eq("id", siteId)
     .eq("employer_id", employerId)

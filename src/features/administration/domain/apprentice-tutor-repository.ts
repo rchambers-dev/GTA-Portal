@@ -53,14 +53,13 @@ type NameRow = {
 function mapCurrentEmployment(
   row: EmploymentRow,
   employer: { company_name: string } | null,
-  site: { postcode: string; area_name: string; site_name: string | null } | null,
+  site: { postcode: string; area_name: string } | null,
   manager: { first_name: string; middle_names: string | null; last_name: string } | null,
 ): CurrentApprenticeEmployment {
   return {
     companyName: employer?.company_name?.trim() || "Employer unavailable",
     postcode: site?.postcode ?? "",
     areaName: site?.area_name ?? "",
-    siteName: site?.site_name?.trim() || null,
     managerName: manager
       ? formatManagerName({
           firstName: manager.first_name,
@@ -196,7 +195,7 @@ export async function readApprenticeLearner(
       employment
         ? supabase
             .from("employer_sites")
-            .select("postcode, area_name, site_name")
+            .select("postcode, area_name")
             .eq("id", employment.site_id)
             .maybeSingle()
         : Promise.resolve({ data: null, error: null }),
@@ -244,7 +243,6 @@ export async function readApprenticeLearner(
           siteResult.data as {
             postcode: string;
             area_name: string;
-            site_name: string | null;
           } | null,
           managerResult.data as {
             first_name: string;

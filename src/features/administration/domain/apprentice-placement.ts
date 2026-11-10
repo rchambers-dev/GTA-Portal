@@ -8,6 +8,7 @@ import { isAssignedGtaId } from "./apprentice-record";
 import { isIsoDate } from "./apprentice-programme";
 import { normaliseGtaId } from "./apprentice-tutor";
 import {
+  formatSite,
   isAssignedEmployerId,
   isRecordId,
   type EmployerManager,
@@ -25,7 +26,6 @@ export type PlacementDetail = {
   companyName: string;
   employerFound: boolean;
   siteId: string;
-  siteName: string | null;
   siteFound: boolean;
   postcode: string | null;
   areaName: string | null;
@@ -34,8 +34,8 @@ export type PlacementDetail = {
   managerFound: boolean;
   managerSiteId: string | null;
   managerSiteFound: boolean;
-  managerSiteName: string | null;
   managerSitePostcode: string | null;
+  managerSiteAreaName: string | null;
   email: string | null;
   phone: string | null;
   startDate: string;
@@ -84,19 +84,14 @@ export function placementEmployerLabel(row: PlacementDetail): string {
   return row.companyName.trim() || "Employer unavailable";
 }
 
-export function placementDetailSiteName(row: PlacementDetail): string {
-  if (!row.siteFound) return "Site unavailable";
-  return row.siteName?.trim() || "No site name";
-}
-
 export function placementDetailPostcode(row: PlacementDetail): string {
   if (!row.siteFound) return "No postcode";
   return row.postcode?.trim() || "No postcode";
 }
 
-export function placementDetailArea(row: PlacementDetail): string {
-  if (!row.siteFound) return "No area";
-  return row.areaName?.trim() || "No area";
+export function placementDetailLocation(row: PlacementDetail): string {
+  if (!row.siteFound) return "No location";
+  return row.areaName?.trim() || "No location";
 }
 
 export function placementDetailManager(row: PlacementDetail): string {
@@ -107,9 +102,10 @@ export function placementDetailManager(row: PlacementDetail): string {
 export function placementDetailManagerSite(row: PlacementDetail): string {
   if (!row.managerFound || !row.managerSiteId) return "No site";
   if (!row.managerSiteFound) return "Site unavailable";
-  const name = row.managerSiteName?.trim() || "No site name";
-  const postcode = row.managerSitePostcode?.trim() || "No postcode";
-  return `${name} · ${postcode}`;
+  return (
+    formatSite({ postcode: row.managerSitePostcode, areaName: row.managerSiteAreaName }) ||
+    "Site unavailable"
+  );
 }
 
 export function placementDetailEmail(row: PlacementDetail): string {
@@ -122,11 +118,6 @@ export function placementDetailPhone(row: PlacementDetail): string {
 
 export function placementEndReasonLabel(row: Pick<PlacementDetail, "endReason">): string {
   return row.endReason?.trim() || "No end reason";
-}
-
-export function placementHistorySite(row: PlacementDetail): string {
-  if (!row.siteFound) return "Site unavailable";
-  return `${placementDetailSiteName(row)} · ${placementDetailPostcode(row)}`;
 }
 
 export function explainPlacementError(error: {

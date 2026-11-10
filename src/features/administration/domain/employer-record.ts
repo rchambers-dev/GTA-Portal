@@ -12,7 +12,7 @@ import { isUkPostcode, normaliseUkPostcode } from "./postcode-area";
 export const EMPLOYER_COLUMNS = "employer_id, company_name, created_at, updated_at";
 
 export const EMPLOYER_SITE_COLUMNS =
-  "id, employer_id, postcode, area_name, site_name, is_active, created_at, updated_at";
+  "id, employer_id, postcode, area_name, is_active, created_at, updated_at";
 
 export const EMPLOYER_MANAGER_COLUMNS =
   "id, employer_id, site_id, first_name, middle_names, last_name, phone, email, created_at, updated_at";
@@ -42,7 +42,6 @@ export type EmployerSite = {
   id: string;
   postcode: string;
   areaName: string;
-  siteName: string | null;
   isActive: boolean;
 };
 
@@ -84,7 +83,6 @@ export type CurrentApprenticeEmployment = {
   companyName: string;
   postcode: string;
   areaName: string;
-  siteName: string | null;
   managerName: string;
   startDate: string;
 };
@@ -96,7 +94,6 @@ export type EmployerFieldErrors = Partial<
     | "companyName"
     | "postcode"
     | "areaName"
-    | "siteName"
     | "firstName"
     | "middleNames"
     | "lastName"
@@ -123,7 +120,6 @@ export type EmployerSiteRow = {
   employer_id: string;
   postcode: string;
   area_name: string;
-  site_name: string | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -164,13 +160,11 @@ export type ApprenticeNameRow = {
 export type SiteInput = {
   postcode: string;
   areaName: string;
-  siteName: string;
 };
 
 export type ValidatedSite = {
   postcode: string;
   areaName: string;
-  siteName: string | null;
 };
 
 export type ManagerInput = {
@@ -232,7 +226,6 @@ export function validateSiteInput(
   const fieldErrors: EmployerFieldErrors = {};
   const postcode = normaliseUkPostcode(input.postcode);
   const areaName = input.areaName.trim();
-  const siteName = input.siteName.trim();
 
   if (!postcode) {
     fieldErrors.postcode = "Enter a postcode.";
@@ -244,12 +237,12 @@ export function validateSiteInput(
     fieldErrors.postcode = DUPLICATE_POSTCODE;
   }
 
-  if (!areaName) fieldErrors.areaName = "Enter an area.";
+  if (!areaName) fieldErrors.areaName = "Enter a location.";
 
   if (Object.keys(fieldErrors).length > 0) return { ok: false, fieldErrors };
   return {
     ok: true,
-    value: { postcode, areaName, siteName: siteName || null },
+    value: { postcode, areaName },
   };
 }
 
@@ -305,7 +298,6 @@ export function toSiteInsert(employerId: string, value: ValidatedSite) {
     employer_id: employerId,
     postcode: value.postcode,
     area_name: value.areaName,
-    site_name: value.siteName,
   };
 }
 
@@ -348,7 +340,7 @@ export function explainEmployerWriteError(error: {
     message.includes("employer_sites_area_name_not_blank") ||
     message.includes("employer_sites_area_name_check")
   ) {
-    return { fieldErrors: { areaName: "Enter an area." }, formError: null };
+    return { fieldErrors: { areaName: "Enter a location." }, formError: null };
   }
   if (
     message.includes("employer_sites_employer_postcode_unique") ||
@@ -388,7 +380,6 @@ export function mapEmployerSite(row: EmployerSiteRow): EmployerSite {
     id: row.id,
     postcode: row.postcode,
     areaName: row.area_name,
-    siteName: row.site_name?.trim() || null,
     isActive: row.is_active,
   };
 }
@@ -573,15 +564,25 @@ export function formatManagerName(
     .join(" ");
 }
 
+/** Postcode then location, for example "DN20 8LB, Brigg". */
+export function formatSite(site: {
+  postcode?: string | null;
+  areaName?: string | null;
+}): string {
+  const postcode = site.postcode?.trim() ?? "";
+  const location = site.areaName?.trim() ?? "";
+  if (postcode && location) return `${postcode}, ${location}`;
+  return postcode || location;
+}
+
 export function siteLabel(
-  site: Pick<EmployerSite, "postcode" | "areaName" | "siteName" | "isActive">,
+  site: Pick<EmployerSite, "postcode" | "areaName" | "isActive">,
   options?: { markInactive?: boolean },
 ): string {
-  const parts = [site.siteName?.trim(), site.postcode, site.areaName].filter(
-    (part): part is string => Boolean(part),
-  );
-  const label = parts.join(" · ");
-  if (options?.markInactive && !site.isActive) return `${label} (inactive)`;
+  const label = formatSite(site);
+  if (options?.markInactive && !site.isActive) {
+    return label ? `${label} (inactive)` : "Inactive";
+  }
   return label;
 }
 
@@ -602,13 +603,13 @@ export function placementSiteLabel(
   return site ? siteLabel(site) : "Site unavailable";
 }
 
-export function placementSiteName(
+export function placementLocation(
   placement: Pick<ApprenticePlacement, "siteId">,
   sites: readonly EmployerSite[],
 ): string {
   const site = sites.find((item) => item.id === placement.siteId);
-  if (!site) return "Site unavailable";
-  return site.siteName?.trim() || "No site name";
+  if (!site) return "No location";
+  return site.areaName?.trim() || "No location";
 }
 
 export function placementPostcode(
@@ -622,12 +623,7 @@ export function placementPostcode(
 
 /** Same wording on every employer and learner placement control. */
 export function siteChoiceLabel(site: EmployerSite): string {
-  const label = [
-    site.siteName?.trim() || "No site name",
-    site.postcode?.trim() || "No postcode",
-    site.areaName?.trim() || "No area",
-  ].join(" · ");
-  return site.isActive ? label : `${label} (inactive)`;
+  return siteLabel(site, { markInactive: true });
 }
 
 export function managerChoiceLabel(
@@ -638,7 +634,7 @@ export function managerChoiceLabel(
   if (!manager.siteId) return `${name} — No site`;
   const site = sites.find((item) => item.id === manager.siteId);
   if (!site) return `${name} — Site unavailable`;
-  return `${name} — ${site.siteName?.trim() || site.postcode?.trim() || "No site name"}`;
+  return `${name} — ${formatSite(site) || "Site unavailable"}`;
 }
 
 export function placementManagerLabel(
@@ -655,7 +651,7 @@ export function employerMatchesQuery(employer: EmployerListItem, query: string):
   const haystack = [
     employer.employerId,
     employer.companyName,
-    ...employer.sites.flatMap((site) => [site.postcode, site.areaName, site.siteName]),
+    ...employer.sites.flatMap((site) => [site.postcode, site.areaName]),
     ...employer.managers.flatMap((manager) => [
       formatManagerName(manager),
       manager.phone,
@@ -679,7 +675,7 @@ export function employerMatchesQuery(employer: EmployerListItem, query: string):
 
 export function employerSummary(employer: EmployerListItem): string {
   const sites =
-    employer.sites.map((site) => siteLabel(site, { markInactive: true })).join(", ") || "No sites";
+    employer.sites.map((site) => siteLabel(site, { markInactive: true })).join(" · ") || "No sites";
   const managers =
     employer.managers.length === 1 ? "1 manager" : `${employer.managers.length} managers`;
   const apprentices =
@@ -690,9 +686,7 @@ export function employerSummary(employer: EmployerListItem): string {
 }
 
 export function employmentSiteLabel(
-  employment: Pick<CurrentApprenticeEmployment, "siteName" | "postcode" | "areaName">,
+  employment: Pick<CurrentApprenticeEmployment, "postcode" | "areaName">,
 ): string {
-  return [employment.siteName?.trim(), employment.postcode, employment.areaName]
-    .filter((part): part is string => Boolean(part))
-    .join(" · ");
+  return formatSite(employment);
 }
