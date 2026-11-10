@@ -40,6 +40,7 @@ const MONTHS = [
  */
 export const LEARNER_SECTIONS = [
   { id: "overview", label: "Overview" },
+  { id: "employer", label: "Employer" },
   { id: "programme", label: "Programme" },
   { id: "tutor", label: "Tutor" },
 ] as const;

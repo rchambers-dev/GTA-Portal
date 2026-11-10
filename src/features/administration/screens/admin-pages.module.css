@@ -2567,6 +2567,20 @@ textarea.detailFieldInput {
   box-shadow: var(--shadow-lg);
 }
 
+.formDialog {
+  width: min(34rem, 100%);
+  max-height: min(42rem, calc(100vh - 2rem));
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-lg);
+}
+
 .confirmTitle {
   margin: 0;
   font-size: 1rem;

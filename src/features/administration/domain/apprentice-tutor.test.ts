@@ -116,9 +116,13 @@ describe("apprentice tutor rule", () => {
     expect(learnerSectionFromQuery(null)).toBe("overview");
     expect(learnerSectionFromQuery("tutor")).toBe("tutor");
     expect(learnerSectionFromQuery("programme")).toBe("programme");
-    expect(learnerSectionFromQuery("employer")).toBe("overview");
+    expect(learnerSectionFromQuery("employer")).toBe("employer");
+    expect(learnerSectionFromQuery("attendance")).toBe("overview");
     expect(learnerSectionHref("/administration/onboarding/apprentice/GTA-000002", "overview")).toBe(
       "/administration/onboarding/apprentice/GTA-000002",
+    );
+    expect(learnerSectionHref("/administration/onboarding/apprentice/GTA-000002", "employer")).toBe(
+      "/administration/onboarding/apprentice/GTA-000002?tab=employer",
     );
     expect(learnerSectionHref("/administration/onboarding/apprentice/GTA-000002", "programme")).toBe(
       "/administration/onboarding/apprentice/GTA-000002?tab=programme",

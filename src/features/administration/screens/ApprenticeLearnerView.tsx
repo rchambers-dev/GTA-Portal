@@ -6,8 +6,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Select } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import type { ApprenticeProgrammePage } from "../domain/apprentice-programme";
+import type { ApprenticePlacementPage } from "../domain/apprentice-placement";
+import type { LearnerExitPage } from "../domain/learner-exit";
 import { assignApprenticeTutorAction } from "./apprentice-tutor-actions";
 import { ApprenticeProgrammePanel } from "./ApprenticeProgrammePanel";
+import { LearnerEmployerPanel } from "./LearnerEmployerPanel";
+import { LearnerExitPanel } from "./LearnerExitPanel";
 import type { ApprenticeLearnerPage } from "../domain/apprentice-tutor-repository";
 import { employmentSiteLabel, type CurrentApprenticeEmployment } from "../domain/employer-record";
 import {
@@ -29,12 +33,16 @@ export function ApprenticeLearnerView({
   canManageProgramme,
   page,
   programme,
+  exits,
+  placements,
 }: {
   workspace: "administration" | "management";
   canAssign: boolean;
   canManageProgramme: boolean;
   page: ApprenticeLearnerPage;
   programme: ApprenticeProgrammePage | null;
+  exits: LearnerExitPage;
+  placements: ApprenticePlacementPage;
 }) {
   const pathname = usePathname() ?? apprenticeLearnerPath(workspace, page.requestedId);
   const searchParams = useSearchParams();
@@ -92,6 +100,12 @@ export function ApprenticeLearnerView({
                 tutorHistory={page.tutorHistory}
                 tutorOptions={page.tutorOptions}
               />
+            ) : section === "employer" ? (
+              <LearnerEmployerPanel
+                canManage={canManageProgramme}
+                gtaId={apprentice.gtaId}
+                placements={placements}
+              />
             ) : section === "programme" ? (
               programme ? (
                 <ApprenticeProgrammePanel
@@ -105,7 +119,18 @@ export function ApprenticeLearnerView({
                 </p>
               )
             ) : (
-              <OverviewPanel apprentice={apprentice} employment={page.currentEmployment} />
+              <>
+                <OverviewPanel
+                  apprentice={apprentice}
+                  employment={page.currentEmployment}
+                  employerHref={learnerSectionHref(basePath, "employer")}
+                />
+                <LearnerExitPanel
+                  canManage={canManageProgramme}
+                  gtaId={apprentice.gtaId}
+                  exits={exits}
+                />
+              </>
             )}
           </>
         ) : (
@@ -123,10 +148,15 @@ export function ApprenticeLearnerView({
 function OverviewPanel({
   apprentice,
   employment,
+  employerHref,
 }: {
   apprentice: ApprenticeLearnerRecord;
   employment: CurrentApprenticeEmployment | null;
+  employerHref: string;
 }) {
+  const summary = employment
+    ? `${employment.companyName} · ${employmentSiteLabel(employment)} · ${employment.managerName}`
+    : "No current employer";
   return (
     <section className={styles.learnerCard} aria-labelledby="learner-overview-heading" data-learner-section="overview">
       <h2 id="learner-overview-heading" className={styles.formGroupTitle}>
@@ -142,17 +172,17 @@ function OverviewPanel({
         <dt>Status</dt>
         <dd data-learner-status={apprentice.statusLabel}>{apprentice.statusLabel}</dd>
         <dt>Employer</dt>
-        <dd data-learner-employer={employment?.companyName ?? ""}>
-          {employment?.companyName ?? "No current employer"}
+        <dd>
+          <Link
+            className={styles.placementLink}
+            href={employerHref}
+            data-learner-employer={employment?.companyName ?? ""}
+            data-learner-site={employment?.postcode ?? ""}
+            data-learner-manager={employment?.managerName ?? ""}
+          >
+            {summary}
+          </Link>
         </dd>
-        {employment ? (
-          <>
-            <dt>Site</dt>
-            <dd data-learner-site={employment.postcode}>{employmentSiteLabel(employment)}</dd>
-            <dt>Manager</dt>
-            <dd data-learner-manager={employment.managerName}>{employment.managerName}</dd>
-          </>
-        ) : null}
       </dl>
     </section>
   );

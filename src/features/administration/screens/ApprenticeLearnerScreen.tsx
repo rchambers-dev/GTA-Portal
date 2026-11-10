@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canManageApprenticeProgramme } from "../domain/apprentice-programme";
 import { loadApprenticeProgramme } from "../domain/apprentice-programme-repository";
+import { loadApprenticePlacements } from "../domain/apprentice-placement-repository";
+import { loadLearnerExits } from "../domain/learner-exit-repository";
 import { loadApprenticeLearner } from "../domain/apprentice-tutor-repository";
 import { canAssignApprenticeTutor } from "../domain/apprentice-tutor";
 import { ApprenticeLearnerView } from "./ApprenticeLearnerView";
@@ -19,9 +21,11 @@ export async function ApprenticeLearnerScreen({
 }) {
   const session = await getSupabaseEffectiveSession();
   const canManageProgramme = canManageApprenticeProgramme(session);
-  const [page, programme] = await Promise.all([
+  const [page, programme, exits, placements] = await Promise.all([
     loadApprenticeLearner(gtaId),
     loadApprenticeProgramme(gtaId, { canManage: canManageProgramme }),
+    loadLearnerExits(gtaId, { canManage: canManageProgramme }),
+    loadApprenticePlacements(gtaId, { canManage: canManageProgramme }),
   ]);
 
   return (
@@ -32,6 +36,8 @@ export async function ApprenticeLearnerScreen({
         canManageProgramme={canManageProgramme}
         page={page}
         programme={programme}
+        exits={exits}
+        placements={placements}
       />
     </Suspense>
   );

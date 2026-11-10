@@ -31,7 +31,10 @@ import {
   formatManagerName,
   managerSiteLabel,
   placementManagerLabel,
-  placementSiteLabel,
+  placementPostcode,
+  placementSiteName,
+  placementsForSite,
+  siteChoiceLabel,
   siteLabel,
   sortEmployers,
   validateCompanyName,
@@ -890,39 +893,138 @@ function EmployerEditor({
         ) : null}
       </section>
 
-      <section className={styles.stack} aria-labelledby={`apprentices-${employer.employerId}`}>
-        <h3 id={`apprentices-${employer.employerId}`} className={styles.formGroupTitle}>
-          Apprentices
-        </h3>
-        {employer.placements.length === 0 ? (
-          <p className={styles.empty}>No current apprentices.</p>
-        ) : (
-          <ul className={styles.pillList} data-placement-list={employer.employerId}>
-            {employer.placements.map((placement) => (
-              <li
-                key={placement.gtaId}
-                className={`${styles.pillRow} ${styles.employerRow}`}
-                data-placement-gta={placement.gtaId}
-              >
-                <span>
-                  <Link
-                    className={styles.placementLink}
-                    href={apprenticeLearnerPath(workspace, placement.gtaId)}
-                  >
-                    {placement.name}
-                  </Link>
-                </span>
-                <span className={styles.pillMeta}>
-                  <span>{placementSiteLabel(placement, employer.sites)}</span>
-                  <span>{placementManagerLabel(placement, employer.managers)}</span>
-                  <span>Started {formatTutorDate(placement.startDate)}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <ApprenticesSection employer={employer} workspace={workspace} />
     </div>
+  );
+}
+
+function ApprenticesSection({
+  employer,
+  workspace,
+}: {
+  employer: EmployerListItem;
+  workspace: "administration" | "management";
+}) {
+  const [siteId, setSiteId] = useState("");
+  const current = placementsForSite(employer.placements, siteId);
+  const past = placementsForSite(employer.pastPlacements, siteId);
+  const atSite = Boolean(siteId);
+
+  return (
+    <section className={styles.stack} aria-labelledby={`apprentices-${employer.employerId}`}>
+      <h3 id={`apprentices-${employer.employerId}`} className={styles.formGroupTitle}>
+        Apprentices
+      </h3>
+      <div className={styles.learnerField} data-apprentice-filter="site">
+        <span>Site</span>
+        <Select
+          aria-label="Site"
+          value={siteId}
+          placeholder="All sites"
+          options={[
+            { value: "", label: "All sites" },
+            ...employer.sites.map((site) => ({ value: site.id, label: siteChoiceLabel(site) })),
+          ]}
+          onChange={setSiteId}
+        />
+      </div>
+      <h4 className={styles.formGroupTitle}>Current apprentices</h4>
+      {current.length === 0 ? (
+        <p className={styles.empty} role="status">
+          {atSite ? "No current apprentices at this site." : "No current apprentices."}
+        </p>
+      ) : (
+        <div className={styles.tableWrap}>
+          <table className={styles.table} data-current-apprentices={employer.employerId}>
+            <thead>
+              <tr>
+                <th>Learner</th>
+                <th>GTA ID</th>
+                <th>Site</th>
+                <th>Postcode</th>
+                <th>Manager</th>
+                <th>Start</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {current.map((placement) => (
+                <tr
+                  key={placement.id}
+                  data-current-apprentice={placement.gtaId}
+                  data-placement-site={placement.siteId}
+                >
+                  <td>
+                    <Link
+                      className={styles.placementLink}
+                      href={apprenticeLearnerPath(workspace, placement.gtaId)}
+                    >
+                      {placement.name}
+                    </Link>
+                  </td>
+                  <td>{placement.gtaId}</td>
+                  <td>{placementSiteName(placement, employer.sites)}</td>
+                  <td>{placementPostcode(placement, employer.sites)}</td>
+                  <td>{placementManagerLabel(placement, employer.managers)}</td>
+                  <td>{formatTutorDate(placement.startDate)}</td>
+                  <td>{placement.statusLabel || "Status unavailable"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <h4 className={styles.formGroupTitle}>Past apprentices</h4>
+      {past.length === 0 ? (
+        <p className={styles.empty} role="status">
+          {atSite ? "No past apprentices at this site." : "No past apprentices."}
+        </p>
+      ) : (
+        <div className={styles.tableWrap}>
+          <table className={styles.table} data-past-apprentices={employer.employerId}>
+            <thead>
+              <tr>
+                <th>Learner</th>
+                <th>GTA ID</th>
+                <th>Site</th>
+                <th>Postcode</th>
+                <th>Manager</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>End reason</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {past.map((placement) => (
+                <tr
+                  key={placement.id}
+                  data-past-apprentice={placement.gtaId}
+                  data-placement-site={placement.siteId}
+                >
+                  <td>
+                    <Link
+                      className={styles.placementLink}
+                      href={apprenticeLearnerPath(workspace, placement.gtaId)}
+                    >
+                      {placement.name}
+                    </Link>
+                  </td>
+                  <td>{placement.gtaId}</td>
+                  <td>{placementSiteName(placement, employer.sites)}</td>
+                  <td>{placementPostcode(placement, employer.sites)}</td>
+                  <td>{placementManagerLabel(placement, employer.managers)}</td>
+                  <td>{formatTutorDate(placement.startDate)}</td>
+                  <td>{placement.endDate ? formatTutorDate(placement.endDate) : "No end date"}</td>
+                  <td>{placement.endReason?.trim() || "No end reason"}</td>
+                  <td>{placement.statusLabel || "Status unavailable"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
   );
 }
 

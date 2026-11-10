@@ -22,29 +22,98 @@ const dateRow = {
   actual_epa: null,
 };
 
-function chain(data: unknown, error: { message: string } | null = null) {
+function chain(
+  data: unknown,
+  error: { message: string } | null = null,
+  filters?: [string, unknown][],
+) {
   const builder: Record<string, unknown> = {};
   const self = () => builder;
+  const filtered = () => {
+    if (!filters || !Array.isArray(data)) return data;
+    return data.filter((row) =>
+      filters.every(([column, value]) => (row as Record<string, unknown>)[column] === value),
+    );
+  };
   builder.select = self;
-  builder.eq = self;
+  builder.eq = (column: string, value: unknown) => {
+    filters?.push([column, value]);
+    return builder;
+  };
   builder.order = self;
   builder.in = self;
   builder.is = self;
   builder.update = self;
-  builder.maybeSingle = () =>
-    Promise.resolve({
-      data: Array.isArray(data) ? (data[0] ?? null) : data,
+  builder.maybeSingle = () => {
+    const rows = filtered();
+    return Promise.resolve({
+      data: Array.isArray(rows) ? (rows[0] ?? null) : rows,
       error,
     });
+  };
   builder.then = (
     resolve: (value: unknown) => unknown,
     reject?: (reason: unknown) => unknown,
-  ) => Promise.resolve({ data, error }).then(resolve, reject);
+  ) => Promise.resolve({ data: filtered(), error }).then(resolve, reject);
   return builder;
 }
 
+const reasonRows = [
+  {
+    id: "reason-early",
+    label: "Learner ahead of schedule",
+    sort_order: 10,
+    active: true,
+    is_safeguarding: false,
+    used_for_breaks: false,
+    used_for_withdrawals: false,
+    used_for_date_changes: true,
+  },
+  {
+    id: "reason-other",
+    label: "Other",
+    sort_order: 20,
+    active: true,
+    is_safeguarding: false,
+    used_for_breaks: true,
+    used_for_withdrawals: true,
+    used_for_date_changes: true,
+  },
+  {
+    id: reasonId,
+    label: "Illness, injury or medical treatment",
+    sort_order: 10,
+    active: true,
+    is_safeguarding: false,
+    used_for_breaks: true,
+    used_for_withdrawals: true,
+    used_for_date_changes: false,
+  },
+  {
+    id: "reason-leave",
+    label: "Learner chose to leave",
+    sort_order: 30,
+    active: true,
+    is_safeguarding: false,
+    used_for_breaks: false,
+    used_for_withdrawals: true,
+    used_for_date_changes: false,
+  },
+  {
+    id: "reason-old",
+    label: "Retired reason",
+    sort_order: 5,
+    active: false,
+    is_safeguarding: false,
+    used_for_breaks: true,
+    used_for_withdrawals: true,
+    used_for_date_changes: true,
+  },
+];
+
 function programmeClient(canManage: boolean) {
   const tables: string[] = [];
+  const queries: { table: string; filters: [string, unknown][] }[] = [];
   const rpcs: string[] = [];
   const forbidden = [
     "breaks_in_learning",
@@ -53,6 +122,7 @@ function programmeClient(canManage: boolean) {
     "return_to_learning_checks",
     "return_check_results",
     "date_change_reasons",
+    "reasons",
   ];
   const supabase = {
     from(table: string) {
@@ -66,16 +136,10 @@ function programmeClient(canManage: boolean) {
           { id: tutorId, display_name: "Anne Admin", email: "anne@example.com" },
         ]);
       }
-      if (table === "date_change_reasons") {
-        return chain([
-          { id: reasonId, label: "Other", sort_order: 20, is_safeguarding: false },
-          {
-            id: "reason-early",
-            label: "Learner ahead of schedule",
-            sort_order: 10,
-            is_safeguarding: false,
-          },
-        ]);
+      if (table === "reasons") {
+        const filters: [string, unknown][] = [];
+        queries.push({ table, filters });
+        return chain(reasonRows, null, filters);
       }
       if (table === "breaks_in_learning") {
         return chain([
@@ -96,17 +160,6 @@ function programmeClient(canManage: boolean) {
             reason_id: reasonId,
             explanation: "Family funeral.",
             started_by: tutorId,
-          },
-        ]);
-      }
-      if (table === "break_reasons") {
-        return chain([
-          {
-            id: reasonId,
-            label: "Illness, injury or medical treatment",
-            sort_order: 10,
-            active: true,
-            is_safeguarding: false,
           },
         ]);
       }
@@ -162,7 +215,7 @@ function programmeClient(canManage: boolean) {
       return Promise.resolve({ data: null, error: { message: `unexpected rpc ${name}` } });
     },
   } as unknown as SupabaseClient;
-  return { supabase, tables, rpcs };
+  return { supabase, tables, queries, rpcs };
 }
 
 describe("apprentice programme repository", () => {
@@ -202,6 +255,43 @@ describe("apprentice programme repository", () => {
     expect(page.breaks?.history.map((item) => item.actualReturn)).toEqual(["2025-02-01"]);
     expect(tables).toContain("breaks_in_learning");
     expect(tables).not.toContain("return_check_results");
+    expect(tables).not.toContain("break_reasons");
+    expect(tables).not.toContain("date_change_reasons");
+  });
+
+  it("reads reasons by flag and active, and does not read the compatibility views", async () => {
+    const { supabase, tables, queries } = programmeClient(true);
+    const page = await readApprenticeProgramme(supabase, "GTA-000002", { canManage: true });
+    expect(tables).not.toContain("break_reasons");
+    expect(tables).not.toContain("date_change_reasons");
+    expect(queries).toEqual([
+      {
+        table: "reasons",
+        filters: [
+          ["used_for_date_changes", true],
+          ["active", true],
+        ],
+      },
+      {
+        table: "reasons",
+        filters: [
+          ["used_for_breaks", true],
+          ["active", true],
+        ],
+      },
+    ]);
+    expect(page.dateChangeReasons.map((reason) => reason.label)).toEqual([
+      "Learner ahead of schedule",
+      "Other",
+    ]);
+    expect(page.breaks?.reasons.map((reason) => reason.label)).toEqual([
+      "Illness, injury or medical treatment",
+      "Other",
+    ]);
+    expect(page.dateChangeReasons.map((reason) => reason.label)).not.toContain("Learner chose to leave");
+    expect(page.dateChangeReasons.map((reason) => reason.label)).not.toContain("Retired reason");
+    expect(page.breaks?.reasons.map((reason) => reason.label)).not.toContain("Retired reason");
+    expect(page.breaks?.reasons.map((reason) => reason.label)).not.toContain("Learner chose to leave");
   });
 
   it("writes an initial planned date only while the column is empty", async () => {

@@ -77,11 +77,42 @@ const example: EmployerListItem = {
   ],
   placements: [
     {
+      id: "placement-current",
       gtaId: "GTA-000002",
       name: "Jack Elliot",
+      status: "in_learning",
+      statusLabel: "In learning",
       siteId,
       managerId,
       startDate: "2024-09-02",
+      endDate: null,
+      endReason: null,
+    },
+    {
+      id: "placement-leeds",
+      gtaId: "GTA-000110",
+      name: "Cameron Garner",
+      status: "in_learning",
+      statusLabel: "In learning",
+      siteId: leedsId,
+      managerId,
+      startDate: "2024-07-15",
+      endDate: null,
+      endReason: null,
+    },
+  ],
+  pastPlacements: [
+    {
+      id: "placement-past",
+      gtaId: "GTA-000003",
+      name: "Pat Lee",
+      status: "withdrawn",
+      statusLabel: "Withdrawn",
+      siteId,
+      managerId,
+      startDate: "2023-09-04",
+      endDate: "2024-02-01",
+      endReason: "Learner withdrew",
     },
   ],
 };
@@ -112,8 +143,18 @@ describe("Employers page", () => {
     expect(html).toContain("Jane Ann Smith");
     expect(html).toContain("jane@example.test");
     expect(html).toContain("Jack Elliot");
+    expect(html).toContain("Cameron Garner");
     expect(html).toContain('href="/administration/onboarding/apprentice/GTA-000002"');
-    expect(html).toContain("Started 2 Sep 2024");
+    expect(html).toContain('href="/administration/onboarding/apprentice/GTA-000110"');
+    expect(html).toContain("2 Sep 2024");
+    expect(html).toContain('data-current-apprentice="GTA-000002"');
+    expect(html).toContain('data-current-apprentice="GTA-000110"');
+    expect(html).toContain("No site name");
+    expect(html).toContain('data-past-apprentice="GTA-000003"');
+    expect(html).toContain("Learner withdrew");
+    expect(html).toContain("All sites");
+    expect(html).toContain("Current apprentices");
+    expect(html).toContain("Past apprentices");
     expect(html).toContain("Deactivate");
     expect(html).toContain("Make active");
     expect(html).toContain("Search employers");

@@ -44,10 +44,7 @@ export async function loadEmployersPage(): Promise<EmployersPageData> {
     supabase.from("employers").select(EMPLOYER_COLUMNS).order("company_name", { ascending: true }),
     supabase.from("employer_sites").select(EMPLOYER_SITE_COLUMNS),
     supabase.from("employer_managers").select(EMPLOYER_MANAGER_COLUMNS),
-    supabase
-      .from("apprentice_employments")
-      .select(APPRENTICE_PLACEMENT_COLUMNS)
-      .is("end_date", null),
+    supabase.from("apprentice_employments").select(APPRENTICE_PLACEMENT_COLUMNS),
   ]);
 
   const problems: string[] = [];
@@ -73,7 +70,7 @@ export async function loadEmployersPage(): Promise<EmployersPageData> {
       ? { data: [], error: null }
       : await supabase
           .from("apprentices")
-          .select("gta_id, first_name, middle_names, last_name")
+          .select("gta_id, first_name, middle_names, last_name, status")
           .in("gta_id", gtaIds);
 
   if (namesResult.error) {

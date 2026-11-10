@@ -12,6 +12,9 @@ import {
   canDeactivateSite,
   canManageEmployers,
   employerMatchesQuery,
+  managerChoiceLabel,
+  placementSiteName,
+  placementsForSite,
   explainEmployerWriteError,
   toManagerInsert,
   toSiteInsert,
@@ -73,13 +76,19 @@ function sampleEmployer(): EmployerListItem {
     ],
     placements: [
       {
+        id: "placement-1",
         gtaId: "GTA-000002",
         name: "Jack Elliot",
+        status: "in_learning",
+        statusLabel: "In learning",
         siteId,
         managerId: "11111111-1111-4111-8111-111111111111",
         startDate: "2024-09-02",
+        endDate: null,
+        endReason: null,
       },
     ],
+    pastPlacements: [],
   };
 }
 
@@ -288,6 +297,63 @@ describe("employer record", () => {
     expect(rows[0]?.sites.map((site) => site.postcode)).toEqual(["HU1 1AA"]);
     expect(rows[0]?.managers[0]?.middleNames).toBe("Ann");
     expect(rows[0]?.placements[0]?.name).toBe("Jack Elliot");
+    expect(rows[0]?.placements[0]?.statusLabel).toBe("Status unavailable");
+    expect(rows[0]?.pastPlacements).toEqual([]);
+    expect(placementSiteName(rows[0]!.placements[0]!, rows[0]!.sites)).toBe("No site name");
+  });
+
+  it("splits past apprentices and filters either list by site", () => {
+    const rows = assembleEmployers(
+      [savedEmployer],
+      [],
+      [],
+      [
+        {
+          id: "current",
+          gta_id: "GTA-000002",
+          employer_id: "GTA-EMP-000001",
+          site_id: siteId,
+          manager_id: "11111111-1111-4111-8111-111111111111",
+          start_date: "2024-09-02",
+          end_date: null,
+          end_reason: null,
+        },
+        {
+          id: "past",
+          gta_id: "GTA-000003",
+          employer_id: "GTA-EMP-000001",
+          site_id: otherSiteId,
+          manager_id: "11111111-1111-4111-8111-111111111111",
+          start_date: "2023-09-04",
+          end_date: "2024-02-01",
+          end_reason: "  Learner withdrew  ",
+        },
+      ],
+      [
+        {
+          gta_id: "GTA-000003",
+          first_name: "Pat",
+          middle_names: null,
+          last_name: "Lee",
+          status: "withdrawn",
+        },
+      ],
+    );
+    expect(rows[0]?.placements.map((placement) => placement.gtaId)).toEqual(["GTA-000002"]);
+    expect(rows[0]?.pastPlacements[0]).toMatchObject({
+      gtaId: "GTA-000003",
+      statusLabel: "Withdrawn",
+      endReason: "Learner withdrew",
+    });
+    expect(placementsForSite(rows[0]!.placements, siteId)).toHaveLength(1);
+    expect(placementsForSite(rows[0]!.pastPlacements, siteId)).toEqual([]);
+    expect(placementsForSite(rows[0]!.pastPlacements, "")).toHaveLength(1);
+    expect(
+      managerChoiceLabel(
+        { firstName: "Pat", middleNames: null, lastName: "Lee", siteId: null },
+        [],
+      ),
+    ).toBe("Pat Lee — No site");
   });
 
   it("creates the employer and first site through the database function", async () => {

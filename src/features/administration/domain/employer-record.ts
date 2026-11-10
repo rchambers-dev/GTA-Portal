@@ -5,7 +5,7 @@
  */
 
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
-import { formatApprenticeName } from "./apprentice-record";
+import { apprenticeStatusLabel, formatApprenticeName } from "./apprentice-record";
 import { isUkPostcode, normaliseUkPostcode } from "./postcode-area";
 
 /** Columns this page reads. employer_id is returned, never written. */
@@ -18,7 +18,7 @@ export const EMPLOYER_MANAGER_COLUMNS =
   "id, employer_id, site_id, first_name, middle_names, last_name, phone, email, created_at, updated_at";
 
 export const APPRENTICE_PLACEMENT_COLUMNS =
-  "gta_id, employer_id, site_id, manager_id, start_date";
+  "id, gta_id, employer_id, site_id, manager_id, start_date, end_date, end_reason";
 
 const EMPLOYER_ID_PATTERN = /^GTA-EMP-[0-9]{6}$/;
 const UUID_PATTERN =
@@ -57,11 +57,16 @@ export type EmployerManager = {
 };
 
 export type ApprenticePlacement = {
+  id: string;
   gtaId: string;
   name: string;
+  status: string;
+  statusLabel: string;
   siteId: string;
   managerId: string;
   startDate: string;
+  endDate: string | null;
+  endReason: string | null;
 };
 
 export type EmployerListItem = {
@@ -72,6 +77,7 @@ export type EmployerListItem = {
   sites: EmployerSite[];
   managers: EmployerManager[];
   placements: ApprenticePlacement[];
+  pastPlacements: ApprenticePlacement[];
 };
 
 export type CurrentApprenticeEmployment = {
@@ -137,11 +143,14 @@ export type EmployerManagerRow = {
 };
 
 export type ApprenticePlacementRow = {
+  id?: string | null;
   gta_id: string;
   employer_id: string;
   site_id: string;
   manager_id: string;
   start_date: string;
+  end_date?: string | null;
+  end_reason?: string | null;
 };
 
 export type ApprenticeNameRow = {
@@ -149,6 +158,7 @@ export type ApprenticeNameRow = {
   first_name: string;
   middle_names: string | null;
   last_name: string;
+  status?: string | null;
 };
 
 export type SiteInput = {
@@ -422,6 +432,51 @@ export function sortPlacements(
   });
 }
 
+export function sortPastPlacements(
+  placements: readonly ApprenticePlacement[],
+): ApprenticePlacement[] {
+  return [...placements].sort((a, b) => {
+    const byEnd = (b.endDate ?? "").localeCompare(a.endDate ?? "");
+    if (byEnd !== 0) return byEnd;
+    const name = a.name.localeCompare(b.name, "en", { sensitivity: "base" });
+    if (name !== 0) return name;
+    return a.gtaId.localeCompare(b.gtaId, "en");
+  });
+}
+
+export function placementsForSite<T extends { siteId: string }>(
+  placements: readonly T[],
+  siteId: string,
+): T[] {
+  if (!siteId) return [...placements];
+  return placements.filter((placement) => placement.siteId === siteId);
+}
+
+function placementFromRow(
+  placement: ApprenticePlacementRow,
+  person: ApprenticeNameRow | undefined,
+): ApprenticePlacement {
+  const status = person?.status?.trim() ?? "";
+  return {
+    id: placement.id?.trim() || `${placement.gta_id}:${placement.start_date}`,
+    gtaId: placement.gta_id,
+    name: person
+      ? formatApprenticeName({
+          firstName: person.first_name,
+          middleNames: person.middle_names,
+          lastName: person.last_name,
+        })
+      : placement.gta_id,
+    status,
+    statusLabel: status ? apprenticeStatusLabel(status) : "Status unavailable",
+    siteId: placement.site_id,
+    managerId: placement.manager_id,
+    startDate: placement.start_date,
+    endDate: placement.end_date ?? null,
+    endReason: placement.end_reason?.trim() || null,
+  };
+}
+
 export function sortEmployers(rows: readonly EmployerListItem[]): EmployerListItem[] {
   return [...rows].sort((a, b) =>
     a.companyName.localeCompare(b.companyName, "en", { sensitivity: "base" }),
@@ -450,25 +505,10 @@ export function assembleEmployers(
           .filter((manager) => manager.employer_id === employer.employer_id)
           .map(mapEmployerManager),
       ),
-      placements: sortPlacements(
+      ...splitEmployerPlacements(
         placements
           .filter((placement) => placement.employer_id === employer.employer_id)
-          .map((placement) => {
-            const person = names.get(placement.gta_id);
-            return {
-              gtaId: placement.gta_id,
-              name: person
-                ? formatApprenticeName({
-                    firstName: person.first_name,
-                    middleNames: person.middle_names,
-                    lastName: person.last_name,
-                  })
-                : placement.gta_id,
-              siteId: placement.site_id,
-              managerId: placement.manager_id,
-              startDate: placement.start_date,
-            };
-          }),
+          .map((placement) => placementFromRow(placement, names.get(placement.gta_id))),
       ),
     })),
   );
@@ -486,6 +526,17 @@ export function employerFromRow(
     sites: sortSites(sites),
     managers: [],
     placements: [],
+    pastPlacements: [],
+  };
+}
+
+function splitEmployerPlacements(rows: readonly ApprenticePlacement[]): {
+  placements: ApprenticePlacement[];
+  pastPlacements: ApprenticePlacement[];
+} {
+  return {
+    placements: sortPlacements(rows.filter((row) => row.endDate === null)),
+    pastPlacements: sortPastPlacements(rows.filter((row) => row.endDate !== null)),
   };
 }
 
@@ -551,6 +602,45 @@ export function placementSiteLabel(
   return site ? siteLabel(site) : "Site unavailable";
 }
 
+export function placementSiteName(
+  placement: Pick<ApprenticePlacement, "siteId">,
+  sites: readonly EmployerSite[],
+): string {
+  const site = sites.find((item) => item.id === placement.siteId);
+  if (!site) return "Site unavailable";
+  return site.siteName?.trim() || "No site name";
+}
+
+export function placementPostcode(
+  placement: Pick<ApprenticePlacement, "siteId">,
+  sites: readonly EmployerSite[],
+): string {
+  const site = sites.find((item) => item.id === placement.siteId);
+  if (!site) return "No postcode";
+  return site.postcode?.trim() || "No postcode";
+}
+
+/** Same wording on every employer and learner placement control. */
+export function siteChoiceLabel(site: EmployerSite): string {
+  const label = [
+    site.siteName?.trim() || "No site name",
+    site.postcode?.trim() || "No postcode",
+    site.areaName?.trim() || "No area",
+  ].join(" · ");
+  return site.isActive ? label : `${label} (inactive)`;
+}
+
+export function managerChoiceLabel(
+  manager: Pick<EmployerManager, "firstName" | "middleNames" | "lastName" | "siteId">,
+  sites: readonly EmployerSite[],
+): string {
+  const name = formatManagerName(manager);
+  if (!manager.siteId) return `${name} — No site`;
+  const site = sites.find((item) => item.id === manager.siteId);
+  if (!site) return `${name} — Site unavailable`;
+  return `${name} — ${site.siteName?.trim() || site.postcode?.trim() || "No site name"}`;
+}
+
 export function placementManagerLabel(
   placement: Pick<ApprenticePlacement, "managerId">,
   managers: readonly EmployerManager[],
@@ -572,9 +662,11 @@ export function employerMatchesQuery(employer: EmployerListItem, query: string):
       manager.email,
       managerSiteLabel(manager, employer.sites),
     ]),
-    ...employer.placements.flatMap((placement) => [
+    ...[...employer.placements, ...employer.pastPlacements].flatMap((placement) => [
       placement.name,
       placement.gtaId,
+      placement.statusLabel,
+      placement.endReason,
       placementSiteLabel(placement, employer.sites),
       placementManagerLabel(placement, employer.managers),
     ]),
