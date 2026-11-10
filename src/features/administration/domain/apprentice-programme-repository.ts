@@ -236,8 +236,9 @@ export async function readApprenticeProgramme(
 
   const reasonQuery = options.canManage
     ? supabase
-        .from("date_change_reasons")
+        .from("reasons")
         .select("id, label, sort_order, is_safeguarding")
+        .eq("used_for_date_changes", true)
         .eq("active", true)
         .order("sort_order", { ascending: true })
     : Promise.resolve({ data: [] as ReasonRow[], error: null });
@@ -318,8 +319,10 @@ async function readBreaks(
       .select("id, start_date, planned_return, actual_return, reason_id, explanation, started_by")
       .eq("apprentice_id", gtaId),
     supabase
-      .from("break_reasons")
+      .from("reasons")
       .select("id, label, sort_order, active, is_safeguarding")
+      .eq("used_for_breaks", true)
+      .eq("active", true)
       .order("sort_order", { ascending: true }),
     supabase
       .from("return_checklist_items")

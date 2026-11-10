@@ -2,7 +2,10 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
 import type { ApprenticeProgrammePage } from "../domain/apprentice-programme";
+import type { ApprenticePlacementPage } from "../domain/apprentice-placement";
+import type { LearnerExitPage } from "../domain/learner-exit";
 import { ApprenticeLearnerView } from "./ApprenticeLearnerView";
+import { RecordExitForm } from "./LearnerExitPanel";
 import type { ApprenticeLearnerPage } from "../domain/apprentice-tutor-repository";
 
 const nav = vi.hoisted(() => ({ search: "" }));
@@ -26,6 +29,17 @@ vi.mock("next/navigation", () => ({
 
 vi.mock("./apprentice-tutor-actions", () => ({
   assignApprenticeTutorAction: vi.fn(),
+}));
+
+vi.mock("./learner-exit-actions", () => ({
+  recordLearnerExitAction: vi.fn(),
+  reverseLearnerExitAction: vi.fn(),
+}));
+
+vi.mock("./apprentice-placement-actions", () => ({
+  endApprenticePlacementAction: vi.fn(),
+  startApprenticePlacementAction: vi.fn(),
+  changeApprenticePlacementAction: vi.fn(),
 }));
 
 vi.mock("./apprentice-programme-actions", () => ({
@@ -84,6 +98,7 @@ function page(overrides: Partial<ApprenticeLearnerPage> = {}): ApprenticeLearner
 }
 
 const reasonId = "44444444-4444-4444-8444-444444444444";
+const exitId = "88888888-8888-4888-8888-888888888888";
 const breakId = "55555555-5555-4555-8555-555555555555";
 const changeId = "66666666-6666-4666-8666-666666666666";
 const safeguardingId = "77777777-7777-4777-8777-777777777777";
@@ -197,6 +212,8 @@ function render(
         canAssign?: boolean;
         canManage?: boolean;
         programme?: ApprenticeProgrammePage | null;
+        exits?: LearnerExitPage;
+        placements?: ApprenticePlacementPage;
       } = true,
 ) {
   const options = typeof canAssignOrOptions === "boolean" ? { canAssign: canAssignOrOptions } : canAssignOrOptions;
@@ -209,6 +226,19 @@ function render(
       canManageProgramme: canManage,
       page: value,
       programme: options.programme === undefined ? programmePage() : options.programme,
+      exits: options.exits ?? {
+        exits: [],
+        reasons: [],
+        courseStart: "2025-09-01",
+        today: "2026-11-10",
+        loadError: null,
+      },
+      placements: options.placements ?? {
+        current: [],
+        history: [],
+        employers: [],
+        loadError: null,
+      },
     }),
   );
 }
@@ -418,5 +448,177 @@ describe("learner page", () => {
     );
     expect(html).toContain("No apprentice has the GTA ID GTA-999999.");
     expect(html).not.toContain("data-learner-tab");
+  });
+
+  it("links the overview employer line to the employer tab", () => {
+    nav.search = "";
+    const html = render(
+      page({
+        currentEmployment: {
+          companyName: "BCA",
+          postcode: "DN2 4SF",
+          areaName: "Barnby Dun with Kirk Sandall",
+          siteName: null,
+          managerName: "Jane Ann Smith",
+          startDate: "2024-09-02",
+        },
+      }),
+    );
+    expect(html).toContain('href="/administration/onboarding/apprentice/GTA-000002?tab=employer"');
+    expect(html).toContain("BCA · DN2 4SF · Barnby Dun with Kirk Sandall · Jane Ann Smith");
+  });
+
+  it("shows the current placement, a missing site, and keeps tutors from editing it", () => {
+    nav.search = "tab=employer";
+    const placement = {
+      id: "placement-1",
+      employerId: "GTA-EMP-000011",
+      companyName: "BCA",
+      employerFound: true,
+      siteId: "site-1",
+      siteName: null,
+      siteFound: true,
+      postcode: "DN2 4SF",
+      areaName: "Barnby Dun with Kirk Sandall",
+      managerId: "manager-1",
+      managerName: "Mick James Reynolds",
+      managerFound: true,
+      managerSiteId: null,
+      managerSiteFound: false,
+      managerSiteName: null,
+      managerSitePostcode: null,
+      email: "mick.reynolds@bca.com",
+      phone: null,
+      startDate: "2024-07-15",
+      endDate: null,
+      endReason: null,
+    };
+    const html = render(page(), {
+      canAssign: false,
+      canManage: false,
+      placements: {
+        current: [placement],
+        history: [
+          {
+            ...placement,
+            id: "placement-past",
+            endDate: "2024-07-14",
+            endReason: null,
+            startDate: "2023-01-09",
+          },
+        ],
+        employers: [],
+        loadError: null,
+      },
+    });
+    expect(html).toContain('data-learner-section="employer"');
+    expect(html).toContain('data-placement-site-name="No site name"');
+    expect(html).toContain('data-placement-postcode="DN2 4SF"');
+    expect(html).toContain('data-placement-area="Barnby Dun with Kirk Sandall"');
+    expect(html).toContain('data-placement-manager="Mick James Reynolds"');
+    expect(html).toContain('data-placement-manager-site="No site"');
+    expect(html).toContain('data-placement-email="mick.reynolds@bca.com"');
+    expect(html).toContain('data-placement-phone="No phone"');
+    expect(html).toContain("15 Jul 2024");
+    expect(html).toContain("No end reason");
+    expect(html).toContain("You can view placements.");
+    expect(html).not.toContain("data-change-placement");
+    expect(html).not.toContain("data-end-placement");
+  });
+
+  it("shows a recorded exit and lets an administrator reverse it", () => {
+    nav.search = "";
+    const html = render(page(), {
+      exits: {
+        exits: [
+          {
+            id: exitId,
+            gtaId: "GTA-000002",
+            exitType: "withdrawn",
+            exitDate: "2026-11-01",
+            reason: "Learner chose to leave",
+            isSafeguarding: false,
+            notes: "Left for another trade.",
+            notesWithheld: false,
+            recordedByName: "Anne Admin",
+            recordedAt: "2026-11-10T18:49:00.000Z",
+            reversedAt: null,
+            reversedByName: null,
+            reversalNote: null,
+            reversalNoteWithheld: false,
+          },
+        ],
+        reasons: [],
+        courseStart: "2025-09-01",
+        today: "2026-11-10",
+        loadError: null,
+      },
+    });
+    expect(html).toContain('data-exit-status="withdrawn"');
+    expect(html).toContain("Withdrawn");
+    expect(html).toContain("1 Nov 2026");
+    expect(html).toContain("Learner chose to leave");
+    expect(html).toContain("Anne Admin");
+    expect(html).toContain("10 Nov 2026, 18:49");
+    expect(html).toContain("Left for another trade.");
+    expect(html).toContain(`data-reverse-exit="${exitId}"`);
+    expect(html).not.toContain("data-record-exit");
+  });
+
+  it("keeps a tutor on a read-only exit with safeguarding notes withheld", () => {
+    nav.search = "";
+    const html = render(page(), {
+      canAssign: false,
+      canManage: false,
+      exits: {
+        exits: [
+          {
+            id: exitId,
+            gtaId: "GTA-000002",
+            exitType: "withdrawn",
+            exitDate: "2026-11-01",
+            reason: "Safeguarding",
+            isSafeguarding: true,
+            notes: null,
+            notesWithheld: true,
+            recordedByName: "Anne Admin",
+            recordedAt: "2026-11-10T18:49:00.000Z",
+            reversedAt: null,
+            reversedByName: null,
+            reversalNote: null,
+            reversalNoteWithheld: false,
+          },
+        ],
+        reasons: [],
+        courseStart: "2025-09-01",
+        today: "2026-11-10",
+        loadError: null,
+      },
+    });
+    expect(html).toContain("Safeguarding");
+    expect(html).toContain("Notes withheld");
+    expect(html).toContain('data-safeguarding-redacted="true"');
+    expect(html).not.toContain("data-record-exit");
+    expect(html).not.toContain("data-reverse-exit");
+    expect(html).toContain("You can view exits.");
+  });
+
+  it("hides the withdrawal reason until the exit is Withdrawn", () => {
+    const shared = {
+      gtaId: "GTA-000002",
+      today: "2026-11-10",
+      courseStart: "2025-09-01",
+      reasons: [{ id: reasonId, label: "Learner chose to leave", sortOrder: 130, isSafeguarding: false }],
+      onCancel: () => undefined,
+    };
+    const completed = renderToStaticMarkup(createElement(RecordExitForm, shared));
+    expect(completed).toContain('data-record-exit-form="completed"');
+    expect(completed).not.toContain("data-exit-reason");
+
+    const withdrawn = renderToStaticMarkup(
+      createElement(RecordExitForm, { ...shared, initialExitType: "withdrawn" }),
+    );
+    expect(withdrawn).toContain('data-exit-reason="withdrawn"');
+    expect(withdrawn).toContain("Choose a reason");
   });
 });
