@@ -1,0 +1,82 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 64rem;
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.55rem;
+  font-weight: 750;
+}
+
+.description {
+  margin: 0;
+  max-width: 44rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.panel {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--border-subtle, var(--line, #d7d1c7));
+  border-radius: 12px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.pageRow {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1.4fr) auto auto minmax(8rem, 1fr);
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.status {
+  margin: 0;
+  font-weight: 650;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.list {
+  display: grid;
+  gap: var(--space-2);
+}

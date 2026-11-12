@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 type Params = { params: Promise<{ runId: string }> };
 
 export async function GET(_request: Request, { params }: Params) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(_request);
   if (access instanceof NextResponse) return access;
   try {
     const { runId } = await params;

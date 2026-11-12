@@ -45,6 +45,16 @@ import {
   loadProgrammes,
 } from "./catalogue-handlers";
 import { normalizeEnrolmentTiming } from "@/features/administration/domain/enrolment-status";
+import { pageApiAllowed } from "@/features/staff-page-access/enforce";
+import {
+  canMutateStaffAccounts,
+  canReadMasterRecords,
+  enrolmentApprenticeSelect,
+  isStaffAccountAction,
+  redactApprenticeContacts,
+  redactEnrolmentContacts,
+  staffActionPagePath,
+} from "./record-access";
 
 type ApprenticeRow = {
   id: string;
@@ -191,6 +201,8 @@ async function requireAdminAccess() {
 export async function GET() {
   const session = await requireAdminAccess();
   if (session instanceof NextResponse) return session;
+  const pageRead = pageApiAllowed(session, "/api/admin/store", "read");
+  if (!pageRead.ok) return NextResponse.json({ error: pageRead.error }, { status: 403 });
 
   const supabase = createSupabaseAdminClient();
   const [
@@ -299,19 +311,23 @@ export async function GET() {
     );
   }
 
+  const master = canReadMasterRecords(session);
+  const staffAccounts = canMutateStaffAccounts(session);
   return NextResponse.json({
-    apprentices: (apprentices ?? []).map((row) => mapApprentice(row as ApprenticeRow)),
+    apprentices: master
+      ? (apprentices ?? []).map((row) => mapApprentice(row as ApprenticeRow))
+      : [],
     enrolments: (enrolments ?? []).map((row) =>
-      mapEnrolment(row as ApprenticeProgrammeRow),
+      redactEnrolmentContacts(mapEnrolment(row as ApprenticeProgrammeRow), master),
     ),
-    employers: employersResult.employers,
+    employers: master ? employersResult.employers : [],
     programmes: programmesResult.programmes,
     cohorts,
     teachingGroups,
     teachingGroupMemberships: membershipsResult.memberships,
     gtaProgrammeVersions: versionsResult.versions,
     cohortChangeLogs,
-    users: usersResult.users,
+    users: staffAccounts ? usersResult.users : [],
   });
 }
 
@@ -367,6 +383,30 @@ export async function POST(request: Request) {
       };
 
   const supabase = createSupabaseAdminClient();
+  const master = canReadMasterRecords(session);
+
+  if (
+    (body.action === "createApprentice" ||
+      body.action === "updateApprentice" ||
+      body.action === "createEmployer" ||
+      body.action === "updateEmployer") &&
+    !master
+  ) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  if (isStaffAccountAction(body.action) && !canMutateStaffAccounts(session)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const pageWrite = pageApiAllowed(
+    session,
+    isStaffAccountAction(body.action)
+      ? staffActionPagePath(session.account.workspace, body.action)
+      : "/api/admin/store",
+    "edit",
+  );
+  if (!pageWrite.ok) return NextResponse.json({ error: pageWrite.error }, { status: 403 });
 
   const actorFallback =
     session.account.name?.trim() ||
@@ -434,7 +474,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error?.message ?? "Unable to create apprentice" }, { status: 500 });
     }
 
-    return NextResponse.json({ apprentice: mapApprentice(data as ApprenticeRow) });
+    return NextResponse.json({
+      apprentice: redactApprenticeContacts(
+        mapApprentice(data as ApprenticeRow),
+        master,
+      ),
+    });
   }
 
   if (body.action === "updateApprentice") {
@@ -476,7 +521,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error?.message ?? "Unable to update apprentice" }, { status: 500 });
     }
 
-    return NextResponse.json({ apprentice: mapApprentice(data as ApprenticeRow) });
+    return NextResponse.json({
+      apprentice: redactApprenticeContacts(
+        mapApprentice(data as ApprenticeRow),
+        master,
+      ),
+    });
   }
 
   if (body.action === "createEnrolment") {
@@ -521,14 +571,17 @@ export async function POST(request: Request) {
         college_days: input.collegeDays.trim(),
         notes: input.notes.trim(),
       })
-      .select("*, apprentices(*)")
+      .select(enrolmentApprenticeSelect(master))
       .single();
 
     if (error || !data) {
       return NextResponse.json({ error: error?.message ?? "Unable to create enrolment" }, { status: 500 });
     }
 
-    const created = mapEnrolment(data as ApprenticeProgrammeRow);
+    const created = redactEnrolmentContacts(
+      mapEnrolment(data as unknown as ApprenticeProgrammeRow),
+      master,
+    );
     if (input.teachingGroupId) {
       const placed = await applyLiveTeachingGroupPlacement({
         supabase,
@@ -545,7 +598,7 @@ export async function POST(request: Request) {
       }
       const { data: refreshed } = await supabase
         .from("apprentice_programmes")
-        .select("*, apprentices(*)")
+        .select(enrolmentApprenticeSelect(master))
         .eq("id", created.id)
         .single();
       const memberships = (await loadTeachingGroupMemberships(supabase)).memberships.filter(
@@ -553,7 +606,10 @@ export async function POST(request: Request) {
       );
       return NextResponse.json({
         enrolment: refreshed
-          ? mapEnrolment(refreshed as ApprenticeProgrammeRow)
+          ? redactEnrolmentContacts(
+              mapEnrolment(refreshed as unknown as ApprenticeProgrammeRow),
+              master,
+            )
           : created,
         memberships,
       });
@@ -569,7 +625,7 @@ export async function POST(request: Request) {
   const patch = body.patch;
   const { data: existingRow, error: existingError } = await supabase
     .from("apprentice_programmes")
-    .select("*, apprentices(*)")
+    .select(enrolmentApprenticeSelect(master))
     .eq("id", body.id)
     .single();
   if (existingError || !existingRow) {
@@ -578,7 +634,7 @@ export async function POST(request: Request) {
       { status: 404 },
     );
   }
-  const existing = mapEnrolment(existingRow as ApprenticeProgrammeRow);
+  const existing = mapEnrolment(existingRow as unknown as ApprenticeProgrammeRow);
   const versions = (await loadGtaProgrammeVersions(supabase)).versions;
   const nextPin =
     patch.gtaProgrammeVersionId !== undefined
@@ -683,7 +739,7 @@ export async function POST(request: Request) {
 
   const { data, error } = await supabase
     .from("apprentice_programmes")
-    .select("*, apprentices(*)")
+    .select(enrolmentApprenticeSelect(master))
     .eq("id", body.id)
     .single();
 
@@ -695,7 +751,10 @@ export async function POST(request: Request) {
     (row) => row.enrolmentId === body.id,
   );
   return NextResponse.json({
-    enrolment: mapEnrolment(data as ApprenticeProgrammeRow),
+    enrolment: redactEnrolmentContacts(
+      mapEnrolment(data as unknown as ApprenticeProgrammeRow),
+      master,
+    ),
     memberships,
   });
 }

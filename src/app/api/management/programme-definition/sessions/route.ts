@@ -11,7 +11,7 @@ import type { LearnerFacingContent } from "@/features/programme-definition/domai
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
@@ -60,7 +60,7 @@ type PatchBody = {
 };
 
 export async function PATCH(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PatchBody;

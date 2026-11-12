@@ -9,7 +9,7 @@ export const runtime = "nodejs";
  * Explicit catalogue only — never auto-selects "newest".
  */
 export async function GET(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);

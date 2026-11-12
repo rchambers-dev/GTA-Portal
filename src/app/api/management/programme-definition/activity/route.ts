@@ -27,7 +27,7 @@ const KINDS = new Set<ProgrammeActivityKind>([
 
 /** Shared History & API log for a standard (all staff). */
 export async function GET(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
@@ -82,7 +82,7 @@ type PostBody = {
 
 /** Append one shared history row. */
 export async function POST(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PostBody;

@@ -3,6 +3,8 @@ import type { User } from "@supabase/supabase-js";
 import type { SessionUser } from "@/features/apprentice-lifecycle/types";
 import type { EffectiveSession, PortalAccount, WorkspaceId } from "@/lib/portal/types";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
+import { pageGrantSnapshot } from "@/features/staff-page-access/enforce";
+import { readPageAccessConfig } from "@/features/staff-page-access/store";
 import { createSupabaseServerClient } from "./client";
 
 type ProfileRow = {
@@ -123,7 +125,12 @@ export const supabaseAuthAdapter = {
   },
 
   async getEffectiveSession(): Promise<EffectiveSession | null> {
-    return getSupabaseEffectiveSession();
+    const session = await getSupabaseEffectiveSession();
+    if (!session) return null;
+    return {
+      ...session,
+      pageGrants: pageGrantSnapshot(readPageAccessConfig(), session.account),
+    };
   },
 
   can(session: EffectiveSession, permission: string): boolean {

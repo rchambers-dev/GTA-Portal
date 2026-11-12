@@ -11,7 +11,7 @@ import type { TaskSessionLinkUpsertInput } from "@/features/programme-delivery/d
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
@@ -51,7 +51,7 @@ type PutBody = {
 
 /** Upsert provided links only — never delete-missing on PUT. */
 export async function PUT(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PutBody;
@@ -88,7 +88,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);

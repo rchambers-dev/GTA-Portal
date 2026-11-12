@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 
 /** Historical pilot records only. New writes are rejected. */
 export async function GET(request: Request) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
@@ -40,8 +40,8 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST() {
-  const access = await requireTutorDeliveryAccess();
+export async function POST(request: Request) {
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   return NextResponse.json(
     {

@@ -15,7 +15,7 @@ export const runtime = "nodejs";
  * Does not claim binary DOCX is openable in-app.
  */
 export async function GET(request: Request) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);

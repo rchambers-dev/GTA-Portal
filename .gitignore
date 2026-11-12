@@ -87,3 +87,6 @@ scripts/*-stderr.txt
 ../GTA Website/**
 ../Other Portal/
 ../Other Portal/**
+
+# Disposable staff page-access config. Not a production migration.
+.staff-page-access/
