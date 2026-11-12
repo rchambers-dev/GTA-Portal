@@ -53,10 +53,27 @@ export function canAccessRoute(
   return hasPermission(session, required);
 }
 
+const WORKSPACE_PREFIX = /^\/(administration|management|quality|staff|safeguarding)(\/.*)?$/;
+
+/** Same page in the signed-in workspace, when the other workspace prefix is denied. */
+export function workspaceRouteForSession(
+  session: EffectiveSession,
+  pathname: string,
+): string | null {
+  const match = WORKSPACE_PREFIX.exec(pathname);
+  if (!match || match[1] === session.account.workspace) return null;
+  const swapped = `/${session.account.workspace}${match[2] ?? ""}`;
+  return canAccessRoute(session, swapped) ? swapped : null;
+}
+
 export function getRedirectForDeniedRoute(
   session: EffectiveSession,
   deniedPathname?: string,
 ): string {
+  if (deniedPathname) {
+    const swapped = workspaceRouteForSession(session, deniedPathname);
+    if (swapped) return swapped;
+  }
   const destination = getDefaultWorkspaceRoute(
     session.account.workspace,
     session,

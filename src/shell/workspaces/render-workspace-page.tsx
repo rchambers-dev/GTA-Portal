@@ -45,6 +45,7 @@ import { ApprenticeLearnerScreen } from "@/features/administration/screens/Appre
 import { apprenticeLearnerGtaId } from "@/features/administration/domain/apprentice-tutor";
 import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
+import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
 import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
@@ -467,7 +468,7 @@ export async function renderWorkspacePage(
       case "reviews/analytics":
         return <ReviewStubScreen title="Analytics" />;
       case "reviews/settings":
-        return <ReviewStubScreen title="Settings" />;
+        return <SettingsScreen />;
       case "staff":
         return <AdminStaffScreen eyebrow="Administration" />;
       case "shared-drive":
@@ -543,7 +544,7 @@ export async function renderWorkspacePage(
       case "reviews/analytics":
         return <ReviewStubScreen title="Analytics" />;
       case "reviews/settings":
-        return <ReviewStubScreen title="Settings" />;
+        return <SettingsScreen />;
       case "enrolments":
         return <AdminEnrolmentsScreen />;
       case "apprentice-funding":

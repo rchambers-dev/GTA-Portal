@@ -25,7 +25,6 @@ export async function PlanScreen({
     <ApprenticePageShell
       eyebrow="Reviews"
       title="Plan"
-      description="Who still needs a visit, and the day you are building."
     >
       {page.loadError ? <p role="alert">{page.loadError}</p> : null}
       <PlanView workspace={workspace} page={page} date={selected} month={selectedMonth} />

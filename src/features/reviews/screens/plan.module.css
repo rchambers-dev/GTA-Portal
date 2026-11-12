@@ -1,16 +1,26 @@
 .layout {
+  --ink: #1d2433;
+  --muted: #5d6573;
+  --paper: #efe6d6;
+  --card: #fffaf1;
+  --line: #d8ccb8;
+  --terracotta: #b44a2c;
+  --navy: #24324f;
   display: grid;
-  grid-template-columns: minmax(18rem, 0.9fr) minmax(22rem, 1.3fr);
-  gap: 16px;
+  grid-template-columns: minmax(440px, 520px) minmax(0, 1fr);
+  gap: 20px;
   align-items: start;
+  color: var(--ink);
+  font-family: Outfit, "Segoe UI", sans-serif;
 }
 
 .roster,
 .plan {
-  background: #f6f1e7;
-  border: 1px solid #e4d8c4;
-  border-radius: 18px;
-  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(36, 31, 22, 0.12);
+  padding: 20px;
 }
 
 .tabs {
@@ -32,9 +42,16 @@
 }
 
 .tabOn {
-  background: #1f3b4d;
+  background: var(--navy);
   color: white;
-  border-color: #1f3b4d;
+  border-color: var(--navy);
+}
+
+.tab em,
+.tabOn em {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
 }
 
 .tab strong,
@@ -154,9 +171,55 @@
 }
 
 .fill {
-  background: #1d4ed8;
+  background: #1d6fbf;
   color: white;
-  border-color: #1d4ed8;
+  border-color: #1d6fbf;
+}
+
+.accept {
+  background: #2f6b56;
+  color: white;
+  border-color: #2f6b56;
+}
+
+.ghost {
+  background: transparent;
+}
+
+.pill strong {
+  min-width: 1.35rem;
+  height: 1.35rem;
+  display: inline-grid;
+  place-items: center;
+  margin-left: 8px;
+  border-radius: 999px;
+  background: #24324f;
+  color: white;
+  font-size: 0.72rem;
+}
+
+.pillOn {
+  background: #eef2f8;
+}
+
+.noteItem {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.dialogHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
 .calendar {
@@ -319,8 +382,32 @@
   color: #9a3412;
 }
 
+.settingsPage {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 20px;
+  background: #fffaf1;
+  border: 1px solid #d8ccb8;
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.settingsNav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
 @media (max-width: 900px) {
-  .layout {
+  .layout,
+  .settingsPage {
     grid-template-columns: 1fr;
   }
 }

@@ -18,9 +18,7 @@ import {
   lockStopAction,
   recordSafeguardingAction,
   reverseSafeguardingAction,
-  savePlanSettingsAction,
   setNotesAction,
-  unlockDayAction,
   unlockStopAction,
   verifyStopAction,
 } from "./plan-actions";
@@ -49,10 +47,9 @@ export function PlanView({
   const [tab, setTab] = useState<PlanCounter>("to_book");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState<string | null>(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [trail, setTrail] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
+  const [notePerson, setNotePerson] = useState<PlanPerson | null>(null);
   const [packed, setPacked] = useState<PackedDay | null>(null);
   const [officePoint, setOfficePoint] = useState<{ lat: number; lon: number; postcode: string } | null>(null);
   const noted = page.people.filter((person) => person.notes);
@@ -185,7 +182,15 @@ export function PlanView({
         </label>
         <ul className={styles.list}>
           {visible.length === 0 ? (
-            <li className={styles.empty}>Nobody in this list.</li>
+            <li className={styles.empty}>
+              {tab === "locked"
+                ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
+                : tab === "booked"
+                  ? "No one is booked yet."
+                  : tab === "waiting"
+                    ? "No one is waiting."
+                    : "No one needs booking."}
+            </li>
           ) : (
             visible.map((person) => (
               <RosterCard
@@ -194,7 +199,7 @@ export function PlanView({
                 person={person}
                 today={page.today}
                 canWrite={page.canWrite}
-                onRun={run}
+                onNote={() => setNotePerson(person)}
               />
             ))
           )}
@@ -207,31 +212,33 @@ export function PlanView({
             <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => void showMap()}>
               {mapOpen ? "Hide map" : "Show map"}
             </button>
-            <button type="button" className={styles.pill} aria-expanded={notesOpen} onClick={() => setNotesOpen((value) => !value)}>
-              Notes{noted.length ? ` ${noted.length}` : ""}
+            <button
+              type="button"
+              className={`${styles.pill} ${noted.length ? styles.pillOn : ""}`}
+              aria-expanded={notesOpen}
+              aria-haspopup="true"
+              onClick={() => setNotesOpen((value) => !value)}
+            >
+              <span>Notes</span>
+              <strong>{noted.length}</strong>
             </button>
-            <button type="button" className={styles.pill} onClick={() => setTrail((value) => !value)}>
-              Completed reviews
-            </button>
-            {page.canWrite ? (
-              <button type="button" className={styles.pill} onClick={() => setSettingsOpen(true)}>
-                Plan settings
-              </button>
-            ) : (
-              <p className={styles.meta}>You can view the plan. Administrator and Management can change it.</p>
-            )}
           </div>
         </div>
         {notesOpen ? (
           <ul className={styles.notesMenu} aria-label="Notes still on the plan">
-            {noted.length === 0 ? <li>No notes on the plan.</li> : null}
-            {noted.map((person) => (
-              <li key={person.gtaId}>
-                <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`}>{person.name}</Link>
-                <p>{person.notes}</p>
-                <p>{noteUntilLabel(person.notesUntil, page.today).label}</p>
-              </li>
-            ))}
+            {noted.length === 0 ? <li className={styles.empty}>No notes at the moment.</li> : null}
+            {noted.map((person) => {
+              const until = noteUntilLabel(person.notesUntil, page.today);
+              return (
+                <li key={person.gtaId}>
+                  <button type="button" className={styles.noteItem} onClick={() => { setNotesOpen(false); setNotePerson(person); }}>
+                    <strong>{person.name}</strong>
+                    <span>{person.notes}</span>
+                    <em className={until.overdue ? styles.overdue : undefined}>{until.label}</em>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         ) : null}
         <Calendar
@@ -277,10 +284,7 @@ export function PlanView({
               <DayActions workspace={workspace} page={page} date={date} packed={packed} onRun={run} />
             ) : null}
           </div>
-          <p className={styles.hint}>Drag a name here to add them to this day. College day is not a visit day.</p>
-          {page.day && page.day.stops.length === 0 ? (
-            <p className={styles.empty}>No stops on this day yet.</p>
-          ) : (
+          {page.day && page.day.stops.length === 0 ? null : (
             <div className={styles.stops}>
               {page.day?.stops.map((stop, index) => (
                 <StopCard
@@ -303,36 +307,45 @@ export function PlanView({
             </p>
           ) : null}
           {mapOpen ? <PlanMap office={officePoint} stops={packed?.stops ?? []} /> : null}
-          {trail || (page.day?.completedReviews.length ?? 0) > 0 ? (
-            <section className={styles.trail} aria-label="Completed reviews">
-              <h3>Completed reviews</h3>
-              <p className={styles.meta}>
-                Reviews finished on this day stay here. Earlier days stay on the calendar.
-              </p>
-              {page.day?.completedReviews.length ? (
-                <ul>
-                  {page.day.completedReviews.map((review) => (
-                    <li key={review.id}>
-                      <Link href={`/${workspace}/onboarding/apprentice/${review.gtaId}`}>{review.name}</Link>
-                      <span>
-                        {review.actualOn} · {review.method}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className={styles.empty}>No completed review on this day.</p>
-              )}
-            </section>
+          {page.day?.completed ? (
+            <ul className={styles.list}>
+              {page.day.completedReviews.map((review) => (
+                <li key={review.id} className={styles.card}>
+                  <Link href={`/${workspace}/onboarding/apprentice/${review.gtaId}`}>{review.name}</Link>
+                  <p>Review completed · {review.method}</p>
+                </li>
+              ))}
+            </ul>
           ) : null}
         </div>
       </section>
-      {settingsOpen ? (
-        <SettingsDialog
-          page={page}
-          onClose={() => setSettingsOpen(false)}
-          onSave={(input) => void run(() => savePlanSettingsAction(input))}
-        />
+      {notePerson ? (
+        <div className={styles.backdrop} onMouseDown={() => setNotePerson(null)}>
+          <div
+            className={styles.dialog}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="note-sheet-title"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className={styles.dialogHead}>
+              <h2 id="note-sheet-title">Note · {notePerson.name}</h2>
+              <button type="button" className={styles.pill} onClick={() => setNotePerson(null)}>
+                Close
+              </button>
+            </div>
+            <NoteForm
+              reviewId={notePerson.reviewId || ""}
+              notes={notePerson.notes}
+              until={notePerson.notesUntil}
+              today={page.today}
+              onRun={async (work) => {
+                await run(work);
+                setNotePerson(null);
+              }}
+            />
+          </div>
+        </div>
       ) : null}
     </div>
   );
@@ -343,15 +356,14 @@ function RosterCard({
   person,
   today,
   canWrite,
-  onRun,
+  onNote,
 }: {
   workspace: "administration" | "management";
   person: PlanPerson;
   today: string;
   canWrite: boolean;
-  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onNote: () => void;
 }) {
-  const [open, setOpen] = useState(false);
   return (
     <li
       className={styles.card}
@@ -375,18 +387,9 @@ function RosterCard({
         </div>
       ) : null}
       {canWrite && person.reviewId ? (
-        <button type="button" onClick={() => setOpen((value) => !value)}>
+        <button type="button" className={styles.pill} onClick={onNote}>
           {person.notes ? "Edit note" : "Add note"}
         </button>
-      ) : null}
-      {open ? (
-        <NoteForm
-          reviewId={person.reviewId || ""}
-          notes={person.notes}
-          until={person.notesUntil}
-          today={today}
-          onRun={onRun}
-        />
       ) : null}
     </li>
   );
@@ -406,16 +409,42 @@ function DayActions({
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
 }) {
   const stops = page.day?.stops ?? [];
-  const ready = stops.every((stop) => stop.verified || stop.locked || stop.method !== "");
+  const ready = stops.length > 0 && stops.every((stop) => stop.verified);
   return (
     <div className={styles.dayActions}>
+      {page.settings.outEnabled ? (
+        <a className={styles.ghost} href={`/${workspace}/reviews/out`}>Open Out</a>
+      ) : null}
       {page.day?.accepted ? (
-        <button type="button" onClick={() => void onRun(() => unlockDayAction({ date }))}>
-          Unlock route
+        <a className={styles.fill} href={mailto(page, date)}>
+          Email this route
+        </a>
+      ) : null}
+      {page.day?.accepted ? (
+        <button type="button" className={styles.fill} onClick={() => printRoute(page, date, packed)}>
+          Print this route
+        </button>
+      ) : null}
+      {page.day?.accepted ? (
+        <button
+          type="button"
+          className={styles.accept}
+          disabled={date > page.today}
+          onClick={() =>
+            void onRun(() =>
+              completeDayAction({
+                date,
+                gtaIds: stops.map((stop) => stop.gtaId),
+              }),
+            )
+          }
+        >
+          Mark route completed
         </button>
       ) : (
         <button
           type="button"
+          className={styles.accept}
           disabled={!ready}
           onClick={() =>
             void onRun(() =>
@@ -434,34 +463,6 @@ function DayActions({
           Accept Route
         </button>
       )}
-      {page.settings.outEnabled ? (
-        <a href={`/${workspace}/reviews/out`}>Open Out</a>
-      ) : null}
-      <a
-        href={mailto(page, date)}
-        onClick={(event) => {
-          if (!page.day?.accepted) event.preventDefault();
-        }}
-      >
-        Email this route
-      </a>
-      <button type="button" onClick={() => printRoute(page, date, packed)} disabled={!page.day?.accepted}>
-        Print this route
-      </button>
-      <button
-        type="button"
-        disabled={date > page.today}
-        onClick={() =>
-          void onRun(() =>
-            completeDayAction({
-              date,
-              gtaIds: stops.map((stop) => stop.gtaId),
-            }),
-          )
-        }
-      >
-        Mark route completed
-      </button>
     </div>
   );
 }
@@ -791,132 +792,6 @@ function Calendar({
           ),
         )}
       </div>
-    </div>
-  );
-}
-
-function SettingsDialog({
-  page,
-  onClose,
-  onSave,
-}: {
-  page: PlanPageData;
-  onClose: () => void;
-  onSave: (input: {
-    skipToday: boolean;
-    officePostcode: string;
-    startTime: string;
-    callMinutes: number;
-    lunchStart: string;
-    lunchMinutes: number;
-    returnBy: string;
-    stayMinutes: number;
-    extraEmails: string;
-    hiddenTutorIds: string[];
-    outEnabled: boolean;
-  }) => void;
-}) {
-  const [skipToday, setSkipToday] = useState(page.settings.skipToday);
-  const [officePostcode, setOffice] = useState(page.settings.officePostcode);
-  const [startTime, setStart] = useState(page.settings.startTime);
-  const [callMinutes, setCall] = useState(page.settings.callMinutes);
-  const [lunchStart, setLunch] = useState(page.settings.lunchStart);
-  const [lunchMinutes, setLunchMinutes] = useState(page.settings.lunchMinutes);
-  const [returnBy, setReturn] = useState(page.settings.returnBy);
-  const [stayMinutes, setStay] = useState(page.settings.stayMinutes);
-  const [emails, setEmails] = useState(page.settings.extraEmails.join(", "));
-  const [hidden, setHidden] = useState(page.settings.hiddenTutorIds);
-  const [outEnabled, setOut] = useState(page.settings.outEnabled);
-  return (
-    <div className={styles.backdrop} onMouseDown={onClose}>
-      <form
-        className={styles.dialog}
-        role="dialog"
-        aria-labelledby="plan-settings-title"
-        onMouseDown={(event) => event.stopPropagation()}
-        onSubmit={(event) => {
-          event.preventDefault();
-          onSave({
-            skipToday,
-            officePostcode,
-            startTime,
-            callMinutes,
-            lunchStart,
-            lunchMinutes,
-            returnBy,
-            stayMinutes,
-            extraEmails: emails,
-            hiddenTutorIds: hidden,
-            outEnabled,
-          });
-          onClose();
-        }}
-      >
-        <h2 id="plan-settings-title">Plan settings</h2>
-        <label>
-          <input type="checkbox" checked={skipToday} onChange={(event) => setSkipToday(event.target.checked)} />
-          Skip today
-        </label>
-        <label>
-          Office postcode
-          <input value={officePostcode} onChange={(event) => setOffice(event.target.value)} />
-        </label>
-        <label>
-          Start time
-          <input type="time" value={startTime} onChange={(event) => setStart(event.target.value)} />
-        </label>
-        <label>
-          Calls before start
-          <input type="number" min={0} max={60} step={5} value={callMinutes} onChange={(event) => setCall(Number(event.target.value))} />
-        </label>
-        <label>
-          Lunch
-          <input type="time" value={lunchStart} onChange={(event) => setLunch(event.target.value)} />
-        </label>
-        <label>
-          Lunch minutes
-          <input type="number" value={lunchMinutes} onChange={(event) => setLunchMinutes(Number(event.target.value))} />
-        </label>
-        <label>
-          Back by
-          <input type="time" value={returnBy} onChange={(event) => setReturn(event.target.value)} />
-        </label>
-        <label>
-          Stay minutes
-          <input type="number" min={15} max={120} step={5} value={stayMinutes} onChange={(event) => setStay(Number(event.target.value))} />
-        </label>
-        <label>
-          Extra email addresses
-          <input value={emails} onChange={(event) => setEmails(event.target.value)} />
-        </label>
-        <fieldset>
-          <legend>Hide a tutor</legend>
-          {page.tutors.map((tutor) => (
-            <label key={tutor.id}>
-              <input
-                type="checkbox"
-                checked={hidden.includes(tutor.id)}
-                onChange={(event) =>
-                  setHidden((current) =>
-                    event.target.checked ? [...current, tutor.id] : current.filter((id) => id !== tutor.id),
-                  )
-                }
-              />
-              {tutor.name}
-            </label>
-          ))}
-        </fieldset>
-        <label>
-          <input type="checkbox" checked={outEnabled} onChange={(event) => setOut(event.target.checked)} />
-          Use the Out page on visit days
-        </label>
-        <div className={styles.dialogActions}>
-          <button type="submit">Save</button>
-          <button type="button" onClick={onClose}>
-            Close
-          </button>
-        </div>
-      </form>
     </div>
   );
 }
