@@ -276,9 +276,7 @@
 }
 
 .pills span {
-  background: var(--bg-elevated);
   border-radius: 999px;
-  padding: 2px 8px;
 }
 
 .drop {
@@ -953,7 +951,7 @@
   gap: 12px;
   font-family: Fraunces, Georgia, serif;
   font-weight: 650;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   letter-spacing: -0.03em;
 }
 
@@ -975,7 +973,7 @@
   position: absolute;
   left: 100%;
   top: 0.02em;
-  font-size: 0.58em;
+  font-size: 0.45em;
   line-height: 1;
 }
 
@@ -1068,8 +1066,7 @@
   box-shadow: none;
 }
 
-.timeline .stop:first-child,
-.lockedPanel .stop:first-child {
+.timeline > .stop:first-child {
   border-top: 0;
 }
 
@@ -1109,24 +1106,34 @@
   font-weight: 500;
 }
 
+.dialog h2 {
+  font-family: Fraunces, Georgia, serif;
+}
+
 .stopName,
 .stopName a,
-.dialog h2,
 .noteItem strong,
 .tag,
 .tagDone,
 .tagLock,
 .safeOn,
-.safeOff {
-  font-family: Fraunces, Georgia, serif;
+.safeOff,
+.stopNum {
+  font-family: Outfit, "Segoe UI", sans-serif;
 }
 
 .stopName,
 .stopName a {
-  font-size: 1.15rem;
-  font-weight: 650;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.15;
   color: #1d2433;
   text-decoration: none;
+}
+
+.noteItem strong {
+  font-size: 0.92rem;
+  font-weight: 650;
 }
 
 .contactLine strong {
@@ -1215,6 +1222,8 @@
 }
 
 .checkBox {
+  display: inline-block;
+  flex: 0 0 auto;
   width: 1.25rem;
   height: 1.25rem;
   border: 1.5px solid var(--border-subtle);
@@ -1275,4 +1284,412 @@
 .presets .choiceOn {
   min-height: 2.4rem;
   padding: 8px 14px;
+}
+
+/* Later rules beat the shared button reset and the pale pill background. */
+
+.roster,
+.plan,
+.dialog,
+.notesMenu,
+.calendar,
+.list .card {
+  background: var(--bg-card);
+  border-color: var(--border-subtle);
+}
+
+.tabs .tab {
+  min-height: 4.4rem;
+  padding: 10px 12px 11px;
+  gap: 4px;
+  background: var(--bg-elevated);
+  border-color: var(--border-subtle);
+}
+
+.tabs .tab em,
+.tabs .tabOn em,
+.tabs .tabLocked em {
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+}
+
+.tabs .tab strong,
+.tabs .tabOn strong,
+.tabs .tabLocked strong {
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.search input,
+.fields input,
+.fields select,
+.fields textarea,
+.dialog input,
+.dialog textarea,
+.dialog select {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  min-height: 2.75rem;
+}
+
+.search input {
+  padding-right: 2.6rem;
+}
+
+.calHead h3 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 0.98rem;
+  font-weight: 650;
+}
+
+.calHead button,
+.calLabel,
+.day,
+.dayOn {
+  font-weight: 400;
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.calHead button {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  padding: 2px 8px;
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+.calLabel {
+  font-size: 0.75rem;
+  height: 22px;
+}
+
+.timeline .planCard,
+.lockedPanel .planCard {
+  column-gap: 12px;
+  row-gap: 0;
+  padding: 4px 0;
+  align-items: start;
+  line-height: 1.15;
+}
+
+.timeline .stop p,
+.lockedPanel .stop p,
+.planCard .when,
+.planCard .stopName {
+  margin: 0;
+}
+
+.planCard .stopHead {
+  grid-row: 1;
+  align-items: center;
+}
+
+.planCard .contactLine {
+  grid-row: 2;
+  margin-top: 1px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.planCard .stopExtra {
+  grid-row: 3;
+}
+
+.pills .tag,
+.pills .tagDone,
+.pills .tagLock,
+.pills .safeOn,
+.pills .safeOff {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.7rem;
+  margin: 0;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pills .tagOk {
+  background: #e7f1ec;
+  color: #2f6b56;
+}
+
+.pills .tagOver {
+  background: #b44a2c;
+  color: #fff;
+}
+
+.pills .tagSoon {
+  background: #c9782a;
+  color: #fff;
+}
+
+.pills .tagDone {
+  background: #2f6b56;
+  color: #fff;
+}
+
+.pills .tagLock {
+  background: #b44a2c;
+  color: #fff;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pills .safeOff {
+  background: #b44a2c;
+  color: #fff;
+}
+
+.pills .safeOn {
+  background: #1e8f4a;
+  color: #fff;
+}
+
+.actionGrid {
+  margin-top: 16px;
+}
+
+.actionGrid .actionPrimary,
+.actionGrid .actionBlue,
+.actionGrid .actionGrey,
+.actionGrid .actionDanger,
+.actionGrid .actionGhost {
+  width: 100%;
+  min-height: 2.45rem;
+  border-radius: 12px;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+}
+
+.actionGrid .actionGhost {
+  background: #fff;
+  color: #24324f;
+  border: 1px solid var(--border-subtle);
+}
+
+.placeLine {
+  margin: 0 0 4px;
+  color: #5d6573;
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.noteBox {
+  display: grid;
+  gap: 4px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.noteUntil {
+  color: #5d6573;
+  font-size: 0.75rem;
+}
+
+.lunch {
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.lockNote {
+  margin: 8px 0 4px;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.dialog .presets .pill,
+.dialog .presets .noteOn,
+.dialog .noteOn,
+.dialog .clearNote {
+  height: 2rem;
+  min-height: 2rem;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.dialog .presets .noteOn,
+.dialog .noteOn {
+  background: #e7f1ec;
+  color: #2f6b56;
+  border: 1px solid #c5ddd2;
+}
+
+.dialog .presets .pill {
+  background: var(--bg-card);
+  color: #24324f;
+  border: 1px solid var(--border-subtle);
+}
+
+.dialog .clearNote {
+  background: #fff8f5;
+  color: #8f351c;
+  border: 1px solid #c45c4a;
+}
+
+.settingsPage {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.settingsMain {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+}
+
+.settingsPage .settingsTitle {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 0.875rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  margin: 0 0 12px;
+}
+
+.settingsPage h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.settingsNav {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  gap: 4px;
+}
+
+.settingsTab,
+.settingsOn {
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.settingsOn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+}
+
+.inline.fields label.skipBar,
+.inline label.outBox,
+.inline.fields label.tutorCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin: 0;
+  text-align: left;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.inline.fields label.skipBar,
+.inline label.outBox {
+  padding: 12px 14px;
+  min-height: 3.25rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+}
+
+.inline.fields label.tutorCard {
+  position: relative;
+  align-items: flex-start;
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  font-weight: 400;
+}
+
+.tutorList {
+  grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+  gap: 8px;
+}
+
+.tutorCopy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tutorCopy strong {
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.tutorCopy .meta {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+
+.inline.fields label {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  gap: 6px;
+}
+
+.skipBar input,
+.outBox input,
+.tutorCard input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.skipBar input:checked + .checkBox,
+.outBox input:checked + .checkBox,
+.tutorCard input:checked + .checkBox {
+  background: #24324f;
+  border-color: #24324f;
+}
+
+.skipBar input:checked + .checkBox::after,
+.outBox input:checked + .checkBox::after,
+.tutorCard input:checked + .checkBox::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 9px;
+  margin: 1px auto 0;
+  border: solid var(--bg-card);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }

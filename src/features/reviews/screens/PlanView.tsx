@@ -305,7 +305,6 @@ export function PlanView({
               <span className={styles.completedPill}>
                 <LockIcon /> Route completed
               </span>
-              <p className={styles.lockNote}>This day is locked. The visits can’t be changed.</p>
             </div>
           ) : (
             <div className={styles.routeBar}>
@@ -652,8 +651,8 @@ function StopCard({
             </div>
             {stop.notes ? (
               <p className={styles.noteBox}>
-                {stop.notes}
-                {stop.notesUntil ? ` · ${noteUntilLabel(stop.notesUntil, today).label}` : ""}
+                <span>{stop.notes}</span>
+                {stop.notesUntil ? <span className={styles.noteUntil}>{noteUntilLabel(stop.notesUntil, today).label}</span> : null}
               </p>
             ) : null}
         {open === "book" && stop.reviewId ? (
@@ -717,7 +716,8 @@ function NoteForm({
 }) {
   const presets = noteUntilPresets(today);
   const [text, setText] = useState(notes);
-  const [end, setEnd] = useState(until || presets.week);
+  const [end, setEnd] = useState(dateOnly(until) || presets.week);
+  const selected = dateOnly(end);
   return (
     <form
       className={styles.inline}
@@ -736,8 +736,8 @@ function NoteForm({
           <button
             key={preset.id}
             type="button"
-            aria-pressed={end === presets[preset.id]}
-            className={end === presets[preset.id] ? styles.noteOn : styles.pill}
+            aria-pressed={selected === presets[preset.id]}
+            className={selected === presets[preset.id] ? styles.noteOn : styles.pill}
             onClick={() => setEnd(presets[preset.id])}
           >
             {preset.label}
@@ -835,6 +835,10 @@ function Calendar({
   );
 }
 
+function dateOnly(value: string): string {
+  return value.slice(0, 10);
+}
+
 function previousWeekday(iso: string): string {
   let cursor = addDays(iso, -1);
   while (weekdayName(cursor) === "Saturday" || weekdayName(cursor) === "Sunday") cursor = addDays(cursor, -1);
@@ -885,6 +889,7 @@ function DayTimeline({
   if (!stops.length) return null;
   return (
     <div className={locked ? styles.lockedPanel : styles.timeline}>
+      {locked ? <p className={styles.lockNote}>This day is locked. The visits can’t be changed.</p> : null}
       <div className={styles.stop}>
         <div className={styles.when}>{minutesToTime(leave)}</div>
         <div>

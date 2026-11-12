@@ -74,15 +74,15 @@ export function ReviewSettingsScreen({
           <button
             key={item.id}
             type="button"
-            className={tab === item.id ? styles.settingsOn : styles.tab}
+            className={tab === item.id ? styles.settingsOn : styles.settingsTab}
             onClick={() => setTab(item.id)}
           >
             {item.label}
           </button>
         ))}
       </nav>
-      <div>
-        <h1>Settings</h1>
+      <div className={styles.settingsMain}>
+        <h2 className={styles.settingsTitle}>Settings</h2>
         {message ? <p role="alert">{message}</p> : null}
         {tab === "account" ? (
           <section>
@@ -158,7 +158,8 @@ export function ReviewSettingsScreen({
                       void save({ hiddenTutorIds: next });
                     }}
                   />
-                  <span>
+                  <span className={styles.checkBox} aria-hidden="true" />
+                  <span className={styles.tutorCopy}>
                     <strong>{tutor.name}</strong>
                     <span className={styles.meta}>{tutor.department}</span>
                   </span>
@@ -178,6 +179,7 @@ export function ReviewSettingsScreen({
                 void save({ outEnabled: event.target.checked });
               }}
             />
+            <span className={styles.checkBox} aria-hidden="true" />
             Use the Out page on visit days
           </label>
         ) : null}
