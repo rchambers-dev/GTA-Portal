@@ -2,10 +2,12 @@
 
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useActionState, useRef, useState } from "react";
+import { hcaptchaEnabled } from "./captcha";
 import { loginAction, type LoginActionState } from "./actions";
 import styles from "./login.module.css";
 
 const initialState: LoginActionState = { error: null };
+const captchaOn = hcaptchaEnabled();
 const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY?.trim() ?? "";
 
 export function LoginForm({
@@ -19,6 +21,7 @@ export function LoginForm({
   const [captchaToken, setCaptchaToken] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const captchaRef = useRef<HCaptcha>(null);
+  const showWidget = captchaOn && Boolean(siteKey);
 
   return (
     <form
@@ -30,7 +33,7 @@ export function LoginForm({
       }}
     >
       <input type="hidden" name="next" value={next} />
-      <input type="hidden" name="captchaToken" value={captchaToken} />
+      {showWidget ? <input type="hidden" name="captchaToken" value={captchaToken} /> : null}
 
       <label className={styles.field}>
         <span>Email</span>
@@ -67,7 +70,7 @@ export function LoginForm({
         </div>
       </label>
 
-      {siteKey ? (
+      {showWidget ? (
         <div className={styles.captchaBlock}>
           <div className={styles.captchaHead}>
             <span className={styles.captchaLabel}>Security check</span>
@@ -90,11 +93,13 @@ export function LoginForm({
             <p className={styles.captchaOk}>Verified — you can sign in</p>
           ) : null}
         </div>
-      ) : (
+      ) : null}
+
+      {captchaOn && !siteKey ? (
         <p className={styles.error}>
           Missing NEXT_PUBLIC_HCAPTCHA_SITE_KEY — captcha cannot load.
         </p>
-      )}
+      ) : null}
 
       {state.error ? (
         <p className={styles.error} role="alert">
@@ -105,7 +110,7 @@ export function LoginForm({
       <button
         className={styles.submit}
         type="submit"
-        disabled={isPending || (Boolean(siteKey) && !captchaToken)}
+        disabled={isPending || (showWidget && !captchaToken)}
       >
         {isPending ? "Signing in…" : "Sign in"}
       </button>

@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { hcaptchaEnabled } from "./captcha";
 
 export type LoginActionState = {
   error: string | null;
@@ -19,6 +20,7 @@ export async function loginAction(
 ): Promise<LoginActionState> {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
+  const captchaOn = hcaptchaEnabled();
   const captchaToken = String(formData.get("captchaToken") ?? "").trim();
   const next = normaliseNext(formData.get("next"));
 
@@ -26,7 +28,7 @@ export async function loginAction(
     return { error: "Enter your email and password." };
   }
 
-  if (!captchaToken) {
+  if (captchaOn && !captchaToken) {
     return { error: "Complete the security check, then try again." };
   }
 
@@ -34,7 +36,7 @@ export async function loginAction(
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
-    options: { captchaToken },
+    ...(captchaOn ? { options: { captchaToken } } : {}),
   });
 
   if (error) {
