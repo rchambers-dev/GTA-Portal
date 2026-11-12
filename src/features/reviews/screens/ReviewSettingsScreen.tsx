@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Fraunces, Outfit } from "next/font/google";
 import { logoutAction } from "@/app/logout/actions";
 import type { PlanPageData } from "../domain/plan-repository";
 import { savePlanSettingsAction } from "./plan-actions";
+import { ReviewFonts } from "./ReviewFonts";
 import styles from "./plan.module.css";
 
 const TABS = [
@@ -16,9 +16,6 @@ const TABS = [
 ] as const;
 
 type Tab = (typeof TABS)[number]["id"];
-
-const outfit = Outfit({ subsets: ["latin"], weight: ["400", "600", "700"] });
-const fraunces = Fraunces({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-fraunces" });
 
 export function ReviewSettingsScreen({
   email,
@@ -70,7 +67,8 @@ export function ReviewSettingsScreen({
   }
 
   return (
-    <div className={`${styles.settingsPage} ${outfit.className} ${fraunces.variable}`}>
+    <div className={styles.settingsPage}>
+      <ReviewFonts />
       <nav className={styles.settingsNav} aria-label="Settings sections">
         {TABS.map((item) => (
           <button

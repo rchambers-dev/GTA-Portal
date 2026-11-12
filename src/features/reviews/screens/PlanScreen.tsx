@@ -3,12 +3,9 @@ import { canAddApprentice } from "@/features/administration/domain/apprentice-re
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { loadPlanPage } from "../domain/plan-repository";
-import { Fraunces, Outfit } from "next/font/google";
 import { PlanView } from "./PlanView";
+import { ReviewFonts } from "./ReviewFonts";
 import styles from "./plan.module.css";
-
-const outfit = Outfit({ subsets: ["latin"], weight: ["400", "600", "700"] });
-const fraunces = Fraunces({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-fraunces" });
 
 export async function PlanScreen({
   workspace,
@@ -31,7 +28,8 @@ export async function PlanScreen({
       eyebrow="Reviews"
       title="Plan"
     >
-      <div className={`${styles.raPage} ${outfit.className} ${fraunces.variable}`}>
+      <div className={styles.raPage}>
+        <ReviewFonts />
         {page.loadError ? <p role="alert">{page.loadError}</p> : null}
         <PlanView workspace={workspace} page={page} date={selected} month={selectedMonth} />
       </div>
