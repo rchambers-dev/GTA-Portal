@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Fraunces, Outfit } from "next/font/google";
 import { logoutAction } from "@/app/logout/actions";
 import type { PlanPageData } from "../domain/plan-repository";
 import { savePlanSettingsAction } from "./plan-actions";
@@ -15,6 +16,9 @@ const TABS = [
 ] as const;
 
 type Tab = (typeof TABS)[number]["id"];
+
+const outfit = Outfit({ subsets: ["latin"], weight: ["400", "600", "700"] });
+const fraunces = Fraunces({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-fraunces" });
 
 export function ReviewSettingsScreen({
   email,
@@ -66,13 +70,13 @@ export function ReviewSettingsScreen({
   }
 
   return (
-    <div className={styles.settingsPage}>
+    <div className={`${styles.settingsPage} ${outfit.className} ${fraunces.variable}`}>
       <nav className={styles.settingsNav} aria-label="Settings sections">
         {TABS.map((item) => (
           <button
             key={item.id}
             type="button"
-            className={tab === item.id ? styles.tabOn : styles.tab}
+            className={tab === item.id ? styles.choiceOn : styles.tab}
             onClick={() => setTab(item.id)}
           >
             {item.label}
@@ -87,13 +91,13 @@ export function ReviewSettingsScreen({
             <h2>Signed in</h2>
             <p>{email}</p>
             <form action={logoutAction}>
-              <button type="submit" className={styles.pill}>Sign out</button>
+              <button type="submit" className={styles.solid}>Sign out</button>
             </form>
           </section>
         ) : null}
         {tab === "plan" ? (
           <form
-            className={styles.inline}
+            className={`${styles.inline} ${styles.fields}`}
             onSubmit={(event) => {
               event.preventDefault();
               void save({});
@@ -142,24 +146,29 @@ export function ReviewSettingsScreen({
               <h2>Hide a tutor’s reviews</h2>
               <p className={styles.meta}>Tick a tutor to take their reviews off Need booking and the planner. Booked or verified people stay where they are.</p>
               {page.tutors.map((tutor) => (
-                <label key={tutor.id} className={styles.check}>
+                <label key={tutor.name} className={styles.tutorCard}>
                   <input
                     type="checkbox"
-                    checked={hidden.includes(tutor.id)}
+                    checked={Boolean(tutor.id) && hidden.includes(tutor.id)}
+                    disabled={!tutor.id || !page.canWrite}
                     onChange={(event) => {
+                      if (!tutor.id) return;
                       const next = event.target.checked ? [...hidden, tutor.id] : hidden.filter((id) => id !== tutor.id);
                       setHidden(next);
                       void save({ hiddenTutorIds: next });
                     }}
                   />
-                  {tutor.name}
+                  <span>
+                    <strong>{tutor.name}</strong>
+                    <span className={styles.meta}>{tutor.department}</span>
+                  </span>
                 </label>
               ))}
             </div>
           </form>
         ) : null}
         {tab === "out" ? (
-          <label className={styles.check}>
+          <label className={styles.outBox}>
             <input
               type="checkbox"
               checked={outEnabled}
@@ -187,7 +196,7 @@ export function ReviewSettingsScreen({
                 Your suggestion
                 <textarea rows={7} maxLength={2000} required placeholder="e.g. The date picker is hard to use on a phone because…" />
               </label>
-              <button type="submit" className={styles.accept}>Send suggestion</button>
+              <button type="submit" className={styles.solid}>Send suggestion</button>
             </form>
           </section>
         ) : null}
@@ -197,31 +206,45 @@ export function ReviewSettingsScreen({
 }
 
 function AccessibilityPanel() {
+  const [text, setText] = useState("default");
+  const [font, setFont] = useState("outfit");
+  const [theme, setTheme] = useState("default");
+  useEffect(() => {
+    document.documentElement.dataset.text = text;
+    document.documentElement.dataset.font = font;
+    document.documentElement.dataset.theme = theme;
+  }, [text, font, theme]);
+  function pickText(value: string) {
+    setText(value);
+  }
+  function pickFont(value: string) {
+    setFont(value);
+  }
+  function pickTheme(value: string) {
+    setTheme(value);
+  }
   return (
     <section>
       <h2>Text size</h2>
       <p className={styles.meta}>Make the words on screen bigger if they are hard to read.</p>
       <div className={styles.presets}>
-        <button type="button" className={styles.pill} onClick={() => document.documentElement.dataset.text = "default"}>Default</button>
-        <button type="button" className={styles.pill} onClick={() => document.documentElement.dataset.text = "large"}>Large</button>
-        <button type="button" className={styles.pill} onClick={() => document.documentElement.dataset.text = "xl"}>Extra large</button>
+        {[["default", "Default"], ["large", "Large"], ["xl", "Extra large"]].map(([value, label]) => (
+          <button key={value} type="button" className={text === value ? styles.choiceOn : styles.pill} onClick={() => pickText(value)}>{label}</button>
+        ))}
       </div>
       <h2>Text font</h2>
       <p className={styles.meta}>Pick a font that is easier for you to read.</p>
       <div className={styles.presets}>
-        {(["outfit", "system", "verdana", "atkinson", "georgia"] as const).map((font) => (
-          <button key={font} type="button" className={styles.pill} onClick={() => { document.documentElement.dataset.font = font; }}>
-            {font === "outfit" ? "Outfit" : font === "system" ? "System" : font[0].toUpperCase() + font.slice(1)}
-          </button>
+        {[["outfit", "Outfit"], ["system", "System"], ["verdana", "Verdana"], ["atkinson", "Atkinson"], ["georgia", "Georgia"]].map(([value, label]) => (
+          <button key={value} type="button" className={font === value ? styles.choiceOn : styles.pill} onClick={() => pickFont(value)}>{label}</button>
         ))}
       </div>
       <h2>Colour scheme</h2>
       <p className={styles.meta}>Change the colours across the whole app.</p>
       <div className={styles.presets}>
-        <button type="button" className={styles.pill} onClick={() => { document.documentElement.dataset.theme = "default"; }}>Warm</button>
-        <button type="button" className={styles.pill} onClick={() => { document.documentElement.dataset.theme = "calm"; }}>Calm</button>
-        <button type="button" className={styles.pill} onClick={() => { document.documentElement.dataset.theme = "dark"; }}>Dark</button>
-        <button type="button" className={styles.pill} onClick={() => { document.documentElement.dataset.theme = "contrast"; }}>High contrast</button>
+        {[["default", "Warm"], ["calm", "Calm"], ["dark", "Dark"], ["contrast", "High contrast"]].map(([value, label]) => (
+          <button key={value} type="button" className={theme === value ? styles.choiceOn : styles.pill} onClick={() => pickTheme(value)}>{label}</button>
+        ))}
       </div>
     </section>
   );

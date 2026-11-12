@@ -35,17 +35,48 @@ export function reviewDueLabel(input: {
   today: string;
   nextDate: string | null;
   intervalWeeks: number;
-}): { state: DueState; label: string } {
-  if (!input.nextDate) return { state: "unknown", label: "Not set" };
+}): { state: DueState; label: string; daysUntil: number; nextDate: string | null } {
+  if (!input.nextDate) {
+    return { state: "unknown", label: "Not set", daysUntil: Number.POSITIVE_INFINITY, nextDate: null };
+  }
   const start = weekStartMonday(input.nextDate);
   const end = addDays(start, 6);
   const untilEnd = daysFrom(input.today, end);
   const untilStart = daysFrom(input.today, start);
   if (untilEnd < 0) {
-    return { state: "overdue", label: `Overdue · ${formatWeeksAndDays(untilEnd)}` };
+    return {
+      state: "overdue",
+      label: `Overdue · ${formatWeeksAndDays(untilEnd)}`,
+      daysUntil: untilEnd,
+      nextDate: input.nextDate,
+    };
   }
-  if (untilStart <= 0) return { state: "due-soon", label: "Due this week" };
-  return { state: "ok", label: `Within ${input.intervalWeeks} weeks` };
+  if (untilStart <= 0) {
+    return { state: "due-soon", label: "Due this week", daysUntil: untilEnd, nextDate: input.nextDate };
+  }
+  return {
+    state: "ok",
+    label: `Within ${input.intervalWeeks} weeks`,
+    daysUntil: untilEnd,
+    nextDate: input.nextDate,
+  };
+}
+
+export function formatShortNumericDate(iso: string | null): string {
+  if (!iso) return "";
+  const [year, month, day] = iso.split("-").map(Number);
+  if (!year || !month || !day) return "";
+  return `${day}/${month}/${String(year).slice(-2)}`;
+}
+
+export function planDateParts(iso: string): { day: number; ordinal: string; month: string } {
+  const day = Number(iso.slice(8, 10));
+  const month = new Intl.DateTimeFormat("en-GB", { month: "long", timeZone: "UTC" }).format(
+    new Date(`${iso}T00:00:00Z`),
+  );
+  const teen = day % 100;
+  const ordinal = teen >= 11 && teen <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" } as Record<number, string>)[day % 10] || "th";
+  return { day, ordinal, month };
 }
 
 function daysFrom(today: string, target: string): number {

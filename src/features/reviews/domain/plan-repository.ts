@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
+import { GTA_TUTORS } from "./gta-tutors";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
 import {
   methodLabel,
@@ -34,6 +35,8 @@ export type PlanPerson = {
   signoffId: string | null;
   dueLabel: string;
   dueState: DueState;
+  daysUntil: number;
+  nextDate: string | null;
   safeguarding: boolean;
   concern: boolean;
 };
@@ -55,6 +58,7 @@ export type PlanStop = {
   locked: boolean;
   dueLabel: string;
   dueState: DueState;
+  tutor: string;
   safeguarding: boolean;
   signoffId: string | null;
   reviewId: string | null;
@@ -92,7 +96,7 @@ export type PlanPageData = {
   people: PlanPerson[];
   counts: Record<PlanCounter, number>;
   settings: PlanSettings;
-  tutors: { id: string; name: string }[];
+  tutors: { id: string; name: string; department: string }[];
   monthMarks: { date: string; accepted: boolean; completed: boolean }[];
   day: {
     date: string;
@@ -161,7 +165,13 @@ export async function readPlanPage(
       .select("id, gta_id, status, planned_on, actual_on, method, notes, interval_weeks"),
     supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
     supabase.from("apprentice_safeguarding_signoffs").select("id, gta_id").is("reversed_at", null),
-    supabase.from("profiles").select("id, display_name").eq("base_role", "Tutor"),
+    supabase
+      .from("profiles")
+      .select("id, display_name, email")
+      .in(
+        "display_name",
+        GTA_TUTORS.map((tutor) => tutor.name),
+      ),
     supabase.rpc("get_review_settings"),
     supabase
       .from("review_days")
@@ -348,11 +358,22 @@ export async function readPlanPage(
       signoffId: signed.get(row.gta_id) ?? null,
       dueLabel: due.label,
       dueState: due.state,
+      daysUntil: due.daysUntil,
+      nextDate: due.nextDate,
       safeguarding: signed.has(row.gta_id),
       concern: concerns.has(row.gta_id),
     });
   }
-  people.sort((a, b) => a.name.localeCompare(b.name, "en-GB"));
+  const dueRank = { overdue: 3, "due-soon": 2, ok: 1, unknown: 0 } as const;
+  people.sort((a, b) => {
+    const rank = dueRank[b.dueState] - dueRank[a.dueState];
+    if (rank) return rank;
+    const days = a.daysUntil - b.daysUntil;
+    if (days) return days;
+    const company = a.company.localeCompare(b.company, "en-GB");
+    if (company) return company;
+    return a.name.localeCompare(b.name, "en-GB");
+  });
 
   const byId = new Map(people.map((person) => [person.gtaId, person]));
   const dayRow = ((daysResult.data ?? []) as { date_on: string; accepted: boolean; completed_at: string | null }[]).find(
@@ -394,6 +415,7 @@ export async function readPlanPage(
         locked: stop.locked_until_minutes != null,
         dueLabel: person?.dueLabel || "Not set",
         dueState: person?.dueState || "unknown",
+        tutor: person?.tutor || "",
         safeguarding: person?.safeguarding || false,
         signoffId: person?.signoffId ?? null,
         reviewId: person?.reviewId ?? null,
@@ -452,9 +474,7 @@ export async function readPlanPage(
       hiddenTutorIds: settingsRow?.hidden_tutor_ids ?? [],
       outEnabled: settingsRow?.out_enabled ?? false,
     },
-    tutors: ((tutorsResult.data ?? []) as { id: string; display_name: string | null }[])
-      .map((row) => ({ id: row.id, name: row.display_name?.trim() || "Tutor" }))
-      .sort((a, b) => a.name.localeCompare(b.name, "en-GB")),
+    tutors: officialTutors((tutorsResult.data ?? []) as { id: string; display_name: string | null; email: string | null }[]),
     monthMarks: ((daysResult.data ?? []) as { date_on: string; accepted: boolean; completed_at: string | null }[]).map(
       (row) => ({ date: row.date_on, accepted: row.accepted, completed: Boolean(row.completed_at) }),
     ),
@@ -467,6 +487,17 @@ export async function readPlanPage(
     },
     loadError: problems.length ? problems.join(" ") : null,
   };
+}
+
+function officialTutors(rows: { id: string; display_name: string | null; email: string | null }[]) {
+  const byName = new Map(rows.map((row) => [row.display_name?.trim().toLowerCase() || "", row]));
+  const byEmail = new Map(rows.map((row) => [row.email?.trim().toLowerCase() || "", row]));
+  return [...GTA_TUTORS]
+    .map((tutor) => {
+      const profile = byName.get(tutor.name.toLowerCase()) || byEmail.get(tutor.email.toLowerCase());
+      return { id: profile?.id || "", name: tutor.name, department: tutor.trade };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name, "en-GB"));
 }
 
 export async function loadPlanPage(input: {

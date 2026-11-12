@@ -405,9 +405,392 @@
   gap: 8px;
 }
 
+.plan {
+  position: relative;
+  background: #efe6d6;
+}
+
+.roster {
+  background: #fffaf1;
+}
+
+.raPage {
+  background: #efe6d6;
+  margin: -4px;
+  padding: 12px;
+  border-radius: 18px;
+}
+
+.planTitle {
+  font-family: var(--font-fraunces), Fraunces, Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.planTitle sup {
+  font-size: 0.58em;
+}
+
+.tab strong,
+.tabOn strong,
+.tabLocked strong {
+  font-family: var(--font-fraunces), Fraunces, Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+
+.tabLocked {
+  background: #b44a2c;
+  color: white;
+  border-color: #b44a2c;
+}
+
+.tabLocked em {
+  color: rgb(255 255 255 / 0.78);
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+}
+
+.searchField {
+  position: relative;
+  display: block;
+}
+
+.clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  border-radius: 18px;
+}
+
+.rowMain {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rowMain a {
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.college {
+  color: #5d6573;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.duePill,
+.tag {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.duePill small {
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.tagOver,
+.duePill.tagOver {
+  background: #b44a2c;
+  color: white;
+}
+
+.tagSoon,
+.duePill.tagSoon {
+  background: #c9782a;
+  color: white;
+}
+
+.tagOk,
+.duePill.tagOk {
+  background: #e7f1ec;
+  color: #2f6b56;
+}
+
+.noteOn {
+  background: #e7f1ec;
+  color: #2f6b56;
+  border: 1px solid #c5ddd2;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.clearNote {
+  background: #fff8f5;
+  color: #8f351c;
+  border: 1px solid #ead4c8;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.notesMenu {
+  position: absolute;
+  right: 20px;
+  top: 72px;
+  z-index: 30;
+  width: min(22rem, calc(100% - 40px));
+  max-height: 22rem;
+  overflow: auto;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: #fffaf1;
+  border: 1px solid #d8ccb8;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(36, 31, 22, 0.12);
+}
+
+.calendar {
+  padding: 12px;
+  border: 1px solid #d8ccb8;
+  border-radius: 18px;
+  background: #fffaf1;
+}
+
+.calGrid {
+  grid-template-columns: repeat(5, 32px);
+  justify-content: space-between;
+}
+
+.day,
+.dayOn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.dayOn {
+  background: #24324f;
+  color: white;
+  border-color: #24324f;
+}
+
+.dayPrev,
+.dayToday {
+  box-shadow: inset 0 0 0 2px #b44a2c;
+}
+
+.dayBooked {
+  box-shadow: inset 0 -3px 0 #2f6b56;
+}
+
+.dayDone {
+  box-shadow: inset 0 -3px 0 #b44a2c;
+}
+
+.completedPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #2f6b56;
+  color: white;
+  font-weight: 700;
+}
+
+.lockIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.lockNote,
+.acceptNote {
+  color: #5d6573;
+  margin: 8px 0;
+}
+
+.timeline {
+  display: grid;
+  margin-top: 8px;
+}
+
+.when {
+  font-variant-numeric: tabular-nums;
+}
+
+.arrive {
+  color: #b44a2c;
+  font-weight: 700;
+}
+
+.until {
+  color: #5d6573;
+}
+
+.planCard {
+  align-items: start;
+}
+
+.closed .stopExtra {
+  display: none;
+}
+
+.stopHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.stopNum {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #b44a2c;
+  color: white;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.75rem;
+  margin-right: 6px;
+}
+
+.handle {
+  margin-right: 6px;
+  color: #5d6573;
+  letter-spacing: -2px;
+}
+
+.contactLine {
+  display: block;
+  color: #24324f;
+  font-weight: 600;
+}
+
+.tagDone {
+  background: #2f6b56;
+  color: white;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.tagLock {
+  background: #b44a2c;
+  color: white;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.safeOn,
+.safeOff {
+  border: 0;
+  border-radius: 999px;
+  color: white;
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.safeOn {
+  background: #1e8f4a;
+}
+
+.safeOff {
+  background: #b44a2c;
+}
+
+.lunch {
+  padding: 8px 0 8px 7.2rem;
+  color: #5d6573;
+}
+
+.headActions {
+  position: relative;
+}
+
+.settingsNav .tabOn {
+  background: #24324f;
+  color: #fff;
+  border-color: #24324f;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tutorCard {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  border: 1px solid #d8ccb8;
+  border-radius: 12px;
+  background: white;
+}
+
+.solid {
+  background: #b44a2c;
+  color: white;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.choiceOn {
+  background: #24324f;
+  color: white;
+  border-color: #24324f;
+}
+
+.outBox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid #d8ccb8;
+  border-radius: 16px;
+  background: white;
+}
+
 @media (max-width: 900px) {
   .layout,
-  .settingsPage {
+  .settingsPage,
+  .fields {
     grid-template-columns: 1fr;
   }
 }

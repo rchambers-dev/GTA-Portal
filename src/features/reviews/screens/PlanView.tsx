@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
-import { formatPlanDate, methodLabel, minutesToTime, timeToMinutes, weekdayName } from "../domain/plan-due";
+import { addDays, formatPlanDate, formatShortNumericDate, methodLabel, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import type { PackedDay } from "../domain/plan-route";
 import type { PlanCounter, PlanPageData, PlanPerson, PlanStop } from "../domain/plan-repository";
@@ -63,7 +63,27 @@ export function PlanView({
       return [person.name, person.tutor, person.company].join(" ").toLowerCase().includes(term);
     });
   }, [page.people, query, tab]);
-  const title = date === page.today ? "Today’s round" : `Plan for ${formatPlanDate(date)}`;
+  const heading = planDateParts(date);
+  const stopKey = (page.day?.stops ?? []).map((stop) => `${stop.gtaId}:${stop.arrive}:${stop.leave}`).join("|");
+
+  useEffect(() => {
+    let cancel = false;
+    if (!page.day?.stops.length) return;
+    void fitStops({
+      officePostcode: page.settings.officePostcode,
+      existing: page.day.stops,
+      extras: [],
+      settings: routeSettings(page.settings),
+      people: page.people,
+    }).then((fitted) => {
+      if (cancel) return;
+      setPacked(fitted.packed);
+      setOfficePoint(fitted.office);
+    });
+    return () => {
+      cancel = true;
+    };
+  }, [stopKey, page.settings.officePostcode, page.settings.startTime, page.settings.lunchStart, page.settings.lunchMinutes, page.settings.returnBy, page.settings.stayMinutes, page.settings.callMinutes]);
 
   function go(nextDate: string, nextMonth = month) {
     const params = new URLSearchParams({ date: nextDate, month: nextMonth });
@@ -162,7 +182,7 @@ export function PlanView({
               type="button"
               role="tab"
               aria-selected={tab === item.id}
-              className={tab === item.id ? styles.tabOn : styles.tab}
+              className={tab === item.id ? (item.id === "locked" ? styles.tabLocked : styles.tabOn) : styles.tab}
               data-roster-tab={item.id}
               onClick={() => setTab(item.id)}
             >
@@ -173,12 +193,19 @@ export function PlanView({
         </div>
         <label className={styles.search}>
           Search names, tutors or companies
-          <input
-            type="search"
-            placeholder="e.g. Bailey or Polypipe"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
+          <span className={styles.searchField}>
+            <input
+              type="search"
+              placeholder="e.g. Bailey or Polypipe"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            {query ? (
+              <button type="button" className={styles.clear} aria-label="Clear search" onClick={() => setQuery("")}>
+                ×
+              </button>
+            ) : null}
+          </span>
         </label>
         <ul className={styles.list}>
           {visible.length === 0 ? (
@@ -197,7 +224,6 @@ export function PlanView({
                 key={person.gtaId}
                 workspace={workspace}
                 person={person}
-                today={page.today}
                 canWrite={page.canWrite}
                 onNote={() => setNotePerson(person)}
               />
@@ -207,7 +233,10 @@ export function PlanView({
       </section>
       <section className={styles.plan} aria-labelledby="plan-title">
         <div className={styles.head}>
-          <h2 id="plan-title">{title}</h2>
+          <h2 id="plan-title" className={styles.planTitle}>
+            Plan For {heading.day}
+            <sup>{heading.ordinal}</sup> {heading.month}
+          </h2>
           <div className={styles.headActions}>
             <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => void showMap()}>
               {mapOpen ? "Hide map" : "Show map"}
@@ -263,60 +292,47 @@ export function PlanView({
             if (id) void dropPerson(id);
           }}
         >
-          <div className={styles.routeBar}>
-            {page.canWrite ? (
-              <button
-                type="button"
-                className={styles.fill}
-                onClick={() =>
-                  void placePeople(
-                    page.people.filter(
-                      (person) =>
-                        person.counter === "to_book" && !page.day?.stops.some((stop) => stop.gtaId === person.gtaId),
-                    ),
-                  )
-                }
-              >
-                Fill Day
-              </button>
-            ) : null}
-            {page.canWrite && page.day && page.day.stops.length > 0 ? (
-              <DayActions workspace={workspace} page={page} date={date} packed={packed} onRun={run} />
-            ) : null}
-          </div>
-          {page.day && page.day.stops.length === 0 ? null : (
-            <div className={styles.stops}>
-              {page.day?.stops.map((stop, index) => (
-                <StopCard
-                  key={stop.gtaId}
-                  workspace={workspace}
-                  stop={stop}
-                  index={index}
-                  date={date}
-                  today={page.today}
-                  canWrite={page.canWrite && !page.day?.completed}
-                  dayIds={page.day?.stops.map((item) => item.gtaId) ?? []}
-                  onRun={run}
-                />
-              ))}
+          {page.day?.completed ? (
+            <div className={styles.lockedDay}>
+              <span className={styles.completedPill}>
+                <LockIcon /> Route completed
+              </span>
+              <p className={styles.lockNote}>This day is locked. The visits can’t be changed.</p>
+            </div>
+          ) : (
+            <div className={styles.routeBar}>
+              {page.canWrite ? (
+                <button
+                  type="button"
+                  className={styles.fill}
+                  onClick={() =>
+                    void placePeople(
+                      page.people.filter(
+                        (person) =>
+                          person.counter === "to_book" && !page.day?.stops.some((stop) => stop.gtaId === person.gtaId),
+                      ),
+                    )
+                  }
+                >
+                  Fill Day
+                </button>
+              ) : null}
+              {page.canWrite && page.day && page.day.stops.length > 0 ? (
+                <DayActions workspace={workspace} page={page} date={date} packed={packed} onRun={run} />
+              ) : null}
             </div>
           )}
-          {packed ? (
-            <p className={styles.meta}>
-              Leave {page.settings.officePostcode} at {minutesToTime(packed.leaveMinutes)} · {packed.driveTotal ? `${Math.round(packed.driveTotal)} min driving` : "no driving yet"} · back at {minutesToTime(packed.returnArrive)}
-            </p>
+          {page.day?.accepted && !page.day.completed ? (
+            <p className={styles.acceptNote}>This day’s learners will not be moved if you plan the week again.</p>
           ) : null}
+          <DayTimeline
+            workspace={workspace}
+            page={page}
+            date={date}
+            packed={packed}
+            onRun={run}
+          />
           {mapOpen ? <PlanMap office={officePoint} stops={packed?.stops ?? []} /> : null}
-          {page.day?.completed ? (
-            <ul className={styles.list}>
-              {page.day.completedReviews.map((review) => (
-                <li key={review.id} className={styles.card}>
-                  <Link href={`/${workspace}/onboarding/apprentice/${review.gtaId}`}>{review.name}</Link>
-                  <p>Review completed · {review.method}</p>
-                </li>
-              ))}
-            </ul>
-          ) : null}
         </div>
       </section>
       {notePerson ? (
@@ -354,13 +370,11 @@ export function PlanView({
 function RosterCard({
   workspace,
   person,
-  today,
   canWrite,
   onNote,
 }: {
   workspace: "administration" | "management";
   person: PlanPerson;
-  today: string;
   canWrite: boolean;
   onNote: () => void;
 }) {
@@ -371,23 +385,13 @@ function RosterCard({
       onDragStart={(event) => event.dataTransfer.setData("text/plain", person.gtaId)}
       data-roster-gta={person.gtaId}
     >
-      <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`}>{person.name}</Link>
-      <p>
-        College {person.releaseDay}
-        {person.concern ? " · Concern" : ""}
-      </p>
-      <p>
-        {person.company} · {person.postcode}, {person.location}
-      </p>
-      <p className={person.dueState === "overdue" ? styles.overdue : styles.due}>{person.dueLabel}</p>
-      {person.notes ? (
-        <div className={styles.note}>
-          <p>{person.notes}</p>
-          <p>{noteUntilLabel(person.notesUntil, today).label}</p>
-        </div>
-      ) : null}
+      <span className={styles.rowMain}>
+        <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`}>{person.name}</Link>
+        <span className={styles.college}>College {person.releaseDay}</span>
+      </span>
+      <DuePill person={person} />
       {canWrite && person.reviewId ? (
-        <button type="button" className={styles.pill} onClick={onNote}>
+        <button type="button" className={person.notes ? styles.noteOn : styles.pill} onClick={onNote}>
           {person.notes ? "Edit note" : "Add note"}
         </button>
       ) : null}
@@ -522,35 +526,65 @@ function StopCard({
   dayIds: string[];
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState<"book" | "note" | "lock" | null>(null);
   const [method, setMethod] = useState(stop.method || "in_person");
   const [time, setTime] = useState(stop.arrive || "10:00");
   const [holdUntil, setHoldUntil] = useState("23:45");
+  const phoneDigits = stop.phone.replace(/\D/g, "");
+  const priority = stop.dueState === "overdue" ? styles.tagOver : stop.dueState === "due-soon" ? styles.tagSoon : styles.tagOk;
   return (
-    <article className={styles.stop} data-stop={stop.gtaId}>
+    <article
+      className={`${styles.stop} ${styles.planCard} ${expanded ? "" : styles.closed}`}
+      data-stop={stop.gtaId}
+      onClick={() => setExpanded((value) => !value)}
+    >
       <p className={styles.when}>
-        {stop.arrive || "—"}–{stop.leave || "—"}
+        <span className={styles.arrive}>{stop.arrive || "—"}</span>
+        <span className={styles.until}>–{stop.leave || "—"}</span>
       </p>
-      <div>
-        <p className={styles.stopName}>
-          <span>{index + 1}</span>
-          <Link href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`}>{stop.name}</Link>
-        </p>
-        <p>
-          {stop.company}, {stop.postcode}
-          {stop.contact ? ` · ${stop.contact}` : ""}
-          {stop.phone ? ` · ${stop.phone}` : ""}
-        </p>
-        <p className={stop.dueState === "overdue" ? styles.overdue : styles.due}>{stop.dueLabel}</p>
-        <p className={styles.pills}>
-          {stop.completed ? <span>Review done</span> : null}
-          {stop.verified ? <span>Verified</span> : null}
-          {stop.locked ? <span>Locked</span> : null}
-          {stop.safeguarding ? <span>Safeguarding</span> : <span>Safeguarding missing</span>}
-          <span>{methodLabel(stop.method)}</span>
-        </p>
-        {canWrite ? (
-          <div className={styles.stopActions}>
+      <div className={styles.stopBody}>
+        <div className={styles.stopHead}>
+          <p className={styles.stopName}>
+            {canWrite ? <span className={styles.handle} aria-hidden="true">⋮⋮</span> : null}
+            <span className={styles.stopNum}>{index + 1}</span>
+            <Link href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
+              {stop.name}
+            </Link>
+          </p>
+          <p className={styles.pills}>
+            <span className={`${styles.tag} ${priority}`}>{stop.dueState === "ok" ? "On track" : stop.dueLabel}</span>
+            <button
+              type="button"
+              className={stop.safeguarding ? styles.safeOn : styles.safeOff}
+              onClick={(event) => {
+                event.stopPropagation();
+                if (!canWrite) return;
+                void onRun(() =>
+                  stop.safeguarding && stop.signoffId
+                    ? reverseSafeguardingAction({ signoffId: stop.signoffId })
+                    : recordSafeguardingAction({ gtaId: stop.gtaId, date }),
+                );
+              }}
+            >
+              Safeguarding
+            </button>
+            {stop.completed ? <span className={styles.tagDone}>Review done</span> : null}
+            {!stop.completed && stop.verified ? <span className={styles.tagDone}>Verified</span> : null}
+            {stop.locked ? <span className={styles.tagLock}>Locked</span> : null}
+          </p>
+        </div>
+        <span className={styles.contactLine}>
+          {stop.tutor || "Tutor"}
+          {stop.phone ? (
+            <>
+              {" · "}
+              <a href={`tel:${phoneDigits}`} onClick={(event) => event.stopPropagation()}>{stop.phone}</a>
+            </>
+          ) : null}
+        </span>
+        {canWrite && !stop.completed ? (
+          <div className={styles.stopExtra} onClick={(event) => event.stopPropagation()}>
             <button
               type="button"
               onClick={() =>
@@ -574,26 +608,18 @@ function StopCard({
             <button type="button" onClick={() => setOpen(open === "lock" ? null : "lock")}>
               {stop.locked ? "Unlock" : "Lock"}
             </button>
-            <button type="button" onClick={() => setOpen(open === "note" ? null : "note")}>
+            <button type="button" className={styles.fill} onClick={() => setOpen(open === "book" ? null : "book")}>
+              Phone review
+            </button>
+            <button type="button" className={stop.notes ? styles.noteOn : styles.pill} onClick={() => setOpen(open === "note" ? null : "note")}>
               {stop.notes ? "Edit note" : "Add note"}
             </button>
-            <button
-              type="button"
-              onClick={() =>
-                void onRun(() =>
-                  stop.safeguarding && stop.signoffId
-                    ? reverseSafeguardingAction({ signoffId: stop.signoffId })
-                    : recordSafeguardingAction({ gtaId: stop.gtaId, date }),
-                )
-              }
-            >
-              {stop.safeguarding ? "Undo safeguarding" : "Safeguarding"}
-            </button>
+            <Link href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
+              Edit details
+            </Link>
             <button type="button" onClick={() => void onRun(() => excludeStopAction({ date, gtaId: stop.gtaId }))}>
-              Take off day
+              Take off this round
             </button>
-          </div>
-        ) : null}
         {open === "book" && stop.reviewId ? (
           <form
             className={styles.inline}
@@ -661,6 +687,8 @@ function StopCard({
         {open === "note" && stop.reviewId ? (
           <NoteForm reviewId={stop.reviewId} notes={stop.notes} until={stop.notesUntil} today={today} onRun={onRun} />
         ) : null}
+          </div>
+        ) : null}
       </div>
     </article>
   );
@@ -712,9 +740,9 @@ function NoteForm({
         End date
         <input type="date" min={today} value={end} onChange={(event) => setEnd(event.target.value)} />
       </label>
-      <button type="submit">Save note</button>
+      <button type="submit" className={styles.noteOn}>Save note</button>
       {notes ? (
-        <button type="button" onClick={() => void onRun(async () => (await setNotesAction({ reviewId, notes: "", until: "" })) ?? { ok: false, formError: "The note could not be saved." })}>
+        <button type="button" className={styles.clearNote} onClick={() => void onRun(async () => (await setNotesAction({ reviewId, notes: "", until: "" })) ?? { ok: false, formError: "The note could not be saved." })}>
           Clear
         </button>
       ) : null}
@@ -779,10 +807,13 @@ function Calendar({
             <button
               key={iso}
               type="button"
-              className={iso === date ? styles.dayOn : styles.day}
-              data-today={iso === today ? "true" : undefined}
-              data-has-route={marks.has(iso) ? "true" : undefined}
-              data-completed={completed.has(iso) ? "true" : undefined}
+              className={[
+                styles.day,
+                iso === date ? styles.dayOn : "",
+                iso === previousWeekday(date) ? styles.dayPrev : "",
+                iso === today && iso !== date ? styles.dayToday : "",
+                completed.has(iso) ? styles.dayDone : marks.has(iso) ? styles.dayBooked : "",
+              ].filter(Boolean).join(" ")}
               onClick={() => onPick(iso)}
             >
               {Number(iso.slice(-2))}
@@ -791,6 +822,98 @@ function Calendar({
             <span key={`gap-${index}`} />
           ),
         )}
+      </div>
+    </div>
+  );
+}
+
+function previousWeekday(iso: string): string {
+  let cursor = addDays(iso, -1);
+  while (weekdayName(cursor) === "Saturday" || weekdayName(cursor) === "Sunday") cursor = addDays(cursor, -1);
+  return cursor;
+}
+
+function DuePill({ person }: { person: PlanPerson }) {
+  const tone = person.dueState === "overdue" ? styles.tagOver : person.dueState === "due-soon" ? styles.tagSoon : styles.tagOk;
+  const label = person.dueState === "ok" ? "On track" : person.dueState === "due-soon" ? "Due this week" : person.dueLabel;
+  return (
+    <span className={`${styles.duePill} ${tone}`}>
+      <span>{label}</span>
+      {person.nextDate ? <small>{formatShortNumericDate(person.nextDate)}</small> : null}
+    </span>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg className={styles.lockIcon} viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path fill="currentColor" d="M17 8h-1V6a4 4 0 1 0-8 0v2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm-6-2a2 2 0 1 1 4 0v2h-4V6zm6 14H7V10h10v10z" />
+    </svg>
+  );
+}
+
+function DayTimeline({
+  workspace,
+  page,
+  date,
+  packed,
+  onRun,
+}: {
+  workspace: "administration" | "management";
+  page: PlanPageData;
+  date: string;
+  packed: PackedDay | null;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+}) {
+  const stops = [...(page.day?.stops ?? [])].sort((a, b) => (timeToMinutes(a.arrive) ?? 0) - (timeToMinutes(b.arrive) ?? 0));
+  const lunchStart = timeToMinutes(page.settings.lunchStart) ?? 12 * 60 + 30;
+  const lunchEnd = lunchStart + page.settings.lunchMinutes;
+  const leave = packed?.leaveMinutes ?? timeToMinutes(page.settings.startTime) ?? 10 * 60;
+  const back = packed?.returnArrive;
+  if (!stops.length) return null;
+  return (
+    <div className={styles.timeline}>
+      <div className={styles.stop}>
+        <div className={styles.when}>{minutesToTime(leave)}</div>
+        <div>
+          <strong>Leave office</strong>
+          <div className={styles.meta}>{page.settings.officePostcode}</div>
+        </div>
+      </div>
+      {stops.map((stop, index) => {
+        const leaveMin = timeToMinutes(stop.leave) ?? 0;
+        const next = stops[index + 1];
+        const nextArrive = next ? timeToMinutes(next.arrive) ?? 0 : back ?? leaveMin;
+        const crosses = leaveMin <= lunchStart && nextArrive >= lunchEnd;
+        return (
+          <div key={stop.gtaId}>
+            <StopCard
+              workspace={workspace}
+              stop={stop}
+              index={index}
+              date={date}
+              today={page.today}
+              canWrite={page.canWrite && !page.day?.completed}
+              dayIds={stops.map((item) => item.gtaId)}
+              onRun={onRun}
+            />
+            {crosses ? (
+              <div className={styles.lunch}>
+                Lunch {minutesToTime(lunchStart)}–{minutesToTime(lunchEnd)}. No reviews in this window.
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+      <div className={styles.stop}>
+        <div className={styles.when}>{back != null ? minutesToTime(back) : ""}</div>
+        <div>
+          <strong>Back at office</strong>
+          <div className={styles.meta}>
+            {page.settings.officePostcode}
+            {packed ? ` · ${Math.round(packed.returnTravel)} min drive` : ""}
+          </div>
+        </div>
       </div>
     </div>
   );

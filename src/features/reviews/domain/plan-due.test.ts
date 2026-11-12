@@ -11,13 +11,13 @@ describe("plan due pill", () => {
   it("marks the week that contains the next review", () => {
     expect(
       reviewDueLabel({ today: "2026-11-12", nextDate: "2026-08-05", intervalWeeks: 5 }),
-    ).toEqual({ state: "overdue", label: "Overdue · 13 weeks 4 days" });
+    ).toMatchObject({ state: "overdue", label: "Overdue · 13 weeks 4 days", nextDate: "2026-08-05" });
     expect(
       reviewDueLabel({ today: "2026-11-12", nextDate: "2026-11-13", intervalWeeks: 10 }),
-    ).toEqual({ state: "due-soon", label: "Due this week" });
+    ).toMatchObject({ state: "due-soon", label: "Due this week" });
     expect(
       reviewDueLabel({ today: "2026-11-12", nextDate: "2027-01-21", intervalWeeks: 10 }),
-    ).toEqual({ state: "ok", label: "Within 10 weeks" });
+    ).toMatchObject({ state: "ok", label: "Within 10 weeks" });
     expect(reviewDueLabel({ today: "2026-11-12", nextDate: null, intervalWeeks: 10 }).label).toBe(
       "Not set",
     );
