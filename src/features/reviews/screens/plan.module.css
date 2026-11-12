@@ -1,0 +1,271 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.9fr) minmax(22rem, 1.3fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.roster,
+.plan {
+  background: #f6f1e7;
+  border: 1px solid #e4d8c4;
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tab,
+.tabOn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid #d9cbb6;
+  background: #fffaf3;
+  border-radius: 14px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.tabOn {
+  background: #1f3b4d;
+  color: white;
+  border-color: #1f3b4d;
+}
+
+.tab strong,
+.tabOn strong {
+  font-size: 1.35rem;
+}
+
+.tab em,
+.tabOn em {
+  font-style: normal;
+  font-size: 0.82rem;
+}
+
+.search,
+.inline label,
+.dialog label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 12px 0;
+  font-size: 0.85rem;
+}
+
+.search input,
+.inline input,
+.inline select,
+.inline textarea,
+.dialog input {
+  border: 1px solid #d9cbb6;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font: inherit;
+  background: white;
+}
+
+.list,
+.stops {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.card,
+.stop {
+  background: white;
+  border: 1px solid #eadfce;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.card p,
+.stop p,
+.meta,
+.hint,
+.empty {
+  margin: 4px 0 0;
+  color: #5c5146;
+  font-size: 0.88rem;
+}
+
+.overdue {
+  color: #9a3412;
+  font-weight: 700;
+}
+
+.due {
+  color: #3f6212;
+  font-weight: 700;
+}
+
+.note {
+  white-space: pre-wrap;
+}
+
+.head,
+.calHead,
+.routeBar,
+.stopActions,
+.dialogActions,
+.headActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.head h2,
+.calHead h3,
+.trail h3,
+.dialog h2 {
+  margin: 0;
+}
+
+.pill,
+.fill,
+.dayActions button,
+.dayActions a,
+.stopActions button,
+.inline button,
+.dialog button,
+.calHead button,
+.day {
+  border: 1px solid #c8b79a;
+  background: white;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.fill {
+  background: #1d4ed8;
+  color: white;
+  border-color: #1d4ed8;
+}
+
+.calendar {
+  margin: 12px 0;
+}
+
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.calLabel {
+  font-size: 0.75rem;
+  color: #6b5e51;
+}
+
+.dayOn {
+  border: 1px solid #1f3b4d;
+  background: #1f3b4d;
+  color: white;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.day[data-today="true"] {
+  outline: 2px solid #b45309;
+}
+
+.day[data-completed="true"] {
+  background: #ecfccb;
+}
+
+.when {
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.stopName {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  font-weight: 700;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pills span {
+  background: #f3efe6;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.drop {
+  min-height: 8rem;
+}
+
+.trail,
+.dialog {
+  margin-top: 12px;
+  background: white;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.trail ul {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trail li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eadfce;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(20 16 12 / 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 40;
+}
+
+.dialog {
+  width: min(32rem, 100%);
+  max-height: min(40rem, 100%);
+  overflow: auto;
+}
+
+.status {
+  color: #9a3412;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
