@@ -562,7 +562,18 @@ function StopCard({
       <div className={styles.stopBody}>
         <div className={styles.stopHead}>
           <p className={styles.stopName}>
-            {canWrite ? <span className={styles.handle} aria-hidden="true">⋮⋮</span> : null}
+            {canWrite ? (
+              <span className={styles.handle} aria-hidden="true">
+                <svg viewBox="0 0 12 16">
+                  <circle cx="4" cy="3" r="1.35" />
+                  <circle cx="8" cy="3" r="1.35" />
+                  <circle cx="4" cy="8" r="1.35" />
+                  <circle cx="8" cy="8" r="1.35" />
+                  <circle cx="4" cy="13" r="1.35" />
+                  <circle cx="8" cy="13" r="1.35" />
+                </svg>
+              </span>
+            ) : null}
             <span className={styles.stopNum}>{index + 1}</span>
             <Link href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
               {stop.name}

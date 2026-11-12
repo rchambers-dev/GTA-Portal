@@ -1,11 +1,11 @@
 .layout {
-  --ink: #1d2433;
-  --muted: #5d6573;
-  --paper: #efe6d6;
-  --card: #fffaf1;
-  --line: #d8ccb8;
+  --ink: var(--text-primary);
+  --muted: var(--text-secondary);
+  --paper: var(--bg-elevated);
+  --card: var(--bg-card);
+  --line: var(--border-subtle);
   --terracotta: #b44a2c;
-  --navy: #24324f;
+  --navy: var(--color-navy-800);
   display: grid;
   grid-template-columns: minmax(440px, 520px) minmax(0, 1fr);
   gap: 20px;
@@ -16,10 +16,10 @@
 
 .roster,
 .plan {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  box-shadow: 0 18px 40px rgba(36, 31, 22, 0.12);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
   padding: 20px;
 }
 
@@ -34,8 +34,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  border: 1px solid #d9cbb6;
-  background: #fffaf3;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
   border-radius: 14px;
   padding: 8px 10px;
   cursor: pointer;
@@ -276,7 +276,7 @@
 }
 
 .pills span {
-  background: #f3efe6;
+  background: var(--bg-elevated);
   border-radius: 999px;
   padding: 2px 8px;
 }
@@ -377,6 +377,9 @@
   width: min(32rem, 100%);
   max-height: min(40rem, 100%);
   overflow: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg);
 }
 
 .status {
@@ -387,8 +390,8 @@
   display: grid;
   grid-template-columns: 11rem minmax(0, 1fr);
   gap: 20px;
-  background: #fffaf1;
-  border: 1px solid #d8ccb8;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
   border-radius: 24px;
   padding: 20px;
 }
@@ -408,11 +411,11 @@
 
 .plan {
   position: relative;
-  background: #efe6d6;
+  background: var(--bg-card);
 }
 
 .roster {
-  background: #fffaf1;
+  background: var(--bg-card);
 }
 
 .raPage,
@@ -422,12 +425,7 @@
 }
 
 .raPage {
-  background:
-    radial-gradient(circle at top right, rgba(180, 74, 44, 0.12), transparent 32%),
-    linear-gradient(180deg, #f6efe2 0%, #efe6d6 100%);
-  margin: -4px;
-  padding: 12px;
-  border-radius: 18px;
+  background: transparent;
 }
 
 .planTitle {
@@ -573,17 +571,17 @@
   margin: 0;
   padding: 8px;
   list-style: none;
-  background: #fffaf1;
-  border: 1px solid #d8ccb8;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
   box-shadow: 0 18px 40px rgba(36, 31, 22, 0.12);
 }
 
 .calendar {
   padding: 12px;
-  border: 1px solid #d8ccb8;
+  border: 1px solid var(--border-subtle);
   border-radius: 18px;
-  background: #fffaf1;
+  background: var(--bg-card);
 }
 
 .calGrid {
@@ -690,9 +688,20 @@
 }
 
 .handle {
-  margin-right: 6px;
-  color: #5d6573;
-  letter-spacing: -2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0;
+  color: var(--text-secondary);
+}
+
+.handle svg {
+  display: block;
+  width: 12px;
+  height: 16px;
+  fill: currentColor;
 }
 
 .contactLine {
@@ -757,7 +766,7 @@
   margin: 8px 0 0;
   padding: 8px 10px;
   border-radius: 12px;
-  background: #f4efe6;
+  background: var(--bg-elevated);
   color: #1d2433;
 }
 
@@ -767,16 +776,16 @@
 }
 
 .timeline {
-  background: white;
-  border-radius: 16px;
+  background: transparent;
+  border-radius: 0;
 }
 
 .lockedPanel {
   margin-top: 8px;
   padding: 4px 12px 12px;
-  border: 1px solid #d8ccb8;
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
-  background: #f3efe6;
+  background: var(--bg-elevated);
 }
 
 .lunch {
@@ -784,7 +793,7 @@
 }
 
 .settingsNav {
-  background: #efe6d6;
+  background: var(--bg-elevated);
   border-radius: 16px;
   padding: 8px;
   align-items: stretch;
@@ -889,7 +898,7 @@
   gap: 8px;
   align-items: flex-start;
   padding: 8px 10px;
-  border: 1px solid #d8ccb8;
+  border: 1px solid var(--border-subtle);
   border-radius: 12px;
   background: white;
 }
@@ -916,7 +925,7 @@
   gap: 10px;
   align-items: center;
   padding: 14px;
-  border: 1px solid #d8ccb8;
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
   background: white;
 }
@@ -932,8 +941,8 @@
 /* Copied from the Review Assistant stylesheet. Later rules win over the shared button reset. */
 
 .plan {
-  background: #fffaf1;
-  border: 1px solid #d8ccb8;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
   border-radius: 24px;
   box-shadow: 0 18px 40px rgba(36, 31, 22, 0.12);
 }
@@ -979,8 +988,8 @@
 }
 
 .tab {
-  background: color-mix(in srgb, #efe6d6 70%, #fffaf1);
-  border-color: #d8ccb8;
+  background: color-mix(in srgb, var(--bg-elevated) 70%, var(--bg-card));
+  border-color: var(--border-subtle);
 }
 
 .tabOn,
@@ -1053,7 +1062,7 @@
   padding: 10px 0;
   margin: 0;
   border: 0;
-  border-top: 1px solid #d8ccb8;
+  border-top: 1px solid var(--border-subtle);
   border-radius: 0;
   background: transparent;
   box-shadow: none;
@@ -1082,6 +1091,7 @@
 }
 
 .when,
+.when *,
 .arrive,
 .until {
   text-decoration: none;
@@ -1139,17 +1149,17 @@
 }
 
 .lunch {
-  background: #f3ead8;
+  background: var(--bg-elevated);
   border-radius: 12px;
   padding: 10px 12px;
   margin: 4px 0;
-  color: #5d6573;
+  color: var(--text-secondary);
 }
 
 .lockedPanel {
-  border: 1px solid color-mix(in srgb, #2f6b56 55%, #d8ccb8);
-  border-radius: 16px;
-  background: color-mix(in srgb, #2f6b56 7%, #fffaf1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--bg-elevated);
 }
 
 .actionGhost {
@@ -1159,9 +1169,9 @@
   min-height: 2.6rem;
   border-radius: 999px;
   padding: 10px 16px;
-  background: #fffaf1;
+  background: var(--bg-card);
   color: #24324f;
-  border: 1px solid #d8ccb8;
+  border: 1px solid var(--border-subtle);
   font: inherit;
   font-weight: 650;
   cursor: pointer;
@@ -1187,10 +1197,10 @@
   width: 100%;
   margin: 0 0 10px;
   padding: 12px 14px;
-  background: #efe6d6;
-  border: 1px solid #d8ccb8;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
   border-radius: 16px;
-  color: #1d2433;
+  color: var(--text-primary);
   font-size: 0.95rem;
   font-weight: 600;
   grid-column: 1 / -1;
@@ -1207,9 +1217,9 @@
 .checkBox {
   width: 1.25rem;
   height: 1.25rem;
-  border: 1.5px solid #d8ccb8;
+  border: 1.5px solid var(--border-subtle);
   border-radius: 6px;
-  background: #fffaf1;
+  background: var(--bg-card);
 }
 
 .skipBar input:checked + .checkBox {
@@ -1223,7 +1233,7 @@
   width: 5px;
   height: 9px;
   margin: 1px auto 0;
-  border: solid #fffaf1;
+  border: solid var(--bg-card);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
@@ -1234,9 +1244,15 @@
 }
 
 .settingsOn {
-  background: #fffaf1;
-  color: #1d2433;
+  background: var(--bg-card);
+  color: var(--text-primary);
   border: 0;
+}
+
+.settingsNav {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  padding: 8px;
 }
 
 .tutorCard strong {
@@ -1246,7 +1262,7 @@
 
 .tutorCard .meta {
   display: block;
-  color: #5d6573;
+  color: var(--text-secondary);
 }
 
 .settingsPage h2 {
