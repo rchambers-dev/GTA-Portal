@@ -31,6 +31,8 @@ type DrivePerson = {
 type DriveStop = DrivePerson & {
   arrive: string;
   leave: string;
+  arriveMinutes?: number | null;
+  leaveMinutes?: number | null;
   verified: boolean;
   locked: boolean;
 };
@@ -102,8 +104,8 @@ export async function fitStops(input: {
   const current = emptyPackedDay(settings);
   current.stops = existingLearners.map((learner) => {
     const stop = input.existing.find((item) => item.gtaId === learner.id);
-    const arrive = timeToMinutes(stop?.arrive || "") ?? settings.startMinutes;
-    const leave = timeToMinutes(stop?.leave || "") ?? arrive + settings.stayMinutes;
+    const arrive = stop?.arriveMinutes ?? timeToMinutes(stop?.arrive || "") ?? settings.startMinutes;
+    const leave = stop?.leaveMinutes ?? timeToMinutes(stop?.leave || "") ?? arrive + settings.stayMinutes;
     if (stop?.arrive && stop.leave) frozen[learner.id] = { arrive, leave, booked: stop.verified || stop.locked };
     return {
       id: learner.id,

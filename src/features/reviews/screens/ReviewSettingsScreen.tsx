@@ -76,7 +76,7 @@ export function ReviewSettingsScreen({
           <button
             key={item.id}
             type="button"
-            className={tab === item.id ? styles.choiceOn : styles.tab}
+            className={tab === item.id ? styles.settingsOn : styles.tab}
             onClick={() => setTab(item.id)}
           >
             {item.label}
@@ -142,9 +142,10 @@ export function ReviewSettingsScreen({
               Extra email addresses
               <input value={emails} placeholder="e.g. colleague@gta.ac.uk, office@gta.ac.uk" onChange={(event) => setEmails(event.target.value)} onBlur={() => void save({})} />
             </label>
-            <div>
+            <div className={styles.tutorBlock}>
               <h2>Hide a tutor’s reviews</h2>
               <p className={styles.meta}>Tick a tutor to take their reviews off Need booking and the planner. Booked or verified people stay where they are.</p>
+              <div className={styles.tutorList}>
               {page.tutors.map((tutor) => (
                 <label key={tutor.name} className={styles.tutorCard}>
                   <input
@@ -164,6 +165,7 @@ export function ReviewSettingsScreen({
                   </span>
                 </label>
               ))}
+              </div>
             </div>
           </form>
         ) : null}

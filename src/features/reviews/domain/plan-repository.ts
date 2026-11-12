@@ -48,6 +48,8 @@ export type PlanStop = {
   postcode: string;
   phone: string;
   contact: string;
+  releaseDay: string;
+  appointmentOn: string | null;
   sortOrder: number;
   kind: string;
   verified: boolean;
@@ -55,6 +57,8 @@ export type PlanStop = {
   accepted: boolean;
   arrive: string;
   leave: string;
+  arriveMinutes: number | null;
+  leaveMinutes: number | null;
   locked: boolean;
   dueLabel: string;
   dueState: DueState;
@@ -181,7 +185,7 @@ export async function readPlanPage(
     supabase
       .from("review_day_stops")
       .select(
-        "gta_id, sort_order, kind, verified, completed, accepted, excluded, arrive_minutes, leave_minutes, locked_until_minutes, accepted_arrive_minutes, accepted_leave_minutes",
+        "gta_id, sort_order, kind, verified, completed, accepted, excluded, arrive_minutes, leave_minutes, locked_until_minutes, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
       )
       .eq("date_on", options.date)
       .eq("excluded", false),
@@ -389,6 +393,8 @@ export async function readPlanPage(
     arrive_minutes: number | null;
     leave_minutes: number | null;
     locked_until_minutes: number | null;
+    lock_arrive_minutes: number | null;
+    lock_leave_minutes: number | null;
     accepted_arrive_minutes: number | null;
     accepted_leave_minutes: number | null;
   }[])
@@ -396,8 +402,12 @@ export async function readPlanPage(
     .sort((a, b) => a.sort_order - b.sort_order)
     .map((stop) => {
       const person = byId.get(stop.gta_id);
-      const arrive = stop.accepted ? stop.accepted_arrive_minutes : stop.arrive_minutes;
-      const leave = stop.accepted ? stop.accepted_leave_minutes : stop.leave_minutes;
+      const arrive = stop.accepted
+        ? stop.accepted_arrive_minutes
+        : (stop.arrive_minutes ?? stop.lock_arrive_minutes);
+      const leave = stop.accepted
+        ? stop.accepted_leave_minutes
+        : (stop.leave_minutes ?? stop.lock_leave_minutes);
       return {
         gtaId: stop.gta_id,
         name: person?.name || apprenticeNames.get(stop.gta_id) || stop.gta_id,
@@ -405,6 +415,8 @@ export async function readPlanPage(
         postcode: person?.postcode || "",
         phone: person?.phone || "",
         contact: person?.contact || "",
+        releaseDay: person?.releaseDay || "",
+        appointmentOn: person?.appointmentOn ?? null,
         sortOrder: stop.sort_order,
         kind: stop.kind,
         verified: stop.verified,
@@ -412,6 +424,8 @@ export async function readPlanPage(
         accepted: stop.accepted,
         arrive: minutesToTime(arrive),
         leave: minutesToTime(leave),
+        arriveMinutes: arrive,
+        leaveMinutes: leave,
         locked: stop.locked_until_minutes != null,
         dueLabel: person?.dueLabel || "Not set",
         dueState: person?.dueState || "unknown",

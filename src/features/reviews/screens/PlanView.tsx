@@ -15,11 +15,9 @@ import {
   clearBookingAction,
   completeDayAction,
   excludeStopAction,
-  lockStopAction,
   recordSafeguardingAction,
   reverseSafeguardingAction,
   setNotesAction,
-  unlockStopAction,
   verifyStopAction,
 } from "./plan-actions";
 import { PlanMap } from "./PlanMap";
@@ -52,7 +50,13 @@ export function PlanView({
   const [notePerson, setNotePerson] = useState<PlanPerson | null>(null);
   const [packed, setPacked] = useState<PackedDay | null>(null);
   const [officePoint, setOfficePoint] = useState<{ lat: number; lon: number; postcode: string } | null>(null);
-  const noted = page.people.filter((person) => person.notes);
+  const noted = page.people
+    .filter((person) => person.notes)
+    .slice()
+    .sort(
+      (a, b) =>
+        a.notesUntil.localeCompare(b.notesUntil) || a.name.localeCompare(b.name, "en-GB"),
+    );
   const marks = new Set(page.monthMarks.map((item) => item.date));
   const completedDays = new Set(page.monthMarks.filter((item) => item.completed).map((item) => item.date));
   const visible = useMemo(() => {
@@ -330,7 +334,12 @@ export function PlanView({
             page={page}
             date={date}
             packed={packed}
+            locked={Boolean(page.day?.completed)}
             onRun={run}
+            onNote={(gtaId) => {
+              const person = page.people.find((item) => item.gtaId === gtaId);
+              if (person) setNotePerson(person);
+            }}
           />
           {mapOpen ? <PlanMap office={officePoint} stops={packed?.stops ?? []} /> : null}
         </div>
@@ -413,7 +422,9 @@ function DayActions({
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
 }) {
   const stops = page.day?.stops ?? [];
-  const ready = stops.length > 0 && stops.every((stop) => stop.verified);
+  const ready =
+    stops.length > 0 &&
+    stops.every((stop) => stop.verified || stop.locked || stop.appointmentOn === date);
   return (
     <div className={styles.dayActions}>
       {page.settings.outEnabled ? (
@@ -516,6 +527,7 @@ function StopCard({
   canWrite,
   dayIds,
   onRun,
+  onNote,
 }: {
   workspace: "administration" | "management";
   stop: PlanStop;
@@ -525,12 +537,12 @@ function StopCard({
   canWrite: boolean;
   dayIds: string[];
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onNote: (gtaId: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState<"book" | "note" | "lock" | null>(null);
   const [method, setMethod] = useState(stop.method || "in_person");
   const [time, setTime] = useState(stop.arrive || "10:00");
-  const [holdUntil, setHoldUntil] = useState("23:45");
   const phoneDigits = stop.phone.replace(/\D/g, "");
   const priority = stop.dueState === "overdue" ? styles.tagOver : stop.dueState === "due-soon" ? styles.tagSoon : styles.tagOk;
   return (
@@ -540,8 +552,8 @@ function StopCard({
       onClick={() => setExpanded((value) => !value)}
     >
       <p className={styles.when}>
-        <span className={styles.arrive}>{stop.arrive || "—"}</span>
-        <span className={styles.until}>–{stop.leave || "—"}</span>
+        <span className={styles.arrive}>{minutesToTime(stop.arriveMinutes) || "—"}</span>
+        <span className={styles.until}>–{minutesToTime(stop.leaveMinutes) || "—"}</span>
       </p>
       <div className={styles.stopBody}>
         <div className={styles.stopHead}>
@@ -575,18 +587,23 @@ function StopCard({
           </p>
         </div>
         <span className={styles.contactLine}>
-          {stop.tutor || "Tutor"}
+          {stop.contact}
           {stop.phone ? (
             <>
-              {" · "}
+              {stop.contact ? " · " : ""}
               <a href={`tel:${phoneDigits}`} onClick={(event) => event.stopPropagation()}>{stop.phone}</a>
             </>
           ) : null}
         </span>
         {canWrite && !stop.completed ? (
           <div className={styles.stopExtra} onClick={(event) => event.stopPropagation()}>
+            <p className={styles.placeLine}>
+              {stop.company} · {stop.postcode} · tutor {stop.tutor} · college {stop.releaseDay}
+            </p>
+            <div className={styles.actionGrid}>
             <button
               type="button"
+              className={styles.actionPrimary}
               onClick={() =>
                 void onRun(() =>
                   verifyStopAction({
@@ -602,24 +619,28 @@ function StopCard({
             >
               {stop.verified ? "Undo verify" : "Verify"}
             </button>
-            <button type="button" onClick={() => setOpen(open === "book" ? null : "book")}>
+            <button type="button" className={styles.actionBlue} onClick={() => setOpen(open === "book" ? null : "book")}>
               Rebook
             </button>
-            <button type="button" onClick={() => setOpen(open === "lock" ? null : "lock")}>
-              {stop.locked ? "Unlock" : "Lock"}
-            </button>
-            <button type="button" className={styles.fill} onClick={() => setOpen(open === "book" ? null : "book")}>
+            <button type="button" className={styles.actionBlue} onClick={() => setOpen(open === "book" ? null : "book")}>
               Phone review
             </button>
-            <button type="button" className={stop.notes ? styles.noteOn : styles.pill} onClick={() => setOpen(open === "note" ? null : "note")}>
+            <button type="button" className={styles.actionGrey} onClick={() => onNote(stop.gtaId)}>
               {stop.notes ? "Edit note" : "Add note"}
             </button>
-            <Link href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
+            <Link className={styles.actionBlue} href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
               Edit details
             </Link>
-            <button type="button" onClick={() => void onRun(() => excludeStopAction({ date, gtaId: stop.gtaId }))}>
+            <button type="button" className={styles.actionDanger} onClick={() => void onRun(() => excludeStopAction({ date, gtaId: stop.gtaId }))}>
               Take off this round
             </button>
+            </div>
+            {stop.notes ? (
+              <p className={styles.noteBox}>
+                {stop.notes}
+                {stop.notesUntil ? ` · ${noteUntilLabel(stop.notesUntil, today).label}` : ""}
+              </p>
+            ) : null}
         {open === "book" && stop.reviewId ? (
           <form
             className={styles.inline}
@@ -658,34 +679,6 @@ function StopCard({
               Back To Queue
             </button>
           </form>
-        ) : null}
-        {open === "lock" ? (
-          <form
-            className={styles.inline}
-            onSubmit={(event: FormEvent) => {
-              event.preventDefault();
-              void onRun(() =>
-                stop.locked
-                  ? unlockStopAction({ gtaId: stop.gtaId })
-                  : lockStopAction({
-                      date,
-                      gtaId: stop.gtaId,
-                      arrive: stop.arrive || "10:00",
-                      leave: stop.leave || "10:30",
-                      until: holdUntil,
-                    }),
-              );
-            }}
-          >
-            <label>
-              Hold until
-              <input type="time" value={holdUntil} onChange={(event) => setHoldUntil(event.target.value)} />
-            </label>
-            <button type="submit">{stop.locked ? "Unlock" : "Lock"}</button>
-          </form>
-        ) : null}
-        {open === "note" && stop.reviewId ? (
-          <NoteForm reviewId={stop.reviewId} notes={stop.notes} until={stop.notesUntil} today={today} onRun={onRun} />
         ) : null}
           </div>
         ) : null}
@@ -857,22 +850,26 @@ function DayTimeline({
   page,
   date,
   packed,
+  locked,
   onRun,
+  onNote,
 }: {
   workspace: "administration" | "management";
   page: PlanPageData;
   date: string;
   packed: PackedDay | null;
+  locked: boolean;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onNote: (gtaId: string) => void;
 }) {
-  const stops = [...(page.day?.stops ?? [])].sort((a, b) => (timeToMinutes(a.arrive) ?? 0) - (timeToMinutes(b.arrive) ?? 0));
+  const stops = [...(page.day?.stops ?? [])].sort((a, b) => a.sortOrder - b.sortOrder || (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0));
   const lunchStart = timeToMinutes(page.settings.lunchStart) ?? 12 * 60 + 30;
   const lunchEnd = lunchStart + page.settings.lunchMinutes;
   const leave = packed?.leaveMinutes ?? timeToMinutes(page.settings.startTime) ?? 10 * 60;
   const back = packed?.returnArrive;
   if (!stops.length) return null;
   return (
-    <div className={styles.timeline}>
+    <div className={locked ? styles.lockedPanel : styles.timeline}>
       <div className={styles.stop}>
         <div className={styles.when}>{minutesToTime(leave)}</div>
         <div>
@@ -881,9 +878,9 @@ function DayTimeline({
         </div>
       </div>
       {stops.map((stop, index) => {
-        const leaveMin = timeToMinutes(stop.leave) ?? 0;
+        const leaveMin = stop.leaveMinutes ?? timeToMinutes(stop.leave) ?? 0;
         const next = stops[index + 1];
-        const nextArrive = next ? timeToMinutes(next.arrive) ?? 0 : back ?? leaveMin;
+        const nextArrive = next ? (next.arriveMinutes ?? timeToMinutes(next.arrive) ?? 0) : back ?? leaveMin;
         const crosses = leaveMin <= lunchStart && nextArrive >= lunchEnd;
         return (
           <div key={stop.gtaId}>
@@ -896,6 +893,7 @@ function DayTimeline({
               canWrite={page.canWrite && !page.day?.completed}
               dayIds={stops.map((item) => item.gtaId)}
               onRun={onRun}
+              onNote={onNote}
             />
             {crosses ? (
               <div className={styles.lunch}>

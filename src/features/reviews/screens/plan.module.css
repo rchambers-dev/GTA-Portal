@@ -42,9 +42,10 @@
 }
 
 .tabOn {
-  background: var(--navy);
+  background: #24324f;
   color: white;
-  border-color: var(--navy);
+  border-color: #24324f;
+  box-shadow: none;
 }
 
 .tab em,
@@ -415,7 +416,9 @@
 }
 
 .raPage {
-  background: #efe6d6;
+  background:
+    radial-gradient(circle at top right, rgba(180, 74, 44, 0.12), transparent 32%),
+    linear-gradient(180deg, #f6efe2 0%, #efe6d6 100%);
   margin: -4px;
   padding: 12px;
   border-radius: 18px;
@@ -597,6 +600,7 @@
   background: #24324f;
   color: white;
   border-color: #24324f;
+  border-radius: 0;
 }
 
 .dayPrev,
@@ -688,7 +692,131 @@
 .contactLine {
   display: block;
   color: #24324f;
+  font-weight: 400;
+}
+
+.contactLine a {
+  color: inherit;
+}
+
+.placeLine {
+  margin: 8px 0;
+  color: #5d6573;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.actionPrimary,
+.actionBlue,
+.actionGrey,
+.actionDanger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.actionPrimary {
+  background: #b44a2c;
+  color: white;
+}
+
+.actionBlue {
+  background: #1d6fbf;
+  color: white;
+}
+
+.actionGrey {
+  background: #d5cfc3;
+  color: #1d2433;
+}
+
+.actionDanger {
+  background: #b44a2c;
+  color: white;
+}
+
+.noteBox {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: #f4efe6;
+  color: #1d2433;
+}
+
+.noteItem em,
+.notesMenu em {
+  font-style: normal;
+}
+
+.timeline {
+  background: white;
+  border-radius: 16px;
+}
+
+.lockedPanel {
+  margin-top: 8px;
+  padding: 4px 12px 12px;
+  border: 1px solid #d8ccb8;
+  border-radius: 16px;
+  background: #f3efe6;
+}
+
+.lunch {
+  padding: 8px 0;
+}
+
+.settingsNav {
+  background: #efe6d6;
+  border-radius: 16px;
+  padding: 8px;
+  align-items: stretch;
+}
+
+.settingsNav .tab,
+.settingsOn {
+  text-align: left;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.settingsOn {
+  background: white;
+  color: #1d2433;
+  border-color: white;
+}
+
+.tutorBlock {
+  grid-column: 1 / -1;
+}
+
+.tutorList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.tutorBlock h2,
+.settingsPage h2 {
+  font-family: var(--font-fraunces), Georgia, serif;
   font-weight: 600;
+  margin: 18px 0 8px;
+}
+
+.check {
+  grid-column: 1 / -1;
+  justify-content: flex-start;
 }
 
 .tagDone {
