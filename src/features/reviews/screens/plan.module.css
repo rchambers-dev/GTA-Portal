@@ -928,3 +928,335 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Copied from the Review Assistant stylesheet. Later rules win over the shared button reset. */
+
+.plan {
+  background: #fffaf1;
+  border: 1px solid #d8ccb8;
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(36, 31, 22, 0.12);
+}
+
+.planTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 650;
+  font-size: 1.75rem;
+  letter-spacing: -0.03em;
+}
+
+.kicker {
+  font-size: 0.78em;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: #5d6573;
+}
+
+.dateDay {
+  display: inline-block;
+  position: relative;
+  margin-right: 0.9em;
+  font-family: Fraunces, Georgia, serif;
+}
+
+.dateDay sup {
+  position: absolute;
+  left: 100%;
+  top: 0.02em;
+  font-size: 0.58em;
+  line-height: 1;
+}
+
+.tab,
+.tabOn,
+.tabLocked {
+  box-shadow: none;
+  border-radius: 16px;
+  min-height: 4.4rem;
+}
+
+.tab {
+  background: color-mix(in srgb, #efe6d6 70%, #fffaf1);
+  border-color: #d8ccb8;
+}
+
+.tabOn,
+.tabLocked {
+  border-color: transparent;
+}
+
+.tab strong,
+.tabOn strong,
+.tabLocked strong {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.search,
+.searchField,
+.search input {
+  width: 100%;
+}
+
+.search input {
+  box-sizing: border-box;
+  padding-right: 40px;
+}
+
+.clear {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #1d2433 10%, transparent);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.calHead button {
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.calLabel {
+  color: #5d6573;
+  font-weight: 600;
+  height: 22px;
+  font-size: 0.75rem;
+}
+
+.dayActions .accept {
+  background: #2f6b56;
+  color: #fff;
+  border: 0;
+}
+
+.dayActions .accept:disabled,
+.dayActions .accept:disabled:hover {
+  background: #2f6b56;
+  color: #fff;
+  opacity: 1;
+}
+
+.timeline .stop,
+.lockedPanel .stop {
+  display: grid;
+  grid-template-columns: 7.2rem 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid #d8ccb8;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.timeline .stop:first-child,
+.lockedPanel .stop:first-child {
+  border-top: 0;
+}
+
+.planCard .stopBody {
+  display: contents;
+}
+
+.planCard .when {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.planCard .stopHead,
+.planCard .contactLine,
+.planCard .stopExtra {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.when,
+.arrive,
+.until {
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.arrive {
+  color: #b44a2c;
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+.until {
+  color: #5d6573;
+  font-weight: 500;
+}
+
+.stopName,
+.stopName a,
+.dialog h2,
+.noteItem strong,
+.tag,
+.tagDone,
+.tagLock,
+.safeOn,
+.safeOff {
+  font-family: Fraunces, Georgia, serif;
+}
+
+.stopName,
+.stopName a {
+  font-size: 1.15rem;
+  font-weight: 650;
+  color: #1d2433;
+  text-decoration: none;
+}
+
+.contactLine strong {
+  font-weight: 700;
+}
+
+.contactLine a {
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.tagDone {
+  background: #2f6b56;
+  color: #fff;
+}
+
+.tagLock {
+  background: #b44a2c;
+  color: #fff;
+}
+
+.lunch {
+  background: #f3ead8;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 4px 0;
+  color: #5d6573;
+}
+
+.lockedPanel {
+  border: 1px solid color-mix(in srgb, #2f6b56 55%, #d8ccb8);
+  border-radius: 16px;
+  background: color-mix(in srgb, #2f6b56 7%, #fffaf1);
+}
+
+.actionGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: #fffaf1;
+  color: #24324f;
+  border: 1px solid #d8ccb8;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.noteBox {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.dialog h2 {
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.skipBar,
+.outBox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  background: #efe6d6;
+  border: 1px solid #d8ccb8;
+  border-radius: 16px;
+  color: #1d2433;
+  font-size: 0.95rem;
+  font-weight: 600;
+  grid-column: 1 / -1;
+}
+
+.skipBar input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.checkBox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid #d8ccb8;
+  border-radius: 6px;
+  background: #fffaf1;
+}
+
+.skipBar input:checked + .checkBox {
+  background: #24324f;
+  border-color: #24324f;
+}
+
+.skipBar input:checked + .checkBox::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 9px;
+  margin: 1px auto 0;
+  border: solid #fffaf1;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.settingsNav {
+  overflow: visible;
+  min-width: 11rem;
+}
+
+.settingsOn {
+  background: #fffaf1;
+  color: #1d2433;
+  border: 0;
+}
+
+.tutorCard strong {
+  display: block;
+  font-weight: 700;
+}
+
+.tutorCard .meta {
+  display: block;
+  color: #5d6573;
+}
+
+.settingsPage h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.presets .pill,
+.presets .choiceOn {
+  min-height: 2.4rem;
+  padding: 8px 14px;
+}

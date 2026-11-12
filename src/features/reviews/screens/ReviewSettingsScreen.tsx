@@ -101,7 +101,7 @@ export function ReviewSettingsScreen({
               void save({});
             }}
           >
-            <label className={styles.check}>
+            <label className={styles.skipBar}>
               <input
                 type="checkbox"
                 checked={skipToday}
@@ -110,6 +110,7 @@ export function ReviewSettingsScreen({
                   void save({ skipToday: event.target.checked });
                 }}
               />
+              <span className={styles.checkBox} aria-hidden="true" />
               Skip today and plan from tomorrow
             </label>
             <label>

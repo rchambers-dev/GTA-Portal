@@ -238,8 +238,12 @@ export function PlanView({
       <section className={styles.plan} aria-labelledby="plan-title">
         <div className={styles.head}>
           <h2 id="plan-title" className={styles.planTitle}>
-            Plan For {heading.day}
-            <sup>{heading.ordinal}</sup> {heading.month}
+            <span className={styles.kicker}>Plan For</span>
+            <span className={styles.dateDay}>
+              {heading.day}
+              <sup>{heading.ordinal}</sup>
+            </span>{" "}
+            {heading.month}
           </h2>
           <div className={styles.headActions}>
             <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => void showMap()}>
@@ -587,7 +591,7 @@ function StopCard({
           </p>
         </div>
         <span className={styles.contactLine}>
-          {stop.contact}
+          {stop.contact ? <strong>{stop.contact}</strong> : null}
           {stop.phone ? (
             <>
               {stop.contact ? " · " : ""}
@@ -603,7 +607,7 @@ function StopCard({
             <div className={styles.actionGrid}>
             <button
               type="button"
-              className={styles.actionPrimary}
+              className={stop.verified ? styles.actionGhost : styles.actionPrimary}
               onClick={() =>
                 void onRun(() =>
                   verifyStopAction({
@@ -722,7 +726,7 @@ function NoteForm({
             key={preset.id}
             type="button"
             aria-pressed={end === presets[preset.id]}
-            className={end === presets[preset.id] ? styles.tabOn : styles.tab}
+            className={end === presets[preset.id] ? styles.noteOn : styles.pill}
             onClick={() => setEnd(presets[preset.id])}
           >
             {preset.label}
