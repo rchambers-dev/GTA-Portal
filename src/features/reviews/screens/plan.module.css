@@ -1693,3 +1693,284 @@
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
+/* Round 5: Assistant sizes on the Portal surfaces. */
+
+.planTitle {
+  font-size: 1.15rem;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.dateLine {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28em;
+  min-width: 0;
+}
+
+.dateDay {
+  margin-right: 0.28em;
+}
+
+.dateDay sup,
+.planTitle sup {
+  top: 0.34em;
+  font-size: 0.42em;
+}
+
+.timeline .stop,
+.lockedPanel .stop {
+  grid-template-columns: 7.2rem minmax(0, 1fr);
+  column-gap: 12px;
+  border-top: 1px solid var(--border-strong);
+}
+
+.timeline > .stop:first-child {
+  border-top: 0;
+}
+
+.timeline .planCard,
+.lockedPanel .planCard {
+  min-height: 36px;
+  padding: 6px 0;
+  row-gap: 2px;
+}
+
+.planCard .when,
+.timeline > .stop .when,
+.lockedPanel > .stop .when {
+  font-size: 1rem;
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+.planCard .until {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #5d6573;
+}
+
+.handle {
+  flex: 0 0 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.handle svg {
+  width: 12px;
+  height: 16px;
+}
+
+.planCard .contactLine {
+  margin-top: 2px;
+  font-size: 0.82rem;
+  line-height: 1.15;
+}
+
+.timeline .lunch,
+.lockedPanel .lunch {
+  display: block;
+  box-sizing: border-box;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 4px 0;
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.lockedPanel {
+  background: var(--bg-card);
+}
+
+.lockNote {
+  margin: 4px 0 8px;
+  color: var(--text-secondary);
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.actionGrid .actionPrimary,
+.actionGrid .actionBlue,
+.actionGrid .actionGrey,
+.actionGrid .actionDanger,
+.actionGrid .actionGhost {
+  height: 2.45rem;
+  min-height: 2.45rem;
+  padding: 0 12px;
+  line-height: 1.2;
+}
+
+.dialog {
+  width: min(34rem, calc(100% - 32px));
+}
+
+.dialog .inline {
+  display: grid;
+  gap: 8px;
+}
+
+.dialog .presets {
+  gap: 8px;
+}
+
+.dialog .presets .pill {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+
+.notesMenu .noteItem em,
+.noteItem em {
+  display: block;
+  margin-top: 1px;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-secondary);
+}
+
+.tabs .tab strong,
+.tabs .tabOn strong,
+.tabs .tabLocked strong {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tabs .tab em,
+.tabs .tabOn em,
+.tabs .tabLocked em {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.tutorList {
+  grid-template-columns: 1fr 1fr;
+}
+
+.tutorCard .tutorCopy .meta {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+
+.settingsPage .settingsTitle {
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.settingsMain .fields input,
+.settingsMain .fields select,
+.settingsMain .fields textarea,
+.settingsMain .inline input,
+.settingsMain .inline select,
+.settingsMain .inline textarea {
+  min-height: 0;
+  padding: 10px 12px;
+  font-size: 1rem;
+  line-height: 1.3;
+  border-radius: 12px;
+}
+
+.settingsMain .fields label,
+.settingsMain .inline label {
+  font-size: 0.82rem;
+  gap: 6px;
+}
+
+.settingsMain .outBox,
+.settingsMain .skipBar {
+  min-height: 0;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.calendar .calGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 32px);
+  justify-content: space-between;
+  justify-items: center;
+  gap: 4px 2px;
+  width: 100%;
+}
+
+.calendar .calLabel {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 22px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.calendar .day,
+.calendar .dayOn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  max-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.calendar .dayOn {
+  background: #24324f;
+  border-color: #24324f;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.calendar .dayToday:not(.dayOn) {
+  border-color: #b44a2c;
+  box-shadow: none;
+}
+
+.calendar .dayBooked::after,
+.calendar .dayDone::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 12px;
+  height: 3px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.calendar .dayBooked::after {
+  background: #2f6b56;
+}
+
+.calendar .dayDone::after {
+  background: #b44a2c;
+}
+
+.calendar .dayOn::after {
+  content: none;
+}

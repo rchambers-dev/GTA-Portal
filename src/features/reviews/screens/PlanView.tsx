@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
-import { addDays, formatPlanDate, formatShortNumericDate, methodLabel, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
+import { formatPlanDate, formatShortNumericDate, methodLabel, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import type { PackedDay } from "../domain/plan-route";
 import type { PlanCounter, PlanPageData, PlanPerson, PlanStop } from "../domain/plan-repository";
@@ -57,7 +57,7 @@ export function PlanView({
       (a, b) =>
         a.notesUntil.localeCompare(b.notesUntil) || a.name.localeCompare(b.name, "en-GB"),
     );
-  const marks = new Set(page.monthMarks.map((item) => item.date));
+  const bookedDays = new Set(page.monthMarks.filter((item) => item.accepted && !item.completed).map((item) => item.date));
   const completedDays = new Set(page.monthMarks.filter((item) => item.completed).map((item) => item.date));
   const visible = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -239,11 +239,13 @@ export function PlanView({
         <div className={styles.head}>
           <h2 id="plan-title" className={styles.planTitle}>
             <span className={styles.kicker}>Plan For</span>
-            <span className={styles.dateDay}>
-              {heading.day}
-              <sup>{heading.ordinal}</sup>
-            </span>{" "}
-            {heading.month}
+            <span className={styles.dateLine}>
+              <span className={styles.dateDay}>
+                {heading.day}
+                <sup>{heading.ordinal}</sup>
+              </span>
+              {heading.month}
+            </span>
           </h2>
           <div className={styles.headActions}>
             <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => void showMap()}>
@@ -282,7 +284,7 @@ export function PlanView({
           month={month}
           date={date}
           today={page.today}
-          marks={marks}
+          booked={bookedDays}
           completed={completedDays}
           onPick={(next) => go(next, next.slice(0, 7))}
           onMonth={(next) => go(date, next)}
@@ -762,7 +764,7 @@ function Calendar({
   month,
   date,
   today,
-  marks,
+  booked,
   completed,
   onPick,
   onMonth,
@@ -770,7 +772,7 @@ function Calendar({
   month: string;
   date: string;
   today: string;
-  marks: Set<string>;
+  booked: Set<string>;
   completed: Set<string>;
   onPick: (date: string) => void;
   onMonth: (month: string) => void;
@@ -818,9 +820,8 @@ function Calendar({
               className={[
                 styles.day,
                 iso === date ? styles.dayOn : "",
-                iso === previousWeekday(date) ? styles.dayPrev : "",
                 iso === today && iso !== date ? styles.dayToday : "",
-                completed.has(iso) ? styles.dayDone : marks.has(iso) ? styles.dayBooked : "",
+                completed.has(iso) ? styles.dayDone : booked.has(iso) ? styles.dayBooked : "",
               ].filter(Boolean).join(" ")}
               onClick={() => onPick(iso)}
             >
@@ -837,12 +838,6 @@ function Calendar({
 
 function dateOnly(value: string): string {
   return value.slice(0, 10);
-}
-
-function previousWeekday(iso: string): string {
-  let cursor = addDays(iso, -1);
-  while (weekdayName(cursor) === "Saturday" || weekdayName(cursor) === "Sunday") cursor = addDays(cursor, -1);
-  return cursor;
 }
 
 function DuePill({ person }: { person: PlanPerson }) {
