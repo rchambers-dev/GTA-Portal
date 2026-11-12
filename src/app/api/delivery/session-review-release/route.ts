@@ -11,7 +11,7 @@ import type { SessionReviewReleaseSource } from "@/features/programme-delivery/d
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);
@@ -58,7 +58,7 @@ type PostBody = {
 };
 
 export async function POST(request: Request) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as PostBody;

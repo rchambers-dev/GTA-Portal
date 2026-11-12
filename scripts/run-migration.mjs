@@ -1,8 +1,10 @@
+import { createHash } from "node:crypto";
 import fs from "fs";
 import path from "path";
 import dns from "node:dns";
 import pg from "pg";
 import { createClient } from "@supabase/supabase-js";
+import { migrationDecision } from "./migration-registry.mjs";
 
 // Prefer IPv6 when available (Supabase direct DB is often IPv6-only).
 dns.setDefaultResultOrder("ipv6first");
@@ -183,11 +185,20 @@ try {
   const done = new Set(applied.rows.map((row) => row.filename));
 
   for (const filename of migrationFiles) {
+    const sql = fs.readFileSync(path.join(migrationsDir, filename), "utf8");
+    const sha256 = createHash("sha256").update(sql).digest("hex");
+    const decision = migrationDecision(filename, sha256);
+    if (decision.action === "refuse") {
+      throw new Error(decision.reason);
+    }
+    if (decision.action === "skip") {
+      console.log(`Skip: ${decision.reason}`);
+      continue;
+    }
     if (done.has(filename)) {
       console.log(`Skip (already applied): ${filename}`);
       continue;
     }
-    const sql = fs.readFileSync(path.join(migrationsDir, filename), "utf8");
     console.log(`Applying ${filename}…`);
     await client.query("begin");
     try {

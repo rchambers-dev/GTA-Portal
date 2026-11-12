@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Review Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Outfit:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/appearance.js"></script>
+  </head>
+  <body class="signed-out">
+    <main class="login-screen" id="login-screen">
+      <form class="login-card panel" id="login-form">
+        <p class="eyebrow">Workplace reviews</p>
+        <h1>Sign in</h1>
+        <p class="meta">Use your email and password to open Review Assistant.</p>
+        <p class="login-error" id="login-error" hidden></p>
+        <label>
+          Email
+          <input
+            id="login-email"
+            name="email"
+            type="email"
+            required
+            autocomplete="username"
+            placeholder="e.g. you@gta.ac.uk"
+          />
+        </label>
+        <label>
+          Password
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            required
+            minlength="6"
+            autocomplete="current-password"
+            placeholder="Password"
+          />
+        </label>
+        <label class="login-remember">
+          <input id="login-remember" name="remember" type="checkbox" checked />
+          Remember login
+        </label>
+        <div class="login-actions">
+          <button type="submit" class="btn primary" id="login-submit">Sign in</button>
+        </div>
+      </form>
+    </main>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="topbar-row">
+          <div>
+            <p class="eyebrow">Workplace reviews</p>
+            <h1>Review Assistant</h1>
+          </div>
+          <div class="account-bar">
+            <p class="clock" id="live-clock" aria-live="polite"></p>
+            <div class="account-settings" data-account-settings>
+              <button type="button" class="btn ghost account-settings-trigger" id="account-settings" aria-haspopup="dialog" aria-expanded="false" aria-controls="settings-modal">
+                Settings
+              </button>
+            </div>
+          </div>
+        </div>
+        <p class="lede" id="lede-reviews" hidden></p>
+        <p class="lede" id="lede-analytics" hidden></p>
+        <nav class="app-nav" aria-label="App pages">
+          <button type="button" class="btn ghost on" data-nav-page="records">
+            Learners
+          </button>
+          <button type="button" class="btn ghost" data-nav-page="plan">
+            Plan
+          </button>
+          <button type="button" class="btn ghost" data-nav-page="out">
+            Out
+          </button>
+          <button type="button" class="btn ghost" data-nav-page="reviews">
+            Reviews
+          </button>
+          <button type="button" class="btn ghost" data-nav-page="archive">
+            Archive
+          </button>
+          <button type="button" class="btn ghost" data-nav-page="analytics">
+            Analytics
+          </button>
+        </nav>
+      </header>
+
+      <section id="page-records" class="page records-page" data-page="records">
+        <div class="panel records-panel">
+          <div class="panel-head">
+            <h2 id="records-title">All learners</h2>
+            <span class="count" id="records-count">0</span>
+          </div>
+          <div class="records-toolbar">
+            <label class="records-search">
+              Search
+              <span class="search-field">
+                <input
+                  id="records-search"
+                  type="search"
+                  placeholder="Search a name, tutor, company or postcode"
+                  autocomplete="off"
+                />
+                <button type="button" class="search-clear" data-clear-search hidden aria-label="Clear search"></button>
+              </span>
+            </label>
+            <div class="records-toolbar-actions">
+              <div class="records-filters" role="group" aria-label="Learner records">
+                <button type="button" class="btn pill on" data-records-filter="all">
+                  All learners
+                </button>
+                <button type="button" class="btn pill ghost records-missing-filter" data-records-filter="missing">
+                  Missing information
+                  <span class="records-missing-count" data-missing-count hidden>0</span>
+                </button>
+              </div>
+              <button
+                type="button"
+                class="btn pill ghost"
+                id="records-archive-open"
+                aria-haspopup="dialog"
+                aria-expanded="false"
+                aria-controls="learner-archive-modal"
+              >
+                Learner archive
+                <span class="records-missing-count" data-learner-archive-count hidden>0</span>
+              </button>
+              <button
+                type="button"
+                class="btn pill primary"
+                id="records-add-toggle"
+                aria-expanded="false"
+                aria-controls="records-add"
+              >
+                Add learners
+              </button>
+            </div>
+          </div>
+          <div id="records-add" class="records-add" hidden>
+            <div class="records-add-head">
+              <strong>Add learners</strong>
+              <button type="button" class="btn pill ghost" id="records-add-minimise">
+                Minimise
+              </button>
+            </div>
+            <div id="records-add-body" class="records-add-body">
+            <form id="learner-form" class="records-details" autocomplete="off">
+              <div class="records-fields">
+                <label data-portal-apprentice-field hidden>
+                  Portal apprentice
+                  <select id="learner-portal-apprentice" data-add-portal-apprentice>
+                    <option value="" disabled hidden selected>Choose an apprentice</option>
+                  </select>
+                </label>
+                <p class="meta" data-portal-apprentice-empty hidden>
+                  No Portal apprentices are available to review. This screen does not create an apprentice record.
+                </p>
+                <label data-free-name-field>
+                  Apprentice name
+                  <input
+                    id="learner-name"
+                    name="name"
+                    required
+                    placeholder="e.g. Alex Patel"
+                  />
+                </label>
+                <label>
+                  Employer / workplace
+                  <input
+                    id="learner-company"
+                    name="company"
+                    placeholder="e.g. Polypipe"
+                  />
+                </label>
+                <label>
+                  Postcode
+                  <input
+                    id="learner-postcode"
+                    name="postcode"
+                    placeholder="e.g. DN1 2AB"
+                  />
+                </label>
+                <label>
+                  Release day
+                  <select id="learner-college" name="collegeDay" required>
+                    <option value="" disabled hidden selected>Choose day</option>
+                    <option>Monday</option>
+                    <option>Tuesday</option>
+                    <option>Wednesday</option>
+                    <option>Thursday</option>
+                    <option>Friday</option>
+                  </select>
+                </label>
+                <label>
+                  GTA tutor
+                  <select data-add-tutor data-combo="tutor">
+                    <option value="" disabled hidden selected>Choose tutor</option>
+                  </select>
+                  <input data-add-tutor-new class="combo-new" hidden placeholder="Type the tutor’s name" />
+                </label>
+                <label>
+                  Apprenticeship standard / route / level
+                  <select data-add-apprenticeship data-combo="apprenticeship">
+                    <option value="" disabled hidden selected>Choose apprenticeship</option>
+                    <option value="__new__">Add a new apprenticeship</option>
+                  </select>
+                  <input
+                    data-add-apprenticeship-new
+                    class="combo-new"
+                    hidden
+                    placeholder="Type the apprenticeship"
+                  />
+                </label>
+                <label>
+                  Apprenticeship start date
+                  <input data-add-apprenticeship-start type="date" />
+                </label>
+                <label>
+                  Apprenticeship planned end date
+                  <input data-add-apprenticeship-end type="date" />
+                </label>
+                <label>
+                  GTA reviewer
+                  <input data-add-gta-reviewer placeholder="Reviewer name" />
+                </label>
+                <label>
+                  Employer contact name
+                  <input data-add-employer-contact placeholder="e.g. Jo Smith" />
+                </label>
+                <label>
+                  Employer contact email
+                  <input data-add-employer-email type="email" placeholder="e.g. jo@company.com" />
+                </label>
+                <label>
+                  Employer contact phone
+                  <input data-add-contact-number type="tel" placeholder="e.g. 01302 123456" />
+                </label>
+                <div class="records-planned-cycle">
+                  <label>
+                    Planned review date
+                    <input id="learner-planned-review" name="plannedDate" type="date" data-add-planned-review />
+                  </label>
+                  <label>
+                    Future reviews
+                    <select data-add-planned-cycle>
+                      <option value="" disabled hidden selected>Enter the planned review date first</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+              <div class="appointment-form-actions">
+                <button type="submit" class="btn primary">Add learner</button>
+              </div>
+            </form>
+            <p class="form-error" id="form-error" hidden></p>
+            </div>
+          </div>
+          <div id="records-list" class="records-list"></div>
+        </div>
+      </section>
+
+      <main id="page-plan" class="layout page" data-page="plan" hidden>
+        <section class="panel roster" aria-label="Need booking">
+          <div class="roster-tabs" id="learner-count" role="tablist" aria-label="Need booking lists">
+            <button type="button" class="roster-tab" data-roster-tab="waiting" role="tab" aria-selected="false">
+              <strong id="paper-waiting">0</strong>
+              <em>Waiting</em>
+            </button>
+            <button type="button" class="roster-tab is-on" data-roster-tab="unbooked" role="tab" aria-selected="true">
+              <strong id="paper-unbooked">0</strong>
+              <em>To book</em>
+            </button>
+            <button type="button" class="roster-tab is-locked" data-roster-tab="awaiting" role="tab" aria-selected="false">
+              <strong id="paper-awaiting">0</strong>
+              <em>Locked</em>
+            </button>
+            <button type="button" class="roster-tab" data-roster-tab="booked" role="tab" aria-selected="false">
+              <strong id="paper-booked">0</strong>
+              <em>Booked</em>
+            </button>
+          </div>
+          <label class="learner-search">
+            Search names, tutors or companies
+            <span class="search-field">
+              <input
+                id="learner-search"
+                type="search"
+                placeholder="e.g. Bailey or Polypipe"
+                autocomplete="off"
+              />
+              <button type="button" class="search-clear" data-clear-search hidden aria-label="Clear search"></button>
+            </span>
+          </label>
+          <div class="plan-roster-scroll">
+          <ul id="learner-list" class="learner-list"></ul>
+
+          <section class="follow-up" aria-labelledby="follow-up-title">
+            <div class="panel-head">
+              <h2 id="follow-up-title">Book next review</h2>
+              <span class="count" id="follow-up-count">0</span>
+            </div>
+            <p class="meta">
+              When you mark a route completed, those learners move here so you
+              can email yourself a list to book their next review.
+            </p>
+            <div class="follow-up-actions">
+              <button type="button" id="email-follow-up" class="btn primary">
+                Email booking list
+              </button>
+            </div>
+            <ul id="follow-up-list" class="learner-list"></ul>
+          </section>
+
+          <section class="follow-up archive" aria-labelledby="archive-title">
+            <div class="panel-head">
+              <h2 id="archive-title">Archive</h2>
+              <span class="count" id="archive-count">0</span>
+            </div>
+            <p class="meta">
+              Learners who no longer need a review stay here, so you can bring
+              them back later if they need another one.
+            </p>
+            <ul id="archive-list" class="learner-list"></ul>
+          </section>
+          </div>
+        </section>
+
+        <section class="panel plan" aria-labelledby="plan-title">
+          <div class="panel-head">
+            <h2 id="plan-title">Tomorrow’s round</h2>
+            <div class="plan-head-actions">
+              <button type="button" class="plan-notes-pill map-toggle" id="map-toggle" aria-expanded="false" aria-controls="map-panel">Show map</button>
+              <div class="plan-notes" data-plan-notes>
+                <button type="button" class="plan-notes-pill" data-plan-notes-toggle aria-expanded="false" aria-haspopup="true" aria-controls="plan-notes-menu">
+                  <span>Notes</span>
+                  <strong data-plan-notes-count>0</strong>
+                </button>
+                <div class="plan-notes-menu" id="plan-notes-menu" data-plan-notes-menu hidden></div>
+              </div>
+            </div>
+          </div>
+          <div class="plan-setup">
+            <div class="work-calendar" id="work-calendar">
+              <div class="cal-head">
+                <button type="button" class="btn ghost cal-nav" data-cal-prev aria-label="Previous month">
+                  ‹
+                </button>
+                <h3 id="cal-title">Pick a day</h3>
+                <button type="button" class="btn ghost cal-nav" data-cal-next aria-label="Next month">
+                  ›
+                </button>
+              </div>
+              <div class="cal-grid" id="cal-grid"></div>
+            </div>
+          </div>
+
+          <p class="status" id="status" role="status" aria-live="polite" hidden></p>
+          <p class="leftover" id="leftover" hidden></p>
+
+          <div class="plan-drop" id="plan-drop">
+            <div class="plan-route-bar">
+              <div class="fill-day-action">
+                <button type="button" id="plan-week" class="btn blue">
+                  Fill Day
+                </button>
+              </div>
+              <div id="route-actions" class="day-actions"></div>
+            </div>
+            <p class="roster-drop-hint" id="roster-drop-hint" hidden></p>
+            <div id="day-detail" class="day-detail"></div>
+          </div>
+          <div id="map-panel" class="map-panel" hidden>
+            <div id="map" class="map" role="img" aria-label="Route map for the selected day"></div>
+          </div>
+        </section>
+      </main>
+
+      <section id="page-out" class="page out-page" data-page="out" hidden>
+        <div class="panel">
+          <div id="out-body"></div>
+          <p class="status" id="out-status" hidden></p>
+        </div>
+      </section>
+
+      <section id="page-reviews" class="page reviews-page" data-page="reviews" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <h2 id="reviews-title">Review learners</h2>
+            <span class="count" id="reviews-count">0</span>
+          </div>
+          <p class="meta" id="reviews-intro" hidden></p>
+          <div class="records-toolbar">
+            <label class="records-search">
+              <span class="search-field">
+                <input
+                  id="reviews-search"
+                  type="search"
+                  aria-label="Search"
+                  placeholder="Search a name, tutor, company or postcode"
+                  autocomplete="off"
+                />
+                <button type="button" class="search-clear" data-clear-search hidden aria-label="Clear search"></button>
+              </span>
+            </label>
+            <label class="reviews-tutor-filter" id="reviews-tutor-filter-wrap">
+              <select id="reviews-tutor-filter" aria-label="Tutor">
+                <option value="">All tutors</option>
+              </select>
+            </label>
+          </div>
+          <div id="reviews-list" class="reviews-list"></div>
+        </div>
+      </section>
+
+      <section id="page-archive" class="page archive-page" data-page="archive" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <h2 id="archive-history-title">Archive</h2>
+            <span class="count" id="archive-history-count">0</span>
+          </div>
+          <div class="records-toolbar">
+            <label class="records-search">
+              <span class="search-field">
+                <input
+                  id="archive-history-search"
+                  type="search"
+                  aria-label="Search"
+                  placeholder="Search a name, tutor, company or postcode"
+                  autocomplete="off"
+                />
+                <button type="button" class="search-clear" data-clear-search hidden aria-label="Clear search"></button>
+              </span>
+            </label>
+          </div>
+          <div id="archive-history-list" class="archive-history-list"></div>
+        </div>
+      </section>
+
+      <section id="page-analytics" class="page analytics-page" data-page="analytics" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Analytics</h2>
+            <span class="count" id="analytics-count">0</span>
+          </div>
+          <div class="records-toolbar analytics-toolbar">
+            <div class="records-filters" id="analytics-side" role="group" aria-label="Analytics section">
+              <button type="button" class="btn pill on" data-analytics-side="reviews">
+                Reviews
+              </button>
+              <button type="button" class="btn pill ghost" data-analytics-side="tutors">
+                Tutors
+              </button>
+            </div>
+            <div class="records-filters" id="analytics-range" role="group" aria-label="Analytics range">
+              <button type="button" class="btn pill on" data-analytics-range="all">
+                All time
+              </button>
+            </div>
+            <div class="records-toolbar-actions">
+              <button type="button" class="btn" id="analytics-reports-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="reports-modal">
+                Reports
+              </button>
+              <button type="button" class="btn" id="analytics-movement-btn">
+                Review Log
+              </button>
+            </div>
+          </div>
+          <div id="analytics-body" class="analytics-body"></div>
+        </div>
+      </section>
+
+    </div>
+    <div class="settings-modal" id="settings-modal" data-settings-modal hidden>
+      <button type="button" class="settings-modal-backdrop" data-settings-close aria-label="Close settings"></button>
+      <div class="settings-modal-card" data-settings-card role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <nav class="settings-modal-nav" aria-label="Settings sections">
+          <button type="button" class="settings-tab on" data-settings-tab="account">Account</button>
+          <button type="button" class="settings-tab" data-settings-tab="plan">Plan</button>
+          <button type="button" class="settings-tab" data-settings-tab="out">Out</button>
+          <button type="button" class="settings-tab" data-settings-tab="accessibility">Accessibility</button>
+          <button type="button" class="settings-tab" data-settings-tab="feedback">Feedback</button>
+        </nav>
+        <div class="settings-modal-main">
+          <div class="settings-modal-head">
+            <button type="button" class="settings-back" data-settings-back hidden>Settings</button>
+            <h2 id="settings-title">Settings</h2>
+            <button type="button" class="btn ghost settings-done" data-settings-close>
+              <span class="settings-done-desktop">Close</span>
+              <span class="settings-done-phone">Done</span>
+            </button>
+          </div>
+          <div class="settings-home" data-settings-home hidden>
+            <section class="settings-group">
+              <button type="button" class="settings-row settings-row-stack" data-settings-open="account">
+                <span class="settings-row-copy">
+                  <span class="settings-row-title">Account</span>
+                  <span class="settings-row-sub" data-settings-home-email></span>
+                </span>
+              </button>
+              <button type="button" class="settings-row" data-settings-open="plan">Plan</button>
+              <button type="button" class="settings-row" data-settings-open="out">Out</button>
+              <button type="button" class="settings-row" data-settings-open="accessibility">Accessibility</button>
+              <button type="button" class="settings-row" data-settings-open="feedback">Feedback</button>
+            </section>
+            <section class="settings-group">
+              <button type="button" class="settings-row settings-row-danger" data-settings-sign-out>Sign out</button>
+            </section>
+          </div>
+          <section class="settings-panel" data-settings-panel="account">
+            <div class="settings-signed-in">
+              <h3>Signed in</h3>
+              <p class="account-email" id="signed-in-email"></p>
+              <button type="button" class="btn settings-sign-out" id="sign-out">Sign out</button>
+            </div>
+            <form class="settings-password" id="settings-password-form" data-password-change>
+              <h3>Change password</h3>
+              <p class="meta" data-password-lock-copy hidden>Set your own password before you use Review Assistant. You cannot open anything else until this is done.</p>
+              <p class="form-error" id="settings-password-error" hidden></p>
+              <p class="meta" id="settings-password-ok" hidden>Your password has been updated.</p>
+              <label>
+                Current password
+                <input id="settings-password-current" name="currentPassword" type="password" autocomplete="current-password" required />
+              </label>
+              <label>
+                New password
+                <input id="settings-password-new" name="newPassword" type="password" autocomplete="new-password" required minlength="8" />
+              </label>
+              <label>
+                Confirm new password
+                <input id="settings-password-confirm" name="confirmPassword" type="password" autocomplete="new-password" required minlength="8" />
+              </label>
+              <button type="submit" class="btn primary" id="settings-password-save">Update password</button>
+            </form>
+          </section>
+          <section class="settings-panel" data-settings-panel="plan" hidden>
+            <form id="settings-form" class="settings">
+              <label class="app-check skip-today settings-skip">
+                <input type="checkbox" id="skip-today" />
+                <span class="app-check-box" aria-hidden="true"></span>
+                Skip today and plan from tomorrow
+              </label>
+              <label>
+                Office
+                <input id="office-postcode" name="officePostcode" required />
+              </label>
+              <label>
+                Start
+                <input id="start-time" name="startTime" type="time" required />
+              </label>
+              <label>
+                Calls before start (min)
+                <input
+                  id="call-minutes"
+                  name="callMinutes"
+                  type="number"
+                  min="0"
+                  max="60"
+                  step="5"
+                  required
+                />
+              </label>
+              <label>
+                Lunch
+                <input id="lunch-start" name="lunchStart" type="time" required />
+              </label>
+              <label>
+                Back by
+                <input id="return-by" name="returnBy" type="time" required />
+              </label>
+              <label>
+                Stay (min)
+                <input
+                  id="stay-minutes"
+                  name="stayMinutes"
+                  type="number"
+                  min="15"
+                  max="120"
+                  step="5"
+                  required
+                />
+              </label>
+              <label class="settings-email">
+                Extra email addresses
+                <input
+                  id="route-email"
+                  name="email"
+                  type="text"
+                  placeholder="e.g. colleague@gta.ac.uk, office@gta.ac.uk"
+                  autocomplete="email"
+                />
+              </label>
+              <div class="settings-tutors">
+                <h3>Hide a tutor’s reviews</h3>
+                <p class="meta">Tick a tutor to take their reviews off Need booking and the planner. Booked or verified people stay where they are.</p>
+                <div id="blocked-tutors" class="settings-tutor-list"></div>
+              </div>
+            </form>
+          </section>
+          <section class="settings-panel" data-settings-panel="out" hidden>
+            <label class="app-check reports-auto-email">
+              <input type="checkbox" id="out-page-enabled" />
+              <span class="app-check-box reports-auto-email-box" aria-hidden="true"></span>
+              Use the Out page on visit days
+            </label>
+          </section>
+          <section class="settings-panel" data-settings-panel="accessibility" hidden>
+            <h3>Text size</h3>
+            <p class="meta">Make the words on screen bigger if they are hard to read.</p>
+            <div class="settings-choice" role="group" aria-label="Text size">
+              <button type="button" class="btn pill ghost" data-appearance-text="default">Default</button>
+              <button type="button" class="btn pill ghost" data-appearance-text="large">Large</button>
+              <button type="button" class="btn pill ghost" data-appearance-text="xl">Extra large</button>
+            </div>
+            <h3>Text font</h3>
+            <p class="meta">Pick a font that is easier for you to read.</p>
+            <div class="settings-choice" role="group" aria-label="Text font">
+              <button type="button" class="btn pill ghost" data-appearance-font="outfit">Outfit</button>
+              <button type="button" class="btn pill ghost" data-appearance-font="system">System</button>
+              <button type="button" class="btn pill ghost" data-appearance-font="verdana">Verdana</button>
+              <button type="button" class="btn pill ghost" data-appearance-font="atkinson">Atkinson</button>
+              <button type="button" class="btn pill ghost" data-appearance-font="georgia">Georgia</button>
+            </div>
+            <h3>Colour scheme</h3>
+            <p class="meta">Change the colours across the whole app.</p>
+            <div class="settings-choice" role="group" aria-label="Colour scheme">
+              <button type="button" class="btn pill ghost" data-appearance-theme="default">Warm</button>
+              <button type="button" class="btn pill ghost" data-appearance-theme="calm">Calm</button>
+              <button type="button" class="btn pill ghost" data-appearance-theme="dark">Dark</button>
+              <button type="button" class="btn pill ghost" data-appearance-theme="contrast">High contrast</button>
+            </div>
+          </section>
+          <section class="settings-panel" data-settings-panel="feedback" hidden>
+            <h3>Suggest an improvement</h3>
+            <p class="meta">Tell us what would make this easier for tutors. We read these and use them to improve the app.</p>
+            <form class="settings-feedback" id="settings-feedback-form">
+              <label>
+                Your suggestion
+                <textarea id="settings-feedback-text" name="message" rows="7" maxlength="2000" required placeholder="e.g. The date picker is hard to use on a phone because…"></textarea>
+              </label>
+              <p class="form-error" id="settings-feedback-error" hidden></p>
+              <p class="meta" id="settings-feedback-ok" hidden>Thanks — that has been sent.</p>
+              <button type="submit" class="btn primary" id="settings-feedback-send">Send suggestion</button>
+            </form>
+            <div class="settings-feedback-inbox" id="settings-feedback-inbox" hidden>
+              <h3>Tutor suggestions</h3>
+              <div id="settings-feedback-list"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <div class="settings-modal" id="archive-reason-modal" hidden>
+      <button type="button" class="settings-modal-backdrop" data-archive-reason-close aria-label="Close"></button>
+      <div class="settings-modal-card learner-sheet-card archive-reason-card" role="dialog" aria-modal="true" aria-labelledby="archive-reason-title">
+        <div class="settings-modal-main">
+          <div class="settings-modal-head">
+            <h2 id="archive-reason-title">Archive learner</h2>
+            <button type="button" class="btn ghost" data-archive-reason-close>Close</button>
+          </div>
+          <div class="archive-reason-body">
+            <p class="meta" id="archive-reason-copy"></p>
+            <section class="settings-group">
+              <button type="button" class="settings-row settings-row-stack" data-archive-reason="completed">
+                <span class="settings-row-copy">
+                  <span class="settings-row-title">Completed their course</span>
+                  <span class="settings-row-sub">They have finished the apprenticeship</span>
+                </span>
+              </button>
+              <button type="button" class="settings-row settings-row-stack" data-archive-reason="left">
+                <span class="settings-row-copy">
+                  <span class="settings-row-title">Left and quit their apprenticeship</span>
+                  <span class="settings-row-sub">They left before the end of the course</span>
+                </span>
+              </button>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-modal" id="learner-archive-modal" hidden>
+      <button type="button" class="settings-modal-backdrop" data-learner-archive-close aria-label="Close learner archive"></button>
+      <div class="settings-modal-card learner-archive-card" role="dialog" aria-modal="true" aria-labelledby="learner-archive-title">
+        <div class="settings-modal-main">
+          <div class="settings-modal-head">
+            <h2 id="learner-archive-title">Learner archive</h2>
+            <span class="count" id="learner-archive-count">0</span>
+            <button type="button" class="btn ghost" data-learner-archive-close>Close</button>
+          </div>
+          <div class="learner-archive-tools">
+            <label class="records-search">
+              Search
+              <span class="search-field">
+                <input
+                  id="learner-archive-search"
+                  type="search"
+                  placeholder="Search a name, tutor, company or postcode"
+                  autocomplete="off"
+                />
+              </span>
+            </label>
+            <div class="records-filters" role="group" aria-label="Why they were archived">
+              <button type="button" class="btn pill on" data-learner-archive-filter="all">All</button>
+              <button type="button" class="btn pill ghost" data-learner-archive-filter="completed">Completed course</button>
+              <button type="button" class="btn pill ghost" data-learner-archive-filter="left">Left apprenticeship</button>
+            </div>
+          </div>
+          <div id="learner-archive-list" class="learner-archive-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-modal learner-sheet-modal" id="learner-sheet" hidden>
+      <button type="button" class="settings-modal-backdrop" data-learner-sheet-close aria-label="Close"></button>
+      <div class="settings-modal-card learner-sheet-card" data-learner-sheet-card role="dialog" aria-modal="true" aria-labelledby="learner-sheet-title">
+        <div class="settings-modal-main">
+          <div class="settings-modal-head">
+            <h2 id="learner-sheet-title">Details</h2>
+            <button type="button" class="btn ghost" data-learner-sheet-close>Close</button>
+          </div>
+          <div id="learner-sheet-body"></div>
+        </div>
+      </div>
+    </div>
+    <div class="settings-modal" id="reports-modal" hidden>
+      <button type="button" class="settings-modal-backdrop" data-reports-close aria-label="Close reports"></button>
+      <div class="settings-modal-card reports-modal-card" role="dialog" aria-modal="true" aria-labelledby="reports-title">
+        <nav class="settings-modal-nav" aria-label="Report sections">
+          <button type="button" class="settings-tab on" data-reports-tab="saved">Saved</button>
+          <button type="button" class="settings-tab" data-reports-tab="next">Next</button>
+          <button type="button" class="settings-tab" data-reports-tab="settings">Settings</button>
+        </nav>
+        <div class="settings-modal-main">
+          <div class="settings-modal-head">
+            <h2 id="reports-title">Reports</h2>
+            <button type="button" class="btn ghost" data-reports-close>Close</button>
+          </div>
+          <section class="settings-panel" data-reports-panel="saved">
+            <h3>Saved reports</h3>
+            <div id="reports-list" class="reports-list"></div>
+          </section>
+          <section class="settings-panel" data-reports-panel="next" hidden>
+            <h3>Next reports</h3>
+            <div id="reports-next" class="reports-next"></div>
+          </section>
+          <section class="settings-panel" data-reports-panel="settings" hidden>
+            <h3>Automatic reports</h3>
+            <label class="app-check reports-auto-email">
+              <input type="checkbox" id="reports-auto-email" />
+              <span class="app-check-box reports-auto-email-box" aria-hidden="true"></span>
+              Email me when a report is ready
+            </label>
+          </section>
+        </div>
+      </div>
+    </div>
+    <dialog class="pdf-preview" id="report-view">
+      <div class="pdf-preview-bar">
+        <strong id="report-view-title">Report</strong>
+        <div class="pdf-preview-actions">
+          <button type="button" class="btn" id="report-view-print">Print</button>
+          <button type="button" class="btn" id="report-view-close">Close</button>
+        </div>
+      </div>
+      <iframe id="report-view-frame" aria-label="Saved report"></iframe>
+    </dialog>
+    <div class="out-party-popup" id="out-party-popup" hidden>
+      <button type="button" class="tutor-help-backdrop" data-out-party-dismiss aria-label="Close comments"></button>
+      <form class="tutor-help-card out-party-card" id="out-party-form" data-out-party-form></form>
+    </div>
+    <div class="out-party-popup" id="out-maps-popup" hidden>
+      <button type="button" class="tutor-help-backdrop" data-out-maps-dismiss aria-label="Close maps"></button>
+      <div class="tutor-help-card out-party-card out-maps-card" role="dialog" aria-modal="true" aria-labelledby="out-maps-title">
+        <div class="tutor-help-card-head">
+          <h3 id="out-maps-title">Open maps</h3>
+          <button type="button" class="btn ghost" data-out-maps-dismiss>Close</button>
+        </div>
+        <div class="tutor-help-body">
+          <p class="meta" data-out-maps-place></p>
+          <a class="btn ghost" data-out-maps-apple>Apple Maps</a>
+          <a class="btn ghost" data-out-maps-google>Google Maps</a>
+        </div>
+      </div>
+    </div>
+    <div class="pdf-preview-layer" id="pdf-preview-layer" hidden>
+      <button type="button" class="pdf-preview-scrim" id="pdf-preview-scrim" aria-label="Close preview"></button>
+      <div class="pdf-preview" id="pdf-preview" role="dialog" aria-modal="true" aria-labelledby="pdf-preview-title">
+        <div class="pdf-preview-bar">
+          <strong id="pdf-preview-title">Review preview</strong>
+          <div class="pdf-preview-actions">
+            <button type="button" class="btn" id="pdf-preview-populate-pdf">Preview PDF</button>
+            <button type="button" class="btn" id="pdf-preview-populate-word">Preview Word</button>
+            <a class="btn primary" id="pdf-preview-download">Download</a>
+            <button type="button" class="btn" id="pdf-preview-close">Close</button>
+          </div>
+        </div>
+        <div class="pdf-preview-stage">
+          <p class="pdf-preview-empty" id="pdf-preview-empty">Choose Preview PDF or Preview Word.</p>
+          <div id="pdf-preview-pdf" class="pdf-preview-pdf" hidden></div>
+          <div id="pdf-preview-word" class="pdf-preview-word" hidden></div>
+        </div>
+      </div>
+    </div>
+    <div class="session-lock" id="session-lock" hidden>
+      <div class="session-lock-card panel" role="dialog" aria-modal="true" aria-labelledby="session-lock-title">
+        <h2 id="session-lock-title">You are logged in elsewhere</h2>
+        <p id="session-lock-copy">Would you like to close this browser?</p>
+        <div class="session-lock-actions" id="session-lock-actions">
+          <button type="button" class="btn primary" id="session-lock-yes">Yes</button>
+          <button type="button" class="btn" id="session-lock-no">No</button>
+        </div>
+      </div>
+    </div>
+    <link rel="stylesheet" href="/app.css?v=out-137" />
+    <script type="module" src="/app.js?v=out-165"></script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "applied": [
+    {
+      "repositoryFile": "035_review_assistant_store.sql",
+      "sha256": "283720831f5fd05170212dd3b637eecf135498c176a20e48fd49ae01cf70654d",
+      "hostedVersion": "20261108000601",
+      "hostedName": "review_assistant_empty_structure_035",
+      "appliedAt": "2026-11-08T00:06:01Z",
+      "targetProjectRef": "cjtgjxgghfiskqnuttzd",
+      "rowCountsAtApply": {
+        "app_state": 0,
+        "app_state_history": 0,
+        "tutor_reword_rate": 0
+      },
+      "note": "Empty structure only. Parent applied this exact file. Do not rename it and do not replace it with PR #1's unrelated 035."
+    },
+    {
+      "repositoryFile": "036_review_assistant_portal.sql",
+      "sha256": "ea74b46c607e7cb50d60f9e2ad0928fdeb44fe7f7291ba507afdea99af7bae87",
+      "hostedVersion": "20261108004631",
+      "hostedName": "review_assistant_portal_integration_036",
+      "appliedAt": "2026-11-08T00:46:31Z",
+      "targetProjectRef": "cjtgjxgghfiskqnuttzd",
+      "rowCountsAtApply": {
+        "app_state": 0,
+        "app_state_history": 0,
+        "tutor_reword_rate": 0,
+        "review_assistant_attachments": 0,
+        "staff_page_access": 0
+      },
+      "storageAtApply": {
+        "review-app": 0,
+        "review-attachments": 0
+      },
+      "note": "Parent sanctioned empty apply. Both private buckets had 0 objects. Public wrappers are service_role only, security invoker, empty search_path. Protected catalogs were unchanged. This file is immutable. Further SQL needs a new additive migration. The application remains held until DEV-184, DEV-185, AI opt-in, and the permissions screen are accepted. No seed, import, or source data was loaded."
+    }
+  ],
+  "held": [],
+  "neverAutoApply": [
+    "035_review_assistant_store_rollback.sql",
+    "036_review_assistant_portal_rollback.sql"
+  ],
+  "ownedNumbers": {
+    "035": "035_review_assistant_store.sql",
+    "036": "036_review_assistant_portal.sql"
+  },
+  "applyPathLimit": "scripts/run-migration.mjs is the only tool that reads this registry. The hosted SQL editor, the Supabase dashboard migration runner, and the Supabase MCP apply_migration tool do not. PR #1 remains held and its own 035 must not be applied through any of those paths."
+}

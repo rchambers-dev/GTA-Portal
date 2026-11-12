@@ -1,0 +1,16 @@
+# 035 and 036 forward SQL are applied and must stay byte-for-byte.
+# 035 hosted identity: 20261108000601_review_assistant_empty_structure_035
+# Applied at 2026-11-08T00:06:01Z on cjtgjxgghfiskqnuttzd. Counts were 0/0/0.
+# 036 hosted identity: 20261108004631_review_assistant_portal_integration_036
+# Applied at 2026-11-08T00:46:31Z on cjtgjxgghfiskqnuttzd.
+# At apply: app_state 0, app_state_history 0, tutor_reword_rate 0,
+# review_assistant_attachments 0, staff_page_access 0.
+# Buckets review-app and review-attachments existed with 0 objects.
+# Wrappers are service_role only, security invoker, empty search_path.
+# Protected catalogs were unchanged. No seed, import, or source rows.
+# Do not edit 035 or 036. Further SQL is a new additive migration.
+# The application is still held. reviews_private stays out of the Data API.
+035_review_assistant_store.sql 283720831f5fd05170212dd3b637eecf135498c176a20e48fd49ae01cf70654d
+036_review_assistant_portal.sql ea74b46c607e7cb50d60f9e2ad0928fdeb44fe7f7291ba507afdea99af7bae87
+035_review_assistant_store_rollback.sql 5b94b199195e9326175c64f2f00a15cb3f0e89808a588d3f9667a93c77245058
+036_review_assistant_portal_rollback.sql 01106073711ab9b5b6171d24a78dedd79d37a423d9def581274cf3f4d7b0416e

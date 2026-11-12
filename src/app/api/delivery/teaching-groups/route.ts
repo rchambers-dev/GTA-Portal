@@ -9,8 +9,8 @@ import { eligibleReleaseRoster } from "@/features/programme-delivery/domain/teac
 
 export const runtime = "nodejs";
 
-export async function GET() {
-  const access = await requireTutorDeliveryAccess();
+export async function GET(request: Request) {
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const supabase = createSupabaseAdminClient();

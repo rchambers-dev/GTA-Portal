@@ -6,7 +6,7 @@ import { loadTeachingGroupBlockBundle } from "@/features/programme-delivery/doma
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);

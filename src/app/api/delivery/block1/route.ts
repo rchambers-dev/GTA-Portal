@@ -32,7 +32,7 @@ const CONTROL_TAG = "autocare-st0499-v1.3-phase1-controlled";
  * GET ?apprenticeProgrammeId=  (or programmeVersionId + apprenticeId)
  */
 export async function GET(request: Request) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);

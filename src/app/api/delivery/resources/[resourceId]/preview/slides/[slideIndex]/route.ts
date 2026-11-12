@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 type Props = { params: Promise<{ resourceId: string; slideIndex: string }> };
 
 export async function GET(request: Request, { params }: Props) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   const { resourceId, slideIndex } = await params;
   const id = resourceId?.trim();

@@ -14,7 +14,7 @@ type Props = { params: Promise<{ resourceId: string }> };
  * Never a public URL. Apprentices must use the apprentice file route.
  */
 export async function GET(request: Request, { params }: Props) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
 
   const { resourceId } = await params;

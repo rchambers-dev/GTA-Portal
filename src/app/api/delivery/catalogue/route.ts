@@ -10,7 +10,7 @@ export const runtime = "nodejs";
  * Never selects newest / Autocare static content.
  */
 export async function GET(request: Request) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const url = new URL(request.url);

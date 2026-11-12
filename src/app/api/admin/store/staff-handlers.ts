@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server";
 import type { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import { workspaceForRole } from "@/features/administration/domain/account-access";
+import { staffHierarchyError } from "./record-access";
 import {
   EXCLUSIVE_STAFF_JOB_TITLES,
   normalizeJobTitles,
@@ -253,14 +254,34 @@ export async function handleStaffAction(
         adminPassword: string;
         adminEmail?: string;
       },
-  session?: { account: { email?: string | null; name?: string | null } },
+  session?: {
+    account: {
+      id?: string;
+      email?: string | null;
+      name?: string | null;
+      baseRole?: string | null;
+    };
+  },
 ): Promise<NextResponse | null> {
+  const actorId = session?.account.id || "";
+  const actorRole = session?.account.baseRole || "";
+  if (!actorId || !actorRole) {
+    return NextResponse.json({ error: "Authentication required." }, { status: 401 });
+  }
+
   if (body.action === "createStaff") {
+    const requestedRole = body.input.role || "Tutor";
+    const hierarchy = staffHierarchyError({
+      actorId,
+      actorRole,
+      requestedRole,
+    });
+    if (hierarchy) return NextResponse.json({ error: hierarchy }, { status: 403 });
     const input = body.input;
     const email = input.email.trim().toLowerCase();
     const displayName = input.displayName.trim();
-    const role = input.role || "Tutor";
-    const workspace = input.workspace || workspaceForRole(role);
+    const role = requestedRole;
+    const workspace = workspaceForRole(role);
     const jobTitles = normalizeJobTitles(input.jobTitles ?? []);
     const password = (input.password ?? "").trim() || generateTempPassword();
 
@@ -389,6 +410,23 @@ export async function handleStaffAction(
   }
 
   if (body.action === "updateStaffProfile") {
+    const { data: current, error: currentError } = await supabase
+      .from("profiles")
+      .select("id, base_role")
+      .eq("id", body.id)
+      .maybeSingle();
+    if (currentError) {
+      return NextResponse.json({ error: currentError.message }, { status: 500 });
+    }
+    const hierarchy = staffHierarchyError({
+      actorId,
+      actorRole,
+      targetId: body.id,
+      targetRole: current?.base_role,
+      requestedRole: body.patch.role,
+      changesWorkspace: body.patch.workspace != null,
+    });
+    if (hierarchy) return NextResponse.json({ error: hierarchy }, { status: 403 });
     const update: Record<string, unknown> = {};
     if (body.patch.jobTitles != null) {
       const titles = normalizeJobTitles(body.patch.jobTitles);
@@ -424,12 +462,17 @@ export async function handleStaffAction(
         }
       }
     }
+    const nextRole = body.patch.role ?? (current?.base_role as AdminPortalRole | undefined);
+    if (body.patch.workspace != null && nextRole && body.patch.workspace !== workspaceForRole(nextRole)) {
+      return NextResponse.json(
+        { error: "Workspace must follow the role." },
+        { status: 403 },
+      );
+    }
     if (body.patch.role != null) {
       update.base_role = body.patch.role;
       update.permissions = permissionsForStaffRole(body.patch.role);
-    }
-    if (body.patch.workspace != null) {
-      update.workspace = body.patch.workspace;
+      update.workspace = workspaceForRole(body.patch.role);
     }
 
     const { data, error } = await supabase
@@ -450,6 +493,21 @@ export async function handleStaffAction(
   }
 
   if (body.action === "setPortalEnvironment") {
+    const { data: current, error: currentError } = await supabase
+      .from("profiles")
+      .select("id, base_role")
+      .eq("id", body.id)
+      .maybeSingle();
+    if (currentError) {
+      return NextResponse.json({ error: currentError.message }, { status: 500 });
+    }
+    const hierarchy = staffHierarchyError({
+      actorId,
+      actorRole,
+      targetId: body.id,
+      targetRole: current?.base_role,
+    });
+    if (hierarchy) return NextResponse.json({ error: hierarchy }, { status: 403 });
     const stamp = new Date().toISOString();
     const update: Record<string, unknown> = {
       portal_status: body.status,

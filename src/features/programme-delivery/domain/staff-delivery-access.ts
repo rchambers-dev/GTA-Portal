@@ -9,6 +9,7 @@ import { getStandalonePorts } from "@/adapters/standalone";
 import type { EffectiveSession } from "@/lib/portal/types";
 import { hasPermission } from "@/lib/permissions/effective-permissions";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
+import { pageApiAllowed } from "@/features/staff-page-access/enforce";
 
 export function canUseTutorDeliveryApi(session: EffectiveSession): boolean {
   if (session.account.workspace === "apprentice") return false;
@@ -18,9 +19,9 @@ export function canUseTutorDeliveryApi(session: EffectiveSession): boolean {
   );
 }
 
-export async function requireTutorDeliveryAccess(): Promise<
-  EffectiveSession | NextResponse
-> {
+export async function requireTutorDeliveryAccess(
+  request?: Request,
+): Promise<EffectiveSession | NextResponse> {
   const session = await getStandalonePorts().auth.getEffectiveSession();
   if (!session) {
     return NextResponse.json(
@@ -33,6 +34,11 @@ export async function requireTutorDeliveryAccess(): Promise<
       { ok: false, error: "Forbidden" },
       { status: 403 },
     );
+  }
+  const pathname = request ? new URL(request.url).pathname : "";
+  const page = pageApiAllowed(session, pathname, request && request.method !== "GET" ? "edit" : "read");
+  if (!page.ok) {
+    return NextResponse.json({ ok: false, error: page.error }, { status: 403 });
   }
   return session;
 }

@@ -10,7 +10,7 @@ import { requireTutorDeliveryAccess } from "@/features/programme-delivery/domain
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const access = await requireTutorDeliveryAccess();
+  const access = await requireTutorDeliveryAccess(request);
   if (access instanceof NextResponse) return access;
 
   const url = new URL(request.url);
@@ -50,7 +50,7 @@ type PostBody = {
 };
 
 export async function POST(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
 
   try {

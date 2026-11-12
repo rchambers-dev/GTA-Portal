@@ -44,7 +44,7 @@ describe("sidebar grouping", () => {
       const onboarding = sections.find((section) => section.title === "Onboarding");
       const marketing = sections.find((section) => section.title === "Marketing & Recruitment");
       const reviews = sections.find((section) => section.title === "Reviews");
-      expect(staff?.items.map((item) => item.label)).toEqual(["Staff Records"]);
+      expect(staff?.items.map((item) => item.label)).toEqual(["Staff Records", "Permissions"]);
       expect(staff?.items[0]?.href).toBe(`/staff-records?from=${workspace}`);
       expect(staff?.items[0]?.permission).toBe(PERMISSIONS.ADMIN_USERS_MANAGE);
       expect(onboarding?.items.map((item) => item.label)).toEqual([
@@ -123,9 +123,17 @@ describe("sidebar grouping", () => {
       ]),
     );
     const reviews = shown.find((section) => section.title === "Reviews");
-    expect(reviews?.items.map((item) => item.label)).toEqual(["Review queue"]);
-    expect(reviews?.items[0]?.href).toBe("/reviews?from=administration");
-    expect(reviews?.items[0]?.permission).toBe(PERMISSIONS.REVIEWS_MANAGE);
+    expect(reviews?.items.map((item) => item.label)).toEqual([
+      "Learners",
+      "Plan",
+      "Out",
+      "Reviews",
+      "Archive",
+      "Analytics",
+      "Settings",
+    ]);
+    expect(reviews?.items[0]?.href).toBe("/reviews/learners");
+    expect(reviews?.items.every((item) => item.permission === PERMISSIONS.REVIEWS_MANAGE)).toBe(true);
   });
 
   it("hides the Staff group when the child permission is absent", () => {

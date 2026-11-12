@@ -72,7 +72,7 @@ function slimOfficialForClient(
  * and persist once. Never creates a duplicate for the same ST + version.
  */
 export async function POST(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   try {
     const body = (await request.json().catch(() => ({}))) as Body;

@@ -29,7 +29,7 @@ type Body = {
 };
 
 export async function POST(request: Request) {
-  const access = await requireCurriculumAuthoringAccess();
+  const access = await requireCurriculumAuthoringAccess(request);
   if (access instanceof NextResponse) return access;
   const body = (await request.json().catch(() => ({}))) as Body;
   const ksb: ImportedKsb = {

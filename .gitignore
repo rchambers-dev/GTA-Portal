@@ -87,3 +87,10 @@ scripts/*-stderr.txt
 ../GTA Website/**
 ../Other Portal/
 ../Other Portal/**
+
+# Local checkpoints only. Not the production store.
+.staff-page-access/
+.review-assistant/
+integrations/gta-reviews/node_modules/
+integrations/gta-reviews/dist/
+integrations/gta-reviews/data/

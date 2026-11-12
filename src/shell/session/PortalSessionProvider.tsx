@@ -42,6 +42,8 @@ function sessionIdentity(session: EffectiveSession): string {
     account.linkedApprenticeId ?? "",
     permissions.join(","),
     temporaryAccessLabels.join(","),
+    session.pageGrants?.configured ? "configured" : "legacy",
+    session.pageGrants?.readable.join(",") ?? "",
   ].join("|");
 }
 

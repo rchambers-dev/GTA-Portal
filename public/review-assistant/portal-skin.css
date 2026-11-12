@@ -1,0 +1,108 @@
+/* Portal surfaces and type for the original review screens.
+   Loaded only with the review routes, after the original stylesheet. */
+
+.gta-review-app,
+.gta-review-app[data-theme="default"],
+.gta-review-app[data-font="outfit"] {
+  --ink: var(--text-primary);
+  --muted: var(--text-secondary);
+  --paper: var(--bg-page);
+  --card: var(--bg-card);
+  --line: var(--border-strong);
+  --shadow: var(--shadow-sm);
+  --font: var(--font-body);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background: var(--bg-page);
+}
+
+.gta-review-app h1,
+.gta-review-app h2,
+.gta-review-app h3,
+.gta-review-app .roster-tab strong,
+.gta-review-app .rebook-month strong {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.gta-review-app .app-shell,
+.gta-review-app .app-shell.records-wide,
+.gta-review-app .app-shell.plan-wide {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.gta-review-app .panel,
+.gta-review-app .tutor-learner,
+.gta-review-app .settings-modal-card,
+.gta-review-app .learner-archive-card,
+.gta-review-app .archive-reason-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.gta-review-app input,
+.gta-review-app select,
+.gta-review-app textarea {
+  font-family: var(--font-body);
+  border-color: var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.gta-review-app #account-settings {
+  display: none;
+}
+
+.gta-review-app.is-settings-page .app-shell {
+  display: none;
+}
+
+.gta-review-app.is-settings-page #settings-modal {
+  position: static;
+  display: block;
+  inset: auto;
+  z-index: auto;
+  padding: 0;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  background: transparent;
+}
+
+.gta-review-app.is-settings-page #settings-modal .settings-modal-backdrop,
+.gta-review-app.is-settings-page #settings-modal .settings-done,
+.gta-review-app.is-settings-page #settings-modal [data-settings-close] {
+  display: none;
+}
+
+.gta-review-app.is-settings-page #settings-modal .settings-modal-card {
+  position: static;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  opacity: 1;
+  transform: none;
+}
+
+.gta-review-app.is-settings-page #settings-modal .settings-modal-main {
+  overflow: visible;
+}
+
+@media (max-width: 720px) {
+  .gta-review-app.is-settings-page #settings-modal .settings-modal-card {
+    grid-template-columns: 1fr;
+  }
+
+  .gta-review-app .app-shell,
+  .gta-review-app .app-shell.records-wide,
+  .gta-review-app .app-shell.plan-wide {
+    width: 100%;
+  }
+}

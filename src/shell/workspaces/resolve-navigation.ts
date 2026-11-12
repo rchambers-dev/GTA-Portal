@@ -3,6 +3,7 @@ import { hasPermission } from "@/lib/permissions/effective-permissions";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 import { STAFF_BASE_NAV, MENTOR_NAV_SECTIONS, CURRICULUM_NAV } from "./nav-manifests";
 import { isMentorStaffSession } from "@/lib/permissions/workspace";
+import { pageNavAllowed } from "@/features/staff-page-access/enforce";
 
 function marketingSection(workspace: "administration" | "management") {
   const records = PERMISSIONS.ADMIN_RECORDS_MANAGE;
@@ -24,16 +25,23 @@ function marketingSection(workspace: "administration" | "management") {
   };
 }
 
-function reviewsSection(workspace: "administration" | "management") {
+const ORIGINAL_REVIEW_NAV = [
+  { href: "/reviews/learners", label: "Learners" },
+  { href: "/reviews/plan", label: "Plan" },
+  { href: "/reviews/out", label: "Out" },
+  { href: "/reviews/reviews", label: "Reviews" },
+  { href: "/reviews/archive", label: "Archive" },
+  { href: "/reviews/analytics", label: "Analytics" },
+  { href: "/reviews/settings", label: "Settings" },
+] as const;
+
+function reviewsSection() {
   return {
     title: "Reviews",
-    items: [
-      {
-        href: `/reviews?from=${workspace}`,
-        label: "Review queue",
-        permission: PERMISSIONS.REVIEWS_MANAGE,
-      },
-    ],
+    items: ORIGINAL_REVIEW_NAV.map((item) => ({
+      ...item,
+      permission: PERMISSIONS.REVIEWS_MANAGE,
+    })),
   };
 }
 
@@ -70,6 +78,11 @@ function staffSection(workspace: "administration" | "management") {
         label: "Staff Records",
         permission: PERMISSIONS.ADMIN_USERS_MANAGE,
       },
+      {
+        href: `/staff-permissions?from=${workspace}`,
+        label: "Permissions",
+        permission: PERMISSIONS.ADMIN_USERS_MANAGE,
+      },
     ],
   };
 }
@@ -91,8 +104,8 @@ function filterSection(
   session: EffectiveSession,
   section: NavSection,
 ): NavSection | null {
-  const items = section.items.filter((item) =>
-    hasPermission(session, item.permission),
+  const items = section.items.filter(
+    (item) => hasPermission(session, item.permission) && pageNavAllowed(session, item.href),
   );
   if (items.length === 0) return null;
   return { ...section, items };
@@ -211,7 +224,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       staffSection("management"),
       marketingSection("management"),
       onboardingSection("management"),
-      reviewsSection("management"),
+      reviewsSection(),
     ]);
   }
 
@@ -231,7 +244,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       staffSection("administration"),
       marketingSection("administration"),
       onboardingSection("administration"),
-      reviewsSection("administration"),
+      reviewsSection(),
     ]);
   }
 
