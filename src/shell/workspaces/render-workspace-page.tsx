@@ -276,7 +276,19 @@ export async function renderWorkspacePage(
 ) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
-  if (!session) redirect(getUnauthenticatedRedirect(`/${workspace}`));
+  if (!session) {
+    const segment = slug?.join("/") ?? "";
+    const path = segment ? `/${workspace}/${segment}` : `/${workspace}`;
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(search ?? {})) {
+      if (typeof value === "string") params.set(key, value);
+      else if (Array.isArray(value)) {
+        for (const item of value) params.append(key, item);
+      }
+    }
+    const query = params.toString();
+    redirect(getUnauthenticatedRedirect(query ? `${path}?${query}` : path));
+  }
 
   const rawSegment = slug?.join("/") ?? "";
   const segment = rawSegment || "dashboard";
