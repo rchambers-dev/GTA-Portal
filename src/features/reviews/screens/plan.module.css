@@ -221,6 +221,27 @@
   min-height: 8rem;
 }
 
+.notesMenu {
+  list-style: none;
+  margin: 0;
+  padding: 12px;
+  background: white;
+  border-radius: 14px;
+}
+
+.notesMenu p {
+  margin: 4px 0 0;
+}
+
+.map {
+  width: 100%;
+  height: 22rem;
+  border: 0;
+  border-radius: 14px;
+  margin-top: 12px;
+  background: white;
+}
+
 .trail,
 .dialog {
   margin-top: 12px;

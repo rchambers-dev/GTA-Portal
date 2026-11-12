@@ -48,6 +48,9 @@ export function PlanView({
   const [message, setMessage] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [trail, setTrail] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
+  const noted = page.people.filter((person) => person.notes);
   const marks = new Set(page.monthMarks.map((item) => item.date));
   const completedDays = new Set(page.monthMarks.filter((item) => item.completed).map((item) => item.date));
   const visible = useMemo(() => {
@@ -121,7 +124,7 @@ export function PlanView({
                 workspace={workspace}
                 person={person}
                 canWrite={page.canWrite}
-                onDrag={() => undefined}
+                onRun={run}
               />
             ))
           )}
@@ -131,6 +134,12 @@ export function PlanView({
         <div className={styles.head}>
           <h2 id="plan-title">{title}</h2>
           <div className={styles.headActions}>
+            <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => setMapOpen((value) => !value)}>
+              {mapOpen ? "Hide map" : "Show map"}
+            </button>
+            <button type="button" className={styles.pill} aria-expanded={notesOpen} onClick={() => setNotesOpen((value) => !value)}>
+              Notes{noted.length ? ` ${noted.length}` : ""}
+            </button>
             <button type="button" className={styles.pill} onClick={() => setTrail((value) => !value)}>
               Completed reviews
             </button>
@@ -143,6 +152,17 @@ export function PlanView({
             )}
           </div>
         </div>
+        {notesOpen ? (
+          <ul className={styles.notesMenu} aria-label="Notes still on the plan">
+            {noted.length === 0 ? <li>No notes on the plan.</li> : null}
+            {noted.map((person) => (
+              <li key={person.gtaId}>
+                <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`}>{person.name}</Link>
+                <p>{person.notes}</p>
+              </li>
+            ))}
+          </ul>
+        ) : null}
         <Calendar
           month={month}
           date={date}
@@ -198,7 +218,7 @@ export function PlanView({
               </button>
             ) : null}
             {page.canWrite && page.day && page.day.stops.length > 0 ? (
-              <DayActions page={page} date={date} onRun={run} />
+              <DayActions workspace={workspace} page={page} date={date} onRun={run} />
             ) : null}
           </div>
           <p className={styles.hint}>Drag a name here to add them to this day. College day is not a visit day.</p>
@@ -220,6 +240,13 @@ export function PlanView({
               ))}
             </div>
           )}
+          {mapOpen ? (
+            <iframe
+              className={styles.map}
+              title="Route map for the selected day"
+              src={mapUrl(page.settings.officePostcode, page.day?.stops.map((stop) => stop.postcode) ?? [])}
+            />
+          ) : null}
           {trail || (page.day?.completedReviews.length ?? 0) > 0 ? (
             <section className={styles.trail} aria-label="Completed reviews">
               <h3>Completed reviews</h3>
@@ -258,12 +285,16 @@ export function PlanView({
 function RosterCard({
   workspace,
   person,
+  canWrite,
+  onRun,
 }: {
   workspace: "administration" | "management";
   person: PlanPerson;
   canWrite: boolean;
-  onDrag: () => void;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
 }) {
+  const [open, setOpen] = useState(false);
+  const [note, setNote] = useState(person.notes);
   return (
     <li
       className={styles.card}
@@ -281,15 +312,37 @@ function RosterCard({
       </p>
       <p className={person.dueState === "overdue" ? styles.overdue : styles.due}>{person.dueLabel}</p>
       {person.notes ? <p className={styles.note}>{person.notes}</p> : null}
+      {canWrite && person.reviewId ? (
+        <button type="button" onClick={() => setOpen((value) => !value)}>
+          {person.notes ? "Edit note" : "Add note"}
+        </button>
+      ) : null}
+      {open ? (
+        <form
+          className={styles.inline}
+          onSubmit={(event) => {
+            event.preventDefault();
+            void onRun(() => setNotesAction({ reviewId: person.reviewId || "", notes: note }));
+          }}
+        >
+          <label>
+            Note
+            <textarea value={note} onChange={(event) => setNote(event.target.value)} />
+          </label>
+          <button type="submit">Save note</button>
+        </form>
+      ) : null}
     </li>
   );
 }
 
 function DayActions({
+  workspace,
   page,
   date,
   onRun,
 }: {
+  workspace: "administration" | "management";
   page: PlanPageData;
   date: string;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
@@ -323,6 +376,9 @@ function DayActions({
           Accept Route
         </button>
       )}
+      {page.settings.outEnabled ? (
+        <a href={`/${workspace}/reviews/out`}>Open Out</a>
+      ) : null}
       <a
         href={mailto(page, date)}
         onClick={(event) => {
@@ -350,6 +406,11 @@ function DayActions({
       </button>
     </div>
   );
+}
+
+function mapUrl(office: string, postcodes: string[]): string {
+  const stops = [office, ...postcodes.filter((item) => item && item !== "No postcode"), office];
+  return `https://www.google.com/maps/dir/${stops.map((item) => encodeURIComponent(item)).join("/")}`;
 }
 
 function mailto(page: PlanPageData, date: string): string {
@@ -549,7 +610,8 @@ function Calendar({
   const [year, monthNumber] = month.split("-").map(Number);
   const first = new Date(Date.UTC(year, monthNumber - 1, 1));
   const days = new Date(Date.UTC(year, monthNumber, 0)).getUTCDate();
-  const lead = (first.getUTCDay() + 6) % 7;
+  const startDow = first.getUTCDay();
+  const lead = startDow === 0 || startDow === 6 ? 0 : startDow - 1;
   const cells: (string | null)[] = [...Array(lead).fill(null)];
   for (let day = 1; day <= days; day += 1) {
     const iso = `${month}-${String(day).padStart(2, "0")}`;

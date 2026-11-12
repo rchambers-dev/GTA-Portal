@@ -222,10 +222,18 @@ export async function readPlanPage(
       }[]
     ).map((row) => [row.gta_id, row]),
   );
-  const release = new Map(
-    ((apprenticesResult.data ?? []) as { gta_id: string; release_day: string | null }[]).map((row) => [
+  const apprenticeRows = (apprenticesResult.data ?? []) as {
+    gta_id: string;
+    first_name: string | null;
+    middle_names: string | null;
+    last_name: string | null;
+    release_day: string | null;
+  }[];
+  const release = new Map(apprenticeRows.map((row) => [row.gta_id, row.release_day ?? ""]));
+  const apprenticeNames = new Map(
+    apprenticeRows.map((row) => [
       row.gta_id,
-      row.release_day ?? "",
+      [row.first_name, row.middle_names, row.last_name].filter((part) => part && part.trim()).join(" "),
     ]),
   );
   const concerns = new Set(
@@ -356,7 +364,7 @@ export async function readPlanPage(
       const leave = stop.accepted ? stop.accepted_leave_minutes : stop.leave_minutes;
       return {
         gtaId: stop.gta_id,
-        name: person?.name || stop.gta_id,
+        name: person?.name || apprenticeNames.get(stop.gta_id) || stop.gta_id,
         company: person?.company || "No employer",
         postcode: person?.postcode || "",
         phone: person?.phone || "",
@@ -402,7 +410,7 @@ export async function readPlanPage(
     .map((row) => ({
       id: row.id,
       gtaId: row.gta_id,
-      name: byId.get(row.gta_id)?.name || row.gta_id,
+      name: byId.get(row.gta_id)?.name || apprenticeNames.get(row.gta_id) || row.gta_id,
       actualOn: row.actual_on || options.date,
       method: methodLabel(row.method),
       plannedOn: row.planned_on,
