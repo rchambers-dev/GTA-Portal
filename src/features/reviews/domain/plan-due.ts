@@ -87,6 +87,12 @@ export function weekdayName(iso: string): string {
   return WEEKDAYS[new Date(Date.UTC(year, month - 1, day)).getUTCDay()] ?? "";
 }
 
+export function methodLabel(method: string | null): string {
+  if (method === "teams") return "Teams";
+  if (method === "phone") return "Phone call";
+  return "In person";
+}
+
 export function formatPlanDate(iso: string): string {
   const [year, month, day] = iso.split("-").map(Number);
   const date = new Date(Date.UTC(year, month - 1, day));

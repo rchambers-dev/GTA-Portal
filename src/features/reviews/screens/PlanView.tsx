@@ -3,9 +3,8 @@
 import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { formatPlanDate, weekdayName } from "../domain/plan-due";
+import { formatPlanDate, methodLabel, weekdayName } from "../domain/plan-due";
 import type { PlanCounter, PlanPageData, PlanPerson, PlanStop } from "../domain/plan-repository";
-import { methodLabel } from "../domain/plan-repository";
 import {
   acceptDayAction,
   bookReviewAction,

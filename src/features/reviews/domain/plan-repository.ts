@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
 import {
+  methodLabel,
   minutesToTime,
   nextReviewDate,
   reviewDueLabel,
@@ -449,12 +450,6 @@ export async function readPlanPage(
     },
     loadError: problems.length ? problems.join(" ") : null,
   };
-}
-
-export function methodLabel(method: string | null): string {
-  if (method === "teams") return "Teams";
-  if (method === "phone") return "Phone call";
-  return "In person";
 }
 
 export async function loadPlanPage(input: {
