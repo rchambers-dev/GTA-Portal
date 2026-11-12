@@ -113,14 +113,22 @@ export async function clearBookingAction(input: { reviewId: string }) {
   return fail(error) ?? { ok: true as const };
 }
 
-export async function setNotesAction(input: { reviewId: string; notes: string }) {
+export async function setNotesAction(input: { reviewId: string; notes: string; until: string }) {
   const access = await writer();
   if (!access.ok) return access;
+  const notes = input.notes.trim() || null;
+  const planned = await access.supabase.rpc("set_review_plan_note", {
+    p_review_id: input.reviewId,
+    p_notes: notes,
+    p_until: notes ? input.until || null : null,
+  });
+  if (!planned.error) return { ok: true as const };
+  if (!/set_review_plan_note|notes_until/i.test(planned.error.message || "")) return fail(planned.error);
   const { error } = await access.supabase.rpc("set_review_notes", {
     p_review_id: input.reviewId,
-    p_notes: input.notes.trim() || null,
+    p_notes: notes,
   });
-  return fail(error) ?? { ok: true as const };
+  return fail(error) ?? { ok: true as const, formError: "The note was saved. The end date is waiting for the notes migration." };
 }
 
 export async function acceptDayAction(input: {
@@ -161,6 +169,41 @@ export async function completeDayAction(input: { date: string; gtaIds: string[] 
   return fail(error) ?? { ok: true as const };
 }
 
+export async function reverseSafeguardingAction(input: { signoffId: string }) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const { error } = await access.supabase.rpc("reverse_safeguarding_signoff", {
+    p_signoff_id: input.signoffId,
+    p_reason: "Cleared from the plan",
+  });
+  return fail(error) ?? { ok: true as const };
+}
+
+export async function applyRouteAction(input: {
+  date: string;
+  stops: { gtaId: string; arrive: number; leave: number }[];
+}) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const pinned = await access.supabase.rpc("set_review_day_pins", {
+    p_date: input.date,
+    p_gta_ids: input.stops.map((stop) => stop.gtaId),
+  });
+  const pinError = fail(pinned.error);
+  if (pinError) return pinError;
+  for (const stop of input.stops) {
+    const timed = await access.supabase.rpc("set_review_day_stop_times", {
+      p_date: input.date,
+      p_gta_id: stop.gtaId,
+      p_arrive: stop.arrive,
+      p_leave: stop.leave,
+    });
+    const timeError = fail(timed.error);
+    if (timeError) return timeError;
+  }
+  return { ok: true as const };
+}
+
 export async function recordSafeguardingAction(input: { gtaId: string; date: string }) {
   const access = await writer();
   if (!access.ok) return access;
@@ -170,132 +213,6 @@ export async function recordSafeguardingAction(input: { gtaId: string; date: str
     p_notes: null,
   });
   return fail(error) ?? { ok: true as const };
-}
-
-export async function fillDayAction(input: {
-  date: string;
-  officePostcode: string;
-  startTime: string;
-  lunchStart: string;
-  lunchMinutes: number;
-  returnBy: string;
-  stayMinutes: number;
-  accepted: boolean;
-  existing: string[];
-  candidates: { gtaId: string; postcode: string; company: string; releaseDay: string }[];
-}) {
-  const access = await writer();
-  if (!access.ok) return access;
-  if (input.accepted) {
-    return { ok: false as const, formError: "This route is already accepted. Unlock it before filling the day again." };
-  }
-  const weekday = weekdayName(input.date);
-  const fresh = input.candidates.filter(
-    (person) => !input.existing.includes(person.gtaId) && person.releaseDay !== weekday,
-  );
-  const points = await geocode([input.officePostcode, ...fresh.map((person) => person.postcode)]);
-  const missing = fresh.filter((person) => !points.get(normalise(person.postcode)));
-  const office = points.get(normalise(input.officePostcode));
-  if (!office) {
-    return { ok: false as const, formError: `Could not find the office postcode ${input.officePostcode}.` };
-  }
-  const ordered = nearest(office, fresh.filter((person) => points.get(normalise(person.postcode))), points);
-  const ids = [...input.existing, ...ordered.map((person) => person.gtaId)];
-  const pinned = await access.supabase.rpc("set_review_day_pins", { p_date: input.date, p_gta_ids: ids });
-  const pinError = fail(pinned.error);
-  if (pinError) return pinError;
-  let cursor = timeToMinutes(input.startTime) ?? 10 * 60;
-  const lunch = timeToMinutes(input.lunchStart) ?? 13 * 60;
-  const lunchEnd = lunch + input.lunchMinutes;
-  const backBy = timeToMinutes(input.returnBy) ?? 16 * 60 + 45;
-  let previous = "";
-  for (const person of ordered) {
-    const same = previous === `${person.company}|${normalise(person.postcode)}`;
-    const stay = same ? 15 : input.stayMinutes;
-    if (cursor < lunch && cursor + stay > lunch) cursor = lunchEnd;
-    if (cursor + stay > backBy) break;
-    const leave = cursor + stay;
-    const timed = await access.supabase.rpc("set_review_day_stop_times", {
-      p_date: input.date,
-      p_gta_id: person.gtaId,
-      p_arrive: cursor,
-      p_leave: leave,
-    });
-    const timeError = fail(timed.error);
-    if (timeError) return timeError;
-    cursor = leave + 20;
-    previous = `${person.company}|${normalise(person.postcode)}`;
-  }
-  const missed = missing.map((person) => person.postcode).filter(Boolean);
-  return {
-    ok: true as const,
-    formError: missed.length ? `Could not find: ${missed.join(", ")}` : null,
-  };
-}
-
-function normalise(value: string): string {
-  return value.replace(/\s+/g, "").toUpperCase();
-}
-
-async function geocode(postcodes: string[]) {
-  const unique = [...new Set(postcodes.map((item) => item.trim()).filter(Boolean))];
-  const found = new Map<string, { lat: number; lon: number }>();
-  if (!unique.length) return found;
-  try {
-    const response = await fetch("https://api.postcodes.io/postcodes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ postcodes: unique }),
-    });
-    if (response.ok) {
-      const body = (await response.json()) as {
-        result?: { query: string; result?: { latitude: number; longitude: number } | null }[];
-      };
-      for (const row of body.result ?? []) {
-        if (!row.result) continue;
-        found.set(normalise(row.query), { lat: row.result.latitude, lon: row.result.longitude });
-      }
-    }
-  } catch {
-    return found;
-  }
-  return found;
-}
-
-function nearest<T extends { postcode: string }>(
-  office: { lat: number; lon: number },
-  people: T[],
-  points: Map<string, { lat: number; lon: number }>,
-): T[] {
-  const left = [...people];
-  const ordered: T[] = [];
-  let here = office;
-  while (left.length) {
-    let best = 0;
-    let bestKm = Number.POSITIVE_INFINITY;
-    for (let index = 0; index < left.length; index += 1) {
-      const point = points.get(normalise(left[index].postcode));
-      if (!point) continue;
-      const km = distance(here, point);
-      if (km < bestKm) {
-        bestKm = km;
-        best = index;
-      }
-    }
-    const [next] = left.splice(best, 1);
-    ordered.push(next);
-    here = points.get(normalise(next.postcode)) ?? here;
-  }
-  return ordered;
-}
-
-function distance(a: { lat: number; lon: number }, b: { lat: number; lon: number }): number {
-  const dLat = ((b.lat - a.lat) * Math.PI) / 180;
-  const dLon = ((b.lon - a.lon) * Math.PI) / 180;
-  const lat1 = (a.lat * Math.PI) / 180;
-  const lat2 = (b.lat * Math.PI) / 180;
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
-  return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
 }
 
 export async function savePlanSettingsAction(input: {

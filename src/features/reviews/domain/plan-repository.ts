@@ -30,6 +30,8 @@ export type PlanPerson = {
   appointmentOn: string | null;
   appointmentMinutes: number | null;
   notes: string;
+  notesUntil: string;
+  signoffId: string | null;
   dueLabel: string;
   dueState: DueState;
   safeguarding: boolean;
@@ -54,7 +56,10 @@ export type PlanStop = {
   dueLabel: string;
   dueState: DueState;
   safeguarding: boolean;
+  signoffId: string | null;
   reviewId: string | null;
+  notes: string;
+  notesUntil: string;
   method: string;
 };
 
@@ -155,7 +160,7 @@ export async function readPlanPage(
       .from("reviews")
       .select("id, gta_id, status, planned_on, actual_on, method, notes, interval_weeks"),
     supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
-    supabase.from("apprentice_safeguarding_signoffs").select("gta_id").is("reversed_at", null),
+    supabase.from("apprentice_safeguarding_signoffs").select("id, gta_id").is("reversed_at", null),
     supabase.from("profiles").select("id, display_name").eq("base_role", "Tutor"),
     supabase.rpc("get_review_settings"),
     supabase
@@ -240,9 +245,16 @@ export async function readPlanPage(
   const concerns = new Set(
     ((concernsResult.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id),
   );
-  const signed = new Set(
-    ((signoffsResult.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id),
+  const signed = new Map(
+    ((signoffsResult.data ?? []) as { id: string; gta_id: string }[]).map((row) => [row.gta_id, row.id]),
   );
+  const noteUntil = new Map<string, string>();
+  const untilResult = await supabase.from("reviews").select("id, notes_until");
+  if (!untilResult.error) {
+    for (const row of (untilResult.data ?? []) as { id: string; notes_until: string | null }[]) {
+      if (row.notes_until) noteUntil.set(row.id, row.notes_until);
+    }
+  }
   type ReviewRow = {
     id: string;
     gta_id: string;
@@ -332,6 +344,8 @@ export async function readPlanPage(
       appointmentOn: booking?.on ?? row.appointment_on,
       appointmentMinutes: booking?.minutes ?? null,
       notes: review?.notes?.trim() || "",
+      notesUntil: (review && noteUntil.get(review.id)) || "",
+      signoffId: signed.get(row.gta_id) ?? null,
       dueLabel: due.label,
       dueState: due.state,
       safeguarding: signed.has(row.gta_id),
@@ -381,7 +395,10 @@ export async function readPlanPage(
         dueLabel: person?.dueLabel || "Not set",
         dueState: person?.dueState || "unknown",
         safeguarding: person?.safeguarding || false,
+        signoffId: person?.signoffId ?? null,
         reviewId: person?.reviewId ?? null,
+        notes: person?.notes || "",
+        notesUntil: person?.notesUntil || "",
         method: person?.method || "in_person",
       } satisfies PlanStop;
     });

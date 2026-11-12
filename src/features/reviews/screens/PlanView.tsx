@@ -3,24 +3,28 @@
 import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { formatPlanDate, methodLabel, weekdayName } from "../domain/plan-due";
+import { fitStops, routeSettings } from "../domain/plan-drive";
+import { formatPlanDate, methodLabel, minutesToTime, timeToMinutes, weekdayName } from "../domain/plan-due";
+import { NOTE_UNTIL_PRESETS, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
+import type { PackedDay } from "../domain/plan-route";
 import type { PlanCounter, PlanPageData, PlanPerson, PlanStop } from "../domain/plan-repository";
 import {
   acceptDayAction,
+  applyRouteAction,
   bookReviewAction,
   clearBookingAction,
   completeDayAction,
   excludeStopAction,
-  fillDayAction,
   lockStopAction,
-  pinOnDayAction,
   recordSafeguardingAction,
+  reverseSafeguardingAction,
   savePlanSettingsAction,
   setNotesAction,
   unlockDayAction,
   unlockStopAction,
   verifyStopAction,
 } from "./plan-actions";
+import { PlanMap } from "./PlanMap";
 import styles from "./plan.module.css";
 
 const TABS: { id: PlanCounter; label: string }[] = [
@@ -49,6 +53,8 @@ export function PlanView({
   const [trail, setTrail] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
+  const [packed, setPacked] = useState<PackedDay | null>(null);
+  const [officePoint, setOfficePoint] = useState<{ lat: number; lon: number; postcode: string } | null>(null);
   const noted = page.people.filter((person) => person.notes);
   const marks = new Set(page.monthMarks.map((item) => item.date));
   const completedDays = new Set(page.monthMarks.filter((item) => item.completed).map((item) => item.date));
@@ -78,11 +84,75 @@ export function PlanView({
     router.refresh();
   }
 
+  async function placePeople(extras: PlanPerson[]) {
+    if (!page.canWrite) return;
+    if (page.day?.accepted) {
+      setMessage("This route is already accepted. Unlock it before changing the drive times.");
+      return;
+    }
+    const weekday = weekdayName(date);
+    const allowed = extras.filter((person) => person.releaseDay !== weekday && person.method !== "phone");
+    const blocked = extras.filter((person) => !allowed.includes(person));
+    if (blocked.length && !allowed.length) {
+      const person = blocked[0];
+      setMessage(
+        person.method === "phone"
+          ? `${person.name} is a phone review, so they stay off the driving round.`
+          : `${person.name} is at college on ${weekday}.`,
+      );
+      return;
+    }
+    setMessage("Checking drive times…");
+    const fitted = await fitStops({
+      officePostcode: page.settings.officePostcode,
+      existing: page.day?.stops ?? [],
+      extras: allowed,
+      settings: routeSettings(page.settings),
+      people: page.people,
+    });
+    setPacked(fitted.packed);
+    setOfficePoint(fitted.office);
+    if (!fitted.office) {
+      setMessage(`Could not find the office postcode ${page.settings.officePostcode}.`);
+      return;
+    }
+    const added = fitted.packed.stops.filter((stop) => allowed.some((person) => person.gtaId === stop.id));
+    if (allowed.length && added.length < allowed.length && !fitted.missing.length) {
+      setMessage(`No space before ${page.settings.returnBy}.`);
+    }
+    if (!fitted.packed.stops.length) return;
+    await run(() =>
+      applyRouteAction({
+        date,
+        stops: fitted.packed.stops.map((stop) => ({ gtaId: stop.id, arrive: stop.arrive, leave: stop.leave })),
+      }),
+    );
+    if (fitted.missing.length) setMessage(`Could not find: ${fitted.missing.join(", ")}`);
+  }
+
   async function dropPerson(gtaId: string) {
-    if (!page.canWrite || !page.day) return;
-    const ids = [...page.day.stops.map((stop) => stop.gtaId)];
-    if (!ids.includes(gtaId)) ids.push(gtaId);
-    await run(() => pinOnDayAction({ date, gtaIds: ids }));
+    const person = page.people.find((item) => item.gtaId === gtaId);
+    if (!person) return;
+    if (page.day?.stops.some((stop) => stop.gtaId === gtaId)) {
+      setMessage(`${person.name} is already on this day.`);
+      return;
+    }
+    await placePeople([person]);
+  }
+
+  async function showMap() {
+    setMapOpen((value) => !value);
+    if (mapOpen || !page.day?.stops.length) return;
+    const fitted = await fitStops({
+      officePostcode: page.settings.officePostcode,
+      existing: page.day.stops,
+      extras: [],
+      settings: routeSettings(page.settings),
+      people: page.people,
+    });
+    setPacked(fitted.packed);
+    setOfficePoint(fitted.office);
+    if (fitted.missing.length) setMessage(`Could not find: ${fitted.missing.join(", ")}`);
   }
 
   return (
@@ -122,6 +192,7 @@ export function PlanView({
                 key={person.gtaId}
                 workspace={workspace}
                 person={person}
+                today={page.today}
                 canWrite={page.canWrite}
                 onRun={run}
               />
@@ -133,7 +204,7 @@ export function PlanView({
         <div className={styles.head}>
           <h2 id="plan-title">{title}</h2>
           <div className={styles.headActions}>
-            <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => setMapOpen((value) => !value)}>
+            <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => void showMap()}>
               {mapOpen ? "Hide map" : "Show map"}
             </button>
             <button type="button" className={styles.pill} aria-expanded={notesOpen} onClick={() => setNotesOpen((value) => !value)}>
@@ -158,6 +229,7 @@ export function PlanView({
               <li key={person.gtaId}>
                 <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`}>{person.name}</Link>
                 <p>{person.notes}</p>
+                <p>{noteUntilLabel(person.notesUntil, page.today).label}</p>
               </li>
             ))}
           </ul>
@@ -190,26 +262,11 @@ export function PlanView({
                 type="button"
                 className={styles.fill}
                 onClick={() =>
-                  void run(() =>
-                    fillDayAction({
-                      date,
-                      officePostcode: page.settings.officePostcode,
-                      startTime: page.settings.startTime,
-                      lunchStart: page.settings.lunchStart,
-                      lunchMinutes: page.settings.lunchMinutes,
-                      returnBy: page.settings.returnBy,
-                      stayMinutes: page.settings.stayMinutes,
-                      accepted: page.day?.accepted ?? false,
-                      existing: page.day?.stops.map((stop) => stop.gtaId) ?? [],
-                      candidates: page.people
-                        .filter((person) => person.counter === "to_book")
-                        .map((person) => ({
-                          gtaId: person.gtaId,
-                          postcode: person.postcode,
-                          company: person.company,
-                          releaseDay: person.releaseDay,
-                        })),
-                    }),
+                  void placePeople(
+                    page.people.filter(
+                      (person) =>
+                        person.counter === "to_book" && !page.day?.stops.some((stop) => stop.gtaId === person.gtaId),
+                    ),
                   )
                 }
               >
@@ -217,7 +274,7 @@ export function PlanView({
               </button>
             ) : null}
             {page.canWrite && page.day && page.day.stops.length > 0 ? (
-              <DayActions workspace={workspace} page={page} date={date} onRun={run} />
+              <DayActions workspace={workspace} page={page} date={date} packed={packed} onRun={run} />
             ) : null}
           </div>
           <p className={styles.hint}>Drag a name here to add them to this day. College day is not a visit day.</p>
@@ -232,6 +289,7 @@ export function PlanView({
                   stop={stop}
                   index={index}
                   date={date}
+                  today={page.today}
                   canWrite={page.canWrite && !page.day?.completed}
                   dayIds={page.day?.stops.map((item) => item.gtaId) ?? []}
                   onRun={run}
@@ -239,13 +297,12 @@ export function PlanView({
               ))}
             </div>
           )}
-          {mapOpen ? (
-            <iframe
-              className={styles.map}
-              title="Route map for the selected day"
-              src={mapUrl(page.settings.officePostcode, page.day?.stops.map((stop) => stop.postcode) ?? [])}
-            />
+          {packed ? (
+            <p className={styles.meta}>
+              Leave {page.settings.officePostcode} at {minutesToTime(packed.leaveMinutes)} · {packed.driveTotal ? `${Math.round(packed.driveTotal)} min driving` : "no driving yet"} · back at {minutesToTime(packed.returnArrive)}
+            </p>
           ) : null}
+          {mapOpen ? <PlanMap office={officePoint} stops={packed?.stops ?? []} /> : null}
           {trail || (page.day?.completedReviews.length ?? 0) > 0 ? (
             <section className={styles.trail} aria-label="Completed reviews">
               <h3>Completed reviews</h3>
@@ -284,16 +341,17 @@ export function PlanView({
 function RosterCard({
   workspace,
   person,
+  today,
   canWrite,
   onRun,
 }: {
   workspace: "administration" | "management";
   person: PlanPerson;
+  today: string;
   canWrite: boolean;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
 }) {
   const [open, setOpen] = useState(false);
-  const [note, setNote] = useState(person.notes);
   return (
     <li
       className={styles.card}
@@ -310,26 +368,25 @@ function RosterCard({
         {person.company} · {person.postcode}, {person.location}
       </p>
       <p className={person.dueState === "overdue" ? styles.overdue : styles.due}>{person.dueLabel}</p>
-      {person.notes ? <p className={styles.note}>{person.notes}</p> : null}
+      {person.notes ? (
+        <div className={styles.note}>
+          <p>{person.notes}</p>
+          <p>{noteUntilLabel(person.notesUntil, today).label}</p>
+        </div>
+      ) : null}
       {canWrite && person.reviewId ? (
         <button type="button" onClick={() => setOpen((value) => !value)}>
           {person.notes ? "Edit note" : "Add note"}
         </button>
       ) : null}
       {open ? (
-        <form
-          className={styles.inline}
-          onSubmit={(event) => {
-            event.preventDefault();
-            void onRun(() => setNotesAction({ reviewId: person.reviewId || "", notes: note }));
-          }}
-        >
-          <label>
-            Note
-            <textarea value={note} onChange={(event) => setNote(event.target.value)} />
-          </label>
-          <button type="submit">Save note</button>
-        </form>
+        <NoteForm
+          reviewId={person.reviewId || ""}
+          notes={person.notes}
+          until={person.notesUntil}
+          today={today}
+          onRun={onRun}
+        />
       ) : null}
     </li>
   );
@@ -339,11 +396,13 @@ function DayActions({
   workspace,
   page,
   date,
+  packed,
   onRun,
 }: {
   workspace: "administration" | "management";
   page: PlanPageData;
   date: string;
+  packed: PackedDay | null;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
 }) {
   const stops = page.day?.stops ?? [];
@@ -386,7 +445,7 @@ function DayActions({
       >
         Email this route
       </a>
-      <button type="button" onClick={() => window.print()} disabled={!page.day?.accepted}>
+      <button type="button" onClick={() => printRoute(page, date, packed)} disabled={!page.day?.accepted}>
         Print this route
       </button>
       <button
@@ -407,9 +466,32 @@ function DayActions({
   );
 }
 
-function mapUrl(office: string, postcodes: string[]): string {
-  const stops = [office, ...postcodes.filter((item) => item && item !== "No postcode"), office];
-  return `https://www.google.com/maps/dir/${stops.map((item) => encodeURIComponent(item)).join("/")}`;
+function printRoute(page: PlanPageData, date: string, packed: PackedDay | null) {
+  const popup = window.open("", "print-route");
+  if (!popup) return;
+  const leave = packed ? minutesToTime(packed.leaveMinutes) : page.settings.startTime;
+  const back = packed ? minutesToTime(packed.returnArrive) : "";
+  const drive = packed?.driveTotal ? `${Math.round(packed.driveTotal)} min driving` : "";
+  const stops = (packed?.stops ?? page.day?.stops.map((stop) => ({
+    ...stop,
+    arrive: timeToMinutes(stop.arrive) ?? 0,
+    leave: timeToMinutes(stop.leave) ?? 0,
+  })) ?? []);
+  const body = stops
+    .map(
+      (stop, index) =>
+        `<article class="print-stop"><div class="print-when">${minutesToTime(stop.arrive)}–${minutesToTime(stop.leave)}</div><div><h2>${index + 1}. ${escapeHtml(stop.name)}</h2><p>${escapeHtml(`${stop.company} · ${stop.postcode}`)}</p></div></article>`,
+    )
+    .join("");
+  popup.document.open();
+  popup.document.write(`<!doctype html><html lang="en"><head><meta charset="utf-8" /><title>${escapeHtml(date)} review round</title><style>body{font:13px/1.4 Calibri,Arial,sans-serif;color:#111;margin:24px}h1{font-size:22px;margin:0 0 4px}.lede{margin:0 0 18px;color:#444}.print-stop{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:10px 0;border-top:1px solid #ccc}.print-when{font-weight:700}h2{font-size:16px;margin:0 0 4px}p{margin:0}.end{border-top:1px solid #111;margin-top:8px;padding-top:10px;font-weight:700}@media print{body{margin:12mm}}</style></head><body><h1>${escapeHtml(formatPlanDate(date))} workplace review round</h1><p class="lede">Leave ${escapeHtml(page.settings.officePostcode)} at ${escapeHtml(leave)} · ${stops.length} visit${stops.length === 1 ? "" : "s"}${drive ? ` · ${escapeHtml(drive)}` : ""}</p>${body}<p class="end">Back at ${escapeHtml(page.settings.officePostcode)}${back ? ` at ${escapeHtml(back)}` : ""}</p></body></html>`);
+  popup.document.close();
+  popup.focus();
+  popup.print();
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char] || char);
 }
 
 function mailto(page: PlanPageData, date: string): string {
@@ -425,6 +507,7 @@ function StopCard({
   stop,
   index,
   date,
+  today,
   canWrite,
   dayIds,
   onRun,
@@ -433,6 +516,7 @@ function StopCard({
   stop: PlanStop;
   index: number;
   date: string;
+  today: string;
   canWrite: boolean;
   dayIds: string[];
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
@@ -440,8 +524,7 @@ function StopCard({
   const [open, setOpen] = useState<"book" | "note" | "lock" | null>(null);
   const [method, setMethod] = useState(stop.method || "in_person");
   const [time, setTime] = useState(stop.arrive || "10:00");
-  const [note, setNote] = useState("");
-  const [until, setUntil] = useState("23:45");
+  const [holdUntil, setHoldUntil] = useState("23:45");
   return (
     <article className={styles.stop} data-stop={stop.gtaId}>
       <p className={styles.when}>
@@ -491,14 +574,19 @@ function StopCard({
               {stop.locked ? "Unlock" : "Lock"}
             </button>
             <button type="button" onClick={() => setOpen(open === "note" ? null : "note")}>
-              {note ? "Edit note" : "Add note"}
+              {stop.notes ? "Edit note" : "Add note"}
             </button>
             <button
               type="button"
-              onClick={() => void onRun(() => recordSafeguardingAction({ gtaId: stop.gtaId, date }))}
-              disabled={stop.safeguarding}
+              onClick={() =>
+                void onRun(() =>
+                  stop.safeguarding && stop.signoffId
+                    ? reverseSafeguardingAction({ signoffId: stop.signoffId })
+                    : recordSafeguardingAction({ gtaId: stop.gtaId, date }),
+                )
+              }
             >
-              Safeguarding
+              {stop.safeguarding ? "Undo safeguarding" : "Safeguarding"}
             </button>
             <button type="button" onClick={() => void onRun(() => excludeStopAction({ date, gtaId: stop.gtaId }))}>
               Take off day
@@ -557,35 +645,79 @@ function StopCard({
                       gtaId: stop.gtaId,
                       arrive: stop.arrive || "10:00",
                       leave: stop.leave || "10:30",
-                      until,
+                      until: holdUntil,
                     }),
               );
             }}
           >
             <label>
               Hold until
-              <input type="time" value={until} onChange={(event) => setUntil(event.target.value)} />
+              <input type="time" value={holdUntil} onChange={(event) => setHoldUntil(event.target.value)} />
             </label>
             <button type="submit">{stop.locked ? "Unlock" : "Lock"}</button>
           </form>
         ) : null}
         {open === "note" && stop.reviewId ? (
-          <form
-            className={styles.inline}
-            onSubmit={(event) => {
-              event.preventDefault();
-              void onRun(() => setNotesAction({ reviewId: stop.reviewId || "", notes: note }));
-            }}
-          >
-            <label>
-              Note
-              <textarea value={note} onChange={(event) => setNote(event.target.value)} />
-            </label>
-            <button type="submit">Save note</button>
-          </form>
+          <NoteForm reviewId={stop.reviewId} notes={stop.notes} until={stop.notesUntil} today={today} onRun={onRun} />
         ) : null}
       </div>
     </article>
+  );
+}
+
+function NoteForm({
+  reviewId,
+  notes,
+  until,
+  today,
+  onRun,
+}: {
+  reviewId: string;
+  notes: string;
+  until: string;
+  today: string;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+}) {
+  const presets = noteUntilPresets(today);
+  const [text, setText] = useState(notes);
+  const [end, setEnd] = useState(until || presets.week);
+  return (
+    <form
+      className={styles.inline}
+      onSubmit={(event) => {
+        event.preventDefault();
+        void onRun(async () => (await setNotesAction({ reviewId, notes: text, until: text.trim() ? end : "" })) ?? { ok: false, formError: "The note could not be saved." });
+      }}
+    >
+      <label>
+        Note
+        <textarea value={text} onChange={(event) => setText(event.target.value)} rows={4} placeholder="e.g. Off sick, doctor's note" />
+      </label>
+      <p className={styles.meta}>Keep this note until</p>
+      <div className={styles.presets}>
+        {NOTE_UNTIL_PRESETS.map((preset) => (
+          <button
+            key={preset.id}
+            type="button"
+            aria-pressed={end === presets[preset.id]}
+            className={end === presets[preset.id] ? styles.tabOn : styles.tab}
+            onClick={() => setEnd(presets[preset.id])}
+          >
+            {preset.label}
+          </button>
+        ))}
+      </div>
+      <label>
+        End date
+        <input type="date" min={today} value={end} onChange={(event) => setEnd(event.target.value)} />
+      </label>
+      <button type="submit">Save note</button>
+      {notes ? (
+        <button type="button" onClick={() => void onRun(async () => (await setNotesAction({ reviewId, notes: "", until: "" })) ?? { ok: false, formError: "The note could not be saved." })}>
+          Clear
+        </button>
+      ) : null}
+    </form>
   );
 }
 

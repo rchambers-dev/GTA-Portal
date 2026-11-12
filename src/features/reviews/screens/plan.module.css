@@ -233,6 +233,40 @@
   margin: 4px 0 0;
 }
 
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+:global(.plan-leaflet) {
+  width: 100%;
+  height: 22rem;
+  border-radius: 14px;
+  margin-top: 12px;
+  background: white;
+}
+
+:global(.plan-pin) {
+  background: transparent;
+  border: 0;
+}
+
+:global(.plan-pin-face) {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #b44a2c;
+  color: white;
+  font-weight: 700;
+}
+
+:global(.plan-pin-face.is-office) {
+  background: #24306e;
+}
+
 .map {
   width: 100%;
   height: 22rem;
