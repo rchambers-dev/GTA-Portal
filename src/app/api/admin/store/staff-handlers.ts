@@ -512,8 +512,8 @@ export async function handleStaffAction(
 
   if (body.action === "revealApprenticePassword") {
     // Staff are already authenticated via requireAdminAccess on the route.
-    // Do NOT re-run signInWithPassword here — Auth has hCaptcha enabled, and this
-    // endpoint has no captcha token, so every reveal looked like a wrong password.
+    // Do not start another password sign-in here. When captcha is turned back on,
+    // this route has no captcha token, so that sign-in would be rejected.
     const adminEmail = session?.account.email?.trim().toLowerCase() || "";
     if (!adminEmail) {
       return NextResponse.json(
