@@ -1974,3 +1974,224 @@
 .calendar .dayOn::after {
   content: none;
 }
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.roster,
+.plan,
+.settingsPage {
+  background: var(--bg-sidebar);
+  color: var(--text-inverse);
+  border-color: transparent;
+}
+
+.roster .search,
+.plan .planTitle {
+  color: #fff;
+}
+
+.plan .kicker,
+.roster .empty,
+.plan .status {
+  color: var(--text-muted-inverse);
+}
+
+.roster .search input,
+.roster .card,
+.roster .list .card,
+.plan .calendar,
+.plan .lockedPanel,
+.plan .headActions .pill,
+.plan .headActions button.pill,
+.settingsMain {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.plan .calendar .day,
+.plan .calendar .calLabel,
+.plan .calendar .dayOn {
+  color: var(--text-primary);
+}
+
+.plan .calendar .dayOn {
+  background: #24324f;
+  color: #fff;
+  box-shadow: 0 0 0 2px #b44a2c;
+}
+
+.plan .ghost {
+  color: #fff;
+  border-color: rgb(255 255 255 / 0.5);
+}
+
+.tabs .counterTile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 4.4rem;
+  min-height: 4.4rem;
+  max-height: 4.4rem;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.tabs .counterTile.tabOn {
+  background: #24324f;
+  color: #fff;
+  border-color: #fff;
+}
+
+.tabs .counterTile.tabLocked {
+  background: #b44a2c;
+  color: #fff;
+  border-color: #b44a2c;
+}
+
+.tabs .counterTile strong,
+.tabs .counterTile em {
+  display: block;
+  margin: 0;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.tabs .counterTile strong {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.tabs .counterTile em {
+  font-size: 0.68rem;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tabs .counterTile.tabOn em,
+.tabs .counterTile.tabLocked em {
+  color: rgb(255 255 255 / 0.82);
+}
+
+.pills .tag,
+.pills .tagDone,
+.pills .tagLock,
+.pills .safeOn,
+.pills .safeOff,
+.duePill {
+  align-items: center;
+  justify-content: center;
+  height: 1.85rem;
+  min-height: 1.85rem;
+  padding: 0 14px;
+  border-radius: 6px;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.duePill {
+  height: auto;
+  padding: 6px 14px;
+}
+
+.duePill span,
+.duePill small {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.planCard .stopExtra {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  min-width: 0;
+  transition:
+    grid-template-rows 220ms ease-out,
+    opacity 220ms ease-out,
+    visibility 0s linear 0s;
+}
+
+.planCard.closed .stopExtra {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    grid-template-rows 220ms ease-out,
+    opacity 220ms ease-out,
+    visibility 0s linear 220ms;
+}
+
+.stopExtraInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planCard .stopExtra,
+  .planCard.closed .stopExtra {
+    transition: none;
+  }
+}
+
+.timeline .lunch,
+.lockedPanel .lunch {
+  background: var(--color-grey-100);
+  color: var(--text-secondary);
+}
+
+.lockedPanel,
+.lockedPanel .stop,
+.timeline .stop {
+  color: var(--text-primary);
+}
+
+.lockedPanel {
+  background: var(--bg-card);
+}
+
+.settingsPage {
+  border-radius: var(--radius-xl);
+  padding: 16px;
+  margin-top: calc(var(--space-2) * -1);
+}
+
+.settingsNav .settingsTab,
+.settingsNav .settingsOn {
+  box-sizing: border-box;
+  border: 1px solid transparent;
+}
+
+.settingsNav .settingsTab {
+  color: var(--text-inverse);
+}
+
+.settingsNav .settingsOn {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--bg-card);
+}

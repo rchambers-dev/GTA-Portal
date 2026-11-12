@@ -27,6 +27,7 @@ export async function PlanScreen({
     <ApprenticePageShell
       eyebrow="Reviews"
       title="Plan"
+      hideHeader
     >
       <div className={styles.raPage}>
         <ReviewFonts />

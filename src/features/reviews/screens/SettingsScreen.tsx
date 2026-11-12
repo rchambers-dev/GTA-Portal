@@ -2,6 +2,7 @@ import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { loadPlanPage } from "../domain/plan-repository";
+import { ReviewFonts } from "./ReviewFonts";
 import { ReviewSettingsScreen } from "./ReviewSettingsScreen";
 
 export async function SettingsScreen() {
@@ -12,5 +13,10 @@ export async function SettingsScreen() {
     date: today,
     month: today.slice(0, 7),
   });
-  return <ReviewSettingsScreen email={session?.account.email || ""} page={page} />;
+  return (
+    <>
+      <ReviewFonts />
+      <ReviewSettingsScreen email={session?.account.email || ""} page={page} />
+    </>
+  );
 }

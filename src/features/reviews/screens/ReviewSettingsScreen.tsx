@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { logoutAction } from "@/app/logout/actions";
 import type { PlanPageData } from "../domain/plan-repository";
 import { savePlanSettingsAction } from "./plan-actions";
-import { ReviewFonts } from "./ReviewFonts";
 import styles from "./plan.module.css";
 
 const TABS = [
@@ -37,6 +36,14 @@ export function ReviewSettingsScreen({
   const [hidden, setHidden] = useState(page.settings.hiddenTutorIds);
   const [outEnabled, setOut] = useState(page.settings.outEnabled);
 
+  useEffect(() => {
+    const previous = document.title;
+    document.title = "Review settings · GTA Apprenticeship Portal";
+    return () => {
+      document.title = previous;
+    };
+  }, []);
+
   async function save(next: {
     skipToday?: boolean;
     officePostcode?: string;
@@ -68,7 +75,7 @@ export function ReviewSettingsScreen({
 
   return (
     <div className={styles.settingsPage}>
-      <ReviewFonts />
+      <h1 className={styles.srOnly}>Settings</h1>
       <nav className={styles.settingsNav} aria-label="Settings sections">
         {TABS.map((item) => (
           <button
@@ -82,7 +89,7 @@ export function ReviewSettingsScreen({
         ))}
       </nav>
       <div className={styles.settingsMain}>
-        <h2 className={styles.settingsTitle}>Settings</h2>
+        <h2 className={styles.srOnly}>Review settings</h2>
         {message ? <p role="alert">{message}</p> : null}
         {tab === "account" ? (
           <section>
