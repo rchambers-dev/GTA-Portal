@@ -1,0 +1,1976 @@
+.layout {
+  --ink: var(--text-primary);
+  --muted: var(--text-secondary);
+  --paper: var(--bg-elevated);
+  --card: var(--bg-card);
+  --line: var(--border-subtle);
+  --terracotta: #b44a2c;
+  --navy: var(--color-navy-800);
+  display: grid;
+  grid-template-columns: minmax(440px, 520px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  color: var(--ink);
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.roster,
+.plan {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.tab,
+.tabOn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  border-radius: 14px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.tabOn {
+  background: #24324f;
+  color: white;
+  border-color: #24324f;
+  box-shadow: none;
+}
+
+.tab em,
+.tabOn em {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+}
+
+.tab strong,
+.tabOn strong {
+  font-size: 1.35rem;
+}
+
+.tab em,
+.tabOn em {
+  font-style: normal;
+  font-size: 0.82rem;
+}
+
+.search,
+.inline label,
+.dialog label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 12px 0;
+  font-size: 0.85rem;
+}
+
+.search input,
+.inline input,
+.inline select,
+.inline textarea,
+.dialog input {
+  border: 1px solid #d9cbb6;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font: inherit;
+  background: white;
+}
+
+.list,
+.stops {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.card,
+.stop {
+  background: white;
+  border: 1px solid #eadfce;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.card p,
+.stop p,
+.meta,
+.hint,
+.empty {
+  margin: 4px 0 0;
+  color: #5c5146;
+  font-size: 0.88rem;
+}
+
+.overdue {
+  color: #9a3412;
+  font-weight: 700;
+}
+
+.due {
+  color: #3f6212;
+  font-weight: 700;
+}
+
+.note {
+  white-space: pre-wrap;
+}
+
+.head,
+.calHead,
+.routeBar,
+.stopActions,
+.dialogActions,
+.headActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.head h2,
+.calHead h3,
+.trail h3,
+.dialog h2 {
+  margin: 0;
+}
+
+.pill,
+.fill,
+.dayActions button,
+.dayActions a,
+.stopActions button,
+.inline button,
+.dialog button,
+.calHead button,
+.day {
+  border: 1px solid #c8b79a;
+  background: white;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.fill {
+  background: #1d6fbf;
+  color: white;
+  border-color: #1d6fbf;
+}
+
+.accept {
+  background: #2f6b56;
+  color: white;
+  border-color: #2f6b56;
+}
+
+.ghost {
+  background: transparent;
+}
+
+.pill strong {
+  min-width: 1.35rem;
+  height: 1.35rem;
+  display: inline-grid;
+  place-items: center;
+  margin-left: 8px;
+  border-radius: 999px;
+  background: #24324f;
+  color: white;
+  font-size: 0.72rem;
+}
+
+.pillOn {
+  background: #eef2f8;
+}
+
+.noteItem {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.dialogHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.calendar {
+  margin: 12px 0;
+}
+
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.calLabel {
+  font-size: 0.75rem;
+  color: #6b5e51;
+}
+
+.dayOn {
+  border: 1px solid #1f3b4d;
+  background: #1f3b4d;
+  color: white;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.day[data-today="true"] {
+  outline: 2px solid #b45309;
+}
+
+.day[data-completed="true"] {
+  background: #ecfccb;
+}
+
+.when {
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.stopName {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  font-weight: 700;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pills span {
+  border-radius: 999px;
+}
+
+.drop {
+  min-height: 8rem;
+}
+
+.notesMenu {
+  list-style: none;
+  margin: 0;
+  padding: 12px;
+  background: white;
+  border-radius: 14px;
+}
+
+.notesMenu p {
+  margin: 4px 0 0;
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+:global(.plan-leaflet) {
+  width: 100%;
+  height: 22rem;
+  border-radius: 14px;
+  margin-top: 12px;
+  background: white;
+}
+
+:global(.plan-pin) {
+  background: transparent;
+  border: 0;
+}
+
+:global(.plan-pin-face) {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #b44a2c;
+  color: white;
+  font-weight: 700;
+}
+
+:global(.plan-pin-face.is-office) {
+  background: #24306e;
+}
+
+.map {
+  width: 100%;
+  height: 22rem;
+  border: 0;
+  border-radius: 14px;
+  margin-top: 12px;
+  background: white;
+}
+
+.trail,
+.dialog {
+  margin-top: 12px;
+  background: white;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.trail ul {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trail li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eadfce;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(20 16 12 / 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 40;
+}
+
+.dialog {
+  width: min(32rem, 100%);
+  max-height: min(40rem, 100%);
+  overflow: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg);
+}
+
+.status {
+  color: #9a3412;
+}
+
+.settingsPage {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 20px;
+}
+
+.settingsNav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.check {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.plan {
+  position: relative;
+  background: var(--bg-card);
+}
+
+.roster {
+  background: var(--bg-card);
+}
+
+.raPage,
+.settingsPage {
+  --font-fraunces: Fraunces, Georgia, serif;
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.raPage {
+  background: transparent;
+}
+
+.planTitle {
+  font-family: var(--font-fraunces), Fraunces, Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.planTitle sup {
+  font-size: 0.58em;
+}
+
+.tab strong,
+.tabOn strong,
+.tabLocked strong {
+  font-family: var(--font-fraunces), Fraunces, Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+
+.tabLocked {
+  background: #b44a2c;
+  color: white;
+  border-color: #b44a2c;
+}
+
+.tabLocked em {
+  color: rgb(255 255 255 / 0.78);
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.7rem;
+}
+
+.searchField {
+  position: relative;
+  display: block;
+}
+
+.clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  border-radius: 18px;
+}
+
+.rowMain {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rowMain a {
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.college {
+  color: #5d6573;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.duePill,
+.tag {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.duePill small {
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.tagOver,
+.duePill.tagOver {
+  background: #b44a2c;
+  color: white;
+}
+
+.tagSoon,
+.duePill.tagSoon {
+  background: #c9782a;
+  color: white;
+}
+
+.tagOk,
+.duePill.tagOk {
+  background: #e7f1ec;
+  color: #2f6b56;
+}
+
+.noteOn {
+  background: #e7f1ec;
+  color: #2f6b56;
+  border: 1px solid #c5ddd2;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.clearNote {
+  background: #fff8f5;
+  color: #8f351c;
+  border: 1px solid #ead4c8;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.notesMenu {
+  position: absolute;
+  right: 20px;
+  top: 72px;
+  z-index: 30;
+  width: min(22rem, calc(100% - 40px));
+  max-height: 22rem;
+  overflow: auto;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(36, 31, 22, 0.12);
+}
+
+.calendar {
+  padding: 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  background: var(--bg-card);
+}
+
+.calGrid {
+  grid-template-columns: repeat(5, 32px);
+  justify-content: space-between;
+}
+
+.day,
+.dayOn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.dayOn {
+  background: #24324f;
+  color: white;
+  border-color: #24324f;
+  border-radius: 0;
+}
+
+.dayPrev,
+.dayToday {
+  box-shadow: inset 0 0 0 2px #b44a2c;
+}
+
+.dayBooked {
+  box-shadow: inset 0 -3px 0 #2f6b56;
+}
+
+.dayDone {
+  box-shadow: inset 0 -3px 0 #b44a2c;
+}
+
+.completedPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #2f6b56;
+  color: white;
+  font-weight: 700;
+}
+
+.lockIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.lockNote,
+.acceptNote {
+  color: #5d6573;
+  margin: 8px 0;
+}
+
+.timeline {
+  display: grid;
+  margin-top: 8px;
+}
+
+.when {
+  font-variant-numeric: tabular-nums;
+}
+
+.arrive {
+  color: #b44a2c;
+  font-weight: 700;
+}
+
+.until {
+  color: #5d6573;
+}
+
+.planCard {
+  align-items: start;
+}
+
+.closed .stopExtra {
+  display: none;
+}
+
+.stopHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.stopNum {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #b44a2c;
+  color: white;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.75rem;
+  margin-right: 6px;
+}
+
+.handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0;
+  color: var(--text-secondary);
+}
+
+.handle svg {
+  display: block;
+  width: 12px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.contactLine {
+  display: block;
+  color: #24324f;
+  font-weight: 400;
+}
+
+.contactLine a {
+  color: inherit;
+}
+
+.placeLine {
+  margin: 8px 0;
+  color: #5d6573;
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.actionPrimary,
+.actionBlue,
+.actionGrey,
+.actionDanger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.actionPrimary {
+  background: #b44a2c;
+  color: white;
+}
+
+.actionBlue {
+  background: #1d6fbf;
+  color: white;
+}
+
+.actionGrey {
+  background: #d5cfc3;
+  color: #1d2433;
+}
+
+.actionDanger {
+  background: #b44a2c;
+  color: white;
+}
+
+.noteBox {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  color: #1d2433;
+}
+
+.noteItem em,
+.notesMenu em {
+  font-style: normal;
+}
+
+.timeline {
+  background: transparent;
+  border-radius: 0;
+}
+
+.lockedPanel {
+  margin-top: 8px;
+  padding: 4px 12px 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: var(--bg-elevated);
+}
+
+.lunch {
+  padding: 8px 0;
+}
+
+.settingsNav {
+  background: var(--bg-elevated);
+  border-radius: 16px;
+  padding: 8px;
+  align-items: stretch;
+}
+
+.settingsNav .tab,
+.settingsOn {
+  text-align: left;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.settingsOn {
+  background: white;
+  color: #1d2433;
+  border-color: white;
+}
+
+.tutorBlock {
+  grid-column: 1 / -1;
+}
+
+.tutorList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.tutorBlock h2,
+.settingsPage h2 {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 600;
+  margin: 18px 0 8px;
+}
+
+.check {
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+}
+
+.tagDone {
+  background: #2f6b56;
+  color: white;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.tagLock {
+  background: #b44a2c;
+  color: white;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.safeOn,
+.safeOff {
+  border: 0;
+  border-radius: 999px;
+  color: white;
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.safeOn {
+  background: #1e8f4a;
+}
+
+.safeOff {
+  background: #b44a2c;
+}
+
+.lunch {
+  padding: 8px 0 8px 7.2rem;
+  color: #5d6573;
+}
+
+.headActions {
+  position: relative;
+}
+
+.settingsNav .tabOn {
+  background: #24324f;
+  color: #fff;
+  border-color: #24324f;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tutorCard {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  background: white;
+}
+
+.solid {
+  background: #b44a2c;
+  color: white;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.choiceOn {
+  background: #24324f;
+  color: white;
+  border-color: #24324f;
+}
+
+.outBox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: white;
+}
+
+@media (max-width: 900px) {
+  .layout,
+  .settingsPage,
+  .fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Copied from the Review Assistant stylesheet. Later rules win over the shared button reset. */
+
+.plan {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(36, 31, 22, 0.12);
+}
+
+.planTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 650;
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.kicker {
+  font-size: 0.78em;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: #5d6573;
+}
+
+.dateDay {
+  display: inline-block;
+  position: relative;
+  margin-right: 0.9em;
+  font-family: Fraunces, Georgia, serif;
+}
+
+.dateDay sup {
+  position: absolute;
+  left: 100%;
+  top: 0.02em;
+  font-size: 0.45em;
+  line-height: 1;
+}
+
+.tab,
+.tabOn,
+.tabLocked {
+  box-shadow: none;
+  border-radius: 16px;
+  min-height: 4.4rem;
+}
+
+.tab {
+  background: color-mix(in srgb, var(--bg-elevated) 70%, var(--bg-card));
+  border-color: var(--border-subtle);
+}
+
+.tabOn,
+.tabLocked {
+  border-color: transparent;
+}
+
+.tab strong,
+.tabOn strong,
+.tabLocked strong {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.search,
+.searchField,
+.search input {
+  width: 100%;
+}
+
+.search input {
+  box-sizing: border-box;
+  padding-right: 40px;
+}
+
+.clear {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #1d2433 10%, transparent);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.calHead button {
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+
+.calLabel {
+  color: #5d6573;
+  font-weight: 600;
+  height: 22px;
+  font-size: 0.75rem;
+}
+
+.dayActions .accept {
+  background: #2f6b56;
+  color: #fff;
+  border: 0;
+}
+
+.dayActions .accept:disabled,
+.dayActions .accept:disabled:hover {
+  background: #2f6b56;
+  color: #fff;
+  opacity: 1;
+}
+
+.timeline .stop,
+.lockedPanel .stop {
+  display: grid;
+  grid-template-columns: 7.2rem 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.timeline > .stop:first-child {
+  border-top: 0;
+}
+
+.planCard .stopBody {
+  display: contents;
+}
+
+.planCard .when {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.planCard .stopHead,
+.planCard .contactLine,
+.planCard .stopExtra {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.when,
+.when *,
+.arrive,
+.until {
+  text-decoration: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.arrive {
+  color: #b44a2c;
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+.until {
+  color: #5d6573;
+  font-weight: 500;
+}
+
+.dialog h2 {
+  font-family: Fraunces, Georgia, serif;
+}
+
+.stopName,
+.stopName a,
+.noteItem strong,
+.tag,
+.tagDone,
+.tagLock,
+.safeOn,
+.safeOff,
+.stopNum {
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.stopName,
+.stopName a {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #1d2433;
+  text-decoration: none;
+}
+
+.noteItem strong {
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.contactLine strong {
+  font-weight: 700;
+}
+
+.contactLine a {
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.tagDone {
+  background: #2f6b56;
+  color: #fff;
+}
+
+.tagLock {
+  background: #b44a2c;
+  color: #fff;
+}
+
+.lunch {
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 4px 0;
+  color: var(--text-secondary);
+}
+
+.lockedPanel {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--bg-elevated);
+}
+
+.actionGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: var(--bg-card);
+  color: #24324f;
+  border: 1px solid var(--border-subtle);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.noteBox {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.dialog h2 {
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.skipBar,
+.outBox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  grid-column: 1 / -1;
+}
+
+.skipBar input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.checkBox {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 6px;
+  background: var(--bg-card);
+}
+
+.skipBar input:checked + .checkBox {
+  background: #24324f;
+  border-color: #24324f;
+}
+
+.skipBar input:checked + .checkBox::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 9px;
+  margin: 1px auto 0;
+  border: solid var(--bg-card);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.settingsNav {
+  overflow: visible;
+  min-width: 11rem;
+}
+
+.settingsOn {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 0;
+}
+
+.settingsNav {
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+}
+
+.tutorCard strong {
+  display: block;
+  font-weight: 700;
+}
+
+.tutorCard .meta {
+  display: block;
+  color: var(--text-secondary);
+}
+
+.settingsPage h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.presets .pill,
+.presets .choiceOn {
+  min-height: 2.4rem;
+  padding: 8px 14px;
+}
+
+/* Later rules beat the shared button reset and the pale pill background. */
+
+.roster,
+.plan,
+.dialog,
+.notesMenu,
+.calendar,
+.list .card {
+  background: var(--bg-card);
+  border-color: var(--border-subtle);
+}
+
+.tabs .tab {
+  min-height: 4.4rem;
+  padding: 10px 12px 11px;
+  gap: 4px;
+  background: var(--bg-elevated);
+  border-color: var(--border-subtle);
+}
+
+.tabs .tab em,
+.tabs .tabOn em,
+.tabs .tabLocked em {
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+}
+
+.tabs .tab strong,
+.tabs .tabOn strong,
+.tabs .tabLocked strong {
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.search input,
+.fields input,
+.fields select,
+.fields textarea,
+.dialog input,
+.dialog textarea,
+.dialog select {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  min-height: 2.75rem;
+}
+
+.search input {
+  padding-right: 2.6rem;
+}
+
+.calHead h3 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 0.98rem;
+  font-weight: 650;
+}
+
+.calHead button,
+.calLabel,
+.day,
+.dayOn {
+  font-weight: 400;
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.calHead button {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  padding: 2px 8px;
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+.calLabel {
+  font-size: 0.75rem;
+  height: 22px;
+}
+
+.timeline .planCard,
+.lockedPanel .planCard {
+  column-gap: 12px;
+  row-gap: 0;
+  padding: 4px 0;
+  align-items: start;
+  line-height: 1.15;
+}
+
+.timeline .stop p,
+.lockedPanel .stop p,
+.planCard .when,
+.planCard .stopName {
+  margin: 0;
+}
+
+.planCard .stopHead {
+  grid-row: 1;
+  align-items: center;
+}
+
+.planCard .contactLine {
+  grid-row: 2;
+  margin-top: 1px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.planCard .stopExtra {
+  grid-row: 3;
+}
+
+.pills .tag,
+.pills .tagDone,
+.pills .tagLock,
+.pills .safeOn,
+.pills .safeOff {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.7rem;
+  margin: 0;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pills .tagOk {
+  background: #e7f1ec;
+  color: #2f6b56;
+}
+
+.pills .tagOver {
+  background: #b44a2c;
+  color: #fff;
+}
+
+.pills .tagSoon {
+  background: #c9782a;
+  color: #fff;
+}
+
+.pills .tagDone {
+  background: #2f6b56;
+  color: #fff;
+}
+
+.pills .tagLock {
+  background: #b44a2c;
+  color: #fff;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pills .safeOff {
+  background: #b44a2c;
+  color: #fff;
+}
+
+.pills .safeOn {
+  background: #1e8f4a;
+  color: #fff;
+}
+
+.actionGrid {
+  margin-top: 16px;
+}
+
+.actionGrid .actionPrimary,
+.actionGrid .actionBlue,
+.actionGrid .actionGrey,
+.actionGrid .actionDanger,
+.actionGrid .actionGhost {
+  width: 100%;
+  min-height: 2.45rem;
+  border-radius: 12px;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+}
+
+.actionGrid .actionGhost {
+  background: #fff;
+  color: #24324f;
+  border: 1px solid var(--border-subtle);
+}
+
+.placeLine {
+  margin: 0 0 4px;
+  color: #5d6573;
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.noteBox {
+  display: grid;
+  gap: 4px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  font-family: Outfit, "Segoe UI", sans-serif;
+}
+
+.noteUntil {
+  color: #5d6573;
+  font-size: 0.75rem;
+}
+
+.lunch {
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.lockNote {
+  margin: 8px 0 4px;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.dialog .presets .pill,
+.dialog .presets .noteOn,
+.dialog .noteOn,
+.dialog .clearNote {
+  height: 2rem;
+  min-height: 2rem;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.dialog .presets .noteOn,
+.dialog .noteOn {
+  background: #e7f1ec;
+  color: #2f6b56;
+  border: 1px solid #c5ddd2;
+}
+
+.dialog .presets .pill {
+  background: var(--bg-card);
+  color: #24324f;
+  border: 1px solid var(--border-subtle);
+}
+
+.dialog .clearNote {
+  background: #fff8f5;
+  color: #8f351c;
+  border: 1px solid #c45c4a;
+}
+
+.settingsPage {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.settingsMain {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+}
+
+.settingsPage .settingsTitle {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 0.875rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  margin: 0 0 12px;
+}
+
+.settingsPage h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.settingsNav {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  gap: 4px;
+}
+
+.settingsTab,
+.settingsOn {
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-primary);
+  text-align: left;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.settingsOn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+}
+
+.inline.fields label.skipBar,
+.inline label.outBox,
+.inline.fields label.tutorCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin: 0;
+  text-align: left;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.inline.fields label.skipBar,
+.inline label.outBox {
+  padding: 12px 14px;
+  min-height: 3.25rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+}
+
+.inline.fields label.tutorCard {
+  position: relative;
+  align-items: flex-start;
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  font-weight: 400;
+}
+
+.tutorList {
+  grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+  gap: 8px;
+}
+
+.tutorCopy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tutorCopy strong {
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.tutorCopy .meta {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+
+.inline.fields label {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  gap: 6px;
+}
+
+.skipBar input,
+.outBox input,
+.tutorCard input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.skipBar input:checked + .checkBox,
+.outBox input:checked + .checkBox,
+.tutorCard input:checked + .checkBox {
+  background: #24324f;
+  border-color: #24324f;
+}
+
+.skipBar input:checked + .checkBox::after,
+.outBox input:checked + .checkBox::after,
+.tutorCard input:checked + .checkBox::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 9px;
+  margin: 1px auto 0;
+  border: solid var(--bg-card);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Round 5: Assistant sizes on the Portal surfaces. */
+
+.planTitle {
+  font-size: 1.15rem;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.dateLine {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28em;
+  min-width: 0;
+}
+
+.dateDay {
+  margin-right: 0.28em;
+}
+
+.dateDay sup,
+.planTitle sup {
+  top: 0.34em;
+  font-size: 0.42em;
+}
+
+.timeline .stop,
+.lockedPanel .stop {
+  grid-template-columns: 7.2rem minmax(0, 1fr);
+  column-gap: 12px;
+  border-top: 1px solid var(--border-strong);
+}
+
+.timeline > .stop:first-child {
+  border-top: 0;
+}
+
+.timeline .planCard,
+.lockedPanel .planCard {
+  min-height: 36px;
+  padding: 6px 0;
+  row-gap: 2px;
+}
+
+.planCard .when,
+.timeline > .stop .when,
+.lockedPanel > .stop .when {
+  font-size: 1rem;
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+.planCard .until {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #5d6573;
+}
+
+.handle {
+  flex: 0 0 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.handle svg {
+  width: 12px;
+  height: 16px;
+}
+
+.planCard .contactLine {
+  margin-top: 2px;
+  font-size: 0.82rem;
+  line-height: 1.15;
+}
+
+.timeline .lunch,
+.lockedPanel .lunch {
+  display: block;
+  box-sizing: border-box;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 4px 0;
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.lockedPanel {
+  background: var(--bg-card);
+}
+
+.lockNote {
+  margin: 4px 0 8px;
+  color: var(--text-secondary);
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.actionGrid .actionPrimary,
+.actionGrid .actionBlue,
+.actionGrid .actionGrey,
+.actionGrid .actionDanger,
+.actionGrid .actionGhost {
+  height: 2.45rem;
+  min-height: 2.45rem;
+  padding: 0 12px;
+  line-height: 1.2;
+}
+
+.dialog {
+  width: min(34rem, calc(100% - 32px));
+}
+
+.dialog .inline {
+  display: grid;
+  gap: 8px;
+}
+
+.dialog .presets {
+  gap: 8px;
+}
+
+.dialog .presets .pill {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+
+.notesMenu .noteItem em,
+.noteItem em {
+  display: block;
+  margin-top: 1px;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-secondary);
+}
+
+.tabs .tab strong,
+.tabs .tabOn strong,
+.tabs .tabLocked strong {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tabs .tab em,
+.tabs .tabOn em,
+.tabs .tabLocked em {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.tutorList {
+  grid-template-columns: 1fr 1fr;
+}
+
+.tutorCard .tutorCopy .meta {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+
+.settingsPage .settingsTitle {
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.settingsMain .fields input,
+.settingsMain .fields select,
+.settingsMain .fields textarea,
+.settingsMain .inline input,
+.settingsMain .inline select,
+.settingsMain .inline textarea {
+  min-height: 0;
+  padding: 10px 12px;
+  font-size: 1rem;
+  line-height: 1.3;
+  border-radius: 12px;
+}
+
+.settingsMain .fields label,
+.settingsMain .inline label {
+  font-size: 0.82rem;
+  gap: 6px;
+}
+
+.settingsMain .outBox,
+.settingsMain .skipBar {
+  min-height: 0;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.calendar .calGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 32px);
+  justify-content: space-between;
+  justify-items: center;
+  gap: 4px 2px;
+  width: 100%;
+}
+
+.calendar .calLabel {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 22px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.calendar .day,
+.calendar .dayOn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  max-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: Outfit, "Segoe UI", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.calendar .dayOn {
+  background: #24324f;
+  border-color: #24324f;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.calendar .dayToday:not(.dayOn) {
+  border-color: #b44a2c;
+  box-shadow: none;
+}
+
+.calendar .dayBooked::after,
+.calendar .dayDone::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 12px;
+  height: 3px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.calendar .dayBooked::after {
+  background: #2f6b56;
+}
+
+.calendar .dayDone::after {
+  background: #b44a2c;
+}
+
+.calendar .dayOn::after {
+  content: none;
+}

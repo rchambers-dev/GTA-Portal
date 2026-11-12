@@ -25,9 +25,17 @@ function marketingSection(workspace: "administration" | "management") {
 }
 
 function reviewsSection(workspace: "administration" | "management") {
+  const base = `/${workspace}/reviews`;
+  const records = PERMISSIONS.ADMIN_RECORDS_MANAGE;
   return {
     title: "Reviews",
     items: [
+      { href: `${base}/plan`, label: "Plan", permission: records },
+      { href: `${base}/cycle`, label: "Review cycle", permission: records },
+      { href: `${base}/out`, label: "Out", permission: records },
+      { href: `${base}/archive`, label: "Archive", permission: records },
+      { href: `${base}/analytics`, label: "Analytics", permission: records },
+      { href: `${base}/settings`, label: "Settings", permission: records },
       {
         href: `/reviews?from=${workspace}`,
         label: "Review queue",

@@ -75,7 +75,14 @@ describe("sidebar grouping", () => {
         PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW,
         PERMISSIONS.ADMIN_USERS_MANAGE,
       ]);
-      expect(reviews).toBeUndefined();
+      expect(reviews?.items.map((item) => item.label)).toEqual([
+        "Plan",
+        "Review cycle",
+        "Out",
+        "Archive",
+        "Analytics",
+        "Settings",
+      ]);
       const apprenticeship = sections.find((section) => section.title === "Apprenticeship Management");
       const expected =
         workspace === "administration"
@@ -115,7 +122,14 @@ describe("sidebar grouping", () => {
     const hidden = resolveNavigation(
       session("management", [PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW, PERMISSIONS.ADMIN_RECORDS_MANAGE]),
     );
-    expect(hidden.some((section) => section.title === "Reviews")).toBe(false);
+    expect(hidden.find((section) => section.title === "Reviews")?.items.map((item) => item.label)).toEqual([
+      "Plan",
+      "Review cycle",
+      "Out",
+      "Archive",
+      "Analytics",
+      "Settings",
+    ]);
     const shown = resolveNavigation(
       session("administration", [
         PERMISSIONS.ADMIN_WORKSPACE_VIEW,

@@ -44,6 +44,9 @@ import { AddApprenticeScreen } from "@/features/administration/screens/AddAppren
 import { ApprenticeLearnerScreen } from "@/features/administration/screens/ApprenticeLearnerScreen";
 import { apprenticeLearnerGtaId } from "@/features/administration/domain/apprentice-tutor";
 import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
+import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
+import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
+import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
 import { OnboardingOverview } from "@/features/administration/screens/OnboardingOverview";
@@ -71,6 +74,10 @@ const STAFF_SHARED_REDIRECTS: Record<string, string> = {
   resources: "/staff/programme-delivery",
   "curriculum-feedback": "/staff/programme-delivery",
 };
+
+function searchValue(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
 
 function renderOnboarding(
   workspace: "administration" | "management",
@@ -266,10 +273,23 @@ async function renderApprenticePage(
 export async function renderWorkspacePage(
   workspace: string,
   slug?: string[],
+  search?: Record<string, string | string[] | undefined>,
 ) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
-  if (!session) redirect(getUnauthenticatedRedirect(`/${workspace}`));
+  if (!session) {
+    const segment = slug?.join("/") ?? "";
+    const path = segment ? `/${workspace}/${segment}` : `/${workspace}`;
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(search ?? {})) {
+      if (typeof value === "string") params.set(key, value);
+      else if (Array.isArray(value)) {
+        for (const item of value) params.append(key, item);
+      }
+    }
+    const query = params.toString();
+    redirect(getUnauthenticatedRedirect(query ? `${path}?${query}` : path));
+  }
 
   const rawSegment = slug?.join("/") ?? "";
   const segment = rawSegment || "dashboard";
@@ -431,6 +451,24 @@ export async function renderWorkspacePage(
       case "onboarding/directory/apprentices":
       case "onboarding/directory/employers":
         return renderOnboarding("administration", segment);
+      case "reviews/plan":
+        return (
+          <PlanScreen
+            workspace="administration"
+            date={searchValue(search?.date)}
+            month={searchValue(search?.month)}
+          />
+        );
+      case "reviews/cycle":
+        return <ReviewStubScreen title="Review cycle" />;
+      case "reviews/out":
+        return <ReviewStubScreen title="Out" />;
+      case "reviews/archive":
+        return <ReviewStubScreen title="Archive" />;
+      case "reviews/analytics":
+        return <ReviewStubScreen title="Analytics" />;
+      case "reviews/settings":
+        return <SettingsScreen />;
       case "staff":
         return <AdminStaffScreen eyebrow="Administration" />;
       case "shared-drive":
@@ -489,6 +527,24 @@ export async function renderWorkspacePage(
       case "onboarding/directory/apprentices":
       case "onboarding/directory/employers":
         return renderOnboarding("management", segment);
+      case "reviews/plan":
+        return (
+          <PlanScreen
+            workspace="management"
+            date={searchValue(search?.date)}
+            month={searchValue(search?.month)}
+          />
+        );
+      case "reviews/cycle":
+        return <ReviewStubScreen title="Review cycle" />;
+      case "reviews/out":
+        return <ReviewStubScreen title="Out" />;
+      case "reviews/archive":
+        return <ReviewStubScreen title="Archive" />;
+      case "reviews/analytics":
+        return <ReviewStubScreen title="Analytics" />;
+      case "reviews/settings":
+        return <SettingsScreen />;
       case "enrolments":
         return <AdminEnrolmentsScreen />;
       case "apprentice-funding":
