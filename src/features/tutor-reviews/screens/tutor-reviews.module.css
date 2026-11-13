@@ -1,0 +1,355 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
+}
+
+.card h2,
+.card h3,
+.form h1,
+.form h2 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.lead,
+.muted,
+.help {
+  color: var(--text-secondary);
+  margin: 0.35rem 0 0;
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: end;
+  margin-bottom: var(--space-4);
+}
+
+.rounds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-4);
+}
+
+.round {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  background: var(--bg-card);
+}
+
+.roundSelected {
+  border-color: var(--color-navy-800);
+  box-shadow: inset 0 0 0 1px var(--color-navy-800);
+}
+
+.round button.roundPick {
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  width: 100%;
+}
+
+.dates {
+  margin: 0.35rem 0 0.75rem;
+  color: var(--text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.primary,
+.secondary,
+.copy {
+  border-radius: var(--radius-md);
+  padding: 0.55rem 0.9rem;
+  font: 600 0.95rem var(--font-body);
+  cursor: pointer;
+}
+
+.primary {
+  background: var(--color-navy-800);
+  color: var(--text-inverse);
+  border: 1px solid var(--color-navy-800);
+}
+
+.secondary,
+.copy {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+
+.primary:disabled,
+.secondary:disabled,
+.copy:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  background: var(--color-navy-50);
+  color: var(--color-navy-800);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+
+.table th {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.linkRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: center;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-2);
+}
+
+.error {
+  color: var(--color-red-600, #b42318);
+  margin: 0.5rem 0 0;
+}
+
+.reportGrid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.statRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: 0.75rem 0;
+  color: var(--text-secondary);
+}
+
+.question {
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.question p {
+  margin: 0.25rem 0 0;
+}
+
+.changeUp {
+  color: var(--color-green-600);
+  font-weight: 600;
+}
+
+.changeDown {
+  color: var(--color-red-600, #b42318);
+  font-weight: 600;
+}
+
+.concern {
+  border-left: 3px solid var(--color-navy-800);
+  padding-left: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.form {
+  min-height: 100vh;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  padding: var(--space-6) var(--space-4) var(--space-12);
+}
+
+.formInner {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.choice input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--color-navy-800);
+}
+
+.statement {
+  margin-top: var(--space-5);
+  border: 0;
+  padding: 0;
+}
+
+.statement legend {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 7rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  font: 1rem var(--font-body);
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.progress {
+  margin: 0.75rem 0 0;
+  font-weight: 600;
+  color: var(--color-navy-800);
+}
+
+.previewBanner {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: 0 0 var(--space-4);
+  padding: 0.7rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-navy-800);
+  color: var(--text-inverse);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-align: center;
+}
+
+.field,
+.fieldInline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: var(--space-3);
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.fieldInline {
+  margin-top: 0;
+}
+
+.field input,
+.field textarea,
+.fieldInline select,
+.scaleEdit input {
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.75rem;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  font: 1rem var(--font-body);
+}
+
+.field textarea {
+  min-height: 4.5rem;
+}
+
+.scaleEdit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--space-3);
+}
+
+.pageBlock {
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.pageBlock h3,
+.editorQuestion {
+  font-family: var(--font-display);
+}
+
+.editorQuestion {
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+a.secondary {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}

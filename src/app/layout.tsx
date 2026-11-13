@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Plus_Jakarta_Sans, Source_Sans_3 } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
@@ -59,6 +60,8 @@ export default async function RootLayout({
 }>) {
   const ports = getStandalonePorts();
   const session = await ports.auth.getEffectiveSession();
+  const pathname = (await headers()).get("x-pathname") ?? "";
+  const bareForm = pathname.startsWith("/tutor-review");
 
   return (
     <html lang="en-GB" className={`${plusJakarta.variable} ${sourceSans.variable}`}>
@@ -119,7 +122,7 @@ export default async function RootLayout({
       </head>
       <body>
         <BrowserExtensionErrorGuard />
-        {session ? (
+        {session && !bareForm ? (
           <PortalShell session={session}>{children}</PortalShell>
         ) : (
           children

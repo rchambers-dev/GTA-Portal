@@ -47,6 +47,7 @@ import { EmployersScreen } from "@/features/administration/screens/EmployersScre
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
 import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
 import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
+import { TutorReviewsScreen } from "@/features/tutor-reviews/screens/TutorReviewsScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
 import { OnboardingOverview } from "@/features/administration/screens/OnboardingOverview";
@@ -467,6 +468,8 @@ export async function renderWorkspacePage(
         return <ReviewStubScreen title="Archive" />;
       case "reviews/analytics":
         return <ReviewStubScreen title="Analytics" />;
+      case "reviews/tutor-reviews":
+        return <TutorReviewsScreen />;
       case "reviews/settings":
         return <SettingsScreen />;
       case "staff":
@@ -543,6 +546,8 @@ export async function renderWorkspacePage(
         return <ReviewStubScreen title="Archive" />;
       case "reviews/analytics":
         return <ReviewStubScreen title="Analytics" />;
+      case "reviews/tutor-reviews":
+        return <TutorReviewsScreen />;
       case "reviews/settings":
         return <SettingsScreen />;
       case "enrolments":
