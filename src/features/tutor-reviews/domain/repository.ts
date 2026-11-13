@@ -3,6 +3,7 @@ import { formatApprenticeName } from "@/features/administration/domain/apprentic
 import type { ReviewQuestionKind } from "./catalogue";
 import { blankPublicForm, publicFormFromPayload, questionnaireFromParts, type PublicForm, type Questionnaire } from "./questionnaire";
 import { excludeTestApprentices } from "@/features/administration/domain/test-apprentice";
+import { assignedTutorIds, assignedTutorName, tutorIsCounted } from "./dashboard";
 import { emailPlan, type EmailAttemptStatus, type EmailPlan } from "./email";
 import { concernList, publishStats, type AnswerStat, type RoundStatus } from "./rules";
 
@@ -33,6 +34,7 @@ export type TrackerRow = {
   tutorName: string;
   invited: boolean;
   submitted: boolean;
+  updatedAt: string | null;
 };
 
 export type ReportCard = {
@@ -74,6 +76,7 @@ export type TutorReviewsPage = {
   emailQueueReady: boolean;
   templates: { id: string; label: string; isDefault: boolean; createdAt: string; questionnaire: Questionnaire }[];
   templatesReady: boolean;
+  tutors: { id: string; name: string }[];
 };
 
 export type { PublicForm, Questionnaire };
@@ -85,7 +88,7 @@ function missingTable(message: string | undefined): boolean {
 }
 
 export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
-  const empty: TutorReviewsPage = { loadError: null, rounds: [], tracker: [], reports: [], concerns: [], attempts: [], emailQueueReady: false, templates: [], templatesReady: false };
+  const empty: TutorReviewsPage = { loadError: null, rounds: [], tracker: [], reports: [], concerns: [], attempts: [], emailQueueReady: false, templates: [], templatesReady: false, tutors: [] };
   let supabase;
   try {
     supabase = await createSupabaseServerClient();
@@ -130,9 +133,9 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
   const [questionsResult, invitesQuery, peopleResult, tutorsResult, profilesResult, responsesQuery, answersResult] = await Promise.all([
     supabase.from("tutor_review_questions").select("id, round_id, page, position, code, text, help, kind, is_concern").order("position"),
     supabase.from("tutor_review_invites").select("round_id, apprentice_id, tutor_id, used_at, access_token"),
-    supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, email"),
+    supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, email, updated_at"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id, start_date").is("end_date", null),
-    supabase.from("profiles").select("id, display_name"),
+    supabase.from("profiles").select("id, display_name, base_role, responsibilities, portal_status, archived_at"),
     supabase.from("tutor_review_responses").select("id, round_id, tutor_id, submitted_on, is_test"),
     supabase.from("tutor_review_answers").select("response_id, question_id, rating, text_answer"),
   ]);
@@ -146,14 +149,24 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     if (result.error) return { ...empty, loadError: result.error.message };
   }
 
-  const names = new Map(((profilesResult.data ?? []) as { id: string; display_name: string | null }[]).map((row) => [row.id, row.display_name?.trim() || "Tutor"]));
+  const profileRows = (profilesResult.data ?? []) as { id: string; display_name: string | null; portal_status?: string | null; archived_at?: string | null }[];
+  const names = new Map(profileRows.map((row) => [row.id, row.display_name?.trim() || "Tutor"]));
+  const openAssignments = (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[];
+  const countedTutorIds = assignedTutorIds(
+    openAssignments.map((row) => ({ tutorId: row.tutor_id })),
+    profileRows.map((row) => ({ id: row.id, portalStatus: row.portal_status ?? null, archivedAt: row.archived_at ?? null })),
+  );
+  const tutors = [...countedTutorIds]
+    .map((id) => ({ id, name: names.get(id) || "Tutor" }))
+    .sort((a, b) => a.name.localeCompare(b.name));
   const currentTutor = new Map<string, { tutorId: string; start: string }>();
-  for (const row of (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[]) {
+  for (const row of openAssignments) {
+    if (!countedTutorIds.has(row.tutor_id)) continue;
     const current = currentTutor.get(row.apprentice_id);
     if (!current || row.start_date > current.start) currentTutor.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }
   const invites = (invitesResult.data ?? []) as { round_id: string; apprentice_id: string; tutor_id: string; used_at: string | null; access_token?: string | null }[];
-  const people = excludeTestApprentices((peopleResult.data ?? []) as { gta_id: string; first_name: string; middle_names: string | null; last_name: string; email: string | null; is_test?: boolean | null }[]);
+  const people = excludeTestApprentices((peopleResult.data ?? []) as { gta_id: string; first_name: string; middle_names: string | null; last_name: string; email: string | null; updated_at?: string | null; is_test?: boolean | null }[]);
   const testFlag = await supabase.from("apprentices").select("gta_id, is_test").eq("is_test", true);
   const testIds = testFlag.error ? new Set<string>() : new Set(((testFlag.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
   const tracker: TrackerRow[] = [];
@@ -162,16 +175,17 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
       if (testIds.has(person.gta_id)) continue;
       const invite = invites.find((row) => row.round_id === round.id && row.apprentice_id === person.gta_id);
       const tutorId = invite?.tutor_id ?? currentTutor.get(person.gta_id)?.tutorId ?? null;
-      if (!invite && !tutorId) continue;
+      const tutorName = assignedTutorName(tutorId, tutors);
       tracker.push({
         roundId: round.id,
         apprenticeId: person.gta_id,
         name: formatApprenticeName({ firstName: person.first_name, middleNames: person.middle_names, lastName: person.last_name }),
         email: person.email,
-        tutorId,
-        tutorName: tutorId ? names.get(tutorId) || "Tutor" : "No tutor",
+        tutorId: tutorName === "—" ? null : tutorId,
+        tutorName,
         invited: Boolean(invite),
         submitted: Boolean(invite?.used_at),
+        updatedAt: person.updated_at ?? null,
       });
     }
   }
@@ -186,10 +200,14 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
   const ordered = [...rounds].sort((a, b) => a.opensOn.localeCompare(b.opensOn));
   for (const round of ordered) {
     const previous = ordered.filter((item) => item.opensOn < round.opensOn).at(-1) ?? null;
-    const tutorIds = new Set<string>([
+    const stillCounted = new Set(profileRows.filter((row) => tutorIsCounted({ portalStatus: row.portal_status ?? null, archivedAt: row.archived_at ?? null })).map((row) => row.id));
+    const tutorIds = new Set<string>(countedTutorIds);
+    for (const tutorId of [
       ...invites.filter((row) => row.round_id === round.id && !testIds.has(row.apprentice_id)).map((row) => row.tutor_id),
       ...responses.filter((row) => row.round_id === round.id).map((row) => row.tutor_id),
-    ]);
+    ]) {
+      if (stillCounted.has(tutorId)) tutorIds.add(tutorId);
+    }
     for (const tutorId of tutorIds) {
       const roundResponses = responses.filter((row) => row.round_id === round.id && row.tutor_id === tutorId);
       const previousResponses = previous ? responses.filter((row) => row.round_id === previous.id && row.tutor_id === tutorId) : [];
@@ -239,6 +257,17 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
         questions: published.questions,
       });
       for (const question of roundQuestions.filter((item) => item.is_concern)) {
+        if (question.kind === "yes_no") {
+          const saidYes = (yesFor(roundResponses, roundQuestions).find((row) => row.code === question.code)?.values ?? []).some(Boolean);
+          if (!saidYes) continue;
+          const notes = texts.find((row) => row.code === "concern_note")?.values ?? [];
+          if (notes.length) {
+            for (const value of notes) concernRows.push({ tutorName: names.get(tutorId) || "Tutor", roundLabel: round.label, text: value });
+          } else {
+            concernRows.push({ tutorName: names.get(tutorId) || "Tutor", roundLabel: round.label, text: "Yes" });
+          }
+          continue;
+        }
         for (const value of texts.find((row) => row.code === question.code)?.values ?? []) {
           concernRows.push({ tutorName: names.get(tutorId) || "Tutor", roundLabel: round.label, text: value });
         }
@@ -360,7 +389,7 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     }),
   }));
 
-  return { loadError: null, rounds: fullRounds, tracker, reports, concerns: concernList(concernRows), attempts: attemptRows, emailQueueReady, templates, templatesReady };
+  return { loadError: null, rounds: fullRounds, tracker, reports, concerns: concernList(concernRows), attempts: attemptRows, emailQueueReady, templates, templatesReady, tutors };
 }
 
 export async function readPublicForm(token: string): Promise<PublicForm> {

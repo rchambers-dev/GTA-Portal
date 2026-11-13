@@ -7,6 +7,7 @@ import { resendOneInvite, sendRoundInvites, sendTestRoundInvite } from "../domai
 import type { EmailRunSummary } from "../domain/email";
 import { questionnaireLock, validateQuestionnaire, type Questionnaire } from "../domain/questionnaire";
 import { templateVersionLabel } from "../domain/templates";
+import { assignedTutorIds } from "../domain/dashboard";
 import { hashReviewToken, newReviewToken } from "../domain/rules";
 
 const DENIED = "You do not have permission to change tutor reviews. Administrator and Management can.";
@@ -33,19 +34,26 @@ export async function generateTutorReviewInvitesAction(roundId: string): Promise
 > {
   const access = await writer();
   if (!access.ok) return access;
-  const [peopleResult, tutorsResult, invitesResult] = await Promise.all([
+  const [peopleResult, tutorsResult, invitesResult, profilesResult] = await Promise.all([
     access.supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, email"),
     access.supabase.from("apprentice_tutors").select("apprentice_id, tutor_id, start_date").is("end_date", null),
     access.supabase.from("tutor_review_invites").select("id, apprentice_id, used_at").eq("round_id", roundId),
+    access.supabase.from("profiles").select("id, portal_status, archived_at"),
   ]);
-  const failure = peopleResult.error || tutorsResult.error || invitesResult.error;
+  const failure = peopleResult.error || tutorsResult.error || invitesResult.error || profilesResult.error;
   if (failure) return { ok: false, error: failure.message };
   const snapshot = await access.supabase.rpc("snapshot_tutor_review_round", { p_round_id: roundId });
   if (snapshot.error && !/snapshot_tutor_review_round|does not exist|schema cache|PGRST202/i.test(snapshot.error.message)) {
     return { ok: false, error: snapshot.error.message };
   }
+  const assignmentRows = (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[];
+  const counted = assignedTutorIds(
+    assignmentRows.map((row) => ({ tutorId: row.tutor_id })),
+    ((profilesResult.data ?? []) as { id: string; portal_status: string | null; archived_at: string | null }[]).map((row) => ({ id: row.id, portalStatus: row.portal_status, archivedAt: row.archived_at })),
+  );
   const current = new Map<string, { tutorId: string; start: string }>();
-  for (const row of (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[]) {
+  for (const row of assignmentRows) {
+    if (!counted.has(row.tutor_id)) continue;
     const existing = current.get(row.apprentice_id);
     if (!existing || row.start_date > existing.start) current.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }
