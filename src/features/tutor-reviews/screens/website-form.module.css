@@ -156,9 +156,11 @@
 
 .track {
   position: relative;
-  height: 48px;
+  height: 56px;
   margin: 0.35rem 0;
   touch-action: none;
+  cursor: grab;
+  user-select: none;
 }
 
 .trackFill {
@@ -171,40 +173,15 @@
   background: linear-gradient(90deg, #1f8a4c, #e0b000, #d7263d);
 }
 
-.stop {
-  position: absolute;
-  top: 16px;
-  width: 18px;
-  height: 18px;
-  margin-left: -9px;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 0 1px #e4e4e4;
-  padding: 0;
-}
-
-.stopOn {
-  background: #26529c;
-}
-
 .thumb {
   position: absolute;
-  top: 4px;
-  width: 40px;
-  height: 40px;
-  margin-left: -20px;
+  top: 6px;
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
   display: grid;
   place-items: center;
   pointer-events: none;
-}
-
-.sliderKeys {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
 }
 
 .sliderBlock {
@@ -216,16 +193,6 @@
   align-items: center;
   gap: 0.75rem;
   margin: 0.35rem 0 0;
-}
-
-.clear {
-  border: 0;
-  background: none;
-  color: #26529c;
-  font: inherit;
-  text-decoration: underline;
-  padding: 0.4rem 0;
-  cursor: pointer;
 }
 
 .yesNo {

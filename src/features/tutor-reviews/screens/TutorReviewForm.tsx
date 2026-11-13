@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { questionHelp, type PublicForm, type ReviewPage } from "../domain/questionnaire";
-import { canSubmitReview } from "../domain/slider";
+import { canSubmitReview, DEFAULT_RATING, ratingAnswers } from "../domain/slider";
 import { submitTutorReviewAction } from "./actions";
 import { RatingSlider } from "./RatingSlider";
 import styles from "./website-form.module.css";
@@ -31,7 +31,7 @@ export function TutorReviewForm({ token, form, preview = false, embedded = false
   function submit() {
     if (preview || !canSubmitReview(page, true)) return;
     const answers = [
-      ...Object.entries(ratings).map(([code, rating]) => ({ code, rating })),
+      ...ratingAnswers(form.questions, ratings),
       ...Object.entries(yeses).map(([code, yes]) => ({ code, yes })),
       ...Object.entries(texts).filter(([, text]) => text.trim()).map(([code, text]) => ({ code, text })),
     ];
@@ -95,7 +95,7 @@ export function TutorReviewForm({ token, form, preview = false, embedded = false
                       </div>
                     ) : null}
                     {question.kind === "rating_1_5" ? (
-                      <RatingSlider name={question.text} value={ratings[question.code] ?? null} onChange={(next) => setRatings((current) => setRating(current, question.code, next))} />
+                      <RatingSlider name={question.text} value={ratings[question.code] ?? DEFAULT_RATING} onChange={(next) => setRatings((current) => ({ ...current, [question.code]: next }))} />
                     ) : null}
                     {question.kind === "text" ? (
                       <textarea className={styles.textarea} value={texts[question.code] ?? ""} onChange={(event) => setTexts((current) => ({ ...current, [question.code]: event.target.value }))} />
@@ -132,13 +132,6 @@ function toggleYes(current: Record<string, boolean>, code: string, value: boolea
     return next;
   }
   return { ...current, [code]: value };
-}
-
-function setRating(current: Record<string, number>, code: string, value: number | null) {
-  const next = { ...current };
-  if (value == null) delete next[code];
-  else next[code] = value;
-  return next;
 }
 
 function closesLabel(isoDate: string) {

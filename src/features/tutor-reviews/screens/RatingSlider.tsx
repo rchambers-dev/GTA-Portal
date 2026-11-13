@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { sliderIndex, sliderLabel, sliderValueFromRatio, stepSlider, SLIDER_STOPS } from "../domain/slider";
+import { useRef, useState } from "react";
+import { DEFAULT_RATING, faceColour, sliderLabel, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS } from "../domain/slider";
 import styles from "./website-form.module.css";
 
 export function RatingSlider({
@@ -10,91 +10,81 @@ export function RatingSlider({
   onChange,
 }: {
   name: string;
-  value: number | null;
-  onChange: (value: number | null) => void;
+  value?: number;
+  onChange: (value: number) => void;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const index = sliderIndex(value);
+  const [dragRatio, setDragRatio] = useState<number | null>(null);
+  const committed = value ?? DEFAULT_RATING;
+  const ratio = dragRatio ?? sliderRatioFromValue(committed);
+  const shown = dragRatio == null ? committed : sliderValueFromRatio(dragRatio);
 
-  function chooseFromPointer(clientX: number) {
+  function ratioFrom(clientX: number) {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track) return sliderRatioFromValue(committed);
     const rect = track.getBoundingClientRect();
-    const ratio = rect.width ? (clientX - rect.left) / rect.width : 0;
-    onChange(sliderValueFromRatio(ratio));
+    if (!rect.width) return 0;
+    return Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
   }
 
   return (
     <div className={styles.sliderBlock}>
-      <div className={styles.sliderEnds} aria-hidden="true">
-        <span>Happy</span>
-        <span>Sad</span>
-      </div>
       <div
         ref={trackRef}
-        className={styles.track}
-        onPointerDown={(event) => {
-          if ((event.target as HTMLElement).closest("button")) return;
-          chooseFromPointer(event.clientX);
-        }}
-      >
-        <div className={styles.trackFill} />
-        {SLIDER_STOPS.map((stop, stopIndex) => (
-          <button
-            key={stop.value}
-            type="button"
-            className={value === stop.value ? `${styles.stop} ${styles.stopOn}` : styles.stop}
-            style={{ left: `${(stopIndex / (SLIDER_STOPS.length - 1)) * 100}%` }}
-            aria-label={stop.label}
-            onClick={() => onChange(stop.value)}
-          />
-        ))}
-        {index != null ? (
-          <span className={styles.thumb} style={{ left: `${(index / (SLIDER_STOPS.length - 1)) * 100}%` }} aria-hidden="true">
-            <Face index={index} />
-          </span>
-        ) : null}
-      </div>
-      <div
         role="slider"
         tabIndex={0}
         aria-label={name}
         aria-valuemin={1}
         aria-valuemax={5}
-        aria-valuenow={value ?? undefined}
-        aria-valuetext={sliderLabel(value)}
-        className={styles.sliderKeys}
+        aria-valuenow={shown}
+        aria-valuetext={sliderLabel(shown)}
+        className={styles.track}
+        onPointerDown={(event) => {
+          event.currentTarget.setPointerCapture(event.pointerId);
+          event.currentTarget.focus();
+          setDragRatio(ratioFrom(event.clientX));
+        }}
+        onPointerMove={(event) => {
+          if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+          setDragRatio(ratioFrom(event.clientX));
+        }}
+        onPointerUp={(event) => {
+          if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+          onChange(sliderValueFromRatio(ratioFrom(event.clientX)));
+          setDragRatio(null);
+        }}
+        onPointerCancel={() => setDragRatio(null)}
         onKeyDown={(event) => {
-          if (event.key === "ArrowLeft") onChange(stepSlider(value, "left"));
-          else if (event.key === "ArrowRight") onChange(stepSlider(value, "right"));
-          else if (event.key === "Home") onChange(stepSlider(value, "home"));
-          else if (event.key === "End") onChange(stepSlider(value, "end"));
+          if (event.key === "ArrowLeft") onChange(stepSlider(committed, "left"));
+          else if (event.key === "ArrowRight") onChange(stepSlider(committed, "right"));
+          else if (event.key === "Home") onChange(stepSlider(committed, "home"));
+          else if (event.key === "End") onChange(stepSlider(committed, "end"));
           else return;
           event.preventDefault();
         }}
-      />
+      >
+        <div className={styles.trackFill} />
+        <span className={styles.thumb} style={{ left: `${ratio * 100}%` }} aria-hidden="true">
+          <Face ratio={ratio} />
+        </span>
+      </div>
       <div className={styles.stopLabels}>
         {SLIDER_STOPS.map((stop) => <span key={stop.value}>{stop.label}</span>)}
       </div>
-      <p className={styles.selected}>
-        Selected: {sliderLabel(value)}
-        {value != null ? (
-          <button type="button" className={styles.clear} onClick={() => onChange(null)}>Clear</button>
-        ) : null}
-      </p>
+      <p className={styles.selected}>{sliderLabel(shown)}</p>
     </div>
   );
 }
 
-function Face({ index }: { index: number }) {
-  const mouth = ["M6 14 Q12 20 18 14", "M6 14 Q12 18 18 14", "M6 15 H18", "M6 17 Q12 13 18 17", "M6 18 Q12 12 18 18"][index];
-  const colour = ["#1f8a4c", "#7aa31a", "#e0b000", "#e06a2c", "#d7263d"][index];
+function Face({ ratio }: { ratio: number }) {
+  const start = 14 + ratio * 4;
+  const curve = 20 - ratio * 8;
   return (
-    <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
-      <circle cx="12" cy="12" r="11" fill={colour} />
+    <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true">
+      <circle cx="12" cy="12" r="11" fill={faceColour(ratio)} />
       <circle cx="8" cy="10" r="1.3" fill="#fff" />
       <circle cx="16" cy="10" r="1.3" fill="#fff" />
-      <path d={mouth} fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
+      <path d={`M6 ${start} Q12 ${curve} 18 ${start}`} fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
   );
 }
