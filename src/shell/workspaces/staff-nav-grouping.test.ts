@@ -81,6 +81,7 @@ describe("sidebar grouping", () => {
         "Out",
         "Archive",
         "Analytics",
+        "Tutor reviews",
         "Settings",
       ]);
       const apprenticeship = sections.find((section) => section.title === "Apprenticeship Management");
@@ -128,6 +129,7 @@ describe("sidebar grouping", () => {
       "Out",
       "Archive",
       "Analytics",
+      "Tutor reviews",
       "Settings",
     ]);
     const shown = resolveNavigation(
