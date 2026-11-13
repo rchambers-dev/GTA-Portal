@@ -294,11 +294,18 @@
   line-height: 1.45;
 }
 
-.scale {
+.scale,
+.yesNo {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
   margin: var(--space-4) 0;
+}
+
+.yesNo .choice {
+  min-height: 56px;
+  justify-content: center;
+  font-size: 1.05rem;
 }
 
 .choice {

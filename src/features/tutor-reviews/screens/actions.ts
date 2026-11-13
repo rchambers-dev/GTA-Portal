@@ -158,7 +158,7 @@ export async function saveTutorReviewQuestionnaireAction(roundId: string, questi
 
 export async function submitTutorReviewAction(
   token: string,
-  answers: { code: string; rating?: number | null; text?: string | null }[],
+  answers: { code: string; rating?: number | null; text?: string | null; yes?: boolean | null }[],
 ): Promise<{ state: "unavailable" | "submitted" | "closed" | "not_open" | "invalid" }> {
   const supabase = await createSupabaseServerClient();
   const result = await supabase.rpc("submit_tutor_review", { p_token: token, p_answers: answers });

@@ -36,7 +36,9 @@ export function diffQuestions(before: QuestionnaireQuestion[], after: Questionna
     }
     const notes: string[] = [];
     if (older.text !== question.text) notes.push(`wording is now “${question.text}”`);
-    if (older.kind !== question.kind) notes.push(question.kind === "text" ? "it is now a written question" : "it is now a rating from 1 to 5");
+    if (older.kind !== question.kind) {
+      notes.push(question.kind === "text" ? "it is now a written question" : question.kind === "yes_no" ? "it is now a yes or no question" : "it is now a rating from 1 to 5");
+    }
     if (older.page !== question.page) notes.push(`it moved to page ${question.page}`);
     if (older.isConcern !== question.isConcern) notes.push(question.isConcern ? "it is now marked as a concern" : "it is no longer marked as a concern");
     if (older.help !== question.help) notes.push("the help text changed");

@@ -27,8 +27,11 @@ function statusLabel(round: TutorReviewRound) {
 
 function changeLabel(value: number | null) {
   if (value == null) return "—";
-  const text = `${value > 0 ? "+" : ""}${value.toFixed(1)}`;
-  return text;
+  return `${value > 0 ? "+" : ""}${value.toFixed(1)}`;
+}
+
+function isPastRound(round: TutorReviewRound, today: string) {
+  return round.status === "closed" || Boolean(round.closedEarly) || round.closesOn < today;
 }
 
 export function TutorReviewsBoard({
@@ -56,7 +59,10 @@ export function TutorReviewsBoard({
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [roundId, setRoundId] = useState(rounds[0]?.id ?? "");
+  const today = londonToday();
+  const upcoming = rounds.filter((item) => !isPastRound(item, today));
+  const past = rounds.filter((item) => isPastRound(item, today));
+  const [roundId, setRoundId] = useState(upcoming[0]?.id ?? rounds.at(-1)?.id ?? "");
   const [links, setLinks] = useState<LinkRow[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
@@ -87,11 +93,11 @@ export function TutorReviewsBoard({
         <CollapsibleSection id="rounds" title="Rounds" defaultOpen>
         <div className={styles.sectionHead}>
           <div>
-            <p className={styles.muted}>Seeded rounds stay draft until you open one. Opening a round lets apprentices submit on the dates shown.</p>
+            <p className={styles.muted}>December and June rounds are created as drafts. You can change the dates before you open a round. Opening a round lets apprentices submit on the dates shown.</p>
           </div>
         </div>
         <div className={styles.rounds}>
-          {rounds.map((item) => (
+          {upcoming.map((item) => (
             <article key={item.id} className={item.id === round?.id ? `${styles.round} ${styles.roundSelected}` : styles.round}>
               <button type="button" className={styles.roundPick} onClick={() => setRoundId(item.id)}>
                 <strong>{item.label}</strong>
@@ -117,6 +123,19 @@ export function TutorReviewsBoard({
             </article>
           ))}
         </div>
+        <CollapsibleSection id="past-rounds" title={`Past rounds${past.length ? ` · ${past.length}` : ""}`}>
+          <div className={styles.rounds}>
+            {past.length ? past.map((item) => (
+              <article key={item.id} className={item.id === round?.id ? `${styles.round} ${styles.roundSelected}` : styles.round}>
+                <button type="button" className={styles.roundPick} onClick={() => setRoundId(item.id)}>
+                  <strong>{item.label}</strong>
+                  <span className={styles.pill}>{statusLabel(item)}</span>
+                  <p className={styles.dates}>{formatDate(item.opensOn)} – {formatDate(item.closesOn)}</p>
+                </button>
+              </article>
+            )) : <p className={styles.muted}>No past rounds yet.</p>}
+          </div>
+        </CollapsibleSection>
         {error ? <p className={styles.error}>{error}</p> : null}
         </CollapsibleSection>
       </section>
@@ -257,7 +276,7 @@ export function TutorReviewsBoard({
 
       <section className={styles.card}>
         <CollapsibleSection id="report" title={`Report${round ? ` · ${round.label}` : ""}`}>
-        <p className={styles.muted}>Averages and comments stay hidden until a tutor has at least 3 responses. The change is against the previous round when that round also has at least 3.</p>
+        <p className={styles.muted}>Averages, Yes percentages, and comments stay hidden until a tutor has at least 3 responses. The change is against the previous round when that round also has at least 3.</p>
         <div className={styles.reportGrid}>
           {roundReports.length ? roundReports.map((report) => (
             <article key={`${report.roundId}-${report.tutorId}`} className={styles.round}>
@@ -267,10 +286,19 @@ export function TutorReviewsBoard({
                 <span>{report.invited} invited</span>
                 <span>{report.submitted} submitted</span>
               </div>
-              {report.hidden ? <p className={styles.muted}>Fewer than 3 responses, so averages and comments stay hidden.</p> : report.questions.map((question) => (
+              {report.hidden ? <p className={styles.muted}>Fewer than 3 responses, so averages, Yes percentages, and comments stay hidden.</p> : report.questions.map((question) => (
                 <div key={question.code} className={styles.question}>
                   <strong>{question.text}</strong>
-                  {question.kind === "rating_1_5" ? (
+                  {question.kind === "yes_no" ? (
+                    <p>
+                      {question.yesAnswered ? `${question.yesCount} Yes of ${question.yesAnswered} (${question.yesPercent}%)` : "No answers yet"}
+                      {" · "}
+                      <span className={question.change == null ? undefined : question.change < 0 ? styles.changeDown : styles.changeUp}>
+                        {question.change == null ? "—" : `${question.change > 0 ? "+" : ""}${question.change} points`}
+                      </span>
+                      {report.previousLabel ? ` vs ${report.previousLabel}` : ""}
+                    </p>
+                  ) : question.kind === "rating_1_5" ? (
                     <p>
                       Average {question.average?.toFixed(1) ?? "—"}
                       {" · "}

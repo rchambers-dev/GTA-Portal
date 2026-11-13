@@ -12,7 +12,7 @@ export const RATING_SCALE = [
   { value: 5, label: "Always" },
 ] as const;
 
-export type ReviewQuestionKind = "rating_1_5" | "text";
+export type ReviewQuestionKind = "rating_1_5" | "text" | "yes_no";
 
 export type ReviewQuestionTemplate = {
   page: 1 | 2 | 3;

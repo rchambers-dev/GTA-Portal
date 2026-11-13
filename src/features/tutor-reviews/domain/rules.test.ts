@@ -75,6 +75,37 @@ describe("tutor review report", () => {
     expect(shown.questions.find((question) => question.isConcern)?.texts).toEqual(["Talks over people"]);
   });
 
+  it("reports the Yes count and percentage, and hides them below 3 responses", () => {
+    const question = { code: "yn", text: "Was the session useful?", kind: "yes_no" as const, isConcern: false };
+    const hidden = publishStats({
+      responseCount: 2,
+      previousCount: 4,
+      questions: [question],
+      ratings: [],
+      previousRatings: [],
+      texts: [],
+      yeses: [{ code: "yn", values: [true, false] }],
+      previousYeses: [{ code: "yn", values: [true, true, true, false] }],
+    });
+    expect(hidden.questions[0]?.yesPercent).toBeNull();
+    expect(hidden.questions[0]?.change).toBeNull();
+
+    const shown = publishStats({
+      responseCount: 4,
+      previousCount: 4,
+      questions: [question],
+      ratings: [],
+      previousRatings: [],
+      texts: [],
+      yeses: [{ code: "yn", values: [true, true, true, false] }],
+      previousYeses: [{ code: "yn", values: [true, false, false, false] }],
+    });
+    expect(shown.questions[0]?.yesCount).toBe(3);
+    expect(shown.questions[0]?.yesAnswered).toBe(4);
+    expect(shown.questions[0]?.yesPercent).toBe(75);
+    expect(shown.questions[0]?.change).toBe(50);
+  });
+
   it("exports invite links as name, email, and link", () => {
     expect(inviteCsv([{ name: "Ada Lovelace", email: "No email", link: "https://example.test/tutor-review/abc" }])).toBe(
       "name,email,link\nAda Lovelace,No email,https://example.test/tutor-review/abc",

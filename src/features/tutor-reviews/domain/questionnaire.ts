@@ -88,7 +88,7 @@ export function questionnaireFromParts(input: {
         position: index + 1,
         text: question.text,
         help: question.help?.trim() || null,
-        kind: question.kind === "text" ? "text" : "rating_1_5",
+        kind: question.kind === "text" ? "text" : question.kind === "yes_no" ? "yes_no" : "rating_1_5",
         isConcern: question.isConcern,
       })),
   };
@@ -176,7 +176,7 @@ export function validateQuestionnaire(input: Questionnaire): { ok: true; value: 
       text: question.text.trim(),
       help: question.help?.trim() || null,
       page: asReviewPage(question.page),
-      kind: question.kind === "text" ? "text" as const : "rating_1_5" as const,
+      kind: question.kind === "text" ? "text" as const : question.kind === "yes_no" ? "yes_no" as const : "rating_1_5" as const,
       isConcern: Boolean(question.isConcern),
     }));
   return {

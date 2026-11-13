@@ -4,7 +4,7 @@ import type { ReviewQuestionKind } from "./catalogue";
 import { blankPublicForm, publicFormFromPayload, questionnaireFromParts, type PublicForm, type Questionnaire } from "./questionnaire";
 import { excludeTestApprentices } from "@/features/administration/domain/test-apprentice";
 import { emailPlan, type EmailAttemptStatus, type EmailPlan } from "./email";
-import { concernList, publishStats, type RoundStatus } from "./rules";
+import { concernList, publishStats, type AnswerStat, type RoundStatus } from "./rules";
 
 export type TutorReviewRound = {
   id: string;
@@ -44,15 +44,7 @@ export type ReportCard = {
   submitted: number;
   responseCount: number;
   hidden: boolean;
-  questions: {
-    code: string;
-    text: string;
-    kind: ReviewQuestionKind;
-    isConcern: boolean;
-    average: number | null;
-    change: number | null;
-    texts: string[];
-  }[];
+  questions: AnswerStat[];
 };
 
 export type ConcernItem = { tutorName: string; roundLabel: string; text: string };
@@ -177,6 +169,8 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
   const questions = (questionsResult.data ?? []) as { id: string; round_id: string; page: number; code: string; text: string; help: string | null; kind: ReviewQuestionKind; is_concern: boolean; position: number }[];
   const responses = (responsesResult.data ?? []) as { id: string; round_id: string; tutor_id: string }[];
   const answers = (answersResult.data ?? []) as { response_id: string; question_id: string; rating: number | null; text_answer: string | null }[];
+  const yesResult = await supabase.from("tutor_review_answers").select("response_id, question_id, yes_answer");
+  const yesAnswers = yesResult.error ? [] : (yesResult.data ?? []) as { response_id: string; question_id: string; yes_answer: boolean | null }[];
   const reports: ReportCard[] = [];
   const concernRows: { tutorName: string; roundLabel: string; text: string }[] = [];
   const ordered = [...rounds].sort((a, b) => a.opensOn.localeCompare(b.opensOn));
@@ -203,6 +197,14 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
         code: question.code,
         values: roundResponses.flatMap((response) => answers.filter((answer) => answer.response_id === response.id && answer.question_id === question.id && answer.text_answer).map((answer) => answer.text_answer as string)),
       }));
+      const yesFor = (rows: { id: string }[], sourceQuestions: typeof questions) =>
+        roundQuestions.filter((question) => question.kind === "yes_no").map((question) => ({
+          code: question.code,
+          values: rows.flatMap((response) => {
+            const match = sourceQuestions.find((item) => item.code === question.code);
+            return yesAnswers.filter((answer) => answer.response_id === response.id && answer.question_id === match?.id && answer.yes_answer != null).map((answer) => Boolean(answer.yes_answer));
+          }),
+        }));
       const published = publishStats({
         responseCount: roundResponses.length,
         previousCount: previousResponses.length,
@@ -210,6 +212,8 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
         ratings: ratingsFor(roundResponses, roundQuestions),
         previousRatings: ratingsFor(previousResponses, previousQuestions),
         texts,
+        yeses: yesFor(roundResponses, roundQuestions),
+        previousYeses: yesFor(previousResponses, previousQuestions),
       });
       const invited = tracker.filter((row) => row.tutorId === tutorId && invites.some((invite) => invite.round_id === round.id && invite.apprentice_id === row.apprenticeId)).length;
       reports.push({

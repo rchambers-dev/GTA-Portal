@@ -160,8 +160,9 @@ export function QuestionnaireEditor({
                 </label>
                 <div className={styles.actions}>
                   <label className={styles.fieldInline}>Type
-                    <select value={question.kind} onChange={(event) => updateQuestion(question.code, { kind: event.target.value === "text" ? "text" : "rating_1_5" })}>
+                    <select value={question.kind} onChange={(event) => updateQuestion(question.code, { kind: event.target.value === "text" ? "text" : event.target.value === "yes_no" ? "yes_no" : "rating_1_5" })}>
                       <option value="rating_1_5">Rating 1–5</option>
+                      <option value="yes_no">Yes / No</option>
                       <option value="text">Written</option>
                     </select>
                   </label>
