@@ -139,7 +139,7 @@ with (security_invoker = true) as
 select round.id as round_id,
        count(invite.id) filter (where apprentice.is_test is not true) as invited,
        count(invite.id) filter (where apprentice.is_test is not true and invite.used_at is not null) as submitted,
-       count(invite.id) filter (where apprentice.is_test is not true and nullif(btrim(coalesce(apprentice.email, '')), '') is null) as no_email,
+       (select count(*) from public.apprentices learner where learner.is_test is not true and nullif(btrim(coalesce(learner.email, '')), '') is null) as no_email,
        count(distinct attempt.id) filter (where attempt.status in ('failed', 'bounced') and apprentice.is_test is not true) as failed_emails
   from public.tutor_review_rounds round
   left join public.tutor_review_invites invite on invite.round_id = round.id

@@ -46,6 +46,7 @@ export function TutorReviewsBoard({
   workspace,
   templates,
   templatesReady,
+  tutors,
 }: {
   rounds: TutorReviewRound[];
   tracker: TrackerRow[];
@@ -57,6 +58,7 @@ export function TutorReviewsBoard({
   workspace: "administration" | "management";
   templates: TutorReviewsPage["templates"];
   templatesReady: boolean;
+  tutors: { id: string; name: string }[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -106,19 +108,20 @@ export function TutorReviewsBoard({
           round={round}
           rounds={upcoming.length ? upcoming : [round]}
           onSelect={setRoundId}
-          actions={
+          toolbar={
             <>
               <button type="button" className={styles.primary} disabled={pending || round.status === "open"} onClick={() => run(() => setTutorReviewRoundAction({ roundId: round.id, status: "open" }))}>Open round</button>
-              <button type="button" className={styles.secondary} disabled={pending || round.status !== "open"} onClick={() => run(() => setTutorReviewRoundAction({ roundId: round.id, status: "closed" }))}>Close early</button>
+              {round.status === "open" ? <button type="button" className={styles.secondary} disabled={pending} onClick={() => run(() => setTutorReviewRoundAction({ roundId: round.id, status: "closed" }))}>Close early</button> : null}
               <SendInvitesButton roundId={round.id} label={round.label} plan={round.emailPlan} mode={emailMode} canSend={emailQueueReady && roundCanSend({ status: round.status, closesOn: round.closesOn, closedEarly: round.closedEarly, today }).ok} reason={null} />
               <SendTestEmailButton roundId={round.id} canSend={emailQueueReady && roundCanSend({ status: round.status, closesOn: round.closesOn, closedEarly: round.closedEarly, today }).ok} reason={null} />
-              <TestLinkPanel roundId={round.id} path={round.testPath} />
             </>
           }
+          testPath={round.testPath}
           tracker={rows}
           reports={roundReports}
-          concerns={concerns.filter((item) => item.roundLabel === round.label)}
+          concernCount={concerns.filter((item) => item.roundLabel === round.label).length}
           attempts={attempts.filter((item) => item.roundId === round.id)}
+          tutors={tutors}
           onOpenEmail={() => setTab("email")}
           onEditQuestions={() => setTab("questions")}
         />

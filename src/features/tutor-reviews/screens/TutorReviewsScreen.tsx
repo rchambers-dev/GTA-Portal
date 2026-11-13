@@ -44,6 +44,7 @@ export async function TutorReviewsScreen({ workspace }: { workspace: "administra
           workspace={workspace}
           templates={page.templates}
           templatesReady={page.templatesReady}
+          tutors={page.tutors}
         />
       )}
     </ApprenticePageShell>

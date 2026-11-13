@@ -16,6 +16,26 @@ describe("tutor review dashboard figures", () => {
     expect(figures).toEqual({ invited: 2, submitted: 1, responseRate: 50, noEmail: 1, failedEmails: 2, concerns: 1 });
   });
 
+  it("counts apprentices with no email even when they have not been invited", () => {
+    const figures = roundKpis({
+      people: [
+        { tutorName: "—", invited: false, submitted: false, email: null },
+        { tutorName: "Ada", invited: true, submitted: false, email: "a@example.com" },
+        { tutorName: "—", invited: false, submitted: false, email: null, isTest: true },
+      ],
+      failedEmails: 0,
+      concerns: 0,
+    });
+    expect(figures.noEmail).toBe(1);
+    expect(figures.invited).toBe(1);
+  });
+
+  it("shows an active tutor at 0% before anyone is invited", () => {
+    expect(tutorResponseRates([], ["Anne-Marie Sanderson"])).toEqual([
+      { tutorName: "Anne-Marie Sanderson", invited: 0, submitted: 0, rate: 0 },
+    ]);
+  });
+
   it("rates each tutor from real invites only", () => {
     expect(tutorResponseRates([
       { tutorName: "Ada", invited: true, submitted: true, email: "a@example.com" },

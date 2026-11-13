@@ -33,6 +33,7 @@ export type TrackerRow = {
   tutorName: string;
   invited: boolean;
   submitted: boolean;
+  updatedAt: string | null;
 };
 
 export type ReportCard = {
@@ -74,6 +75,7 @@ export type TutorReviewsPage = {
   emailQueueReady: boolean;
   templates: { id: string; label: string; isDefault: boolean; createdAt: string; questionnaire: Questionnaire }[];
   templatesReady: boolean;
+  tutors: { id: string; name: string }[];
 };
 
 export type { PublicForm, Questionnaire };
@@ -85,7 +87,7 @@ function missingTable(message: string | undefined): boolean {
 }
 
 export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
-  const empty: TutorReviewsPage = { loadError: null, rounds: [], tracker: [], reports: [], concerns: [], attempts: [], emailQueueReady: false, templates: [], templatesReady: false };
+  const empty: TutorReviewsPage = { loadError: null, rounds: [], tracker: [], reports: [], concerns: [], attempts: [], emailQueueReady: false, templates: [], templatesReady: false, tutors: [] };
   let supabase;
   try {
     supabase = await createSupabaseServerClient();
@@ -130,9 +132,9 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
   const [questionsResult, invitesQuery, peopleResult, tutorsResult, profilesResult, responsesQuery, answersResult] = await Promise.all([
     supabase.from("tutor_review_questions").select("id, round_id, page, position, code, text, help, kind, is_concern").order("position"),
     supabase.from("tutor_review_invites").select("round_id, apprentice_id, tutor_id, used_at, access_token"),
-    supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, email"),
+    supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, email, updated_at"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id, start_date").is("end_date", null),
-    supabase.from("profiles").select("id, display_name"),
+    supabase.from("profiles").select("id, display_name, base_role, responsibilities, portal_status, archived_at"),
     supabase.from("tutor_review_responses").select("id, round_id, tutor_id, submitted_on, is_test"),
     supabase.from("tutor_review_answers").select("response_id, question_id, rating, text_answer"),
   ]);
@@ -146,14 +148,19 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     if (result.error) return { ...empty, loadError: result.error.message };
   }
 
-  const names = new Map(((profilesResult.data ?? []) as { id: string; display_name: string | null }[]).map((row) => [row.id, row.display_name?.trim() || "Tutor"]));
+  const profileRows = (profilesResult.data ?? []) as { id: string; display_name: string | null; base_role?: string | null; responsibilities?: string[] | null; portal_status?: string | null; archived_at?: string | null }[];
+  const names = new Map(profileRows.map((row) => [row.id, row.display_name?.trim() || "Tutor"]));
+  const tutors = profileRows
+    .filter((row) => row.portal_status === "active" && !row.archived_at && (row.base_role === "Tutor" || (row.responsibilities ?? []).includes("Apprenticeship Tutor")))
+    .map((row) => ({ id: row.id, name: row.display_name?.trim() || "Tutor" }))
+    .sort((a, b) => a.name.localeCompare(b.name));
   const currentTutor = new Map<string, { tutorId: string; start: string }>();
   for (const row of (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[]) {
     const current = currentTutor.get(row.apprentice_id);
     if (!current || row.start_date > current.start) currentTutor.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }
   const invites = (invitesResult.data ?? []) as { round_id: string; apprentice_id: string; tutor_id: string; used_at: string | null; access_token?: string | null }[];
-  const people = excludeTestApprentices((peopleResult.data ?? []) as { gta_id: string; first_name: string; middle_names: string | null; last_name: string; email: string | null; is_test?: boolean | null }[]);
+  const people = excludeTestApprentices((peopleResult.data ?? []) as { gta_id: string; first_name: string; middle_names: string | null; last_name: string; email: string | null; updated_at?: string | null; is_test?: boolean | null }[]);
   const testFlag = await supabase.from("apprentices").select("gta_id, is_test").eq("is_test", true);
   const testIds = testFlag.error ? new Set<string>() : new Set(((testFlag.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
   const tracker: TrackerRow[] = [];
@@ -162,16 +169,16 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
       if (testIds.has(person.gta_id)) continue;
       const invite = invites.find((row) => row.round_id === round.id && row.apprentice_id === person.gta_id);
       const tutorId = invite?.tutor_id ?? currentTutor.get(person.gta_id)?.tutorId ?? null;
-      if (!invite && !tutorId) continue;
       tracker.push({
         roundId: round.id,
         apprenticeId: person.gta_id,
         name: formatApprenticeName({ firstName: person.first_name, middleNames: person.middle_names, lastName: person.last_name }),
         email: person.email,
         tutorId,
-        tutorName: tutorId ? names.get(tutorId) || "Tutor" : "No tutor",
+        tutorName: tutorId ? names.get(tutorId) || "Tutor" : "—",
         invited: Boolean(invite),
         submitted: Boolean(invite?.used_at),
+        updatedAt: person.updated_at ?? null,
       });
     }
   }
@@ -371,7 +378,7 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     }),
   }));
 
-  return { loadError: null, rounds: fullRounds, tracker, reports, concerns: concernList(concernRows), attempts: attemptRows, emailQueueReady, templates, templatesReady };
+  return { loadError: null, rounds: fullRounds, tracker, reports, concerns: concernList(concernRows), attempts: attemptRows, emailQueueReady, templates, templatesReady, tutors };
 }
 
 export async function readPublicForm(token: string): Promise<PublicForm> {
