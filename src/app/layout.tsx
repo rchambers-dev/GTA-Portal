@@ -64,7 +64,7 @@ export default async function RootLayout({
   const bareForm = pathname.startsWith("/tutor-review");
 
   return (
-    <html lang="en-GB" className={`${plusJakarta.variable} ${sourceSans.variable}`}>
+    <html lang="en-GB" className={`${plusJakarta.variable} ${sourceSans.variable}${bareForm ? " tutorReviewPage" : ""}`}>
       <head>
         <Script
           id="ignore-metamask-extension-errors"

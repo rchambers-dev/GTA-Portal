@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { formatApprenticeName } from "@/features/administration/domain/apprentice-record";
 import type { ReviewQuestionKind } from "./catalogue";
 import { blankPublicForm, publicFormFromPayload, questionnaireFromParts, type PublicForm, type Questionnaire } from "./questionnaire";
+import { excludeTestApprentices } from "@/features/administration/domain/test-apprentice";
 import { emailPlan, type EmailAttemptStatus, type EmailPlan } from "./email";
 import { concernList, publishStats, type RoundStatus } from "./rules";
 
@@ -18,6 +19,8 @@ export type TutorReviewRound = {
   responseCount: number;
   questionnaire: Questionnaire;
   emailPlan: EmailPlan;
+  templateVersionId: string | null;
+  snapshotted: boolean;
 };
 
 export type TrackerRow = {
@@ -73,6 +76,8 @@ export type TutorReviewsPage = {
   concerns: ConcernItem[];
   attempts: EmailAttemptRow[];
   emailQueueReady: boolean;
+  templates: { id: string; label: string; isDefault: boolean; createdAt: string; questionnaire: Questionnaire }[];
+  templatesReady: boolean;
 };
 
 export type { PublicForm, Questionnaire };
@@ -84,7 +89,7 @@ function missingTable(message: string | undefined): boolean {
 }
 
 export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
-  const empty: TutorReviewsPage = { loadError: null, rounds: [], tracker: [], reports: [], concerns: [], attempts: [], emailQueueReady: false };
+  const empty: TutorReviewsPage = { loadError: null, rounds: [], tracker: [], reports: [], concerns: [], attempts: [], emailQueueReady: false, templates: [], templatesReady: false };
   let supabase;
   try {
     supabase = await createSupabaseServerClient();
@@ -92,7 +97,11 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     const message = error instanceof Error ? error.message : MISSING;
     return { ...empty, loadError: /supabase|tutor_review_|does not exist|schema cache/i.test(message) ? MISSING : message };
   }
-  const roundsResult = await supabase.from("tutor_review_rounds").select("id, label, opens_on, closes_on, status, closed_early_at, title, intro, rating_help, scale, page_headings").order("opens_on");
+  const roundColumns = "id, label, opens_on, closes_on, status, closed_early_at, title, intro, rating_help, scale, page_headings";
+  const richRounds = await supabase.from("tutor_review_rounds").select(`${roundColumns}, template_version_id, snapshotted_at`).order("opens_on");
+  const roundsResult = richRounds.error && /template_version_id|snapshotted_at/i.test(richRounds.error.message)
+    ? await supabase.from("tutor_review_rounds").select(roundColumns).order("opens_on")
+    : richRounds;
   if (roundsResult.error) {
     return { ...empty, loadError: missingTable(roundsResult.error.message) ? MISSING : roundsResult.error.message };
   }
@@ -108,6 +117,8 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     rating_help: string;
     scale: unknown;
     page_headings: unknown;
+    template_version_id?: string | null;
+    snapshotted_at?: string | null;
   }[];
   const rounds = roundRows.map((row) => ({
     id: row.id,
@@ -140,10 +151,13 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     if (!current || row.start_date > current.start) currentTutor.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }
   const invites = (invitesResult.data ?? []) as { round_id: string; apprentice_id: string; tutor_id: string; used_at: string | null }[];
-  const people = (peopleResult.data ?? []) as { gta_id: string; first_name: string; middle_names: string | null; last_name: string; email: string | null }[];
+  const people = excludeTestApprentices((peopleResult.data ?? []) as { gta_id: string; first_name: string; middle_names: string | null; last_name: string; email: string | null; is_test?: boolean | null }[]);
+  const testFlag = await supabase.from("apprentices").select("gta_id, is_test").eq("is_test", true);
+  const testIds = testFlag.error ? new Set<string>() : new Set(((testFlag.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
   const tracker: TrackerRow[] = [];
   for (const round of rounds) {
     for (const person of people) {
+      if (testIds.has(person.gta_id)) continue;
       const invite = invites.find((row) => row.round_id === round.id && row.apprentice_id === person.gta_id);
       const tutorId = invite?.tutor_id ?? currentTutor.get(person.gta_id)?.tutorId ?? null;
       if (!invite && !tutorId) continue;
@@ -264,7 +278,10 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
           isConcern: question.is_concern,
         })),
       }),
+      templateVersionId: source?.template_version_id ?? null,
+      snapshotted: Boolean(source?.snapshotted_at),
       emailPlan: emailPlan(people.flatMap((person) => {
+        if (testIds.has(person.gta_id)) return [];
         const tutorId = currentTutor.get(person.gta_id)?.tutorId;
         if (!tutorId) return [];
         const invite = invites.find((row) => row.round_id === round.id && row.apprentice_id === person.gta_id);
@@ -277,7 +294,37 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     };
   });
 
-  return { loadError: null, rounds: fullRounds, tracker, reports, concerns: concernList(concernRows), attempts: attemptRows, emailQueueReady };
+  const templateResult = await supabase.from("tutor_review_template_versions").select("id, label, is_default, created_at, title, intro, rating_help, scale, page_headings").order("created_at");
+  const templateQuestions = templateResult.error ? { data: [], error: templateResult.error } : await supabase.from("tutor_review_template_questions").select("version_id, page, position, code, text, help, kind, is_concern").order("position");
+  const templatesReady = !templateResult.error && !templateQuestions.error;
+  const templateRows = templatesReady ? (templateResult.data ?? []) as {
+    id: string; label: string; is_default: boolean; created_at: string; title: string; intro: string; rating_help: string; scale: unknown; page_headings: unknown;
+  }[] : [];
+  const templateQuestionRows = (templateQuestions.data ?? []) as { version_id: string; page: number; position: number; code: string; text: string; help: string | null; kind: string; is_concern: boolean }[];
+  const templates = templateRows.map((version) => ({
+    id: version.id,
+    label: version.label,
+    isDefault: version.is_default,
+    createdAt: version.created_at,
+    questionnaire: questionnaireFromParts({
+      title: version.title,
+      intro: version.intro,
+      ratingHelp: version.rating_help,
+      scale: version.scale,
+      pageHeadings: version.page_headings,
+      questions: templateQuestionRows.filter((question) => question.version_id === version.id).map((question) => ({
+        code: question.code,
+        page: question.page,
+        position: question.position,
+        text: question.text,
+        help: question.help,
+        kind: question.kind,
+        isConcern: question.is_concern,
+      })),
+    }),
+  }));
+
+  return { loadError: null, rounds: fullRounds, tracker, reports, concerns: concernList(concernRows), attempts: attemptRows, emailQueueReady, templates, templatesReady };
 }
 
 export async function readPublicForm(token: string): Promise<PublicForm> {

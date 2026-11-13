@@ -115,6 +115,31 @@ export function nextQuestionCode(codes: string[]): string {
   return code;
 }
 
+export function renumberQuestions(questions: QuestionnaireQuestion[]): QuestionnaireQuestion[] {
+  return [...questions]
+    .sort((a, b) => a.page - b.page || a.position - b.position || a.code.localeCompare(b.code))
+    .map((question, index) => ({ ...question, position: index + 1 }));
+}
+
+export function insertQuestion(questions: QuestionnaireQuestion[], afterCode: string | null, question: QuestionnaireQuestion): QuestionnaireQuestion[] {
+  const ordered = renumberQuestions(questions);
+  const index = afterCode ? ordered.findIndex((item) => item.code === afterCode) : -1;
+  const next = [...ordered];
+  next.splice(index + 1, 0, question);
+  return renumberQuestions(next);
+}
+
+export function duplicateQuestion(questions: QuestionnaireQuestion[], code: string): QuestionnaireQuestion[] {
+  const source = questions.find((question) => question.code === code);
+  if (!source) return questions;
+  const copy: QuestionnaireQuestion = {
+    ...source,
+    code: nextQuestionCode(questions.map((question) => question.code)),
+    text: source.text,
+  };
+  return insertQuestion(questions, code, copy);
+}
+
 export function moveQuestion(questions: QuestionnaireQuestion[], code: string, direction: -1 | 1): QuestionnaireQuestion[] {
   const current = questions.find((question) => question.code === code);
   if (!current) return questions;

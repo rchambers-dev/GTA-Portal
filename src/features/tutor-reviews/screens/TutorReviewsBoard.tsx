@@ -3,10 +3,11 @@
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { inviteCsv } from "../domain/csv";
-import type { ConcernItem, EmailAttemptRow, ReportCard, TrackerRow, TutorReviewRound } from "../domain/repository";
+import type { ConcernItem, EmailAttemptRow, ReportCard, TrackerRow, TutorReviewRound, TutorReviewsPage } from "../domain/repository";
 import { londonToday, roundCanSend, type EmailMode } from "../domain/email";
 import { generateTutorReviewInvitesAction, setTutorReviewRoundAction } from "./actions";
 import { EmailAttempts, SendInvitesButton } from "./EmailPanel";
+import { CollapsibleSection } from "./CollapsibleSection";
 import { QuestionnaireEditor } from "./QuestionnaireEditor";
 import styles from "./tutor-reviews.module.css";
 
@@ -39,6 +40,8 @@ export function TutorReviewsBoard({
   emailQueueReady,
   emailMode,
   workspace,
+  templates,
+  templatesReady,
 }: {
   rounds: TutorReviewRound[];
   tracker: TrackerRow[];
@@ -48,6 +51,8 @@ export function TutorReviewsBoard({
   emailQueueReady: boolean;
   emailMode: EmailMode;
   workspace: "administration" | "management";
+  templates: TutorReviewsPage["templates"];
+  templatesReady: boolean;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -79,9 +84,9 @@ export function TutorReviewsBoard({
   return (
     <div className={styles.stack}>
       <section className={styles.card}>
+        <CollapsibleSection id="rounds" title="Rounds" defaultOpen>
         <div className={styles.sectionHead}>
           <div>
-            <h2>Rounds</h2>
             <p className={styles.muted}>Seeded rounds stay draft until you open one. Opening a round lets apprentices submit on the dates shown.</p>
           </div>
         </div>
@@ -113,29 +118,29 @@ export function TutorReviewsBoard({
           ))}
         </div>
         {error ? <p className={styles.error}>{error}</p> : null}
+        </CollapsibleSection>
       </section>
 
       {round ? (
-        <QuestionnaireEditor
-          key={round.id}
-          roundId={round.id}
-          label={round.label}
-          inviteCount={round.inviteCount}
-          responseCount={round.responseCount}
-          questionnaire={round.questionnaire}
-          sources={rounds.filter((item) => item.opensOn < round.opensOn).map((item) => ({
-            id: item.id,
-            label: item.label,
-            questionnaire: item.questionnaire,
-          }))}
-        />
+        <section className={styles.card}>
+          <CollapsibleSection id="editor" title="Editor">
+            <QuestionnaireEditor
+              key={`${round.id}-${round.templateVersionId ?? "none"}`}
+              roundId={round.id}
+              snapshotted={round.snapshotted}
+              templateVersionId={round.templateVersionId}
+              versions={templates}
+              templatesReady={templatesReady}
+            />
+          </CollapsibleSection>
+        </section>
       ) : null}
 
       {round ? (
         <section className={styles.card}>
+          <CollapsibleSection id="invites" title={`Invites · ${round.label}`}>
           <div className={styles.sectionHead}>
             <div>
-              <h2>Invites · {round.label}</h2>
               <p className={styles.muted}>Creates a one-time link for each apprentice who has a tutor. Copy a link or export a CSV. Send invites posts those links by email. Generating again replaces any link that has not been submitted.</p>
             </div>
             <button
@@ -202,6 +207,7 @@ export function TutorReviewsBoard({
               </div>
             </>
           ) : null}
+          </CollapsibleSection>
         </section>
       ) : null}
 
@@ -216,7 +222,7 @@ export function TutorReviewsBoard({
       ) : null}
 
       <section className={styles.card}>
-        <h2>Tracker{round ? ` · ${round.label}` : ""}</h2>
+        <CollapsibleSection id="tracker" title={`Tracker${round ? ` · ${round.label}` : ""}`}>
         <p className={styles.muted}>Who was invited and who has submitted. Answers are not shown here.</p>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -246,10 +252,11 @@ export function TutorReviewsBoard({
             </tbody>
           </table>
         </div>
+        </CollapsibleSection>
       </section>
 
       <section className={styles.card}>
-        <h2>Report{round ? ` · ${round.label}` : ""}</h2>
+        <CollapsibleSection id="report" title={`Report${round ? ` · ${round.label}` : ""}`}>
         <p className={styles.muted}>Averages and comments stay hidden until a tutor has at least 3 responses. The change is against the previous round when that round also has at least 3.</p>
         <div className={styles.reportGrid}>
           {roundReports.length ? roundReports.map((report) => (
@@ -278,10 +285,11 @@ export function TutorReviewsBoard({
             </article>
           )) : <p className={styles.muted}>No responses for this round yet.</p>}
         </div>
+        </CollapsibleSection>
       </section>
 
       <section className={styles.card}>
-        <h2>Concerns to read</h2>
+        <CollapsibleSection id="concerns" title="Concerns to read">
         <p className={styles.muted}>A concern names the tutor and the round only. It is not linked to an apprentice.</p>
         {concerns.length ? concerns.map((item, index) => (
           <article key={`${item.tutorName}-${item.roundLabel}-${index}`} className={styles.concern}>
@@ -290,6 +298,7 @@ export function TutorReviewsBoard({
             <p>{item.text}</p>
           </article>
         )) : <p className={styles.muted}>No concerns to read.</p>}
+        </CollapsibleSection>
       </section>
     </div>
   );

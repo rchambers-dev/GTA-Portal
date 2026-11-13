@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { excludeTestApprentices, isMissingTestColumn } from "./test-apprentice";
 import {
   APPRENTICE_PLACEMENT_COLUMNS,
   EMPLOYER_COLUMNS,
@@ -65,25 +66,35 @@ export async function loadEmployersPage(): Promise<EmployersPageData> {
     ? []
     : ((placementsResult.data ?? []) as ApprenticePlacementRow[]);
   const gtaIds = [...new Set(placements.map((row) => row.gta_id))];
-  const namesResult =
+  let namesResult =
     gtaIds.length === 0
-      ? { data: [], error: null }
+      ? { data: [] as { gta_id: string; is_test?: boolean | null }[], error: null }
       : await supabase
           .from("apprentices")
-          .select("gta_id, first_name, middle_names, last_name, status")
+          .select("gta_id, first_name, middle_names, last_name, status, is_test")
           .in("gta_id", gtaIds);
+  if (namesResult.error && isMissingTestColumn(namesResult.error.message) && gtaIds.length) {
+    namesResult = await supabase
+      .from("apprentices")
+      .select("gta_id, first_name, middle_names, last_name, status")
+      .in("gta_id", gtaIds);
+  }
 
   if (namesResult.error) {
     problems.push(`Apprentice names could not be loaded. ${namesResult.error.message}`);
   }
+  const names = namesResult.error
+    ? []
+    : excludeTestApprentices((namesResult.data ?? []) as (ApprenticeNameRow & { is_test?: boolean | null })[]);
+  const visibleIds = namesResult.error ? null : new Set(names.map((row) => row.gta_id));
 
   return {
     employers: assembleEmployers(
       (employersResult.data ?? []) as EmployerRow[],
       (sitesResult.data ?? []) as EmployerSiteRow[],
       (managersResult.data ?? []) as EmployerManagerRow[],
-      placements,
-      (namesResult.data ?? []) as ApprenticeNameRow[],
+      placements.filter((row) => visibleIds === null || visibleIds.has(row.gta_id)),
+      names,
     ),
     loadError: problems.length > 0 ? problems.join(" ") : null,
   };

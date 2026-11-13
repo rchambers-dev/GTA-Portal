@@ -37,6 +37,8 @@ export async function TutorReviewsScreen({ workspace }: { workspace: "administra
           emailQueueReady={page.emailQueueReady}
           emailMode={emailMode}
           workspace={workspace}
+          templates={page.templates}
+          templatesReady={page.templatesReady}
         />
       )}
     </ApprenticePageShell>

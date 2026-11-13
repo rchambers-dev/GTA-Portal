@@ -13,7 +13,7 @@ const MESSAGES: Record<string, string> = {
   unavailable: "This form is not available.",
 };
 
-export function TutorReviewForm({ token, form, preview = false }: { token?: string; form: PublicForm; preview?: boolean }) {
+export function TutorReviewForm({ token, form, preview = false, embedded = false }: { token?: string; form: PublicForm; preview?: boolean; embedded?: boolean }) {
   const [state, setState] = useState(form.state);
   const [page, setPage] = useState<ReviewPage>(1);
   const [ratings, setRatings] = useState<Record<string, number>>({});
@@ -25,7 +25,7 @@ export function TutorReviewForm({ token, form, preview = false }: { token?: stri
 
   if (state !== "ready") {
     return (
-      <main className={styles.form}>
+      <main className={embedded ? `${styles.form} ${styles.formEmbedded}` : styles.form}>
         <div className={`${styles.formInner} ${styles.card}`}>
           <h1>{form.title}</h1>
           <p className={styles.lead}>{MESSAGES[state] ?? MESSAGES.unavailable}</p>
@@ -35,7 +35,7 @@ export function TutorReviewForm({ token, form, preview = false }: { token?: stri
   }
 
   return (
-    <main className={styles.form}>
+    <main className={embedded ? `${styles.form} ${styles.formEmbedded}` : styles.form}>
       <form
         className={`${styles.formInner} ${styles.card}`}
         onSubmit={(event) => {

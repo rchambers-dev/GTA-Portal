@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { EmailAttemptRow } from "../domain/repository";
 import type { EmailMode, EmailPlan, EmailRunSummary } from "../domain/email";
+import { CollapsibleSection } from "./CollapsibleSection";
 import { resendFailedTutorReviewEmailsAction, resendTutorReviewEmailAction, sendTutorReviewInvitesAction } from "./actions";
 import styles from "./tutor-reviews.module.css";
 
@@ -104,9 +105,9 @@ export function EmailAttempts({
 
   return (
     <section className={styles.card}>
+      <CollapsibleSection id="email" title="Email attempts">
       <div className={styles.sectionHead}>
         <div>
-          <h2>Email attempts</h2>
           <p className={styles.muted}>
             {queueReady
               ? "Each send is queued. A failed or bounced row can be sent again to the apprentice’s current email, and the old link stops working."
@@ -194,6 +195,7 @@ export function EmailAttempts({
       </div>
       {summary ? <p className={styles.muted}>{summary}</p> : null}
       {error ? <p className={styles.error}>{error}</p> : null}
+      </CollapsibleSection>
     </section>
   );
 }

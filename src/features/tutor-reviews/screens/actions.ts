@@ -6,6 +6,7 @@ import { canAddApprentice, formatApprenticeName } from "@/features/administratio
 import { resendOneInvite, sendRoundInvites } from "../domain/email-dispatch";
 import type { EmailRunSummary } from "../domain/email";
 import { questionnaireLock, validateQuestionnaire, type Questionnaire } from "../domain/questionnaire";
+import { templateVersionLabel } from "../domain/templates";
 import { hashReviewToken, newReviewToken } from "../domain/rules";
 
 const DENIED = "You do not have permission to change tutor reviews. Administrator and Management can.";
@@ -39,14 +40,21 @@ export async function generateTutorReviewInvitesAction(roundId: string): Promise
   ]);
   const failure = peopleResult.error || tutorsResult.error || invitesResult.error;
   if (failure) return { ok: false, error: failure.message };
+  const snapshot = await access.supabase.rpc("snapshot_tutor_review_round", { p_round_id: roundId });
+  if (snapshot.error && !/snapshot_tutor_review_round|does not exist|schema cache|PGRST202/i.test(snapshot.error.message)) {
+    return { ok: false, error: snapshot.error.message };
+  }
   const current = new Map<string, { tutorId: string; start: string }>();
   for (const row of (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[]) {
     const existing = current.get(row.apprentice_id);
     if (!existing || row.start_date > existing.start) current.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }
   const invites = new Map(((invitesResult.data ?? []) as { id: string; apprentice_id: string; used_at: string | null }[]).map((row) => [row.apprentice_id, row]));
+  const testRows = await access.supabase.from("apprentices").select("gta_id").eq("is_test", true);
+  const testIds = testRows.error ? new Set<string>() : new Set(((testRows.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
   const links: { name: string; email: string; path: string }[] = [];
   for (const person of (peopleResult.data ?? []) as { gta_id: string; first_name: string; middle_names: string | null; last_name: string; email: string | null }[]) {
+    if (testIds.has(person.gta_id)) continue;
     const tutor = current.get(person.gta_id);
     if (!tutor) continue;
     const existing = invites.get(person.gta_id);
@@ -86,6 +94,41 @@ export async function resendTutorReviewEmailAction(attemptId: string): Promise<{
   const access = await writer();
   if (!access.ok) return access;
   return resendOneInvite(access.supabase, attemptId);
+}
+
+export async function saveTemplateVersionAction(input: { roundId: string | null; questionnaire: Questionnaire }) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const parsed = validateQuestionnaire(input.questionnaire);
+  if (!parsed.ok) return parsed;
+  const existing = await access.supabase.from("tutor_review_template_versions").select("label");
+  if (existing.error) return { ok: false as const, error: /template_versions|does not exist|schema cache/i.test(existing.error.message) ? "Form templates are not available until the database migration is applied." : existing.error.message };
+  const label = templateVersionLabel(new Date(), ((existing.data ?? []) as { label: string }[]).map((row) => row.label));
+  const saved = await access.supabase.rpc("save_tutor_review_template_version", {
+    p_label: label,
+    p_title: parsed.value.title,
+    p_intro: parsed.value.intro,
+    p_rating_help: parsed.value.ratingHelp,
+    p_scale: parsed.value.scale,
+    p_page_headings: parsed.value.pageHeadings,
+    p_questions: parsed.value.questions,
+    p_round_id: input.roundId,
+  });
+  return saved.error ? { ok: false as const, error: saved.error.message } : { ok: true as const, label };
+}
+
+export async function setTemplateDefaultAction(versionId: string) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const result = await access.supabase.rpc("set_tutor_review_template_default", { p_version_id: versionId });
+  return result.error ? { ok: false as const, error: result.error.message } : { ok: true as const };
+}
+
+export async function setRoundTemplateAction(roundId: string, versionId: string) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const result = await access.supabase.rpc("set_tutor_review_round_template", { p_round_id: roundId, p_version_id: versionId });
+  return result.error ? { ok: false as const, error: result.error.message } : { ok: true as const };
 }
 
 export async function saveTutorReviewQuestionnaireAction(roundId: string, questionnaire: Questionnaire) {

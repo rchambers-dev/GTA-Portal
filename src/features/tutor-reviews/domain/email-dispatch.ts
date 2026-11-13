@@ -91,6 +91,8 @@ async function loadRecipients(supabase: SupabaseClient, roundId: string, resend:
   ]);
   const failure = peopleResult.error || tutorsResult.error || invitesResult.error || attemptsResult.error;
   if (failure) return { ok: false as const, error: friendly(failure.message) };
+  const testRows = await supabase.from("apprentices").select("gta_id").eq("is_test", true);
+  const testIds = testRows.error ? new Set<string>() : new Set(((testRows.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
   const tutors = new Map<string, { tutorId: string; start: string }>();
   for (const row of (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[]) {
     const current = tutors.get(row.apprentice_id);
@@ -106,7 +108,7 @@ async function loadRecipients(supabase: SupabaseClient, roundId: string, resend:
   const wanted = onlyApprenticeIds ? new Set(onlyApprenticeIds) : null;
   const rows: { apprenticeId: string; tutorId: string; email: string; tokenHash: string; dispatchToken: string }[] = [];
   for (const person of (peopleResult.data ?? []) as { gta_id: string; email: string | null }[]) {
-    if (wanted && !wanted.has(person.gta_id)) continue;
+    if (testIds.has(person.gta_id) || (wanted && !wanted.has(person.gta_id))) continue;
     const tutor = tutors.get(person.gta_id);
     const email = person.email?.trim() || "";
     if (!tutor || !email) continue;

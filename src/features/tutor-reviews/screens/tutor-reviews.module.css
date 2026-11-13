@@ -30,6 +30,10 @@
   margin: 0.35rem 0 0;
 }
 
+.sectionBody {
+  margin-top: var(--space-4);
+}
+
 .sectionHead {
   display: flex;
   flex-wrap: wrap;
@@ -210,8 +214,13 @@
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.45;
-  overflow-x: hidden;
+  overflow: visible;
   padding: max(1rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) calc(1.5rem + env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left));
+}
+
+.formEmbedded {
+  min-height: 0;
+  padding: 0.75rem;
 }
 
 .formInner {
@@ -219,6 +228,57 @@
   max-width: 40rem;
   margin: 0 auto;
   min-width: 0;
+}
+
+.builder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.phoneFrame {
+  width: 390px;
+  max-width: 100%;
+  max-height: 70vh;
+  overflow: auto;
+  border: 8px solid var(--color-navy-800);
+  border-radius: 1.75rem;
+  background: var(--bg-page);
+}
+
+.questionCard {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+}
+
+.unsaved {
+  color: var(--color-navy-800);
+  font-weight: 700;
+}
+
+.sectionToggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+@media (max-width: 960px) {
+  .builder {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form h1 {

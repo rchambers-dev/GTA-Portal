@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { excludeTestApprentices, isMissingTestColumn } from "./test-apprentice";
 import {
   APPRENTICE_COLUMNS,
   explainApprenticeWriteError,
@@ -31,6 +32,14 @@ type ProgrammeRow = {
  * Reads programmes and apprentices with the signed-in user's session.
  * RLS decides what comes back. The service role is not used.
  */
+async function loadApprenticeRows(supabase: SupabaseClient) {
+  const withFlag = await supabase.from("apprentices").select(`${APPRENTICE_COLUMNS}, is_test`).order("created_at", { ascending: false });
+  if (withFlag.error && isMissingTestColumn(withFlag.error.message)) {
+    return supabase.from("apprentices").select(APPRENTICE_COLUMNS).order("created_at", { ascending: false });
+  }
+  return withFlag;
+}
+
 export async function loadAddApprenticePage(): Promise<AddApprenticePageData> {
   const supabase = await createSupabaseServerClient();
   const [programmesResult, apprenticesResult] = await Promise.all([
@@ -38,10 +47,7 @@ export async function loadAddApprenticePage(): Promise<AddApprenticePageData> {
       .from("programmes")
       .select("id, name, standard_code, status")
       .order("name", { ascending: true }),
-    supabase
-      .from("apprentices")
-      .select(APPRENTICE_COLUMNS)
-      .order("created_at", { ascending: false }),
+    loadApprenticeRows(supabase),
   ]);
 
   const problems: string[] = [];
@@ -67,7 +73,7 @@ export async function loadAddApprenticePage(): Promise<AddApprenticePageData> {
   if (apprenticesResult.error) {
     problems.push(`Apprentices could not be loaded. ${apprenticesResult.error.message}`);
   } else {
-    apprentices = ((apprenticesResult.data ?? []) as ApprenticeRow[]).map((row) =>
+    apprentices = excludeTestApprentices((apprenticesResult.data ?? []) as (ApprenticeRow & { is_test?: boolean | null })[]).map((row) =>
       mapApprenticeRow(row, catalogue),
     );
   }
