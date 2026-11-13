@@ -115,7 +115,7 @@ export function ReviewOverview({
               <div className={styles.barTrack}><span style={{ width: `${row.rate}%` }} /></div>
               <strong>{row.rate}%</strong>
             </div>
-          )) : <p className={styles.muted}>No active tutors yet.</p>}
+          )) : <p className={styles.muted}>No tutors are assigned yet.</p>}
         </section>
         <section className={styles.card}>
           <h3>Tutor scores</h3>
@@ -130,7 +130,7 @@ export function ReviewOverview({
                     <td>{row.responseCount}</td>
                     <td colSpan={3}>{row.hidden ? "Hidden until 3 responses" : row.previousLabel ?? "—"}</td>
                   </tr>
-                )) : <tr><td colSpan={5}>No active tutors yet.</td></tr>}
+                )) : <tr><td colSpan={5}>No tutors are assigned yet.</td></tr>}
               </tbody>
             </table>
           </div>

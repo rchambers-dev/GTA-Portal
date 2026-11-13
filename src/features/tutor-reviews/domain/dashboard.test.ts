@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { assignedTutorName, daysUntil, roundKpis, tutorResponseRates } from "./dashboard";
+import { assignedTutorIds, assignedTutorName, daysUntil, roundKpis, tutorIsCounted, tutorResponseRates } from "./dashboard";
 
 describe("tutor review dashboard figures", () => {
   it("leaves test apprentices out of the round totals", () => {
@@ -30,11 +30,29 @@ describe("tutor review dashboard figures", () => {
     expect(figures.invited).toBe(1);
   });
 
-  it("names only an active tutor, and leaves anyone else blank", () => {
-    const active = [{ id: "anne", name: "Anne-Marie Sanderson" }];
-    expect(assignedTutorName("anne", active)).toBe("Anne-Marie Sanderson");
-    expect(assignedTutorName("dan", active)).toBe("—");
-    expect(assignedTutorName(null, active)).toBe("—");
+  it("counts invited and active tutors on an open assignment, and leaves disabled or archived tutors out", () => {
+    const profiles = [
+      { id: "anne", portalStatus: "active", archivedAt: null },
+      { id: "dan", portalStatus: "invited", archivedAt: null },
+      { id: "old", portalStatus: "disabled", archivedAt: null },
+      { id: "gone", portalStatus: "active", archivedAt: "2026-01-01" },
+    ];
+    expect(tutorIsCounted(profiles[0])).toBe(true);
+    expect(tutorIsCounted(profiles[1])).toBe(true);
+    expect(tutorIsCounted(profiles[2])).toBe(false);
+    expect(tutorIsCounted(profiles[3])).toBe(false);
+    const ids = assignedTutorIds(
+      [{ tutorId: "anne" }, { tutorId: "dan" }, { tutorId: "old" }, { tutorId: "gone" }],
+      profiles,
+    );
+    expect([...ids].sort()).toEqual(["anne", "dan"]);
+    const tutors = [
+      { id: "anne", name: "Anne-Marie Sanderson" },
+      { id: "dan", name: "Dan Hanmer" },
+    ];
+    expect(assignedTutorName("dan", tutors)).toBe("Dan Hanmer");
+    expect(assignedTutorName("old", tutors)).toBe("—");
+    expect(assignedTutorName(null, tutors)).toBe("—");
   });
 
   it("shows an active tutor at 0% before anyone is invited", () => {
@@ -68,5 +86,16 @@ describe("tutor review dashboard figures", () => {
     expect(sql).toContain("is_test is not true");
     expect(sql).toContain("v 13 Nov 2026 (2)");
     expect(sql).not.toContain("example.com");
+  });
+
+  it("counts every open tutor assignment in the dashboard views", () => {
+    const sql = readFileSync(new URL("../../../../supabase/migrations/20261113220000_tutor_review_assigned_tutors.sql", import.meta.url), "utf8");
+    expect(sql).toContain("tutor_review_tutor_response_rates");
+    expect(sql).toContain("tutor_review_tutor_scores");
+    expect(sql).toContain("end_date is null");
+    expect(sql).toContain("archived_at is null");
+    expect(sql).toContain("portal_status is distinct from 'disabled'");
+    expect(sql).toContain("is_test is not true");
+    expect(sql).not.toContain("portal_status = 'active'");
   });
 });

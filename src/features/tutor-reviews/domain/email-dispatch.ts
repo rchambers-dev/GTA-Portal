@@ -14,6 +14,7 @@ import {
 } from "./email";
 import { graphMessageWasSent, graphNdrMessages } from "./email-graph";
 import { currentEmailMode, dryRunSender, graphCredentialsFrom, tutorReviewEmailSender } from "./email-provider";
+import { assignedTutorIds } from "./dashboard";
 import { hashReviewToken, newReviewToken, type RoundStatus } from "./rules";
 
 const QUEUE_MISSING = "Invite email is not available until the database migration is applied.";
@@ -103,21 +104,28 @@ async function loadRecipients(
   roundId: string,
   options: { audience: "apprentices" | "test"; resend: boolean; onlyApprenticeIds?: string[] },
 ) {
-  const [peopleResult, tutorsResult, invitesResult, attemptsResult] = await Promise.all([
+  const [peopleResult, tutorsResult, invitesResult, attemptsResult, profilesResult] = await Promise.all([
     supabase.from("apprentices").select("gta_id, email"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id, start_date").is("end_date", null),
     supabase.from("tutor_review_invites").select("id, apprentice_id, used_at, access_token").eq("round_id", roundId),
     supabase.from("tutor_review_email_attempts").select("invite_id, apprentice_id, status").eq("round_id", roundId),
+    supabase.from("profiles").select("id, portal_status, archived_at"),
   ]);
-  const failure = peopleResult.error || tutorsResult.error || invitesResult.error || attemptsResult.error;
+  const failure = peopleResult.error || tutorsResult.error || invitesResult.error || attemptsResult.error || profilesResult.error;
   if (failure) return { ok: false as const, error: friendly(failure.message) };
   const testRows = await supabase.from("apprentices").select("gta_id").eq("is_test", true);
   if (testRows.error && options.audience === "test") {
     return { ok: false as const, error: "The test apprentice is not available until the database migration is applied." };
   }
   const testIds = testRows.error ? new Set<string>() : new Set(((testRows.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
+  const assignmentRows = (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[];
+  const counted = assignedTutorIds(
+    assignmentRows.map((row) => ({ tutorId: row.tutor_id })),
+    ((profilesResult.data ?? []) as { id: string; portal_status: string | null; archived_at: string | null }[]).map((row) => ({ id: row.id, portalStatus: row.portal_status, archivedAt: row.archived_at })),
+  );
   const tutors = new Map<string, { tutorId: string; start: string }>();
-  for (const row of (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[]) {
+  for (const row of assignmentRows) {
+    if (!counted.has(row.tutor_id)) continue;
     const current = tutors.get(row.apprentice_id);
     if (!current || row.start_date > current.start) tutors.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }

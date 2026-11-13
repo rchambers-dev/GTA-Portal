@@ -34,10 +34,24 @@ export function roundKpis(input: {
   };
 }
 
-/** Name from the open apprentice_tutors row, limited to the active tutors listed on the response-rate chart. */
-export function assignedTutorName(tutorId: string | null, activeTutors: { id: string; name: string }[]): string {
+/** An open apprentice_tutors assignment counts unless that profile is disabled or archived. */
+export function tutorIsCounted(profile: { portalStatus: string | null; archivedAt: string | null } | null | undefined): boolean {
+  if (!profile || profile.archivedAt) return false;
+  return profile.portalStatus !== "disabled";
+}
+
+export function assignedTutorIds(
+  rows: { tutorId: string }[],
+  profiles: { id: string; portalStatus: string | null; archivedAt: string | null }[],
+): Set<string> {
+  const counted = new Set(profiles.filter((profile) => tutorIsCounted(profile)).map((profile) => profile.id));
+  return new Set(rows.map((row) => row.tutorId).filter((id) => counted.has(id)));
+}
+
+/** Name from the open apprentice_tutors row when that tutor is still counted. */
+export function assignedTutorName(tutorId: string | null, tutors: { id: string; name: string }[]): string {
   if (!tutorId) return "—";
-  return activeTutors.find((tutor) => tutor.id === tutorId)?.name ?? "—";
+  return tutors.find((tutor) => tutor.id === tutorId)?.name ?? "—";
 }
 
 export function tutorResponseRates(people: DashboardPerson[], tutorNames: string[] = []): { tutorName: string; invited: number; submitted: number; rate: number }[] {

@@ -3,7 +3,7 @@ import { formatApprenticeName } from "@/features/administration/domain/apprentic
 import type { ReviewQuestionKind } from "./catalogue";
 import { blankPublicForm, publicFormFromPayload, questionnaireFromParts, type PublicForm, type Questionnaire } from "./questionnaire";
 import { excludeTestApprentices } from "@/features/administration/domain/test-apprentice";
-import { assignedTutorName } from "./dashboard";
+import { assignedTutorIds, assignedTutorName, tutorIsCounted } from "./dashboard";
 import { emailPlan, type EmailAttemptStatus, type EmailPlan } from "./email";
 import { concernList, publishStats, type AnswerStat, type RoundStatus } from "./rules";
 
@@ -149,14 +149,19 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     if (result.error) return { ...empty, loadError: result.error.message };
   }
 
-  const profileRows = (profilesResult.data ?? []) as { id: string; display_name: string | null; base_role?: string | null; responsibilities?: string[] | null; portal_status?: string | null; archived_at?: string | null }[];
+  const profileRows = (profilesResult.data ?? []) as { id: string; display_name: string | null; portal_status?: string | null; archived_at?: string | null }[];
   const names = new Map(profileRows.map((row) => [row.id, row.display_name?.trim() || "Tutor"]));
-  const tutors = profileRows
-    .filter((row) => row.portal_status === "active" && !row.archived_at && (row.base_role === "Tutor" || (row.responsibilities ?? []).includes("Apprenticeship Tutor")))
-    .map((row) => ({ id: row.id, name: row.display_name?.trim() || "Tutor" }))
+  const openAssignments = (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[];
+  const countedTutorIds = assignedTutorIds(
+    openAssignments.map((row) => ({ tutorId: row.tutor_id })),
+    profileRows.map((row) => ({ id: row.id, portalStatus: row.portal_status ?? null, archivedAt: row.archived_at ?? null })),
+  );
+  const tutors = [...countedTutorIds]
+    .map((id) => ({ id, name: names.get(id) || "Tutor" }))
     .sort((a, b) => a.name.localeCompare(b.name));
   const currentTutor = new Map<string, { tutorId: string; start: string }>();
-  for (const row of (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[]) {
+  for (const row of openAssignments) {
+    if (!countedTutorIds.has(row.tutor_id)) continue;
     const current = currentTutor.get(row.apprentice_id);
     if (!current || row.start_date > current.start) currentTutor.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }
@@ -195,10 +200,14 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
   const ordered = [...rounds].sort((a, b) => a.opensOn.localeCompare(b.opensOn));
   for (const round of ordered) {
     const previous = ordered.filter((item) => item.opensOn < round.opensOn).at(-1) ?? null;
-    const tutorIds = new Set<string>([
+    const stillCounted = new Set(profileRows.filter((row) => tutorIsCounted({ portalStatus: row.portal_status ?? null, archivedAt: row.archived_at ?? null })).map((row) => row.id));
+    const tutorIds = new Set<string>(countedTutorIds);
+    for (const tutorId of [
       ...invites.filter((row) => row.round_id === round.id && !testIds.has(row.apprentice_id)).map((row) => row.tutor_id),
       ...responses.filter((row) => row.round_id === round.id).map((row) => row.tutor_id),
-    ]);
+    ]) {
+      if (stillCounted.has(tutorId)) tutorIds.add(tutorId);
+    }
     for (const tutorId of tutorIds) {
       const roundResponses = responses.filter((row) => row.round_id === round.id && row.tutor_id === tutorId);
       const previousResponses = previous ? responses.filter((row) => row.round_id === previous.id && row.tutor_id === tutorId) : [];
