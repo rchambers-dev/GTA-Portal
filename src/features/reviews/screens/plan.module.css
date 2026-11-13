@@ -2431,3 +2431,105 @@
     justify-self: stretch;
   }
 }
+
+/* Light panels sit inside the navy plan. Reset their text here so a new panel cannot inherit white. */
+.plan .calendar,
+.plan .timeline,
+.plan .lockedPanel,
+.plan .rebook,
+.plan .notesMenu,
+.plan .noteItem,
+.plan .noteItem strong,
+.plan .noteItem span,
+.dialog,
+.dialog h2,
+.dialog label,
+.dialog input,
+.dialog textarea,
+.dialog select,
+.roster .card,
+.roster .list .card {
+  color: #1d2433;
+}
+
+.plan .notes {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.plan .notesMenu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 30;
+  display: grid;
+  gap: 4px;
+  width: min(22rem, calc(100vw - 48px));
+  background: #fff;
+}
+
+.plan .notesMenu .empty {
+  margin: 0;
+  padding: 12px;
+  color: #5d6573;
+}
+
+.plan .noteItem span {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+
+.plan .noteItem em {
+  color: #5d6573;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.plan .noteDue em {
+  color: #8f351c;
+  font-weight: 650;
+}
+
+.plan .headActions .notesOn {
+  background: #eef2f8;
+  border-color: #c5cedb;
+  color: #1d2433;
+}
+
+.plan .headActions .notesDue {
+  background: #f8efe8;
+  border-color: #d8b4a4;
+  color: #8f351c;
+}
+
+.plan .headActions .notesDue strong {
+  background: #b44a2c;
+  color: #fff;
+}
+
+@media print {
+  .roster,
+  .headActions,
+  .dayActions,
+  .notesMenu,
+  .backdrop,
+  .map {
+    display: none !important;
+  }
+
+  .layout,
+  .plan,
+  .timeline,
+  .lockedPanel,
+  .calendar,
+  .stop,
+  .stopName,
+  .stopName a,
+  .contactLine,
+  .placeLine {
+    background: #fff !important;
+    color: #111 !important;
+  }
+}

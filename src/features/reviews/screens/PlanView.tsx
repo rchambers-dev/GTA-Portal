@@ -5,8 +5,9 @@ import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
-import { formatPlanDate, formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
-import { NOTE_UNTIL_PRESETS, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
+import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
+import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
+import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
 import type { PackedDay } from "../domain/plan-route";
 import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
 import {
@@ -55,10 +56,8 @@ export function PlanView({
   const noted = page.people
     .filter((person) => person.notes)
     .slice()
-    .sort(
-      (a, b) =>
-        a.notesUntil.localeCompare(b.notesUntil) || a.name.localeCompare(b.name, "en-GB"),
-    );
+    .sort((a, b) => comparePlanNotes(a, b, page.today));
+  const notesDue = noted.filter((person) => noteUntilLabel(person.notesUntil, page.today).overdue).length;
   const activeDay = planDayFor(page, selectedDate);
   const route = packedFor === selectedDate ? packed : null;
   const bookedDays = useMemo(
@@ -287,35 +286,36 @@ export function PlanView({
             <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => void showMap()}>
               {mapOpen ? "Hide map" : "Show map"}
             </button>
-            <button
-              type="button"
-              className={`${styles.pill} ${noted.length ? styles.pillOn : ""}`}
-              aria-expanded={notesOpen}
-              aria-haspopup="true"
-              onClick={() => setNotesOpen((value) => !value)}
-            >
-              <span>Notes</span>
-              <strong>{noted.length}</strong>
-            </button>
+            <div className={styles.notes}>
+              <button
+                type="button"
+                className={`${styles.pill} ${noted.length ? styles.notesOn : ""} ${notesDue ? styles.notesDue : ""}`}
+                aria-expanded={notesOpen}
+                aria-haspopup="true"
+                aria-label={notesDue ? `${noted.length} note${noted.length === 1 ? "" : "s"}, ${notesDue} need checking` : `${noted.length} note${noted.length === 1 ? "" : "s"}`}
+                onClick={() => setNotesOpen((value) => !value)}
+              >
+                <span>Notes</span>
+                <strong>{noted.length}</strong>
+              </button>
+              {notesOpen ? (
+                <div className={styles.notesMenu} aria-label="Notes still on the plan">
+                  {noted.length === 0 ? <p className={styles.empty}>No notes at the moment.</p> : null}
+                  {noted.map((person) => {
+                    const until = noteUntilLabel(person.notesUntil, page.today);
+                    return (
+                      <button key={person.gtaId} type="button" className={`${styles.noteItem} ${until.overdue ? styles.noteDue : ""}`} onClick={() => { setNotesOpen(false); setNotePerson(person); }}>
+                        <strong>{person.name}</strong>
+                        <span>{person.notes}</span>
+                        <em>{until.label}</em>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
-        {notesOpen ? (
-          <ul className={styles.notesMenu} aria-label="Notes still on the plan">
-            {noted.length === 0 ? <li className={styles.empty}>No notes at the moment.</li> : null}
-            {noted.map((person) => {
-              const until = noteUntilLabel(person.notesUntil, page.today);
-              return (
-                <li key={person.gtaId}>
-                  <button type="button" className={styles.noteItem} onClick={() => { setNotesOpen(false); setNotePerson(person); }}>
-                    <strong>{person.name}</strong>
-                    <span>{person.notes}</span>
-                    <em className={until.overdue ? styles.overdue : undefined}>{until.label}</em>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        ) : null}
         <Calendar
           month={month}
           date={selectedDate}
@@ -363,7 +363,7 @@ export function PlanView({
                 </button>
               ) : null}
               {page.canWrite && activeDay.stops.length > 0 ? (
-                <DayActions workspace={workspace} page={page} day={activeDay} date={selectedDate} packed={route} onRun={run} />
+                <DayActions workspace={workspace} page={page} day={activeDay} date={selectedDate} packed={route} onRun={run} onStatus={setMessage} />
               ) : null}
             </div>
           )}
@@ -489,6 +489,7 @@ function DayActions({
   date,
   packed,
   onRun,
+  onStatus,
 }: {
   workspace: "administration" | "management";
   page: PlanPageData;
@@ -496,6 +497,7 @@ function DayActions({
   date: string;
   packed: PackedDay | null;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onStatus: (message: string) => void;
 }) {
   const stops = day.stops;
   const ready =
@@ -507,12 +509,12 @@ function DayActions({
         <a className={styles.ghost} href={`/${workspace}/reviews/out`}>Open Out</a>
       ) : null}
       {day.accepted ? (
-        <a className={styles.fill} href={mailto(page, day, date)}>
+        <button type="button" className={styles.fill} onClick={() => emailRoute(page, day, date, packed, onStatus)}>
           Email this route
-        </a>
+        </button>
       ) : null}
       {day.accepted ? (
-        <button type="button" className={styles.fill} onClick={() => printRoute(page, day, date, packed)}>
+        <button type="button" className={styles.fill} onClick={() => printRoute(page, day, date, packed, onStatus)}>
           Print this route
         </button>
       ) : null}
@@ -558,40 +560,38 @@ function DayActions({
   );
 }
 
-function printRoute(page: PlanPageData, day: PlanDay, date: string, packed: PackedDay | null) {
+function printRoute(page: PlanPageData, day: PlanDay, date: string, packed: PackedDay | null, onStatus: (message: string) => void) {
+  if (!day.stops.length) return;
   const popup = window.open("", "print-route");
-  if (!popup) return;
-  const leave = packed ? minutesToTime(packed.leaveMinutes) : page.settings.startTime;
-  const back = packed ? minutesToTime(packed.returnArrive) : "";
-  const drive = packed?.driveTotal ? `${Math.round(packed.driveTotal)} min driving` : "";
-  const stops = (packed?.stops ?? day.stops.map((stop) => ({
-    ...stop,
-    arrive: timeToMinutes(stop.arrive) ?? 0,
-    leave: timeToMinutes(stop.leave) ?? 0,
-  })) ?? []);
-  const body = stops
-    .map(
-      (stop, index) =>
-        `<article class="print-stop"><div class="print-when">${minutesToTime(stop.arrive)}–${minutesToTime(stop.leave)}</div><div><h2>${index + 1}. ${escapeHtml(stop.name)}</h2><p>${escapeHtml(`${stop.company} · ${stop.postcode}`)}</p></div></article>`,
-    )
-    .join("");
+  if (!popup) {
+    onStatus("Allow pop-ups so the route can open for printing.");
+    return;
+  }
   popup.document.open();
-  popup.document.write(`<!doctype html><html lang="en"><head><meta charset="utf-8" /><title>${escapeHtml(date)} review round</title><style>body{font:13px/1.4 Calibri,Arial,sans-serif;color:#111;margin:24px}h1{font-size:22px;margin:0 0 4px}.lede{margin:0 0 18px;color:#444}.print-stop{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:10px 0;border-top:1px solid #ccc}.print-when{font-weight:700}h2{font-size:16px;margin:0 0 4px}p{margin:0}.end{border-top:1px solid #111;margin-top:8px;padding-top:10px;font-weight:700}@media print{body{margin:12mm}}</style></head><body><h1>${escapeHtml(formatPlanDate(date))} workplace review round</h1><p class="lede">Leave ${escapeHtml(page.settings.officePostcode)} at ${escapeHtml(leave)} · ${stops.length} visit${stops.length === 1 ? "" : "s"}${drive ? ` · ${escapeHtml(drive)}` : ""}</p>${body}<p class="end">Back at ${escapeHtml(page.settings.officePostcode)}${back ? ` at ${escapeHtml(back)}` : ""}</p></body></html>`);
+  popup.document.write(buildRoutePrintHtml(page, sheetStops(day.stops, packed), date, packed));
   popup.document.close();
   popup.focus();
-  popup.print();
+  try {
+    popup.print();
+  } catch {
+    onStatus("Could not open the print dialog.");
+    return;
+  }
+  onStatus(`Print ${routeDateLabel(date)} from the print window.`);
 }
 
-function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char] || char);
-}
-
-function mailto(page: PlanPageData, day: PlanDay, date: string): string {
-  const lines = day.stops.map(
-    (stop, index) => `${index + 1}. ${stop.name}, ${stop.company}, ${stop.postcode}, ${stop.arrive}–${stop.leave}`,
+function emailRoute(page: PlanPageData, day: PlanDay, date: string, packed: PackedDay | null, onStatus: (message: string) => void) {
+  if (!day.stops.length) return;
+  const email = buildRouteEmail(page, sheetStops(day.stops, packed), date, packed);
+  const extras = routeEmailAddresses(page.settings.extraEmails).slice(1);
+  window.location.href = email.href;
+  onStatus(
+    extras.length === 0
+      ? `Opened an email to ${DEFAULT_ROUTE_EMAIL} with this day’s Google Maps route.`
+      : extras.length === 1
+        ? `Opened an email to ${DEFAULT_ROUTE_EMAIL} and ${extras[0]} with this day’s Google Maps route.`
+        : `Opened an email to ${DEFAULT_ROUTE_EMAIL} and ${extras.length} extra addresses with this day’s Google Maps route.`,
   );
-  const to = page.settings.extraEmails.join(",");
-  return `mailto:${to}?subject=${encodeURIComponent(`Review route ${date}`)}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 
 function StopCard({
