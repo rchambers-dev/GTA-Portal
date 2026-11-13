@@ -109,8 +109,8 @@ begin
   limit 1;
 
   with years as (
-    select (extract(year from v_today)::integer + g.offset) as year
-    from generate_series(-1, 2) as g(offset)
+    select (extract(year from v_today)::integer + g.yr) as year
+    from generate_series(-1, 2) as g(yr)
   ),
   june as (
     select 'June ' || year::text as label,
