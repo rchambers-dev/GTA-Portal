@@ -239,6 +239,17 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
         questions: published.questions,
       });
       for (const question of roundQuestions.filter((item) => item.is_concern)) {
+        if (question.kind === "yes_no") {
+          const saidYes = (yesFor(roundResponses, roundQuestions).find((row) => row.code === question.code)?.values ?? []).some(Boolean);
+          if (!saidYes) continue;
+          const notes = texts.find((row) => row.code === "concern_note")?.values ?? [];
+          if (notes.length) {
+            for (const value of notes) concernRows.push({ tutorName: names.get(tutorId) || "Tutor", roundLabel: round.label, text: value });
+          } else {
+            concernRows.push({ tutorName: names.get(tutorId) || "Tutor", roundLabel: round.label, text: "Yes" });
+          }
+          continue;
+        }
         for (const value of texts.find((row) => row.code === question.code)?.values ?? []) {
           concernRows.push({ tutorName: names.get(tutorId) || "Tutor", roundLabel: round.label, text: value });
         }

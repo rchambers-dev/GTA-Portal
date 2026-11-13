@@ -7,6 +7,7 @@ import type { ConcernItem, EmailAttemptRow, ReportCard, TrackerRow, TutorReviewR
 import { londonToday, roundCanSend, type EmailMode } from "../domain/email";
 import { generateTutorReviewInvitesAction, setTutorReviewRoundAction } from "./actions";
 import { EmailAttempts, SendInvitesButton, SendTestEmailButton, TestLinkPanel } from "./EmailPanel";
+import { ReviewOverview } from "./ReviewOverview";
 import { CollapsibleSection } from "./CollapsibleSection";
 import { QuestionnaireEditor } from "./QuestionnaireEditor";
 import styles from "./tutor-reviews.module.css";
@@ -60,6 +61,7 @@ export function TutorReviewsBoard({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const today = londonToday();
+  const [tab, setTab] = useState<"overview" | "questions" | "email" | "past">("overview");
   const upcoming = rounds.filter((item) => !isPastRound(item, today));
   const past = rounds.filter((item) => isPastRound(item, today));
   const [roundId, setRoundId] = useState(upcoming[0]?.id ?? rounds.at(-1)?.id ?? "");
@@ -89,15 +91,47 @@ export function TutorReviewsBoard({
 
   return (
     <div className={styles.stack}>
-      <section className={styles.card}>
+      <nav className={styles.tabs} aria-label="Tutor reviews">
+        {([
+          ["overview", "Overview"],
+          ["questions", "Questions & versions"],
+          ["email", "Email attempts"],
+          ["past", "Past rounds"],
+        ] as const).map(([id, label]) => (
+          <button key={id} type="button" className={tab === id ? styles.tabOn : styles.tab} onClick={() => setTab(id)}>{label}</button>
+        ))}
+      </nav>
+      {tab === "overview" && round ? (
+        <ReviewOverview
+          round={round}
+          rounds={upcoming.length ? upcoming : [round]}
+          onSelect={setRoundId}
+          actions={
+            <>
+              <button type="button" className={styles.primary} disabled={pending || round.status === "open"} onClick={() => run(() => setTutorReviewRoundAction({ roundId: round.id, status: "open" }))}>Open round</button>
+              <button type="button" className={styles.secondary} disabled={pending || round.status !== "open"} onClick={() => run(() => setTutorReviewRoundAction({ roundId: round.id, status: "closed" }))}>Close early</button>
+              <SendInvitesButton roundId={round.id} label={round.label} plan={round.emailPlan} mode={emailMode} canSend={emailQueueReady && roundCanSend({ status: round.status, closesOn: round.closesOn, closedEarly: round.closedEarly, today }).ok} reason={null} />
+              <SendTestEmailButton roundId={round.id} canSend={emailQueueReady && roundCanSend({ status: round.status, closesOn: round.closesOn, closedEarly: round.closedEarly, today }).ok} reason={null} />
+              <TestLinkPanel roundId={round.id} path={round.testPath} />
+            </>
+          }
+          tracker={rows}
+          reports={roundReports}
+          concerns={concerns.filter((item) => item.roundLabel === round.label)}
+          attempts={attempts.filter((item) => item.roundId === round.id)}
+          onOpenEmail={() => setTab("email")}
+          onEditQuestions={() => setTab("questions")}
+        />
+      ) : null}
+      {tab === "past" ? <section className={styles.card}>
         <CollapsibleSection id="rounds" title="Rounds" defaultOpen>
         <div className={styles.sectionHead}>
           <div>
-            <p className={styles.muted}>December and June rounds are created as drafts. You can change the dates before you open a round. Opening a round lets apprentices submit on the dates shown.</p>
+            <p className={styles.muted}>Rounds whose closing date has passed, or that were closed early.</p>
           </div>
         </div>
         <div className={styles.rounds}>
-          {upcoming.map((item) => (
+          {([] as typeof upcoming).map((item) => (
             <article key={item.id} className={item.id === round?.id ? `${styles.round} ${styles.roundSelected}` : styles.round}>
               <button type="button" className={styles.roundPick} onClick={() => setRoundId(item.id)}>
                 <strong>{item.label}</strong>
@@ -144,9 +178,9 @@ export function TutorReviewsBoard({
         </CollapsibleSection>
         {error ? <p className={styles.error}>{error}</p> : null}
         </CollapsibleSection>
-      </section>
+      </section> : null}
 
-      {round ? (
+      {tab === "questions" && round ? (
         <section className={styles.card}>
           <CollapsibleSection id="editor" title="Editor">
             <QuestionnaireEditor
@@ -161,7 +195,7 @@ export function TutorReviewsBoard({
         </section>
       ) : null}
 
-      {round ? (
+      {tab === "questions" && round ? (
         <section className={styles.card}>
           <CollapsibleSection id="invites" title={`Invites · ${round.label}`}>
           <div className={styles.sectionHead}>
@@ -236,7 +270,7 @@ export function TutorReviewsBoard({
         </section>
       ) : null}
 
-      {round ? (
+      {tab === "email" && round ? (
         <EmailAttempts
           roundId={round.id}
           attempts={attempts}
@@ -246,7 +280,7 @@ export function TutorReviewsBoard({
         />
       ) : null}
 
-      <section className={styles.card}>
+      {false ? <><section className={styles.card}>
         <CollapsibleSection id="tracker" title={`Tracker${round ? ` · ${round.label}` : ""}`}>
         <p className={styles.muted}>Who was invited and who has submitted. Answers are not shown here.</p>
         <div className={styles.tableWrap}>
@@ -320,9 +354,9 @@ export function TutorReviewsBoard({
           )) : <p className={styles.muted}>No responses for this round yet.</p>}
         </div>
         </CollapsibleSection>
-      </section>
+      </section></> : null}
 
-      <section className={styles.card}>
+      {false ? <section className={styles.card}>
         <CollapsibleSection id="concerns" title="Concerns to read">
         <p className={styles.muted}>A concern names the tutor and the round only. It is not linked to an apprentice.</p>
         {concerns.length ? concerns.map((item, index) => (
@@ -331,9 +365,9 @@ export function TutorReviewsBoard({
             <p className={styles.muted}>{item.roundLabel}</p>
             <p>{item.text}</p>
           </article>
-        )) : <p className={styles.muted}>No concerns to read.</p>}
+        )        ) : <p className={styles.muted}>No concerns to read.</p>}
         </CollapsibleSection>
-      </section>
+      </section> : null}
     </div>
   );
 }

@@ -201,6 +201,8 @@ export type PublicForm = {
   pageHeadings: PageHeadings;
   questions: QuestionnaireQuestion[];
   isTest: boolean;
+  roundLabel?: string | null;
+  closesOn?: string | null;
 };
 
 export function blankPublicForm(state: PublicForm["state"]): PublicForm {
@@ -240,7 +242,13 @@ export function publicFormFromPayload(payload: unknown): PublicForm {
       };
     }),
   });
-  return { state: known, ...form, isTest: row.isTest === true };
+  return {
+    state: known,
+    ...form,
+    isTest: row.isTest === true,
+    roundLabel: typeof row.roundLabel === "string" ? row.roundLabel : null,
+    closesOn: typeof row.closesOn === "string" ? row.closesOn : null,
+  };
 }
 
 export function questionHelp(question: QuestionnaireQuestion, ratingHelp: string): string | null {

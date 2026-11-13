@@ -523,3 +523,65 @@ a.secondary {
   margin: var(--space-4) 0;
   padding-left: 1.1rem;
 }
+
+.tabs, .pills, .kpis, .barRow, .kpi, .barTrack, .search, .tab, .tabOn, .pillButton, .pillOn, .linkButton {
+  font: inherit;
+}
+
+.tabs, .pills, .kpis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tab, .pillButton, .linkButton {
+  border: 1px solid var(--border-strong);
+  background: var(--bg-card);
+  color: var(--color-navy-800);
+  border-radius: 999px;
+  min-height: 40px;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+}
+
+.tabOn, .pillOn {
+  border: 0;
+  background: var(--color-navy-800);
+  color: #fff;
+  border-radius: 999px;
+  min-height: 40px;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+}
+
+.kpi {
+  flex: 1 1 8rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 1rem;
+}
+
+.kpi p { margin: 0; color: var(--text-secondary); }
+.kpi strong { display: block; font-family: var(--font-display); font-size: 1.45rem; }
+
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(6rem, 10rem) 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.barTrack { height: 10px; border-radius: 999px; background: #e7eef8; overflow: hidden; }
+.barTrack span { display: block; height: 100%; background: var(--color-navy-800); }
+
+.search {
+  min-height: 40px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.4rem 0.7rem;
+  font: 16px/1.3 var(--font-body);
+}
+
+.linkButton { background: none; border: 0; text-decoration: underline; min-height: 0; padding: 0; }
