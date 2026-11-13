@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
-import { DEFAULT_RATING, faceColour, sliderLabel, sliderRatioFromClient, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS, SLIDER_THUMB_PX } from "../domain/slider";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { DEFAULT_RATING, faceColour, faceTint, sliderLabel, sliderRatioFromClient, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS, SLIDER_THUMB_PX } from "../domain/slider";
 import styles from "./website-form.module.css";
+
+const MOVE_MS = 200;
 
 export function RatingSlider({
   name,
@@ -13,22 +15,98 @@ export function RatingSlider({
   value?: number;
   onChange: (value: number) => void;
 }) {
+  const blockRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [dragRatio, setDragRatio] = useState<number | null>(null);
+  const labelsRef = useRef<HTMLDivElement>(null);
+  const labelRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const initialRatio = sliderRatioFromValue(value ?? DEFAULT_RATING);
+  const shownRatio = useRef(initialRatio);
+  const dragging = useRef(false);
+  const frame = useRef(0);
+  const settle = useRef(0);
+  const [ratio, setRatio] = useState(initialRatio);
+  const [pillWidth, setPillWidth] = useState(64);
   const committed = value ?? DEFAULT_RATING;
-  const ratio = dragRatio ?? sliderRatioFromValue(committed);
-  const shown = dragRatio == null ? committed : sliderValueFromRatio(dragRatio);
+  const shown = sliderValueFromRatio(ratio);
+  const onChangeRef = useRef(onChange);
+
+  useEffect(() => () => {
+    cancelAnimationFrame(frame.current);
+    window.clearTimeout(settle.current);
+  }, []);
+
+  function paint(next: number) {
+    shownRatio.current = next;
+    setRatio(next);
+  }
+
+  function animateTo(target: number) {
+    cancelAnimationFrame(frame.current);
+    window.clearTimeout(settle.current);
+    const block = blockRef.current;
+    if (block) delete block.dataset.dragging;
+    const from = shownRatio.current;
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / MOVE_MS);
+      const eased = 1 - (1 - t) ** 3;
+      paint(t === 1 ? target : from + (target - from) * eased);
+      if (t < 1) frame.current = requestAnimationFrame(step);
+    };
+    frame.current = requestAnimationFrame(step);
+    settle.current = window.setTimeout(() => paint(target), MOVE_MS + 40);
+  }
+
+  function choose(next: number) {
+    onChangeRef.current(next);
+    animateTo(sliderRatioFromValue(next));
+  }
 
   function ratioFrom(clientX: number) {
     const track = trackRef.current;
-    if (!track) return sliderRatioFromValue(committed);
+    if (!track) return shownRatio.current;
     const rect = track.getBoundingClientRect();
     const inset = Number.parseFloat(getComputedStyle(track).getPropertyValue("--inset")) || SLIDER_THUMB_PX / 2;
     return sliderRatioFromClient(clientX, rect.left, rect.width, inset);
   }
 
+  function finishDrag(clientX?: number) {
+    if (!dragging.current) return;
+    dragging.current = false;
+    const raw = clientX == null ? shownRatio.current : ratioFrom(clientX);
+    const next = sliderValueFromRatio(raw);
+    onChangeRef.current(next);
+    animateTo(sliderRatioFromValue(next));
+  }
+
+  const finishDragRef = useRef<(clientX?: number) => void>(() => {});
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+    finishDragRef.current = finishDrag;
+  });
+
+  useEffect(() => {
+    const end = (event: PointerEvent) => finishDragRef.current(event.clientX);
+    const cancel = () => finishDragRef.current();
+    window.addEventListener("pointerup", end);
+    window.addEventListener("pointercancel", cancel);
+    return () => {
+      window.removeEventListener("pointerup", end);
+      window.removeEventListener("pointercancel", cancel);
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    const index = SLIDER_STOPS.findIndex((stop) => stop.value === shown);
+    const label = labelRefs.current[index];
+    if (!label) return;
+    const width = label.offsetWidth;
+    setPillWidth((current) => (current === width ? current : width));
+  }, [shown]);
+
   return (
-    <div className={styles.sliderBlock}>
+    <div ref={blockRef} className={styles.sliderBlock}>
       <div
         ref={trackRef}
         role="slider"
@@ -40,27 +118,36 @@ export function RatingSlider({
         aria-valuetext={sliderLabel(shown)}
         className={styles.track}
         onPointerDown={(event) => {
+          if (event.pointerType === "mouse" && event.button !== 0) return;
+          cancelAnimationFrame(frame.current);
+          window.clearTimeout(settle.current);
+          dragging.current = true;
+          if (blockRef.current) blockRef.current.dataset.dragging = "true";
+          event.currentTarget.dataset.pointing = "true";
           event.currentTarget.setPointerCapture(event.pointerId);
           event.currentTarget.focus();
-          setDragRatio(ratioFrom(event.clientX));
+          paint(ratioFrom(event.clientX));
         }}
         onPointerMove={(event) => {
-          if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
-          setDragRatio(ratioFrom(event.clientX));
+          if (!dragging.current) return;
+          paint(ratioFrom(event.clientX));
         }}
-        onPointerUp={(event) => {
-          if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
-          onChange(sliderValueFromRatio(ratioFrom(event.clientX)));
-          setDragRatio(null);
+        onPointerUp={(event) => finishDrag(event.clientX)}
+        onPointerCancel={() => finishDrag()}
+        onLostPointerCapture={() => finishDrag()}
+        onBlur={(event) => {
+          delete event.currentTarget.dataset.pointing;
         }}
-        onPointerCancel={() => setDragRatio(null)}
         onKeyDown={(event) => {
-          if (event.key === "ArrowLeft") onChange(stepSlider(committed, "left"));
-          else if (event.key === "ArrowRight") onChange(stepSlider(committed, "right"));
-          else if (event.key === "Home") onChange(stepSlider(committed, "home"));
-          else if (event.key === "End") onChange(stepSlider(committed, "end"));
-          else return;
+          delete event.currentTarget.dataset.pointing;
+          const next = event.key === "ArrowLeft" ? stepSlider(committed, "left")
+            : event.key === "ArrowRight" ? stepSlider(committed, "right")
+            : event.key === "Home" ? stepSlider(committed, "home")
+            : event.key === "End" ? stepSlider(committed, "end")
+            : null;
+          if (next == null) return;
           event.preventDefault();
+          choose(next);
         }}
       >
         <div className={styles.trackFill} />
@@ -68,15 +155,27 @@ export function RatingSlider({
           <Face ratio={ratio} />
         </span>
       </div>
-      <div className={styles.stopLabels}>
+      <div ref={labelsRef} className={styles.stopLabels} aria-hidden="true">
+        <span
+          className={styles.pill}
+          style={{ "--ratio": ratio, width: pillWidth, background: faceTint(ratio) } as CSSProperties}
+        />
         {SLIDER_STOPS.map((stop, index) => (
-          <span
+          <button
             key={stop.value}
+            ref={(node) => { labelRefs.current[index] = node; }}
+            type="button"
+            tabIndex={-1}
             className={`${styles.stop} ${index === 0 ? styles.stopFirst : ""} ${index === SLIDER_STOPS.length - 1 ? styles.stopLast : ""} ${stop.value === shown ? styles.stopOn : ""}`}
             style={{ "--stop": index / (SLIDER_STOPS.length - 1) } as CSSProperties}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={(event) => {
+              event.preventDefault();
+              choose(stop.value);
+            }}
           >
             {stop.label}
-          </span>
+          </button>
         ))}
       </div>
     </div>

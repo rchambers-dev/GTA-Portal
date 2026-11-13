@@ -164,20 +164,52 @@
 
 .stopLabels {
   position: relative;
-  height: 1.15rem;
+  height: 44px;
   margin-top: var(--slider-gap);
   color: #525252;
   font-size: 0.78rem;
-  line-height: 1.15rem;
+}
+
+.pill {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  height: 32px;
+  border-radius: 999px;
+  left: calc(var(--inset) + var(--ratio) * (100% - var(--thumb)));
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.sliderBlock[data-dragging="true"] .pill,
+.sliderBlock[data-dragging="true"] .thumb {
+  transition: none;
 }
 
 .stop {
   position: absolute;
+  z-index: 1;
   top: 0;
   left: calc(var(--inset) + var(--stop) * (100% - var(--thumb)));
   transform: translateX(-50%);
+  min-height: 44px;
+  padding: 0 0.45rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #525252;
+  font: 500 0.78rem var(--font-poppins), "Poppins", sans-serif;
   white-space: nowrap;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.stop:focus,
+.stop:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .stopFirst {
@@ -193,6 +225,7 @@
 }
 
 .stopOn {
+  z-index: 2;
   color: #213066;
   font-weight: 700;
 }
@@ -206,6 +239,18 @@
   touch-action: none;
   cursor: grab;
   user-select: none;
+}
+
+.track:focus,
+.track:focus-visible,
+.track:focus .thumb,
+.track:focus-visible .thumb {
+  outline: none;
+  box-shadow: none;
+}
+
+.track:focus-visible:not([data-pointing="true"]) .thumb {
+  transform: translateX(-50%) scale(1.1);
 }
 
 .trackFill {
@@ -247,6 +292,14 @@
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
+}
+
+.yes:focus,
+.no:focus,
+.yes:focus-visible,
+.no:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .yesOn {

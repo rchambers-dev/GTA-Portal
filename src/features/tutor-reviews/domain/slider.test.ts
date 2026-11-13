@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canSubmitReview, DEFAULT_RATING, ratingAnswers, sliderLabel, sliderRatioFromClient, sliderValueFromRatio, stepSlider } from "./slider";
+import { canSubmitReview, DEFAULT_RATING, faceColour, faceTint, ratingAnswers, sliderLabel, sliderRatioFromClient, sliderValueFromRatio, stepSlider } from "./slider";
 
 describe("tutor review slider", () => {
   it("maps the left of the track to Always and the right to Never", () => {
@@ -20,6 +20,13 @@ describe("tutor review slider", () => {
     expect(sliderRatioFromClient(width / 2, 0, width, inset)).toBe(0.5);
     expect(sliderRatioFromClient(width - inset, 0, width, inset)).toBe(1);
     expect(sliderRatioFromClient(inset + (width - inset * 2) * 0.25, 0, width, inset)).toBeCloseTo(0.25);
+  });
+
+  it("tints the label pill with a lighter version of the face colour", () => {
+    const face = faceColour(0.25).match(/\d+/g)?.map(Number) ?? [];
+    const tint = faceTint(0.25).match(/\d+/g)?.map(Number) ?? [];
+    expect(tint).toHaveLength(3);
+    tint.forEach((channel, index) => expect(channel).toBeGreaterThan(face[index]));
   });
 
   it("starts on Sometimes and snaps with the arrow keys", () => {

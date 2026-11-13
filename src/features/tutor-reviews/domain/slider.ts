@@ -61,6 +61,13 @@ export function faceColour(ratio: number): string {
   return `rgb(${colour.join(", ")})`;
 }
 
+/** A light tint of the face colour, for the label highlight. */
+export function faceTint(ratio: number): string {
+  const channels = faceColour(ratio).match(/\d+/g)?.map(Number) ?? [170, 194, 234];
+  const mixed = channels.map((channel) => Math.round(channel + (255 - channel) * 0.78));
+  return `rgb(${mixed.join(", ")})`;
+}
+
 export function canSubmitReview(page: number, explicitClick: boolean): boolean {
   return explicitClick && page === 3;
 }
