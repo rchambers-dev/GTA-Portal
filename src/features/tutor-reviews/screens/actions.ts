@@ -3,7 +3,7 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice, formatApprenticeName } from "@/features/administration/domain/apprentice-record";
-import { resendOneInvite, sendRoundInvites } from "../domain/email-dispatch";
+import { resendOneInvite, sendRoundInvites, sendTestRoundInvite } from "../domain/email-dispatch";
 import type { EmailRunSummary } from "../domain/email";
 import { questionnaireLock, validateQuestionnaire, type Questionnaire } from "../domain/questionnaire";
 import { templateVersionLabel } from "../domain/templates";
@@ -82,6 +82,12 @@ export async function sendTutorReviewInvitesAction(roundId: string): Promise<{ o
   const access = await writer();
   if (!access.ok) return access;
   return sendRoundInvites(access.supabase, roundId, false);
+}
+
+export async function sendTestTutorReviewEmailAction(roundId: string): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
+  const access = await writer();
+  if (!access.ok) return access;
+  return sendTestRoundInvite(access.supabase, roundId);
 }
 
 export async function resendFailedTutorReviewEmailsAction(roundId: string): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {

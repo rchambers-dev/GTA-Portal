@@ -350,6 +350,21 @@
   overflow-wrap: anywhere;
 }
 
+.emailPreview {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--bg-page);
+  max-width: 36rem;
+}
+
+.emailPreview pre {
+  margin: 0.5rem 0 0;
+  white-space: pre-wrap;
+  font: 16px/1.45 var(--font-body);
+}
+
 .textarea {
   display: block;
   width: 100%;

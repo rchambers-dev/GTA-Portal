@@ -45,6 +45,10 @@ begin
     return jsonb_build_object('state', 'submitted');
   end if;
 
+  if exists (select 1 from public.apprentices where gta_id = v_invite.apprentice_id and is_test) then
+    return jsonb_build_object('state', 'submitted');
+  end if;
+
   insert into public.tutor_review_responses (round_id, tutor_id, submitted_on)
   values (v_round.id, v_invite.tutor_id, v_today)
   returning id into v_response;

@@ -58,6 +58,9 @@ export type EmailAttemptRow = {
   error: string | null;
   createdAt: string;
   sentAt: string | null;
+  renderedSubject: string | null;
+  renderedBody: string | null;
+  renderedLink: string | null;
 };
 
 export type TutorReviewsPage = {
@@ -236,14 +239,30 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     }
   }
 
-  const attemptsResult = await supabase.from("tutor_review_email_attempts").select("id, round_id, apprentice_id, email, status, error, attempt_no, created_at, sent_at").order("created_at", { ascending: false });
+  const attemptColumns = "id, round_id, apprentice_id, email, status, error, attempt_no, created_at, sent_at";
+  const richAttempts = await supabase.from("tutor_review_email_attempts").select(`${attemptColumns}, rendered_subject, rendered_body, rendered_link`).order("created_at", { ascending: false });
+  const attemptsResult = richAttempts.error && /rendered_subject|rendered_body|rendered_link/i.test(richAttempts.error.message)
+    ? await supabase.from("tutor_review_email_attempts").select(attemptColumns).order("created_at", { ascending: false })
+    : richAttempts;
   let emailQueueReady = true;
   let attemptRows: EmailAttemptRow[] = [];
   if (attemptsResult.error) {
     if (!missingTable(attemptsResult.error.message)) return { ...empty, loadError: attemptsResult.error.message };
     emailQueueReady = false;
   } else {
-    attemptRows = ((attemptsResult.data ?? []) as { id: string; round_id: string; apprentice_id: string; email: string; status: EmailAttemptStatus; error: string | null; created_at: string; sent_at: string | null }[]).map((row) => ({
+    attemptRows = ((attemptsResult.data ?? []) as {
+      id: string;
+      round_id: string;
+      apprentice_id: string;
+      email: string;
+      status: EmailAttemptStatus;
+      error: string | null;
+      created_at: string;
+      sent_at: string | null;
+      rendered_subject?: string | null;
+      rendered_body?: string | null;
+      rendered_link?: string | null;
+    }[]).map((row) => ({
       id: row.id,
       roundId: row.round_id,
       apprenticeId: row.apprentice_id,
@@ -252,6 +271,9 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
       error: row.error,
       createdAt: row.created_at,
       sentAt: row.sent_at,
+      renderedSubject: row.rendered_subject ?? null,
+      renderedBody: row.rendered_body ?? null,
+      renderedLink: row.rendered_link ?? null,
     }));
   }
   const latestStatus = new Map<string, EmailAttemptStatus>();

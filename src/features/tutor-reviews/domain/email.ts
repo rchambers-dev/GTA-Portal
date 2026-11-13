@@ -52,6 +52,33 @@ export function canResend(status: EmailAttemptStatus): boolean {
   return status === "failed" || status === "bounced";
 }
 
+export type InviteCandidate = {
+  apprenticeId: string;
+  email: string | null;
+  tutorId: string | null;
+  submitted: boolean;
+  isTest: boolean;
+  statuses: EmailAttemptStatus[];
+};
+
+/** Learners never include a test apprentice. A test send includes only test apprentices. */
+export function selectInviteRecipients(
+  people: InviteCandidate[],
+  options: { audience: "apprentices" | "test"; resend: boolean },
+): InviteCandidate[] {
+  return people.filter((person) => {
+    if (options.audience === "test" ? !person.isTest : person.isTest) return false;
+    if (!person.tutorId || !person.email?.trim() || person.submitted) return false;
+    if (options.audience === "test") {
+      return !person.statuses.some((status) => status === "queued" || status === "sending");
+    }
+    const blocking = person.statuses.some((status) => status === "queued" || status === "sending" || status === "sent" || status === "dry_run" || (!options.resend && (status === "failed" || status === "bounced")));
+    if (blocking) return false;
+    if (options.resend && !person.statuses.some((status) => canResend(status))) return false;
+    return true;
+  });
+}
+
 export function formatLongDate(isoDate: string): string {
   const [year, month, day] = isoDate.split("-").map(Number);
   return `${day} ${MONTHS[(month || 1) - 1]} ${year}`;

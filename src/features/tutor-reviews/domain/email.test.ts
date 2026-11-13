@@ -6,6 +6,7 @@ import {
   canResend,
   emailPlan,
   resolveEmailMode,
+  selectInviteRecipients,
   roundCanSend,
   settleSend,
   tutorReviewEmail,
@@ -33,6 +34,16 @@ describe("tutor review invite emails", () => {
     expect(roundCanSend({ ...open, status: "closed" }).ok).toBe(false);
     expect(roundCanSend({ ...open, closedEarly: true }).ok).toBe(false);
     expect(roundCanSend({ ...open, today: "2026-12-20" }).ok).toBe(false);
+  });
+
+  it("sends learner invites to real apprentices and the test email only to the test apprentice", () => {
+    const people = [
+      { apprenticeId: "GTA-1", email: "learner@example.com", tutorId: "tutor", submitted: false, isTest: false, statuses: [] },
+      { apprenticeId: "GTA-TEST", email: "reiss.kc@gmail.com", tutorId: "tutor", submitted: false, isTest: true, statuses: ["dry_run" as const] },
+    ];
+    expect(selectInviteRecipients(people, { audience: "apprentices", resend: false }).map((person) => person.apprenticeId)).toEqual(["GTA-1"]);
+    expect(selectInviteRecipients(people, { audience: "test", resend: false }).map((person) => person.apprenticeId)).toEqual(["GTA-TEST"]);
+    expect(selectInviteRecipients(people, { audience: "apprentices", resend: false }).some((person) => person.isTest)).toBe(false);
   });
 
   it("writes a confidential email with the link and the closing date", () => {
@@ -173,6 +184,16 @@ describe("tutor review invite emails", () => {
     expect(calls.some((call) => call.url.includes("/users/reiss%40example.com/sendMail"))).toBe(true);
     expect(calls.some((call) => call.body?.includes("client_secret=secret"))).toBe(true);
     expect(JSON.stringify(result)).not.toContain("secret");
+  });
+
+  it("creates one test apprentice and keeps a dry-run copy of the email", () => {
+    const sql = readFileSync(new URL("../../../../supabase/migrations/20261113191000_test_apprentice.sql", import.meta.url), "utf8");
+    expect(sql).toContain("reiss.kc@gmail.com");
+    expect(sql).toContain("is_test");
+    expect(sql).toContain("rendered_subject");
+    expect(sql).toContain("rendered_body");
+    expect(sql).toContain("rendered_link");
+    expect(sql).not.toContain("sendMail");
   });
 
   it("stores the queue so a crash cannot send the same invite twice", () => {
