@@ -564,6 +564,77 @@ function officialTutors(rows: { id: string; display_name: string | null; email: 
     .sort((a, b) => a.name.localeCompare(b.name, "en-GB"));
 }
 
+export type RebookMonthStop = {
+  gtaId: string;
+  sortOrder: number;
+  arriveMinutes: number | null;
+  leaveMinutes: number | null;
+};
+
+export type RebookMonthDay = {
+  date: string;
+  accepted: boolean;
+  completed: boolean;
+  stops: RebookMonthStop[];
+};
+
+/** Stops and route flags for one month, so the rebook calendar can fit a visit on a day that is not the month open on the plan. */
+export async function readRebookMonth(
+  supabase: SupabaseClient,
+  month: string,
+): Promise<{ days: RebookMonthDay[]; error: string | null }> {
+  if (!/^\d{4}-\d{2}$/.test(month)) return { days: [], error: "That month is not available." };
+  const monthStart = `${month}-01`;
+  const [year, monthNumber] = month.split("-").map(Number);
+  const nextMonth = new Date(Date.UTC(year, monthNumber, 1)).toISOString().slice(0, 10);
+  const [daysResult, stopsResult] = await Promise.all([
+    supabase.from("review_days").select("date_on, accepted, completed_at").gte("date_on", monthStart).lt("date_on", nextMonth),
+    supabase
+      .from("review_day_stops")
+      .select(
+        "date_on, gta_id, sort_order, accepted, arrive_minutes, leave_minutes, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
+      )
+      .gte("date_on", monthStart)
+      .lt("date_on", nextMonth)
+      .eq("excluded", false),
+  ]);
+  if (daysResult.error || stopsResult.error) {
+    return { days: [], error: daysResult.error?.message || stopsResult.error?.message || "That month could not be loaded." };
+  }
+  const stopsByDate = new Map<string, RebookMonthStop[]>();
+  for (const stop of (stopsResult.data ?? []) as {
+    date_on: string;
+    gta_id: string;
+    sort_order: number;
+    accepted: boolean;
+    arrive_minutes: number | null;
+    leave_minutes: number | null;
+    lock_arrive_minutes: number | null;
+    lock_leave_minutes: number | null;
+    accepted_arrive_minutes: number | null;
+    accepted_leave_minutes: number | null;
+  }[]) {
+    const arrive = stop.accepted ? stop.accepted_arrive_minutes : (stop.arrive_minutes ?? stop.lock_arrive_minutes);
+    const leave = stop.accepted ? stop.accepted_leave_minutes : (stop.leave_minutes ?? stop.lock_leave_minutes);
+    const list = stopsByDate.get(stop.date_on) ?? [];
+    list.push({ gtaId: stop.gta_id, sortOrder: stop.sort_order, arriveMinutes: arrive, leaveMinutes: leave });
+    stopsByDate.set(stop.date_on, list);
+  }
+  for (const list of stopsByDate.values()) list.sort((a, b) => a.sortOrder - b.sortOrder);
+  const dayRows = (daysResult.data ?? []) as { date_on: string; accepted: boolean; completed_at: string | null }[];
+  const meta = new Map(dayRows.map((row) => [row.date_on, row]));
+  const dates = new Set<string>([...meta.keys(), ...stopsByDate.keys()]);
+  return {
+    days: [...dates].sort().map((date) => ({
+      date,
+      accepted: Boolean(meta.get(date)?.accepted),
+      completed: Boolean(meta.get(date)?.completed_at),
+      stops: stopsByDate.get(date) ?? [],
+    })),
+    error: null,
+  };
+}
+
 export async function loadPlanPage(input: {
   canWrite: boolean;
   date: string;
