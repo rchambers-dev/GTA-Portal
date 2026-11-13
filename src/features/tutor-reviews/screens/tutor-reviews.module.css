@@ -353,3 +353,32 @@ a.secondary {
   align-items: center;
   text-decoration: none;
 }
+
+.dialogBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgb(13 16 36 / 0.35);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+}
+
+.dialog {
+  width: min(28rem, 100%);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-md);
+}
+
+.dialog h3 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+.counts {
+  margin: var(--space-4) 0;
+  padding-left: 1.1rem;
+}

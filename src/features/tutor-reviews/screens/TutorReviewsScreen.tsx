@@ -1,10 +1,16 @@
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
+import { resolveEmailMode } from "../domain/email";
 import { loadTutorReviewsPage } from "../domain/repository";
 import { TutorReviewsBoard } from "./TutorReviewsBoard";
 import styles from "./tutor-reviews.module.css";
 
-export async function TutorReviewsScreen() {
+export async function TutorReviewsScreen({ workspace }: { workspace: "administration" | "management" }) {
   const page = await loadTutorReviewsPage();
+  const emailMode = resolveEmailMode({
+    vercelEnv: process.env.VERCEL_ENV,
+    nodeEnv: process.env.NODE_ENV,
+    mode: process.env.TUTOR_REVIEW_EMAIL_MODE,
+  });
   return (
     <ApprenticePageShell
       eyebrow="Reviews"
@@ -17,7 +23,16 @@ export async function TutorReviewsScreen() {
           <p className={styles.lead}>{page.loadError}</p>
         </section>
       ) : (
-        <TutorReviewsBoard rounds={page.rounds} tracker={page.tracker} reports={page.reports} concerns={page.concerns} />
+        <TutorReviewsBoard
+          rounds={page.rounds}
+          tracker={page.tracker}
+          reports={page.reports}
+          concerns={page.concerns}
+          attempts={page.attempts}
+          emailQueueReady={page.emailQueueReady}
+          emailMode={emailMode}
+          workspace={workspace}
+        />
       )}
     </ApprenticePageShell>
   );

@@ -469,7 +469,7 @@ export async function renderWorkspacePage(
       case "reviews/analytics":
         return <ReviewStubScreen title="Analytics" />;
       case "reviews/tutor-reviews":
-        return <TutorReviewsScreen />;
+        return <TutorReviewsScreen workspace="administration" />;
       case "reviews/settings":
         return <SettingsScreen />;
       case "staff":
@@ -547,7 +547,7 @@ export async function renderWorkspacePage(
       case "reviews/analytics":
         return <ReviewStubScreen title="Analytics" />;
       case "reviews/tutor-reviews":
-        return <TutorReviewsScreen />;
+        return <TutorReviewsScreen workspace="management" />;
       case "reviews/settings":
         return <SettingsScreen />;
       case "enrolments":

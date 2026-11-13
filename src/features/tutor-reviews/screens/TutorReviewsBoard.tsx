@@ -3,8 +3,10 @@
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { inviteCsv } from "../domain/csv";
-import type { ConcernItem, ReportCard, TrackerRow, TutorReviewRound } from "../domain/repository";
+import type { ConcernItem, EmailAttemptRow, ReportCard, TrackerRow, TutorReviewRound } from "../domain/repository";
+import { londonToday, roundCanSend, type EmailMode } from "../domain/email";
 import { generateTutorReviewInvitesAction, setTutorReviewRoundAction } from "./actions";
+import { EmailAttempts, SendInvitesButton } from "./EmailPanel";
 import { QuestionnaireEditor } from "./QuestionnaireEditor";
 import styles from "./tutor-reviews.module.css";
 
@@ -33,11 +35,19 @@ export function TutorReviewsBoard({
   tracker,
   reports,
   concerns,
+  attempts,
+  emailQueueReady,
+  emailMode,
+  workspace,
 }: {
   rounds: TutorReviewRound[];
   tracker: TrackerRow[];
   reports: ReportCard[];
   concerns: ConcernItem[];
+  attempts: EmailAttemptRow[];
+  emailQueueReady: boolean;
+  emailMode: EmailMode;
+  workspace: "administration" | "management";
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -90,6 +100,14 @@ export function TutorReviewsBoard({
                 <button type="button" className={styles.secondary} disabled={pending || item.status !== "open"} onClick={() => run(() => setTutorReviewRoundAction({ roundId: item.id, status: "closed" }))}>
                   Close early
                 </button>
+                <SendInvitesButton
+                  roundId={item.id}
+                  label={item.label}
+                  plan={item.emailPlan}
+                  mode={emailMode}
+                  canSend={emailQueueReady && roundCanSend({ status: item.status, closesOn: item.closesOn, closedEarly: item.closedEarly, today: londonToday() }).ok}
+                  reason={emailQueueReady ? (roundCanSend({ status: item.status, closesOn: item.closesOn, closedEarly: item.closedEarly, today: londonToday() }).ok ? null : "Invites can be sent when a round is open or scheduled to open.") : "Email sending is not available until the database migration is applied."}
+                />
               </div>
             </article>
           ))}
@@ -118,7 +136,7 @@ export function TutorReviewsBoard({
           <div className={styles.sectionHead}>
             <div>
               <h2>Invites · {round.label}</h2>
-              <p className={styles.muted}>Creates a one-time link for each apprentice who has a tutor. Copy a link or export a CSV. Nothing is emailed from here. Generating again replaces any link that has not been submitted.</p>
+              <p className={styles.muted}>Creates a one-time link for each apprentice who has a tutor. Copy a link or export a CSV. Send invites posts those links by email. Generating again replaces any link that has not been submitted.</p>
             </div>
             <button
               type="button"
@@ -185,6 +203,16 @@ export function TutorReviewsBoard({
             </>
           ) : null}
         </section>
+      ) : null}
+
+      {round ? (
+        <EmailAttempts
+          roundId={round.id}
+          attempts={attempts}
+          workspace={workspace}
+          mode={emailMode}
+          queueReady={emailQueueReady}
+        />
       ) : null}
 
       <section className={styles.card}>

@@ -3,6 +3,8 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice, formatApprenticeName } from "@/features/administration/domain/apprentice-record";
+import { resendOneInvite, sendRoundInvites } from "../domain/email-dispatch";
+import type { EmailRunSummary } from "../domain/email";
 import { questionnaireLock, validateQuestionnaire, type Questionnaire } from "../domain/questionnaire";
 import { hashReviewToken, newReviewToken } from "../domain/rules";
 
@@ -66,6 +68,24 @@ export async function generateTutorReviewInvitesAction(roundId: string): Promise
     });
   }
   return { ok: true, links };
+}
+
+export async function sendTutorReviewInvitesAction(roundId: string): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
+  const access = await writer();
+  if (!access.ok) return access;
+  return sendRoundInvites(access.supabase, roundId, false);
+}
+
+export async function resendFailedTutorReviewEmailsAction(roundId: string): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
+  const access = await writer();
+  if (!access.ok) return access;
+  return sendRoundInvites(access.supabase, roundId, true);
+}
+
+export async function resendTutorReviewEmailAction(attemptId: string): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
+  const access = await writer();
+  if (!access.ok) return access;
+  return resendOneInvite(access.supabase, attemptId);
 }
 
 export async function saveTutorReviewQuestionnaireAction(roundId: string, questionnaire: Questionnaire) {

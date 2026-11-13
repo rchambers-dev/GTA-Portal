@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { formatApprenticeName } from "@/features/administration/domain/apprentice-record";
 import type { ReviewQuestionKind } from "./catalogue";
 import { blankPublicForm, publicFormFromPayload, questionnaireFromParts, type PublicForm, type Questionnaire } from "./questionnaire";
+import { emailPlan, type EmailAttemptStatus, type EmailPlan } from "./email";
 import { concernList, publishStats, type RoundStatus } from "./rules";
 
 export type TutorReviewRound = {
@@ -16,6 +17,7 @@ export type TutorReviewRound = {
   inviteCount: number;
   responseCount: number;
   questionnaire: Questionnaire;
+  emailPlan: EmailPlan;
 };
 
 export type TrackerRow = {
@@ -52,12 +54,25 @@ export type ReportCard = {
 
 export type ConcernItem = { tutorName: string; roundLabel: string; text: string };
 
+export type EmailAttemptRow = {
+  id: string;
+  roundId: string;
+  apprenticeId: string;
+  email: string;
+  status: EmailAttemptStatus;
+  error: string | null;
+  createdAt: string;
+  sentAt: string | null;
+};
+
 export type TutorReviewsPage = {
   loadError: string | null;
   rounds: TutorReviewRound[];
   tracker: TrackerRow[];
   reports: ReportCard[];
   concerns: ConcernItem[];
+  attempts: EmailAttemptRow[];
+  emailQueueReady: boolean;
 };
 
 export type { PublicForm, Questionnaire };
@@ -69,7 +84,7 @@ function missingTable(message: string | undefined): boolean {
 }
 
 export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
-  const empty: TutorReviewsPage = { loadError: null, rounds: [], tracker: [], reports: [], concerns: [] };
+  const empty: TutorReviewsPage = { loadError: null, rounds: [], tracker: [], reports: [], concerns: [], attempts: [], emailQueueReady: false };
   let supabase;
   try {
     supabase = await createSupabaseServerClient();
@@ -203,6 +218,30 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     }
   }
 
+  const attemptsResult = await supabase.from("tutor_review_email_attempts").select("id, round_id, apprentice_id, email, status, error, attempt_no, created_at, sent_at").order("created_at", { ascending: false });
+  let emailQueueReady = true;
+  let attemptRows: EmailAttemptRow[] = [];
+  if (attemptsResult.error) {
+    if (!missingTable(attemptsResult.error.message)) return { ...empty, loadError: attemptsResult.error.message };
+    emailQueueReady = false;
+  } else {
+    attemptRows = ((attemptsResult.data ?? []) as { id: string; round_id: string; apprentice_id: string; email: string; status: EmailAttemptStatus; error: string | null; created_at: string; sent_at: string | null }[]).map((row) => ({
+      id: row.id,
+      roundId: row.round_id,
+      apprenticeId: row.apprentice_id,
+      email: row.email,
+      status: row.status,
+      error: row.error,
+      createdAt: row.created_at,
+      sentAt: row.sent_at,
+    }));
+  }
+  const latestStatus = new Map<string, EmailAttemptStatus>();
+  for (const attempt of attemptRows) {
+    const key = `${attempt.roundId}:${attempt.apprenticeId}`;
+    if (!latestStatus.has(key)) latestStatus.set(key, attempt.status);
+  }
+
   const fullRounds = rounds.map((round) => {
     const source = roundRows.find((row) => row.id === round.id);
     return {
@@ -225,10 +264,20 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
           isConcern: question.is_concern,
         })),
       }),
+      emailPlan: emailPlan(people.flatMap((person) => {
+        const tutorId = currentTutor.get(person.gta_id)?.tutorId;
+        if (!tutorId) return [];
+        const invite = invites.find((row) => row.round_id === round.id && row.apprentice_id === person.gta_id);
+        return [{
+          email: person.email,
+          submitted: Boolean(invite?.used_at),
+          latestStatus: latestStatus.get(`${round.id}:${person.gta_id}`) ?? null,
+        }];
+      })),
     };
   });
 
-  return { loadError: null, rounds: fullRounds, tracker, reports, concerns: concernList(concernRows) };
+  return { loadError: null, rounds: fullRounds, tracker, reports, concerns: concernList(concernRows), attempts: attemptRows, emailQueueReady };
 }
 
 export async function readPublicForm(token: string): Promise<PublicForm> {
