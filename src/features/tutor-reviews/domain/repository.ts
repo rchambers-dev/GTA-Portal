@@ -3,6 +3,7 @@ import { formatApprenticeName } from "@/features/administration/domain/apprentic
 import type { ReviewQuestionKind } from "./catalogue";
 import { blankPublicForm, publicFormFromPayload, questionnaireFromParts, type PublicForm, type Questionnaire } from "./questionnaire";
 import { excludeTestApprentices } from "@/features/administration/domain/test-apprentice";
+import { assignedTutorName } from "./dashboard";
 import { emailPlan, type EmailAttemptStatus, type EmailPlan } from "./email";
 import { concernList, publishStats, type AnswerStat, type RoundStatus } from "./rules";
 
@@ -169,13 +170,14 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
       if (testIds.has(person.gta_id)) continue;
       const invite = invites.find((row) => row.round_id === round.id && row.apprentice_id === person.gta_id);
       const tutorId = invite?.tutor_id ?? currentTutor.get(person.gta_id)?.tutorId ?? null;
+      const tutorName = assignedTutorName(tutorId, tutors);
       tracker.push({
         roundId: round.id,
         apprenticeId: person.gta_id,
         name: formatApprenticeName({ firstName: person.first_name, middleNames: person.middle_names, lastName: person.last_name }),
         email: person.email,
-        tutorId,
-        tutorName: tutorId ? names.get(tutorId) || "Tutor" : "—",
+        tutorId: tutorName === "—" ? null : tutorId,
+        tutorName,
         invited: Boolean(invite),
         submitted: Boolean(invite?.used_at),
         updatedAt: person.updated_at ?? null,

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { daysUntil, roundKpis, tutorResponseRates } from "./dashboard";
+import { assignedTutorName, daysUntil, roundKpis, tutorResponseRates } from "./dashboard";
 
 describe("tutor review dashboard figures", () => {
   it("leaves test apprentices out of the round totals", () => {
@@ -28,6 +28,13 @@ describe("tutor review dashboard figures", () => {
     });
     expect(figures.noEmail).toBe(1);
     expect(figures.invited).toBe(1);
+  });
+
+  it("names only an active tutor, and leaves anyone else blank", () => {
+    const active = [{ id: "anne", name: "Anne-Marie Sanderson" }];
+    expect(assignedTutorName("anne", active)).toBe("Anne-Marie Sanderson");
+    expect(assignedTutorName("dan", active)).toBe("—");
+    expect(assignedTutorName(null, active)).toBe("—");
   });
 
   it("shows an active tutor at 0% before anyone is invited", () => {

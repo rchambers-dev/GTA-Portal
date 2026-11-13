@@ -34,11 +34,18 @@ export function roundKpis(input: {
   };
 }
 
+/** Name from the open apprentice_tutors row, limited to the active tutors listed on the response-rate chart. */
+export function assignedTutorName(tutorId: string | null, activeTutors: { id: string; name: string }[]): string {
+  if (!tutorId) return "—";
+  return activeTutors.find((tutor) => tutor.id === tutorId)?.name ?? "—";
+}
+
 export function tutorResponseRates(people: DashboardPerson[], tutorNames: string[] = []): { tutorName: string; invited: number; submitted: number; rate: number }[] {
   const groups = new Map<string, { invited: number; submitted: number }>();
   for (const name of tutorNames) groups.set(name, { invited: 0, submitted: 0 });
   for (const person of people) {
     if (person.isTest || !person.invited) continue;
+    if (tutorNames.length > 0 && !groups.has(person.tutorName)) continue;
     const row = groups.get(person.tutorName) ?? { invited: 0, submitted: 0 };
     row.invited += 1;
     if (person.submitted) row.submitted += 1;

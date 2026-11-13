@@ -69,9 +69,10 @@ export function RatingSlider({
         </span>
       </div>
       <div className={styles.stopLabels}>
-        {SLIDER_STOPS.map((stop) => <span key={stop.value}>{stop.label}</span>)}
+        {SLIDER_STOPS.map((stop) => (
+          <span key={stop.value} className={stop.value === shown ? styles.stopOn : undefined}>{stop.label}</span>
+        ))}
       </div>
-      <p className={styles.selected}>{sliderLabel(shown)}</p>
     </div>
   );
 }

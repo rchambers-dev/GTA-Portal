@@ -81,6 +81,7 @@ export function TutorReviewForm({ token, form, preview = false, embedded = false
               <h1>{form.title}</h1>
               <p className={styles.lead}>{form.intro}</p>
               {heading ? <h2>{heading}</h2> : null}
+              <div className={styles.questions}>
               {questions.map((question) => {
                 const help = questionHelp(question, form.ratingHelp);
                 const showConcernNote = question.code === "concern" && question.kind === "yes_no" && yeses[question.code] === true;
@@ -109,6 +110,7 @@ export function TutorReviewForm({ token, form, preview = false, embedded = false
                   </fieldset>
                 );
               })}
+              </div>
               <div className={styles.pager}>
                 <button type="button" className={styles.secondary} disabled={page === 1 || pending} onClick={() => setPage((page - 1) as ReviewPage)}>Back</button>
                 {page < 3 ? (
