@@ -65,6 +65,35 @@ update public.tutor_review_rounds round
        and apprentice.is_test is not true
    );
 
+create or replace function public.tutor_review_questions_guard()
+returns trigger
+language plpgsql
+set search_path to ''
+as $$
+declare
+  v_round uuid := coalesce(new.round_id, old.round_id);
+begin
+  if exists (
+    select 1
+      from public.tutor_review_invites invite
+      join public.apprentices apprentice on apprentice.gta_id = invite.apprentice_id
+     where invite.round_id = v_round
+       and apprentice.is_test is not true
+    union all
+    select 1
+      from public.tutor_review_responses response
+     where response.round_id = v_round
+       and response.is_test is not true
+  ) then
+    raise exception 'Questions are locked because this round already has invites or responses.' using errcode = '55000';
+  end if;
+  if tg_op = 'DELETE' then
+    return old;
+  end if;
+  return new;
+end;
+$$;
+
 update public.tutor_review_questions question
    set kind = 'yes_no',
        text = case question.code
