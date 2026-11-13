@@ -156,49 +156,53 @@
 
 .sliderBlock {
   --thumb: 44px;
-  --inset: 22px;
+  --pad: 4px;
   --slider-gap: 0.75rem;
   position: relative;
   margin-top: var(--slider-gap);
 }
 
-.stopLabels {
+.segmentTray {
   position: relative;
-  height: 44px;
+  height: 48px;
   margin-top: var(--slider-gap);
-  color: #525252;
-  font-size: 0.78rem;
+  border-radius: 999px;
+  background: #e6ebf2;
 }
 
-.pill {
+.segment {
   position: absolute;
   z-index: 0;
-  top: 50%;
-  height: 32px;
+  top: var(--pad);
+  bottom: var(--pad);
+  width: calc((100% - 2 * var(--pad)) / 5);
+  left: calc(var(--pad) + var(--ratio) * 0.8 * (100% - 2 * var(--pad)));
   border-radius: 999px;
-  left: calc(var(--inset) + var(--ratio) * (100% - var(--thumb)));
-  transform: translate(-50%, -50%);
   pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 1px 2px rgba(13, 27, 52, 0.08),
+    0 6px 14px rgba(13, 27, 52, 0.12);
 }
 
-.sliderBlock[data-dragging="true"] .pill,
-.sliderBlock[data-dragging="true"] .thumb {
-  transition: none;
+.segmentLabels {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  height: 100%;
+  padding: 0 var(--pad);
 }
 
 .stop {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: calc(var(--inset) + var(--stop) * (100% - var(--thumb)));
-  transform: translateX(-50%);
+  min-width: 0;
   min-height: 44px;
-  padding: 0 0.45rem;
+  padding: 0 1px;
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: #525252;
-  font: 500 0.78rem var(--font-poppins), "Poppins", sans-serif;
+  color: #5c6578;
+  font: 500 0.62rem var(--font-poppins), "Poppins", sans-serif;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -212,22 +216,21 @@
   box-shadow: none;
 }
 
-.stopFirst {
-  left: var(--inset);
-  transform: translateX(-50%);
-  text-align: left;
-}
-
-.stopLast {
-  left: calc(100% - var(--inset));
-  transform: translateX(-50%);
-  text-align: right;
-}
-
 .stopOn {
-  z-index: 2;
   color: #213066;
   font-weight: 700;
+}
+
+@media (min-width: 720px) {
+  .segmentTray { height: 52px; }
+  .stop { font-size: 0.84rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb,
+  .segment {
+    transition: none;
+  }
 }
 
 .track {
@@ -255,8 +258,8 @@
 
 .trackFill {
   position: absolute;
-  left: var(--inset);
-  right: var(--inset);
+  left: calc(var(--pad) + 0.1 * (100% - 2 * var(--pad)));
+  right: calc(var(--pad) + 0.1 * (100% - 2 * var(--pad)));
   top: 50%;
   height: 10px;
   transform: translateY(-50%);
@@ -269,7 +272,7 @@
   top: 0;
   width: var(--thumb);
   height: var(--thumb);
-  left: calc(var(--inset) + var(--ratio) * (100% - var(--thumb)));
+  left: calc(var(--pad) + (0.1 + var(--ratio) * 0.8) * (100% - 2 * var(--pad)));
   transform: translateX(-50%);
   display: grid;
   place-items: center;

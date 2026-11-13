@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canSubmitReview, DEFAULT_RATING, faceColour, faceTint, ratingAnswers, sliderLabel, sliderRatioFromClient, sliderValueFromRatio, stepSlider } from "./slider";
+import { canSubmitReview, DEFAULT_RATING, faceColour, faceTint, ratingAnswers, sliderLabel, sliderRatioFromClient, sliderRatioFromSegment, sliderValueFromRatio, stepSlider } from "./slider";
 
 describe("tutor review slider", () => {
   it("maps the left of the track to Always and the right to Never", () => {
@@ -20,6 +20,19 @@ describe("tutor review slider", () => {
     expect(sliderRatioFromClient(width / 2, 0, width, inset)).toBe(0.5);
     expect(sliderRatioFromClient(width - inset, 0, width, inset)).toBe(1);
     expect(sliderRatioFromClient(inset + (width - inset * 2) * 0.25, 0, width, inset)).toBeCloseTo(0.25);
+  });
+
+  it("lines each segment centre up with a snap stop", () => {
+    const width = 300;
+    const pad = 4;
+    const inner = width - pad * 2;
+    const segment = inner / 5;
+    const centre = (index: number) => pad + segment * index + segment / 2;
+    expect(sliderRatioFromSegment(centre(0), 0, width, pad)).toBeCloseTo(0);
+    expect(sliderRatioFromSegment(centre(1), 0, width, pad)).toBeCloseTo(0.25);
+    expect(sliderRatioFromSegment(centre(2), 0, width, pad)).toBeCloseTo(0.5);
+    expect(sliderRatioFromSegment(centre(3), 0, width, pad)).toBeCloseTo(0.75);
+    expect(sliderRatioFromSegment(centre(4), 0, width, pad)).toBeCloseTo(1);
   });
 
   it("tints the label pill with a lighter version of the face colour", () => {

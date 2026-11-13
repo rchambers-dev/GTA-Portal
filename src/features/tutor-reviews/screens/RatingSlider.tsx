@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import { DEFAULT_RATING, faceColour, faceTint, sliderLabel, sliderRatioFromClient, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS, SLIDER_THUMB_PX } from "../domain/slider";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { DEFAULT_RATING, faceColour, faceTint, SEGMENT_PAD_PX, sliderLabel, sliderRatioFromSegment, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS } from "../domain/slider";
 import styles from "./website-form.module.css";
 
 const MOVE_MS = 200;
@@ -17,15 +17,12 @@ export function RatingSlider({
 }) {
   const blockRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const labelsRef = useRef<HTMLDivElement>(null);
-  const labelRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const initialRatio = sliderRatioFromValue(value ?? DEFAULT_RATING);
   const shownRatio = useRef(initialRatio);
   const dragging = useRef(false);
   const frame = useRef(0);
   const settle = useRef(0);
   const [ratio, setRatio] = useState(initialRatio);
-  const [pillWidth, setPillWidth] = useState(64);
   const committed = value ?? DEFAULT_RATING;
   const shown = sliderValueFromRatio(ratio);
   const onChangeRef = useRef(onChange);
@@ -45,6 +42,10 @@ export function RatingSlider({
     window.clearTimeout(settle.current);
     const block = blockRef.current;
     if (block) delete block.dataset.dragging;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      paint(target);
+      return;
+    }
     const from = shownRatio.current;
     const start = performance.now();
     const step = (now: number) => {
@@ -63,11 +64,11 @@ export function RatingSlider({
   }
 
   function ratioFrom(clientX: number) {
-    const track = trackRef.current;
-    if (!track) return shownRatio.current;
-    const rect = track.getBoundingClientRect();
-    const inset = Number.parseFloat(getComputedStyle(track).getPropertyValue("--inset")) || SLIDER_THUMB_PX / 2;
-    return sliderRatioFromClient(clientX, rect.left, rect.width, inset);
+    const block = blockRef.current;
+    if (!block) return shownRatio.current;
+    const rect = block.getBoundingClientRect();
+    const pad = Number.parseFloat(getComputedStyle(block).getPropertyValue("--pad")) || SEGMENT_PAD_PX;
+    return sliderRatioFromSegment(clientX, rect.left, rect.width, pad);
   }
 
   function finishDrag(clientX?: number) {
@@ -96,14 +97,6 @@ export function RatingSlider({
       window.removeEventListener("pointercancel", cancel);
     };
   }, []);
-
-  useLayoutEffect(() => {
-    const index = SLIDER_STOPS.findIndex((stop) => stop.value === shown);
-    const label = labelRefs.current[index];
-    if (!label) return;
-    const width = label.offsetWidth;
-    setPillWidth((current) => (current === width ? current : width));
-  }, [shown]);
 
   return (
     <div ref={blockRef} className={styles.sliderBlock}>
@@ -155,28 +148,25 @@ export function RatingSlider({
           <Face ratio={ratio} />
         </span>
       </div>
-      <div ref={labelsRef} className={styles.stopLabels} aria-hidden="true">
-        <span
-          className={styles.pill}
-          style={{ "--ratio": ratio, width: pillWidth, background: faceTint(ratio) } as CSSProperties}
-        />
-        {SLIDER_STOPS.map((stop, index) => (
-          <button
-            key={stop.value}
-            ref={(node) => { labelRefs.current[index] = node; }}
-            type="button"
-            tabIndex={-1}
-            className={`${styles.stop} ${index === 0 ? styles.stopFirst : ""} ${index === SLIDER_STOPS.length - 1 ? styles.stopLast : ""} ${stop.value === shown ? styles.stopOn : ""}`}
-            style={{ "--stop": index / (SLIDER_STOPS.length - 1) } as CSSProperties}
-            onMouseDown={(event) => event.preventDefault()}
-            onClick={(event) => {
-              event.preventDefault();
-              choose(stop.value);
-            }}
-          >
-            {stop.label}
-          </button>
-        ))}
+      <div className={styles.segmentTray} aria-hidden="true">
+        <span className={styles.segment} style={{ "--ratio": ratio, background: faceTint(ratio) } as CSSProperties} />
+        <div className={styles.segmentLabels}>
+          {SLIDER_STOPS.map((stop) => (
+            <button
+              key={stop.value}
+              type="button"
+              tabIndex={-1}
+              className={stop.value === shown ? `${styles.stop} ${styles.stopOn}` : styles.stop}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={(event) => {
+                event.preventDefault();
+                choose(stop.value);
+              }}
+            >
+              {stop.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

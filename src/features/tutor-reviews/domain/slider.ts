@@ -23,6 +23,22 @@ export function sliderValueFromRatio(ratio: number): number {
   return SLIDER_STOPS[index].value;
 }
 
+/** Padding inside the segmented label pill. The face and the raised segment share this inset. */
+export const SEGMENT_PAD_PX = 4;
+
+/**
+ * Pointer position mapped onto the five equal segments.
+ * Ratio 0 is the centre of Always, 1 is the centre of Never.
+ */
+export function sliderRatioFromSegment(clientX: number, left: number, width: number, pad = SEGMENT_PAD_PX): number {
+  const inner = width - pad * 2;
+  const segment = inner / SLIDER_STOPS.length;
+  const start = left + pad + segment / 2;
+  const usable = inner - segment;
+  if (usable <= 0) return 0;
+  return Math.min(1, Math.max(0, (clientX - start) / usable));
+}
+
 /** Pointer position mapped onto the usable track, inset by half the thumb on each side. */
 export function sliderRatioFromClient(clientX: number, left: number, width: number, inset = SLIDER_THUMB_PX / 2): number {
   const usable = width - inset * 2;
