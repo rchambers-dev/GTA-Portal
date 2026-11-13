@@ -509,12 +509,12 @@ function DayActions({
         <a className={styles.ghost} href={`/${workspace}/reviews/out`}>Open Out</a>
       ) : null}
       {day.accepted ? (
-        <button type="button" className={styles.fill} onClick={() => emailRoute(page, day, date, packed, onStatus)}>
+        <button type="button" className={styles.quiet} onClick={() => emailRoute(page, day, date, packed, onStatus)}>
           Email this route
         </button>
       ) : null}
       {day.accepted ? (
-        <button type="button" className={styles.fill} onClick={() => printRoute(page, day, date, packed, onStatus)}>
+        <button type="button" className={styles.quiet} onClick={() => printRoute(page, day, date, packed, onStatus)}>
           Print this route
         </button>
       ) : null}

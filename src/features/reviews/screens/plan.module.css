@@ -2533,3 +2533,291 @@
     color: #111 !important;
   }
 }
+
+/* Portal restyle. Layout stays as the Review Assistant; surfaces use the Portal tokens. */
+.raPage,
+.layout,
+.settingsPage,
+.stubCard {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+}
+
+.roster,
+.plan,
+.settingsMain,
+.stubCard {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.settingsPage {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  color: var(--text-primary);
+}
+
+.stubCard {
+  padding: 20px;
+}
+
+.stubCard h2,
+.planTitle,
+.planTitle .kicker,
+.planTitle .dateLine,
+.calendar h3,
+.settingsPage h2,
+.settingsPage .settingsTitle,
+.dialog h2,
+.stopName,
+.stopName a,
+.noteItem strong,
+.rebookMonth strong,
+.tabs .counterTile strong,
+.tabs .counterTile em,
+.pill,
+.fill,
+.accept,
+.quiet,
+.completedPill,
+.actionPrimary,
+.actionBlue,
+.actionGrey,
+.actionDanger,
+.actionGhost,
+.rebookBook,
+.rebookQueue,
+.rebookSlot,
+.rebookSlotOn,
+.rebookDay,
+.noteBtn,
+.noteOn {
+  font-family: var(--font-display);
+}
+
+.planTitle,
+.stopName,
+.stopName a,
+.calendar h3,
+.dialog h2,
+.settingsPage h2 {
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.plan .kicker,
+.roster .empty,
+.plan .status,
+.search,
+.college,
+.placeLine,
+.contactLine,
+.lockNote,
+.meta,
+.hint {
+  color: var(--text-secondary);
+}
+
+.plan .ghost,
+.plan .headActions .pill,
+.plan .headActions button.pill,
+.quiet {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+
+.plan .headActions .pill strong,
+.plan .headActions button.pill strong {
+  background: var(--color-navy-800);
+  color: var(--text-inverse);
+}
+
+.tabs .counterTile {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+.tabs .counterTile em {
+  color: var(--text-secondary);
+}
+
+.tabs .counterTile.tabOn,
+.tabs .counterTile.tabLocked {
+  background: var(--color-navy-800);
+  color: var(--text-inverse);
+  border-color: var(--color-navy-800);
+}
+
+.tabs .counterTile.tabOn em,
+.tabs .counterTile.tabLocked em {
+  color: rgb(255 255 255 / 0.82);
+}
+
+.plan .calendar {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+}
+
+.plan .calendar .day,
+.plan .calendar .calLabel {
+  color: var(--text-primary);
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.plan .calendar .dayOn {
+  background: color-mix(in srgb, var(--color-navy-700) 12%, white);
+  border-color: color-mix(in srgb, var(--color-navy-700) 28%, white);
+  color: var(--color-navy-800);
+  box-shadow: none;
+  font-weight: 700;
+}
+
+.plan .calendar .dayToday:not(.dayOn) {
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--color-navy-600) 55%, transparent);
+}
+
+.plan .calendar .dayDone::after {
+  background: color-mix(in srgb, #b44a2c 62%, transparent);
+  width: 11px;
+  height: 2px;
+}
+
+.plan .calendar .dayBooked::after {
+  background: color-mix(in srgb, var(--color-green-600) 65%, transparent);
+  width: 11px;
+  height: 2px;
+}
+
+.pills .tag,
+.pills .tagOk,
+.duePill.tagOk,
+.roster .tagOk {
+  background: var(--status-on-track-bg);
+  color: var(--status-on-track-fg);
+}
+
+.pills .tagOver,
+.duePill.tagOver,
+.roster .tagOver {
+  background: color-mix(in srgb, #b44a2c 14%, white);
+  color: #8f3a22;
+}
+
+.pills .tagSoon,
+.duePill.tagSoon {
+  background: var(--status-monitoring-bg);
+  color: var(--status-monitoring-fg);
+}
+
+.pills .safeOn {
+  background: color-mix(in srgb, var(--color-green-600) 16%, white);
+  color: var(--color-green-600);
+}
+
+.pills .safeOff {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+}
+
+.pills .tagDone {
+  background: color-mix(in srgb, var(--color-green-600) 18%, white);
+  color: #176338;
+}
+
+.pills .tagLock {
+  background: color-mix(in srgb, #b44a2c 14%, white);
+  color: #8f3a22;
+}
+
+.fill,
+.accept,
+.completedPill,
+.dayActions .accept,
+.dayActions .accept:disabled,
+.dayActions .accept:disabled:hover {
+  background: var(--color-green-600);
+  color: var(--text-inverse);
+  border-color: var(--color-green-600);
+}
+
+.rebookBook {
+  background: var(--color-green-600);
+  color: var(--text-inverse);
+}
+
+.rebookBook:hover:not(:disabled) {
+  background: #176338;
+}
+
+.rebookBook:disabled {
+  background: var(--status-on-track-bg);
+  color: var(--status-on-track-fg);
+}
+
+.rebookOn,
+.rebookSlotOn {
+  background: var(--color-green-600);
+  border-color: var(--color-green-600);
+  color: var(--text-inverse);
+}
+
+.actionPrimary,
+.actionDanger {
+  background: var(--action-primary);
+  color: var(--action-primary-text);
+}
+
+.actionBlue,
+.actionGhost,
+.actionGrey,
+.solid {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+
+.settingsNav .settingsTab {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+.settingsNav .settingsOn {
+  background: var(--color-navy-800);
+  color: var(--text-inverse);
+  border-color: var(--color-navy-800);
+}
+
+.timeline .lunch,
+.lockedPanel .lunch {
+  background: var(--color-grey-100);
+  color: var(--text-secondary);
+}
+
+.plan .headActions .notesOn {
+  background: #eef2f8;
+  border-color: #c5cedb;
+  color: var(--text-primary);
+}
+
+.plan .headActions .notesDue {
+  background: #f8efe8;
+  border-color: #d8b4a4;
+  color: #8f3a22;
+}
+
+.plan .headActions .notesDue strong {
+  background: var(--color-navy-800);
+  color: var(--text-inverse);
+}

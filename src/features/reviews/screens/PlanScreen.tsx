@@ -4,7 +4,6 @@ import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { loadPlanPage } from "../domain/plan-repository";
 import { PlanView } from "./PlanView";
-import { ReviewFonts } from "./ReviewFonts";
 import styles from "./plan.module.css";
 
 export async function PlanScreen({
@@ -30,7 +29,6 @@ export async function PlanScreen({
       hideHeader
     >
       <div className={styles.raPage}>
-        <ReviewFonts />
         {page.loadError ? <p role="alert">{page.loadError}</p> : null}
         <PlanView workspace={workspace} page={page} date={selected} month={selectedMonth} />
       </div>
