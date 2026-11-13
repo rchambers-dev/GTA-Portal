@@ -102,19 +102,23 @@
   background: #26529c;
 }
 
-h1, h2, legend, .primary, .secondary {
+.card h1,
+.card h2,
+.statement legend,
+.primary,
+.secondary {
   font-family: var(--font-open-sans), "Open Sans", sans-serif;
   font-weight: 700;
 }
 
-h1 {
+.card h1 {
   margin: 1rem 0 0.4rem;
   color: #0d1b34;
   font-size: 1.55rem;
   line-height: 1.25;
 }
 
-h2 {
+.card h2 {
   margin: 1rem 0 0.2rem;
   color: #193768;
   font-size: 1.15rem;
@@ -135,6 +139,8 @@ h2 {
   color: #181818;
   font-size: 1.02rem;
   line-height: 1.4;
+  font-family: var(--font-open-sans), "Open Sans", sans-serif;
+  font-weight: 700;
 }
 
 .sliderBlock {
