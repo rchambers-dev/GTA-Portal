@@ -200,6 +200,7 @@ export type PublicForm = {
   scale: ScalePoint[];
   pageHeadings: PageHeadings;
   questions: QuestionnaireQuestion[];
+  isTest: boolean;
 };
 
 export function blankPublicForm(state: PublicForm["state"]): PublicForm {
@@ -211,6 +212,7 @@ export function blankPublicForm(state: PublicForm["state"]): PublicForm {
     scale: RATING_SCALE.map((item) => ({ value: item.value, label: item.label })),
     pageHeadings: defaultPageHeadings(),
     questions: [],
+    isTest: false,
   };
 }
 
@@ -238,7 +240,7 @@ export function publicFormFromPayload(payload: unknown): PublicForm {
       };
     }),
   });
-  return { state: known, ...form };
+  return { state: known, ...form, isTest: row.isTest === true };
 }
 
 export function questionHelp(question: QuestionnaireQuestion, ratingHelp: string): string | null {

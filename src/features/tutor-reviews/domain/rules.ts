@@ -29,10 +29,12 @@ export function formGate(input: {
   closedEarly: boolean;
   used: boolean;
   today: string;
+  testInvite?: boolean;
 }): FormState {
   if (!input.found) return "invalid";
   if (input.used) return "submitted";
   if (input.status === "closed" || input.closedEarly || input.today > input.closesOn) return "closed";
+  if (input.testInvite) return "ready";
   if (input.status !== "open" || input.today < input.opensOn) return "not_open";
   return "ready";
 }

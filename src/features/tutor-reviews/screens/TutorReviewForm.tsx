@@ -28,6 +28,7 @@ export function TutorReviewForm({ token, form, preview = false, embedded = false
     return (
       <main className={embedded ? `${styles.form} ${styles.formEmbedded}` : styles.form}>
         <div className={`${styles.formInner} ${styles.card}`}>
+          {form.isTest ? <p className={styles.previewBanner}>Test submission</p> : null}
           <h1>{form.title}</h1>
           <p className={styles.lead}>{MESSAGES[state] ?? MESSAGES.unavailable}</p>
         </div>
@@ -57,6 +58,7 @@ export function TutorReviewForm({ token, form, preview = false, embedded = false
           });
         }}
       >
+        {form.isTest ? <p className={styles.previewBanner}>Test submission</p> : null}
         {preview ? <p className={styles.previewBanner}>Preview</p> : null}
         {preview ? <p className={styles.help}>Nothing you enter here is saved.</p> : null}
         <h1>{form.title}</h1>

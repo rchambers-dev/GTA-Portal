@@ -219,7 +219,7 @@ export function QuestionnaireEditor({
         </div>
       </div>
       <aside className={styles.phoneFrame} aria-label="Phone preview">
-        <TutorReviewForm embedded preview form={{ state: "ready", ...draft }} />
+        <TutorReviewForm embedded preview form={{ state: "ready", isTest: false, ...draft }} />
       </aside>
     </div>
   );

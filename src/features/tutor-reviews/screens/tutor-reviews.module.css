@@ -350,6 +350,18 @@
   overflow-wrap: anywhere;
 }
 
+.testLink {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.testPath {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+}
+
 .emailPreview {
   margin-top: 0.5rem;
   padding: 0.75rem;
