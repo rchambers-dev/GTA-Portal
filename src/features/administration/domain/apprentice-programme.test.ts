@@ -87,6 +87,7 @@ describe("apprentice programme rules", () => {
       standardCode: "ST0499",
       status: "in_learning",
       statusLabel: "In learning",
+      email: null,
     };
     expect(programmeIdentity(apprentice)).toEqual({
       name: "Autocare Level 2",

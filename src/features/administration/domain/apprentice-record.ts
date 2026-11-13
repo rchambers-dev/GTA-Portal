@@ -27,7 +27,9 @@ export const DEFAULT_APPRENTICE_STATUS: ApprenticeStatus = "in_learning";
 
 /** Columns this page reads and writes. gta_id is returned, never written. */
 export const APPRENTICE_COLUMNS =
-  "gta_id, first_name, middle_names, last_name, programme_id, status, created_at, updated_at";
+  "gta_id, first_name, middle_names, last_name, email, programme_id, status, created_at, updated_at";
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const GTA_ID_PATTERN = /^GTA-[0-9]{6}$/;
 const UUID_PATTERN =
@@ -43,6 +45,7 @@ export type NewApprenticeInput = {
   firstName: string;
   middleNames: string;
   lastName: string;
+  email?: string;
   programmeId: string;
   status: string;
 };
@@ -51,6 +54,7 @@ export type ValidatedApprentice = {
   firstName: string;
   middleNames: string | null;
   lastName: string;
+  email: string | null;
   programmeId: string | null;
   status: ApprenticeStatus;
 };
@@ -60,6 +64,7 @@ export type ApprenticeInsert = {
   first_name: string;
   middle_names: string | null;
   last_name: string;
+  email: string | null;
   programme_id: string | null;
   status: ApprenticeStatus;
 };
@@ -69,6 +74,7 @@ export type SavedApprentice = {
   firstName: string;
   middleNames: string | null;
   lastName: string;
+  email: string | null;
   programmeId: string | null;
   status: ApprenticeStatus;
   createdAt: string;
@@ -90,7 +96,7 @@ export type ApprenticeListItem = {
 export type ApprenticeField = keyof ApprenticeFieldErrors;
 
 export type ApprenticeFieldErrors = Partial<
-  Record<"firstName" | "middleNames" | "lastName" | "programmeId" | "status", string>
+  Record<"firstName" | "middleNames" | "lastName" | "email" | "programmeId" | "status", string>
 >;
 
 export type AddApprenticeResult =
@@ -102,11 +108,28 @@ export type ApprenticeRow = {
   first_name: string;
   middle_names: string | null;
   last_name: string;
+  email: string | null;
   programme_id: string | null;
   status: string;
   created_at: string;
   updated_at: string;
 };
+
+/** Blank becomes null. A value is trimmed and stored in lower case. */
+export function normaliseApprenticeEmail(value: string | null | undefined): string | null {
+  const email = (value ?? "").trim().toLowerCase();
+  return email || null;
+}
+
+export function validateApprenticeEmail(
+  value: string | null | undefined,
+): { ok: true; email: string | null } | { ok: false; error: string } {
+  const email = normaliseApprenticeEmail(value);
+  if (email && !EMAIL_PATTERN.test(email)) {
+    return { ok: false, error: "Enter a valid email address." };
+  }
+  return { ok: true, email };
+}
 
 type PortalActor = {
   account: { baseRole: string };
@@ -180,11 +203,13 @@ export function validateNewApprentice(
   const firstName = input.firstName.trim();
   const lastName = input.lastName.trim();
   const middleNames = input.middleNames.trim();
+  const email = validateApprenticeEmail(input.email);
   const programmeId = input.programmeId.trim();
   const status = input.status.trim();
 
   if (!firstName) fieldErrors.firstName = "Enter a first name.";
   if (!lastName) fieldErrors.lastName = "Enter a last name.";
+  if (!email.ok) fieldErrors.email = email.error;
   if (programmeId && !UUID_PATTERN.test(programmeId)) {
     fieldErrors.programmeId = "Choose a programme from the list.";
   }
@@ -202,6 +227,7 @@ export function validateNewApprentice(
       firstName,
       middleNames: middleNames || null,
       lastName,
+      email: email.ok ? email.email : null,
       programmeId: programmeId || null,
       status: status as ApprenticeStatus,
     },
@@ -213,6 +239,7 @@ export function toApprenticeInsert(value: ValidatedApprentice): ApprenticeInsert
     first_name: value.firstName,
     middle_names: value.middleNames,
     last_name: value.lastName,
+    email: value.email,
     programme_id: value.programmeId,
     status: value.status,
   };
@@ -235,6 +262,15 @@ export function explainApprenticeWriteError(error: {
   }
   if (message.includes("apprentices_status_check")) {
     return { fieldErrors: { status: "Choose a status." }, formError: null };
+  }
+  if (message.includes("apprentices_email_format")) {
+    return { fieldErrors: { email: "Enter a valid email address." }, formError: null };
+  }
+  if (message.includes("apprentices_email_lower_key") || (error.code === "23505" && /email/i.test(message))) {
+    return {
+      fieldErrors: { email: "That email address is already used by another apprentice." },
+      formError: null,
+    };
   }
   if (message.includes("apprentices_programme_id_fkey") || error.code === "23503") {
     return {

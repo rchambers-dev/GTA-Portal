@@ -8,6 +8,7 @@ import { ApprenticePageShell } from "@/features/apprentice-portal/components/App
 import type { ApprenticeProgrammePage } from "../domain/apprentice-programme";
 import type { ApprenticePlacementPage } from "../domain/apprentice-placement";
 import type { LearnerExitPage } from "../domain/learner-exit";
+import { setApprenticeEmailAction } from "./apprentice-email-actions";
 import { assignApprenticeTutorAction } from "./apprentice-tutor-actions";
 import { ApprenticeProgrammePanel } from "./ApprenticeProgrammePanel";
 import { LearnerEmployerPanel } from "./LearnerEmployerPanel";
@@ -122,6 +123,7 @@ export function ApprenticeLearnerView({
               <>
                 <OverviewPanel
                   apprentice={apprentice}
+                  canEdit={canManageProgramme}
                   employment={page.currentEmployment}
                   employerHref={learnerSectionHref(basePath, "employer")}
                 />
@@ -147,10 +149,12 @@ export function ApprenticeLearnerView({
 
 function OverviewPanel({
   apprentice,
+  canEdit,
   employment,
   employerHref,
 }: {
   apprentice: ApprenticeLearnerRecord;
+  canEdit: boolean;
   employment: CurrentApprenticeEmployment | null;
   employerHref: string;
 }) {
@@ -171,6 +175,8 @@ function OverviewPanel({
         </dd>
         <dt>Status</dt>
         <dd data-learner-status={apprentice.statusLabel}>{apprentice.statusLabel}</dd>
+        <dt>Email</dt>
+        <dd data-learner-email={apprentice.email ?? ""}>{apprentice.email || "No email"}</dd>
         <dt>Employer</dt>
         <dd>
           <Link
@@ -184,7 +190,57 @@ function OverviewPanel({
           </Link>
         </dd>
       </dl>
+      {canEdit ? <EmailEditor gtaId={apprentice.gtaId} email={apprentice.email} /> : null}
     </section>
+  );
+}
+
+function EmailEditor({ gtaId, email }: { gtaId: string; email: string | null }) {
+  const router = useRouter();
+  const [value, setValue] = useState(email ?? "");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+  const errorId = error ? "learner-email-error" : undefined;
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPending(true);
+    setError(null);
+    const result = await setApprenticeEmailAction({ gtaId, email: value });
+    setPending(false);
+    if (!result.ok) {
+      setError(result.fieldError || result.formError || "The email could not be saved.");
+      return;
+    }
+    setValue(result.email ?? "");
+    router.refresh();
+  }
+
+  return (
+    <form className={styles.learnerGrid} onSubmit={onSubmit} data-learner-email-form={gtaId}>
+      <label className={styles.learnerField} data-entry-field="email">
+        <span>Email</span>
+        <input
+          type="email"
+          value={value}
+          disabled={pending}
+          autoComplete="email"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={errorId}
+          onChange={(event) => setValue(event.target.value)}
+        />
+        {error ? (
+          <p id={errorId} className={styles.error} role="alert">
+            {error}
+          </p>
+        ) : null}
+      </label>
+      <div className={styles.learnerActions}>
+        <button type="submit" className={styles.primaryBtn} disabled={pending}>
+          {pending ? "Saving…" : "Save email"}
+        </button>
+      </div>
+    </form>
   );
 }
 

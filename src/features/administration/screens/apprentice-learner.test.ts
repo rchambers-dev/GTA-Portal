@@ -31,6 +31,10 @@ vi.mock("./apprentice-tutor-actions", () => ({
   assignApprenticeTutorAction: vi.fn(),
 }));
 
+vi.mock("./apprentice-email-actions", () => ({
+  setApprenticeEmailAction: vi.fn(),
+}));
+
 vi.mock("./learner-exit-actions", () => ({
   recordLearnerExitAction: vi.fn(),
   reverseLearnerExitAction: vi.fn(),
@@ -68,6 +72,7 @@ function page(overrides: Partial<ApprenticeLearnerPage> = {}): ApprenticeLearner
       standardCode: "ST0403",
       status: "in_learning",
       statusLabel: "In learning",
+      email: "jack@example.com",
     },
     currentTutor: {
       id: "open",
