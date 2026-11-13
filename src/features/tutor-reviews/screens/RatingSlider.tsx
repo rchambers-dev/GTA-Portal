@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { DEFAULT_RATING, faceColour, sliderLabel, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS } from "../domain/slider";
+import { useRef, useState, type CSSProperties } from "react";
+import { DEFAULT_RATING, faceColour, sliderLabel, sliderRatioFromClient, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS, SLIDER_THUMB_PX } from "../domain/slider";
 import styles from "./website-form.module.css";
 
 export function RatingSlider({
@@ -23,8 +23,8 @@ export function RatingSlider({
     const track = trackRef.current;
     if (!track) return sliderRatioFromValue(committed);
     const rect = track.getBoundingClientRect();
-    if (!rect.width) return 0;
-    return Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+    const inset = Number.parseFloat(getComputedStyle(track).getPropertyValue("--inset")) || SLIDER_THUMB_PX / 2;
+    return sliderRatioFromClient(clientX, rect.left, rect.width, inset);
   }
 
   return (
@@ -64,13 +64,19 @@ export function RatingSlider({
         }}
       >
         <div className={styles.trackFill} />
-        <span className={styles.thumb} style={{ left: `${ratio * 100}%` }} aria-hidden="true">
+        <span className={styles.thumb} style={{ "--ratio": ratio } as CSSProperties} aria-hidden="true">
           <Face ratio={ratio} />
         </span>
       </div>
       <div className={styles.stopLabels}>
-        {SLIDER_STOPS.map((stop) => (
-          <span key={stop.value} className={stop.value === shown ? styles.stopOn : undefined}>{stop.label}</span>
+        {SLIDER_STOPS.map((stop, index) => (
+          <span
+            key={stop.value}
+            className={`${styles.stop} ${index === 0 ? styles.stopFirst : ""} ${index === SLIDER_STOPS.length - 1 ? styles.stopLast : ""} ${stop.value === shown ? styles.stopOn : ""}`}
+            style={{ "--stop": index / (SLIDER_STOPS.length - 1) } as CSSProperties}
+          >
+            {stop.label}
+          </span>
         ))}
       </div>
     </div>

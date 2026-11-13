@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canSubmitReview, DEFAULT_RATING, ratingAnswers, sliderLabel, sliderValueFromRatio, stepSlider } from "./slider";
+import { canSubmitReview, DEFAULT_RATING, ratingAnswers, sliderLabel, sliderRatioFromClient, sliderValueFromRatio, stepSlider } from "./slider";
 
 describe("tutor review slider", () => {
   it("maps the left of the track to Always and the right to Never", () => {
@@ -11,6 +11,15 @@ describe("tutor review slider", () => {
     expect(sliderLabel(5)).toBe("Always");
     expect(sliderLabel(4)).toBe("Usually");
     expect(sliderLabel(1)).toBe("Never");
+  });
+
+  it("maps a click on the inset track to the same stop as the face", () => {
+    const width = 360;
+    const inset = 22;
+    expect(sliderRatioFromClient(inset, 0, width, inset)).toBe(0);
+    expect(sliderRatioFromClient(width / 2, 0, width, inset)).toBe(0.5);
+    expect(sliderRatioFromClient(width - inset, 0, width, inset)).toBe(1);
+    expect(sliderRatioFromClient(inset + (width - inset * 2) * 0.25, 0, width, inset)).toBeCloseTo(0.25);
   });
 
   it("starts on Sometimes and snaps with the arrow keys", () => {
