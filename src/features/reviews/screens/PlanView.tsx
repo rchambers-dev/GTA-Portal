@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { memo, useEffect, useMemo, useState, type FormEvent } from "react";
+import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
 import { formatPlanDate, formatShortNumericDate, methodLabel, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import type { PackedDay } from "../domain/plan-route";
-import type { PlanCounter, PlanPageData, PlanPerson, PlanStop } from "../domain/plan-repository";
+import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanStop } from "../domain/plan-repository";
 import {
   acceptDayAction,
   applyRouteAction,
@@ -33,7 +34,7 @@ const TABS: { id: PlanCounter; label: string }[] = [
 export function PlanView({
   workspace,
   page,
-  date,
+  date: serverDate,
   month,
 }: {
   workspace: "administration" | "management";
@@ -42,6 +43,7 @@ export function PlanView({
   month: string;
 }) {
   const router = useRouter();
+  const [selectedDate, setSelectedDate] = useState(serverDate);
   const [tab, setTab] = useState<PlanCounter>("to_book");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState<string | null>(null);
@@ -49,6 +51,7 @@ export function PlanView({
   const [notesOpen, setNotesOpen] = useState(false);
   const [notePerson, setNotePerson] = useState<PlanPerson | null>(null);
   const [packed, setPacked] = useState<PackedDay | null>(null);
+  const [packedFor, setPackedFor] = useState(serverDate);
   const [officePoint, setOfficePoint] = useState<{ lat: number; lon: number; postcode: string } | null>(null);
   const noted = page.people
     .filter((person) => person.notes)
@@ -57,8 +60,16 @@ export function PlanView({
       (a, b) =>
         a.notesUntil.localeCompare(b.notesUntil) || a.name.localeCompare(b.name, "en-GB"),
     );
-  const bookedDays = new Set(page.monthMarks.filter((item) => item.accepted && !item.completed).map((item) => item.date));
-  const completedDays = new Set(page.monthMarks.filter((item) => item.completed).map((item) => item.date));
+  const activeDay = planDayFor(page, selectedDate);
+  const route = packedFor === selectedDate ? packed : null;
+  const bookedDays = useMemo(
+    () => new Set(page.monthMarks.filter((item) => item.accepted && !item.completed).map((item) => item.date)),
+    [page.monthMarks],
+  );
+  const completedDays = useMemo(
+    () => new Set(page.monthMarks.filter((item) => item.completed).map((item) => item.date)),
+    [page.monthMarks],
+  );
   const visible = useMemo(() => {
     const term = query.trim().toLowerCase();
     return page.people.filter((person) => {
@@ -67,31 +78,63 @@ export function PlanView({
       return [person.name, person.tutor, person.company].join(" ").toLowerCase().includes(term);
     });
   }, [page.people, query, tab]);
-  const heading = planDateParts(date);
-  const stopKey = (page.day?.stops ?? []).map((stop) => `${stop.gtaId}:${stop.arrive}:${stop.leave}`).join("|");
+  const heading = planDateParts(selectedDate);
+  const stopKey = activeDay.stops.map((stop) => `${stop.gtaId}:${stop.arrive}:${stop.leave}`).join("|");
+
+  useEffect(() => {
+    setSelectedDate(serverDate);
+  }, [serverDate, month]);
+
+  useEffect(() => {
+    const previous = document.title;
+    document.title = "Plan · GTA Apprenticeship Portal";
+    return () => {
+      document.title = previous;
+    };
+  }, []);
+
+  useEffect(() => {
+    const [year, monthNumber] = month.split("-").map(Number);
+    const previousMonth = new Date(Date.UTC(year, monthNumber - 2, 1)).toISOString().slice(0, 7);
+    const nextMonth = new Date(Date.UTC(year, monthNumber, 1)).toISOString().slice(0, 7);
+    router.prefetch(planHref(workspace, `${previousMonth}-01`, previousMonth));
+    router.prefetch(planHref(workspace, `${nextMonth}-01`, nextMonth));
+  }, [month, router, workspace]);
 
   useEffect(() => {
     let cancel = false;
-    if (!page.day?.stops.length) return;
-    void fitStops({
-      officePostcode: page.settings.officePostcode,
-      existing: page.day.stops,
-      extras: [],
-      settings: routeSettings(page.settings),
-      people: page.people,
-    }).then((fitted) => {
-      if (cancel) return;
-      setPacked(fitted.packed);
-      setOfficePoint(fitted.office);
+    let timer = 0;
+    const frame = window.requestAnimationFrame(() => {
+      timer = window.setTimeout(() => {
+        if (cancel || !activeDay.stops.length) return;
+        void fitStops({
+          officePostcode: page.settings.officePostcode,
+          existing: activeDay.stops,
+          extras: [],
+          settings: routeSettings(page.settings),
+          people: [],
+        }).then((fitted) => {
+          if (cancel) return;
+          setPacked(fitted.packed);
+          setPackedFor(selectedDate);
+          setOfficePoint(fitted.office);
+        });
+      }, 0);
     });
     return () => {
       cancel = true;
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
     };
-  }, [stopKey, page.settings.officePostcode, page.settings.startTime, page.settings.lunchStart, page.settings.lunchMinutes, page.settings.returnBy, page.settings.stayMinutes, page.settings.callMinutes]);
+  }, [selectedDate, stopKey, page.settings]);
 
   function go(nextDate: string, nextMonth = month) {
-    const params = new URLSearchParams({ date: nextDate, month: nextMonth });
-    router.push(`/${workspace}/reviews/plan?${params.toString()}`);
+    if (nextMonth === month) {
+      flushSync(() => setSelectedDate(nextDate));
+      replacePlanUrl(planHref(workspace, nextDate, nextMonth));
+      return;
+    }
+    router.push(planHref(workspace, nextDate, nextMonth));
   }
 
   async function run(work: () => Promise<{ ok: boolean; formError?: string | null }>) {
@@ -107,11 +150,11 @@ export function PlanView({
 
   async function placePeople(extras: PlanPerson[]) {
     if (!page.canWrite) return;
-    if (page.day?.accepted) {
+    if (activeDay.accepted) {
       setMessage("This route is already accepted. Unlock it before changing the drive times.");
       return;
     }
-    const weekday = weekdayName(date);
+    const weekday = weekdayName(selectedDate);
     const allowed = extras.filter((person) => person.releaseDay !== weekday && person.method !== "phone");
     const blocked = extras.filter((person) => !allowed.includes(person));
     if (blocked.length && !allowed.length) {
@@ -126,12 +169,13 @@ export function PlanView({
     setMessage("Checking drive times…");
     const fitted = await fitStops({
       officePostcode: page.settings.officePostcode,
-      existing: page.day?.stops ?? [],
+      existing: activeDay.stops,
       extras: allowed,
       settings: routeSettings(page.settings),
       people: page.people,
     });
     setPacked(fitted.packed);
+    setPackedFor(selectedDate);
     setOfficePoint(fitted.office);
     if (!fitted.office) {
       setMessage(`Could not find the office postcode ${page.settings.officePostcode}.`);
@@ -144,7 +188,7 @@ export function PlanView({
     if (!fitted.packed.stops.length) return;
     await run(() =>
       applyRouteAction({
-        date,
+        date: selectedDate,
         stops: fitted.packed.stops.map((stop) => ({ gtaId: stop.id, arrive: stop.arrive, leave: stop.leave })),
       }),
     );
@@ -154,7 +198,7 @@ export function PlanView({
   async function dropPerson(gtaId: string) {
     const person = page.people.find((item) => item.gtaId === gtaId);
     if (!person) return;
-    if (page.day?.stops.some((stop) => stop.gtaId === gtaId)) {
+    if (activeDay.stops.some((stop) => stop.gtaId === gtaId)) {
       setMessage(`${person.name} is already on this day.`);
       return;
     }
@@ -163,15 +207,16 @@ export function PlanView({
 
   async function showMap() {
     setMapOpen((value) => !value);
-    if (mapOpen || !page.day?.stops.length) return;
+    if (mapOpen || !activeDay.stops.length) return;
     const fitted = await fitStops({
       officePostcode: page.settings.officePostcode,
-      existing: page.day.stops,
+      existing: activeDay.stops,
       extras: [],
       settings: routeSettings(page.settings),
       people: page.people,
     });
     setPacked(fitted.packed);
+    setPackedFor(selectedDate);
     setOfficePoint(fitted.office);
     if (fitted.missing.length) setMessage(`Could not find: ${fitted.missing.join(", ")}`);
   }
@@ -186,7 +231,7 @@ export function PlanView({
               type="button"
               role="tab"
               aria-selected={tab === item.id}
-              className={tab === item.id ? (item.id === "locked" ? styles.tabLocked : styles.tabOn) : styles.tab}
+              className={[styles.counterTile, tab === item.id ? (item.id === "locked" ? styles.tabLocked : styles.tabOn) : ""].filter(Boolean).join(" ")}
               data-roster-tab={item.id}
               onClick={() => setTab(item.id)}
             >
@@ -211,29 +256,21 @@ export function PlanView({
             ) : null}
           </span>
         </label>
-        <ul className={styles.list}>
-          {visible.length === 0 ? (
-            <li className={styles.empty}>
-              {tab === "locked"
-                ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
-                : tab === "booked"
-                  ? "No one is booked yet."
-                  : tab === "waiting"
-                    ? "No one is waiting."
-                    : "No one needs booking."}
-            </li>
-          ) : (
-            visible.map((person) => (
-              <RosterCard
-                key={person.gtaId}
-                workspace={workspace}
-                person={person}
-                canWrite={page.canWrite}
-                onNote={() => setNotePerson(person)}
-              />
-            ))
-          )}
-        </ul>
+        <RosterList
+          workspace={workspace}
+          people={visible}
+          canWrite={page.canWrite}
+          empty={
+            tab === "locked"
+              ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
+              : tab === "booked"
+                ? "No one is booked yet."
+                : tab === "waiting"
+                  ? "No one is waiting."
+                  : "No one needs booking."
+          }
+          onNote={setNotePerson}
+        />
       </section>
       <section className={styles.plan} aria-labelledby="plan-title">
         <div className={styles.head}>
@@ -282,12 +319,12 @@ export function PlanView({
         ) : null}
         <Calendar
           month={month}
-          date={date}
+          date={selectedDate}
           today={page.today}
           booked={bookedDays}
           completed={completedDays}
           onPick={(next) => go(next, next.slice(0, 7))}
-          onMonth={(next) => go(date, next)}
+          onMonth={(next) => go(selectedDate, next)}
         />
         {message ? (
           <p className={styles.status} role="status">
@@ -302,7 +339,7 @@ export function PlanView({
             if (id) void dropPerson(id);
           }}
         >
-          {page.day?.completed ? (
+          {activeDay.completed ? (
             <div className={styles.lockedDay}>
               <span className={styles.completedPill}>
                 <LockIcon /> Route completed
@@ -318,7 +355,7 @@ export function PlanView({
                     void placePeople(
                       page.people.filter(
                         (person) =>
-                          person.counter === "to_book" && !page.day?.stops.some((stop) => stop.gtaId === person.gtaId),
+                          person.counter === "to_book" && !activeDay.stops.some((stop) => stop.gtaId === person.gtaId),
                       ),
                     )
                   }
@@ -326,27 +363,28 @@ export function PlanView({
                   Fill Day
                 </button>
               ) : null}
-              {page.canWrite && page.day && page.day.stops.length > 0 ? (
-                <DayActions workspace={workspace} page={page} date={date} packed={packed} onRun={run} />
+              {page.canWrite && activeDay.stops.length > 0 ? (
+                <DayActions workspace={workspace} page={page} day={activeDay} date={selectedDate} packed={route} onRun={run} />
               ) : null}
             </div>
           )}
-          {page.day?.accepted && !page.day.completed ? (
+          {activeDay.accepted && !activeDay.completed ? (
             <p className={styles.acceptNote}>This day’s learners will not be moved if you plan the week again.</p>
           ) : null}
           <DayTimeline
             workspace={workspace}
             page={page}
-            date={date}
-            packed={packed}
-            locked={Boolean(page.day?.completed)}
+            day={activeDay}
+            date={selectedDate}
+            packed={route}
+            locked={activeDay.completed}
             onRun={run}
             onNote={(gtaId) => {
               const person = page.people.find((item) => item.gtaId === gtaId);
               if (person) setNotePerson(person);
             }}
           />
-          {mapOpen ? <PlanMap office={officePoint} stops={packed?.stops ?? []} /> : null}
+          {mapOpen ? <PlanMap office={officePoint} stops={route?.stops ?? []} /> : null}
         </div>
       </section>
       {notePerson ? (
@@ -380,6 +418,38 @@ export function PlanView({
     </div>
   );
 }
+
+const RosterList = memo(function RosterList({
+  workspace,
+  people,
+  canWrite,
+  empty,
+  onNote,
+}: {
+  workspace: "administration" | "management";
+  people: PlanPerson[];
+  canWrite: boolean;
+  empty: string;
+  onNote: (person: PlanPerson) => void;
+}) {
+  return (
+    <ul className={styles.list}>
+      {people.length === 0 ? (
+        <li className={styles.empty}>{empty}</li>
+      ) : (
+        people.map((person) => (
+          <RosterCard
+            key={person.gtaId}
+            workspace={workspace}
+            person={person}
+            canWrite={canWrite}
+            onNote={() => onNote(person)}
+          />
+        ))
+      )}
+    </ul>
+  );
+});
 
 function RosterCard({
   workspace,
@@ -416,17 +486,19 @@ function RosterCard({
 function DayActions({
   workspace,
   page,
+  day,
   date,
   packed,
   onRun,
 }: {
   workspace: "administration" | "management";
   page: PlanPageData;
+  day: PlanDay;
   date: string;
   packed: PackedDay | null;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
 }) {
-  const stops = page.day?.stops ?? [];
+  const stops = day.stops;
   const ready =
     stops.length > 0 &&
     stops.every((stop) => stop.verified || stop.locked || stop.appointmentOn === date);
@@ -435,17 +507,17 @@ function DayActions({
       {page.settings.outEnabled ? (
         <a className={styles.ghost} href={`/${workspace}/reviews/out`}>Open Out</a>
       ) : null}
-      {page.day?.accepted ? (
-        <a className={styles.fill} href={mailto(page, date)}>
+      {day.accepted ? (
+        <a className={styles.fill} href={mailto(page, day, date)}>
           Email this route
         </a>
       ) : null}
-      {page.day?.accepted ? (
-        <button type="button" className={styles.fill} onClick={() => printRoute(page, date, packed)}>
+      {day.accepted ? (
+        <button type="button" className={styles.fill} onClick={() => printRoute(page, day, date, packed)}>
           Print this route
         </button>
       ) : null}
-      {page.day?.accepted ? (
+      {day.accepted ? (
         <button
           type="button"
           className={styles.accept}
@@ -487,13 +559,13 @@ function DayActions({
   );
 }
 
-function printRoute(page: PlanPageData, date: string, packed: PackedDay | null) {
+function printRoute(page: PlanPageData, day: PlanDay, date: string, packed: PackedDay | null) {
   const popup = window.open("", "print-route");
   if (!popup) return;
   const leave = packed ? minutesToTime(packed.leaveMinutes) : page.settings.startTime;
   const back = packed ? minutesToTime(packed.returnArrive) : "";
   const drive = packed?.driveTotal ? `${Math.round(packed.driveTotal)} min driving` : "";
-  const stops = (packed?.stops ?? page.day?.stops.map((stop) => ({
+  const stops = (packed?.stops ?? day.stops.map((stop) => ({
     ...stop,
     arrive: timeToMinutes(stop.arrive) ?? 0,
     leave: timeToMinutes(stop.leave) ?? 0,
@@ -515,8 +587,8 @@ function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char] || char);
 }
 
-function mailto(page: PlanPageData, date: string): string {
-  const lines = (page.day?.stops ?? []).map(
+function mailto(page: PlanPageData, day: PlanDay, date: string): string {
+  const lines = day.stops.map(
     (stop, index) => `${index + 1}. ${stop.name}, ${stop.company}, ${stop.postcode}, ${stop.arrive}–${stop.leave}`,
   );
   const to = page.settings.extraEmails.join(",");
@@ -613,6 +685,7 @@ function StopCard({
         </span>
         {canWrite && !stop.completed ? (
           <div className={styles.stopExtra} onClick={(event) => event.stopPropagation()}>
+            <div className={styles.stopExtraInner}>
             <p className={styles.placeLine}>
               {stop.company} · {stop.postcode} · tutor {stop.tutor} · college {stop.releaseDay}
             </p>
@@ -696,6 +769,7 @@ function StopCard({
             </button>
           </form>
         ) : null}
+            </div>
           </div>
         ) : null}
       </div>
@@ -862,6 +936,7 @@ function LockIcon() {
 function DayTimeline({
   workspace,
   page,
+  day,
   date,
   packed,
   locked,
@@ -870,13 +945,14 @@ function DayTimeline({
 }: {
   workspace: "administration" | "management";
   page: PlanPageData;
+  day: PlanDay;
   date: string;
   packed: PackedDay | null;
   locked: boolean;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
   onNote: (gtaId: string) => void;
 }) {
-  const stops = [...(page.day?.stops ?? [])].sort((a, b) => a.sortOrder - b.sortOrder || (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0));
+  const stops = [...day.stops].sort((a, b) => a.sortOrder - b.sortOrder || (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0));
   const lunchStart = timeToMinutes(page.settings.lunchStart) ?? 12 * 60 + 30;
   const lunchEnd = lunchStart + page.settings.lunchMinutes;
   const leave = packed?.leaveMinutes ?? timeToMinutes(page.settings.startTime) ?? 10 * 60;
@@ -905,7 +981,7 @@ function DayTimeline({
               index={index}
               date={date}
               today={page.today}
-              canWrite={page.canWrite && !page.day?.completed}
+              canWrite={page.canWrite && !day.completed}
               dayIds={stops.map((item) => item.gtaId)}
               onRun={onRun}
               onNote={onNote}
@@ -929,5 +1005,28 @@ function DayTimeline({
         </div>
       </div>
     </div>
+  );
+}
+
+function planHref(workspace: "administration" | "management", date: string, month: string) {
+  return `/${workspace}/reviews/plan?date=${encodeURIComponent(date)}&month=${encodeURIComponent(month)}`;
+}
+
+function replacePlanUrl(url: string) {
+  const current = window.history.state;
+  const state = current && typeof current === "object" ? current : { __NA: true };
+  History.prototype.replaceState.call(window.history, state, "", url);
+}
+
+function planDayFor(page: PlanPageData, date: string): PlanDay {
+  return (
+    page.days.find((item) => item.date === date) ??
+    (page.day?.date === date ? page.day : null) ?? {
+      date,
+      accepted: false,
+      completed: false,
+      stops: [],
+      completedReviews: [],
+    }
   );
 }

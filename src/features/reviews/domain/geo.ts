@@ -23,16 +23,26 @@ export function formatPostcode(value: string): string {
   return `${compact.slice(0, -3)} ${compact.slice(-3)}`;
 }
 
+const geocodeCache = new Map<string, GeoPoint>();
+const matrixCache = new Map<string, DriveMatrix>();
+
 export async function geocodePostcodes(postcodes: string[]): Promise<Record<string, GeoPoint>> {
   const unique = [...new Set(postcodes.map(formatPostcode).filter(Boolean))];
   if (!unique.length) return {};
   const lookup: Record<string, GeoPoint> = {};
+  for (const postcode of unique) {
+    const cached = geocodeCache.get(normalisePostcode(postcode));
+    if (cached) lookup[normalisePostcode(postcode)] = cached;
+  }
+
+  const pending = unique.filter((postcode) => !lookup[normalisePostcode(postcode)]);
+  if (!pending.length) return lookup;
 
   try {
     const response = await fetch(POSTCODES_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ postcodes: unique }),
+      body: JSON.stringify({ postcodes: pending }),
     });
     if (response.ok) {
       const payload = (await response.json()) as {
@@ -40,22 +50,26 @@ export async function geocodePostcodes(postcodes: string[]): Promise<Record<stri
       };
       for (const row of payload.result || []) {
         if (!row?.result) continue;
-        lookup[normalisePostcode(row.query)] = {
+        const point = {
           lat: row.result.latitude,
           lon: row.result.longitude,
           formatted: row.result.postcode,
         };
+        lookup[normalisePostcode(row.query)] = point;
+        geocodeCache.set(normalisePostcode(row.query), point);
       }
     }
   } catch {
     // Fall through to one-by-one lookups.
   }
 
-  const missing = unique.filter((postcode) => !lookup[normalisePostcode(postcode)]);
+  const missing = pending.filter((postcode) => !lookup[normalisePostcode(postcode)]);
   await Promise.all(
     missing.map(async (postcode) => {
       const point = await geocodeOne(postcode);
-      if (point) lookup[normalisePostcode(postcode)] = point;
+      if (!point) return;
+      lookup[normalisePostcode(postcode)] = point;
+      geocodeCache.set(normalisePostcode(postcode), point);
     }),
   );
   return lookup;
@@ -108,13 +122,17 @@ function fallbackMatrix(points: GeoPoint[]): DriveMatrix {
 export async function drivingMatrix(points: GeoPoint[]): Promise<DriveMatrix> {
   if (points.length < 2) return { durations: [[0]], distances: [[0]], source: "none" };
   const coords = points.map((point) => `${point.lon},${point.lat}`).join(";");
+  const cached = matrixCache.get(coords);
+  if (cached) return cached;
   const url = `${OSRM_TABLE}/${coords}?annotations=duration,distance`;
   try {
     const response = await fetch(url);
     if (!response.ok) throw new Error("routing failed");
     const payload = (await response.json()) as { durations?: number[][]; distances?: number[][] };
     if (!payload.durations) throw new Error("routing failed");
-    return { durations: payload.durations, distances: payload.distances || [], source: "osrm" };
+    const matrix = { durations: payload.durations, distances: payload.distances || [], source: "osrm" as const };
+    matrixCache.set(coords, matrix);
+    return matrix;
   } catch {
     return fallbackMatrix(points);
   }

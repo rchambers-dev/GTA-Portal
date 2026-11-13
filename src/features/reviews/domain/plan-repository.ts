@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { GTA_TUTORS } from "./gta-tutors";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
+import { callEndMinutes, heldPastCallEnd, londonClock } from "./plan-call-end";
 import {
   methodLabel,
   minutesToTime,
@@ -94,6 +95,14 @@ export type CompletedReview = {
   plannedOn: string | null;
 };
 
+export type PlanDay = {
+  date: string;
+  accepted: boolean;
+  completed: boolean;
+  stops: PlanStop[];
+  completedReviews: CompletedReview[];
+};
+
 export type PlanPageData = {
   today: string;
   canWrite: boolean;
@@ -102,13 +111,9 @@ export type PlanPageData = {
   settings: PlanSettings;
   tutors: { id: string; name: string; department: string }[];
   monthMarks: { date: string; accepted: boolean; completed: boolean }[];
-  day: {
-    date: string;
-    accepted: boolean;
-    completed: boolean;
-    stops: PlanStop[];
-    completedReviews: CompletedReview[];
-  } | null;
+  /** Every day in the loaded month that has a route or a completed review. */
+  days: PlanDay[];
+  day: PlanDay | null;
   loadError: string | null;
 };
 
@@ -134,6 +139,9 @@ export async function readPlanPage(
   options: { canWrite: boolean; date: string; month: string },
 ): Promise<PlanPageData> {
   const today = londonToday();
+  const released = await supabase.rpc("release_unverified_after_call_end");
+  const releaseMissing = released.error?.code === "PGRST202"
+    || /release_unverified_after_call_end/i.test(released.error?.message || "");
   const monthStart = `${options.month}-01`;
   const [year, month] = options.month.split("-").map(Number);
   const nextMonthDate = new Date(Date.UTC(year, month, 1));
@@ -179,15 +187,16 @@ export async function readPlanPage(
     supabase.rpc("get_review_settings"),
     supabase
       .from("review_days")
-      .select("date_on, accepted, completed_at")
+      .select("date_on, accepted, completed_at, call_anchor_minutes")
       .gte("date_on", monthStart)
       .lt("date_on", nextMonth),
     supabase
       .from("review_day_stops")
       .select(
-        "gta_id, sort_order, kind, verified, completed, accepted, excluded, arrive_minutes, leave_minutes, locked_until_minutes, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
+        "date_on, gta_id, sort_order, kind, verified, completed, accepted, excluded, arrive_minutes, leave_minutes, locked_until_minutes, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
       )
-      .eq("date_on", options.date)
+      .gte("date_on", monthStart)
+      .lt("date_on", nextMonth)
       .eq("excluded", false),
     supabase
       .from("reviews")
@@ -208,6 +217,7 @@ export async function readPlanPage(
   ]) {
     if (result.error) problems.push(result.error.message);
   }
+  if (released.error && !releaseMissing) problems.push(released.error.message);
 
   const employers = new Map(
     ((employersResult.data ?? []) as { employer_id: string; company_name: string }[]).map((row) => [
@@ -380,65 +390,12 @@ export async function readPlanPage(
   });
 
   const byId = new Map(people.map((person) => [person.gtaId, person]));
-  const dayRow = ((daysResult.data ?? []) as { date_on: string; accepted: boolean; completed_at: string | null }[]).find(
-    (row) => row.date_on === options.date,
-  );
-  const stops = ((stopsResult.data ?? []) as {
-    gta_id: string;
-    sort_order: number;
-    kind: string;
-    verified: boolean;
-    completed: boolean;
+  const dayRows = (daysResult.data ?? []) as {
+    date_on: string;
     accepted: boolean;
-    arrive_minutes: number | null;
-    leave_minutes: number | null;
-    locked_until_minutes: number | null;
-    lock_arrive_minutes: number | null;
-    lock_leave_minutes: number | null;
-    accepted_arrive_minutes: number | null;
-    accepted_leave_minutes: number | null;
-  }[])
-    .slice()
-    .sort((a, b) => a.sort_order - b.sort_order)
-    .map((stop) => {
-      const person = byId.get(stop.gta_id);
-      const arrive = stop.accepted
-        ? stop.accepted_arrive_minutes
-        : (stop.arrive_minutes ?? stop.lock_arrive_minutes);
-      const leave = stop.accepted
-        ? stop.accepted_leave_minutes
-        : (stop.leave_minutes ?? stop.lock_leave_minutes);
-      return {
-        gtaId: stop.gta_id,
-        name: person?.name || apprenticeNames.get(stop.gta_id) || stop.gta_id,
-        company: person?.company || "No employer",
-        postcode: person?.postcode || "",
-        phone: person?.phone || "",
-        contact: person?.contact || "",
-        releaseDay: person?.releaseDay || "",
-        appointmentOn: person?.appointmentOn ?? null,
-        sortOrder: stop.sort_order,
-        kind: stop.kind,
-        verified: stop.verified,
-        completed: stop.completed,
-        accepted: stop.accepted,
-        arrive: minutesToTime(arrive),
-        leave: minutesToTime(leave),
-        arriveMinutes: arrive,
-        leaveMinutes: leave,
-        locked: stop.locked_until_minutes != null,
-        dueLabel: person?.dueLabel || "Not set",
-        dueState: person?.dueState || "unknown",
-        tutor: person?.tutor || "",
-        safeguarding: person?.safeguarding || false,
-        signoffId: person?.signoffId ?? null,
-        reviewId: person?.reviewId ?? null,
-        notes: person?.notes || "",
-        notesUntil: person?.notesUntil || "",
-        method: person?.method || "in_person",
-      } satisfies PlanStop;
-    });
-
+    completed_at: string | null;
+    call_anchor_minutes: number | null;
+  }[];
   const settingsRow = asRows<{
     skip_today: boolean;
     office_postcode: string;
@@ -452,23 +409,119 @@ export async function readPlanPage(
     hidden_tutor_ids: string[] | null;
     out_enabled: boolean;
   }>(settingsResult.data)[0];
+  const clock = londonClock();
+  const lunchStart = timeToMinutes(String(settingsRow?.lunch_start || "13:00").slice(0, 5)) ?? 13 * 60;
+  const callEnd = callEndMinutes({
+    startMinutes: timeToMinutes(String(settingsRow?.start_time || "10:00").slice(0, 5)) ?? 10 * 60,
+    lunchStart,
+    lunchEnd: lunchStart + (settingsRow?.lunch_minutes ?? 30),
+    callAnchorMinutes: dayRows.find((row) => row.date_on === clock.today)?.call_anchor_minutes ?? null,
+  });
+  type StopRow = {
+    date_on: string;
+    gta_id: string;
+    sort_order: number;
+    kind: string;
+    verified: boolean;
+    completed: boolean;
+    accepted: boolean;
+    arrive_minutes: number | null;
+    leave_minutes: number | null;
+    locked_until_minutes: number | null;
+    lock_arrive_minutes: number | null;
+    lock_leave_minutes: number | null;
+    accepted_arrive_minutes: number | null;
+    accepted_leave_minutes: number | null;
+  };
+  function toStop(stop: StopRow): PlanStop {
+    const person = byId.get(stop.gta_id);
+    const arrive = stop.accepted
+      ? stop.accepted_arrive_minutes
+      : (stop.arrive_minutes ?? stop.lock_arrive_minutes);
+    const leave = stop.accepted
+      ? stop.accepted_leave_minutes
+      : (stop.leave_minutes ?? stop.lock_leave_minutes);
+    return {
+      gtaId: stop.gta_id,
+      name: person?.name || apprenticeNames.get(stop.gta_id) || stop.gta_id,
+      company: person?.company || "No employer",
+      postcode: person?.postcode || "",
+      phone: person?.phone || "",
+      contact: person?.contact || "",
+      releaseDay: person?.releaseDay || "",
+      appointmentOn: person?.appointmentOn ?? null,
+      sortOrder: stop.sort_order,
+      kind: stop.kind,
+      verified: stop.verified,
+      completed: stop.completed,
+      accepted: stop.accepted,
+      arrive: minutesToTime(arrive),
+      leave: minutesToTime(leave),
+      arriveMinutes: arrive,
+      leaveMinutes: leave,
+      locked: stop.locked_until_minutes != null,
+      dueLabel: person?.dueLabel || "Not set",
+      dueState: person?.dueState || "unknown",
+      tutor: person?.tutor || "",
+      safeguarding: person?.safeguarding || false,
+      signoffId: person?.signoffId ?? null,
+      reviewId: person?.reviewId ?? null,
+      notes: person?.notes || "",
+      notesUntil: person?.notesUntil || "",
+      method: person?.method || "in_person",
+    };
+  }
+  const stopsByDate = new Map<string, PlanStop[]>();
+  for (const stop of (stopsResult.data ?? []) as StopRow[]) {
+    const built = toStop(stop);
+    if (
+      !bookingResult.error &&
+      heldPastCallEnd(built, { date: stop.date_on, today: clock.today, nowMinutes: clock.minutes, callEnd })
+    ) {
+      continue;
+    }
+    const list = stopsByDate.get(stop.date_on) ?? [];
+    list.push(built);
+    stopsByDate.set(stop.date_on, list);
+  }
+  for (const list of stopsByDate.values()) list.sort((a, b) => a.sortOrder - b.sortOrder);
 
-  const completed = ((completedResult.data ?? []) as {
+  const completedByDate = new Map<string, CompletedReview[]>();
+  for (const row of (completedResult.data ?? []) as {
     id: string;
     gta_id: string;
     actual_on: string | null;
     method: string | null;
     planned_on: string | null;
-  }[])
-    .filter((row) => row.actual_on === options.date)
-    .map((row) => ({
+  }[]) {
+    if (!row.actual_on || row.actual_on < monthStart || row.actual_on >= nextMonth) continue;
+    const list = completedByDate.get(row.actual_on) ?? [];
+    list.push({
       id: row.id,
       gtaId: row.gta_id,
       name: byId.get(row.gta_id)?.name || apprenticeNames.get(row.gta_id) || row.gta_id,
-      actualOn: row.actual_on || options.date,
+      actualOn: row.actual_on,
       method: methodLabel(row.method),
       plannedOn: row.planned_on,
-    }));
+    });
+    completedByDate.set(row.actual_on, list);
+  }
+  const dayMeta = new Map(dayRows.map((row) => [row.date_on, row]));
+  const dateKeys = new Set<string>([...dayMeta.keys(), ...stopsByDate.keys(), ...completedByDate.keys()]);
+  const days = [...dateKeys].sort().map((dateOn) => ({
+    date: dateOn,
+    accepted: Boolean(dayMeta.get(dateOn)?.accepted),
+    completed: Boolean(dayMeta.get(dateOn)?.completed_at),
+    stops: stopsByDate.get(dateOn) ?? [],
+    completedReviews: completedByDate.get(dateOn) ?? [],
+  }));
+  const emptyDay = {
+    date: options.date,
+    accepted: Boolean(dayMeta.get(options.date)?.accepted),
+    completed: Boolean(dayMeta.get(options.date)?.completed_at),
+    stops: [],
+    completedReviews: [],
+  };
 
   return {
     today,
@@ -484,21 +537,18 @@ export async function readPlanPage(
       lunchMinutes: settingsRow?.lunch_minutes ?? 30,
       returnBy: String(settingsRow?.return_by || "16:45:00").slice(0, 5),
       stayMinutes: settingsRow?.stay_minutes ?? 30,
-      extraEmails: settingsRow?.extra_emails ?? [],
-      hiddenTutorIds: settingsRow?.hidden_tutor_ids ?? [],
+      extraEmails: Array.isArray(settingsRow?.extra_emails) ? settingsRow.extra_emails : [],
+      hiddenTutorIds: Array.isArray(settingsRow?.hidden_tutor_ids) ? settingsRow.hidden_tutor_ids : [],
       outEnabled: settingsRow?.out_enabled ?? false,
     },
     tutors: officialTutors((tutorsResult.data ?? []) as { id: string; display_name: string | null; email: string | null }[]),
-    monthMarks: ((daysResult.data ?? []) as { date_on: string; accepted: boolean; completed_at: string | null }[]).map(
-      (row) => ({ date: row.date_on, accepted: row.accepted, completed: Boolean(row.completed_at) }),
-    ),
-    day: {
-      date: options.date,
-      accepted: Boolean(dayRow?.accepted),
-      completed: Boolean(dayRow?.completed_at),
-      stops,
-      completedReviews: completed,
-    },
+    monthMarks: dayRows.map((row) => ({
+      date: row.date_on,
+      accepted: row.accepted,
+      completed: Boolean(row.completed_at),
+    })),
+    days,
+    day: days.find((item) => item.date === options.date) ?? emptyDay,
     loadError: problems.length ? problems.join(" ") : null,
   };
 }
