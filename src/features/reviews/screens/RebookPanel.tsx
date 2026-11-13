@@ -5,7 +5,7 @@ import { drivingMatrix, geocodePostcodes, normalisePostcode } from "../domain/ge
 import { minutesToTime, timeToMinutes, weekdayName } from "../domain/plan-due";
 import type { PlanDay, PlanPerson, PlanSettings, PlanStop, RebookMonthDay } from "../domain/plan-repository";
 import { fittingArrivals, rebookDayChoice, rebookWindowEnd } from "../domain/rebook-slots";
-import { loadRebookMonthAction, rebookVisitAction, returnToQueueAction } from "./plan-actions";
+import { loadRebookMonthAction, rebookAppointmentAction } from "./plan-actions";
 import styles from "./plan.module.css";
 
 type DayMark = {
@@ -244,7 +244,7 @@ export function RebookPanel({
               .sort((a, b) => a.arrive - b.arrive)
               .map((item) => item.id);
         void onRun(() =>
-          rebookVisitAction({
+          rebookAppointmentAction({
             reviewId: stop.reviewId || "",
             gtaId: stop.gtaId,
             missedDate,
@@ -253,6 +253,7 @@ export function RebookPanel({
             arriveMinutes: method === "phone" ? null : minute,
             leaveMinutes: method === "phone" || minute == null ? null : minute + stay,
             orderedGtaIds: ordered,
+            backToQueue: false,
           }),
         );
       }}
@@ -332,7 +333,19 @@ export function RebookPanel({
         className={styles.rebookQueue}
         onClick={() => {
           if (!stop.reviewId) return;
-          void onRun(() => returnToQueueAction({ reviewId: stop.reviewId || "", gtaId: stop.gtaId, missedDate }));
+          void onRun(() =>
+            rebookAppointmentAction({
+              reviewId: stop.reviewId || "",
+              gtaId: stop.gtaId,
+              missedDate,
+              date: null,
+              method: "in_person",
+              arriveMinutes: null,
+              leaveMinutes: null,
+              orderedGtaIds: [],
+              backToQueue: true,
+            }),
+          );
         }}
       >
         Back To Queue

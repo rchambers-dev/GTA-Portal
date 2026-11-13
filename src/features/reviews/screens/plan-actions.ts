@@ -3,6 +3,7 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
+import { rebookAppointmentArgs } from "../domain/rebook-appointment";
 import { timeToMinutes, weekdayName } from "../domain/plan-due";
 import { readRebookMonth, type RebookMonthDay } from "../domain/plan-repository";
 
@@ -117,73 +118,21 @@ export async function loadRebookMonthAction(month: string): Promise<{ ok: true; 
   return { ok: true, days: loaded.days };
 }
 
-export async function rebookVisitAction(input: {
+export async function rebookAppointmentAction(input: {
   reviewId: string;
   gtaId: string;
   missedDate: string;
-  date: string;
+  date: string | null;
   method: string;
   arriveMinutes: number | null;
   leaveMinutes: number | null;
   orderedGtaIds: string[];
+  backToQueue: boolean;
 }) {
   const access = await writer();
   if (!access.ok) return access;
-  const method = input.method === "teams" || input.method === "phone" ? input.method : "in_person";
-  const removed = await access.supabase.rpc("exclude_review_day_stop", {
-    p_date: input.missedDate,
-    p_gta_id: input.gtaId,
-  });
-  const removeError = fail(removed.error);
-  if (removeError) return removeError;
-  if (method === "phone") {
-    const booked = await access.supabase.rpc("book_review", {
-      p_review_id: input.reviewId,
-      p_method: "phone",
-      p_on: null,
-      p_minutes: null,
-      p_phone_day: weekdayName(input.date),
-    });
-    return fail(booked.error) ?? { ok: true as const };
-  }
-  const ids = [...new Set(input.orderedGtaIds.includes(input.gtaId) ? input.orderedGtaIds : [...input.orderedGtaIds, input.gtaId])];
-  const pinned = await access.supabase.rpc("set_review_day_pins", {
-    p_date: input.date,
-    p_gta_ids: ids,
-  });
-  const pinError = fail(pinned.error);
-  if (pinError) return pinError;
-  const arrive = input.arriveMinutes == null ? null : Math.round(input.arriveMinutes);
-  const leave = input.leaveMinutes == null ? null : Math.round(input.leaveMinutes);
-  const timed = await access.supabase.rpc("set_review_day_stop_times", {
-    p_date: input.date,
-    p_gta_id: input.gtaId,
-    p_arrive: arrive,
-    p_leave: leave,
-  });
-  const timeError = fail(timed.error);
-  if (timeError) return timeError;
-  const booked = await access.supabase.rpc("book_review", {
-    p_review_id: input.reviewId,
-    p_method: method,
-    p_on: input.date,
-    p_minutes: input.arriveMinutes == null ? null : Math.round(input.arriveMinutes),
-    p_phone_day: null,
-  });
-  return fail(booked.error) ?? { ok: true as const };
-}
-
-export async function returnToQueueAction(input: { reviewId: string; gtaId: string; missedDate: string }) {
-  const access = await writer();
-  if (!access.ok) return access;
-  const removed = await access.supabase.rpc("exclude_review_day_stop", {
-    p_date: input.missedDate,
-    p_gta_id: input.gtaId,
-  });
-  const removeError = fail(removed.error);
-  if (removeError) return removeError;
-  const cleared = await access.supabase.rpc("clear_review_booking", { p_review_id: input.reviewId });
-  return fail(cleared.error) ?? { ok: true as const };
+  const { error } = await access.supabase.rpc("rebook_review_appointment", rebookAppointmentArgs(input));
+  return fail(error) ?? { ok: true as const };
 }
 
 export async function clearBookingAction(input: { reviewId: string }) {
