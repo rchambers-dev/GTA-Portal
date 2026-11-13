@@ -126,6 +126,44 @@
   overflow-x: auto;
 }
 
+.trackerScroll {
+  --tracker-head: 2.55rem;
+  --tracker-row: 2.7rem;
+  overflow: auto;
+  max-height: calc(var(--tracker-head) + 10 * var(--tracker-row));
+  margin-top: 0.85rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  -webkit-overflow-scrolling: touch;
+}
+
+.trackerScroll .table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.trackerScroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: var(--tracker-head);
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: inset 0 -1px 0 var(--border-subtle);
+}
+
+.trackerScroll tbody td {
+  height: var(--tracker-row);
+  max-width: 11rem;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: var(--tracker-row);
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
