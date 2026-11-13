@@ -40,6 +40,7 @@ export function RatingSlider({
         aria-valuetext={sliderLabel(shown)}
         className={styles.track}
         onPointerDown={(event) => {
+          event.currentTarget.dataset.pointing = "true";
           event.currentTarget.setPointerCapture(event.pointerId);
           event.currentTarget.focus();
           setDragRatio(ratioFrom(event.clientX));
@@ -54,7 +55,11 @@ export function RatingSlider({
           setDragRatio(null);
         }}
         onPointerCancel={() => setDragRatio(null)}
+        onBlur={(event) => {
+          delete event.currentTarget.dataset.pointing;
+        }}
         onKeyDown={(event) => {
+          delete event.currentTarget.dataset.pointing;
           if (event.key === "ArrowLeft") onChange(stepSlider(committed, "left"));
           else if (event.key === "ArrowRight") onChange(stepSlider(committed, "right"));
           else if (event.key === "Home") onChange(stepSlider(committed, "home"));
