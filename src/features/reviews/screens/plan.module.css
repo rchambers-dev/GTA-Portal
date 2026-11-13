@@ -2195,3 +2195,12 @@
   color: var(--text-primary);
   border-color: var(--bg-card);
 }
+
+.plan .timeline,
+.plan .lockedPanel {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 12px;
+}

@@ -134,12 +134,13 @@ function getServerSnapshot(): State {
  * Live apprentice identity for portal screens.
  * Shared across shell + screens so page switches do not re-hit /api/apprentice/me.
  */
-export function useApprenticePortalProfile(): State {
+export function useApprenticePortalProfile(enabled = true): State {
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
+    if (!enabled) return;
     void loadProfile();
-  }, []);
+  }, [enabled]);
 
   return state;
 }

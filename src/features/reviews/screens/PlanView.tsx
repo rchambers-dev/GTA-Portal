@@ -90,35 +90,37 @@ export function PlanView({
     const [year, monthNumber] = month.split("-").map(Number);
     const previousMonth = new Date(Date.UTC(year, monthNumber - 2, 1)).toISOString().slice(0, 7);
     const nextMonth = new Date(Date.UTC(year, monthNumber, 1)).toISOString().slice(0, 7);
-    router.prefetch(planHref(workspace, selectedDate, previousMonth));
-    router.prefetch(planHref(workspace, selectedDate, nextMonth));
-  }, [month, router, selectedDate, workspace]);
+    router.prefetch(planHref(workspace, `${previousMonth}-01`, previousMonth));
+    router.prefetch(planHref(workspace, `${nextMonth}-01`, nextMonth));
+  }, [month, router, workspace]);
 
   useEffect(() => {
     let cancel = false;
-    if (!activeDay.stops.length) return;
-    void fitStops({
-      officePostcode: page.settings.officePostcode,
-      existing: activeDay.stops,
-      extras: [],
-      settings: routeSettings(page.settings),
-      people: page.people,
-    }).then((fitted) => {
-      if (cancel) return;
-      setPacked(fitted.packed);
-      setPackedFor(selectedDate);
-      setOfficePoint(fitted.office);
-    });
+    const timer = window.setTimeout(() => {
+      if (cancel || !activeDay.stops.length) return;
+      void fitStops({
+        officePostcode: page.settings.officePostcode,
+        existing: activeDay.stops,
+        extras: [],
+        settings: routeSettings(page.settings),
+        people: page.people,
+      }).then((fitted) => {
+        if (cancel) return;
+        setPacked(fitted.packed);
+        setPackedFor(selectedDate);
+        setOfficePoint(fitted.office);
+      });
+    }, 0);
     return () => {
       cancel = true;
+      window.clearTimeout(timer);
     };
   }, [selectedDate, stopKey, page.settings, page.people]);
 
   function go(nextDate: string, nextMonth = month) {
     if (nextMonth === month) {
       setSelectedDate(nextDate);
-      const url = planHref(workspace, nextDate, nextMonth);
-      window.history.replaceState(window.history.state, "", url);
+      replacePlanUrl(planHref(workspace, nextDate, nextMonth));
       return;
     }
     router.push(planHref(workspace, nextDate, nextMonth));
@@ -973,6 +975,12 @@ function DayTimeline({
 
 function planHref(workspace: "administration" | "management", date: string, month: string) {
   return `/${workspace}/reviews/plan?date=${encodeURIComponent(date)}&month=${encodeURIComponent(month)}`;
+}
+
+function replacePlanUrl(url: string) {
+  const current = window.history.state;
+  const state = current && typeof current === "object" ? current : { __NA: true };
+  History.prototype.replaceState.call(window.history, state, "", url);
 }
 
 function planDayFor(page: PlanPageData, date: string): PlanDay {
