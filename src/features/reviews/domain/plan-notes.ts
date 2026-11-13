@@ -21,6 +21,20 @@ export const NOTE_UNTIL_PRESETS: { id: NoteUntilPreset; label: string }[] = [
   { id: "month", label: "1 month" },
 ];
 
+export function comparePlanNotes(
+  a: { notesUntil: string; name: string },
+  b: { notesUntil: string; name: string },
+  today: string,
+): number {
+  const left = noteUntilLabel(a.notesUntil, today);
+  const right = noteUntilLabel(b.notesUntil, today);
+  const due = Number(right.overdue) - Number(left.overdue);
+  if (due) return due;
+  const until = String(a.notesUntil || "").localeCompare(String(b.notesUntil || ""));
+  if (until) return until;
+  return a.name.localeCompare(b.name, "en-GB");
+}
+
 export function noteUntilLabel(until: string, today: string): { overdue: boolean; label: string } {
   if (!until) return { overdue: true, label: "Add an end date so this is not forgotten" };
   if (until < today) return { overdue: true, label: `Check this — ended ${formatNoteDate(until)}` };
