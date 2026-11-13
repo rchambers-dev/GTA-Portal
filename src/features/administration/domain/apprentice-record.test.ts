@@ -22,6 +22,7 @@ const savedRow = {
   last_name: "Smith",
   programme_id: programmeId,
   status: "in_learning",
+  email: null,
   created_at: "2026-11-09T12:00:00.000Z",
   updated_at: "2026-11-09T12:00:00.000Z",
 };
@@ -48,6 +49,50 @@ describe("add apprentice record", () => {
     expect(apprenticeMatchesQuery(row, "st0499")).toBe(true);
     expect(apprenticeMatchesQuery(row, "in learning")).toBe(true);
     expect(apprenticeMatchesQuery(row, "jordan")).toBe(false);
+  });
+
+  it("keeps email optional and rejects a value that is not an address", () => {
+    const blank = validateNewApprentice({
+      firstName: "Alex",
+      middleNames: "",
+      lastName: "Smith",
+      email: "  ",
+      programmeId: "",
+      status: "in_learning",
+    });
+    expect(blank.ok).toBe(true);
+    if (blank.ok) expect(blank.value.email).toBeNull();
+
+    const invalid = validateNewApprentice({
+      firstName: "Alex",
+      middleNames: "",
+      lastName: "Smith",
+      email: "not-an-email",
+      programmeId: "",
+      status: "in_learning",
+    });
+    expect(invalid.ok).toBe(false);
+    if (!invalid.ok) expect(invalid.fieldErrors.email).toBe("Enter a valid email address.");
+
+    const saved = validateNewApprentice({
+      firstName: "Alex",
+      middleNames: "",
+      lastName: "Smith",
+      email: " Alex@Example.com ",
+      programmeId: "",
+      status: "in_learning",
+    });
+    expect(saved.ok).toBe(true);
+    if (saved.ok) expect(saved.value.email).toBe("alex@example.com");
+  });
+
+  it("explains a duplicate email in plain language", () => {
+    expect(
+      explainApprenticeWriteError({
+        code: "23505",
+        message: 'duplicate key value violates unique constraint "apprentices_email_lower_key"',
+      }).fieldErrors.email,
+    ).toBe("That email address is already used by another apprentice.");
   });
 
   it("shows the programme name with its Skills England code", () => {
@@ -87,6 +132,7 @@ describe("add apprentice record", () => {
       first_name: "Alex",
       middle_names: null,
       last_name: "Smith",
+      email: null,
       programme_id: null,
       status: "in_learning",
     });
@@ -171,6 +217,7 @@ describe("add apprentice record", () => {
       firstName: "Alex",
       middleNames: "Jay",
       lastName: "Smith",
+      email: null,
       programmeId,
       status: "in_learning",
     };
@@ -179,6 +226,7 @@ describe("add apprentice record", () => {
       first_name: "Alex",
       middle_names: "Jay",
       last_name: "Smith",
+      email: null,
       programme_id: programmeId,
       status: "in_learning",
     });
@@ -193,6 +241,7 @@ describe("add apprentice record", () => {
         firstName: "Alex",
         middleNames: "Jay",
         lastName: "Smith",
+        email: null,
         programmeId,
         status: "in_learning",
         createdAt: savedRow.created_at,

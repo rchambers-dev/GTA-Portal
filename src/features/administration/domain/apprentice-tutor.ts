@@ -95,6 +95,7 @@ export type ApprenticeLearnerRecord = {
   standardCode: string | null;
   status: string;
   statusLabel: string;
+  email: string | null;
 };
 
 export type ValidatedTutorAssignment = {
@@ -327,6 +328,7 @@ export function learnerRecordFromRow(
     first_name: string;
     middle_names: string | null;
     last_name: string;
+    email?: string | null;
     programme_id: string | null;
     status: string;
   },
@@ -350,6 +352,7 @@ export function learnerRecordFromRow(
     standardCode: programme?.standardCode.trim() || null,
     status: row.status,
     statusLabel: apprenticeStatusLabel(row.status),
+    email: row.email ?? null,
   };
 }
 

@@ -30,6 +30,7 @@ const EMPTY_FORM = {
   firstName: "",
   middleNames: "",
   lastName: "",
+  email: "",
   programmeId: "",
   status: DEFAULT_APPRENTICE_STATUS as string,
 };
@@ -149,7 +150,7 @@ export function AddApprenticeForm({
             <p className={styles.learnerKicker}>Manual entry</p>
             <h2 className={styles.learnerHeading}>Add apprentice</h2>
             <p className={styles.learnerMuted}>
-              Middle names and programme can be left blank. Status starts as In learning.
+              Middle names, programme, and email can be left blank. Status starts as In learning.
             </p>
             <article className={styles.learnerCard}>
               <form onSubmit={onSubmit} noValidate>
@@ -181,6 +182,16 @@ export function AddApprenticeForm({
                     error={fieldErrors.middleNames}
                     disabled={pending}
                     autoComplete="additional-name"
+                    onChange={setField}
+                  />
+                  <TextField
+                    field="email"
+                    label="Email"
+                    type="email"
+                    value={form.email}
+                    error={fieldErrors.email}
+                    disabled={pending}
+                    autoComplete="email"
                     onChange={setField}
                   />
                   <ChoiceField
@@ -278,7 +289,7 @@ export function AddApprenticeForm({
   );
 }
 
-type EntryField = "firstName" | "middleNames" | "lastName" | "programmeId" | "status";
+type EntryField = "firstName" | "middleNames" | "lastName" | "email" | "programmeId" | "status";
 
 function TextField({
   field,
@@ -288,15 +299,17 @@ function TextField({
   required = false,
   disabled,
   autoComplete,
+  type = "text",
   onChange,
 }: {
-  field: "firstName" | "middleNames" | "lastName";
+  field: "firstName" | "middleNames" | "lastName" | "email";
   label: string;
   value: string;
   error?: string;
   required?: boolean;
   disabled: boolean;
   autoComplete: string;
+  type?: "text" | "email";
   onChange: (field: EntryField, value: string) => void;
 }) {
   const errorId = error ? `${field}-error` : undefined;
@@ -307,7 +320,7 @@ function TextField({
         {required ? <em className={styles.fieldRequired}> required</em> : null}
       </span>
       <input
-        type="text"
+        type={type}
         value={value}
         required={required}
         disabled={disabled}
