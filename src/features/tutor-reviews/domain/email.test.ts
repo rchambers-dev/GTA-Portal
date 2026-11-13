@@ -10,7 +10,8 @@ import {
   settleSend,
   tutorReviewEmail,
 } from "./email";
-import { dryRunSender } from "./email-provider";
+import { createGraphSender, parseNdr, retryAfterMs } from "./email-graph";
+import { currentEmailMode, dryRunSender } from "./email-provider";
 import { parseTutorReviewEmailEvent, verifyEmailWebhook } from "./email-webhook";
 
 describe("tutor review invite emails", () => {
@@ -52,6 +53,20 @@ describe("tutor review invite emails", () => {
     expect(resolveEmailMode({ vercelEnv: "production", nodeEnv: "production", mode: "live" })).toBe("live");
     expect(resolveEmailMode({ vercelEnv: "production", nodeEnv: "production", mode: "dry_run" })).toBe("dry_run");
     expect(resolveEmailMode({ vercelEnv: "production", nodeEnv: "development", mode: "live" })).toBe("dry_run");
+    expect(currentEmailMode({
+      VERCEL_ENV: "production",
+      NODE_ENV: "production",
+      TUTOR_REVIEW_EMAIL_MODE: "live",
+    } as NodeJS.ProcessEnv)).toBe("dry_run");
+    expect(currentEmailMode({
+      VERCEL_ENV: "preview",
+      NODE_ENV: "production",
+      TUTOR_REVIEW_EMAIL_MODE: "live",
+      MS_GRAPH_TENANT_ID: "tenant",
+      MS_GRAPH_CLIENT_ID: "client",
+      MS_GRAPH_CLIENT_SECRET: "secret",
+      MS_GRAPH_SENDER: "reiss@example.com",
+    } as NodeJS.ProcessEnv)).toBe("dry_run");
     const result = await dryRunSender.send({
       to: "a@example.com",
       subject: "Your tutor review – December 2026",
@@ -72,6 +87,14 @@ describe("tutor review invite emails", () => {
     });
     expect(retry.status).toBe("queued");
     expect(retry.nextAttemptAt).toBe("2026-12-01T09:01:00.000Z");
+    const throttled = settleSend({
+      mode: "live",
+      attemptNo: 1,
+      now,
+      result: { ok: false, transient: true, error: "Microsoft Graph is throttling mail.", retryAfterMs: 120_000 },
+    });
+    expect(throttled.nextAttemptAt).toBe("2026-12-01T09:02:00.000Z");
+    expect(retryAfterMs("30", now)).toBe(30_000);
     const accepted = settleSend({
       mode: "dry_run",
       attemptNo: 2,
@@ -114,6 +137,42 @@ describe("tutor review invite emails", () => {
     expect(verifyEmailWebhook({ secret: `whsec_${secret}`, rawBody: raw, headers, now: 1700000000 * 1000 })).toBe(true);
     expect(verifyEmailWebhook({ secret: "plain-secret", rawBody: raw, headers: new Headers({ "x-tutor-review-webhook-secret": "plain-secret" }) })).toBe(true);
     expect(verifyEmailWebhook({ secret: undefined, rawBody: raw, headers })).toBe(false);
+    const ndr = parseNdr({
+      subject: "Undeliverable: Your tutor review – December 2026",
+      sender: "reiss@example.com",
+      body: "Your message to apprentice@example.com couldn't be delivered.\n550 5.1.1 User unknown\nReference tutor-review-11111111-1111-1111-1111-111111111111\nreiss@example.com",
+    });
+    expect(ndr?.reference).toBe("tutor-review-11111111-1111-1111-1111-111111111111");
+    expect(ndr?.recipient).toBe("apprentice@example.com");
+    expect(ndr?.reason).toContain("550");
+  });
+
+  it("sends through Microsoft Graph and honours Retry-After", async () => {
+    const calls: { url: string; body?: string }[] = [];
+    const fetchImpl = async (url: string, init?: RequestInit) => {
+      calls.push({ url, body: typeof init?.body === "string" ? init.body : undefined });
+      if (url.includes("/token")) {
+        return new Response(JSON.stringify({ access_token: "token" }), { status: 200 });
+      }
+      return new Response("", { status: 429, headers: { "retry-after": "45" } });
+    };
+    const sender = createGraphSender({
+      tenantId: "tenant",
+      clientId: "client",
+      clientSecret: "secret",
+      sender: "reiss@example.com",
+    }, fetchImpl);
+    const result = await sender.send({
+      to: "apprentice@example.com",
+      subject: "Your tutor review – December 2026",
+      text: "Hello",
+      html: "<p>Hello</p>",
+      idempotencyKey: "tutor-review-11111111-1111-1111-1111-111111111111",
+    });
+    expect(result).toMatchObject({ ok: false, transient: true, retryAfterMs: 45_000 });
+    expect(calls.some((call) => call.url.includes("/users/reiss%40example.com/sendMail"))).toBe(true);
+    expect(calls.some((call) => call.body?.includes("client_secret=secret"))).toBe(true);
+    expect(JSON.stringify(result)).not.toContain("secret");
   });
 
   it("stores the queue so a crash cannot send the same invite twice", () => {

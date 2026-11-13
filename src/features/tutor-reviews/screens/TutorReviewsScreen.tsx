@@ -1,16 +1,21 @@
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
-import { resolveEmailMode } from "../domain/email";
+import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { recordGraphBounces } from "../domain/email-dispatch";
+import { currentEmailMode } from "../domain/email-provider";
 import { loadTutorReviewsPage } from "../domain/repository";
 import { TutorReviewsBoard } from "./TutorReviewsBoard";
 import styles from "./tutor-reviews.module.css";
 
 export async function TutorReviewsScreen({ workspace }: { workspace: "administration" | "management" }) {
+  const emailMode = currentEmailMode();
+  if (emailMode === "live") {
+    try {
+      await recordGraphBounces(await createSupabaseServerClient());
+    } catch {
+      // The page still opens when the mailbox check fails.
+    }
+  }
   const page = await loadTutorReviewsPage();
-  const emailMode = resolveEmailMode({
-    vercelEnv: process.env.VERCEL_ENV,
-    nodeEnv: process.env.NODE_ENV,
-    mode: process.env.TUTOR_REVIEW_EMAIL_MODE,
-  });
   return (
     <ApprenticePageShell
       eyebrow="Reviews"

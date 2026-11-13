@@ -57,9 +57,10 @@ export function formatLongDate(isoDate: string): string {
   return `${day} ${MONTHS[(month || 1) - 1]} ${year}`;
 }
 
-export function tutorReviewEmail(input: { roundLabel: string; closesOn: string; link: string }): { subject: string; text: string; html: string } {
+export function tutorReviewEmail(input: { roundLabel: string; closesOn: string; link: string; reference?: string | null }): { subject: string; text: string; html: string } {
   const closes = formatLongDate(input.closesOn);
   const subject = `Your tutor review – ${input.roundLabel}`;
+  const reference = input.reference?.trim();
   const text = [
     "Hello,",
     "",
@@ -72,6 +73,7 @@ export function tutorReviewEmail(input: { roundLabel: string; closesOn: string; 
     "Your answers are confidential. They are stored without your name.",
     "",
     "Thank you.",
+    ...(reference ? ["", reference] : []),
   ].join("\n");
   const html = [
     "<p>Hello,</p>",
@@ -80,6 +82,7 @@ export function tutorReviewEmail(input: { roundLabel: string; closesOn: string; 
     `<p>Please send it by ${escapeHtml(closes)}.</p>`,
     "<p>Your answers are confidential. They are stored without your name.</p>",
     "<p>Thank you.</p>",
+    ...(reference ? [`<p>${escapeHtml(reference)}</p>`] : []),
   ].join("");
   return { subject, text, html };
 }
@@ -96,7 +99,9 @@ export function backoffMs(attemptNo: number): number {
   return steps[Math.min(Math.max(attemptNo - 1, 0), steps.length - 1)];
 }
 
-export type ProviderSendResult = { ok: true; providerMessageId: string } | { ok: false; transient: boolean; error: string };
+export type ProviderSendResult =
+  | { ok: true; providerMessageId: string }
+  | { ok: false; transient: boolean; error: string; retryAfterMs?: number };
 
 export function settleSend(input: { mode: EmailMode; attemptNo: number; result: ProviderSendResult; now: Date }): {
   status: EmailAttemptStatus;
@@ -113,11 +118,12 @@ export function settleSend(input: { mode: EmailMode; attemptNo: number; result: 
     };
   }
   if (input.result.transient && input.attemptNo < EMAIL_MAX_ATTEMPTS) {
+    const delay = input.result.retryAfterMs ?? backoffMs(input.attemptNo);
     return {
       status: "queued",
       providerMessageId: null,
       error: input.result.error,
-      nextAttemptAt: new Date(input.now.getTime() + backoffMs(input.attemptNo)).toISOString(),
+      nextAttemptAt: new Date(input.now.getTime() + delay).toISOString(),
     };
   }
   return { status: "failed", providerMessageId: null, error: input.result.error, nextAttemptAt: null };

@@ -11,7 +11,8 @@ import {
   type EmailAttemptStatus,
   type EmailRunSummary,
 } from "./email";
-import { tutorReviewEmailSender } from "./email-provider";
+import { graphMessageWasSent, graphNdrMessages } from "./email-graph";
+import { currentEmailMode, graphCredentialsFrom, tutorReviewEmailSender } from "./email-provider";
 import { hashReviewToken, newReviewToken, type RoundStatus } from "./rules";
 
 const QUEUE_MISSING = "Invite email is not available until the database migration is applied.";
@@ -128,10 +129,37 @@ async function enqueue(supabase: SupabaseClient, roundId: string, resend: boolea
   return { ok: true as const, queued };
 }
 
+export async function recordGraphBounces(supabase: SupabaseClient): Promise<number> {
+  const credentials = graphCredentialsFrom(process.env);
+  if (!credentials || currentEmailMode() !== "live") return 0;
+  const matches = await graphNdrMessages(credentials);
+  let updated = 0;
+  for (const match of matches) {
+    const attemptId = match.reference?.replace(/^tutor-review-/, "");
+    if (attemptId) {
+      const result = await supabase.from("tutor_review_email_attempts").update({ status: "bounced", error: match.reason, dispatch_token: null }).eq("id", attemptId).in("status", ["sent", "sending"]).select("id");
+      updated += result.data?.length ?? 0;
+      continue;
+    }
+    if (!match.recipient) continue;
+    const found = await supabase.from("tutor_review_email_attempts").select("id").eq("email", match.recipient).eq("status", "sent").order("sent_at", { ascending: false }).limit(1);
+    const id = (found.data?.[0] as { id: string } | undefined)?.id;
+    if (!id) continue;
+    const result = await supabase.from("tutor_review_email_attempts").update({ status: "bounced", error: match.reason, dispatch_token: null }).eq("id", id).eq("status", "sent").select("id");
+    updated += result.data?.length ?? 0;
+  }
+  return updated;
+}
+
 async function drain(supabase: SupabaseClient, roundId: string, label: string, closesOn: string): Promise<EmailRunSummary> {
   const summary = emptyEmailSummary();
   const sender = tutorReviewEmailSender();
   const origin = await publicOrigin();
+  try {
+    await recordGraphBounces(supabase);
+  } catch {
+    // A bounce check should not stop the batch.
+  }
   for (let batch = 0; batch < MAX_BATCHES; batch += 1) {
     const claimed = await supabase.rpc("claim_tutor_review_email_batch", { p_round_id: roundId, p_limit: EMAIL_BATCH_SIZE });
     if (claimed.error) throw new Error(friendly(claimed.error.message));
@@ -140,19 +168,23 @@ async function drain(supabase: SupabaseClient, roundId: string, label: string, c
     const inviteIds = rows.map((row) => row.invite_id);
     const usedResult = await supabase.from("tutor_review_invites").select("id, used_at").in("id", inviteIds);
     const used = new Set(((usedResult.data ?? []) as { id: string; used_at: string | null }[]).filter((row) => row.used_at).map((row) => row.id));
+    let pauseUntil: string | null = null;
     for (const row of rows) {
-      const outcome = used.has(row.invite_id) || !row.dispatch_token
+      const reference = `tutor-review-${row.id}`;
+      const hold: string | null = pauseUntil;
+      const outcome: { status: EmailAttemptStatus; providerMessageId: string | null; error: string | null; nextAttemptAt: string | null } = hold
+        ? { status: "queued" as const, providerMessageId: null, error: "Waiting for Microsoft Graph.", nextAttemptAt: hold }
+        : used.has(row.invite_id) || !row.dispatch_token
         ? { status: "failed" as const, providerMessageId: null, error: used.has(row.invite_id) ? "Already submitted. Nothing was sent." : "The link for this email was missing.", nextAttemptAt: null }
-        : settleSend({
-          mode: sender.mode,
-          attemptNo: row.attempt_no,
-          now: new Date(),
-          result: await sender.send({
-            to: row.email,
-            idempotencyKey: `tutor-review-${row.id}`,
-            ...tutorReviewEmail({ roundLabel: label, closesOn, link: `${origin}/tutor-review/${row.dispatch_token}` }),
-          }),
+        : await sendOrSettle({
+          sender,
+          row,
+          reference,
+          message: tutorReviewEmail({ roundLabel: label, closesOn, link: `${origin}/tutor-review/${row.dispatch_token}`, reference }),
         });
+      if (!pauseUntil && outcome.error === "Microsoft Graph is throttling mail.") {
+        pauseUntil = outcome.nextAttemptAt ?? new Date(Date.now() + 60_000).toISOString();
+      }
       const saved = await supabase.rpc("complete_tutor_review_email_attempt", {
         p_id: row.id,
         p_status: outcome.status,
@@ -165,10 +197,34 @@ async function drain(supabase: SupabaseClient, roundId: string, label: string, c
       else if (outcome.status === "dry_run") summary.dryRun += 1;
       else if (outcome.status === "failed" || outcome.status === "bounced") summary.failed += 1;
     }
+    if (pauseUntil) break;
   }
   const left = await supabase.from("tutor_review_email_attempts").select("id", { count: "exact", head: true }).eq("round_id", roundId).eq("status", "queued");
   summary.leftQueued = left.count ?? 0;
   return summary;
+}
+
+async function sendOrSettle(input: {
+  sender: ReturnType<typeof tutorReviewEmailSender>;
+  row: AttemptRow;
+  reference: string;
+  message: { subject: string; text: string; html: string };
+}) {
+  if (input.sender.mode === "live" && input.row.attempt_no > 1) {
+    const credentials = graphCredentialsFrom(process.env);
+    if (credentials) {
+      try {
+        if (await graphMessageWasSent(credentials, input.reference)) {
+          return { status: "sent" as const, providerMessageId: input.reference, error: null, nextAttemptAt: null };
+        }
+      } catch {
+        // If sent mail cannot be checked, the queue still sends once.
+      }
+    }
+  }
+  const now = new Date();
+  const result = await input.sender.send({ to: input.row.email, idempotencyKey: input.reference, ...input.message });
+  return settleSend({ mode: input.sender.mode, attemptNo: input.row.attempt_no, now, result });
 }
 
 async function publicOrigin(): Promise<string> {
