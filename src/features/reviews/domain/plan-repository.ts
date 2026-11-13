@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { GTA_TUTORS } from "./gta-tutors";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
+import { callEndMinutes, heldPastCallEnd, londonClock } from "./plan-call-end";
 import {
   methodLabel,
   minutesToTime,
@@ -138,6 +139,9 @@ export async function readPlanPage(
   options: { canWrite: boolean; date: string; month: string },
 ): Promise<PlanPageData> {
   const today = londonToday();
+  const released = await supabase.rpc("release_unverified_after_call_end");
+  const releaseMissing = released.error?.code === "PGRST202"
+    || /release_unverified_after_call_end/i.test(released.error?.message || "");
   const monthStart = `${options.month}-01`;
   const [year, month] = options.month.split("-").map(Number);
   const nextMonthDate = new Date(Date.UTC(year, month, 1));
@@ -183,7 +187,7 @@ export async function readPlanPage(
     supabase.rpc("get_review_settings"),
     supabase
       .from("review_days")
-      .select("date_on, accepted, completed_at")
+      .select("date_on, accepted, completed_at, call_anchor_minutes")
       .gte("date_on", monthStart)
       .lt("date_on", nextMonth),
     supabase
@@ -213,6 +217,7 @@ export async function readPlanPage(
   ]) {
     if (result.error) problems.push(result.error.message);
   }
+  if (released.error && !releaseMissing) problems.push(released.error.message);
 
   const employers = new Map(
     ((employersResult.data ?? []) as { employer_id: string; company_name: string }[]).map((row) => [
@@ -385,7 +390,33 @@ export async function readPlanPage(
   });
 
   const byId = new Map(people.map((person) => [person.gtaId, person]));
-  const dayRows = (daysResult.data ?? []) as { date_on: string; accepted: boolean; completed_at: string | null }[];
+  const dayRows = (daysResult.data ?? []) as {
+    date_on: string;
+    accepted: boolean;
+    completed_at: string | null;
+    call_anchor_minutes: number | null;
+  }[];
+  const settingsRow = asRows<{
+    skip_today: boolean;
+    office_postcode: string;
+    start_time: string;
+    call_minutes: number;
+    lunch_start: string;
+    lunch_minutes: number;
+    return_by: string;
+    stay_minutes: number;
+    extra_emails: string[] | null;
+    hidden_tutor_ids: string[] | null;
+    out_enabled: boolean;
+  }>(settingsResult.data)[0];
+  const clock = londonClock();
+  const lunchStart = timeToMinutes(String(settingsRow?.lunch_start || "13:00").slice(0, 5)) ?? 13 * 60;
+  const callEnd = callEndMinutes({
+    startMinutes: timeToMinutes(String(settingsRow?.start_time || "10:00").slice(0, 5)) ?? 10 * 60,
+    lunchStart,
+    lunchEnd: lunchStart + (settingsRow?.lunch_minutes ?? 30),
+    callAnchorMinutes: dayRows.find((row) => row.date_on === clock.today)?.call_anchor_minutes ?? null,
+  });
   type StopRow = {
     date_on: string;
     gta_id: string;
@@ -442,25 +473,18 @@ export async function readPlanPage(
   }
   const stopsByDate = new Map<string, PlanStop[]>();
   for (const stop of (stopsResult.data ?? []) as StopRow[]) {
+    const built = toStop(stop);
+    if (
+      !bookingResult.error &&
+      heldPastCallEnd(built, { date: stop.date_on, today: clock.today, nowMinutes: clock.minutes, callEnd })
+    ) {
+      continue;
+    }
     const list = stopsByDate.get(stop.date_on) ?? [];
-    list.push(toStop(stop));
+    list.push(built);
     stopsByDate.set(stop.date_on, list);
   }
   for (const list of stopsByDate.values()) list.sort((a, b) => a.sortOrder - b.sortOrder);
-
-  const settingsRow = asRows<{
-    skip_today: boolean;
-    office_postcode: string;
-    start_time: string;
-    call_minutes: number;
-    lunch_start: string;
-    lunch_minutes: number;
-    return_by: string;
-    stay_minutes: number;
-    extra_emails: string[] | null;
-    hidden_tutor_ids: string[] | null;
-    out_enabled: boolean;
-  }>(settingsResult.data)[0];
 
   const completedByDate = new Map<string, CompletedReview[]>();
   for (const row of (completedResult.data ?? []) as {
