@@ -3,7 +3,9 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
+import { rebookAppointmentArgs } from "../domain/rebook-appointment";
 import { timeToMinutes, weekdayName } from "../domain/plan-due";
+import { readRebookMonth, type RebookMonthDay } from "../domain/plan-repository";
 
 const DENIED = "You do not have permission to change the plan. Administrator and Management can.";
 
@@ -103,6 +105,33 @@ export async function bookReviewAction(input: {
     p_minutes: method === "phone" ? null : timeToMinutes(input.time),
     p_phone_day: method === "phone" ? input.phoneDay || weekdayName(input.date) : null,
   });
+  return fail(error) ?? { ok: true as const };
+}
+
+export async function loadRebookMonthAction(month: string): Promise<{ ok: true; days: RebookMonthDay[] } | { ok: false; formError: string; days: [] }> {
+  if (!/^\d{4}-\d{2}$/.test(month)) return { ok: false, formError: "That month is not available.", days: [] };
+  const session = await getSupabaseEffectiveSession();
+  if (!session) return { ok: false, formError: "Sign in again to see that month.", days: [] };
+  const supabase = await createSupabaseServerClient();
+  const loaded = await readRebookMonth(supabase, month);
+  if (loaded.error) return { ok: false, formError: loaded.error, days: [] };
+  return { ok: true, days: loaded.days };
+}
+
+export async function rebookAppointmentAction(input: {
+  reviewId: string;
+  gtaId: string;
+  missedDate: string;
+  date: string | null;
+  method: string;
+  arriveMinutes: number | null;
+  leaveMinutes: number | null;
+  orderedGtaIds: string[];
+  backToQueue: boolean;
+}) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const { error } = await access.supabase.rpc("rebook_review_appointment", rebookAppointmentArgs(input));
   return fail(error) ?? { ok: true as const };
 }
 

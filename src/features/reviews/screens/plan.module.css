@@ -2204,3 +2204,230 @@
   border-radius: 18px;
   padding: 12px;
 }
+
+.rebook {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: Outfit, "Segoe UI", sans-serif;
+  min-width: 0;
+}
+
+.rebookMethod {
+  display: grid;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.rebookMethod select {
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.rebookMonth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.rebookMonth strong {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 650;
+  text-align: center;
+}
+
+.rebookNav {
+  min-width: 2.4rem;
+  min-height: 2.4rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.rebookNav:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.rebookCal {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.rebookDow {
+  display: grid;
+  place-items: center;
+  height: 1.4rem;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.rebookDay,
+.rebookEmpty {
+  display: grid;
+  place-items: center;
+  min-height: 2.45rem;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.rebookDay {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--color-navy-900);
+  font: inherit;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.rebookDay:hover:not(:disabled) {
+  border-color: var(--color-navy-900);
+}
+
+.rebookDay:focus-visible,
+.rebookSlot:focus-visible,
+.rebookSlotOn:focus-visible,
+.rebookNav:focus-visible,
+.rebookBook:focus-visible,
+.rebookQueue:focus-visible {
+  outline: 2px solid var(--color-navy-900);
+  outline-offset: 2px;
+}
+
+.rebookEmpty {
+  border: 0;
+}
+
+.rebookMuted,
+.rebookMuted:disabled {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.rebookStruck,
+.rebookStruck:disabled {
+  border: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--text-secondary) 16%, var(--bg-card));
+  color: var(--text-secondary);
+  opacity: 1;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+.rebookOn {
+  border-color: #2f6b56;
+  background: #2f6b56;
+  color: #fff;
+  opacity: 1;
+  text-decoration: none;
+}
+
+.rebookSlots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.6rem, 1fr));
+  gap: 8px;
+}
+
+.rebookSlot,
+.rebookSlotOn {
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.rebookSlotOn {
+  background: #2f6b56;
+  border-color: #2f6b56;
+  color: #fff;
+}
+
+.rebookHint,
+.rebookBlocked {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.rebookHint {
+  color: var(--text-secondary);
+}
+
+.rebookBlocked {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, #b44a2c 14%, var(--bg-card));
+  color: var(--text-primary);
+  font-weight: 650;
+}
+
+.rebookBook,
+.rebookQueue {
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.rebookBook {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  background: #2f6b56;
+  color: #fff;
+}
+
+.rebookBook:hover:not(:disabled) {
+  background: #245544;
+}
+
+.rebookBook:disabled {
+  background: #d7ebe3;
+  color: #14382c;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.rebookQueue {
+  justify-self: start;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-card);
+  color: var(--color-navy-900);
+}
+
+@media (max-width: 720px) {
+  .rebookQueue {
+    width: 100%;
+    justify-self: stretch;
+  }
+}

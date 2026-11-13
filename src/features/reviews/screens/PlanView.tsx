@@ -5,15 +5,13 @@ import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
-import { formatPlanDate, formatShortNumericDate, methodLabel, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
+import { formatPlanDate, formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import type { PackedDay } from "../domain/plan-route";
-import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanStop } from "../domain/plan-repository";
+import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
 import {
   acceptDayAction,
   applyRouteAction,
-  bookReviewAction,
-  clearBookingAction,
   completeDayAction,
   excludeStopAction,
   recordSafeguardingAction,
@@ -22,6 +20,7 @@ import {
   verifyStopAction,
 } from "./plan-actions";
 import { PlanMap } from "./PlanMap";
+import { RebookPanel } from "./RebookPanel";
 import styles from "./plan.module.css";
 
 const TABS: { id: PlanCounter; label: string }[] = [
@@ -601,6 +600,10 @@ function StopCard({
   index,
   date,
   today,
+  settings,
+  days,
+  people,
+  loadedMonth,
   canWrite,
   dayIds,
   onRun,
@@ -611,6 +614,10 @@ function StopCard({
   index: number;
   date: string;
   today: string;
+  settings: PlanSettings;
+  days: PlanDay[];
+  people: PlanPerson[];
+  loadedMonth: string;
   canWrite: boolean;
   dayIds: string[];
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
@@ -618,8 +625,7 @@ function StopCard({
 }) {
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState<"book" | "note" | "lock" | null>(null);
-  const [method, setMethod] = useState(stop.method || "in_person");
-  const [time, setTime] = useState(stop.arrive || "10:00");
+  const [bookMethod, setBookMethod] = useState("in_person");
   const phoneDigits = stop.phone.replace(/\D/g, "");
   const priority = stop.dueState === "overdue" ? styles.tagOver : stop.dueState === "due-soon" ? styles.tagSoon : styles.tagOk;
   return (
@@ -708,10 +714,10 @@ function StopCard({
             >
               {stop.verified ? "Undo verify" : "Verify"}
             </button>
-            <button type="button" className={styles.actionBlue} onClick={() => setOpen(open === "book" ? null : "book")}>
+            <button type="button" className={styles.actionBlue} onClick={() => { setBookMethod("in_person"); setOpen(open === "book" && bookMethod === "in_person" ? null : "book"); }}>
               Rebook
             </button>
-            <button type="button" className={styles.actionBlue} onClick={() => setOpen(open === "book" ? null : "book")}>
+            <button type="button" className={styles.actionBlue} onClick={() => { setBookMethod("phone"); setOpen(open === "book" && bookMethod === "phone" ? null : "book"); }}>
               Phone review
             </button>
             <button type="button" className={styles.actionGrey} onClick={() => onNote(stop.gtaId)}>
@@ -731,43 +737,18 @@ function StopCard({
               </p>
             ) : null}
         {open === "book" && stop.reviewId ? (
-          <form
-            className={styles.inline}
-            onSubmit={(event) => {
-              event.preventDefault();
-              void onRun(() =>
-                bookReviewAction({
-                  reviewId: stop.reviewId || "",
-                  method,
-                  date,
-                  time,
-                  phoneDay: weekdayName(date),
-                }),
-              );
-            }}
-          >
-            <label>
-              Booking method
-              <select value={method} onChange={(event) => setMethod(event.target.value)}>
-                <option value="in_person">In person</option>
-                <option value="teams">Teams</option>
-                <option value="phone">Phone call</option>
-              </select>
-            </label>
-            {method === "phone" ? null : (
-              <label>
-                Time
-                <input type="time" value={time} onChange={(event) => setTime(event.target.value)} />
-              </label>
-            )}
-            <button type="submit">Book Appointment</button>
-            <button
-              type="button"
-              onClick={() => void onRun(() => clearBookingAction({ reviewId: stop.reviewId || "" }))}
-            >
-              Back To Queue
-            </button>
-          </form>
+          <RebookPanel
+            key={bookMethod}
+            stop={stop}
+            missedDate={date}
+            today={today}
+            settings={settings}
+            days={days}
+            people={people}
+            loadedMonth={loadedMonth}
+            initialMethod={bookMethod}
+            onRun={onRun}
+          />
         ) : null}
             </div>
           </div>
@@ -981,6 +962,10 @@ function DayTimeline({
               index={index}
               date={date}
               today={page.today}
+              settings={page.settings}
+              days={page.days}
+              people={page.people}
+              loadedMonth={date.slice(0, 7)}
               canWrite={page.canWrite && !day.completed}
               dayIds={stops.map((item) => item.gtaId)}
               onRun={onRun}
