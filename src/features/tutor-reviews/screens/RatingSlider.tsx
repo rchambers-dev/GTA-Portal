@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { DEFAULT_RATING, faceColour, faceTint, sliderLabel, sliderRatioFromClient, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS, SLIDER_THUMB_PX } from "../domain/slider";
 import styles from "./website-form.module.css";
 
@@ -15,18 +15,25 @@ export function RatingSlider({
   value?: number;
   onChange: (value: number) => void;
 }) {
+  const blockRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const labelsRef = useRef<HTMLDivElement>(null);
   const labelRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const initialRatio = sliderRatioFromValue(value ?? DEFAULT_RATING);
   const shownRatio = useRef(initialRatio);
+  const dragging = useRef(false);
   const frame = useRef(0);
+  const settle = useRef(0);
   const [ratio, setRatio] = useState(initialRatio);
   const [pillWidth, setPillWidth] = useState(64);
   const committed = value ?? DEFAULT_RATING;
   const shown = sliderValueFromRatio(ratio);
+  const onChangeRef = useRef(onChange);
 
-  useEffect(() => () => cancelAnimationFrame(frame.current), []);
+  useEffect(() => () => {
+    cancelAnimationFrame(frame.current);
+    window.clearTimeout(settle.current);
+  }, []);
 
   function paint(next: number) {
     shownRatio.current = next;
@@ -35,6 +42,9 @@ export function RatingSlider({
 
   function animateTo(target: number) {
     cancelAnimationFrame(frame.current);
+    window.clearTimeout(settle.current);
+    const block = blockRef.current;
+    if (block) delete block.dataset.dragging;
     const from = shownRatio.current;
     const start = performance.now();
     const step = (now: number) => {
@@ -44,24 +54,50 @@ export function RatingSlider({
       if (t < 1) frame.current = requestAnimationFrame(step);
     };
     frame.current = requestAnimationFrame(step);
+    settle.current = window.setTimeout(() => paint(target), MOVE_MS + 40);
   }
 
   function choose(next: number) {
-    onChange(next);
+    onChangeRef.current(next);
     animateTo(sliderRatioFromValue(next));
   }
 
   function ratioFrom(clientX: number) {
     const track = trackRef.current;
-    if (!track) return sliderRatioFromValue(committed);
+    if (!track) return shownRatio.current;
     const rect = track.getBoundingClientRect();
     const inset = Number.parseFloat(getComputedStyle(track).getPropertyValue("--inset")) || SLIDER_THUMB_PX / 2;
     return sliderRatioFromClient(clientX, rect.left, rect.width, inset);
   }
 
-  function pointerRatio(event: ReactPointerEvent<HTMLDivElement>) {
-    return ratioFrom(event.clientX);
+  function finishDrag(clientX?: number) {
+    if (!dragging.current) return;
+    dragging.current = false;
+    const track = trackRef.current;
+    if (track) delete track.dataset.pointing;
+    const raw = clientX == null ? shownRatio.current : ratioFrom(clientX);
+    const next = sliderValueFromRatio(raw);
+    onChangeRef.current(next);
+    animateTo(sliderRatioFromValue(next));
   }
+
+  const finishDragRef = useRef<(clientX?: number) => void>(() => {});
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+    finishDragRef.current = finishDrag;
+  });
+
+  useEffect(() => {
+    const end = (event: PointerEvent) => finishDragRef.current(event.clientX);
+    const cancel = () => finishDragRef.current();
+    window.addEventListener("pointerup", end);
+    window.addEventListener("pointercancel", cancel);
+    return () => {
+      window.removeEventListener("pointerup", end);
+      window.removeEventListener("pointercancel", cancel);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     const index = SLIDER_STOPS.findIndex((stop) => stop.value === shown);
@@ -72,7 +108,7 @@ export function RatingSlider({
   }, [shown]);
 
   return (
-    <div className={styles.sliderBlock}>
+    <div ref={blockRef} className={styles.sliderBlock}>
       <div
         ref={trackRef}
         role="slider"
@@ -86,24 +122,21 @@ export function RatingSlider({
         onPointerDown={(event) => {
           if (event.pointerType === "mouse" && event.button !== 0) return;
           cancelAnimationFrame(frame.current);
+          window.clearTimeout(settle.current);
+          dragging.current = true;
+          if (blockRef.current) blockRef.current.dataset.dragging = "true";
           event.currentTarget.dataset.pointing = "true";
           event.currentTarget.setPointerCapture(event.pointerId);
           event.currentTarget.focus();
-          paint(pointerRatio(event));
+          paint(ratioFrom(event.clientX));
         }}
         onPointerMove={(event) => {
-          if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
-          paint(pointerRatio(event));
+          if (!dragging.current) return;
+          paint(ratioFrom(event.clientX));
         }}
-        onPointerUp={(event) => {
-          if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
-          const next = sliderValueFromRatio(pointerRatio(event));
-          onChange(next);
-          animateTo(sliderRatioFromValue(next));
-        }}
-        onPointerCancel={() => {
-          animateTo(sliderRatioFromValue(committed));
-        }}
+        onPointerUp={(event) => finishDrag(event.clientX)}
+        onPointerCancel={() => finishDrag()}
+        onLostPointerCapture={() => finishDrag()}
         onBlur={(event) => {
           delete event.currentTarget.dataset.pointing;
         }}

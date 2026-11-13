@@ -181,6 +181,11 @@
   pointer-events: none;
 }
 
+.sliderBlock[data-dragging="true"] .pill,
+.sliderBlock[data-dragging="true"] .thumb {
+  transition: none;
+}
+
 .stop {
   position: absolute;
   z-index: 1;
