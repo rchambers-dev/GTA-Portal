@@ -584,28 +584,53 @@ export async function readRebookMonth(
   month: string,
 ): Promise<{ days: RebookMonthDay[]; error: string | null }> {
   if (!/^\d{4}-\d{2}$/.test(month)) return { days: [], error: "That month is not available." };
+  await supabase.rpc("release_unverified_after_call_end");
   const monthStart = `${month}-01`;
   const [year, monthNumber] = month.split("-").map(Number);
   const nextMonth = new Date(Date.UTC(year, monthNumber, 1)).toISOString().slice(0, 10);
-  const [daysResult, stopsResult] = await Promise.all([
-    supabase.from("review_days").select("date_on, accepted, completed_at").gte("date_on", monthStart).lt("date_on", nextMonth),
+  const clock = londonClock();
+  const [daysResult, stopsResult, settingsResult, reviewsResult] = await Promise.all([
+    supabase.from("review_days").select("date_on, accepted, completed_at, call_anchor_minutes").gte("date_on", monthStart).lt("date_on", nextMonth),
     supabase
       .from("review_day_stops")
       .select(
-        "date_on, gta_id, sort_order, accepted, arrive_minutes, leave_minutes, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
+        "date_on, gta_id, sort_order, verified, completed, accepted, arrive_minutes, leave_minutes, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
       )
       .gte("date_on", monthStart)
       .lt("date_on", nextMonth)
       .eq("excluded", false),
+    supabase.rpc("get_review_settings"),
+    supabase.from("reviews").select("gta_id, review_bookings(appointment_on)").eq("status", "open"),
   ]);
   if (daysResult.error || stopsResult.error) {
     return { days: [], error: daysResult.error?.message || stopsResult.error?.message || "That month could not be loaded." };
+  }
+  const settingsRow = asRows<{ start_time: string; lunch_start: string; lunch_minutes: number }>(settingsResult.data)[0];
+  const lunchStart = timeToMinutes(String(settingsRow?.lunch_start || "13:00").slice(0, 5)) ?? 13 * 60;
+  const dayRowsForAnchor = (daysResult.data ?? []) as { date_on: string; call_anchor_minutes: number | null }[];
+  const callEnd = callEndMinutes({
+    startMinutes: timeToMinutes(String(settingsRow?.start_time || "10:00").slice(0, 5)) ?? 10 * 60,
+    lunchStart,
+    lunchEnd: lunchStart + (settingsRow?.lunch_minutes ?? 30),
+    callAnchorMinutes: dayRowsForAnchor.find((row) => row.date_on === clock.today)?.call_anchor_minutes ?? null,
+  });
+  const bookedToday = new Set<string>();
+  if (!reviewsResult.error) {
+    for (const row of (reviewsResult.data ?? []) as {
+      gta_id: string;
+      review_bookings: { appointment_on: string | null } | { appointment_on: string | null }[] | null;
+    }[]) {
+      const booking = Array.isArray(row.review_bookings) ? row.review_bookings[0] : row.review_bookings;
+      if (booking?.appointment_on === clock.today) bookedToday.add(row.gta_id);
+    }
   }
   const stopsByDate = new Map<string, RebookMonthStop[]>();
   for (const stop of (stopsResult.data ?? []) as {
     date_on: string;
     gta_id: string;
     sort_order: number;
+    verified: boolean;
+    completed: boolean;
     accepted: boolean;
     arrive_minutes: number | null;
     leave_minutes: number | null;
@@ -614,6 +639,20 @@ export async function readRebookMonth(
     accepted_arrive_minutes: number | null;
     accepted_leave_minutes: number | null;
   }[]) {
+    if (
+      !reviewsResult.error &&
+      heldPastCallEnd(
+        {
+          verified: stop.verified,
+          completed: stop.completed,
+          accepted: stop.accepted,
+          appointmentOn: bookedToday.has(stop.gta_id) ? clock.today : null,
+        },
+        { date: stop.date_on, today: clock.today, nowMinutes: clock.minutes, callEnd },
+      )
+    ) {
+      continue;
+    }
     const arrive = stop.accepted ? stop.accepted_arrive_minutes : (stop.arrive_minutes ?? stop.lock_arrive_minutes);
     const leave = stop.accepted ? stop.accepted_leave_minutes : (stop.leave_minutes ?? stop.lock_leave_minutes);
     const list = stopsByDate.get(stop.date_on) ?? [];
