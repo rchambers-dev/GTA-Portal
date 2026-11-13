@@ -244,6 +244,7 @@ function render(
         employers: [],
         loadError: null,
       },
+      reviews: null,
     }),
   );
 }
