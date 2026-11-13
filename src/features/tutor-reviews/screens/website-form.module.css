@@ -242,20 +242,15 @@
 }
 
 .track:focus,
-.track:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
+.track:focus-visible,
+.track:focus .thumb,
 .track:focus-visible .thumb {
-  border-radius: 50%;
-  outline: 2px solid #26529c;
-  outline-offset: 3px;
-}
-
-.track[data-pointing="true"]:focus-visible .thumb {
   outline: none;
   box-shadow: none;
+}
+
+.track:focus-visible:not([data-pointing="true"]) .thumb {
+  transform: translateX(-50%) scale(1.1);
 }
 
 .trackFill {
@@ -300,15 +295,11 @@
 }
 
 .yes:focus,
-.no:focus {
-  outline: none;
-  box-shadow: none;
-}
-
+.no:focus,
 .yes:focus-visible,
 .no:focus-visible {
-  outline: 2px solid #26529c;
-  outline-offset: 3px;
+  outline: none;
+  box-shadow: none;
 }
 
 .yesOn {

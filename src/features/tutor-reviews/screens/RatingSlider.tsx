@@ -73,8 +73,6 @@ export function RatingSlider({
   function finishDrag(clientX?: number) {
     if (!dragging.current) return;
     dragging.current = false;
-    const track = trackRef.current;
-    if (track) delete track.dataset.pointing;
     const raw = clientX == null ? shownRatio.current : ratioFrom(clientX);
     const next = sliderValueFromRatio(raw);
     onChangeRef.current(next);
