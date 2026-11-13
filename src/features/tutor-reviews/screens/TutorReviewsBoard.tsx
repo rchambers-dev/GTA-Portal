@@ -3,10 +3,11 @@
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { inviteCsv } from "../domain/csv";
-import type { ConcernItem, EmailAttemptRow, ReportCard, TrackerRow, TutorReviewRound } from "../domain/repository";
+import type { ConcernItem, EmailAttemptRow, ReportCard, TrackerRow, TutorReviewRound, TutorReviewsPage } from "../domain/repository";
 import { londonToday, roundCanSend, type EmailMode } from "../domain/email";
 import { generateTutorReviewInvitesAction, setTutorReviewRoundAction } from "./actions";
-import { EmailAttempts, SendInvitesButton } from "./EmailPanel";
+import { EmailAttempts, SendInvitesButton, SendTestEmailButton } from "./EmailPanel";
+import { CollapsibleSection } from "./CollapsibleSection";
 import { QuestionnaireEditor } from "./QuestionnaireEditor";
 import styles from "./tutor-reviews.module.css";
 
@@ -26,8 +27,11 @@ function statusLabel(round: TutorReviewRound) {
 
 function changeLabel(value: number | null) {
   if (value == null) return "—";
-  const text = `${value > 0 ? "+" : ""}${value.toFixed(1)}`;
-  return text;
+  return `${value > 0 ? "+" : ""}${value.toFixed(1)}`;
+}
+
+function isPastRound(round: TutorReviewRound, today: string) {
+  return round.status === "closed" || Boolean(round.closedEarly) || round.closesOn < today;
 }
 
 export function TutorReviewsBoard({
@@ -39,6 +43,8 @@ export function TutorReviewsBoard({
   emailQueueReady,
   emailMode,
   workspace,
+  templates,
+  templatesReady,
 }: {
   rounds: TutorReviewRound[];
   tracker: TrackerRow[];
@@ -48,10 +54,15 @@ export function TutorReviewsBoard({
   emailQueueReady: boolean;
   emailMode: EmailMode;
   workspace: "administration" | "management";
+  templates: TutorReviewsPage["templates"];
+  templatesReady: boolean;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [roundId, setRoundId] = useState(rounds[0]?.id ?? "");
+  const today = londonToday();
+  const upcoming = rounds.filter((item) => !isPastRound(item, today));
+  const past = rounds.filter((item) => isPastRound(item, today));
+  const [roundId, setRoundId] = useState(upcoming[0]?.id ?? rounds.at(-1)?.id ?? "");
   const [links, setLinks] = useState<LinkRow[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
@@ -79,14 +90,14 @@ export function TutorReviewsBoard({
   return (
     <div className={styles.stack}>
       <section className={styles.card}>
+        <CollapsibleSection id="rounds" title="Rounds" defaultOpen>
         <div className={styles.sectionHead}>
           <div>
-            <h2>Rounds</h2>
-            <p className={styles.muted}>Seeded rounds stay draft until you open one. Opening a round lets apprentices submit on the dates shown.</p>
+            <p className={styles.muted}>December and June rounds are created as drafts. You can change the dates before you open a round. Opening a round lets apprentices submit on the dates shown.</p>
           </div>
         </div>
         <div className={styles.rounds}>
-          {rounds.map((item) => (
+          {upcoming.map((item) => (
             <article key={item.id} className={item.id === round?.id ? `${styles.round} ${styles.roundSelected}` : styles.round}>
               <button type="button" className={styles.roundPick} onClick={() => setRoundId(item.id)}>
                 <strong>{item.label}</strong>
@@ -108,34 +119,52 @@ export function TutorReviewsBoard({
                   canSend={emailQueueReady && roundCanSend({ status: item.status, closesOn: item.closesOn, closedEarly: item.closedEarly, today: londonToday() }).ok}
                   reason={emailQueueReady ? (roundCanSend({ status: item.status, closesOn: item.closesOn, closedEarly: item.closedEarly, today: londonToday() }).ok ? null : "Invites can be sent when a round is open or scheduled to open.") : "Email sending is not available until the database migration is applied."}
                 />
+                <SendTestEmailButton
+                  roundId={item.id}
+                  canSend={emailQueueReady && roundCanSend({ status: item.status, closesOn: item.closesOn, closedEarly: item.closedEarly, today: londonToday() }).ok}
+                  reason={emailQueueReady ? (roundCanSend({ status: item.status, closesOn: item.closesOn, closedEarly: item.closedEarly, today: londonToday() }).ok ? null : "Invites can be sent when a round is open or scheduled to open.") : "Email sending is not available until the database migration is applied."}
+                />
               </div>
             </article>
           ))}
         </div>
+        <CollapsibleSection id="past-rounds" title={`Past rounds${past.length ? ` · ${past.length}` : ""}`}>
+          <div className={styles.rounds}>
+            {past.length ? past.map((item) => (
+              <article key={item.id} className={item.id === round?.id ? `${styles.round} ${styles.roundSelected}` : styles.round}>
+                <button type="button" className={styles.roundPick} onClick={() => setRoundId(item.id)}>
+                  <strong>{item.label}</strong>
+                  <span className={styles.pill}>{statusLabel(item)}</span>
+                  <p className={styles.dates}>{formatDate(item.opensOn)} – {formatDate(item.closesOn)}</p>
+                </button>
+              </article>
+            )) : <p className={styles.muted}>No past rounds yet.</p>}
+          </div>
+        </CollapsibleSection>
         {error ? <p className={styles.error}>{error}</p> : null}
+        </CollapsibleSection>
       </section>
 
       {round ? (
-        <QuestionnaireEditor
-          key={round.id}
-          roundId={round.id}
-          label={round.label}
-          inviteCount={round.inviteCount}
-          responseCount={round.responseCount}
-          questionnaire={round.questionnaire}
-          sources={rounds.filter((item) => item.opensOn < round.opensOn).map((item) => ({
-            id: item.id,
-            label: item.label,
-            questionnaire: item.questionnaire,
-          }))}
-        />
+        <section className={styles.card}>
+          <CollapsibleSection id="editor" title="Editor">
+            <QuestionnaireEditor
+              key={`${round.id}-${round.templateVersionId ?? "none"}`}
+              roundId={round.id}
+              snapshotted={round.snapshotted}
+              templateVersionId={round.templateVersionId}
+              versions={templates}
+              templatesReady={templatesReady}
+            />
+          </CollapsibleSection>
+        </section>
       ) : null}
 
       {round ? (
         <section className={styles.card}>
+          <CollapsibleSection id="invites" title={`Invites · ${round.label}`}>
           <div className={styles.sectionHead}>
             <div>
-              <h2>Invites · {round.label}</h2>
               <p className={styles.muted}>Creates a one-time link for each apprentice who has a tutor. Copy a link or export a CSV. Send invites posts those links by email. Generating again replaces any link that has not been submitted.</p>
             </div>
             <button
@@ -202,6 +231,7 @@ export function TutorReviewsBoard({
               </div>
             </>
           ) : null}
+          </CollapsibleSection>
         </section>
       ) : null}
 
@@ -216,7 +246,7 @@ export function TutorReviewsBoard({
       ) : null}
 
       <section className={styles.card}>
-        <h2>Tracker{round ? ` · ${round.label}` : ""}</h2>
+        <CollapsibleSection id="tracker" title={`Tracker${round ? ` · ${round.label}` : ""}`}>
         <p className={styles.muted}>Who was invited and who has submitted. Answers are not shown here.</p>
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -246,11 +276,12 @@ export function TutorReviewsBoard({
             </tbody>
           </table>
         </div>
+        </CollapsibleSection>
       </section>
 
       <section className={styles.card}>
-        <h2>Report{round ? ` · ${round.label}` : ""}</h2>
-        <p className={styles.muted}>Averages and comments stay hidden until a tutor has at least 3 responses. The change is against the previous round when that round also has at least 3.</p>
+        <CollapsibleSection id="report" title={`Report${round ? ` · ${round.label}` : ""}`}>
+        <p className={styles.muted}>Averages, Yes percentages, and comments stay hidden until a tutor has at least 3 responses. The change is against the previous round when that round also has at least 3.</p>
         <div className={styles.reportGrid}>
           {roundReports.length ? roundReports.map((report) => (
             <article key={`${report.roundId}-${report.tutorId}`} className={styles.round}>
@@ -260,10 +291,19 @@ export function TutorReviewsBoard({
                 <span>{report.invited} invited</span>
                 <span>{report.submitted} submitted</span>
               </div>
-              {report.hidden ? <p className={styles.muted}>Fewer than 3 responses, so averages and comments stay hidden.</p> : report.questions.map((question) => (
+              {report.hidden ? <p className={styles.muted}>Fewer than 3 responses, so averages, Yes percentages, and comments stay hidden.</p> : report.questions.map((question) => (
                 <div key={question.code} className={styles.question}>
                   <strong>{question.text}</strong>
-                  {question.kind === "rating_1_5" ? (
+                  {question.kind === "yes_no" ? (
+                    <p>
+                      {question.yesAnswered ? `${question.yesCount} Yes of ${question.yesAnswered} (${question.yesPercent}%)` : "No answers yet"}
+                      {" · "}
+                      <span className={question.change == null ? undefined : question.change < 0 ? styles.changeDown : styles.changeUp}>
+                        {question.change == null ? "—" : `${question.change > 0 ? "+" : ""}${question.change} points`}
+                      </span>
+                      {report.previousLabel ? ` vs ${report.previousLabel}` : ""}
+                    </p>
+                  ) : question.kind === "rating_1_5" ? (
                     <p>
                       Average {question.average?.toFixed(1) ?? "—"}
                       {" · "}
@@ -278,10 +318,11 @@ export function TutorReviewsBoard({
             </article>
           )) : <p className={styles.muted}>No responses for this round yet.</p>}
         </div>
+        </CollapsibleSection>
       </section>
 
       <section className={styles.card}>
-        <h2>Concerns to read</h2>
+        <CollapsibleSection id="concerns" title="Concerns to read">
         <p className={styles.muted}>A concern names the tutor and the round only. It is not linked to an apprentice.</p>
         {concerns.length ? concerns.map((item, index) => (
           <article key={`${item.tutorName}-${item.roundLabel}-${index}`} className={styles.concern}>
@@ -290,6 +331,7 @@ export function TutorReviewsBoard({
             <p>{item.text}</p>
           </article>
         )) : <p className={styles.muted}>No concerns to read.</p>}
+        </CollapsibleSection>
       </section>
     </div>
   );

@@ -4,6 +4,7 @@ import {
   EMAIL_BATCH_SIZE,
   canResend,
   emptyEmailSummary,
+  selectInviteRecipients,
   londonToday,
   roundCanSend,
   settleSend,
@@ -12,7 +13,7 @@ import {
   type EmailRunSummary,
 } from "./email";
 import { graphMessageWasSent, graphNdrMessages } from "./email-graph";
-import { currentEmailMode, graphCredentialsFrom, tutorReviewEmailSender } from "./email-provider";
+import { currentEmailMode, dryRunSender, graphCredentialsFrom, tutorReviewEmailSender } from "./email-provider";
 import { hashReviewToken, newReviewToken, type RoundStatus } from "./rules";
 
 const QUEUE_MISSING = "Invite email is not available until the database migration is applied.";
@@ -28,17 +29,32 @@ type AttemptRow = {
 };
 
 export async function sendRoundInvites(supabase: SupabaseClient, roundId: string, resend: boolean): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
+  return sendAudience(supabase, roundId, { audience: "apprentices", resend, dryRun: false });
+}
+
+export async function sendTestRoundInvite(supabase: SupabaseClient, roundId: string): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
+  return sendAudience(supabase, roundId, { audience: "test", resend: false, dryRun: true });
+}
+
+async function sendAudience(
+  supabase: SupabaseClient,
+  roundId: string,
+  options: { audience: "apprentices" | "test"; resend: boolean; dryRun: boolean },
+): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
   const round = await loadRound(supabase, roundId);
   if (!round.ok) return round;
   const gate = roundCanSend({ status: round.status, closesOn: round.closesOn, closedEarly: round.closedEarly, today: londonToday() });
   if (!gate.ok) return { ok: false, error: gate.reason };
 
-  const recipients = await loadRecipients(supabase, roundId, resend);
+  const recipients = await loadRecipients(supabase, roundId, options);
   if (!recipients.ok) return recipients;
-  const queued = await enqueue(supabase, roundId, resend, recipients.rows);
+  if (options.audience === "test" && !recipients.rows.length) {
+    return { ok: false, error: "There is no test apprentice with an email and a current tutor." };
+  }
+  const queued = await enqueue(supabase, roundId, options.resend, recipients.rows, options.audience === "test");
   if (!queued.ok) return queued;
   try {
-    const summary = await drain(supabase, roundId, round.label, round.closesOn);
+    const summary = await drain(supabase, roundId, round.label, round.closesOn, options.dryRun);
     summary.queued = queued.queued;
     return { ok: true, summary };
   } catch (error) {
@@ -51,22 +67,22 @@ export async function resendOneInvite(supabase: SupabaseClient, attemptId: strin
   if (attempt.error) return { ok: false, error: friendly(attempt.error.message) };
   const row = attempt.data as { id: string; round_id: string; apprentice_id: string; status: EmailAttemptStatus } | null;
   if (!row || !canResend(row.status)) return { ok: false, error: "Only a failed or bounced email can be sent again." };
-  const sent = await sendRoundInvitesFor(supabase, row.round_id, [row.apprentice_id]);
+  const sent = await sendRoundInvitesFor(supabase, row.round_id, [row.apprentice_id], false);
   return sent;
 }
 
-async function sendRoundInvitesFor(supabase: SupabaseClient, roundId: string, apprenticeIds: string[]): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
+async function sendRoundInvitesFor(supabase: SupabaseClient, roundId: string, apprenticeIds: string[], dryRun: boolean): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
   const round = await loadRound(supabase, roundId);
   if (!round.ok) return { ok: false, error: round.error };
   const gate = roundCanSend({ status: round.status, closesOn: round.closesOn, closedEarly: round.closedEarly, today: londonToday() });
   if (!gate.ok) return { ok: false, error: gate.reason };
-  const recipients = await loadRecipients(supabase, roundId, true, apprenticeIds);
+  const recipients = await loadRecipients(supabase, roundId, { audience: "apprentices", resend: true, onlyApprenticeIds: apprenticeIds });
   if (!recipients.ok) return recipients;
   if (!recipients.rows.length) return { ok: false, error: "That apprentice has no email, or the review was already submitted." };
   const queued = await enqueue(supabase, roundId, true, recipients.rows);
   if (!queued.ok) return queued;
   try {
-    const summary = await drain(supabase, roundId, round.label, round.closesOn);
+    const summary = await drain(supabase, roundId, round.label, round.closesOn, dryRun);
     summary.queued = queued.queued;
     return { ok: true, summary };
   } catch (error) {
@@ -82,7 +98,11 @@ async function loadRound(supabase: SupabaseClient, roundId: string) {
   return { ok: true as const, label: row.label, closesOn: row.closes_on, status: row.status, closedEarly: Boolean(row.closed_early_at) };
 }
 
-async function loadRecipients(supabase: SupabaseClient, roundId: string, resend: boolean, onlyApprenticeIds?: string[]) {
+async function loadRecipients(
+  supabase: SupabaseClient,
+  roundId: string,
+  options: { audience: "apprentices" | "test"; resend: boolean; onlyApprenticeIds?: string[] },
+) {
   const [peopleResult, tutorsResult, invitesResult, attemptsResult] = await Promise.all([
     supabase.from("apprentices").select("gta_id, email"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id, start_date").is("end_date", null),
@@ -91,6 +111,11 @@ async function loadRecipients(supabase: SupabaseClient, roundId: string, resend:
   ]);
   const failure = peopleResult.error || tutorsResult.error || invitesResult.error || attemptsResult.error;
   if (failure) return { ok: false as const, error: friendly(failure.message) };
+  const testRows = await supabase.from("apprentices").select("gta_id").eq("is_test", true);
+  if (testRows.error && options.audience === "test") {
+    return { ok: false as const, error: "The test apprentice is not available until the database migration is applied." };
+  }
+  const testIds = testRows.error ? new Set<string>() : new Set(((testRows.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
   const tutors = new Map<string, { tutorId: string; start: string }>();
   for (const row of (tutorsResult.data ?? []) as { apprentice_id: string; tutor_id: string; start_date: string }[]) {
     const current = tutors.get(row.apprentice_id);
@@ -103,27 +128,44 @@ async function loadRecipients(supabase: SupabaseClient, roundId: string, resend:
     list.push(row.status);
     statuses.set(row.apprentice_id, list);
   }
-  const wanted = onlyApprenticeIds ? new Set(onlyApprenticeIds) : null;
-  const rows: { apprenticeId: string; tutorId: string; email: string; tokenHash: string; dispatchToken: string }[] = [];
-  for (const person of (peopleResult.data ?? []) as { gta_id: string; email: string | null }[]) {
-    if (wanted && !wanted.has(person.gta_id)) continue;
-    const tutor = tutors.get(person.gta_id);
-    const email = person.email?.trim() || "";
-    if (!tutor || !email) continue;
-    if (invites.get(person.gta_id)?.used_at) continue;
-    const history = statuses.get(person.gta_id) ?? [];
-    const blocking = history.some((status) => status === "queued" || status === "sending" || status === "sent" || status === "dry_run" || (!resend && (status === "failed" || status === "bounced")));
-    if (blocking) continue;
-    if (resend && !history.some((status) => canResend(status))) continue;
+  const wanted = options.onlyApprenticeIds ? new Set(options.onlyApprenticeIds) : null;
+  const chosen = selectInviteRecipients(
+    ((peopleResult.data ?? []) as { gta_id: string; email: string | null }[])
+      .filter((person) => !wanted || wanted.has(person.gta_id))
+      .map((person) => ({
+        apprenticeId: person.gta_id,
+        email: person.email,
+        tutorId: tutors.get(person.gta_id)?.tutorId ?? null,
+        submitted: Boolean(invites.get(person.gta_id)?.used_at),
+        isTest: testIds.has(person.gta_id),
+        statuses: statuses.get(person.gta_id) ?? [],
+      })),
+    options,
+  );
+  const rows = chosen.map((person) => {
     const dispatchToken = newReviewToken();
-    rows.push({ apprenticeId: person.gta_id, tutorId: tutor.tutorId, email, tokenHash: hashReviewToken(dispatchToken), dispatchToken });
-  }
+    return {
+      apprenticeId: person.apprenticeId,
+      tutorId: person.tutorId as string,
+      email: person.email?.trim() || "",
+      tokenHash: hashReviewToken(dispatchToken),
+      dispatchToken,
+    };
+  });
   return { ok: true as const, rows };
 }
 
-async function enqueue(supabase: SupabaseClient, roundId: string, resend: boolean, rows: { apprenticeId: string; tutorId: string; email: string; tokenHash: string; dispatchToken: string }[]) {
+async function enqueue(
+  supabase: SupabaseClient,
+  roundId: string,
+  resend: boolean,
+  rows: { apprenticeId: string; tutorId: string; email: string; tokenHash: string; dispatchToken: string }[],
+  repeat = false,
+) {
   if (!rows.length) return { ok: true as const, queued: 0 };
-  const result = await supabase.rpc("enqueue_tutor_review_emails", { p_round_id: roundId, p_resend: resend, p_rows: rows });
+  const result = repeat
+    ? await supabase.rpc("enqueue_tutor_review_emails", { p_round_id: roundId, p_resend: resend, p_rows: rows, p_repeat: true })
+    : await supabase.rpc("enqueue_tutor_review_emails", { p_round_id: roundId, p_resend: resend, p_rows: rows });
   if (result.error) return { ok: false as const, error: friendly(result.error.message) };
   const queued = Number((result.data as { queued?: number } | null)?.queued ?? 0);
   return { ok: true as const, queued };
@@ -151,9 +193,9 @@ export async function recordGraphBounces(supabase: SupabaseClient): Promise<numb
   return updated;
 }
 
-async function drain(supabase: SupabaseClient, roundId: string, label: string, closesOn: string): Promise<EmailRunSummary> {
+async function drain(supabase: SupabaseClient, roundId: string, label: string, closesOn: string, dryRun = false): Promise<EmailRunSummary> {
   const summary = emptyEmailSummary();
-  const sender = tutorReviewEmailSender();
+  const sender = dryRun ? dryRunSender : tutorReviewEmailSender();
   const origin = await publicOrigin();
   try {
     await recordGraphBounces(supabase);
@@ -182,6 +224,15 @@ async function drain(supabase: SupabaseClient, roundId: string, label: string, c
           reference,
           message: tutorReviewEmail({ roundLabel: label, closesOn, link: `${origin}/tutor-review/${row.dispatch_token}`, reference }),
         });
+      if (outcome.status === "dry_run" && row.dispatch_token) {
+        const link = `${origin}/tutor-review/${row.dispatch_token}`;
+        const message = tutorReviewEmail({ roundLabel: label, closesOn, link, reference });
+        await supabase.from("tutor_review_email_attempts").update({
+          rendered_subject: message.subject,
+          rendered_body: message.text,
+          rendered_link: link,
+        }).eq("id", row.id);
+      }
       if (!pauseUntil && outcome.error === "Microsoft Graph is throttling mail.") {
         pauseUntil = outcome.nextAttemptAt ?? new Date(Date.now() + 60_000).toISOString();
       }

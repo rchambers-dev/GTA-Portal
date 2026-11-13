@@ -44,21 +44,31 @@ export function storedResponse(input: { roundId: string; tutorId: string; today:
 export type AnswerStat = {
   code: string;
   text: string;
-  kind: "rating_1_5" | "text";
+  kind: "rating_1_5" | "text" | "yes_no";
   isConcern: boolean;
   average: number | null;
   previousAverage: number | null;
   change: number | null;
   texts: string[];
+  yesCount: number | null;
+  yesAnswered: number | null;
+  yesPercent: number | null;
 };
+
+function yesPercent(values: boolean[]): number | null {
+  if (!values.length) return null;
+  return Math.round((values.filter(Boolean).length / values.length) * 100);
+}
 
 export function publishStats(input: {
   responseCount: number;
   previousCount: number;
-  questions: { code: string; text: string; kind: "rating_1_5" | "text"; isConcern: boolean }[];
+  questions: { code: string; text: string; kind: "rating_1_5" | "text" | "yes_no"; isConcern: boolean }[];
   ratings: { code: string; values: number[] }[];
   previousRatings: { code: string; values: number[] }[];
   texts: { code: string; values: string[] }[];
+  yeses?: { code: string; values: boolean[] }[];
+  previousYeses?: { code: string; values: boolean[] }[];
 }): { hidden: boolean; questions: AnswerStat[] } {
   const hidden = input.responseCount < MIN_PUBLISHED;
   const previousHidden = input.previousCount < MIN_PUBLISHED;
@@ -68,12 +78,21 @@ export function publishStats(input: {
     const average = !hidden && values.length ? round1(values.reduce((sum, value) => sum + value, 0) / values.length) : null;
     const previousAverage = !previousHidden && previous.length ? round1(previous.reduce((sum, value) => sum + value, 0) / previous.length) : null;
     const written = input.texts.find((row) => row.code === question.code)?.values.filter((value) => value.trim()) ?? [];
+    const yesValues = input.yeses?.find((row) => row.code === question.code)?.values ?? [];
+    const previousYes = input.previousYeses?.find((row) => row.code === question.code)?.values ?? [];
+    const currentYes = hidden ? null : yesPercent(yesValues);
+    const earlierYes = previousHidden ? null : yesPercent(previousYes);
     return {
       ...question,
       average,
       previousAverage,
-      change: average != null && previousAverage != null ? round1(average - previousAverage) : null,
+      change: question.kind === "yes_no"
+        ? currentYes != null && earlierYes != null ? currentYes - earlierYes : null
+        : average != null && previousAverage != null ? round1(average - previousAverage) : null,
       texts: hidden ? [] : written,
+      yesCount: hidden ? null : yesValues.filter(Boolean).length,
+      yesAnswered: hidden ? null : yesValues.length,
+      yesPercent: currentYes,
     };
   });
   return { hidden, questions };

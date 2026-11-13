@@ -7,6 +7,11 @@ import { TutorReviewsBoard } from "./TutorReviewsBoard";
 import styles from "./tutor-reviews.module.css";
 
 export async function TutorReviewsScreen({ workspace }: { workspace: "administration" | "management" }) {
+  try {
+    await (await createSupabaseServerClient()).rpc("ensure_tutor_review_rounds");
+  } catch {
+    // The page still lists the rounds that already exist.
+  }
   const emailMode = currentEmailMode();
   if (emailMode === "live") {
     try {
@@ -37,6 +42,8 @@ export async function TutorReviewsScreen({ workspace }: { workspace: "administra
           emailQueueReady={page.emailQueueReady}
           emailMode={emailMode}
           workspace={workspace}
+          templates={page.templates}
+          templatesReady={page.templatesReady}
         />
       )}
     </ApprenticePageShell>

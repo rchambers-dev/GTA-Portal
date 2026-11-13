@@ -4,7 +4,8 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { EmailAttemptRow } from "../domain/repository";
 import type { EmailMode, EmailPlan, EmailRunSummary } from "../domain/email";
-import { resendFailedTutorReviewEmailsAction, resendTutorReviewEmailAction, sendTutorReviewInvitesAction } from "./actions";
+import { CollapsibleSection } from "./CollapsibleSection";
+import { resendFailedTutorReviewEmailsAction, resendTutorReviewEmailAction, sendTestTutorReviewEmailAction, sendTutorReviewInvitesAction } from "./actions";
 import styles from "./tutor-reviews.module.css";
 
 const FILTERS = ["all", "queued", "sending", "sent", "dry_run", "failed", "bounced"] as const;
@@ -81,6 +82,63 @@ export function SendInvitesButton({
   );
 }
 
+export function SendTestEmailButton({
+  roundId,
+  canSend,
+  reason,
+}: {
+  roundId: string;
+  canSend: boolean;
+  reason: string | null;
+}) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  return (
+    <div>
+      <button type="button" className={styles.secondary} disabled={!canSend || pending} onClick={() => { setOpen(true); setError(null); }}>
+        Send test email
+      </button>
+      {reason && !canSend ? <p className={styles.muted}>{reason}</p> : null}
+      {open ? (
+        <div className={styles.dialogBackdrop} role="presentation" onClick={() => setOpen(false)}>
+          <div className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby={`test-${roundId}`} onClick={(event) => event.stopPropagation()}>
+            <h3 id={`test-${roundId}`}>Send the test email?</h3>
+            <p className={styles.muted}>This prepares the invite for the test apprentice only. No email is sent. The subject, message, and link are saved in Email attempts.</p>
+            {error ? <p className={styles.error}>{error}</p> : null}
+            <div className={styles.actions}>
+              <button type="button" className={styles.secondary} onClick={() => setOpen(false)}>Cancel</button>
+              <button
+                type="button"
+                className={styles.primary}
+                disabled={pending}
+                onClick={() => {
+                  startTransition(async () => {
+                    const result = await sendTestTutorReviewEmailAction(roundId);
+                    if (!result.ok) {
+                      setError(result.error);
+                      return;
+                    }
+                    setSummary(`${result.summary.dryRun} recorded as a dry run. No email was sent.`);
+                    setOpen(false);
+                    router.refresh();
+                  });
+                }}
+              >
+                {pending ? "Preparing" : "Send test email"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {summary ? <p className={styles.muted}>{summary}</p> : null}
+    </div>
+  );
+}
+
 export function EmailAttempts({
   roundId,
   attempts,
@@ -104,9 +162,9 @@ export function EmailAttempts({
 
   return (
     <section className={styles.card}>
+      <CollapsibleSection id="email" title="Email attempts">
       <div className={styles.sectionHead}>
         <div>
-          <h2>Email attempts</h2>
           <p className={styles.muted}>
             {queueReady
               ? "Each send is queued. A failed or bounced row can be sent again to the apprentice’s current email, and the old link stops working."
@@ -158,7 +216,16 @@ export function EmailAttempts({
                 <td>{attempt.email}</td>
                 <td>{statusLabel(attempt.status)}</td>
                 <td>{formatWhen(attempt.sentAt || attempt.createdAt)}</td>
-                <td>{attempt.error || ""}</td>
+                <td>
+                  {attempt.error || ""}
+                  {attempt.renderedSubject ? (
+                    <div className={styles.emailPreview}>
+                      <strong>{attempt.renderedSubject}</strong>
+                      <pre>{attempt.renderedBody}</pre>
+                      {attempt.renderedLink ? <p>Link: {attempt.renderedLink}</p> : null}
+                    </div>
+                  ) : null}
+                </td>
                 <td>
                   {attempt.status === "failed" || attempt.status === "bounced" ? (
                     <div className={styles.actions}>
@@ -194,6 +261,7 @@ export function EmailAttempts({
       </div>
       {summary ? <p className={styles.muted}>{summary}</p> : null}
       {error ? <p className={styles.error}>{error}</p> : null}
+      </CollapsibleSection>
     </section>
   );
 }

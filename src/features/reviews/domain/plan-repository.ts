@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
+import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { GTA_TUTORS } from "./gta-tutors";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
 import { callEndMinutes, heldPastCallEnd, londonClock } from "./plan-call-end";
@@ -164,7 +165,7 @@ export async function readPlanPage(
     completedResult,
   ] = await Promise.all([
     supabase.from("plan_counters").select("gta_id, name, tutor, stage, counter, appointment_on"),
-    supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, release_day"),
+    loadPlanApprentices(supabase),
     supabase
       .from("apprentice_employments")
       .select("gta_id, employer_id, site_id, manager_id")
@@ -252,13 +253,14 @@ export async function readPlanPage(
       }[]
     ).map((row) => [row.gta_id, row]),
   );
-  const apprenticeRows = (apprenticesResult.data ?? []) as {
+  const apprenticeRows = excludeTestApprentices((apprenticesResult.data ?? []) as {
     gta_id: string;
     first_name: string | null;
     middle_names: string | null;
     last_name: string | null;
     release_day: string | null;
-  }[];
+    is_test?: boolean | null;
+  }[]);
   const release = new Map(apprenticeRows.map((row) => [row.gta_id, row.release_day ?? ""]));
   const apprenticeNames = new Map(
     apprenticeRows.map((row) => [
@@ -672,6 +674,15 @@ export async function readRebookMonth(
     })),
     error: null,
   };
+}
+
+async function loadPlanApprentices(supabase: SupabaseClient) {
+  const columns = "gta_id, first_name, middle_names, last_name, release_day";
+  const withFlag = await supabase.from("apprentices").select(`${columns}, is_test`);
+  if (withFlag.error && isMissingTestColumn(withFlag.error.message)) {
+    return supabase.from("apprentices").select(columns);
+  }
+  return withFlag;
 }
 
 export async function loadPlanPage(input: {

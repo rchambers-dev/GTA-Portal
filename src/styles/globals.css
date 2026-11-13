@@ -33,6 +33,15 @@ body {
   overflow: hidden;
 }
 
+/* The tutor review form is outside the Portal shell, so the document must scroll. */
+html.tutorReviewPage,
+html.tutorReviewPage body {
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  -webkit-overflow-scrolling: touch;
+}
+
 body {
   font-family: var(--font-body);
   color: var(--text-primary);

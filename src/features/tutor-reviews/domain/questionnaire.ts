@@ -88,7 +88,7 @@ export function questionnaireFromParts(input: {
         position: index + 1,
         text: question.text,
         help: question.help?.trim() || null,
-        kind: question.kind === "text" ? "text" : "rating_1_5",
+        kind: question.kind === "text" ? "text" : question.kind === "yes_no" ? "yes_no" : "rating_1_5",
         isConcern: question.isConcern,
       })),
   };
@@ -113,6 +113,31 @@ export function nextQuestionCode(codes: string[]): string {
     code = `q${String(number).padStart(2, "0")}`;
   }
   return code;
+}
+
+export function renumberQuestions(questions: QuestionnaireQuestion[]): QuestionnaireQuestion[] {
+  return [...questions]
+    .sort((a, b) => a.page - b.page || a.position - b.position || a.code.localeCompare(b.code))
+    .map((question, index) => ({ ...question, position: index + 1 }));
+}
+
+export function insertQuestion(questions: QuestionnaireQuestion[], afterCode: string | null, question: QuestionnaireQuestion): QuestionnaireQuestion[] {
+  const ordered = renumberQuestions(questions);
+  const index = afterCode ? ordered.findIndex((item) => item.code === afterCode) : -1;
+  const next = [...ordered];
+  next.splice(index + 1, 0, question);
+  return renumberQuestions(next);
+}
+
+export function duplicateQuestion(questions: QuestionnaireQuestion[], code: string): QuestionnaireQuestion[] {
+  const source = questions.find((question) => question.code === code);
+  if (!source) return questions;
+  const copy: QuestionnaireQuestion = {
+    ...source,
+    code: nextQuestionCode(questions.map((question) => question.code)),
+    text: source.text,
+  };
+  return insertQuestion(questions, code, copy);
 }
 
 export function moveQuestion(questions: QuestionnaireQuestion[], code: string, direction: -1 | 1): QuestionnaireQuestion[] {
@@ -151,7 +176,7 @@ export function validateQuestionnaire(input: Questionnaire): { ok: true; value: 
       text: question.text.trim(),
       help: question.help?.trim() || null,
       page: asReviewPage(question.page),
-      kind: question.kind === "text" ? "text" as const : "rating_1_5" as const,
+      kind: question.kind === "text" ? "text" as const : question.kind === "yes_no" ? "yes_no" as const : "rating_1_5" as const,
       isConcern: Boolean(question.isConcern),
     }));
   return {

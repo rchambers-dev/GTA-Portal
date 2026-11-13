@@ -13,10 +13,11 @@ const MESSAGES: Record<string, string> = {
   unavailable: "This form is not available.",
 };
 
-export function TutorReviewForm({ token, form, preview = false }: { token?: string; form: PublicForm; preview?: boolean }) {
+export function TutorReviewForm({ token, form, preview = false, embedded = false }: { token?: string; form: PublicForm; preview?: boolean; embedded?: boolean }) {
   const [state, setState] = useState(form.state);
   const [page, setPage] = useState<ReviewPage>(1);
   const [ratings, setRatings] = useState<Record<string, number>>({});
+  const [yeses, setYeses] = useState<Record<string, boolean>>({});
   const [texts, setTexts] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
   const questions = useMemo(() => form.questions.filter((question) => question.page === page).sort((a, b) => a.position - b.position), [form.questions, page]);
@@ -25,7 +26,7 @@ export function TutorReviewForm({ token, form, preview = false }: { token?: stri
 
   if (state !== "ready") {
     return (
-      <main className={styles.form}>
+      <main className={embedded ? `${styles.form} ${styles.formEmbedded}` : styles.form}>
         <div className={`${styles.formInner} ${styles.card}`}>
           <h1>{form.title}</h1>
           <p className={styles.lead}>{MESSAGES[state] ?? MESSAGES.unavailable}</p>
@@ -35,7 +36,7 @@ export function TutorReviewForm({ token, form, preview = false }: { token?: stri
   }
 
   return (
-    <main className={styles.form}>
+    <main className={embedded ? `${styles.form} ${styles.formEmbedded}` : styles.form}>
       <form
         className={`${styles.formInner} ${styles.card}`}
         onSubmit={(event) => {
@@ -47,6 +48,7 @@ export function TutorReviewForm({ token, form, preview = false }: { token?: stri
           }
           const answers = [
             ...Object.entries(ratings).map(([code, rating]) => ({ code, rating })),
+            ...Object.entries(yeses).map(([code, yes]) => ({ code, yes })),
             ...Object.entries(texts).filter(([, text]) => text.trim()).map(([code, text]) => ({ code, text })),
           ];
           startTransition(async () => {
@@ -75,7 +77,29 @@ export function TutorReviewForm({ token, form, preview = false }: { token?: stri
             <fieldset key={question.code} className={styles.statement}>
               <legend>{question.text}</legend>
               {help ? <p className={styles.help}>{help}</p> : null}
-              {question.kind === "rating_1_5" ? (
+              {question.kind === "yes_no" ? (
+                <div className={styles.yesNo}>
+                  {([true, false] as const).map((value) => (
+                    <label key={String(value)} className={styles.choice}>
+                      <input
+                        type="radio"
+                        name={question.code}
+                        checked={yeses[question.code] === value}
+                        onChange={() => setYeses((current) => ({ ...current, [question.code]: value }))}
+                        onClick={() => {
+                          if (yeses[question.code] !== value) return;
+                          setYeses((current) => {
+                            const next = { ...current };
+                            delete next[question.code];
+                            return next;
+                          });
+                        }}
+                      />
+                      {value ? "Yes" : "No"}
+                    </label>
+                  ))}
+                </div>
+              ) : question.kind === "rating_1_5" ? (
                 <div className={styles.scale}>
                   {form.scale.map((item) => (
                     <label key={item.value} className={styles.choice}>
