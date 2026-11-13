@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
-import { DEFAULT_RATING, faceColour, sliderLabel, sliderRatioFromClient, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS, SLIDER_THUMB_PX } from "../domain/slider";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
+import { DEFAULT_RATING, faceColour, faceTint, sliderLabel, sliderRatioFromClient, sliderRatioFromValue, sliderValueFromRatio, stepSlider, SLIDER_STOPS, SLIDER_THUMB_PX } from "../domain/slider";
 import styles from "./website-form.module.css";
+
+const MOVE_MS = 200;
 
 export function RatingSlider({
   name,
@@ -14,10 +16,40 @@ export function RatingSlider({
   onChange: (value: number) => void;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const [dragRatio, setDragRatio] = useState<number | null>(null);
+  const labelsRef = useRef<HTMLDivElement>(null);
+  const labelRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const initialRatio = sliderRatioFromValue(value ?? DEFAULT_RATING);
+  const shownRatio = useRef(initialRatio);
+  const frame = useRef(0);
+  const [ratio, setRatio] = useState(initialRatio);
+  const [pillWidth, setPillWidth] = useState(64);
   const committed = value ?? DEFAULT_RATING;
-  const ratio = dragRatio ?? sliderRatioFromValue(committed);
-  const shown = dragRatio == null ? committed : sliderValueFromRatio(dragRatio);
+  const shown = sliderValueFromRatio(ratio);
+
+  useEffect(() => () => cancelAnimationFrame(frame.current), []);
+
+  function paint(next: number) {
+    shownRatio.current = next;
+    setRatio(next);
+  }
+
+  function animateTo(target: number) {
+    cancelAnimationFrame(frame.current);
+    const from = shownRatio.current;
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / MOVE_MS);
+      const eased = 1 - (1 - t) ** 3;
+      paint(t === 1 ? target : from + (target - from) * eased);
+      if (t < 1) frame.current = requestAnimationFrame(step);
+    };
+    frame.current = requestAnimationFrame(step);
+  }
+
+  function choose(next: number) {
+    onChange(next);
+    animateTo(sliderRatioFromValue(next));
+  }
 
   function ratioFrom(clientX: number) {
     const track = trackRef.current;
@@ -26,6 +58,18 @@ export function RatingSlider({
     const inset = Number.parseFloat(getComputedStyle(track).getPropertyValue("--inset")) || SLIDER_THUMB_PX / 2;
     return sliderRatioFromClient(clientX, rect.left, rect.width, inset);
   }
+
+  function pointerRatio(event: ReactPointerEvent<HTMLDivElement>) {
+    return ratioFrom(event.clientX);
+  }
+
+  useLayoutEffect(() => {
+    const index = SLIDER_STOPS.findIndex((stop) => stop.value === shown);
+    const label = labelRefs.current[index];
+    if (!label) return;
+    const width = label.offsetWidth;
+    setPillWidth((current) => (current === width ? current : width));
+  }, [shown]);
 
   return (
     <div className={styles.sliderBlock}>
@@ -40,32 +84,39 @@ export function RatingSlider({
         aria-valuetext={sliderLabel(shown)}
         className={styles.track}
         onPointerDown={(event) => {
+          if (event.pointerType === "mouse" && event.button !== 0) return;
+          cancelAnimationFrame(frame.current);
           event.currentTarget.dataset.pointing = "true";
           event.currentTarget.setPointerCapture(event.pointerId);
           event.currentTarget.focus();
-          setDragRatio(ratioFrom(event.clientX));
+          paint(pointerRatio(event));
         }}
         onPointerMove={(event) => {
           if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
-          setDragRatio(ratioFrom(event.clientX));
+          paint(pointerRatio(event));
         }}
         onPointerUp={(event) => {
           if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
-          onChange(sliderValueFromRatio(ratioFrom(event.clientX)));
-          setDragRatio(null);
+          const next = sliderValueFromRatio(pointerRatio(event));
+          onChange(next);
+          animateTo(sliderRatioFromValue(next));
         }}
-        onPointerCancel={() => setDragRatio(null)}
+        onPointerCancel={() => {
+          animateTo(sliderRatioFromValue(committed));
+        }}
         onBlur={(event) => {
           delete event.currentTarget.dataset.pointing;
         }}
         onKeyDown={(event) => {
           delete event.currentTarget.dataset.pointing;
-          if (event.key === "ArrowLeft") onChange(stepSlider(committed, "left"));
-          else if (event.key === "ArrowRight") onChange(stepSlider(committed, "right"));
-          else if (event.key === "Home") onChange(stepSlider(committed, "home"));
-          else if (event.key === "End") onChange(stepSlider(committed, "end"));
-          else return;
+          const next = event.key === "ArrowLeft" ? stepSlider(committed, "left")
+            : event.key === "ArrowRight" ? stepSlider(committed, "right")
+            : event.key === "Home" ? stepSlider(committed, "home")
+            : event.key === "End" ? stepSlider(committed, "end")
+            : null;
+          if (next == null) return;
           event.preventDefault();
+          choose(next);
         }}
       >
         <div className={styles.trackFill} />
@@ -73,15 +124,27 @@ export function RatingSlider({
           <Face ratio={ratio} />
         </span>
       </div>
-      <div className={styles.stopLabels}>
+      <div ref={labelsRef} className={styles.stopLabels} aria-hidden="true">
+        <span
+          className={styles.pill}
+          style={{ "--ratio": ratio, width: pillWidth, background: faceTint(ratio) } as CSSProperties}
+        />
         {SLIDER_STOPS.map((stop, index) => (
-          <span
+          <button
             key={stop.value}
+            ref={(node) => { labelRefs.current[index] = node; }}
+            type="button"
+            tabIndex={-1}
             className={`${styles.stop} ${index === 0 ? styles.stopFirst : ""} ${index === SLIDER_STOPS.length - 1 ? styles.stopLast : ""} ${stop.value === shown ? styles.stopOn : ""}`}
             style={{ "--stop": index / (SLIDER_STOPS.length - 1) } as CSSProperties}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={(event) => {
+              event.preventDefault();
+              choose(stop.value);
+            }}
           >
             {stop.label}
-          </span>
+          </button>
         ))}
       </div>
     </div>
