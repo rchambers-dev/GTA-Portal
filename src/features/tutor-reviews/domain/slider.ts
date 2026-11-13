@@ -13,11 +13,21 @@ export function sliderLabel(value: number): string {
   return SLIDER_STOPS.find((stop) => stop.value === value)?.label ?? "Sometimes";
 }
 
+/** Thumb diameter. The face and the labels share an inset of half this width. */
+export const SLIDER_THUMB_PX = 44;
+
 /** Left of the track is Always (5). Right is Never (1). */
 export function sliderValueFromRatio(ratio: number): number {
   const clamped = Math.min(1, Math.max(0, ratio));
   const index = Math.round(clamped * (SLIDER_STOPS.length - 1));
   return SLIDER_STOPS[index].value;
+}
+
+/** Pointer position mapped onto the usable track, inset by half the thumb on each side. */
+export function sliderRatioFromClient(clientX: number, left: number, width: number, inset = SLIDER_THUMB_PX / 2): number {
+  const usable = width - inset * 2;
+  if (usable <= 0) return 0;
+  return Math.min(1, Math.max(0, (clientX - left - inset) / usable));
 }
 
 export function sliderRatioFromValue(value: number): number {

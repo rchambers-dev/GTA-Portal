@@ -155,25 +155,42 @@
 }
 
 .sliderBlock {
-  margin-top: 0.8rem;
+  --thumb: 44px;
+  --inset: 22px;
+  --slider-gap: 0.75rem;
+  position: relative;
+  margin-top: var(--slider-gap);
 }
 
-.sliderEnds, .stopLabels {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.25rem;
+.stopLabels {
+  position: relative;
+  height: 1.15rem;
+  margin-top: var(--slider-gap);
   color: #525252;
   font-size: 0.78rem;
+  line-height: 1.15rem;
 }
 
-.stopLabels span {
-  flex: 1 1 0;
-  min-width: 0;
+.stop {
+  position: absolute;
+  top: 0;
+  left: calc(var(--inset) + var(--stop) * (100% - var(--thumb)));
+  transform: translateX(-50%);
+  white-space: nowrap;
   text-align: center;
 }
 
-.stopLabels span:first-child { text-align: left; }
-.stopLabels span:last-child { text-align: right; }
+.stopFirst {
+  left: var(--inset);
+  transform: translateX(-50%);
+  text-align: left;
+}
+
+.stopLast {
+  left: calc(100% - var(--inset));
+  transform: translateX(-50%);
+  text-align: right;
+}
 
 .stopOn {
   color: #213066;
@@ -181,9 +198,11 @@
 }
 
 .track {
+  --thumb: 44px;
+  --inset: 22px;
   position: relative;
-  height: 56px;
-  margin: 0.35rem 0;
+  height: var(--thumb);
+  margin: 0;
   touch-action: none;
   cursor: grab;
   user-select: none;
@@ -191,27 +210,25 @@
 
 .trackFill {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 20px;
+  left: var(--inset);
+  right: var(--inset);
+  top: 50%;
   height: 10px;
+  transform: translateY(-50%);
   border-radius: 999px;
   background: linear-gradient(90deg, #1f8a4c, #e0b000, #d7263d);
 }
 
 .thumb {
   position: absolute;
-  top: 6px;
-  width: 44px;
-  height: 44px;
-  margin-left: -22px;
+  top: 0;
+  width: var(--thumb);
+  height: var(--thumb);
+  left: calc(var(--inset) + var(--ratio) * (100% - var(--thumb)));
+  transform: translateX(-50%);
   display: grid;
   place-items: center;
   pointer-events: none;
-}
-
-.sliderBlock {
-  position: relative;
 }
 
 .yesNo {
