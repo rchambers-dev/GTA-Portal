@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { memo, useEffect, useMemo, useState, type FormEvent } from "react";
+import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
@@ -61,8 +62,14 @@ export function PlanView({
     );
   const activeDay = planDayFor(page, selectedDate);
   const route = packedFor === selectedDate ? packed : null;
-  const bookedDays = new Set(page.monthMarks.filter((item) => item.accepted && !item.completed).map((item) => item.date));
-  const completedDays = new Set(page.monthMarks.filter((item) => item.completed).map((item) => item.date));
+  const bookedDays = useMemo(
+    () => new Set(page.monthMarks.filter((item) => item.accepted && !item.completed).map((item) => item.date)),
+    [page.monthMarks],
+  );
+  const completedDays = useMemo(
+    () => new Set(page.monthMarks.filter((item) => item.completed).map((item) => item.date)),
+    [page.monthMarks],
+  );
   const visible = useMemo(() => {
     const term = query.trim().toLowerCase();
     return page.people.filter((person) => {
@@ -96,30 +103,34 @@ export function PlanView({
 
   useEffect(() => {
     let cancel = false;
-    const timer = window.setTimeout(() => {
-      if (cancel || !activeDay.stops.length) return;
-      void fitStops({
-        officePostcode: page.settings.officePostcode,
-        existing: activeDay.stops,
-        extras: [],
-        settings: routeSettings(page.settings),
-        people: page.people,
-      }).then((fitted) => {
-        if (cancel) return;
-        setPacked(fitted.packed);
-        setPackedFor(selectedDate);
-        setOfficePoint(fitted.office);
-      });
-    }, 0);
+    let timer = 0;
+    const frame = window.requestAnimationFrame(() => {
+      timer = window.setTimeout(() => {
+        if (cancel || !activeDay.stops.length) return;
+        void fitStops({
+          officePostcode: page.settings.officePostcode,
+          existing: activeDay.stops,
+          extras: [],
+          settings: routeSettings(page.settings),
+          people: [],
+        }).then((fitted) => {
+          if (cancel) return;
+          setPacked(fitted.packed);
+          setPackedFor(selectedDate);
+          setOfficePoint(fitted.office);
+        });
+      }, 0);
+    });
     return () => {
       cancel = true;
+      window.cancelAnimationFrame(frame);
       window.clearTimeout(timer);
     };
-  }, [selectedDate, stopKey, page.settings, page.people]);
+  }, [selectedDate, stopKey, page.settings]);
 
   function go(nextDate: string, nextMonth = month) {
     if (nextMonth === month) {
-      setSelectedDate(nextDate);
+      flushSync(() => setSelectedDate(nextDate));
       replacePlanUrl(planHref(workspace, nextDate, nextMonth));
       return;
     }
@@ -245,29 +256,21 @@ export function PlanView({
             ) : null}
           </span>
         </label>
-        <ul className={styles.list}>
-          {visible.length === 0 ? (
-            <li className={styles.empty}>
-              {tab === "locked"
-                ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
-                : tab === "booked"
-                  ? "No one is booked yet."
-                  : tab === "waiting"
-                    ? "No one is waiting."
-                    : "No one needs booking."}
-            </li>
-          ) : (
-            visible.map((person) => (
-              <RosterCard
-                key={person.gtaId}
-                workspace={workspace}
-                person={person}
-                canWrite={page.canWrite}
-                onNote={() => setNotePerson(person)}
-              />
-            ))
-          )}
-        </ul>
+        <RosterList
+          workspace={workspace}
+          people={visible}
+          canWrite={page.canWrite}
+          empty={
+            tab === "locked"
+              ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
+              : tab === "booked"
+                ? "No one is booked yet."
+                : tab === "waiting"
+                  ? "No one is waiting."
+                  : "No one needs booking."
+          }
+          onNote={setNotePerson}
+        />
       </section>
       <section className={styles.plan} aria-labelledby="plan-title">
         <div className={styles.head}>
@@ -415,6 +418,38 @@ export function PlanView({
     </div>
   );
 }
+
+const RosterList = memo(function RosterList({
+  workspace,
+  people,
+  canWrite,
+  empty,
+  onNote,
+}: {
+  workspace: "administration" | "management";
+  people: PlanPerson[];
+  canWrite: boolean;
+  empty: string;
+  onNote: (person: PlanPerson) => void;
+}) {
+  return (
+    <ul className={styles.list}>
+      {people.length === 0 ? (
+        <li className={styles.empty}>{empty}</li>
+      ) : (
+        people.map((person) => (
+          <RosterCard
+            key={person.gtaId}
+            workspace={workspace}
+            person={person}
+            canWrite={canWrite}
+            onNote={() => onNote(person)}
+          />
+        ))
+      )}
+    </ul>
+  );
+});
 
 function RosterCard({
   workspace,
