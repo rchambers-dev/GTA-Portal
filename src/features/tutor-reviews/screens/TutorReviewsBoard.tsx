@@ -6,7 +6,7 @@ import { inviteCsv } from "../domain/csv";
 import type { ConcernItem, EmailAttemptRow, ReportCard, TrackerRow, TutorReviewRound, TutorReviewsPage } from "../domain/repository";
 import { londonToday, roundCanSend, type EmailMode } from "../domain/email";
 import { generateTutorReviewInvitesAction, setTutorReviewRoundAction } from "./actions";
-import { EmailAttempts, SendInvitesButton, SendTestEmailButton } from "./EmailPanel";
+import { EmailAttempts, SendInvitesButton, SendTestEmailButton, TestLinkPanel } from "./EmailPanel";
 import { CollapsibleSection } from "./CollapsibleSection";
 import { QuestionnaireEditor } from "./QuestionnaireEditor";
 import styles from "./tutor-reviews.module.css";
@@ -124,6 +124,7 @@ export function TutorReviewsBoard({
                   canSend={emailQueueReady && roundCanSend({ status: item.status, closesOn: item.closesOn, closedEarly: item.closedEarly, today: londonToday() }).ok}
                   reason={emailQueueReady ? (roundCanSend({ status: item.status, closesOn: item.closesOn, closedEarly: item.closedEarly, today: londonToday() }).ok ? null : "Invites can be sent when a round is open or scheduled to open.") : "Email sending is not available until the database migration is applied."}
                 />
+                <TestLinkPanel roundId={item.id} path={item.testPath} />
               </div>
             </article>
           ))}

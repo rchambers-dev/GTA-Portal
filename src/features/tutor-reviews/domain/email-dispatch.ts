@@ -106,7 +106,7 @@ async function loadRecipients(
   const [peopleResult, tutorsResult, invitesResult, attemptsResult] = await Promise.all([
     supabase.from("apprentices").select("gta_id, email"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id, start_date").is("end_date", null),
-    supabase.from("tutor_review_invites").select("id, apprentice_id, used_at").eq("round_id", roundId),
+    supabase.from("tutor_review_invites").select("id, apprentice_id, used_at, access_token").eq("round_id", roundId),
     supabase.from("tutor_review_email_attempts").select("invite_id, apprentice_id, status").eq("round_id", roundId),
   ]);
   const failure = peopleResult.error || tutorsResult.error || invitesResult.error || attemptsResult.error;
@@ -121,7 +121,7 @@ async function loadRecipients(
     const current = tutors.get(row.apprentice_id);
     if (!current || row.start_date > current.start) tutors.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }
-  const invites = new Map(((invitesResult.data ?? []) as { id: string; apprentice_id: string; used_at: string | null }[]).map((row) => [row.apprentice_id, row]));
+  const invites = new Map(((invitesResult.data ?? []) as { id: string; apprentice_id: string; used_at: string | null; access_token?: string | null }[]).map((row) => [row.apprentice_id, row]));
   const statuses = new Map<string, EmailAttemptStatus[]>();
   for (const row of (attemptsResult.data ?? []) as { apprentice_id: string; status: EmailAttemptStatus }[]) {
     const list = statuses.get(row.apprentice_id) ?? [];
@@ -143,7 +143,8 @@ async function loadRecipients(
     options,
   );
   const rows = chosen.map((person) => {
-    const dispatchToken = newReviewToken();
+    const savedToken = options.audience === "test" ? invites.get(person.apprenticeId)?.access_token?.trim() : "";
+    const dispatchToken = savedToken || newReviewToken();
     return {
       apprenticeId: person.apprenticeId,
       tutorId: person.tutorId as string,
@@ -167,6 +168,11 @@ async function enqueue(
     ? await supabase.rpc("enqueue_tutor_review_emails", { p_round_id: roundId, p_resend: resend, p_rows: rows, p_repeat: true })
     : await supabase.rpc("enqueue_tutor_review_emails", { p_round_id: roundId, p_resend: resend, p_rows: rows });
   if (result.error) return { ok: false as const, error: friendly(result.error.message) };
+  if (repeat) {
+    for (const row of rows) {
+      await supabase.from("tutor_review_invites").update({ access_token: row.dispatchToken }).eq("round_id", roundId).eq("apprentice_id", row.apprenticeId);
+    }
+  }
   const queued = Number((result.data as { queued?: number } | null)?.queued ?? 0);
   return { ok: true as const, queued };
 }

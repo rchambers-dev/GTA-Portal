@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { EmailAttemptRow } from "../domain/repository";
 import type { EmailMode, EmailPlan, EmailRunSummary } from "../domain/email";
 import { CollapsibleSection } from "./CollapsibleSection";
-import { resendFailedTutorReviewEmailsAction, resendTutorReviewEmailAction, sendTestTutorReviewEmailAction, sendTutorReviewInvitesAction } from "./actions";
+import { resendFailedTutorReviewEmailsAction, resendTutorReviewEmailAction, resetTutorReviewTestAction, sendTestTutorReviewEmailAction, sendTutorReviewInvitesAction } from "./actions";
 import styles from "./tutor-reviews.module.css";
 
 const FILTERS = ["all", "queued", "sending", "sent", "dry_run", "failed", "bounced"] as const;
@@ -139,6 +139,65 @@ export function SendTestEmailButton({
   );
 }
 
+export function TestLinkPanel({ roundId, path }: { roundId: string; path: string | null }) {
+  const router = useRouter();
+  const [copied, setCopied] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  return (
+    <div className={styles.testLink}>
+      {path ? (
+        <>
+          <p className={styles.muted}>Test link</p>
+          <p className={styles.testPath}>{path}</p>
+          <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.secondary}
+              onClick={() => {
+                const link = `${window.location.origin}${path}`;
+                void navigator.clipboard.writeText(link).then(() => {
+                  setCopied(true);
+                  window.setTimeout(() => setCopied(false), 2000);
+                });
+              }}
+            >
+              {copied ? "Copied" : "Copy"}
+            </button>
+            <a className={styles.secondary} href={path} target="_blank" rel="noreferrer">Open test form</a>
+            <button
+              type="button"
+              className={styles.secondary}
+              disabled={pending}
+              onClick={() => {
+                if (!window.confirm("Clear the test answers and use the same link again?")) return;
+                setError(null);
+                startTransition(async () => {
+                  const result = await resetTutorReviewTestAction(roundId);
+                  if (!result.ok) {
+                    setError(result.error);
+                    return;
+                  }
+                  setNotice("The test form is ready to use again.");
+                  router.refresh();
+                });
+              }}
+            >
+              {pending ? "Resetting" : "Reset test"}
+            </button>
+          </div>
+        </>
+      ) : (
+        <p className={styles.muted}>Send a test email to create the test link.</p>
+      )}
+      {notice ? <p className={styles.muted}>{notice}</p> : null}
+      {error ? <p className={styles.error}>{error}</p> : null}
+    </div>
+  );
+}
+
 export function EmailAttempts({
   roundId,
   attempts,
@@ -206,7 +265,7 @@ export function EmailAttempts({
               <th>Email</th>
               <th>Status</th>
               <th>When</th>
-              <th>Error</th>
+              <th>Message / error</th>
               <th></th>
             </tr>
           </thead>

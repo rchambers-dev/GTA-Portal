@@ -90,6 +90,16 @@ export async function sendTestTutorReviewEmailAction(roundId: string): Promise<{
   return sendTestRoundInvite(access.supabase, roundId);
 }
 
+export async function resetTutorReviewTestAction(roundId: string): Promise<{ ok: true } | { ok: false; error: string }> {
+  const access = await writer();
+  if (!access.ok) return access;
+  const result = await access.supabase.rpc("reset_tutor_review_test", { p_round_id: roundId });
+  if (result.error) {
+    return { ok: false, error: /reset_tutor_review_test|does not exist|schema cache/i.test(result.error.message) ? "Reset is not available until the database migration is applied." : result.error.message };
+  }
+  return { ok: true };
+}
+
 export async function resendFailedTutorReviewEmailsAction(roundId: string): Promise<{ ok: true; summary: EmailRunSummary } | { ok: false; error: string }> {
   const access = await writer();
   if (!access.ok) return access;
@@ -142,13 +152,19 @@ export async function saveTutorReviewQuestionnaireAction(roundId: string, questi
   if (!access.ok) return access;
   const parsed = validateQuestionnaire(questionnaire);
   if (!parsed.ok) return parsed;
-  const [invites, responses] = await Promise.all([
-    access.supabase.from("tutor_review_invites").select("id", { count: "exact", head: true }).eq("round_id", roundId),
-    access.supabase.from("tutor_review_responses").select("id", { count: "exact", head: true }).eq("round_id", roundId),
+  const [invites, responses, testPeople] = await Promise.all([
+    access.supabase.from("tutor_review_invites").select("apprentice_id").eq("round_id", roundId),
+    access.supabase.from("tutor_review_responses").select("id", { count: "exact", head: true }).eq("round_id", roundId).eq("is_test", false),
+    access.supabase.from("apprentices").select("gta_id").eq("is_test", true),
   ]);
-  const failure = invites.error || responses.error;
-  if (failure) return { ok: false as const, error: failure.message };
-  const lock = questionnaireLock({ inviteCount: invites.count ?? 0, responseCount: responses.count ?? 0 });
+  const responseCount = responses.error && /is_test/i.test(responses.error.message)
+    ? (await access.supabase.from("tutor_review_responses").select("id", { count: "exact", head: true }).eq("round_id", roundId)).count
+    : responses.count;
+  const failure = invites.error || (responses.error && !/is_test/i.test(responses.error.message));
+  if (failure) return { ok: false as const, error: (invites.error || responses.error)?.message || "The form could not be checked." };
+  const testIds = new Set(((testPeople.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
+  const inviteCount = ((invites.data ?? []) as { apprentice_id: string }[]).filter((row) => !testIds.has(row.apprentice_id)).length;
+  const lock = questionnaireLock({ inviteCount, responseCount: responseCount ?? 0 });
   if (lock.locked) return { ok: false as const, error: lock.reason || "Questions are locked." };
   const { error } = await access.supabase.rpc("save_tutor_review_questionnaire", {
     p_round_id: roundId,

@@ -21,6 +21,7 @@ export type TutorReviewRound = {
   emailPlan: EmailPlan;
   templateVersionId: string | null;
   snapshotted: boolean;
+  testPath: string | null;
 };
 
 export type TrackerRow = {
@@ -126,15 +127,21 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     intro: row.intro,
   }));
 
-  const [questionsResult, invitesResult, peopleResult, tutorsResult, profilesResult, responsesResult, answersResult] = await Promise.all([
+  const [questionsResult, invitesQuery, peopleResult, tutorsResult, profilesResult, responsesQuery, answersResult] = await Promise.all([
     supabase.from("tutor_review_questions").select("id, round_id, page, position, code, text, help, kind, is_concern").order("position"),
-    supabase.from("tutor_review_invites").select("round_id, apprentice_id, tutor_id, used_at"),
+    supabase.from("tutor_review_invites").select("round_id, apprentice_id, tutor_id, used_at, access_token"),
     supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, email"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id, start_date").is("end_date", null),
     supabase.from("profiles").select("id, display_name"),
-    supabase.from("tutor_review_responses").select("id, round_id, tutor_id, submitted_on"),
+    supabase.from("tutor_review_responses").select("id, round_id, tutor_id, submitted_on, is_test"),
     supabase.from("tutor_review_answers").select("response_id, question_id, rating, text_answer"),
   ]);
+  const invitesResult = invitesQuery.error && /access_token/i.test(invitesQuery.error.message)
+    ? await supabase.from("tutor_review_invites").select("round_id, apprentice_id, tutor_id, used_at")
+    : invitesQuery;
+  const responsesResult = responsesQuery.error && /is_test/i.test(responsesQuery.error.message)
+    ? await supabase.from("tutor_review_responses").select("id, round_id, tutor_id, submitted_on")
+    : responsesQuery;
   for (const result of [questionsResult, invitesResult, peopleResult, tutorsResult, profilesResult, responsesResult, answersResult]) {
     if (result.error) return { ...empty, loadError: result.error.message };
   }
@@ -145,7 +152,7 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     const current = currentTutor.get(row.apprentice_id);
     if (!current || row.start_date > current.start) currentTutor.set(row.apprentice_id, { tutorId: row.tutor_id, start: row.start_date });
   }
-  const invites = (invitesResult.data ?? []) as { round_id: string; apprentice_id: string; tutor_id: string; used_at: string | null }[];
+  const invites = (invitesResult.data ?? []) as { round_id: string; apprentice_id: string; tutor_id: string; used_at: string | null; access_token?: string | null }[];
   const people = excludeTestApprentices((peopleResult.data ?? []) as { gta_id: string; first_name: string; middle_names: string | null; last_name: string; email: string | null; is_test?: boolean | null }[]);
   const testFlag = await supabase.from("apprentices").select("gta_id, is_test").eq("is_test", true);
   const testIds = testFlag.error ? new Set<string>() : new Set(((testFlag.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id));
@@ -170,7 +177,7 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
   }
 
   const questions = (questionsResult.data ?? []) as { id: string; round_id: string; page: number; code: string; text: string; help: string | null; kind: ReviewQuestionKind; is_concern: boolean; position: number }[];
-  const responses = (responsesResult.data ?? []) as { id: string; round_id: string; tutor_id: string }[];
+  const responses = ((responsesResult.data ?? []) as { id: string; round_id: string; tutor_id: string; is_test?: boolean | null }[]).filter((row) => row.is_test !== true);
   const answers = (answersResult.data ?? []) as { response_id: string; question_id: string; rating: number | null; text_answer: string | null }[];
   const yesResult = await supabase.from("tutor_review_answers").select("response_id, question_id, yes_answer");
   const yesAnswers = yesResult.error ? [] : (yesResult.data ?? []) as { response_id: string; question_id: string; yes_answer: boolean | null }[];
@@ -180,7 +187,7 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
   for (const round of ordered) {
     const previous = ordered.filter((item) => item.opensOn < round.opensOn).at(-1) ?? null;
     const tutorIds = new Set<string>([
-      ...invites.filter((row) => row.round_id === round.id).map((row) => row.tutor_id),
+      ...invites.filter((row) => row.round_id === round.id && !testIds.has(row.apprentice_id)).map((row) => row.tutor_id),
       ...responses.filter((row) => row.round_id === round.id).map((row) => row.tutor_id),
     ]);
     for (const tutorId of tutorIds) {
@@ -286,7 +293,10 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     const source = roundRows.find((row) => row.id === round.id);
     return {
       ...round,
-      inviteCount: invites.filter((row) => row.round_id === round.id).length,
+      inviteCount: invites.filter((row) => row.round_id === round.id && !testIds.has(row.apprentice_id)).length,
+      testPath: invites.find((row) => row.round_id === round.id && testIds.has(row.apprentice_id) && row.access_token)?.access_token
+        ? `/tutor-review/${invites.find((row) => row.round_id === round.id && testIds.has(row.apprentice_id) && row.access_token)?.access_token}`
+        : null,
       responseCount: responses.filter((row) => row.round_id === round.id).length,
       questionnaire: questionnaireFromParts({
         title: source?.title ?? round.title,
@@ -383,6 +393,7 @@ export async function readStaffPreview(roundId: string): Promise<PublicForm | nu
   const questions = (questionsResult.data ?? []) as { code: string; page: number; position: number; text: string; help: string | null; kind: string; is_concern: boolean }[];
   return {
     state: "ready",
+    isTest: false,
     ...questionnaireFromParts({
       title: round.title,
       intro: round.intro,

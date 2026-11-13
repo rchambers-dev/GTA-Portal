@@ -29,6 +29,13 @@ describe("tutor review access", () => {
     expect(formGate({ ...open, found: false })).toBe("invalid");
   });
 
+  it("lets a test invite open a draft round and still stops a used or closed link", () => {
+    expect(formGate({ ...open, status: "draft", today: "2026-11-13", testInvite: true })).toBe("ready");
+    expect(formGate({ ...open, status: "draft", today: "2026-11-13" })).toBe("not_open");
+    expect(formGate({ ...open, status: "draft", today: "2026-11-13", testInvite: true, used: true })).toBe("submitted");
+    expect(formGate({ ...open, status: "closed", testInvite: true })).toBe("closed");
+  });
+
   it("stores a response with no apprentice or invite", () => {
     const row = storedResponse({ roundId: "round", tutorId: "tutor", today: "2026-12-08" });
     expect(Object.keys(row).sort()).toEqual(["roundId", "submittedOn", "tutorId"]);
