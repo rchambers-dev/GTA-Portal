@@ -26,6 +26,33 @@ function paceText(pace: Pace): string {
   return "Behind";
 }
 
+function barTone(row: Row): Urgency {
+  if (row.current) {
+    if (row.pace === "slightly-behind") return "amber";
+    if (row.pace === "behind") return "red";
+    return "green";
+  }
+  return coverageTone(row.coverage);
+}
+
+function textTone(tone: Urgency) {
+  if (tone === "red") return styles.redText;
+  if (tone === "amber") return styles.amberText;
+  if (tone === "green") return styles.greenText;
+  return undefined;
+}
+
+function paceChip(row: Row) {
+  if (row.current && row.pace) {
+    const tone = barTone(row);
+    return <span className={`${styles.chip} ${toneClass(tone)}`}>{paceText(row.pace)}</span>;
+  }
+  if (row.missed == null) return "—";
+  if (row.missed === 0) return <span className={`${styles.chip} ${styles.green}`}>Complete</span>;
+  const tone = coverageTone(row.coverage);
+  return <span className={`${styles.chip} ${toneClass(tone)}`}>Short by {row.missed}</span>;
+}
+
 function toneClass(tone: Urgency) {
   if (tone === "red") return styles.red;
   if (tone === "amber") return styles.amber;
@@ -70,9 +97,9 @@ export function CycleHistory({
               <span><strong>Cycle {row.number}</strong>{row.current ? " · In progress" : ""}<small>{row.dates}</small></span>
               <span>{row.due}</span>
               <span>{row.reviewed}</span>
-              <span>
-                {percent(row.coverage)}
-                <span className={styles.track}><i className={toneClass(coverageTone(row.coverage))} style={{ width: `${row.coverage ? Math.round(row.coverage * 100) : 0}%` }} /></span>
+              <span className={styles.coverageCell}>
+                <span className={styles.track}><i className={toneClass(barTone(row))} style={{ width: `${row.coverage ? Math.round(row.coverage * 100) : 0}%` }} /></span>
+                <span className={textTone(barTone(row))}>{percent(row.coverage)}</span>
               </span>
               <span>
                 {row.missed == null ? "—" : (
@@ -90,7 +117,7 @@ export function CycleHistory({
                   </button>
                 )}
               </span>
-              <span className={row.pace === "on-pace" ? styles.greenText : row.pace === "slightly-behind" ? styles.amberText : row.pace === "behind" ? styles.redText : undefined}>{row.pace ? paceText(row.pace) : "—"}</span>
+              <span>{paceChip(row)}</span>
               <span>{row.releaseToCompleted == null ? "—" : `${row.releaseToCompleted}d`}</span>
               <span>{row.visits} / {row.calls} / {row.teams}</span>
             </div>

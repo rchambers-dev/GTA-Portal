@@ -103,7 +103,26 @@
 .cycleHead { color: #5c6478; font-size: 0.72rem; border-top: 0; }
 .cycleRow small { display: block; color: #5c6478; font-size: 0.72rem; }
 .cycleOn { background: #f5f6f8; border-radius: 0.45rem; }
-.cycleRow .track { margin-top: 0.25rem; }
+.coverageCell { display: flex; align-items: center; gap: 0.4rem; }
+.coverageCell .track { flex: 1; min-width: 2.5rem; margin-top: 0; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 1.4rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.lastCycle {
+  display: inline-flex;
+  margin-top: 0.45rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
 .cycleRow { cursor: pointer; }
 .missedButton {
   display: inline-flex;
@@ -161,8 +180,19 @@
 .amberText { color: #8a5a12; }
 .greenText { color: #1f6b4a; }
 .note { color: #5c6478; font-size: 0.75rem; margin: 0.15rem 0 0; }
-.key { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; margin: 0; color: #5c6478; font-size: 0.75rem; }
-.key i { width: 0.7rem; height: 0.7rem; border-radius: 2px; display: inline-block; margin-right: 0.3rem; }
+.key { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; margin: 0; color: #1a1f3d; font-size: 0.8rem; }
+.key span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.key i {
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 4px;
+  display: inline-block;
+  box-shadow: inset 0 0 0 1px rgb(20 24 51 / 18%);
+}
+.swatchRed { background: #c23b3b; }
+.swatchAmber { background: #e0a03a; }
+.swatchGreen { background: #1f8a62; }
+.swatchNeutral { background: #8b93a7; }
 
 .bar { display: grid; grid-template-columns: 7rem 1fr auto; gap: 0.4rem; align-items: center; margin-top: 0.35rem; }
 .track { height: 8px; background: #eef1f6; border-radius: 999px; overflow: hidden; margin-top: 0.4rem; }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import { ANALYTICS_RANGES, percent, type AnalyticsFilters, type Urgency } from "../domain/analytics";
+import { ANALYTICS_RANGES, coverageTone, percent, type AnalyticsFilters, type Urgency } from "../domain/analytics";
 import { CycleHistory } from "./CycleHistory";
 import type { loadAnalytics } from "../domain/analytics-repository";
 import { JumpSelect, PrintReport } from "./PrintReport";
@@ -37,6 +37,7 @@ export function AnalyticsView({
   const maxTrend = Math.max(1, ...page.trend.flatMap((week) => [week.released, week.received, week.completed, week.visits, week.callsTeams]));
   const paceLabel = page.cycle.pace === "on-pace" ? "On pace" : page.cycle.pace === "slightly-behind" ? "Slightly behind" : "Behind";
   const paceTone: Urgency = page.cycle.pace === "on-pace" ? "green" : page.cycle.pace === "slightly-behind" ? "amber" : "red";
+  const previous = page.history.find((row) => !row.current);
 
   return (
     <div className={styles.page}>
@@ -65,7 +66,7 @@ export function AnalyticsView({
         <Filter name="programme" value={filters.programmeId} options={page.options.programmes} all="All programmes" workspace={workspace} filters={filters} view={view} />
         <Filter name="employer" value={filters.employerId} options={page.options.employers} all="All employers" workspace={workspace} filters={filters} view={view} />
       </div>
-      <p className={styles.key}><i className={styles.red} />Overdue or behind <i className={styles.amber} />Due soon <i className={styles.green} />On track <i className={styles.neutral} />Information</p>
+      <p className={styles.key}><span><i className={styles.swatchRed} />Overdue or behind</span><span><i className={styles.swatchAmber} />Due soon</span><span><i className={styles.swatchGreen} />On track</span><span><i className={styles.swatchNeutral} />Information</span></p>
 
           <section className={styles.card} id="analytics-now">
             <h2>Now · {page.learners}</h2>
@@ -90,7 +91,11 @@ export function AnalyticsView({
                 <i className={toneClass(paceTone)} style={{ width: `${page.cycle.needed ? Math.round((page.cycle.done / page.cycle.needed) * 100) : 0}%` }} />
               </div>
               <p>{page.cycle.done} of {page.cycle.needed} done</p>
-              <p>Last cycle: {page.cycle.lastDone} of {page.cycle.needed} completed</p>
+              {previous ? (
+                <p className={`${styles.lastCycle} ${toneClass(coverageTone(previous.coverage))}`}>
+                  Last cycle: {previous.reviewed} of {previous.due} reviewed ({percent(previous.coverage)}), {previous.missed} missed
+                </p>
+              ) : null}
             </div>
             <CycleHistory workspace={workspace} filters={filters} view={view} rows={page.history} />
           </section>

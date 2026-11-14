@@ -181,6 +181,7 @@ describe("review analytics", () => {
     expect(page.history.map((cycle) => cycle.number)).toEqual([2, 1]);
     expect(page.history[0]).toMatchObject({ current: true, due: 2, reviewed: 1, missed: null, pace: "on-pace", visits: 0, calls: 0, teams: 1 });
     expect(page.history[1]).toMatchObject({ current: false, due: 2, reviewed: 2, missed: 0, pace: null, dates: "4 Sept 2026 to 12 Nov 2026" });
+    expect(page.history.find((cycle) => !cycle.current)).toMatchObject({ reviewed: 2, due: 2, missed: 0, coverage: 1 });
     expect(coverageTone(page.history[1]?.coverage ?? null)).toBe("green");
     expect(coverageTone(160 / 168)).toBe("amber");
     expect(coverageTone(1 / 168)).toBe("red");
