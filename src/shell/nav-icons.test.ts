@@ -92,6 +92,15 @@ const expected: Record<string, NavGlyph> = {
   "/administration/marketing": "megaphone",
   "/administration/onboarding": "door",
   "/administration/onboarding/apprentice": "person-plus",
+  "/administration/onboarding/candidates": "people",
+  "/administration/reviews/plan": "calendar",
+  "/administration/reviews/cycle": "clipboard",
+  "/administration/reviews/out": "workplace",
+  "/administration/reviews/archive": "folder",
+  "/administration/reviews/analytics": "chart",
+  "/administration/reviews/log": "history",
+  "/administration/reviews/tutor-reviews": "comment",
+  "/administration/reviews/settings": "gear",
   "/administration/onboarding/employer": "workplace-plus",
   "/administration/onboarding/directory": "directory",
   "/staff-records?from=administration": "staff",
@@ -125,6 +134,18 @@ describe("navigation icon meanings", () => {
     expect(markup("/administration/cohorts")).not.toBe(markup("/administration/teaching-groups"));
     expect(markup("/administration/enrolments")).not.toBe(markup("/management/apprentice-funding"));
     expect(markup("/management/apprentice-funding")).not.toBe(markup("/management/apprentice-tnp"));
+    const reviewIcons = [
+      "/administration/reviews/plan",
+      "/administration/reviews/cycle",
+      "/administration/reviews/out",
+      "/administration/reviews/archive",
+      "/administration/reviews/analytics",
+      "/administration/reviews/log",
+      "/administration/reviews/tutor-reviews",
+      "/administration/reviews/settings",
+      "/reviews?from=tutor",
+    ].map(markup);
+    expect(new Set(reviewIcons).size).toBe(reviewIcons.length);
     expect(markup("/category/onboarding")).toBe(markup("/administration/onboarding/apprentice"));
     expect(markup("/category/onboarding")).not.toBe(markup("/administration/onboarding/employer"));
 
