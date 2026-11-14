@@ -42,11 +42,11 @@ export function AnalyticsView({
         </div>
         <div className={styles.actions}>
           <span className={styles.pills}>
-            <Link className={view === "reviews" ? styles.on : ""} href={href(workspace, filters, "reviews")}>Reviews</Link>
-            <Link className={view === "tutors" ? styles.on : ""} href={href(workspace, filters, "tutors")}>Tutors</Link>
+            <a className={styles.on} href="#analytics-now">Reviews</a>
+            <a href="#analytics-tutors">Tutors</a>
           </span>
           <PrintReport />
-          <Link href={href(workspace, filters, "log")}>Review Log</Link>
+          <a href="#analytics-log">Review Log</a>
         </div>
       </header>
       {data.loadError ? <p className={styles.error} role="alert">{data.loadError}</p> : null}
@@ -61,11 +61,7 @@ export function AnalyticsView({
         <Filter name="employer" value={filters.employerId} options={page.options.employers} all="All employers" workspace={workspace} filters={filters} view={view} />
       </div>
 
-      {view === "tutors" ? <TutorList page={page} /> : null}
-      {view === "log" ? <Log page={page} /> : null}
-      {view === "reviews" ? (
-        <>
-          <section className={styles.card}>
+          <section className={styles.card} id="analytics-now">
             <h2>Now · {page.learners}</h2>
             <div className={styles.flow}>
               {page.flow.map((step) => (
@@ -87,20 +83,6 @@ export function AnalyticsView({
               <Stat label="Visits" value={page.overall.visits} />
               <Stat label="Calls" value={page.overall.calls} />
               <Stat label="Teams" value={page.overall.teams} />
-            </div>
-          </section>
-          <section className={styles.card}>
-            <h2>This week against last week</h2>
-            <div className={styles.tiles}>
-              {page.weekOnWeek.map((item) => (
-                <article key={item.label} className={styles.tile}>
-                  <span>{item.label}</span>
-                  <strong>{item.now}</strong>
-                  <span className={item.delta > 0 ? styles.up : item.delta < 0 ? styles.down : ""}>
-                    {item.delta > 0 ? `+${item.delta}` : item.delta} on last week
-                  </span>
-                </article>
-              ))}
             </div>
           </section>
           <div className={styles.split}>
@@ -125,6 +107,22 @@ export function AnalyticsView({
               ))}
             </section>
           </div>
+          <TutorList page={page} />
+          <Log page={page} />
+          <section className={styles.card}>
+            <h2>This week against last week</h2>
+            <div className={styles.tiles}>
+              {page.weekOnWeek.map((item) => (
+                <article key={item.label} className={styles.tile}>
+                  <span>{item.label}</span>
+                  <strong>{item.now}</strong>
+                  <span className={item.delta > 0 ? styles.up : item.delta < 0 ? styles.down : ""}>
+                    {item.delta > 0 ? `+${item.delta}` : item.delta} on last week
+                  </span>
+                </article>
+              ))}
+            </div>
+          </section>
           <section className={styles.card}>
             <h2>Weekly trend</h2>
             <p className={styles.legend}><i className={styles.rel} />Released <i className={styles.rec} />Received <i className={styles.comp} />Completed <i className={styles.vis} />Visits</p>
@@ -195,8 +193,6 @@ export function AnalyticsView({
               ))}
             </section>
           </div>
-        </>
-      ) : null}
     </div>
   );
 }
@@ -212,7 +208,7 @@ function days(value: { median: number | null; average: number | null }) {
 
 function TutorList({ page }: { page: Page["page"] }) {
   return (
-    <section className={styles.card}>
+    <section className={styles.card} id="analytics-tutors">
       <h2>Tutors · {page.tutors.length}</h2>
       {page.tutors.length === 0 ? <p className={styles.muted}>No tutors to show yet.</p> : page.tutors.map((tutor) => (
         <article key={tutor.name} className={styles.row}>
@@ -235,7 +231,7 @@ function TutorList({ page }: { page: Page["page"] }) {
 
 function Log({ page }: { page: Page["page"] }) {
   return (
-    <section className={styles.card}>
+    <section className={styles.card} id="analytics-log">
       <h2>Review log</h2>
       {page.log.length === 0 ? <p className={styles.muted}>No review log yet.</p> : (
         <table className={styles.log}>
