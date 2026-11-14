@@ -22,6 +22,7 @@ export function CycleView({
   const [query, setQuery] = useState("");
   const [tutor, setTutor] = useState("all");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [signing, setSigning] = useState<CycleLearner | null>(null);
   const [picked, setPicked] = useState<string[]>([]);
   const [error, setError] = useState("");
@@ -84,13 +85,23 @@ export function CycleView({
         </select>
         <span className={styles.count}>{filtered.length} learners</span>
       </div>
-      {groups.map((group) => (
-        <section key={group.id} className={styles.group}>
+      {groups.map((group) => {
+        const sectionOpen = !collapsed[group.id];
+        return (
+        <section key={group.id} className={sectionOpen ? styles.group : `${styles.group} ${styles.groupClosed}`}>
           <h2 className={styles.groupHead}>
-            {group.label}
-            <span className={styles.badge}>{group.rows.length}</span>
+            <button
+              type="button"
+              className={styles.groupToggle}
+              aria-expanded={sectionOpen}
+              onClick={() => setCollapsed((current) => ({ ...current, [group.id]: sectionOpen }))}
+            >
+              <span className={sectionOpen ? styles.groupChevronOpen : styles.groupChevron} aria-hidden="true">▸</span>
+              {group.label}
+              <span className={styles.badge}>{group.rows.length}</span>
+            </button>
           </h2>
-          {group.rows.map((learner) => {
+          {sectionOpen ? group.rows.map((learner) => {
             const expanded = openId === learner.gtaId;
             return (
               <article key={learner.gtaId} className={styles.row}>
@@ -146,9 +157,10 @@ export function CycleView({
                 ) : null}
               </article>
             );
-          })}
+          }) : null}
         </section>
-      ))}
+        );
+      })}
       {signing ? (
         <div className={styles.popup} role="presentation">
           <div className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="sign-title">
