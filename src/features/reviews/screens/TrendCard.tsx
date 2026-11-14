@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./analytics.module.css";
 
 type Point = {
@@ -76,19 +76,33 @@ export function TrendCard({ weeks, months }: { weeks: Point[]; months: Point[] }
 }
 
 function LineChart({ rows, max, mark, period }: { rows: Point[]; max: number; mark: string; period: string }) {
-  const width = 720;
-  const height = 220;
-  const padL = 32;
-  const padR = 12;
-  const padT = 14;
-  const padB = 32;
-  const innerW = width - padL - padR;
+  const frame = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    const node = frame.current;
+    if (!node) return;
+    const measure = () => setWidth(Math.max(1, Math.round(node.clientWidth)));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+  const height = 260;
+  const labels = rows.map((row) => `${row.label}${row.current ? ` · ${mark}` : ""}`);
+  const widest = labels.reduce((size, label) => Math.max(size, label.length), 0);
+  const padL = 44;
+  const padR = Math.ceil((widest * 8.2) / 2) + 16;
+  const padT = 16;
+  const padB = 36;
+  const innerW = Math.max(1, width - padL - padR);
   const innerH = height - padT - padB;
   const xAt = (index: number) => rows.length <= 1 ? padL + innerW / 2 : padL + (index / (rows.length - 1)) * innerW;
   const yAt = (value: number) => padT + innerH - (value / max) * innerH;
   const ticks = [max, Math.round(max / 2), 0];
   return (
-    <svg className={styles.lineChart} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${period} released, received, completed, visits and calls or Teams`}>
+    <div ref={frame} className={styles.lineChartFrame}>
+      {width > 0 ? (
+      <svg className={styles.lineChart} width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${period} released, received, completed, visits and calls or Teams`}>
       {ticks.map((tick, index) => {
         const y = yAt(tick);
         return (
@@ -108,10 +122,12 @@ function LineChart({ rows, max, mark, period }: { rows: Point[]; max: number; ma
         </circle>
       )))}
       {rows.map((row, index) => (
-        <text key={row.id} x={xAt(index)} y={height - 8} className={row.current ? styles.axisCurrent : styles.axisText} textAnchor="middle">
-          {row.label}{row.current ? ` · ${mark}` : ""}
+        <text key={row.id} x={xAt(index)} y={height - 14} className={row.current ? styles.axisCurrent : styles.axisText} textAnchor="middle">
+          {labels[index]}
         </text>
       ))}
-    </svg>
+      </svg>
+      ) : null}
+    </div>
   );
 }
