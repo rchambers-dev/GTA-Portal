@@ -640,6 +640,18 @@ export function EmployerRecord(props: CandidatesViewProps & { employer: string }
             ["Noah Bennett", "Autocare Technician", "Interview", "Allocated"],
             ["Theo Wade", "Light Vehicle Technician", "Withdrawn", "Employer to decide whether to reoffer"],
           ]} />
+          <SimpleTable title="Follow-ups" heads={["Follow-up", "Owner", "Due", "Status"]} rows={[
+            ["Send TNA summary to Diane Copeland", "J. Hartley", "10 Nov 2026", "Overdue"],
+            ["Confirm whether to reoffer Theo Wade’s place", "Anne-Marie", "18 Nov 2026", "Open"],
+            ["H&S visit at Northbridge Motors", "Anne-Marie", "20 Nov 2026", "Booked"],
+          ]} />
+          <SimpleTable title="Activity log" heads={["Type", "Actual date", "Notes", "Follow-up"]} rows={[
+            ["Call", "12 Nov 2026", "Spoke to Diane Copeland about Theo Wade withdrawing. She will confirm whether the Light Vehicle place should be reoffered.", "18 Nov 2026"],
+            ["Email", "3 Oct 2026", "Sent the TNA agenda for Maya Henshaw.", "10 Nov 2026"],
+            ["Visit booked", "8 Oct 2026", "H&S visit booked for 20 Nov 2026.", "20 Nov 2026"],
+            ["Call", "18 Sep 2026", "Employer confirmed for Maya Henshaw’s Light Vehicle place.", "—"],
+            ["Email", "4 Sep 2026", "First enquiry from Diane after a word-of-mouth referral. Paul Wheatley was copied.", "—"],
+          ]} />
         </>
       ) : <p className="muted">No vacancies or linked candidates yet.</p>}
       <form className="card card-pad" action={addEmployerActivityAction}>
@@ -872,6 +884,25 @@ export function ReportsPage(props: CandidatesViewProps) {
           <Kpi k="Overdue follow-ups" v={example ? "2" : "0"} s="Jordan Blake and the Northbridge TNA" />
           <Kpi k="Leads from leaflets and flyers" v={example ? "?" : "0"} unknown={example} s="Source mapping still under review" />
           <Kpi k="Paid advertising reach" v="N/A" na s="Not collected in this period" />
+        </div>
+        <div style={{ marginTop: 10 }}><Pill tone="amber">Under review</Pill> <span className="muted">Leaflet and flyer leads are marked ? until the source definitions are agreed. Paid advertising is N/A because none was run in November.</span></div>
+      </section>
+      <section className="card report-section">
+        <h2 className="card-title">Careers activity</h2>
+        <div className="kpi-row">
+          <Kpi k="Events completed" v={example ? "2" : "0"} s="Hall Cross talk and GTA open evening" />
+          <Kpi k="Events planned or booked" v={example ? "3" : "0"} s="18, 25 and 27 Nov" />
+          <Kpi k="Schools engaged" v={example ? "3" : "0"} s="Doncaster and Sheffield" />
+          <Kpi k="Pupils attended" v={example ? "?" : "0"} unknown={example} s="Register totals not yet entered" />
+        </div>
+      </section>
+      <section className="card report-section">
+        <h2 className="card-title">Actions and decisions</h2>
+        <div className="kpi-row">
+          <Kpi k="Open" v={example ? "4" : "0"} s="Including 1 due today" />
+          <Kpi k="In progress" v={example ? "1" : "0"} s="Jordan Blake no-show follow-up" />
+          <Kpi k="Overdue" v={example ? "2" : "0"} s="Shown in red on the Actions page" />
+          <Kpi k="Completed this month" v={example ? "1" : "0"} s="Maya Henshaw H&S visit booked" />
         </div>
       </section>
     </Frame>
