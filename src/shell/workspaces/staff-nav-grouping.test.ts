@@ -81,6 +81,7 @@ describe("sidebar grouping", () => {
         "Out",
         "Archive",
         "Analytics",
+        "Review log",
         "Tutor reviews",
         "Settings",
       ]);
@@ -129,6 +130,7 @@ describe("sidebar grouping", () => {
       "Out",
       "Archive",
       "Analytics",
+      "Review log",
       "Tutor reviews",
       "Settings",
     ]);

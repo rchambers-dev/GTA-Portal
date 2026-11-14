@@ -44,6 +44,8 @@ import { AddApprenticeScreen } from "@/features/administration/screens/AddAppren
 import { ApprenticeLearnerScreen } from "@/features/administration/screens/ApprenticeLearnerScreen";
 import { apprenticeLearnerGtaId } from "@/features/administration/domain/apprentice-tutor";
 import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
+import { AnalyticsScreen } from "@/features/reviews/screens/AnalyticsScreen";
+import { ReviewLogScreen } from "@/features/reviews/screens/ReviewLogScreen";
 import { CycleScreen } from "@/features/reviews/screens/CycleScreen";
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
 import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
@@ -468,7 +470,29 @@ export async function renderWorkspacePage(
       case "reviews/archive":
         return <ReviewStubScreen title="Archive" />;
       case "reviews/analytics":
-        return <ReviewStubScreen title="Analytics" />;
+        return (
+          <AnalyticsScreen
+            workspace="administration"
+            range={searchValue(search?.range)}
+            tutor={searchValue(search?.tutor)}
+            programme={searchValue(search?.programme)}
+            employer={searchValue(search?.employer)}
+            cycle={searchValue(search?.cycle)}
+            view={searchValue(search?.view)}
+          />
+        );
+      case "reviews/log":
+        return (
+          <ReviewLogScreen
+            workspace="administration"
+            q={searchValue(search?.q)}
+            learner={searchValue(search?.learner)}
+            tutor={searchValue(search?.tutor)}
+            event={searchValue(search?.event)}
+            range={searchValue(search?.range)}
+            page={searchValue(search?.page)}
+          />
+        );
       case "reviews/tutor-reviews":
         return <TutorReviewsScreen workspace="administration" />;
       case "reviews/settings":
@@ -546,7 +570,29 @@ export async function renderWorkspacePage(
       case "reviews/archive":
         return <ReviewStubScreen title="Archive" />;
       case "reviews/analytics":
-        return <ReviewStubScreen title="Analytics" />;
+        return (
+          <AnalyticsScreen
+            workspace="management"
+            range={searchValue(search?.range)}
+            tutor={searchValue(search?.tutor)}
+            programme={searchValue(search?.programme)}
+            employer={searchValue(search?.employer)}
+            cycle={searchValue(search?.cycle)}
+            view={searchValue(search?.view)}
+          />
+        );
+      case "reviews/log":
+        return (
+          <ReviewLogScreen
+            workspace="management"
+            q={searchValue(search?.q)}
+            learner={searchValue(search?.learner)}
+            tutor={searchValue(search?.tutor)}
+            event={searchValue(search?.event)}
+            range={searchValue(search?.range)}
+            page={searchValue(search?.page)}
+          />
+        );
       case "reviews/tutor-reviews":
         return <TutorReviewsScreen workspace="management" />;
       case "reviews/settings":
