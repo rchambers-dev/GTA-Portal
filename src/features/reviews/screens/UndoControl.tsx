@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { undoReviewDayCompletionAction, undoReviewPackEventAction } from "./log-actions";
 import styles from "./review-log.module.css";
 
 export function UndoControl({
@@ -10,14 +11,16 @@ export function UndoControl({
   label = "Undo",
   title = "Undo this event?",
   learners = [],
-  confirm,
+  eventId,
+  dayId,
 }: {
   ready: boolean;
   summary: string;
   label?: string;
   title?: string;
   learners?: { gtaId: string; name: string }[];
-  confirm: () => Promise<{ ok: true } | { ok: false; formError: string }>;
+  eventId?: string;
+  dayId?: string;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -49,8 +52,9 @@ export function UndoControl({
                 type="button"
                 disabled={pending}
                 onClick={() => {
+                  const action = dayId ? undoReviewDayCompletionAction(dayId) : undoReviewPackEventAction(eventId || "");
                   setPending(true);
-                  void confirm().then((result) => {
+                  void action.then((result) => {
                     setPending(false);
                     if (!result.ok) {
                       setError(result.formError);

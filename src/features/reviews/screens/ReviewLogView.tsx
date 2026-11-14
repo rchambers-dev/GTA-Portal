@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { eventLabel, londonStamp } from "../domain/analytics";
 import { LOG_PAGE_SIZE, dayUndoLearners, dayUndoSummary, filterLog, latestUndoableIds, pageOf, undoSummary, type DayUndoPlan, type ReviewLogEvent, type ReviewLogFilters } from "../domain/review-log";
-import { undoReviewDayCompletionAction, undoReviewPackEventAction } from "./log-actions";
 import { UndoControl } from "./UndoControl";
 import styles from "./review-log.module.css";
 
@@ -113,10 +112,10 @@ export function ReviewLogView({
                           title="Undo this day's completion?"
                           summary={dayUndoSummary(event.dayOn)}
                           learners={dayLearners}
-                          confirm={() => undoReviewDayCompletionAction(event.dayOn || "")}
+                          dayId={event.dayOn}
                         />
                       ) : canUndo && undoIds.has(event.id) ? (
-                        <UndoControl ready={undoReady} summary={undoSummary(event)} confirm={() => undoReviewPackEventAction(event.id)} />
+                        <UndoControl ready={undoReady} summary={undoSummary(event)} eventId={event.id} />
                       ) : null}
                     </td>
                   </tr>

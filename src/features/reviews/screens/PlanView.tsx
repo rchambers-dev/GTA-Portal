@@ -11,7 +11,6 @@ import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets 
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
 import type { PackedDay } from "../domain/plan-route";
 import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
-import { undoReviewDayCompletionAction } from "./log-actions";
 import {
   acceptDayAction,
   applyRouteAction,
@@ -352,7 +351,7 @@ export function PlanView({
                   title="Undo this day's completion?"
                   summary={dayUndoSummary(selectedDate)}
                   learners={activeDay.stops.filter((stop) => stop.completed).map((stop) => ({ gtaId: stop.gtaId, name: stop.name }))}
-                  confirm={() => undoReviewDayCompletionAction(selectedDate)}
+                  dayId={selectedDate}
                 />
               ) : null}
             </div>
