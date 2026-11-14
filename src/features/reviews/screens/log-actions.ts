@@ -21,3 +21,18 @@ export async function undoReviewPackEventAction(eventId: string) {
   }
   return { ok: false as const, formError: error.message || "That event could not be undone." };
 }
+
+export async function undoReviewDayCompletionAction(dayId: string) {
+  const session = await getSupabaseEffectiveSession();
+  if (!session) return { ok: false as const, formError: "Sign in again to undo this day." };
+  if (!canAddApprentice(session)) return { ok: false as const, formError: DENIED };
+  const id = dayId.trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(id)) return { ok: false as const, formError: "Choose a completed day to undo." };
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("undo_review_day_completion", { p_day_id: id });
+  if (!error) return { ok: true as const };
+  if (error.code === "PGRST202" || /could not find the function/i.test(error.message || "")) {
+    return { ok: false as const, formError: WAITING };
+  }
+  return { ok: false as const, formError: error.message || "That day could not be undone." };
+}

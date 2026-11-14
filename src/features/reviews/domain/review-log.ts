@@ -29,6 +29,14 @@ export type ReviewLogEvent = {
   role: string;
   detail: string;
   undoes: string | null;
+  /** The review day (review_days.date_on) when this event completed that day's plan. */
+  dayOn: string | null;
+};
+
+export type DayUndoPlan = {
+  date: string;
+  completedAt: string;
+  learners: { gtaId: string; name: string }[];
 };
 
 export type ReviewLogFilters = {
@@ -45,11 +53,18 @@ export function stageLabel(stage: string | null): string {
   return STAGE_LABELS[stage] || stage;
 }
 
+const SINGLE_UNDO_TYPES = new Set(["released", "submitted", "booked"]);
+
 /** A stage-changing pack event. Safeguarding signatures, pack creation and undo rows are never undoable. */
 export function isUndoableType(event: Pick<ReviewLogEvent, "type" | "fromStage" | "toStage">): boolean {
   if (event.type === "undone" || event.type === "created" || event.type === "signature_recorded") return false;
   if (!event.fromStage || !event.toStage) return false;
   return event.fromStage !== event.toStage;
+}
+
+/** Released, received and booked can be undone one event at a time. A completion cannot. */
+export function isSingleUndoType(event: Pick<ReviewLogEvent, "type" | "fromStage" | "toStage">): boolean {
+  return SINGLE_UNDO_TYPES.has(event.type) && isUndoableType(event);
 }
 
 export function withinUndoWindow(at: string, now: Date): boolean {
@@ -63,7 +78,7 @@ export function undoneIds(events: ReviewLogEvent[]): Set<string> {
   return new Set(events.map((event) => event.undoes).filter((id): id is string => Boolean(id)));
 }
 
-/** The newest event per learner that can still be undone. */
+/** The newest released, received or booked event per learner. A later completion blocks it. */
 export function latestUndoableIds(events: ReviewLogEvent[], now: Date): Set<string> {
   const undone = undoneIds(events);
   const newest = new Map<string, ReviewLogEvent>();
@@ -72,13 +87,29 @@ export function latestUndoableIds(events: ReviewLogEvent[], now: Date): Set<stri
     const current = newest.get(event.gtaId);
     if (!current || event.at > current.at) newest.set(event.gtaId, event);
   }
-  return new Set([...newest.values()].map((event) => event.id));
+  return new Set([...newest.values()].filter((event) => isSingleUndoType(event)).map((event) => event.id));
+}
+
+/** Every learner on that day's plan, when this completion row can undo the whole day. */
+export function dayUndoLearners(
+  event: ReviewLogEvent,
+  day: DayUndoPlan | undefined,
+  events: ReviewLogEvent[],
+  now: Date,
+): { gtaId: string; name: string }[] | null {
+  if (event.type !== "completed" || !event.dayOn || !day || day.date !== event.dayOn) return null;
+  if (!day.learners.some((learner) => learner.gtaId === event.gtaId)) return null;
+  if (undoneIds(events).has(event.id)) return null;
+  if (!withinUndoWindow(day.completedAt, now)) return null;
+  return day.learners;
 }
 
 export function undoSummary(event: ReviewLogEvent): string {
-  const change = `Undo ${eventLabel(event.type)} for ${event.learner}. The pack goes back from ${stageLabel(event.toStage)} to ${stageLabel(event.fromStage)}. The original event stays in the log.`;
-  if (event.type !== "completed") return change;
-  return `${change} The next cycle's waiting pack will be voided and this review reopened. Undo is refused if that pack has moved on.`;
+  return `Undo ${eventLabel(event.type)} for ${event.learner}. The pack goes back from ${stageLabel(event.toStage)} to ${stageLabel(event.fromStage)}. The original event stays in the log.`;
+}
+
+export function dayUndoSummary(date: string): string {
+  return `Undo the completion of ${date} for every learner on that day's plan. Each pack goes back to Review booked, each review reopens, and the next cycle's waiting pack is voided. Safeguarding sign-offs stay. Nothing is deleted.`;
 }
 
 export function rangeStart(range: LogRange, today: string): string | null {

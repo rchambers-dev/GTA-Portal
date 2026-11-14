@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { eventLabel, londonStamp } from "../domain/analytics";
-import { LOG_PAGE_SIZE, filterLog, latestUndoableIds, pageOf, undoSummary, type ReviewLogEvent, type ReviewLogFilters } from "../domain/review-log";
+import { LOG_PAGE_SIZE, dayUndoLearners, dayUndoSummary, filterLog, latestUndoableIds, pageOf, undoSummary, type DayUndoPlan, type ReviewLogEvent, type ReviewLogFilters } from "../domain/review-log";
+import { undoReviewDayCompletionAction, undoReviewPackEventAction } from "./log-actions";
 import { UndoControl } from "./UndoControl";
 import styles from "./review-log.module.css";
 
@@ -26,23 +27,29 @@ function href(workspace: "administration" | "management", filters: ReviewLogFilt
 export function ReviewLogView({
   workspace,
   events,
+  days,
   filters,
   today,
   undoReady,
+  dayUndoReady,
   canUndo,
   loadError,
 }: {
   workspace: "administration" | "management";
   events: ReviewLogEvent[];
+  days: DayUndoPlan[];
   filters: ReviewLogFilters;
   today: string;
   undoReady: boolean;
+  dayUndoReady: boolean;
   canUndo: boolean;
   loadError: string | null;
 }) {
   const filtered = filterLog(events, filters, today);
   const page = pageOf(filtered, filters.page, LOG_PAGE_SIZE);
-  const undoIds = latestUndoableIds(events, new Date());
+  const now = new Date();
+  const undoIds = latestUndoableIds(events, now);
+  const dayByDate = new Map(days.map((day) => [day.date, day]));
   const undoneBy = new Map(events.filter((event) => event.undoes).map((event) => [event.undoes, event]));
   const learners = unique(events.map((event) => ({ id: event.gtaId, name: event.learner })));
   const tutors = unique(events.map((event) => ({ id: event.tutorId || "", name: event.tutor })).filter((item) => item.id));
@@ -86,6 +93,7 @@ export function ReviewLogView({
             <tbody>
               {page.rows.map((event) => {
                 const undo = undoneBy.get(event.id);
+                const dayLearners = dayUndoLearners(event, event.dayOn ? dayByDate.get(event.dayOn) : undefined, events, now);
                 return (
                   <tr key={event.id}>
                     <td>{event.learner}</td>
@@ -98,8 +106,17 @@ export function ReviewLogView({
                     <td>{event.role}</td>
                     <td>{londonStamp(event.at)}</td>
                     <td>
-                      {canUndo && undoIds.has(event.id) ? (
-                        <UndoControl ready={undoReady} summary={undoSummary(event)} eventId={event.id} />
+                      {canUndo && dayLearners && event.dayOn ? (
+                        <UndoControl
+                          ready={dayUndoReady}
+                          label="Undo day"
+                          title="Undo this day's completion?"
+                          summary={dayUndoSummary(event.dayOn)}
+                          learners={dayLearners}
+                          confirm={() => undoReviewDayCompletionAction(event.dayOn || "")}
+                        />
+                      ) : canUndo && undoIds.has(event.id) ? (
+                        <UndoControl ready={undoReady} summary={undoSummary(event)} confirm={() => undoReviewPackEventAction(event.id)} />
                       ) : null}
                     </td>
                   </tr>

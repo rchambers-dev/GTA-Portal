@@ -2,7 +2,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { isLiveApprentice } from "./analytics";
-import { type LogRange, type ReviewLogEvent } from "./review-log";
+import { type DayUndoPlan, type LogRange, type ReviewLogEvent } from "./review-log";
 
 export type ReviewLogQuery = {
   query: string;
@@ -17,15 +17,22 @@ function rows<T>(data: unknown): T[] {
   return Array.isArray(data) ? (data as T[]) : [];
 }
 
-function detailText(detail: unknown): { text: string; undoes: string | null } {
-  if (!detail || typeof detail !== "object") return { text: "", undoes: null };
+function detailText(detail: unknown): { text: string; undoes: string | null; dayOn: string | null } {
+  if (!detail || typeof detail !== "object") return { text: "", undoes: null, dayOn: null };
   const record = detail as Record<string, unknown>;
   const undoes = typeof record.undoes === "string" ? record.undoes : null;
+  const actual = typeof record.actual_on === "string" ? record.actual_on.slice(0, 10) : "";
+  const dayOn = /^\d{4}-\d{2}-\d{2}$/.test(actual) ? actual : null;
   for (const key of ["note", "reason", "summary"]) {
     const value = record[key];
-    if (typeof value === "string" && value.trim()) return { text: value.trim(), undoes };
+    if (typeof value === "string" && value.trim()) return { text: value.trim(), undoes, dayOn };
   }
-  return { text: "", undoes };
+  return { text: "", undoes, dayOn };
+}
+
+function functionMissing(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  return error.code === "PGRST202" || /could not find the function/i.test(error.message || "");
 }
 
 export function parseLogQuery(input: {
@@ -57,12 +64,15 @@ export async function loadReviewLog() {
     withFlag.error && isMissingTestColumn(withFlag.error.message)
       ? await supabase.from("apprentices").select(columns)
       : withFlag;
-  const [tutors, profiles, packs, events, probe] = await Promise.all([
+  const [tutors, profiles, packs, events, days, stops, probe, dayProbe] = await Promise.all([
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
     supabase.from("profiles").select("id, display_name, base_role"),
     supabase.from("review_packs").select("id, gta_id"),
     supabase.from("review_pack_events").select("id, pack_id, event_type, from_stage, to_stage, occurred_at, actor_profile_id, actor_role, detail"),
+    supabase.from("review_days").select("date_on, completed_at").not("completed_at", "is", null),
+    supabase.from("review_day_stops").select("date_on, gta_id, sort_order").eq("completed", true),
     supabase.rpc("undo_review_pack_event", { p_event_id: "00000000-0000-0000-0000-000000000000" }),
+    supabase.rpc("undo_review_day_completion", { p_day_id: "1900-01-01" }),
   ]);
   const names = new Map(rows<{ id: string; display_name: string | null }>(profiles.data).map((row) => [row.id, row.display_name || "Reviewer"]));
   const roles = new Map(rows<{ id: string; base_role: string | null }>(profiles.data).map((row) => [row.id, row.base_role || ""]));
@@ -105,11 +115,28 @@ export async function loadReviewLog() {
         role: row.actor_profile_id ? row.actor_role || roles.get(row.actor_profile_id) || "" : "System",
         detail: detail.text,
         undoes: detail.undoes,
+        dayOn: detail.dayOn,
       };
     })
     .filter((event) => event.gtaId && learnerName.has(event.gtaId));
-  const probeMessage = probe.error?.message || "";
-  const undoReady = !probe.error || !(/could not find the function/i.test(probeMessage) || probe.error.code === "PGRST202");
+  const learnersOnDay = new Map<string, { gtaId: string; sort: number }[]>();
+  for (const stop of rows<{ date_on: string; gta_id: string; sort_order: number | null }>(stops.data)) {
+    const date = stop.date_on.slice(0, 10);
+    const list = learnersOnDay.get(date) || [];
+    list.push({ gtaId: stop.gta_id, sort: stop.sort_order ?? 0 });
+    learnersOnDay.set(date, list);
+  }
+  const dayPlans: DayUndoPlan[] = rows<{ date_on: string; completed_at: string }>(days.data).flatMap((day) => {
+    const date = day.date_on.slice(0, 10);
+    const learners = (learnersOnDay.get(date) || [])
+      .sort((a, b) => a.sort - b.sort || a.gtaId.localeCompare(b.gtaId))
+      .filter((stop) => learnerName.has(stop.gtaId))
+      .map((stop) => ({ gtaId: stop.gtaId, name: learnerName.get(stop.gtaId) || stop.gtaId }));
+    if (!day.completed_at || learners.length === 0) return [];
+    return [{ date, completedAt: day.completed_at, learners }];
+  });
+  const undoReady = !functionMissing(probe.error);
+  const dayUndoReady = !functionMissing(dayProbe.error);
   const failed = [apprenticesResult, packs, events].find((result) => result.error);
-  return { today, events: log, undoReady, loadError: failed?.error?.message ?? null };
+  return { today, events: log, days: dayPlans, undoReady, dayUndoReady, loadError: failed?.error?.message ?? null };
 }

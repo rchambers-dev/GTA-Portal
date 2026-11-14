@@ -1,4 +1,6 @@
 -- Undo a review pack event. Not applied. The Review log hides a working Undo button until this function exists.
+-- A later migration, 20261114140000_undo_review_day_completion.sql, replaces this function so a
+-- completion is undone with the whole review day rather than one learner.
 -- Undo never deletes a review_pack_events row. It appends an 'undone' row that points at the original event
 -- and puts the pack back to from_stage. A completed event also voids the next cycle's still-waiting pack
 -- and reopens that review, in this same transaction.

@@ -4,12 +4,14 @@ import { memo, useEffect, useMemo, useState, type FormEvent } from "react";
 import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { dayUndoSummary, withinUndoWindow } from "../domain/review-log";
 import { fitStops, routeSettings } from "../domain/plan-drive";
 import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
 import type { PackedDay } from "../domain/plan-route";
 import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
+import { undoReviewDayCompletionAction } from "./log-actions";
 import {
   acceptDayAction,
   applyRouteAction,
@@ -19,6 +21,7 @@ import {
   setNotesAction,
   verifyStopAction,
 } from "./plan-actions";
+import { UndoControl } from "./UndoControl";
 import { PlanMap } from "./PlanMap";
 import { RebookPanel } from "./RebookPanel";
 import styles from "./plan.module.css";
@@ -342,6 +345,16 @@ export function PlanView({
               <span className={styles.completedPill}>
                 <LockIcon /> Route completed
               </span>
+              {page.canWrite && activeDay.completedAt && withinUndoWindow(activeDay.completedAt, new Date()) ? (
+                <UndoControl
+                  ready={page.dayUndoReady}
+                  label="Undo complete"
+                  title="Undo this day's completion?"
+                  summary={dayUndoSummary(selectedDate)}
+                  learners={activeDay.stops.filter((stop) => stop.completed).map((stop) => ({ gtaId: stop.gtaId, name: stop.name }))}
+                  confirm={() => undoReviewDayCompletionAction(selectedDate)}
+                />
+              ) : null}
             </div>
           ) : (
             <div className={styles.routeBar}>
@@ -1009,6 +1022,7 @@ function planDayFor(page: PlanPageData, date: string): PlanDay {
       date,
       accepted: false,
       completed: false,
+      completedAt: null,
       stops: [],
       completedReviews: [],
     }
