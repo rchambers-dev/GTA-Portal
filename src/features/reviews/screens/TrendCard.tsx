@@ -44,7 +44,7 @@ export function TrendCard({ weeks, months }: { weeks: Point[]; months: Point[] }
         <i className={styles.vis} />Visits
         <i className={styles.call} />Calls/Teams
       </p>
-      <LineChart rows={rows} max={max} mark={mark} period={mode === "weeks" ? "Weekly" : "Monthly"} />
+      <LineChart key={mode} rows={rows} max={max} mark={mark} period={mode} />
       <div className={styles.trendScroll}>
         <table className={styles.weekTable}>
           <thead>
@@ -75,9 +75,15 @@ export function TrendCard({ weeks, months }: { weeks: Point[]; months: Point[] }
   );
 }
 
-function LineChart({ rows, max, mark, period }: { rows: Point[]; max: number; mark: string; period: string }) {
+function periodTitle(row: Point, period: "weeks" | "months", mark: string) {
+  const name = period === "weeks" ? `Week of ${row.label}` : row.label;
+  return row.current ? `${name} · ${mark}` : name;
+}
+
+function LineChart({ rows, max, mark, period }: { rows: Point[]; max: number; mark: string; period: "weeks" | "months" }) {
   const frame = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
+  const [active, setActive] = useState<number | null>(null);
   useEffect(() => {
     const node = frame.current;
     if (!node) return;
@@ -99,10 +105,26 @@ function LineChart({ rows, max, mark, period }: { rows: Point[]; max: number; ma
   const xAt = (index: number) => rows.length <= 1 ? padL + innerW / 2 : padL + (index / (rows.length - 1)) * innerW;
   const yAt = (value: number) => padT + innerH - (value / max) * innerH;
   const ticks = [max, Math.round(max / 2), 0];
+  const column = (index: number) => {
+    if (rows.length <= 1) return { left: padL, width: Math.max(28, width - padL - padR) };
+    const previous = index === 0 ? padL : (xAt(index - 1) + xAt(index)) / 2;
+    const next = index === rows.length - 1 ? width - padR : (xAt(index) + xAt(index + 1)) / 2;
+    return { left: previous, width: Math.max(28, next - previous) };
+  };
+  const tipWidth = 216;
+  const activeRow = active == null ? null : rows[active];
+  const tipLeft = active == null ? 0 : Math.max(8, xAt(active) + 14 + tipWidth <= width - 8 ? xAt(active) + 14 : xAt(active) - 14 - tipWidth);
   return (
-    <div ref={frame} className={styles.lineChartFrame}>
+    <div
+      ref={frame}
+      className={styles.lineChartFrame}
+      onPointerDown={(event) => {
+        const target = event.target as HTMLElement;
+        if (!target.closest("button")) setActive(null);
+      }}
+    >
       {width > 0 ? (
-      <svg className={styles.lineChart} width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${period} released, received, completed, visits and calls or Teams`}>
+      <svg className={styles.lineChart} width={width} height={height} viewBox={`0 0 ${width} ${height}`} aria-hidden="true">
       {ticks.map((tick, index) => {
         const y = yAt(tick);
         return (
@@ -116,10 +138,9 @@ function LineChart({ rows, max, mark, period }: { rows: Point[]; max: number; ma
         const points = rows.map((row, index) => `${xAt(index)},${yAt(row[series.key])}`).join(" ");
         return <polyline key={series.key} points={points} fill="none" stroke={series.color} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />;
       })}
+      {active != null ? <line x1={xAt(active)} x2={xAt(active)} y1={padT} y2={padT + innerH} className={styles.guideLine} /> : null}
       {rows.map((row, index) => SERIES.map((series) => (
-        <circle key={`${row.id}-${series.key}`} cx={xAt(index)} cy={yAt(row[series.key])} r={3.5} fill={series.color}>
-          <title>{`${row.label}${row.current ? ` · ${mark}` : ""} · ${series.name}: ${row[series.key]}`}</title>
-        </circle>
+        <circle key={`${row.id}-${series.key}`} cx={xAt(index)} cy={yAt(row[series.key])} r={active === index ? 6 : 3.5} fill={series.color} stroke={active === index ? "#fff" : "none"} strokeWidth={active === index ? 2 : 0} />
       )))}
       {rows.map((row, index) => (
         <text key={row.id} x={xAt(index)} y={height - 14} className={row.current ? styles.axisCurrent : styles.axisText} textAnchor="middle">
@@ -127,6 +148,42 @@ function LineChart({ rows, max, mark, period }: { rows: Point[]; max: number; ma
         </text>
       ))}
       </svg>
+      ) : null}
+      {width > 0 ? rows.map((row, index) => {
+        const slice = column(index);
+        const title = periodTitle(row, period, mark);
+        return (
+          <button
+            key={row.id}
+            type="button"
+            className={styles.hit}
+            style={{ left: slice.left, width: slice.width, top: padT, height: height - padT - 2 }}
+            aria-label={`${title}. ${SERIES.map((series) => `${series.name} ${row[series.key]}`).join(", ")}`}
+            aria-describedby={active === index ? "trend-tip" : undefined}
+            onPointerEnter={(event) => { if (event.pointerType === "mouse") setActive(index); }}
+            onPointerLeave={(event) => { if (event.pointerType === "mouse") setActive((current) => current === index ? null : current); }}
+            onPointerDown={(event) => {
+              event.stopPropagation();
+              if (event.pointerType !== "mouse") setActive(index);
+            }}
+            onFocus={() => setActive(index)}
+            onBlur={() => setActive((current) => current === index ? null : current)}
+          />
+        );
+      }) : null}
+      {activeRow && active != null ? (
+        <div id="trend-tip" className={styles.tip} role="tooltip" style={{ left: tipLeft, top: 12 }}>
+          <p>{periodTitle(activeRow, period, mark)}</p>
+          <ul>
+            {SERIES.map((series) => (
+              <li key={series.key}>
+                <i style={{ background: series.color }} />
+                <span>{series.name}</span>
+                <b>{activeRow[series.key]}</b>
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : null}
     </div>
   );
