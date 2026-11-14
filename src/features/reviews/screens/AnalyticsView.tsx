@@ -102,27 +102,17 @@ export function AnalyticsView({
           </section>
           <section className={styles.card}>
             <h2>Overall</h2>
-            <div className={styles.board}>
-              <div>
-                <h3>Target</h3>
-                <Stat label="Needed each day" value={page.overall.neededEachDay} note={page.overall.cycleNote} />
-              </div>
-              <div>
-                <h3>Pipeline</h3>
-                <div className={styles.metricRow}>
-                  <Stat label="Released" value={page.overall.released} note={page.overall.rangeLabel} delta={delta(page, "Released")} />
-                  <Stat label="Received" value={page.overall.received} note={page.overall.rangeLabel} delta={delta(page, "Received")} />
-                  <Stat label="Completed" value={page.overall.completed} note={page.overall.rangeLabel} delta={delta(page, "Completed")} />
-                </div>
-              </div>
-              <div>
-                <h3>Delivery</h3>
-                <div className={styles.metricRow}>
-                  <Stat label="Visits" value={page.overall.visits} note={page.overall.rangeLabel} delta={delta(page, "Visits")} />
-                  <Stat label="Calls" value={page.overall.calls} note={page.overall.rangeLabel} delta={delta(page, "Calls")} />
-                  <Stat label="Teams" value={page.overall.teams} note={page.overall.rangeLabel} delta={delta(page, "Teams")} />
-                </div>
-              </div>
+            <div className={styles.overallGrid}>
+              <h3>Target</h3>
+              <Stat label="Needed each day" value={page.overall.neededEachDay} note={page.overall.cycleNote} />
+              <h3>Pipeline</h3>
+              <Stat label="Released" value={page.overall.released} note={page.overall.rangeLabel} delta={delta(page, "Released")} />
+              <Stat label="Received" value={page.overall.received} note={page.overall.rangeLabel} delta={delta(page, "Received")} />
+              <Stat label="Completed" value={page.overall.completed} note={page.overall.rangeLabel} delta={delta(page, "Completed")} />
+              <h3>Delivery</h3>
+              <Stat label="Visits" value={page.overall.visits} note={page.overall.rangeLabel} delta={delta(page, "Visits")} />
+              <Stat label="Calls" value={page.overall.calls} note={page.overall.rangeLabel} delta={delta(page, "Calls")} />
+              <Stat label="Teams" value={page.overall.teams} note={page.overall.rangeLabel} delta={delta(page, "Teams")} />
             </div>
           </section>
           <div className={styles.split}>

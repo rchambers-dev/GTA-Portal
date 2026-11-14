@@ -16,11 +16,11 @@ type Point = {
 };
 
 const SERIES = [
-  { key: "released" as const, className: styles.rel, name: "Reviews released" },
-  { key: "received" as const, className: styles.rec, name: "Forms received" },
-  { key: "completed" as const, className: styles.comp, name: "Reviews completed" },
-  { key: "visits" as const, className: styles.vis, name: "Visits" },
-  { key: "callsTeams" as const, className: styles.call, name: "Calls/Teams" },
+  { key: "released" as const, color: "#1f2a44", name: "Reviews released" },
+  { key: "received" as const, color: "#2f80ed", name: "Forms received" },
+  { key: "completed" as const, color: "#2e9e5b", name: "Reviews completed" },
+  { key: "visits" as const, color: "#7b3fe4", name: "Visits" },
+  { key: "callsTeams" as const, color: "#e67e22", name: "Calls/Teams" },
 ];
 
 export function TrendCard({ weeks, months }: { weeks: Point[]; months: Point[] }) {
@@ -28,7 +28,6 @@ export function TrendCard({ weeks, months }: { weeks: Point[]; months: Point[] }
   const rows = mode === "weeks" ? weeks : months;
   const mark = mode === "weeks" ? "This week" : "This month";
   const max = Math.max(1, ...rows.flatMap((row) => [row.released, row.received, row.completed, row.visits, row.callsTeams]));
-  const ticks = [max, Math.ceil(max / 2), 0];
   return (
     <section className={styles.card}>
       <div className={styles.trendHead}>
@@ -45,23 +44,7 @@ export function TrendCard({ weeks, months }: { weeks: Point[]; months: Point[] }
         <i className={styles.vis} />Visits
         <i className={styles.call} />Calls/Teams
       </p>
-      <div className={styles.chart}>
-        <div className={styles.axis} aria-hidden="true">
-          {ticks.map((tick) => <span key={tick}>{tick}</span>)}
-        </div>
-        <div className={styles.plot} role="img" aria-label={`${mode === "weeks" ? "Weekly" : "Monthly"} released, received, completed, visits and calls or Teams`}>
-          {[0, 50, 100].map((line) => <span key={line} className={styles.grid} style={{ bottom: `${line}%` }} />)}
-          {rows.map((row) => (
-            <div key={row.id} className={row.current && row.behind ? `${styles.cluster} ${styles.behind}` : row.current ? `${styles.cluster} ${styles.currentWeek}` : styles.cluster}>
-              {SERIES.map((item) => {
-                const value = row[item.key];
-                return <i key={item.key} className={item.className} title={`${item.name}: ${value}`} style={{ height: value ? `${Math.round((value / max) * 100)}%` : 0, minHeight: value ? 2 : 0 }} />;
-              })}
-              <span>{row.label}{row.current ? ` · ${mark}` : ""}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <LineChart rows={rows} max={max} mark={mark} period={mode === "weeks" ? "Weekly" : "Monthly"} />
       <div className={styles.trendScroll}>
         <table className={styles.weekTable}>
           <thead>
@@ -89,5 +72,46 @@ export function TrendCard({ weeks, months }: { weeks: Point[]; months: Point[] }
         </table>
       </div>
     </section>
+  );
+}
+
+function LineChart({ rows, max, mark, period }: { rows: Point[]; max: number; mark: string; period: string }) {
+  const width = 720;
+  const height = 220;
+  const padL = 32;
+  const padR = 12;
+  const padT = 14;
+  const padB = 32;
+  const innerW = width - padL - padR;
+  const innerH = height - padT - padB;
+  const xAt = (index: number) => rows.length <= 1 ? padL + innerW / 2 : padL + (index / (rows.length - 1)) * innerW;
+  const yAt = (value: number) => padT + innerH - (value / max) * innerH;
+  const ticks = [max, Math.round(max / 2), 0];
+  return (
+    <svg className={styles.lineChart} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${period} released, received, completed, visits and calls or Teams`}>
+      {ticks.map((tick, index) => {
+        const y = yAt(tick);
+        return (
+          <g key={`${tick}-${index}`}>
+            <line x1={padL} x2={width - padR} y1={y} y2={y} className={styles.gridLine} />
+            <text x={padL - 6} y={y + 3} className={styles.axisText} textAnchor="end">{tick}</text>
+          </g>
+        );
+      })}
+      {SERIES.map((series) => {
+        const points = rows.map((row, index) => `${xAt(index)},${yAt(row[series.key])}`).join(" ");
+        return <polyline key={series.key} points={points} fill="none" stroke={series.color} strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />;
+      })}
+      {rows.map((row, index) => SERIES.map((series) => (
+        <circle key={`${row.id}-${series.key}`} cx={xAt(index)} cy={yAt(row[series.key])} r={3.5} fill={series.color}>
+          <title>{`${row.label}${row.current ? ` · ${mark}` : ""} · ${series.name}: ${row[series.key]}`}</title>
+        </circle>
+      )))}
+      {rows.map((row, index) => (
+        <text key={row.id} x={xAt(index)} y={height - 8} className={row.current ? styles.axisCurrent : styles.axisText} textAnchor="middle">
+          {row.label}{row.current ? ` · ${mark}` : ""}
+        </text>
+      ))}
+    </svg>
   );
 }

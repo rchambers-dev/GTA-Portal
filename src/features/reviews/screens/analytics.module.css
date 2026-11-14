@@ -68,11 +68,10 @@
 .mix { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .concerns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-.board { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.7fr) minmax(0, 1.7fr); gap: 16px; align-items: start; }
-.board > div { min-width: 0; }
-.board h3, .subhead { margin: 0 0 12px; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: #5c6478; font-weight: 700; }
+.overallGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.overallGrid > h3, .subhead { grid-column: 1 / -1; margin: 4px 0 0; font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: #5c6478; font-weight: 700; }
+.overallGrid > h3:first-child { margin-top: 0; }
 .subhead { margin-top: 16px; }
-.metricRow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 
 .stat, .tile, .stepCard {
   border: 1px solid #e8eaef;
@@ -213,26 +212,11 @@
 .current .fill { background: #d3922a; }
 .today { font-weight: 700; }
 
-.chart { display: grid; grid-template-columns: 2rem 1fr; gap: 0.35rem; align-items: stretch; }
-.axis { display: flex; flex-direction: column; justify-content: space-between; height: 200px; color: #5c6478; font-size: 0.68rem; text-align: right; }
-.plot {
-  position: relative;
-  height: 200px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: stretch;
-  gap: 4px;
-  border-left: 1px solid #d1d5de;
-  border-bottom: 1px solid #d1d5de;
-  margin-bottom: 1.6rem;
-  padding: 0 2px;
-}
-.grid { position: absolute; left: 0; right: 0; border-top: 1px solid #e8eaef; }
-.cluster { position: relative; z-index: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%; flex: 1 1 0; min-width: 0; }
-.cluster i { display: block; flex: 1 1 0; width: auto; min-width: 0; border-radius: 2px 2px 0 0; }
-.cluster span { position: absolute; left: 50%; bottom: -1.35rem; transform: translateX(-50%); white-space: nowrap; color: #5c6478; font-size: 0.62rem; }
-.currentWeek span { color: #8a5a12; font-weight: 700; }
-.behind span, .behindRow td:first-child { color: #9c2f2f; font-weight: 700; }
+.lineChart { width: 100%; height: auto; display: block; }
+.gridLine { stroke: #e8eaef; stroke-width: 1; }
+.axisText { fill: #5c6478; font-size: 10px; font-family: var(--font-body), "Source Sans 3", sans-serif; }
+.axisCurrent { fill: #8a5a12; font-size: 10px; font-weight: 700; font-family: var(--font-body), "Source Sans 3", sans-serif; }
+.behindRow td:first-child { color: #9c2f2f; font-weight: 700; }
 .rel { background: #1f2a44; }
 .rec { background: #2f80ed; }
 .comp { background: #2e9e5b; }
@@ -244,9 +228,10 @@
 .toggle button { border: 0; background: #fff; color: #1a1f3d; padding: 0.28rem 0.75rem; font: inherit; font-size: 0.82rem; cursor: pointer; }
 .toggle button[aria-pressed="true"] { background: #1a1f3d; color: #fff; }
 .trendScroll { max-height: 18rem; overflow: auto; margin-top: 0.4rem; }
-.weekTable { width: 100%; border-collapse: collapse; margin-top: 0; font-size: 0.82rem; table-layout: fixed; }
-.weekTable th, .weekTable td { text-align: right; padding: 0.35rem 0.3rem; border-top: 1px solid #e8eaef; }
-.weekTable th:first-child, .weekTable td:first-child { text-align: left; width: 22%; }
+.weekTable { width: 100%; border-collapse: collapse; margin-top: 0; font-size: 0.82rem; table-layout: fixed; font-variant-numeric: tabular-nums; }
+.weekTable th, .weekTable td { text-align: center; padding: 0.4rem 0.35rem; border-top: 1px solid #e8eaef; }
+.weekTable th:first-child, .weekTable td:first-child { width: 9.5rem; text-align: left; }
+.weekTable th:not(:first-child), .weekTable td:not(:first-child) { width: calc((100% - 9.5rem) / 5); }
 .weekTable th { color: #5c6478; font-size: 0.72rem; font-weight: 600; position: sticky; top: 0; background: #fff; }
 .weekTable th i, .legend i {
   display: inline-block;
@@ -327,13 +312,13 @@
 .error { color: #9c2f2f; }
 
 @media (max-width: 1280px) {
-  .board, .split { grid-template-columns: minmax(0, 1fr); }
-  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .split { grid-template-columns: minmax(0, 1fr); }
+  .overallGrid, .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .chevron { display: none; }
 }
 
 @media (max-width: 720px) {
-  .metricRow, .stats, .tiles, .riskGrid, .mix, .concerns { grid-template-columns: minmax(0, 1fr); }
+  .overallGrid, .stats, .tiles, .riskGrid, .mix, .concerns { grid-template-columns: minmax(0, 1fr); }
   .overduePerson { grid-template-columns: minmax(0, 1fr) auto; }
 }
 
