@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { EmailAttemptRow, ReportCard, TrackerRow, TutorReviewRound } from "../domain/repository";
 import { roundKpis, roundSchedule, tutorResponseRates } from "../domain/dashboard";
 import { londonToday } from "../domain/email";
@@ -38,7 +38,7 @@ export function ReviewOverview({
   const schedule = roundSchedule(round.opensOn, round.closesOn, today);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "submitted" | "waiting" | "no-email">("all");
-  const [showAll, setShowAll] = useState(false);
+  const trackerScrollRef = useRef<HTMLDivElement>(null);
   const failed = attempts.filter((attempt) => attempt.status === "failed" || attempt.status === "bounced").length;
   const figures = roundKpis({
     people: tracker.map((row) => ({ tutorName: row.tutorName, invited: row.invited, submitted: row.submitted, email: row.email })),
@@ -67,7 +67,10 @@ export function ReviewOverview({
     if (filter === "no-email") return !row.email?.trim();
     return true;
   }), [tracker, query, filter]);
-  const visible = showAll ? filtered : filtered.slice(0, 6);
+
+  useEffect(() => {
+    if (trackerScrollRef.current) trackerScrollRef.current.scrollTop = 0;
+  }, [query, filter, round.id]);
 
   return (
     <div className={styles.stack}>
@@ -142,7 +145,7 @@ export function ReviewOverview({
               <span>Failed or bounced emails</span>
               <strong className={failed > 0 ? styles.toneRed : styles.toneMuted}>{failed}</strong>
             </button>
-            <button type="button" className={styles.attentionCard} onClick={() => { setFilter("no-email"); setShowAll(false); }}>
+            <button type="button" className={styles.attentionCard} onClick={() => setFilter("no-email")}>
               <span>No email on file</span>
               <strong className={figures.noEmail > 0 ? styles.toneAmber : styles.toneMuted}>{figures.noEmail}</strong>
             </button>
@@ -155,21 +158,21 @@ export function ReviewOverview({
         <section className={styles.card}>
           <h3>Tracker</h3>
           <div className={styles.toolbar}>
-            <input className={styles.search} value={query} onChange={(event) => { setQuery(event.target.value); setShowAll(false); }} placeholder="Search learners" aria-label="Search learners" />
+            <input className={styles.search} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search learners" aria-label="Search learners" />
             {([
               ["all", "All"],
               ["submitted", "Submitted"],
               ["waiting", "Not submitted"],
               ["no-email", "No email"],
             ] as const).map(([id, label]) => (
-              <button key={id} type="button" className={filter === id ? styles.pillOn : styles.pillButton} onClick={() => { setFilter(id); setShowAll(false); }}>{label}</button>
+              <button key={id} type="button" className={filter === id ? styles.pillOn : styles.pillButton} onClick={() => setFilter(id)}>{label}</button>
             ))}
           </div>
-          <div className={styles.tableWrap}>
+          <div ref={trackerScrollRef} className={styles.trackerScroll} tabIndex={0} aria-label="Learner tracker">
             <table className={styles.table}>
               <thead><tr><th>ID</th><th>Learner</th><th>Tutor</th><th>Status</th><th>Last activity</th></tr></thead>
               <tbody>
-                {visible.length ? visible.map((row) => (
+                {filtered.length ? filtered.map((row) => (
                   <tr key={row.apprenticeId}>
                     <td>{row.apprenticeId}</td>
                     <td>{row.name}</td>
@@ -181,9 +184,6 @@ export function ReviewOverview({
               </tbody>
             </table>
           </div>
-          {!showAll && filtered.length > visible.length ? (
-            <button type="button" className={styles.linkButton} onClick={() => setShowAll(true)}>View all {filtered.length} apprentices</button>
-          ) : null}
         </section>
       </div>
     </div>
