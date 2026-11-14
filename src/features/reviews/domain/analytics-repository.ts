@@ -16,10 +16,13 @@ export function parseAnalyticsFilters(input: {
   tutor?: string;
   programme?: string;
   employer?: string;
+  cycle?: string;
 }): AnalyticsFilters {
   const range: AnalyticsRange = input.range === "week" || input.range === "4" || input.range === "12" ? input.range : "all";
+  const cycle = Number(input.cycle);
   return {
     range,
+    cycle: Number.isInteger(cycle) && cycle > 0 ? cycle : null,
     tutorId: input.tutor || "all",
     programmeId: input.programme || "all",
     employerId: input.employer || "all",
@@ -33,7 +36,7 @@ function rows<T>(data: unknown): T[] {
 export async function loadAnalytics(filters: AnalyticsFilters) {
   const supabase = await createSupabaseServerClient();
   const today = londonToday();
-  const columns = "gta_id, first_name, middle_names, last_name, programme_id, status";
+  const columns = "gta_id, first_name, middle_names, last_name, programme_id, status, course_start";
   const withFlag = await supabase.from("apprentices").select(`${columns}, is_test`);
   const apprenticesResult =
     withFlag.error && isMissingTestColumn(withFlag.error.message)
@@ -63,7 +66,7 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
   const packGta = new Map(rows<{ id: string; gta_id: string }>(packs.data).map((row) => [row.id, row.gta_id]));
 
   const learners = excludeTestApprentices(
-    rows<{ gta_id: string; first_name: string | null; middle_names: string | null; last_name: string | null; programme_id: string | null; status: string | null; is_test?: boolean | null }>(
+    rows<{ gta_id: string; first_name: string | null; middle_names: string | null; last_name: string | null; programme_id: string | null; status: string | null; course_start: string | null; is_test?: boolean | null }>(
       apprenticesResult.data,
     ),
   )
@@ -80,6 +83,7 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
         employer: employerId ? employerName.get(employerId) || "Employer" : "No employer",
         tutorId,
         tutor: tutorId ? names.get(tutorId) || "Tutor" : "No tutor set",
+        startedOn: row.course_start,
       };
     });
 

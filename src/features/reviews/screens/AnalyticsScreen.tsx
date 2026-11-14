@@ -8,6 +8,7 @@ export async function AnalyticsScreen({
   tutor,
   programme,
   employer,
+  cycle,
   view,
 }: {
   workspace: "administration" | "management";
@@ -15,9 +16,10 @@ export async function AnalyticsScreen({
   tutor?: string;
   programme?: string;
   employer?: string;
+  cycle?: string;
   view?: string;
 }) {
-  const filters = parseAnalyticsFilters({ range, tutor, programme, employer });
+  const filters = parseAnalyticsFilters({ range, tutor, programme, employer, cycle });
   const data = await loadAnalytics(filters);
   const mode = view === "tutors" || view === "log" ? view : "reviews";
   return (

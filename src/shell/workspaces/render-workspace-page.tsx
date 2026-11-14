@@ -477,6 +477,7 @@ export async function renderWorkspacePage(
             tutor={searchValue(search?.tutor)}
             programme={searchValue(search?.programme)}
             employer={searchValue(search?.employer)}
+            cycle={searchValue(search?.cycle)}
             view={searchValue(search?.view)}
           />
         );
@@ -576,6 +577,7 @@ export async function renderWorkspacePage(
             tutor={searchValue(search?.tutor)}
             programme={searchValue(search?.programme)}
             employer={searchValue(search?.employer)}
+            cycle={searchValue(search?.cycle)}
             view={searchValue(search?.view)}
           />
         );

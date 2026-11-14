@@ -20,6 +20,7 @@ export type AnalyticsLearner = {
   employer: string;
   tutorId: string | null;
   tutor: string;
+  startedOn?: string | null;
 };
 
 export type AnalyticsReview = {
@@ -50,6 +51,7 @@ export type AnalyticsEvent = {
 
 export type AnalyticsFilters = {
   range: AnalyticsRange;
+  cycle?: number | null;
   tutorId: string;
   programmeId: string;
   employerId: string;
@@ -182,6 +184,30 @@ export function rateTone(value: number | null): Urgency {
   return "red";
 }
 
+/** Coverage of a cycle: 100% is green, 90 to 99% is amber, under 90% is red. */
+export function coverageTone(share: number | null): Urgency {
+  if (share == null) return "neutral";
+  if (share >= 1) return "green";
+  if (share >= 0.9) return "amber";
+  return "red";
+}
+
+export type CycleWindow = { number: number; start: string; end: string; current: boolean };
+
+/** Ten-week blocks from the first review day through the cycle that contains today. */
+export function listCycles(origin: string, today: string): CycleWindow[] {
+  const cycles: CycleWindow[] = [];
+  let start = origin;
+  let number = 1;
+  while (start <= today && number < 40) {
+    const end = addDays(start, 69);
+    cycles.push({ number, start, end, current: today >= start && today <= end });
+    start = addDays(end, 1);
+    number += 1;
+  }
+  return cycles;
+}
+
 function riskTone(id: RiskId): Urgency {
   if (id === "overdue" || id === "booking") return "red";
   if (id === "due-this-week" || id === "with-tutor") return "amber";
@@ -224,7 +250,15 @@ const RISK_LABELS: { id: RiskId; label: string }[] = [
 ];
 
 export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilters) {
-  const window = rangeWindow(filters.range, source.today);
+  const anchor = source.reviews
+    .map((review) => (review.status === "completed" ? review.actualOn?.slice(0, 10) || "" : ""))
+    .filter(Boolean)
+    .sort()[0] || null;
+  const cycles = anchor ? listCycles(anchor, source.today) : [];
+  const selected = filters.cycle ? cycles.find((cycle) => cycle.number === filters.cycle) || null : null;
+  const window = selected
+    ? { start: selected.start, end: selected.end < source.today ? selected.end : source.today }
+    : rangeWindow(filters.range, source.today);
   const learners = source.learners.filter((learner) => {
     if (filters.tutorId !== "all" && learner.tutorId !== filters.tutorId) return false;
     if (filters.programmeId !== "all" && learner.programmeId !== filters.programmeId) return false;
@@ -289,8 +323,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
 
   const completedReviews = reviews.filter((review) => review.status === "completed");
   const completedInRange = completedReviews.filter((review) => inWindow(review.actualOn, window));
-  const earliest = completedReviews.map((review) => review.actualOn || "").filter(Boolean).sort()[0] || null;
-  const bounds = cycleBounds(source.today, earliest);
+  const bounds = cycleBounds(source.today, anchor);
   const countedFrom = firstWeekday(source.today);
   const doneThisCycle = new Set(
     completedReviews
@@ -304,7 +337,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const quota = neededEachDay(learners.length, doneThisCycle.size, weekdaysLeft);
   const elapsed = source.today < countedFrom ? 0 : countWeekdays(countedFrom, source.today);
   const expected = quota * elapsed;
-  const completedTotal = filters.range === "all" ? completedReviews.length : countType("completed");
+  const completedTotal = filters.range === "all" && !selected ? completedReviews.length : countType("completed");
 
   const thisMonday = weekStartMonday(source.today);
   const lastMonday = addDays(thisMonday, -7);
@@ -475,6 +508,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   return {
     learners: learners.length,
     flow,
+    history: cycleHistory(cycles, learners, reviews, events, source.today, cyclePace(doneThisCycle.size, expected, quota)),
     weekend: weekdayName(source.today) === "Saturday" || weekdayName(source.today) === "Sunday",
     cycle: {
       done: doneThisCycle.size,
@@ -488,7 +522,15 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     overall: {
       neededEachDay: quota,
       cycleNote: `${longDate(bounds.start)} to ${longDate(bounds.end)}, counted from ${countedFromLabel(countedFrom)}`,
-      rangeLabel: filters.range === "week" ? "This week" : filters.range === "4" ? "Last 4 weeks" : filters.range === "12" ? "Last 12 weeks" : "All time",
+      rangeLabel: selected
+        ? `Cycle ${selected.number}`
+        : filters.range === "week"
+          ? "This week"
+          : filters.range === "4"
+            ? "Last 4 weeks"
+            : filters.range === "12"
+              ? "Last 12 weeks"
+              : "All time",
       released: countType("released"),
       received: countType("submitted"),
       completed: completedTotal,
@@ -570,6 +612,88 @@ function firstWeekday(day: string): string {
   let cursor = londonDay(day);
   while (weekdayName(cursor) === "Saturday" || weekdayName(cursor) === "Sunday") cursor = addDays(cursor, 1);
   return cursor;
+}
+
+function inCycle(date: string | null, cycle: CycleWindow, today: string): boolean {
+  const day = date?.slice(0, 10) || "";
+  return Boolean(day) && day >= cycle.start && day <= cycle.end && day <= today;
+}
+
+function cycleHistory(
+  cycles: CycleWindow[],
+  learners: AnalyticsLearner[],
+  reviews: AnalyticsReview[],
+  events: AnalyticsEvent[],
+  today: string,
+  pace: Pace,
+): {
+  number: number;
+  start: string;
+  end: string;
+  dates: string;
+  current: boolean;
+  due: number;
+  reviewed: number;
+  coverage: number | null;
+  tone: Urgency;
+  missed: number | null;
+  pace: Pace | null;
+  releaseToCompleted: number | null;
+  visits: number;
+  calls: number;
+  teams: number;
+}[] {
+  const byPack = new Map<string, AnalyticsEvent[]>();
+  for (const event of events) {
+    const list = byPack.get(event.packId) || [];
+    list.push(event);
+    byPack.set(event.packId, list);
+  }
+  return [...cycles].reverse().map((cycle) => {
+    const dueLearners = learners.filter((learner) => !learner.startedOn || learner.startedOn.slice(0, 10) <= cycle.end);
+    const dueIds = new Set(dueLearners.map((learner) => learner.gtaId));
+    const reviewed = new Set<string>();
+    let visits = 0;
+    let calls = 0;
+    let teams = 0;
+    for (const review of reviews) {
+      if (review.status !== "completed" || !dueIds.has(review.gtaId) || !inCycle(review.actualOn, cycle, today)) continue;
+      reviewed.add(review.gtaId);
+      if (review.method === "phone") calls += 1;
+      else if (review.method === "teams") teams += 1;
+      else if (review.method) visits += 1;
+    }
+    const gaps: number[] = [];
+    for (const list of byPack.values()) {
+      const completed = list.filter((event) => event.type === "completed" && inCycle(londonDay(event.at), cycle, today));
+      for (const done of completed) {
+        const released = list
+          .filter((event) => event.type === "released" && event.at <= done.at)
+          .sort((a, b) => b.at.localeCompare(a.at))[0];
+        if (!released) continue;
+        const days = daysBetween(londonDay(released.at), londonDay(done.at));
+        if (days >= 0) gaps.push(days);
+      }
+    }
+    const coverage = dueLearners.length ? reviewed.size / dueLearners.length : null;
+    return {
+      number: cycle.number,
+      start: cycle.start,
+      end: cycle.end,
+      dates: `${longDate(cycle.start)} to ${longDate(cycle.end)}`,
+      current: cycle.current,
+      due: dueLearners.length,
+      reviewed: reviewed.size,
+      coverage,
+      tone: coverageTone(coverage),
+      missed: cycle.current ? null : dueLearners.length - reviewed.size,
+      pace: cycle.current ? pace : null,
+      releaseToCompleted: average(gaps),
+      visits,
+      calls,
+      teams,
+    };
+  });
 }
 
 function longDate(iso: string): string {

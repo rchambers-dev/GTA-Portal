@@ -86,6 +86,24 @@
 .stepCard strong { display: block; margin-top: 0.35rem; font-size: 0.82rem; }
 .chevron { align-self: center; color: #8b93a7; font-size: 1.35rem; line-height: 1; }
 .pace { margin-top: 0.8rem; }
+.history { margin-top: 1rem; overflow-x: auto; }
+.history h3 { margin: 0 0 0.35rem; font-family: var(--font-display), "Plus Jakarta Sans", sans-serif; font-size: 0.95rem; }
+.cycleRow {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1.45fr) repeat(7, minmax(4.4rem, 1fr));
+  gap: 0.45rem;
+  align-items: center;
+  min-width: 62rem;
+  padding: 0.45rem 0.2rem;
+  border-top: 1px solid #e8eaef;
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.82rem;
+}
+.cycleHead { color: #5c6478; font-size: 0.72rem; border-top: 0; }
+.cycleRow small { display: block; color: #5c6478; font-size: 0.72rem; }
+.cycleOn { background: #f5f6f8; border-radius: 0.45rem; }
+.cycleRow .track { margin-top: 0.25rem; }
 .paceTop { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
 .pace p { margin: 0.35rem 0 0; }
 .paceBadge { border-radius: 999px; padding: 0.15rem 0.5rem; font-size: 0.75rem; }
