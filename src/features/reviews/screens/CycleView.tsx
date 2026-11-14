@@ -7,6 +7,10 @@ import { peersFor, type CycleLearner, type CyclePage } from "../domain/cycle-vie
 import { signSafeguardingAction } from "./cycle-actions";
 import styles from "./cycle.module.css";
 
+function signCountLabel(count: number) {
+  return `Sign ${count} ${count === 1 ? "apprentice" : "apprentices"}`;
+}
+
 export function CycleView({
   workspace,
   page,
@@ -180,10 +184,10 @@ export function CycleView({
             <div className={styles.actions}>
               <button type="button" className={styles.cancel} onClick={() => setSigning(null)}>Cancel</button>
               <button type="button" className={styles.confirm} disabled={busy} onClick={confirmSign}>
-                Sign {picked.filter((id) => {
+                {signCountLabel(picked.filter((id) => {
                   const person = id === signing.gtaId ? signing : page.learners.find((learner) => learner.gtaId === id);
                   return person && !person.signedOn;
-                }).length} apprentices
+                }).length)}
               </button>
             </div>
           </div>
