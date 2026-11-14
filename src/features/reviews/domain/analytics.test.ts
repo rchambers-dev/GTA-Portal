@@ -246,7 +246,11 @@ describe("review analytics", () => {
     expect(filtered.overall.completed).toBe(1);
     expect(filtered.history[1]?.releaseToCompleted).toBe(15);
     expect(filtered.history[0]?.releaseToCompleted).toBe(4);
-    expect(filtered.history.find((cycle) => cycle.number === 1)?.missed).toBe(1);
+    expect(filtered.history.find((cycle) => cycle.number === 1)?.missedLearners).toEqual([
+      { gtaId: "B", name: "Sam", tutor: "Anne-Marie Sanderson", employer: "Acme" },
+    ]);
+    expect(filtered.history.find((cycle) => cycle.number === 1)?.byTutor).toEqual([{ name: "Anne-Marie Sanderson", count: 1 }]);
+    expect(filtered.history.find((cycle) => cycle.number === 2)?.missedLearners).toEqual([]);
   });
 
   it("limits the page to one tutor", () => {

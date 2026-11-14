@@ -637,6 +637,8 @@ function cycleHistory(
   coverage: number | null;
   tone: Urgency;
   missed: number | null;
+  missedLearners: { gtaId: string; name: string; tutor: string; employer: string }[];
+  byTutor: { name: string; count: number }[];
   pace: Pace | null;
   releaseToCompleted: number | null;
   visits: number;
@@ -676,6 +678,14 @@ function cycleHistory(
       }
     }
     const coverage = dueLearners.length ? reviewed.size / dueLearners.length : null;
+    const missedLearners = cycle.current
+      ? []
+      : dueLearners
+          .filter((learner) => !reviewed.has(learner.gtaId))
+          .map((learner) => ({ gtaId: learner.gtaId, name: learner.name, tutor: learner.tutor, employer: learner.employer }))
+          .sort((a, b) => a.name.localeCompare(b.name) || a.gtaId.localeCompare(b.gtaId));
+    const tutorCounts = new Map<string, number>();
+    for (const learner of missedLearners) tutorCounts.set(learner.tutor, (tutorCounts.get(learner.tutor) || 0) + 1);
     return {
       number: cycle.number,
       start: cycle.start,
@@ -686,7 +696,11 @@ function cycleHistory(
       reviewed: reviewed.size,
       coverage,
       tone: coverageTone(coverage),
-      missed: cycle.current ? null : dueLearners.length - reviewed.size,
+      missed: cycle.current ? null : missedLearners.length,
+      missedLearners,
+      byTutor: [...tutorCounts.entries()]
+        .map(([name, count]) => ({ name, count }))
+        .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
       pace: cycle.current ? pace : null,
       releaseToCompleted: average(gaps),
       visits,

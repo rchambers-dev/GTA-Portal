@@ -104,6 +104,52 @@
 .cycleRow small { display: block; color: #5c6478; font-size: 0.72rem; }
 .cycleOn { background: #f5f6f8; border-radius: 0.45rem; }
 .cycleRow .track { margin-top: 0.25rem; }
+.cycleRow { cursor: pointer; }
+.missedButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  height: 1.45rem;
+  padding: 0 0.45rem 0 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  background: #fdecea;
+  color: #9c2f2f;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.missedPanel {
+  margin: 0.15rem 0 0.45rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #f3d0d0;
+  border-radius: 0.65rem;
+  background: #fff;
+}
+.missedPanel h4 { margin: 0 0 0.35rem; font-size: 0.78rem; color: #5c6478; font-weight: 600; }
+.tutorSummary { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.7rem; }
+.tutorSummary span {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: #fdecea;
+  color: #9c2f2f;
+  font-size: 0.78rem;
+}
+.missedList { display: grid; gap: 0.15rem; }
+.missedPerson {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1.4fr) 8rem minmax(8rem, 1fr) minmax(8rem, 1.2fr);
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.28rem 0;
+  border-top: 1px solid #e8eaef;
+  font-size: 0.85rem;
+}
+.missedPerson a { color: #1a1f3d; font-weight: 650; }
 .paceTop { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
 .pace p { margin: 0.35rem 0 0; }
 .paceBadge { border-radius: 999px; padding: 0.15rem 0.5rem; font-size: 0.75rem; }

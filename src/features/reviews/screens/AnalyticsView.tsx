@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Fragment } from "react";
-import { ANALYTICS_RANGES, coverageTone, percent, type AnalyticsFilters, type Pace, type Urgency } from "../domain/analytics";
+import { ANALYTICS_RANGES, percent, type AnalyticsFilters, type Urgency } from "../domain/analytics";
+import { CycleHistory } from "./CycleHistory";
 import type { loadAnalytics } from "../domain/analytics-repository";
 import { JumpSelect, PrintReport } from "./PrintReport";
 import styles from "./analytics.module.css";
@@ -218,53 +219,6 @@ export function AnalyticsView({
               ))}
             </section>
           </div>
-    </div>
-  );
-}
-
-function paceLabel(pace: Pace): string {
-  if (pace === "on-pace") return "On pace";
-  if (pace === "slightly-behind") return "Slightly behind";
-  return "Behind";
-}
-
-function CycleHistory({
-  workspace,
-  filters,
-  view,
-  rows,
-}: {
-  workspace: "administration" | "management";
-  filters: AnalyticsFilters;
-  view: string;
-  rows: Page["page"]["history"];
-}) {
-  if (!rows.length) return null;
-  return (
-    <div className={styles.history}>
-      <h3>Cycle history</h3>
-      <div className={`${styles.cycleRow} ${styles.cycleHead}`}>
-        <span>Cycle</span><span>Due</span><span>Reviewed</span><span>Coverage</span><span>Missed</span><span>Pace</span><span>Release to completed</span><span>Visits / calls / Teams</span>
-      </div>
-      {rows.map((row) => (
-        <Link
-          key={row.number}
-          href={href(workspace, filters, view, { cycle: row.number, range: "all" })}
-          className={filters.cycle === row.number ? `${styles.cycleRow} ${styles.cycleOn}` : styles.cycleRow}
-        >
-          <span><strong>Cycle {row.number}</strong>{row.current ? " · In progress" : ""}<small>{row.dates}</small></span>
-          <span>{row.due}</span>
-          <span>{row.reviewed}</span>
-          <span>
-            {percent(row.coverage)}
-            <span className={styles.track}><i className={toneClass(coverageTone(row.coverage))} style={{ width: `${row.coverage ? Math.round(row.coverage * 100) : 0}%` }} /></span>
-          </span>
-          <span className={row.missed ? styles.redText : undefined}>{row.missed == null ? "—" : row.missed}</span>
-          <span className={row.pace === "on-pace" ? styles.greenText : row.pace === "slightly-behind" ? styles.amberText : row.pace === "behind" ? styles.redText : undefined}>{row.pace ? paceLabel(row.pace) : "—"}</span>
-          <span>{row.releaseToCompleted == null ? "—" : `${row.releaseToCompleted}d`}</span>
-          <span>{row.visits} / {row.calls} / {row.teams}</span>
-        </Link>
-      ))}
     </div>
   );
 }
