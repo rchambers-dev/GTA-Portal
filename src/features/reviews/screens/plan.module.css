@@ -2821,3 +2821,40 @@
   background: var(--color-navy-800);
   color: var(--text-inverse);
 }
+
+/* Plan page only. Clearer edges so white panels stay distinct on the pale page. */
+.layout {
+  --plan-line: color-mix(in srgb, var(--color-navy-800) 22%, white);
+  --plan-line-strong: color-mix(in srgb, var(--color-navy-800) 32%, white);
+}
+
+.layout .roster,
+.layout .plan {
+  border-color: var(--plan-line-strong);
+  box-shadow: 0 1px 2px rgb(13 16 36 / 0.06), 0 10px 24px rgb(13 16 36 / 0.07);
+}
+
+.layout .tabs .counterTile:not(.tabOn):not(.tabLocked) {
+  border-color: var(--plan-line);
+  background: var(--bg-elevated);
+}
+
+.layout .roster .card {
+  border: 1px solid var(--plan-line-strong);
+  background: var(--bg-card);
+  box-shadow: 0 1px 2px rgb(13 16 36 / 0.05);
+}
+
+.layout .plan .calendar,
+.layout .plan .lockedPanel {
+  border-color: var(--plan-line-strong);
+}
+
+.layout .plan .calendar .day:not(.dayOn) {
+  border-color: var(--plan-line);
+}
+
+.layout .timeline .stop,
+.layout .lockedPanel .stop {
+  border-top-color: var(--plan-line-strong);
+}
