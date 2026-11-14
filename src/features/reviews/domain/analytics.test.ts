@@ -177,6 +177,7 @@ describe("review analytics", () => {
     expect(page.cycle).toMatchObject({ done: 1, needed: 2, expected: 0, pace: "on-pace", lastDone: 1 });
     expect(page.overall.completed).toBe(3);
     expect(page.overall.cycleNote).toBe("13 Nov 2026 to 21 Jan 2027, counted from Mon 16 Nov");
+    expect(page.cycle.dates).toBe("13 Nov 2026 to 21 Jan 2027");
     expect(page.weekend).toBe(true);
     expect(page.weekOnWeek.find((item) => item.label === "Completed")?.now).toBe(1);
     expect(page.flow.find((step) => step.id === "booking")?.tone).toBe("red");

@@ -45,6 +45,7 @@ import { ApprenticeLearnerScreen } from "@/features/administration/screens/Appre
 import { apprenticeLearnerGtaId } from "@/features/administration/domain/apprentice-tutor";
 import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
 import { AnalyticsScreen } from "@/features/reviews/screens/AnalyticsScreen";
+import { ReviewLogScreen } from "@/features/reviews/screens/ReviewLogScreen";
 import { CycleScreen } from "@/features/reviews/screens/CycleScreen";
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
 import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
@@ -479,6 +480,18 @@ export async function renderWorkspacePage(
             view={searchValue(search?.view)}
           />
         );
+      case "reviews/log":
+        return (
+          <ReviewLogScreen
+            workspace="administration"
+            q={searchValue(search?.q)}
+            learner={searchValue(search?.learner)}
+            tutor={searchValue(search?.tutor)}
+            event={searchValue(search?.event)}
+            range={searchValue(search?.range)}
+            page={searchValue(search?.page)}
+          />
+        );
       case "reviews/tutor-reviews":
         return <TutorReviewsScreen workspace="administration" />;
       case "reviews/settings":
@@ -564,6 +577,18 @@ export async function renderWorkspacePage(
             programme={searchValue(search?.programme)}
             employer={searchValue(search?.employer)}
             view={searchValue(search?.view)}
+          />
+        );
+      case "reviews/log":
+        return (
+          <ReviewLogScreen
+            workspace="management"
+            q={searchValue(search?.q)}
+            learner={searchValue(search?.learner)}
+            tutor={searchValue(search?.tutor)}
+            event={searchValue(search?.event)}
+            range={searchValue(search?.range)}
+            page={searchValue(search?.page)}
           />
         );
       case "reviews/tutor-reviews":

@@ -35,6 +35,7 @@ function reviewsSection(workspace: "administration" | "management") {
       { href: `${base}/out`, label: "Out", permission: records },
       { href: `${base}/archive`, label: "Archive", permission: records },
       { href: `${base}/analytics`, label: "Analytics", permission: records },
+      { href: `${base}/log`, label: "Review log", permission: records },
       { href: `${base}/tutor-reviews`, label: "Tutor reviews", permission: records },
       { href: `${base}/settings`, label: "Settings", permission: records },
       {

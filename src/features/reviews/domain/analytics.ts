@@ -483,6 +483,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
       pace: cyclePace(doneThisCycle.size, expected, quota),
       lastDone: waitingNowCount,
       countedFrom,
+      dates: `${longDate(bounds.start)} to ${longDate(bounds.end)}`,
     },
     overall: {
       neededEachDay: quota,
@@ -589,6 +590,7 @@ export function eventLabel(type: string): string {
   if (type === "submitted") return "Received";
   if (type === "booked") return "Booked";
   if (type === "reviewed" || type === "completed") return "Completed";
+  if (type === "undone") return "Undone";
   if (type === "recalled") return "Recalled";
   if (type === "draft_saved") return "Draft saved";
   return type.replaceAll("_", " ");

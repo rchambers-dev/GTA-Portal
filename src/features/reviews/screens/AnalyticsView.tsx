@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { ANALYTICS_RANGES, percent, type AnalyticsFilters, type Urgency } from "../domain/analytics";
 import type { loadAnalytics } from "../domain/analytics-repository";
-import { ReviewLog } from "./AnalyticsLog";
 import { JumpSelect, PrintReport } from "./PrintReport";
 import styles from "./analytics.module.css";
 
@@ -50,7 +49,7 @@ export function AnalyticsView({
             <a href="#analytics-tutors">Tutors</a>
           </span>
           <PrintReport />
-          <a href="#analytics-log">Review Log</a>
+          <Link href={`/${workspace}/reviews/log`}>Review log</Link>
         </div>
       </header>
       {data.loadError ? <p className={styles.error} role="alert">{data.loadError}</p> : null}
@@ -82,6 +81,7 @@ export function AnalyticsView({
             <div className={styles.pace}>
               <div className={styles.paceTop}>
                 <strong>This cycle</strong>
+                <span className={styles.note}>{page.cycle.dates}</span>
                 <span className={`${styles.paceBadge} ${toneClass(paceTone)}`}>{paceLabel}</span>
               </div>
               <div className={styles.track}>
@@ -216,7 +216,6 @@ export function AnalyticsView({
               ))}
             </section>
           </div>
-          <ReviewLog rows={page.log} />
     </div>
   );
 }
