@@ -22,7 +22,7 @@ export function CycleView({
   const [query, setQuery] = useState("");
   const [tutor, setTutor] = useState("all");
   const [openId, setOpenId] = useState<string | null>(null);
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+  const [accordion, setAccordion] = useState<{ key: string; open: string | null }>({ key: "", open: null });
   const [signing, setSigning] = useState<CycleLearner | null>(null);
   const [picked, setPicked] = useState<string[]>([]);
   const [error, setError] = useState("");
@@ -46,7 +46,19 @@ export function CycleView({
   const groups = CYCLE_STEPS.map((step) => ({
     ...step,
     rows: filtered.filter((learner) => learner.stepId === step.id),
-  })).filter((group) => group.rows.length > 0);
+  }));
+  const visibleKey = `${query}\0${tutor}`;
+  const firstWithLearners = groups.find((group) => group.rows.length > 0)?.id ?? null;
+  const openSection =
+    accordion.key === visibleKey
+      ? accordion.open
+      : accordion.open && groups.some((group) => group.id === accordion.open)
+        ? accordion.open
+        : firstWithLearners;
+
+  function toggleSection(id: string) {
+    setAccordion({ key: visibleKey, open: openSection === id ? null : id });
+  }
 
   function openSign(learner: CycleLearner) {
     setError("");
@@ -72,7 +84,7 @@ export function CycleView({
     <div className={styles.page} style={{ ["--cycle-name" as string]: nameColumn }}>
       <header className={styles.head}>
         <h1>Review cycle</h1>
-        <p>Search a name, tutor, company or postcode. Empty steps stay hidden.</p>
+        <p>Search a name, tutor, company or postcode.</p>
       </header>
       {page.loadError ? <p className={styles.error} role="alert">{page.loadError}</p> : null}
       <div className={styles.tools}>
@@ -91,8 +103,9 @@ export function CycleView({
         </select>
         <span className={styles.count}>{filtered.length} learners</span>
       </div>
+      <div className={styles.sections}>
       {groups.map((group) => {
-        const sectionOpen = !collapsed[group.id];
+        const sectionOpen = openSection === group.id;
         return (
         <section key={group.id} className={sectionOpen ? styles.group : `${styles.group} ${styles.groupClosed}`}>
           <h2 className={styles.groupHead}>
@@ -100,14 +113,17 @@ export function CycleView({
               type="button"
               className={styles.groupToggle}
               aria-expanded={sectionOpen}
-              onClick={() => setCollapsed((current) => ({ ...current, [group.id]: sectionOpen }))}
+              onClick={() => toggleSection(group.id)}
             >
               <span className={sectionOpen ? styles.groupChevronOpen : styles.groupChevron} aria-hidden="true">▸</span>
               {group.label}
               <span className={styles.badge}>{group.rows.length}</span>
             </button>
           </h2>
-          {sectionOpen ? group.rows.map((learner) => {
+          {sectionOpen && group.rows.length === 0 ? (
+            <p className={styles.emptyStep}>No learners at this step</p>
+          ) : null}
+          {sectionOpen && group.rows.length > 0 ? group.rows.map((learner) => {
             const expanded = openId === learner.gtaId;
             return (
               <article key={learner.gtaId} className={styles.row}>
@@ -177,6 +193,7 @@ export function CycleView({
         </section>
         );
       })}
+      </div>
       {signing ? (
         <div className={styles.popup} role="presentation">
           <div className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="sign-title">
