@@ -2858,3 +2858,72 @@
 .layout .lockedPanel .stop {
   border-top-color: var(--plan-line-strong);
 }
+
+/* Stop actions. Colours are the Review Assistant .btn rules (style.css :root). */
+.actionGrid .actionPrimary,
+.actionGrid .actionBlue,
+.actionGrid .actionGrey,
+.actionGrid .actionDanger,
+.actionGrid .actionGhost {
+  border: 0;
+  opacity: 1;
+}
+.actionGrid .actionPrimary,
+.actionGrid .actionDanger {
+  background: #b44a2c;
+  color: #fff;
+}
+.actionGrid .actionPrimary:hover:not(:disabled) {
+  background: #8f351c;
+}
+.actionGrid .actionPrimary:disabled,
+.actionGrid .actionPrimary:disabled:hover {
+  background: #b44a2c;
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.actionGrid .actionDanger:hover {
+  background: #8f351c;
+}
+.actionGrid .actionDanger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.actionGrid .actionBlue {
+  background: #1d6fbf;
+  color: #fff;
+}
+.actionGrid .actionBlue:hover:not(:disabled) {
+  background: #165a9c;
+}
+.actionGrid .actionBlue:disabled,
+.actionGrid .actionBlue:disabled:hover {
+  background: #1d6fbf;
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.actionGrid .actionBlue[aria-expanded="true"] {
+  background: #24324f;
+}
+.actionGrid .actionGrey {
+  background: #d5cfc3;
+  color: #1d2433;
+}
+.actionGrid .actionGrey:hover,
+.actionGrid .actionGreyOn {
+  background: #c4bdae;
+  color: #1d2433;
+}
+.actionGrid .actionGrey:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.actionGrid .actionGhost {
+  background: transparent;
+  color: #24324f;
+  border: 1px solid #d8ccb8;
+}
+.actionGrid .actionGhost:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

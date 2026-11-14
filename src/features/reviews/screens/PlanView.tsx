@@ -713,13 +713,13 @@ function StopCard({
             >
               {stop.verified ? "Undo verify" : "Verify"}
             </button>
-            <button type="button" className={styles.actionBlue} onClick={() => { setBookMethod("in_person"); setOpen(open === "book" && bookMethod === "in_person" ? null : "book"); }}>
+            <button type="button" className={styles.actionBlue} aria-expanded={open === "book" && bookMethod === "in_person"} onClick={() => { setBookMethod("in_person"); setOpen(open === "book" && bookMethod === "in_person" ? null : "book"); }}>
               Rebook
             </button>
             <button type="button" className={styles.actionBlue} onClick={() => { setBookMethod("phone"); setOpen(open === "book" && bookMethod === "phone" ? null : "book"); }}>
               Phone review
             </button>
-            <button type="button" className={styles.actionGrey} onClick={() => onNote(stop.gtaId)}>
+            <button type="button" className={stop.notes ? `${styles.actionGrey} ${styles.actionGreyOn}` : styles.actionGrey} onClick={() => onNote(stop.gtaId)}>
               {stop.notes ? "Edit note" : "Add note"}
             </button>
             <Link className={styles.actionBlue} href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
