@@ -2868,19 +2868,22 @@
   border: 0;
   opacity: 1;
 }
-.actionGrid .actionPrimary,
-.actionGrid .actionDanger {
-  background: #b44a2c;
+.actionGrid .actionPrimary {
+  background: #2f6b56;
   color: #fff;
 }
 .actionGrid .actionPrimary:hover:not(:disabled) {
-  background: #8f351c;
+  background: #245544;
 }
 .actionGrid .actionPrimary:disabled,
 .actionGrid .actionPrimary:disabled:hover {
-  background: #b44a2c;
+  background: #2f6b56;
   opacity: 0.55;
   cursor: not-allowed;
+}
+.actionGrid .actionDanger {
+  background: #b44a2c;
+  color: #fff;
 }
 .actionGrid .actionDanger:hover {
   background: #8f351c;
