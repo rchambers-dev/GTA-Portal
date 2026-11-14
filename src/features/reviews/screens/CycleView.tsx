@@ -37,6 +37,12 @@ export function CycleView({
     });
   }, [page.learners, query, tutor]);
 
+  const nameColumn = useMemo(() => {
+    const longest = page.learners.reduce((max, learner) => Math.max(max, learner.name.length), 8);
+    const width = Math.min(Math.max(longest + 1, 12), 28);
+    return `${width}ch`;
+  }, [page.learners]);
+
   const groups = CYCLE_STEPS.map((step) => ({
     ...step,
     rows: filtered.filter((learner) => learner.stepId === step.id),
@@ -63,7 +69,7 @@ export function CycleView({
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} style={{ ["--cycle-name" as string]: nameColumn }}>
       <header className={styles.head}>
         <h1>Review cycle</h1>
         <p>Search a name, tutor, company or postcode. Empty steps stay hidden.</p>
@@ -115,7 +121,7 @@ export function CycleView({
                   >
                     {expanded ? "▾" : "▸"}
                   </button>
-                  <span className={styles.name}>{learner.name}</span>
+                  <span className={styles.name} title={learner.name}>{learner.name}</span>
                   <button
                     type="button"
                     className={styles.reviewBtn}
