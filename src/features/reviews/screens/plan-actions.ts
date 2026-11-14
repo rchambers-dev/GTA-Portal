@@ -198,14 +198,8 @@ export async function completeDayAction(input: { date: string; gtaIds: string[] 
   return fail(error) ?? { ok: true as const };
 }
 
-export async function reverseSafeguardingAction(input: { signoffId: string }) {
-  const access = await writer();
-  if (!access.ok) return access;
-  const { error } = await access.supabase.rpc("reverse_safeguarding_signoff", {
-    p_signoff_id: input.signoffId,
-    p_reason: "Cleared from the plan",
-  });
-  return fail(error) ?? { ok: true as const };
+export async function reverseSafeguardingAction() {
+  return { ok: false as const, formError: "A safeguarding sign-off cannot be undone." };
 }
 
 export async function applyRouteAction(input: {

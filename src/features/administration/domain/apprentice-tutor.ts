@@ -43,6 +43,7 @@ export const LEARNER_SECTIONS = [
   { id: "employer", label: "Employer" },
   { id: "programme", label: "Programme" },
   { id: "tutor", label: "Tutor" },
+  { id: "reviews", label: "Reviews" },
 ] as const;
 
 export type LearnerSectionId = (typeof LEARNER_SECTIONS)[number]["id"];

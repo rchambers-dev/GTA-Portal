@@ -6,6 +6,7 @@ import { loadApprenticePlacements } from "../domain/apprentice-placement-reposit
 import { loadLearnerExits } from "../domain/learner-exit-repository";
 import { loadApprenticeLearner } from "../domain/apprentice-tutor-repository";
 import { canAssignApprenticeTutor } from "../domain/apprentice-tutor";
+import { loadLearnerReviews } from "@/features/reviews/domain/cycle-repository";
 import { ApprenticeLearnerView } from "./ApprenticeLearnerView";
 
 /**
@@ -21,11 +22,12 @@ export async function ApprenticeLearnerScreen({
 }) {
   const session = await getSupabaseEffectiveSession();
   const canManageProgramme = canManageApprenticeProgramme(session);
-  const [page, programme, exits, placements] = await Promise.all([
+  const [page, programme, exits, placements, reviews] = await Promise.all([
     loadApprenticeLearner(gtaId),
     loadApprenticeProgramme(gtaId, { canManage: canManageProgramme }),
     loadLearnerExits(gtaId, { canManage: canManageProgramme }),
     loadApprenticePlacements(gtaId, { canManage: canManageProgramme }),
+    loadLearnerReviews(gtaId),
   ]);
 
   return (
@@ -38,6 +40,7 @@ export async function ApprenticeLearnerScreen({
         programme={programme}
         exits={exits}
         placements={placements}
+        reviews={reviews}
       />
     </Suspense>
   );
