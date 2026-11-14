@@ -34,7 +34,13 @@ export type CycleLearner = {
   packId: string | null;
   packStage: string | null;
   editable: boolean;
+  /** Percent of the saved form that is filled, using the Review Assistant checks. */
   fillPercent: number;
+  /** Percent still to fill. */
+  fillRemaining: number;
+  fillStarted: boolean;
+  /** Days until the two-week window opens. Null while a break pauses the cycle. */
+  noticeDays: number | null;
 };
 
 export type CyclePage = {

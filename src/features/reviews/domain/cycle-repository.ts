@@ -7,7 +7,9 @@ import {
   CYCLE_STEPS,
   currentStepDetail,
   cycleStepFromStage,
+  daysBetween,
   reviewCountLabel,
+  tutorNoticeDate,
   stepTone,
   tutorDueBand,
   type CycleStepId,
@@ -15,6 +17,7 @@ import {
 import { methodLabel, reviewDueLabel } from "./plan-due";
 import {
   emptyTutorForm,
+  tutorFill,
   type Rag,
   type TargetDraft,
   type TargetStatus,
@@ -90,6 +93,7 @@ type Loaded = {
   profiles: Map<string, string>;
   concerns: Set<string>;
   reviewers: { id: string; name: string; isDefault: boolean }[];
+  forms: Map<string, TutorFormDraft>;
 };
 
 async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
@@ -108,6 +112,9 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
     profilesResult,
     concernsResult,
     reviewersResult,
+    formsResult,
+    targetsResult,
+    progressResult,
   ] = await Promise.all([
     loadApprentices(supabase),
     supabase.from("programmes").select("id, name"),
@@ -123,6 +130,9 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
     supabase.from("profiles").select("id, display_name"),
     supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
     supabase.from("review_reviewers").select("profile_id, is_default"),
+    supabase.from("review_tutor_forms").select("pack_id, previous_summary, tutor_comment"),
+    supabase.from("review_targets").select("pack_id, kind, slot, action, owner, measure, target_date, status, carried_from_id"),
+    supabase.from("review_progress_rows").select("pack_id, area, evidence, action_ref, rag, target_hours, current_hours"),
   ]);
 
   const failed = [
@@ -169,7 +179,64 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
       name: profiles.get(row.profile_id) || "Reviewer",
       isDefault: Boolean(row.is_default),
     })),
+    forms: savedForms(formsResult.data, targetsResult.data, progressResult.data),
   };
+}
+
+function savedForms(forms: unknown, targets: unknown, progress: unknown): Map<string, TutorFormDraft> {
+  const byPack = new Map<string, TutorFormDraft>();
+  const draft = (packId: string) => {
+    const existing = byPack.get(packId);
+    if (existing) return existing;
+    const next = emptyTutorForm();
+    byPack.set(packId, next);
+    return next;
+  };
+  asRows<{ pack_id: string; previous_summary: string | null; tutor_comment: string | null }>(forms).forEach((row) => {
+    const form = draft(row.pack_id);
+    form.previousSummary = row.previous_summary || "";
+    form.tutorComment = row.tutor_comment || "";
+  });
+  asRows<{
+    pack_id: string;
+    kind: string;
+    slot: number;
+    action: string | null;
+    owner: string | null;
+    measure: string | null;
+    target_date: string | null;
+    status: string | null;
+    carried_from_id: string | null;
+  }>(targets).forEach((row) => {
+    const form = draft(row.pack_id);
+    const list = row.kind === "previous" ? form.previousTargets : form.newTargets;
+    const slot = list[row.slot - 1];
+    if (!slot) return;
+    slot.action = row.action || "";
+    slot.owner = row.owner || "";
+    slot.measure = row.measure || "";
+    slot.targetDate = isoDate(row.target_date) || "";
+    slot.status = (row.status as TargetStatus) || "open";
+    slot.carriedFromId = row.carried_from_id;
+  });
+  asRows<{
+    pack_id: string;
+    area: string;
+    evidence: string | null;
+    action_ref: string | null;
+    rag: string | null;
+    target_hours: number | null;
+    current_hours: number | null;
+  }>(progress).forEach((row) => {
+    const item = draft(row.pack_id).progress.find((entry) => entry.area === row.area);
+    if (!item) return;
+    item.evidence = row.evidence || "";
+    item.actionRef = row.action_ref || "";
+    item.rag = (row.rag as Rag) || "";
+    item.targetHours = row.target_hours == null ? "" : String(row.target_hours);
+    item.currentHours = row.current_hours == null ? "" : String(row.current_hours);
+  });
+  return byPack;
 }
 
 const EVENT_STEP: Partial<Record<string, CycleStepId>> = {
@@ -227,6 +294,9 @@ function buildLearner(loaded: Loaded, apprentice: ApprenticeRow, today: string):
     stage: latestPack?.stage ?? null,
     inBreak,
   }).band;
+  const sent = ["to_book", "booked", "reviewed", "completed"].includes(latestPack?.stage || "");
+  const fill = tutorFill(latestPack ? loaded.forms.get(latestPack.id) ?? emptyTutorForm() : emptyTutorForm(), today, interval, sent);
+  const noticeDays = planned && !inBreak ? daysBetween(today, tutorNoticeDate(planned)) : null;
   return {
     gtaId: apprentice.gta_id,
     name: personName(apprentice),
@@ -253,7 +323,10 @@ function buildLearner(loaded: Loaded, apprentice: ApprenticeRow, today: string):
     packId: latestPack?.id ?? null,
     packStage: latestPack?.stage ?? null,
     editable: latestPack?.stage === "with_tutor",
-    fillPercent: 0,
+    fillPercent: fill.percent,
+    fillRemaining: fill.remaining,
+    fillStarted: fill.started,
+    noticeDays,
   };
 }
 
@@ -379,13 +452,14 @@ export async function readDigitalReview(supabase: SupabaseClient, packId: string
   const packResult = await supabase.from("review_packs").select("id, review_id, gta_id, stage, tutor_id").eq("id", packId).maybeSingle();
   if (packResult.error || !packResult.data) return failed(packResult.error?.message || "This review could not be opened.");
   const pack = packResult.data;
-  const [apprenticeResult, reviewResult, formResult, targetsResult, progressResult, employmentResult] = await Promise.all([
-    supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, programme_id, release_day, status").eq("gta_id", pack.gta_id).maybeSingle(),
+  const [apprenticeResult, reviewResult, formResult, targetsResult, progressResult, employmentResult, earlierResult] = await Promise.all([
+    supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, programme_id, release_day, status, course_start, planned_course_end").eq("gta_id", pack.gta_id).maybeSingle(),
     supabase.from("reviews").select("id, planned_on, actual_on, method, interval_weeks, reviewer_id").eq("id", pack.review_id).maybeSingle(),
     supabase.from("review_tutor_forms").select("previous_summary, tutor_comment, draft_saved_at").eq("pack_id", packId).maybeSingle(),
     supabase.from("review_targets").select("id, kind, slot, action, owner, measure, target_date, status, carried_from_id").eq("pack_id", packId),
     supabase.from("review_progress_rows").select("area, evidence, action_ref, rag, target_hours, current_hours").eq("pack_id", packId),
     supabase.from("apprentice_employments").select("employer_id, site_id, manager_id").eq("gta_id", pack.gta_id).is("end_date", null).maybeSingle(),
+    supabase.from("reviews").select("actual_on").eq("gta_id", pack.gta_id).eq("status", "completed").order("actual_on", { ascending: false }).limit(2),
   ]);
   const apprentice = apprenticeResult.data;
   const form = emptyTutorForm();
@@ -422,29 +496,34 @@ export async function readDigitalReview(supabase: SupabaseClient, packId: string
   const employerId = employmentResult.data?.employer_id;
   const siteId = employmentResult.data?.site_id;
   const managerId = employmentResult.data?.manager_id;
-  const [employer, site, manager, programme, reviewer] = await Promise.all([
+  const [employer, site, manager, programme, reviewer, tutor] = await Promise.all([
     employerId ? supabase.from("employers").select("company_name").eq("employer_id", employerId).maybeSingle() : Promise.resolve({ data: null }),
     siteId ? supabase.from("employer_sites").select("postcode").eq("id", siteId).maybeSingle() : Promise.resolve({ data: null }),
     managerId ? supabase.from("employer_managers").select("first_name, middle_names, last_name, phone").eq("id", managerId).maybeSingle() : Promise.resolve({ data: null }),
     apprentice?.programme_id ? supabase.from("programmes").select("name").eq("id", apprentice.programme_id).maybeSingle() : Promise.resolve({ data: null }),
     reviewResult.data?.reviewer_id ? supabase.from("profiles").select("display_name").eq("id", reviewResult.data.reviewer_id).maybeSingle() : Promise.resolve({ data: null }),
+    pack.tutor_id ? supabase.from("profiles").select("display_name").eq("id", pack.tutor_id).maybeSingle() : Promise.resolve({ data: null }),
   ]);
   const name = apprentice ? personName(apprentice) : pack.gta_id;
+  const earlier = asRows<{ actual_on: string | null }>(earlierResult.data).find(
+    (row) => row.actual_on && row.actual_on.slice(0, 10) !== (reviewResult.data?.actual_on || "").slice(0, 10),
+  );
   const section1 = [
     ["Apprentice name", name],
     ["Review date", "Filled in once the review is verified from the Plan page"],
     ["Apprenticeship standard / route / level", programme.data?.name || "Not recorded"],
     ["Release day", apprentice?.release_day || "Not recorded"],
+    ["GTA tutor", tutor.data?.display_name || "Not set"],
     ["GTA reviewer", reviewer.data?.display_name || "Reiss"],
-    ["Apprenticeship start date", "Not recorded on the apprentice row"],
-    ["Apprenticeship planned end date", "Not recorded on the apprentice row"],
+    ["Apprenticeship start date", apprentice?.course_start ? formatTutorDate(String(apprentice.course_start).slice(0, 10)) : "Not set"],
+    ["Apprenticeship planned end date", apprentice?.planned_course_end ? formatTutorDate(String(apprentice.planned_course_end).slice(0, 10)) : "Not set"],
     ["Employer / workplace", employer.data?.company_name || "Not recorded"],
     ["Postcode", site.data?.postcode || "Not recorded"],
     ["Employer contact name", manager.data ? formatManagerName({ firstName: manager.data.first_name, middleNames: manager.data.middle_names, lastName: manager.data.last_name }) : "Not recorded"],
     ["Employer contact phone", manager.data?.phone || "Not recorded"],
-    ["Employer contact email", "Not recorded"],
+    ["Employer contact email", "Not set"],
     ["Planned review date", reviewResult.data?.planned_on ? formatTutorDate(reviewResult.data.planned_on) : "Not set"],
-    ["Previous review date", "See the learner Reviews tab"],
+    ["Previous review date", earlier?.actual_on ? formatTutorDate(earlier.actual_on.slice(0, 10)) : "Not set"],
   ].map(([label, value]) => ({ label, value }));
   return {
     packId,

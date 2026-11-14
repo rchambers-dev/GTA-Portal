@@ -222,6 +222,41 @@ export function formPayload(form: TutorFormDraft) {
   };
 }
 
+/** Same checks as the Review Assistant tutorReviewFillProgress. `remaining` is the percent still to fill. */
+export function tutorFill(form: TutorFormDraft, today: string, weeks = REVIEW_INTERVAL_WEEKS, sent = false) {
+  if (sent) return { started: true, remaining: 0, sent: true, percent: 100 };
+  const startedTargets = form.newTargets.filter(
+    (target) => target.action.trim() || target.owner.trim() || target.measure.trim() || target.targetDate.trim(),
+  );
+  const checks: boolean[] = [Boolean(form.previousSummary.trim()), Boolean(form.tutorComment.trim())];
+  if (!startedTargets.length) checks.push(false);
+  else {
+    startedTargets.forEach((target) => {
+      checks.push(
+        Boolean(
+          target.action.trim() &&
+            target.owner.trim() &&
+            target.measure.trim() &&
+            !tutorTargetDateError(target.targetDate, today, weeks),
+        ),
+      );
+    });
+  }
+  form.progress.forEach((row) => {
+    if (row.area === "off_the_job") {
+      checks.push(Boolean(row.evidence.trim() && otjTrack(row.targetHours, row.currentHours).rag));
+    } else {
+      checks.push(Boolean(row.evidence.trim() && ["red", "amber", "green"].includes(row.rag)));
+    }
+  });
+  form.previousTargets
+    .filter((target) => target.action.trim())
+    .forEach((target) => checks.push(target.status !== "open"));
+  const done = checks.filter(Boolean).length;
+  const remaining = checks.length ? Math.round(((checks.length - done) / checks.length) * 100) : 100;
+  return { started: done > 0 || startedTargets.length > 0, remaining, sent: false, percent: 100 - remaining };
+}
+
 export function tidyTutorText(value: string, wordLimit: number): string {
   let text = value.replace(/\s+/g, " ").trim();
   if (!text) return "";

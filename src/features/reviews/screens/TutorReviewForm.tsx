@@ -15,40 +15,37 @@ import {
   type TargetDraft,
   type TutorFormDraft,
 } from "../domain/tutor-form-rules";
-import { addDays } from "../domain/plan-due";
+import { addDays, formatWeeksAndDays } from "../domain/plan-due";
+import { fillReviewFormPdf, reviewPdfFilename } from "../domain/review-pdf";
 import { saveTutorFormAction, submitTutorFormAction } from "./cycle-actions";
+import { TutorDatePicker } from "./TutorDatePicker";
+import { TutorHelpDialog } from "./tutor-help";
 import styles from "./tutor-form.module.css";
-
-const HELP: Record<string, { title: string; body: string; points: string[] }> = {
-  summary: {
-    title: "How to write the previous review summary",
-    body: "Sum up last time from the previous tutor notes: how they were doing, what was agreed, and what was left to do. Use most of the box, about two thirds of the word limit, not just one short sentence. Do not add a conversation that is not already in those notes.",
-    points: [],
-  },
-  target: {
-    title: "How to set a target",
-    body: "Write one clear thing that should happen before the next review. You do not need all three targets if one or two is enough. Write it as the tutor, from the work you have seen.",
-    points: [
-      "Action / target — what needs to happen.",
-      "Owner — who will do it: apprentice, employer or tutor.",
-      "Target date — when it should be done. Use a day in the next 10 weeks.",
-      "Success measure — how you will know it is done.",
-    ],
-  },
-  comment: {
-    title: "How to write the tutor comment",
-    body: "Write your view as the tutor from the work you have seen this cycle and what should happen next. Use most of the box, about two thirds of the word limit. Do not write as if you have spoken to the employer, mentor, or anyone else unless you have already said that in your comments.",
-    points: [],
-  },
-  progress: {
-    title: "How to fill this progress row",
-    body: "Red if they are behind, amber if they need a push, green if they are on track. Evidence is required. Action ref is optional. N/A fills the evidence for English and maths or EPA, and you still mark red, amber or green.",
-    points: [],
-  },
-};
 
 function limit(value: string, words: number) {
   return clipWords(value, words);
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function displayToIso(value: string) {
+  const match = /^(\d{1,2}) ([A-Za-z]{3}) (\d{4})$/.exec(value.trim());
+  if (!match) return "";
+  const month = MONTHS.indexOf(match[2]);
+  if (month < 0) return "";
+  return `${match[3]}-${String(month + 1).padStart(2, "0")}-${match[1].padStart(2, "0")}`;
+}
+
+function fillCaption(learner: { band: string; fillRemaining: number; fillStarted: boolean; noticeDays: number | null }) {
+  if (learner.band === "sent-back") return "Sent back to the reviewer";
+  if (learner.band !== "need-doing") {
+    return learner.noticeDays != null && learner.noticeDays > 0
+      ? `Opens in ${formatWeeksAndDays(learner.noticeDays)}`
+      : "Not due yet";
+  }
+  if (learner.fillRemaining === 0) return "Ready to send back";
+  if (learner.fillStarted) return `${learner.fillRemaining}% left to fill`;
+  return "Fill this review";
 }
 
 export function TutorReviewForm({ review }: { review: DigitalReview }) {
@@ -117,29 +114,37 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
       }
       setStatus("Saved.");
     }
-    const { jsPDF } = await import("jspdf");
-    const pdf = new jsPDF();
-    pdf.setFontSize(14);
-    pdf.text(`Digital review — ${review.name}`, 14, 18);
-    pdf.setFontSize(10);
-    let y = 28;
-    const write = (line: string) => {
-      pdf.splitTextToSize(line, 180).forEach((part: string) => {
-        if (y > 280) {
-          pdf.addPage();
-          y = 18;
-        }
-        pdf.text(part, 14, y);
-        y += 5;
-      });
-    };
-    write(`Summary: ${form.previousSummary}`);
-    form.newTargets.forEach((target) => {
-      if (target.action.trim()) write(`Target ${target.slot}: ${target.action} (${target.owner}, ${target.targetDate}) ${target.measure}`);
+    const template = await fetch("/forms/GTA_Tripartite_Progress_Review_Form_V1.2.pdf");
+    if (!template.ok) {
+      setStatus("Could not load the review form template.");
+      return;
+    }
+    const value = (label: string) => review.section1.find((row) => row.label === label)?.value || "";
+    const bytes = await fillReviewFormPdf(new Uint8Array(await template.arrayBuffer()), {
+      name: review.name,
+      apprenticeship: value("Apprenticeship standard / route / level"),
+      releaseDay: value("Release day"),
+      tutor: value("GTA tutor"),
+      reviewer: value("GTA reviewer"),
+      startDate: displayToIso(value("Apprenticeship start date")),
+      endDate: displayToIso(value("Apprenticeship planned end date")),
+      employer: value("Employer / workplace"),
+      postcode: value("Postcode"),
+      employerContact: value("Employer contact name"),
+      phone: value("Employer contact phone"),
+      email: value("Employer contact email"),
+      plannedReviewDate: displayToIso(value("Planned review date")),
+      previousReviewDate: displayToIso(value("Previous review date")),
+    }, form, {
+      forVisit: review.stage !== "with_tutor" && review.stage !== "waiting",
     });
-    form.progress.forEach((row) => write(`${row.area}: ${row.rag || "no colour"} ${row.evidence}`));
-    write(`Tutor: ${form.tutorComment}`);
-    pdf.save(`${review.gtaId}-digital-review.pdf`);
+    const blob = new Blob([Uint8Array.from(bytes)], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = reviewPdfFilename(review.name, displayToIso(value("Planned review date")));
+    link.click();
+    URL.revokeObjectURL(url);
   }
 
   async function send() {
@@ -259,7 +264,7 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
             <button type="button" className={styles.help} aria-label="Help" onClick={() => setHelp("target")}>?</button>
           </div>
           <div id="summary" className={`${styles.field} ${tone("summary", Boolean(form.previousSummary.trim()))}`}>
-            <span>Tutor summary of the previous review</span>
+            <span>Tutor summary of the previous review <button type="button" className={styles.help} aria-label="How to write the previous review summary" onClick={() => setHelp("summary")}>?</button></span>
             <textarea
               value={form.previousSummary}
               readOnly={!review.editable}
@@ -302,21 +307,19 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
                     {TARGET_OWNERS.map((owner) => <option key={owner}>{owner}</option>)}
                   </select>
                 </label>
-                <label className={styles.label}>
+                <div className={styles.label}>
                   Target date
-                  <input
-                    type="date"
+                  <TutorDatePicker
                     value={target.targetDate}
-                    min={review.today}
-                    max={maxDate}
+                    today={review.today}
+                    weeks={weeks}
                     disabled={!review.editable}
-                    aria-label="Choose a date"
-                    onChange={(event) => {
+                    onChange={(next) => {
                       touch(`target-${target.slot}`);
-                      updateTarget("new", target.slot, { targetDate: event.target.value });
+                      updateTarget("new", target.slot, { targetDate: next });
                     }}
                   />
-                </label>
+                </div>
                 <label className={styles.field}>
                   <span>Success measure</span>
                   <textarea
@@ -337,7 +340,7 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
       <section className={styles.card}>
         <div className={styles.head}>
           <h2>Section 3 — Progress update</h2>
-          <button type="button" className={styles.help} aria-label="Help" onClick={() => setHelp("progress")}>?</button>
+          <button type="button" className={styles.help} aria-label="How to fill progress" onClick={() => setHelp("overall_progress")}>?</button>
         </div>
         {form.progress.map((row) => (
           <ProgressRow
@@ -353,6 +356,7 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
               }));
             }}
             onImprove={(value, words, apply) => improve("evidence", value, words, apply)}
+            onHelp={() => setHelp(row.area)}
           />
         ))}
       </section>
@@ -388,18 +392,7 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
         </div>
       </div>
 
-      {help ? (
-        <div className={styles.popup} role="presentation">
-          <div className={styles.dialog} role="dialog" aria-modal="true">
-            <h2>{HELP[help].title}</h2>
-            <p>{HELP[help].body}</p>
-            {HELP[help].points.length ? (
-              <ul className={styles.list}>{HELP[help].points.map((point) => <li key={point}>{point}</li>)}</ul>
-            ) : null}
-            <button type="button" onClick={() => setHelp(null)}>Close</button>
-          </div>
-        </div>
-      ) : null}
+      {help ? <TutorHelpDialog topic={help} onClose={() => setHelp(null)} /> : null}
     </div>
   );
 }
@@ -422,6 +415,7 @@ function ProgressRow({
   onTouch,
   onChange,
   onImprove,
+  onHelp,
 }: {
   row: ProgressDraft;
   editable: boolean;
@@ -429,13 +423,17 @@ function ProgressRow({
   onTouch: () => void;
   onChange: (patch: Partial<ProgressDraft>) => void;
   onImprove: (value: string, words: number, apply: (next: string) => void) => void;
+  onHelp: () => void;
 }) {
   const spec = PROGRESS_ROWS.find((item) => item.id === row.area);
   const track = row.area === "off_the_job" ? otjTrack(row.targetHours, row.currentHours) : null;
   const na = "naComment" in (spec || {}) ? (spec as { naComment?: string }).naComment : undefined;
   return (
     <div id={`progress-${row.area}`} className={`${styles.row} ${className}`}>
-      <strong>{spec?.label}</strong>
+      <div className={styles.head}>
+        <strong>{spec?.label}</strong>
+        <button type="button" className={styles.help} aria-label={`How to fill ${spec?.label}`} onClick={onHelp}>?</button>
+      </div>
       {row.area === "off_the_job" ? (
         <div className={styles.grid}>
           <label className={styles.label}>
@@ -489,7 +487,7 @@ function ProgressRow({
 export function TutorReviewList({
   learners,
 }: {
-  learners: { gtaId: string; name: string; company: string; postcode: string; programme: string; collegeDay: string; timing: string; band: string; packId: string | null; late: boolean }[];
+  learners: { gtaId: string; name: string; company: string; postcode: string; programme: string; collegeDay: string; timing: string; band: string; packId: string | null; late: boolean; fillPercent: number; fillRemaining: number; fillStarted: boolean; noticeDays: number | null }[];
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<string | null>(null);
@@ -535,7 +533,10 @@ export function TutorReviewList({
                 {open === learner.gtaId ? (
                   <div>
                     <p className={styles.detail}>{learner.company} · {learner.postcode || "No postcode"} · {learner.programme} · {learner.collegeDay}</p>
-                    <div className={styles.slim} aria-hidden="true"><span style={{ width: learner.band === "sent-back" ? "100%" : "8%" }} /></div>
+                    <p className={styles.detail}>{fillCaption(learner)}</p>
+                    {learner.band === "need-doing" ? (
+                      <div className={styles.slim} aria-hidden="true"><span style={{ width: `${learner.fillPercent}%` }} /></div>
+                    ) : null}
                   </div>
                 ) : null}
               </div>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { currentStepDetail, cycleStepFromStage, reviewCountLabel, stepTone, tutorDueBand } from "./cycle";
-import { firstTutorFormGap, emptyTutorForm, otjTrack, tutorTargetDateError } from "./tutor-form-rules";
+import { firstTutorFormGap, emptyTutorForm, otjTrack, tutorFill, tutorTargetDateError } from "./tutor-form-rules";
 
 describe("review cycle steps", () => {
   it("maps pack stages onto the six assistant steps", () => {
@@ -86,6 +86,20 @@ describe("tutor form validation", () => {
       }
     });
     expect(firstTutorFormGap(form, today)?.message).toBe("Mark English and maths as red, amber or green.");
+  });
+
+  it("reports how much of a saved form is still empty", () => {
+    const empty = tutorFill(emptyTutorForm(), today);
+    expect(empty.remaining).toBe(100);
+    expect(empty.percent).toBe(0);
+    expect(empty.started).toBe(false);
+    const started = emptyTutorForm();
+    started.previousSummary = "Last time they were settling in.";
+    const partial = tutorFill(started, today);
+    expect(partial.started).toBe(true);
+    expect(partial.percent).toBeGreaterThan(0);
+    expect(partial.percent).toBeLessThan(100);
+    expect(tutorFill(started, today, 10, true).percent).toBe(100);
   });
 
   it("colours off-the-job hours on the assistant bands", () => {
