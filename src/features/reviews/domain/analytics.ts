@@ -345,13 +345,17 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     const age = since ? daysBetween(since, source.today) : 0;
     const friday = addDays(thisMonday, 4);
     const datePassed = Boolean(planned && planned < source.today);
-    let bucket: RiskId = "on-track";
-    if (datePassed) bucket = "overdue";
-    else if (planned && planned >= source.today && planned <= friday) bucket = "due-this-week";
-    else if (step === "booking" && age > 7) bucket = "booking";
-    else if (step === "released" && age > 7) bucket = "with-tutor";
-    risk[bucket] += 1;
-    if (bucket === "overdue") overdueByTutor.set(learner.tutor, (overdueByTutor.get(learner.tutor) || 0) + 1);
+    const dueThisWeek = Boolean(planned && planned >= source.today && planned <= friday);
+    const bookingLate = step === "booking" && age > 7;
+    const tutorLate = step === "released" && age > 7;
+    if (datePassed) {
+      risk.overdue += 1;
+      overdueByTutor.set(learner.tutor, (overdueByTutor.get(learner.tutor) || 0) + 1);
+    }
+    if (dueThisWeek) risk["due-this-week"] += 1;
+    if (bookingLate) risk.booking += 1;
+    if (tutorLate) risk["with-tutor"] += 1;
+    if (!datePassed && !dueThisWeek && !bookingLate && !tutorLate) risk["on-track"] += 1;
   }
 
   const gaps = (from: string, to: string) => {

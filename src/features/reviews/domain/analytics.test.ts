@@ -60,7 +60,7 @@ describe("review analytics", () => {
     const page = buildAnalytics(source(), { range: "all", tutorId: "all", programmeId: "all", employerId: "all" });
     const overdue = page.risk.find((item) => item.id === "overdue");
     expect(overdue?.count).toBe(1);
-    expect(page.risk.reduce((sum, item) => sum + item.count, 0)).toBe(2);
+    expect(page.risk.find((item) => item.id === "booking")?.count).toBe(1);
     expect(page.overdueByTutor[0]).toMatchObject({ name: "John Pearson", count: 1 });
   });
 
