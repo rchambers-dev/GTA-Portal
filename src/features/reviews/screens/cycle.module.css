@@ -74,6 +74,13 @@
   border-bottom: 0;
 }
 
+.emptyStep {
+  margin: 0;
+  padding: 0.7rem 0.85rem 0.8rem;
+  color: #5c6478;
+  font-size: 0.9rem;
+}
+
 .groupToggle {
   display: flex;
   align-items: center;
