@@ -185,7 +185,8 @@
 
 .step {
   position: relative;
-  padding: 0 0.35rem 0 0.9rem;
+  /* The label starts below the 0.55rem dot, with a 6px gap so the connector cannot cross the words. */
+  padding: calc(0.55rem + 6px) 0.4rem 0 0;
   min-height: 2.6rem;
 }
 
@@ -193,7 +194,8 @@
   content: "";
   position: absolute;
   left: 0;
-  top: 0.35rem;
+  top: 0;
+  z-index: 1;
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 50%;
@@ -203,9 +205,11 @@
 .step:not(:last-child)::after {
   content: "";
   position: absolute;
-  left: 0.7rem;
+  left: 0.55rem;
   right: 0;
-  top: 0.58rem;
+  /* Centre a 2px line on the 0.55rem dot. */
+  top: calc(0.275rem - 1px);
+  z-index: 0;
   height: 2px;
   background: #e8eaef;
 }
@@ -213,10 +217,13 @@
 .step strong,
 .step span {
   display: block;
+  position: relative;
+  z-index: 1;
 }
 
 .step strong {
   font-size: 0.72rem;
+  line-height: 1.25;
 }
 
 .step span {
