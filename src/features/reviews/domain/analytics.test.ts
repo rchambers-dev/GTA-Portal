@@ -19,11 +19,13 @@ function source(extra: Partial<AnalyticsSource> = {}): AnalyticsSource {
       { id: "pk2", gtaId: "B", stage: "waiting", stageSince: "2026-11-12" },
     ],
     events: [
+      { packId: "pk1", gtaId: "A", type: "created", at: "2026-10-01T10:00:00Z", actorName: "", actorRole: "", detail: "" },
       { packId: "pk1", gtaId: "A", type: "released", at: "2026-10-20T10:00:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "" },
       { packId: "pk1", gtaId: "A", type: "submitted", at: "2026-10-25T10:00:00Z", actorName: "John Pearson", actorRole: "Tutor", detail: "" },
-      { packId: "pk2", gtaId: "B", type: "completed", at: "2026-11-12T15:00:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "" },
+      { packId: "pk2", gtaId: "B", type: "completed", at: "2026-11-12T15:00:00Z", actorName: "", actorRole: "", detail: "Visit done on plan" },
     ],
     activeSignoffs: ["A"],
+    recentSignoffs: ["A"],
     reversedSignoffs: ["B"],
     openConcerns: [],
     resolvedConcerns: ["A"],
@@ -46,14 +48,15 @@ describe("review analytics", () => {
     expect(countWeekdays("2026-11-14", "2026-11-15")).toBe(0);
   });
 
-  it("counts the six current steps and splits visits from waiting or archived learners", () => {
+  it("counts the four current steps and totals visits from completed reviews", () => {
     const page = buildAnalytics(source(), { range: "all", tutorId: "all", programmeId: "all", employerId: "all" });
+    expect(page.flow.map((step) => step.id)).toEqual(["released", "booking", "booked", "waiting"]);
     expect(page.flow.find((step) => step.id === "booking")?.count).toBe(1);
     expect(page.flow.find((step) => step.id === "waiting")?.count).toBe(1);
     expect(page.overall.visits).toBe(1);
     expect(page.overall.calls).toBe(0);
     expect(page.overall.released).toBe(1);
-    expect(page.overall.archived).toBe(1);
+    expect(page.overall.completed).toBe(1);
   });
 
   it("puts an overdue learner in one risk bucket and on the tutor list", () => {
@@ -67,19 +70,21 @@ describe("review analytics", () => {
   it("measures release to received from the event dates", () => {
     const page = buildAnalytics(source(), { range: "all", tutorId: "all", programmeId: "all", employerId: "all" });
     expect(page.completion.releaseToReceived).toMatchObject({ median: 5, average: 5, count: 1 });
-    expect(page.safeguarding).toMatchObject({ active: 1, without: 1, reversed: 1, live: 2 });
+    expect(page.safeguarding).toMatchObject({ active: 1, recent: 1, without: 1, reversed: 1, live: 2 });
     expect(page.concerns).toEqual({ open: 0, resolved: 1, breaks: 0 });
     expect(page.programmes.map((item) => item.name)).toEqual(["Business", "Motor"]);
+    expect(page.programmes[0]?.share).toBe(0.5);
   });
 
   it("drops events outside the selected weeks", () => {
     const page = buildAnalytics(source(), { range: "week", tutorId: "all", programmeId: "all", employerId: "all" });
     expect(page.overall.released).toBe(0);
-    expect(page.overall.archived).toBe(1);
+    expect(page.overall.completed).toBe(1);
+    expect(page.reviewsPerWeek).toHaveLength(5);
     expect(page.reviewsPerWeek.some((week) => week.current)).toBe(true);
   });
 
-  it("counts reviews completed as learners now waiting or archived", () => {
+  it("keeps a finished pack in Waiting and does not call that Completed", () => {
     const page = buildAnalytics(
       source({
         packs: [
@@ -89,10 +94,10 @@ describe("review analytics", () => {
       }),
       { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
     );
-    expect(page.flow.find((step) => step.id === "archived")?.count).toBe(0);
     expect(page.flow.find((step) => step.id === "waiting")?.count).toBe(1);
     expect(page.overall.completed).toBe(1);
-    expect(analyticsNowStep("reviewed", false)).toBe("archived");
+    expect(page.flow.every((step) => step.id !== "waiting" || step.label === "Waiting")).toBe(true);
+    expect(analyticsNowStep("reviewed", false)).toBe("waiting");
     expect(analyticsNowStep("completed", false)).toBe("waiting");
     expect(analyticsNowStep("completed", true)).toBe("released");
   });
@@ -148,6 +153,59 @@ describe("review analytics", () => {
     expect(page.risk.find((item) => item.id === "overdue")?.count).toBe(1);
     expect(page.risk.find((item) => item.id === "booking")?.count).toBe(1);
     expect(page.risk.find((item) => item.id === "with-tutor")?.count).toBe(1);
+  });
+
+  it("counts completed this cycle from the latest completed pack and names the weekday the quota starts", () => {
+    const page = buildAnalytics(
+      source({
+        today: "2026-11-14",
+        reviews: [
+          { id: "r1", gtaId: "A", status: "completed", plannedOn: "2026-09-01", actualOn: "2026-09-04", method: "in_person" },
+          { id: "r2", gtaId: "B", status: "completed", plannedOn: "2026-11-01", actualOn: "2026-11-12", method: "in_person" },
+        ],
+        events: [
+          { packId: "pk1", gtaId: "A", type: "completed", at: "2026-09-04T10:00:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "" },
+          { packId: "pk2", gtaId: "B", type: "completed", at: "2026-11-13T15:00:00Z", actorName: "", actorRole: "", detail: "" },
+        ],
+      }),
+      { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
+    );
+    expect(page.completedThisCycle).toBe(1);
+    expect(page.overall.completed).toBe(2);
+    expect(page.overall.cycleNote).toBe("13 Nov 2026 to 21 Jan 2027, counted from Mon 16 Nov");
+    expect(page.weekend).toBe(true);
+    expect(page.weekOnWeek.find((item) => item.label === "Completed")?.now).toBe(1);
+  });
+
+  it("charts the last five weeks of visits and forms received", () => {
+    const page = buildAnalytics(
+      source({
+        events: [
+          ...source().events,
+          { packId: "pk1", gtaId: "A", type: "submitted", at: "2026-11-10T10:00:00Z", actorName: "John Pearson", actorRole: "Tutor", detail: "" },
+        ],
+      }),
+      { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
+    );
+    expect(page.reviewsPerWeek).toHaveLength(5);
+    expect(page.trend).toHaveLength(5);
+    expect(page.trend.at(-1)).toMatchObject({ current: true, visits: 1, received: 1 });
+    expect("released" in (page.trend[0] || {})).toBe(false);
+  });
+
+  it("logs the note, calls a nameless actor System, and skips created events", () => {
+    const page = buildAnalytics(source(), { range: "all", tutorId: "all", programmeId: "all", employerId: "all" });
+    expect(page.log.some((item) => item.pill === "Archived")).toBe(false);
+    expect(page.log.some((item) => item.detail === "Created")).toBe(false);
+    const completed = page.log.find((item) => item.pill === "Completed");
+    expect(completed).toMatchObject({ detail: "Visit done on plan", actor: "System", role: "System" });
+    expect(page.log).toHaveLength(3);
+  });
+
+  it("puts learner counts on the filter options", () => {
+    const page = buildAnalytics(source(), { range: "all", tutorId: "all", programmeId: "all", employerId: "all" });
+    expect(page.options.tutors.find((tutor) => tutor.name === "John Pearson")?.count).toBe(1);
+    expect(page.options.programmes.reduce((sum, item) => sum + item.count, 0)).toBe(2);
   });
 
   it("limits the page to one tutor", () => {

@@ -1,5 +1,5 @@
 import { GTA_TUTORS } from "./gta-tutors";
-import { CYCLE_STEPS, tutorDueBand, type CycleStepId } from "./cycle";
+import { tutorDueBand } from "./cycle";
 import { addDays, weekStartMonday } from "./plan-due";
 
 export const ANALYTICS_RANGES = [
@@ -62,6 +62,7 @@ export type AnalyticsSource = {
   packs: AnalyticsPack[];
   events: AnalyticsEvent[];
   activeSignoffs: string[];
+  recentSignoffs: string[];
   reversedSignoffs: string[];
   openConcerns: string[];
   resolvedConcerns: string[];
@@ -110,17 +111,24 @@ export function londonDay(value: string): string {
   }).format(date);
 }
 
+export type NowStepId = "released" | "booking" | "booked" | "waiting";
+
+const NOW_STEPS: { id: NowStepId; label: string; tone: "red" | "amber" | "green" }[] = [
+  { id: "released", label: "Review released", tone: "amber" },
+  { id: "booking", label: "Needs booking", tone: "red" },
+  { id: "booked", label: "Review booked", tone: "green" },
+  { id: "waiting", label: "Waiting", tone: "green" },
+];
+
 /**
- * Portal `completed` is an archived pack. The Assistant shows that learner as
- * Waiting once the visit is archived and the next window is shut, and uses
- * the Archived step only for a finished visit that has not been archived.
+ * The Portal rests on four steps. A finished pack is Waiting once the next
+ * window is shut, and Review released when that window is open.
  */
-export function analyticsNowStep(stage: string | null, windowOpen: boolean): CycleStepId {
+export function analyticsNowStep(stage: string | null, windowOpen: boolean): NowStepId {
   if (stage === "with_tutor") return "released";
   if (stage === "to_book") return "booking";
   if (stage === "booked") return "booked";
-  if (stage === "reviewed") return "archived";
-  if (stage === "completed" && windowOpen) return "released";
+  if ((stage === "completed" || stage === "reviewed") && windowOpen) return "released";
   return "waiting";
 }
 
@@ -223,8 +231,8 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     list.sort((a, b) => String(b.actualOn).localeCompare(String(a.actualOn)));
   }
 
-  const flow = CYCLE_STEPS.map((step) => ({ id: step.id, label: step.label, count: 0 }));
-  const stepOf = new Map<string, CycleStepId>();
+  const flow = NOW_STEPS.map((step) => ({ ...step, count: 0 }));
+  const stepOf = new Map<string, NowStepId>();
   for (const learner of learners) {
     const pack = packByGta.get(learner.gtaId);
     const last = completedByLearner.get(learner.gtaId)?.[0]?.actualOn?.slice(0, 10) || null;
@@ -241,8 +249,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     const slot = flow.find((item) => item.id === step);
     if (slot) slot.count += 1;
   }
-  const waitingOrArchived = (flow.find((step) => step.id === "waiting")?.count || 0)
-    + (flow.find((step) => step.id === "archived")?.count || 0);
+  const waitingNow = flow.find((step) => step.id === "waiting")?.count || 0;
 
   const datedEvents = events.filter((event) => inWindow(event.at, window));
   const countType = (type: string) => datedEvents.filter((event) => event.type === type).length;
@@ -250,34 +257,32 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   let visits = 0;
   let calls = 0;
   let teams = 0;
-  for (const learner of learners) {
-    const step = stepOf.get(learner.gtaId);
-    if (step !== "waiting" && step !== "archived") continue;
-    const latest = completedByLearner.get(learner.gtaId)?.[0];
-    if (!latest || !inWindow(latest.actualOn, window)) continue;
-    if (latest.method === "phone") calls += 1;
-    else if (latest.method === "teams") teams += 1;
-    else if (latest.method) visits += 1;
+  for (const review of reviews) {
+    if (review.status !== "completed" || !inWindow(review.actualOn, window)) continue;
+    if (review.method === "phone") calls += 1;
+    else if (review.method === "teams") teams += 1;
+    else if (review.method) visits += 1;
   }
 
-  const completedInRange = reviews.filter(
-    (review) => review.status === "completed" && inWindow(review.actualOn, window),
-  );
-  const earliest = completedInRange.map((review) => review.actualOn || "").filter(Boolean).sort()[0] || null;
+  const completedReviews = reviews.filter((review) => review.status === "completed");
+  const completedInRange = completedReviews.filter((review) => inWindow(review.actualOn, window));
+  const earliest = completedReviews.map((review) => review.actualOn || "").filter(Boolean).sort()[0] || null;
   const bounds = cycleBounds(source.today, earliest);
-  const completedThisCycle = new Set(
-    reviews
-      .filter(
-        (review) =>
-          review.status === "completed" &&
-          review.actualOn &&
-          review.actualOn.slice(0, 10) >= bounds.start &&
-          review.actualOn.slice(0, 10) <= source.today,
-      )
-      .map((review) => review.gtaId),
-  );
-  const weekdaysLeft = countWeekdays(source.today, bounds.end);
-  const quota = neededEachDay(learners.length, completedThisCycle.size, weekdaysLeft);
+  const countedFrom = firstWeekday(source.today);
+  const latestCompletedPack = new Map<string, string>();
+  for (const event of events) {
+    if (event.type !== "completed") continue;
+    const day = londonDay(event.at);
+    const previous = latestCompletedPack.get(event.gtaId);
+    if (!previous || day > previous) latestCompletedPack.set(event.gtaId, day);
+  }
+  let completedThisCycle = 0;
+  for (const day of latestCompletedPack.values()) {
+    if (day >= bounds.start && day <= bounds.end) completedThisCycle += 1;
+  }
+  const weekdaysLeft = countWeekdays(countedFrom, bounds.end);
+  const quota = neededEachDay(learners.length, completedThisCycle, weekdaysLeft);
+  const completedTotal = filters.range === "all" ? completedReviews.length : countType("completed");
 
   const thisMonday = weekStartMonday(source.today);
   const lastMonday = addDays(thisMonday, -7);
@@ -298,36 +303,27 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     { label: "Visits", now: visitWeek(thisMonday), previous: visitWeek(lastMonday) },
   ].map((item) => ({ ...item, delta: item.now - item.previous }));
 
-  const trendStart = window.start || addDays(source.today, -77);
-  const trend: { label: string; current: boolean; released: number; received: number; completed: number; visits: number }[] = [];
-  for (let monday = weekStartMonday(trendStart); monday <= source.today; monday = addDays(monday, 7)) {
+  const trend = lastFiveWeeks(thisMonday).map((monday) => {
     const friday = addDays(monday, 4);
-    const inWeek = (type: string) =>
-      events.filter((event) => event.type === type && event.at.slice(0, 10) >= monday && event.at.slice(0, 10) <= friday).length;
-    trend.push({
+    return {
       label: monthDay(monday),
       current: monday === thisMonday,
-      released: inWeek("released"),
-      received: inWeek("submitted"),
-      completed: inWeek("completed"),
+      received: events.filter((event) => event.type === "submitted" && londonDay(event.at) >= monday && londonDay(event.at) <= friday).length,
       visits: reviews.filter((review) => {
         const day = review.actualOn?.slice(0, 10) || "";
-        return review.status === "completed" && review.method === "in_person" && day >= monday && day <= friday;
+        return review.status === "completed" && day >= monday && day <= friday;
       }).length,
-    });
-  }
-  const trendWeeks = trend.slice(-16);
+    };
+  });
 
-  const perWeek = new Map<string, { label: string; total: number; current: boolean; monday: string }>();
-  for (const review of completedInRange) {
-    const day = review.actualOn!.slice(0, 10);
-    if (weekdayName(day) === "Saturday" || weekdayName(day) === "Sunday") continue;
-    const monday = weekStartMonday(day);
-    const row = perWeek.get(monday) || { label: monthDay(monday), total: 0, current: monday === thisMonday, monday };
-    row.total += 1;
-    perWeek.set(monday, row);
-  }
-  const reviewsPerWeek = [...perWeek.values()].sort((a, b) => a.monday.localeCompare(b.monday)).slice(-16);
+  const reviewsPerWeek = lastFiveWeeks(thisMonday).map((monday) => {
+    const friday = addDays(monday, 4);
+    const total = completedInRange.filter((review) => {
+      const day = review.actualOn!.slice(0, 10);
+      return day >= monday && day <= friday && weekdayName(day) !== "Saturday" && weekdayName(day) !== "Sunday";
+    }).length;
+    return { label: monthDay(monday), total, current: monday === thisMonday, monday };
+  });
 
   const weekday = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map((day) => ({
     label: day,
@@ -412,35 +408,44 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
 
   const programmes = new Map<string, number>();
   for (const learner of learners) programmes.set(learner.programme || "No programme", (programmes.get(learner.programme || "No programme") || 0) + 1);
+  const optionLearners = (skip: "tutor" | "programme" | "employer") =>
+    source.learners.filter((learner) => {
+      if (skip !== "tutor" && filters.tutorId !== "all" && learner.tutorId !== filters.tutorId) return false;
+      if (skip !== "programme" && filters.programmeId !== "all" && learner.programmeId !== filters.programmeId) return false;
+      if (skip !== "employer" && filters.employerId !== "all" && learner.employerId !== filters.employerId) return false;
+      return true;
+    });
 
   const active = new Set(source.activeSignoffs.filter((id) => ids.has(id)));
+  const recent = new Set(source.recentSignoffs.filter((id) => ids.has(id)));
   const reversed = new Set(source.reversedSignoffs.filter((id) => ids.has(id) && !active.has(id)));
   const openConcerns = source.openConcerns.filter((id) => ids.has(id)).length;
   const resolvedConcerns = source.resolvedConcerns.filter((id) => ids.has(id)).length;
   const openBreaks = source.openBreaks.filter((id) => ids.has(id)).length;
 
   const log = [...events]
-    .filter((event) => inWindow(event.at, window))
+    .filter((event) => event.type !== "created" && inWindow(event.at, window))
     .sort((a, b) => b.at.localeCompare(a.at))
-    .slice(0, 80)
     .map((event) => ({
       learner: learners.find((learner) => learner.gtaId === event.gtaId)?.name || event.gtaId,
-      detail: event.detail || eventLabel(event.type),
+      detail: event.detail,
       pill: eventLabel(event.type),
-      actor: event.actorName || "Reviewer",
-      role: roleLabel(event.actorRole),
+      actor: event.actorName || "System",
+      role: event.actorName ? roleLabel(event.actorRole) : "System",
       at: event.at,
     }));
 
   return {
     learners: learners.length,
     flow,
+    completedThisCycle,
+    weekend: weekdayName(source.today) === "Saturday" || weekdayName(source.today) === "Sunday",
     overall: {
       neededEachDay: quota,
+      cycleNote: `${longDate(bounds.start)} to ${longDate(bounds.end)}, counted from ${countedFromLabel(countedFrom)}`,
       released: countType("released"),
       received: countType("submitted"),
-      completed: waitingOrArchived,
-      archived: countType("completed"),
+      completed: completedTotal,
       visits,
       calls,
       teams,
@@ -448,34 +453,35 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     weekOnWeek,
     reviewsPerWeek,
     weekday,
-    trend: trendWeeks,
+    trend,
     risk: RISK_LABELS.map((item) => ({ ...item, count: risk[item.id] })),
     overdueByTutor: [...overdueByTutor.entries()]
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
     completion: {
       allTime: releasedPacks.size ? completedPacks.size / releasedPacks.size : null,
-      currentCycle: learners.length ? waitingOrArchived / learners.length : null,
-      inFlight: Math.max(0, learners.length - waitingOrArchived),
+      currentCycle: learners.length ? waitingNow / learners.length : null,
+      inFlight: Math.max(0, learners.length - waitingNow),
       releaseToReceived: gaps("released", "submitted"),
       receivedToCompleted: gaps("submitted", "completed"),
     },
     safeguarding: {
       active: active.size,
+      recent: recent.size,
       without: Math.max(0, learners.length - active.size),
       reversed: reversed.size,
       live: learners.length,
     },
     concerns: { open: openConcerns, resolved: resolvedConcerns, breaks: openBreaks },
     programmes: [...programmes.entries()]
-      .map(([name, count]) => ({ name, count }))
+      .map(([name, count]) => ({ name, count, share: learners.length ? count / learners.length : 0 }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
     tutors: tutors.sort((a, b) => b.learners - a.learners || a.name.localeCompare(b.name)),
     log,
     options: {
-      tutors: unique(source.learners.map((learner) => ({ id: learner.tutorId || "", name: learner.tutor })).filter((item) => item.id)),
-      programmes: unique(source.learners.map((learner) => ({ id: learner.programmeId || "", name: learner.programme })).filter((item) => item.id)),
-      employers: unique(source.learners.map((learner) => ({ id: learner.employerId || "", name: learner.employer })).filter((item) => item.id)),
+      tutors: countedOptions(optionLearners("tutor"), (learner) => learner.tutorId, (learner) => learner.tutor),
+      programmes: countedOptions(optionLearners("programme"), (learner) => learner.programmeId, (learner) => learner.programme),
+      employers: countedOptions(optionLearners("employer"), (learner) => learner.employerId, (learner) => learner.employer),
     },
   };
 }
@@ -489,18 +495,52 @@ function stageEnteredAt(pack: AnalyticsPack | undefined, events: AnalyticsEvent[
   return matches[0]?.at || null;
 }
 
-function unique(items: { id: string; name: string }[]) {
-  const seen = new Map<string, string>();
-  for (const item of items) if (!seen.has(item.id)) seen.set(item.id, item.name);
-  return [...seen.entries()].map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name));
+function countedOptions(
+  learners: AnalyticsLearner[],
+  idOf: (learner: AnalyticsLearner) => string | null,
+  nameOf: (learner: AnalyticsLearner) => string,
+) {
+  const seen = new Map<string, { name: string; count: number }>();
+  for (const learner of learners) {
+    const id = idOf(learner) || "";
+    if (!id) continue;
+    const row = seen.get(id) || { name: nameOf(learner), count: 0 };
+    row.count += 1;
+    seen.set(id, row);
+  }
+  return [...seen.entries()]
+    .map(([id, row]) => ({ id, name: row.name, count: row.count }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function lastFiveWeeks(thisMonday: string): string[] {
+  return [4, 3, 2, 1, 0].map((ago) => addDays(thisMonday, -7 * ago));
+}
+
+function firstWeekday(day: string): string {
+  let cursor = londonDay(day);
+  while (weekdayName(cursor) === "Saturday" || weekdayName(cursor) === "Sunday") cursor = addDays(cursor, 1);
+  return cursor;
+}
+
+function longDate(iso: string): string {
+  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(
+    new Date(`${iso}T00:00:00Z`),
+  );
+}
+
+function countedFromLabel(iso: string): string {
+  const date = new Date(`${iso}T00:00:00Z`);
+  const weekday = new Intl.DateTimeFormat("en-GB", { weekday: "short", timeZone: "UTC" }).format(date);
+  const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).format(date);
+  return `${weekday} ${day}`;
 }
 
 export function eventLabel(type: string): string {
   if (type === "released") return "Released";
   if (type === "submitted") return "Received";
   if (type === "booked") return "Booked";
-  if (type === "reviewed") return "Completed";
-  if (type === "completed") return "Archived";
+  if (type === "reviewed" || type === "completed") return "Completed";
   if (type === "recalled") return "Recalled";
   if (type === "draft_saved") return "Draft saved";
   return type.replaceAll("_", " ");

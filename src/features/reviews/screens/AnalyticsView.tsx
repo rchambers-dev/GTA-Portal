@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ANALYTICS_RANGES, londonStamp, percent, type AnalyticsFilters } from "../domain/analytics";
+import { ANALYTICS_RANGES, percent, type AnalyticsFilters } from "../domain/analytics";
 import type { loadAnalytics } from "../domain/analytics-repository";
+import { ReviewLog } from "./AnalyticsLog";
 import { JumpSelect, PrintReport } from "./PrintReport";
 import styles from "./analytics.module.css";
 
@@ -31,7 +32,7 @@ export function AnalyticsView({
   const maxWeek = Math.max(1, ...page.reviewsPerWeek.map((week) => week.total));
   const maxDay = Math.max(1, ...page.weekday.map((day) => day.total));
   const maxMix = Math.max(1, ...page.programmes.map((item) => item.count));
-  const maxTrend = Math.max(1, ...page.trend.flatMap((week) => [week.released, week.received, week.completed, week.visits]));
+  const maxTrend = Math.max(1, ...page.trend.flatMap((week) => [week.visits, week.received]));
 
   return (
     <div className={styles.page}>
@@ -63,23 +64,28 @@ export function AnalyticsView({
 
           <section className={styles.card} id="analytics-now">
             <h2>Now · {page.learners}</h2>
-            <div className={styles.flow}>
-              {page.flow.map((step) => (
-                <div key={step.id} className={styles.step}>
-                  <strong>{step.label}</strong>
-                  <em>{step.count}</em>
-                </div>
-              ))}
+            <div className={styles.now}>
+              <div className={styles.flow}>
+                {page.flow.map((step) => (
+                  <div key={step.id} className={`${styles.step} ${step.tone === "red" ? styles.red : step.tone === "amber" ? styles.amber : styles.green}`}>
+                    <strong>{step.label}</strong>
+                    <em>{step.count}</em>
+                  </div>
+                ))}
+              </div>
+              <article className={styles.cycleFigure}>
+                <span>Completed this cycle</span>
+                <strong>{page.completedThisCycle}</strong>
+              </article>
             </div>
           </section>
           <section className={styles.card}>
             <h2>Overall</h2>
             <div className={styles.stats}>
-              <Stat label="Needed each day" value={page.overall.neededEachDay} />
-              <Stat label="Released" value={page.overall.released} />
-              <Stat label="Received" value={page.overall.received} />
-              <Stat label="Completed" value={page.overall.completed} />
-              <Stat label="Archived" value={page.overall.archived} />
+              <Stat label="Needed each day" value={page.overall.neededEachDay} note={page.overall.cycleNote} />
+              <Stat label="Reviews released" value={page.overall.released} />
+              <Stat label="Forms received" value={page.overall.received} />
+              <Stat label="Reviews completed" value={page.overall.completed} />
               <Stat label="Visits" value={page.overall.visits} />
               <Stat label="Calls" value={page.overall.calls} />
               <Stat label="Teams" value={page.overall.teams} />
@@ -97,7 +103,7 @@ export function AnalyticsView({
               ))}
             </section>
             <section className={styles.card}>
-              <h2>Reviews by weekday</h2>
+              <h2>Reviews by day</h2>
               {page.weekday.map((day) => (
                 <div key={day.label} className={day.today ? `${styles.bar} ${styles.today}` : styles.bar}>
                   <span className={styles.barLabel}>{day.label}{day.today ? " · Today" : ""}</span>
@@ -105,10 +111,10 @@ export function AnalyticsView({
                   <span>{day.total}</span>
                 </div>
               ))}
+              {page.weekend ? <p className={styles.note}>There is no Today mark.</p> : null}
             </section>
           </div>
           <TutorList page={page} />
-          <Log page={page} />
           <section className={styles.card}>
             <h2>This week against last week</h2>
             <div className={styles.tiles}>
@@ -125,23 +131,13 @@ export function AnalyticsView({
           </section>
           <section className={styles.card}>
             <h2>Weekly trend</h2>
-            <p className={styles.legend}><i className={styles.rel} />Released <i className={styles.rec} />Received <i className={styles.comp} />Completed <i className={styles.vis} />Visits</p>
-            {page.trend.length === 0 ? <p className={styles.muted}>No weeks to show yet.</p> : page.trend.map((week) => (
-              <div key={week.label} className={styles.bar}>
-                <span className={styles.barLabel}>{week.label}{week.current ? " · This week" : ""}</span>
-                <span className={styles.series}>
-                  <i className={styles.rel} style={{ height: `${Math.round((week.released / maxTrend) * 100)}%` }} />
-                  <i className={styles.rec} style={{ height: `${Math.round((week.received / maxTrend) * 100)}%` }} />
-                  <i className={styles.comp} style={{ height: `${Math.round((week.completed / maxTrend) * 100)}%` }} />
-                  <i className={styles.vis} style={{ height: `${Math.round((week.visits / maxTrend) * 100)}%` }} />
-                </span>
-                <span>{week.released + week.received + week.completed + week.visits}</span>
-              </div>
-            ))}
+            <p className={styles.legend}><i className={styles.vis} />Visits <i className={styles.rec} />Forms received</p>
+            <ColumnChart weeks={page.trend} max={maxTrend} />
           </section>
           <div className={styles.split}>
             <section className={styles.card}>
               <h2>Overdue and at risk</h2>
+              <p className={styles.note}>At risk means the planned date has passed, or the pack has waited more than 7 days to be booked or returned by the tutor.</p>
               {page.risk.map((item) => (
                 <div key={item.id} className={styles.row}><span>{item.label}</span><strong>{item.count}</strong></div>
               ))}
@@ -166,39 +162,61 @@ export function AnalyticsView({
           <div className={styles.mix}>
             <section className={styles.card}>
               <h2>Safeguarding</h2>
+              <div className={styles.coverage} aria-hidden="true">
+                <i style={{ width: `${page.safeguarding.live ? Math.round((page.safeguarding.recent / page.safeguarding.live) * 100) : 0}%` }} />
+              </div>
+              <p className={styles.note}>Signed in the last 10 weeks, tracks completed cycles.</p>
               <div className={styles.row}><span>Signed</span><strong>{page.safeguarding.active} of {page.safeguarding.live}</strong></div>
               <div className={styles.row}><span>Without a sign-off</span><strong>{page.safeguarding.without}</strong></div>
               <div className={styles.row}><span>Reversed</span><strong>{page.safeguarding.reversed}</strong></div>
             </section>
             <section className={styles.card}>
               <h2>Concerns</h2>
-              {page.concerns.open + page.concerns.resolved + page.concerns.breaks === 0 ? (
-                <p className={styles.muted}>No concerns or breaks.</p>
-              ) : (
-                <>
-                  <div className={styles.row}><span>Open</span><strong>{page.concerns.open}</strong></div>
-                  <div className={styles.row}><span>Resolved</span><strong>{page.concerns.resolved}</strong></div>
-                  <div className={styles.row}><span>Open breaks</span><strong>{page.concerns.breaks}</strong></div>
-                </>
-              )}
+              <div className={`${styles.tiles} ${styles.concerns}`}>
+                <article className={styles.tile}><span>Open concerns</span><strong>{page.concerns.open}</strong></article>
+                <article className={styles.tile}><span>Resolved concerns</span><strong>{page.concerns.resolved}</strong></article>
+                <article className={styles.tile}><span>Open breaks</span><strong>{page.concerns.breaks}</strong></article>
+              </div>
             </section>
             <section className={styles.card}>
               <h2>Programme mix</h2>
               {page.programmes.length === 0 ? <p className={styles.muted}>No learners.</p> : page.programmes.map((item) => (
-                <div key={item.name} className={styles.bar}>
-                  <span className={styles.barLabel}>{item.name}</span>
+                <div key={item.name} className={styles.mixRow}>
+                  <span className={styles.mixName}>{item.name}</span>
                   <span className={styles.track}><i className={styles.fill} style={{ width: `${Math.round((item.count / maxMix) * 100)}%` }} /></span>
-                  <span>{item.count}</span>
+                  <span>{item.count} · {percent(item.share)}</span>
                 </div>
               ))}
             </section>
           </div>
+          <ReviewLog rows={page.log} />
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string | number }) {
-  return <article className={styles.stat}><span>{label}</span><strong>{value}</strong></article>;
+function Stat({ label, value, note }: { label: string; value: string | number; note?: string }) {
+  return <article className={styles.stat}><span>{label}</span><strong>{value}</strong>{note ? <span className={styles.note}>{note}</span> : null}</article>;
+}
+
+function ColumnChart({ weeks, max }: { weeks: Page["page"]["trend"]; max: number }) {
+  const ticks = [max, Math.round(max / 2), 0];
+  return (
+    <div className={styles.chart}>
+      <div className={styles.axis} aria-hidden="true">
+        {ticks.map((tick) => <span key={tick}>{tick}</span>)}
+      </div>
+      <div className={styles.plot} role="img" aria-label="Visits and forms received over the last five weeks">
+        {[0, 50, 100].map((mark) => <span key={mark} className={styles.grid} style={{ bottom: `${mark}%` }} />)}
+        {weeks.map((week) => (
+          <div key={week.label} className={week.current ? `${styles.cluster} ${styles.currentWeek}` : styles.cluster}>
+            <i className={styles.vis} style={{ height: week.visits ? `${Math.round((week.visits / max) * 100)}%` : 0, minHeight: week.visits ? 2 : 0 }} />
+            <i className={styles.rec} style={{ height: week.received ? `${Math.round((week.received / max) * 100)}%` : 0, minHeight: week.received ? 2 : 0 }} />
+            <span>{week.label}{week.current ? " · This week" : ""}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function days(value: { median: number | null; average: number | null }) {
@@ -229,31 +247,6 @@ function TutorList({ page }: { page: Page["page"] }) {
   );
 }
 
-function Log({ page }: { page: Page["page"] }) {
-  return (
-    <section className={styles.card} id="analytics-log">
-      <h2>Review log</h2>
-      {page.log.length === 0 ? <p className={styles.muted}>No review log yet.</p> : (
-        <table className={styles.log}>
-          <thead><tr><th>Learner</th><th>Detail</th><th>Event</th><th>Actor</th><th>Role</th><th>Time</th></tr></thead>
-          <tbody>
-            {page.log.map((item, index) => (
-              <tr key={`${item.at}-${index}`}>
-                <td>{item.learner}</td>
-                <td>{item.detail}</td>
-                <td><span className={styles.pill}>{item.pill}</span></td>
-                <td>{item.actor}</td>
-                <td>{item.role}</td>
-                <td>{londonStamp(item.at)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </section>
-  );
-}
-
 function Filter({
   name,
   value,
@@ -265,20 +258,21 @@ function Filter({
 }: {
   name: "tutor" | "programme" | "employer";
   value: string;
-  options: { id: string; name: string }[];
+  options: { id: string; name: string; count: number }[];
   all: string;
   workspace: "administration" | "management";
   filters: AnalyticsFilters;
   view: string;
 }) {
   const key = name === "tutor" ? "tutorId" : name === "programme" ? "programmeId" : "employerId";
+  const total = options.reduce((sum, option) => sum + option.count, 0);
   return (
     <JumpSelect
       label={all}
       value={href(workspace, filters, view, { [key]: value })}
       options={[
-        { href: href(workspace, filters, view, { [key]: "all" }), label: all },
-        ...options.map((option) => ({ href: href(workspace, filters, view, { [key]: option.id }), label: option.name })),
+        { href: href(workspace, filters, view, { [key]: "all" }), label: `${all} (${total})` },
+        ...options.map((option) => ({ href: href(workspace, filters, view, { [key]: option.id }), label: `${option.name} (${option.count})` })),
       ]}
     />
   );

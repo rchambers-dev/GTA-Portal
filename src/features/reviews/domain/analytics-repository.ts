@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
+import { addDays } from "./plan-due";
 import {
   buildAnalytics,
   isLiveApprentice,
@@ -48,7 +49,7 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
       supabase.from("reviews").select("id, gta_id, status, planned_on, actual_on, method"),
       supabase.from("review_packs").select("id, gta_id, stage, stage_since"),
       supabase.from("review_pack_events").select("pack_id, event_type, occurred_at, actor_profile_id, actor_role, detail"),
-      supabase.from("apprentice_safeguarding_signoffs").select("gta_id, reversed_at"),
+      supabase.from("apprentice_safeguarding_signoffs").select("gta_id, signed_on, reversed_at"),
       supabase.from("learner_concerns").select("gta_id, resolved_on"),
       supabase.from("breaks_in_learning").select("apprentice_id, actual_return"),
     ]);
@@ -106,14 +107,17 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
       gtaId: packGta.get(row.pack_id) || "",
       type: row.event_type,
       at: row.occurred_at,
-      actorName: row.actor_profile_id ? names.get(row.actor_profile_id) || "" : "",
-      actorRole: row.actor_role || (row.actor_profile_id ? roles.get(row.actor_profile_id) || "" : ""),
+      actorName: row.actor_profile_id ? names.get(row.actor_profile_id) || "System" : "System",
+      actorRole: row.actor_profile_id ? row.actor_role || roles.get(row.actor_profile_id) || "" : "System",
       detail: detailText(row.detail),
     })).filter((event) => event.gtaId),
-    activeSignoffs: rows<{ gta_id: string; reversed_at: string | null }>(signoffs.data)
+    activeSignoffs: rows<{ gta_id: string; signed_on: string | null; reversed_at: string | null }>(signoffs.data)
       .filter((row) => !row.reversed_at)
       .map((row) => row.gta_id),
-    reversedSignoffs: rows<{ gta_id: string; reversed_at: string | null }>(signoffs.data)
+    recentSignoffs: rows<{ gta_id: string; signed_on: string | null; reversed_at: string | null }>(signoffs.data)
+      .filter((row) => !row.reversed_at && row.signed_on && row.signed_on.slice(0, 10) >= addDays(today, -70))
+      .map((row) => row.gta_id),
+    reversedSignoffs: rows<{ gta_id: string; signed_on: string | null; reversed_at: string | null }>(signoffs.data)
       .filter((row) => row.reversed_at)
       .map((row) => row.gta_id),
     openConcerns: rows<{ gta_id: string; resolved_on: string | null }>(concerns.data)
@@ -138,8 +142,11 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
 function detailText(detail: unknown): string {
   if (!detail || typeof detail !== "object") return "";
   const record = detail as Record<string, unknown>;
-  const reason = record.reason || record.summary;
-  return typeof reason === "string" ? reason : "";
+  for (const key of ["note", "reason", "summary"]) {
+    const value = record[key];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return "";
 }
 
 export type { AnalyticsEvent };
