@@ -1,7 +1,11 @@
 -- Undo a whole review day's completion. Not applied.
--- Complete on the Plan finishes every learner on that day in one action, so undoing it
--- reverses that same batch in one transaction. Rows are never deleted: each learner gets
--- an 'undone' event. Safeguarding sign-offs are left untouched.
+-- Complete on the Plan finishes every learner on that day in one action. Undoing it goes
+-- back exactly one step, to the state just before Complete was pressed.
+-- The route is kept: review_day_stops rows are not deleted, and their order, times and
+-- method are not changed. Only the completed flag returns to false. The booking Complete
+-- deleted is inserted again, so each learner shows as booked on that day.
+-- Rows are never deleted: each learner gets an 'undone' event. Safeguarding sign-offs
+-- are left untouched.
 -- A single pack event can still be undone, but only for released, received (submitted) and booked.
 -- A completion is refused there and has to go through undo_review_day_completion.
 
@@ -135,6 +139,13 @@ declare
   v_event public.review_pack_events%rowtype;
   v_next public.reviews%rowtype;
   v_next_pack public.review_packs%rowtype;
+  v_stop public.review_day_stops%rowtype;
+  v_book jsonb;
+  v_booked_at timestamptz;
+  v_method text;
+  v_on date;
+  v_minutes integer;
+  v_phone text;
 begin
   if not public.has_portal_role('Administrator', 'Management') then
     raise exception 'Administrator or Management role required' using errcode = '42501';
@@ -230,9 +241,65 @@ begin
        where id = v_next_pack.id;
     end if;
 
+    -- planned_on, reviewer_id, method, notes and interval stay as they were before Complete.
     update public.reviews
        set status = 'open', actual_on = null
      where id = v_review.id;
+
+    select * into v_stop
+    from public.review_day_stops s
+    where s.date_on = p_day_id and s.gta_id = v_gta;
+    v_book := null;
+    v_booked_at := null;
+    select a.payload, a.occurred_at into v_book, v_booked_at
+    from public.audit_events a
+    where a.entity_type = 'review'
+      and a.entity_id = v_review.id::text
+      and a.action = 'booked'
+      and a.occurred_at <= v_day.completed_at
+    order by a.occurred_at desc
+    limit 1;
+    v_method := coalesce(v_review.method, 'in_person');
+    if v_method not in ('in_person', 'phone', 'teams') then
+      v_method := 'in_person';
+    end if;
+    v_on := null;
+    v_minutes := null;
+    v_phone := null;
+    if v_book is not null and coalesce(v_book->>'method', v_method) = v_method then
+      v_on := nullif(v_book->>'appointment_on', '')::date;
+      v_minutes := nullif(v_book->>'appointment_minutes', '')::integer;
+      v_phone := nullif(v_book->>'phone_day', '');
+    end if;
+    if v_minutes is not null and (v_minutes < 0 or v_minutes > 1439) then
+      v_minutes := null;
+    end if;
+    if v_method = 'phone' then
+      v_on := null;
+      v_minutes := null;
+      if v_phone is null or v_phone not in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday') then
+        v_phone := (array['Monday','Tuesday','Wednesday','Thursday','Friday'])[extract(isodow from p_day_id)::integer];
+      end if;
+    else
+      v_phone := null;
+      if v_on is null then
+        v_on := p_day_id;
+      end if;
+      if v_minutes is null then
+        v_minutes := round(coalesce(v_stop.accepted_arrive_minutes, v_stop.arrive_minutes, v_stop.lock_arrive_minutes))::integer;
+      end if;
+      if v_minutes is null or v_minutes < 0 or v_minutes > 1439 then
+        v_on := null;
+        v_minutes := null;
+      end if;
+    end if;
+    -- Complete deletes this row. Put the same booking back. Do not delete or rewrite the route stop.
+    if not exists (select 1 from public.review_bookings b where b.review_id = v_review.id) then
+      insert into public.review_bookings
+        (review_id, method, appointment_on, appointment_minutes, phone_day, booked_at)
+      values (v_review.id, v_method, v_on, v_minutes, v_phone, coalesce(v_booked_at, v_event.occurred_at));
+    end if;
+
     update public.review_packs
        set stage = 'booked', stage_since = now(), hold_reason = null, held_until = null
      where id = v_pack.id;
@@ -249,6 +316,7 @@ begin
       format('Undid the day completion for %s on %s', v_gta, p_day_id),
       jsonb_build_object('undoes', v_event.id, 'gta_id', v_gta, 'day', p_day_id, 'from', 'completed', 'to', 'booked')
     );
+    -- The stop stays on the route. Order, times and method are left as they were.
     update public.review_day_stops
        set completed = false
      where date_on = p_day_id and gta_id = v_gta;
