@@ -1,6 +1,6 @@
 import { GTA_TUTORS } from "./gta-tutors";
-import { CYCLE_STEPS, cycleStepFromStage, tutorDueBand, type CycleStepId } from "./cycle";
-import { addDays, reviewDueLabel, weekStartMonday } from "./plan-due";
+import { CYCLE_STEPS, tutorDueBand, type CycleStepId } from "./cycle";
+import { addDays, weekStartMonday } from "./plan-due";
 
 export const ANALYTICS_RANGES = [
   { id: "all", label: "All time" },
@@ -92,10 +92,46 @@ function inWindow(date: string | null, window: { start: string | null; end: stri
 }
 
 function daysBetween(today: string, target: string): number {
-  const start = Date.parse(`${today}T00:00:00Z`);
-  const end = Date.parse(`${target.slice(0, 10)}T00:00:00Z`);
+  const start = Date.parse(`${londonDay(today)}T00:00:00Z`);
+  const end = Date.parse(`${londonDay(target)}T00:00:00Z`);
   return Math.round((end - start) / 86_400_000);
 }
+
+/** Calendar day in Europe/London. Date-only values stay as written. */
+export function londonDay(value: string): string {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value.slice(0, 10);
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
+/**
+ * Portal `completed` is an archived pack. The Assistant shows that learner as
+ * Waiting once the visit is archived and the next window is shut, and uses
+ * the Archived step only for a finished visit that has not been archived.
+ */
+export function analyticsNowStep(stage: string | null, windowOpen: boolean): CycleStepId {
+  if (stage === "with_tutor") return "released";
+  if (stage === "to_book") return "booking";
+  if (stage === "booked") return "booked";
+  if (stage === "reviewed") return "archived";
+  if (stage === "completed" && windowOpen) return "released";
+  return "waiting";
+}
+
+const STAGE_ENTRY_EVENTS: Record<string, string[]> = {
+  with_tutor: ["released", "recalled"],
+  to_book: ["submitted", "booking_cleared"],
+  booked: ["booked"],
+  reviewed: ["reviewed"],
+  completed: ["completed"],
+  waiting: ["created"],
+};
 
 function median(values: number[]): number | null {
   if (!values.length) return null;
@@ -190,11 +226,23 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const flow = CYCLE_STEPS.map((step) => ({ id: step.id, label: step.label, count: 0 }));
   const stepOf = new Map<string, CycleStepId>();
   for (const learner of learners) {
-    const step = cycleStepFromStage(packByGta.get(learner.gtaId)?.stage ?? null);
+    const pack = packByGta.get(learner.gtaId);
+    const last = completedByLearner.get(learner.gtaId)?.[0]?.actualOn?.slice(0, 10) || null;
+    const planned = openReview.get(learner.gtaId)?.plannedOn?.slice(0, 10) || (last ? addDays(last, 70) : null);
+    const windowOpen = tutorDueBand({
+      today: source.today,
+      plannedOn: planned,
+      intervalWeeks: 10,
+      stage: pack?.stage ?? null,
+      inBreak: false,
+    }).band === "need-doing";
+    const step = analyticsNowStep(pack?.stage ?? null, windowOpen);
     stepOf.set(learner.gtaId, step);
     const slot = flow.find((item) => item.id === step);
     if (slot) slot.count += 1;
   }
+  const waitingOrArchived = (flow.find((step) => step.id === "waiting")?.count || 0)
+    + (flow.find((step) => step.id === "archived")?.count || 0);
 
   const datedEvents = events.filter((event) => inWindow(event.at, window));
   const countType = (type: string) => datedEvents.filter((event) => event.type === type).length;
@@ -291,16 +339,17 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const overdueByTutor = new Map<string, number>();
   for (const learner of learners) {
     const planned = openReview.get(learner.gtaId)?.plannedOn?.slice(0, 10) || null;
-    const due = reviewDueLabel({ today: source.today, nextDate: planned, intervalWeeks: 10 });
     const step = stepOf.get(learner.gtaId);
-    const since = packByGta.get(learner.gtaId)?.stageSince?.slice(0, 10) || null;
+    const pack = packByGta.get(learner.gtaId);
+    const since = stageEnteredAt(pack, events) || pack?.stageSince || null;
     const age = since ? daysBetween(since, source.today) : 0;
     const friday = addDays(thisMonday, 4);
+    const datePassed = Boolean(planned && planned < source.today);
     let bucket: RiskId = "on-track";
-    if (due.state === "overdue") bucket = "overdue";
+    if (datePassed) bucket = "overdue";
     else if (planned && planned >= source.today && planned <= friday) bucket = "due-this-week";
-    else if (step === "booking" && age >= 7) bucket = "booking";
-    else if (step === "released" && age >= 7) bucket = "with-tutor";
+    else if (step === "booking" && age > 7) bucket = "booking";
+    else if (step === "released" && age > 7) bucket = "with-tutor";
     risk[bucket] += 1;
     if (bucket === "overdue") overdueByTutor.set(learner.tutor, (overdueByTutor.get(learner.tutor) || 0) + 1);
   }
@@ -323,9 +372,8 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     return { median: median(values), average: average(values), count: values.length };
   };
 
-  const allReviews = reviews.length;
-  const completedReviews = reviews.filter((review) => review.status === "completed").length;
-  const openReviews = reviews.filter((review) => review.status === "open").length;
+  const releasedPacks = new Set(events.filter((event) => event.type === "released" && inWindow(event.at, window)).map((event) => event.packId));
+  const completedPacks = new Set(events.filter((event) => event.type === "completed" && inWindow(event.at, window)).map((event) => event.packId));
 
   const tradeOf = new Map(GTA_TUTORS.map((tutor) => [tutor.name, tutor.trade]));
   const tutorRows = new Map<string, { name: string; trade: string; learners: number; visits: number; bands: Record<string, number> }>();
@@ -387,7 +435,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
       neededEachDay: quota,
       released: countType("released"),
       received: countType("submitted"),
-      completed: countType("reviewed"),
+      completed: waitingOrArchived,
       archived: countType("completed"),
       visits,
       calls,
@@ -402,9 +450,9 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
     completion: {
-      allTime: allReviews ? completedReviews / allReviews : null,
-      currentCycle: learners.length ? completedThisCycle.size / learners.length : null,
-      inFlight: learners.length ? openReviews / learners.length : null,
+      allTime: releasedPacks.size ? completedPacks.size / releasedPacks.size : null,
+      currentCycle: learners.length ? waitingOrArchived / learners.length : null,
+      inFlight: Math.max(0, learners.length - waitingOrArchived),
       releaseToReceived: gaps("released", "submitted"),
       receivedToCompleted: gaps("submitted", "completed"),
     },
@@ -426,6 +474,15 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
       employers: unique(source.learners.map((learner) => ({ id: learner.employerId || "", name: learner.employer })).filter((item) => item.id)),
     },
   };
+}
+
+function stageEnteredAt(pack: AnalyticsPack | undefined, events: AnalyticsEvent[]): string | null {
+  if (!pack) return null;
+  const types = STAGE_ENTRY_EVENTS[pack.stage] || [];
+  const matches = events
+    .filter((event) => event.packId === pack.id && types.includes(event.type))
+    .sort((a, b) => b.at.localeCompare(a.at));
+  return matches[0]?.at || null;
 }
 
 function unique(items: { id: string; name: string }[]) {
@@ -454,7 +511,7 @@ function roleLabel(role: string): string {
 
 export function percent(value: number | null): string {
   if (value == null) return "—";
-  return `${Math.round(value * 100)}%`;
+  return `${Math.round(value * 1000) / 10}%`;
 }
 
 export function londonStamp(iso: string): string {

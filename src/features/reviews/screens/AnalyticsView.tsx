@@ -158,7 +158,7 @@ export function AnalyticsView({
             <div className={styles.stats}>
               <Stat label="All time" value={percent(page.completion.allTime)} />
               <Stat label="Current cycle" value={percent(page.completion.currentCycle)} />
-              <Stat label="In flight" value={percent(page.completion.inFlight)} />
+              <Stat label="In flight" value={page.completion.inFlight} />
               <Stat label="Release to received" value={days(page.completion.releaseToReceived)} />
               <Stat label="Received to completed" value={days(page.completion.receivedToCompleted)} />
             </div>

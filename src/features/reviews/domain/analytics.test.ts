@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildAnalytics, countWeekdays, isLiveApprentice, neededEachDay, type AnalyticsSource } from "./analytics";
+import { analyticsNowStep, buildAnalytics, countWeekdays, isLiveApprentice, neededEachDay, percent, type AnalyticsSource } from "./analytics";
 
 const today = "2026-11-13";
 
@@ -77,6 +77,77 @@ describe("review analytics", () => {
     expect(page.overall.released).toBe(0);
     expect(page.overall.archived).toBe(1);
     expect(page.reviewsPerWeek.some((week) => week.current)).toBe(true);
+  });
+
+  it("counts reviews completed as learners now waiting or archived", () => {
+    const page = buildAnalytics(
+      source({
+        packs: [
+          { id: "pk1", gtaId: "A", stage: "to_book", stageSince: "2026-11-01" },
+          { id: "pk2", gtaId: "B", stage: "completed", stageSince: "2026-11-12" },
+        ],
+      }),
+      { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
+    );
+    expect(page.flow.find((step) => step.id === "archived")?.count).toBe(0);
+    expect(page.flow.find((step) => step.id === "waiting")?.count).toBe(1);
+    expect(page.overall.completed).toBe(1);
+    expect(analyticsNowStep("reviewed", false)).toBe("archived");
+    expect(analyticsNowStep("completed", false)).toBe("waiting");
+    expect(analyticsNowStep("completed", true)).toBe("released");
+  });
+
+  it("rates all-time completion from released and completed pack events", () => {
+    const page = buildAnalytics(source(), { range: "all", tutorId: "all", programmeId: "all", employerId: "all" });
+    expect(page.completion.allTime).toBe(1);
+    const wider = buildAnalytics(
+      source({
+        events: [
+          ...source().events,
+          { packId: "pk3", gtaId: "A", type: "released", at: "2026-09-01T10:00:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "" },
+        ],
+      }),
+      { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
+    );
+    expect(wider.completion.allTime).toBeCloseTo(1 / 2);
+    expect(percent(165 / 188)).toBe("87.8%");
+    expect(percent(145 / 168)).toBe("86.3%");
+  });
+
+  it("reports the current cycle as waiting or archived over live learners, and in flight as a count", () => {
+    const page = buildAnalytics(source(), { range: "all", tutorId: "all", programmeId: "all", employerId: "all" });
+    expect(page.completion.currentCycle).toBe(0.5);
+    expect(page.completion.inFlight).toBe(1);
+  });
+
+  it("treats a passed planned date as overdue and counts stage age from the London entry event", () => {
+    const base = source();
+    const page = buildAnalytics(
+      source({
+        learners: [
+          ...base.learners,
+          { gtaId: "C", name: "Casey", programmeId: "p1", programme: "Motor", employerId: "e1", employer: "Acme", tutorId: "t1", tutor: "John Pearson" },
+        ],
+        reviews: [
+          { id: "r1", gtaId: "A", status: "open", plannedOn: "2026-11-20", actualOn: null, method: null },
+          { id: "r2", gtaId: "B", status: "open", plannedOn: "2026-11-20", actualOn: null, method: null },
+          { id: "r3", gtaId: "C", status: "open", plannedOn: "2026-11-12", actualOn: null, method: null },
+        ],
+        packs: [
+          { id: "pk1", gtaId: "A", stage: "to_book", stageSince: "2026-11-12" },
+          { id: "pk2", gtaId: "B", stage: "with_tutor", stageSince: "2026-11-13" },
+          { id: "pk3", gtaId: "C", stage: "waiting", stageSince: "2026-11-01" },
+        ],
+        events: [
+          { packId: "pk1", gtaId: "A", type: "submitted", at: "2026-11-05T12:00:00Z", actorName: "Tutor", actorRole: "Tutor", detail: "" },
+          { packId: "pk2", gtaId: "B", type: "released", at: "2026-11-04T12:00:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "" },
+        ],
+      }),
+      { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
+    );
+    expect(page.risk.find((item) => item.id === "overdue")?.count).toBe(1);
+    expect(page.risk.find((item) => item.id === "booking")?.count).toBe(1);
+    expect(page.risk.find((item) => item.id === "with-tutor")?.count).toBe(1);
   });
 
   it("limits the page to one tutor", () => {
