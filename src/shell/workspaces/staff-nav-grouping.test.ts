@@ -50,14 +50,22 @@ describe("sidebar grouping", () => {
       expect(onboarding?.items.map((item) => item.label)).toEqual([
         "Overview",
         "Candidates",
-        "Add employers",
         "Interviews",
+        "Inductions",
+        "Employers & vacancies",
+        "Activity calendar",
+        "Actions",
+        "Reports",
       ]);
       expect(onboarding?.items.map((item) => item.href)).toEqual([
         `/${workspace}/onboarding`,
         `/${workspace}/onboarding/candidates`,
-        `/${workspace}/onboarding/employer`,
         `/${workspace}/onboarding/interviews`,
+        `/${workspace}/onboarding/inductions`,
+        `/${workspace}/onboarding/employers`,
+        `/${workspace}/onboarding/calendar`,
+        `/${workspace}/onboarding/actions`,
+        `/${workspace}/onboarding/reports`,
       ]);
       const top = sections.find((section) => !section.title);
       expect(top?.items.map((item) => item.label)).toContain("Add apprentice");

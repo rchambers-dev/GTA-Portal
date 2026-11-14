@@ -53,8 +53,7 @@ import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
 import { TutorReviewsScreen } from "@/features/tutor-reviews/screens/TutorReviewsScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
-import { CandidatesScreen } from "@/features/administration/screens/CandidatesScreen";
-import { OnboardingOverview } from "@/features/administration/screens/OnboardingOverview";
+import { CandidatesArea } from "@/features/candidates/CandidatesArea";
 import { RecruitmentGapScreen } from "@/features/administration/screens/RecruitmentGapScreen";
 import { SharedDriveScreen } from "@/features/shared-drive";
 import { getStandalonePorts } from "@/adapters/standalone";
@@ -87,31 +86,38 @@ function searchValue(value: string | string[] | undefined): string | undefined {
 function renderOnboarding(
   workspace: "administration" | "management",
   segment: string,
+  search?: Record<string, string | string[] | undefined>,
 ) {
-  if (segment === "onboarding") return <OnboardingOverview workspace={workspace} />;
-  if (segment === "onboarding/apprentices") {
-    redirect(`/${workspace}/onboarding/apprentice`);
-  }
-  if (segment === "onboarding/interviews") {
+  const example = searchValue(search?.example) === "1";
+  const error = searchValue(search?.error) ?? null;
+  const candidatesPage =
+    segment === "onboarding" ||
+    segment === "onboarding/interviews" ||
+    segment === "onboarding/inductions" ||
+    segment === "onboarding/employers" ||
+    segment === "onboarding/vacancies" ||
+    segment === "onboarding/calendar" ||
+    segment === "onboarding/actions" ||
+    segment === "onboarding/reports" ||
+    segment === "onboarding/candidates" ||
+    segment.startsWith("onboarding/candidates/") ||
+    segment.startsWith("onboarding/employers/");
+  if (candidatesPage) {
     return (
-      <RecruitmentGapScreen
-        eyebrow="Onboarding"
-        title="Interviews"
-        description="Interview groups are not built. Nothing on this page can be booked or saved."
-        gaps={[
-          "Groups are Mondays, with at most 8 learners, not eight timeslots.",
-          "England and Wales bank-holiday Mondays are excluded.",
-          "Cancelling a place asks whether that seat is released.",
-          "A no-show is not a failed assessment.",
-          "Three failures, then six calendar months, then one further attempt.",
-          "An employer is not required before an interview.",
-          "A pass does not open Stage 2.",
-        ]}
+      <CandidatesArea
+        workspace={workspace}
+        segment={segment}
+        example={example}
+        error={error}
+        site={searchValue(search?.site)}
+        deleteName={searchValue(search?.delete)}
       />
     );
   }
+  if (segment === "onboarding/apprentices") {
+    redirect(`/${workspace}/onboarding/apprentice`);
+  }
   if (segment === "onboarding/apprentice") return <AddApprenticeScreen />;
-  if (segment === "onboarding/candidates") return <CandidatesScreen />;
   if (segment === "onboarding/employer") return <EmployersScreen />;
   if (segment === "onboarding/directory" || segment === "onboarding/directory/apprentices") {
     return <OnboardingDirectory initialView="apprentices" />;
@@ -421,6 +427,10 @@ export async function renderWorkspacePage(
   }
 
   if (workspace === "administration") {
+    if (segment === "onboarding" || segment.startsWith("onboarding/")) {
+      const onboarding = renderOnboarding("administration", segment, search);
+      if (onboarding) return onboarding;
+    }
     switch (segment) {
       case "dashboard":
         return <AdministrationDashboardScreen />;
@@ -521,6 +531,10 @@ export async function renderWorkspacePage(
   }
 
   if (workspace === "management") {
+    if (segment === "onboarding" || segment.startsWith("onboarding/")) {
+      const onboarding = renderOnboarding("management", segment, search);
+      if (onboarding) return onboarding;
+    }
     switch (segment) {
       case "dashboard":
         return <ManagementDashboardScreen />;
