@@ -357,6 +357,7 @@ export function PlanView({
             </div>
           ) : (
             <div className={styles.routeBar}>
+              {activeDay.accepted ? <span className={styles.acceptedPill}>Route accepted</span> : null}
               {page.canWrite ? (
                 <button
                   type="button"

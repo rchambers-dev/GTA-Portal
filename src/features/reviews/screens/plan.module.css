@@ -619,15 +619,22 @@
 }
 
 .lockedDay { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.completedPill {
+.completedPill, .acceptedPill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
   border-radius: 999px;
+  font-weight: 700;
+}
+.completedPill {
   background: #2f6b56;
   color: white;
-  font-weight: 700;
+}
+.acceptedPill {
+  background: #e7f4ee;
+  color: #1f6b4a;
+  border: 1px solid #b7dccb;
 }
 
 .lockIcon {

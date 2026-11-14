@@ -89,7 +89,7 @@ describe("review log undo rules", () => {
     expect(dayUndoLearners(events[0], day, events, now)).toEqual(day.learners);
     expect(dayUndoLearners(events[1], day, events, now)).toEqual(day.learners);
     expect(dayUndoLearners(events[2], day, events, now)).toBeNull();
-    expect(dayUndoSummary(day.date)).toContain("every learner on that day's plan");
+    expect(dayUndoSummary(day.date)).toContain("route accepted");
     expect(dayUndoSummary(day.date)).toContain("Safeguarding sign-offs stay");
     expect(dayUndoLearners(events[0], { ...day, completedAt: "2026-11-01T16:00:00Z" }, events, now)).toBeNull();
     const undone = [...events, event({ id: "undo", type: "undone", fromStage: "completed", toStage: "booked", undoes: "a" })];

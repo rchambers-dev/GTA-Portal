@@ -109,7 +109,7 @@ export function undoSummary(event: ReviewLogEvent): string {
 }
 
 export function dayUndoSummary(date: string): string {
-  return `Undo the completion of ${date} for every learner on that day's plan. Each learner stays on the route, in the same order, with the same times and method. Each pack goes back to Review booked, each review reopens with the same plan, reviewer and method, and the next cycle's waiting pack is voided. Safeguarding sign-offs stay. Nothing is deleted.`;
+  return `Undo the completion of ${date} for every learner on that day's plan. The day returns to route accepted. Each learner stays on the route, in the same order, with the same times and method. Each pack and review return to the state they were in while the route was accepted, and the next cycle's waiting pack is voided. Safeguarding sign-offs stay. Nothing is deleted.`;
 }
 
 export function rangeStart(range: LogRange, today: string): string | null {

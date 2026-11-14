@@ -1,9 +1,11 @@
 -- Undo a whole review day's completion. Not applied.
--- Complete on the Plan finishes every learner on that day in one action. Undoing it goes
--- back exactly one step, to the state just before Complete was pressed.
--- The route is kept: review_day_stops rows are not deleted, and their order, times and
--- method are not changed. Only the completed flag returns to false. The booking Complete
--- deleted is inserted again, so each learner shows as booked on that day.
+-- Complete on the Plan finishes every learner on an accepted route. Undoing it returns
+-- that day to route accepted, the state immediately before Complete was pressed.
+-- review_days keeps accepted, accepted_at and accepted_by. Only completed_at and
+-- completed_by are cleared. Each stop returns to completed = false and keeps accepted,
+-- verified, pinned, its times, sort_order, and its locked or accepted minutes.
+-- Packs and reviews return to the stage they were in while the route was accepted.
+-- The booking Complete deleted is inserted again. The next cycle's waiting pack is voided.
 -- Rows are never deleted: each learner gets an 'undone' event. Safeguarding sign-offs
 -- are left untouched.
 -- A single pack event can still be undone, but only for released, received (submitted) and booked.
@@ -146,6 +148,7 @@ declare
   v_on date;
   v_minutes integer;
   v_phone text;
+  v_stage text;
 begin
   if not public.has_portal_role('Administrator', 'Management') then
     raise exception 'Administrator or Management role required' using errcode = '42501';
@@ -194,9 +197,6 @@ begin
     if not found or v_pack.stage is distinct from 'completed' then
       raise exception 'Learner % has no completed pack on this day', v_gta using errcode = 'P0002';
     end if;
-    if v_pack.tutor_id is null or v_pack.learner_snapshot is null then
-      raise exception 'Learner % cannot go back to booked', v_gta using errcode = '23514';
-    end if;
 
     select * into v_event
     from public.review_pack_events e
@@ -211,6 +211,13 @@ begin
     for update;
     if not found then
       raise exception 'Learner % has no completion event to undo', v_gta using errcode = 'P0002';
+    end if;
+    v_stage := v_event.from_stage;
+    if v_stage is null or v_stage not in ('waiting', 'with_tutor', 'to_book', 'booked', 'reviewed') then
+      v_stage := 'booked';
+    end if;
+    if v_stage <> 'waiting' and (v_pack.tutor_id is null or v_pack.learner_snapshot is null) then
+      raise exception 'Learner % cannot return to the accepted route', v_gta using errcode = '23514';
     end if;
 
     -- The next cycle's waiting pack, opened when this review was completed.
@@ -301,27 +308,32 @@ begin
     end if;
 
     update public.review_packs
-       set stage = 'booked', stage_since = now(), hold_reason = null, held_until = null
+       set stage = v_stage,
+           stage_since = now(),
+           hold_reason = case when v_stage in ('booked', 'reviewed') then null else hold_reason end,
+           held_until = case when v_stage in ('booked', 'reviewed') then null else held_until end
      where id = v_pack.id;
     -- Sign-off rows and signature_recorded events are not updated.
     insert into public.review_pack_events
       (pack_id, event_type, from_stage, to_stage, actor_profile_id, actor_role, system, source, occurred_at, detail)
     values (
-      v_pack.id, 'undone', 'completed', 'booked', v_uid, v_role, false, 'user', now(),
-      jsonb_build_object('undoes', v_event.id, 'day', p_day_id, 'note', 'Day completion restored')
+      v_pack.id, 'undone', 'completed', v_stage, v_uid, v_role, false, 'user', now(),
+      jsonb_build_object('undoes', v_event.id, 'day', p_day_id, 'note', 'Route accepted restored')
     );
     insert into public.audit_events (actor_profile_id, entity_type, entity_id, action, summary, payload)
     values (
       v_uid, 'review_pack', v_pack.id::text, 'undone',
       format('Undid the day completion for %s on %s', v_gta, p_day_id),
-      jsonb_build_object('undoes', v_event.id, 'gta_id', v_gta, 'day', p_day_id, 'from', 'completed', 'to', 'booked')
+      jsonb_build_object('undoes', v_event.id, 'gta_id', v_gta, 'day', p_day_id, 'from', 'completed', 'to', v_stage)
     );
-    -- The stop stays on the route. Order, times and method are left as they were.
+    -- Only the completed flag changes. accepted, verified, pinned, times, sort_order
+    -- and locked or accepted minutes stay exactly as they were on the accepted route.
     update public.review_day_stops
        set completed = false
      where date_on = p_day_id and gta_id = v_gta;
   end loop;
 
+  -- Route accepted stays. Only the completion stamp is cleared.
   update public.review_days
      set completed_at = null, completed_by = null
    where date_on = p_day_id;
