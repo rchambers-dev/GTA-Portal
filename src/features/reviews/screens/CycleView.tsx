@@ -129,7 +129,17 @@ export function CycleView({
                   >
                     {learner.reviewCountLabel}
                   </button>
-                  <span className={learner.late ? `${styles.chip} ${styles.late}` : styles.chip}>{learner.timing}</span>
+                  <span
+                    className={
+                      learner.dueTone === "overdue"
+                        ? `${styles.chip} ${styles.late}`
+                        : learner.dueTone === "soon"
+                          ? `${styles.chip} ${styles.current}`
+                          : styles.chip
+                    }
+                  >
+                    {learner.dueChip}
+                  </span>
                   <span className={styles.chip}>{learner.stepLabel}</span>
                   <span className={styles.grow} />
                   {learner.signedLabel ? (

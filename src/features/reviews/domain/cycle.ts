@@ -1,4 +1,4 @@
-import { addDays, reviewDueLabel, weekStartMonday, type DueState } from "./plan-due";
+import { addDays, formatWeeksAndDays, reviewDueLabel, weekStartMonday, type DueState } from "./plan-due";
 
 /** The six Review Assistant steps, in the order the cycle page groups them. */
 export const CYCLE_STEPS = [
@@ -44,6 +44,43 @@ export function reviewCountLabel(completed: number): string {
   if (completed <= 0) return "No review yet";
   if (completed === 1) return "1 review";
   return `${completed} reviews`;
+}
+
+const SHORT_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+export type CycleDueTone = "neutral" | "soon" | "overdue";
+
+function dayMonth(iso: string): string {
+  const [, month, day] = iso.split("-");
+  return `${Number(day)} ${SHORT_MONTHS[Number(month) - 1] ?? ""}`.trim();
+}
+
+/**
+ * Due chip on the review cycle row. Overdue keeps the existing
+ * "Overdue · X weeks Y days" wording. Upcoming dates count calendar days
+ * to the same next-review date.
+ */
+export function cycleDueChip(input: {
+  today: string;
+  dueOn: string | null;
+  inBreak: boolean;
+  overdueLabel: string | null;
+}): { label: string; tone: CycleDueTone } {
+  if (input.inBreak) return { label: "Paused in break", tone: "neutral" };
+  if (!input.dueOn) return { label: "No due date", tone: "neutral" };
+  if (input.overdueLabel) return { label: input.overdueLabel, tone: "overdue" };
+  const days = daysBetween(input.today, input.dueOn);
+  if (days < 0) return { label: `Overdue · ${formatWeeksAndDays(days)}`, tone: "overdue" };
+  const when = dayMonth(input.dueOn);
+  if (days === 0) return { label: "Due today", tone: "soon" };
+  if (days === 1) return { label: "Due tomorrow", tone: "soon" };
+  if (days < 14) return { label: `Due in ${days} days · ${when}`, tone: "soon" };
+  const weeks = Math.floor(days / 7);
+  const weeksLabel = weeks === 1 ? "1 week" : `${weeks} weeks`;
+  return {
+    label: `Due in ${weeksLabel} · ${when}`,
+    tone: days <= 14 ? "soon" : "neutral",
+  };
 }
 
 export function daysBetween(today: string, target: string): number {
