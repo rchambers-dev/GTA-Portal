@@ -22,6 +22,7 @@ export function CycleView({
   const [query, setQuery] = useState("");
   const [tutor, setTutor] = useState("all");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [signing, setSigning] = useState<CycleLearner | null>(null);
   const [picked, setPicked] = useState<string[]>([]);
   const [error, setError] = useState("");
@@ -35,6 +36,12 @@ export function CycleView({
       return [learner.name, learner.tutor, learner.company, learner.postcode].join(" ").toLowerCase().includes(needle);
     });
   }, [page.learners, query, tutor]);
+
+  const nameColumn = useMemo(() => {
+    const longest = page.learners.reduce((max, learner) => Math.max(max, learner.name.length), 8);
+    const width = Math.min(Math.max(longest + 1, 12), 28);
+    return `${width}ch`;
+  }, [page.learners]);
 
   const groups = CYCLE_STEPS.map((step) => ({
     ...step,
@@ -62,7 +69,7 @@ export function CycleView({
   }
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} style={{ ["--cycle-name" as string]: nameColumn }}>
       <header className={styles.head}>
         <h1>Review cycle</h1>
         <p>Search a name, tutor, company or postcode. Empty steps stay hidden.</p>
@@ -84,13 +91,23 @@ export function CycleView({
         </select>
         <span className={styles.count}>{filtered.length} learners</span>
       </div>
-      {groups.map((group) => (
-        <section key={group.id} className={styles.group}>
+      {groups.map((group) => {
+        const sectionOpen = !collapsed[group.id];
+        return (
+        <section key={group.id} className={sectionOpen ? styles.group : `${styles.group} ${styles.groupClosed}`}>
           <h2 className={styles.groupHead}>
-            {group.label}
-            <span className={styles.badge}>{group.rows.length}</span>
+            <button
+              type="button"
+              className={styles.groupToggle}
+              aria-expanded={sectionOpen}
+              onClick={() => setCollapsed((current) => ({ ...current, [group.id]: sectionOpen }))}
+            >
+              <span className={sectionOpen ? styles.groupChevronOpen : styles.groupChevron} aria-hidden="true">▸</span>
+              {group.label}
+              <span className={styles.badge}>{group.rows.length}</span>
+            </button>
           </h2>
-          {group.rows.map((learner) => {
+          {sectionOpen ? group.rows.map((learner) => {
             const expanded = openId === learner.gtaId;
             return (
               <article key={learner.gtaId} className={styles.row}>
@@ -104,7 +121,7 @@ export function CycleView({
                   >
                     {expanded ? "▾" : "▸"}
                   </button>
-                  <span className={styles.name}>{learner.name}</span>
+                  <span className={styles.name} title={learner.name}>{learner.name}</span>
                   <button
                     type="button"
                     className={styles.reviewBtn}
@@ -112,7 +129,17 @@ export function CycleView({
                   >
                     {learner.reviewCountLabel}
                   </button>
-                  <span className={learner.late ? `${styles.chip} ${styles.late}` : styles.chip}>{learner.timing}</span>
+                  <span
+                    className={
+                      learner.dueTone === "overdue"
+                        ? `${styles.chip} ${styles.late}`
+                        : learner.dueTone === "soon"
+                          ? `${styles.chip} ${styles.current}`
+                          : styles.chip
+                    }
+                  >
+                    {learner.dueChip}
+                  </span>
                   <span className={styles.chip}>{learner.stepLabel}</span>
                   <span className={styles.grow} />
                   {learner.signedLabel ? (
@@ -146,9 +173,10 @@ export function CycleView({
                 ) : null}
               </article>
             );
-          })}
+          }) : null}
         </section>
-      ))}
+        );
+      })}
       {signing ? (
         <div className={styles.popup} role="presentation">
           <div className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="sign-title">

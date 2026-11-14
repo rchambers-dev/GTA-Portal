@@ -1,4 +1,4 @@
-import type { CycleStepId, StepTone, TutorBand } from "./cycle";
+import type { CycleDueTone, CycleStepId, StepTone, TutorBand } from "./cycle";
 import type { TutorFormDraft } from "./tutor-form-rules";
 
 export type CycleStepView = {
@@ -23,6 +23,8 @@ export type CycleLearner = {
   stepId: CycleStepId;
   stepLabel: string;
   timing: string;
+  dueChip: string;
+  dueTone: CycleDueTone;
   late: boolean;
   daysLeft: number | null;
   reviewCount: number;

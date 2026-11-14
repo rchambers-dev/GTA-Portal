@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { currentStepDetail, cycleStepFromStage, reviewCountLabel, stepTone, tutorDueBand } from "./cycle";
+import { currentStepDetail, cycleDueChip, cycleStepFromStage, reviewCountLabel, stepTone, tutorDueBand } from "./cycle";
 import { firstTutorFormGap, emptyTutorForm, otjTrack, tutorFill, tutorTargetDateError } from "./tutor-form-rules";
 
 describe("review cycle steps", () => {
@@ -20,6 +20,41 @@ describe("review cycle steps", () => {
     expect(currentStepDetail(false, 4)).toBe("Left · 4 days");
     expect(reviewCountLabel(0)).toBe("No review yet");
     expect(reviewCountLabel(2)).toBe("2 reviews");
+  });
+
+  it("describes the next review date on the cycle chip", () => {
+    expect(cycleDueChip({ today: "2026-11-13", dueOn: null, inBreak: false, overdueLabel: null })).toEqual({
+      label: "No due date",
+      tone: "neutral",
+    });
+    expect(cycleDueChip({ today: "2026-11-13", dueOn: "2026-11-13", inBreak: false, overdueLabel: null })).toEqual({
+      label: "Due today",
+      tone: "soon",
+    });
+    expect(cycleDueChip({ today: "2026-11-13", dueOn: "2026-11-14", inBreak: false, overdueLabel: null })).toEqual({
+      label: "Due tomorrow",
+      tone: "soon",
+    });
+    expect(cycleDueChip({ today: "2026-11-13", dueOn: "2026-11-18", inBreak: false, overdueLabel: null })).toEqual({
+      label: "Due in 5 days · 18 Nov",
+      tone: "soon",
+    });
+    expect(cycleDueChip({ today: "2026-11-13", dueOn: "2026-11-27", inBreak: false, overdueLabel: null })).toEqual({
+      label: "Due in 2 weeks · 27 Nov",
+      tone: "soon",
+    });
+    expect(cycleDueChip({ today: "2026-11-13", dueOn: "2026-12-04", inBreak: false, overdueLabel: null })).toEqual({
+      label: "Due in 3 weeks · 4 Dec",
+      tone: "neutral",
+    });
+    expect(
+      cycleDueChip({
+        today: "2026-11-13",
+        dueOn: "2026-10-01",
+        inBreak: false,
+        overdueLabel: "Overdue · 4 weeks 2 days",
+      }),
+    ).toEqual({ label: "Overdue · 4 weeks 2 days", tone: "overdue" });
   });
 
   it("opens the tutor window two weeks before the due week and groups a returned pack as sent back", () => {

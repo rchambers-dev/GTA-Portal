@@ -6,6 +6,7 @@ import { formatManagerName } from "@/features/administration/domain/employer-rec
 import {
   CYCLE_STEPS,
   currentStepDetail,
+  cycleDueChip,
   cycleStepFromStage,
   daysBetween,
   reviewCountLabel,
@@ -297,6 +298,12 @@ function buildLearner(loaded: Loaded, apprentice: ApprenticeRow, today: string):
   const sent = ["to_book", "booked", "reviewed", "completed"].includes(latestPack?.stage || "");
   const fill = tutorFill(latestPack ? loaded.forms.get(latestPack.id) ?? emptyTutorForm() : emptyTutorForm(), today, interval, sent);
   const noticeDays = planned && !inBreak ? daysBetween(today, tutorNoticeDate(planned)) : null;
+  const cycleDue = cycleDueChip({
+    today,
+    dueOn: planned,
+    inBreak,
+    overdueLabel: !inBreak && due.state === "overdue" ? due.label : null,
+  });
   return {
     gtaId: apprentice.gta_id,
     name: personName(apprentice),
@@ -312,6 +319,8 @@ function buildLearner(loaded: Loaded, apprentice: ApprenticeRow, today: string):
     stepId,
     stepLabel: CYCLE_STEPS.find((step) => step.id === stepId)?.label || "Waiting",
     timing: due.label,
+    dueChip: cycleDue.label,
+    dueTone: cycleDue.tone,
     late,
     daysLeft,
     reviewCount: completed.length,
