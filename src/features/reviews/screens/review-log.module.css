@@ -1,9 +1,13 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 16px;
+  padding: 0.25rem;
+  background: var(--bg-page, #f5f6f8);
   color: #1a1f3d;
   font-family: var(--font-body), "Source Sans 3", sans-serif;
+  --panel-line: color-mix(in srgb, var(--color-navy-800) 22%, white);
+  --panel-line-strong: color-mix(in srgb, var(--color-navy-800) 32%, white);
 }
 
 .head { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-end; flex-wrap: wrap; }
@@ -25,7 +29,17 @@
 }
 .undo:disabled { cursor: not-allowed; color: #8b93a7; }
 
-.filters { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--panel-line-strong);
+  border-radius: 0.9rem;
+  box-shadow: 0 1px 2px rgb(13 16 36 / 0.06), 0 10px 24px rgb(13 16 36 / 0.07);
+  padding: 0.75rem 0.9rem;
+}
 .filters input, .filters select {
   height: 2rem;
   border-radius: 999px;
@@ -40,9 +54,9 @@
 
 .card {
   background: #fff;
-  border: 1px solid #e8eaef;
+  border: 1px solid var(--panel-line-strong);
   border-radius: 0.9rem;
-  box-shadow: 0 1px 2px rgb(20 24 51 / 5%);
+  box-shadow: 0 1px 2px rgb(13 16 36 / 0.06), 0 10px 24px rgb(13 16 36 / 0.07);
   padding: 0.9rem 1rem 1rem;
   overflow-x: auto;
 }
