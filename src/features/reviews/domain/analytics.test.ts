@@ -68,6 +68,7 @@ describe("review analytics", () => {
     expect(overdue?.count).toBe(1);
     expect(page.risk.find((item) => item.id === "booking")?.count).toBe(1);
     expect(page.overdueByTutor[0]).toMatchObject({ name: "John Pearson", count: 1 });
+    expect(page.mostOverdue[0]).toMatchObject({ name: "Alex", tutor: "John Pearson", plannedOn: "2026-10-01", days: 43 });
   });
 
   it("measures release to received from the event dates", () => {

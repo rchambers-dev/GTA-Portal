@@ -397,6 +397,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
 
   const risk = Object.fromEntries(RISK_LABELS.map((item) => [item.id, 0])) as Record<RiskId, number>;
   const overdueByTutor = new Map<string, number>();
+  const overdueLearners: { gtaId: string; name: string; tutor: string; plannedOn: string; days: number }[] = [];
   for (const learner of learners) {
     const planned = openReview.get(learner.gtaId)?.plannedOn?.slice(0, 10) || null;
     const step = stepOf.get(learner.gtaId);
@@ -408,9 +409,16 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     const dueThisWeek = Boolean(planned && planned >= source.today && planned <= friday);
     const bookingLate = step === "booking" && age > 7;
     const tutorLate = step === "released" && age > 7;
-    if (datePassed) {
+    if (datePassed && planned) {
       risk.overdue += 1;
       overdueByTutor.set(learner.tutor, (overdueByTutor.get(learner.tutor) || 0) + 1);
+      overdueLearners.push({
+        gtaId: learner.gtaId,
+        name: learner.name,
+        tutor: learner.tutor,
+        plannedOn: planned,
+        days: Math.max(0, daysBetween(planned, source.today)),
+      });
     }
     if (dueThisWeek) risk["due-this-week"] += 1;
     if (bookingLate) risk.booking += 1;
@@ -546,6 +554,9 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     overdueByTutor: [...overdueByTutor.entries()]
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
+    mostOverdue: overdueLearners
+      .sort((a, b) => b.days - a.days || a.name.localeCompare(b.name))
+      .slice(0, 5),
     completion: {
       allTime: releasedPacks.size ? completedPacks.size / releasedPacks.size : null,
       allTimeTone: rateTone(releasedPacks.size ? completedPacks.size / releasedPacks.size : null),

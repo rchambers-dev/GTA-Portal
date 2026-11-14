@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { apprenticeLearnerPath } from "@/features/administration/domain/apprentice-tutor";
 import { Fragment } from "react";
 import { ANALYTICS_RANGES, coverageTone, percent, type AnalyticsFilters, type Urgency } from "../domain/analytics";
 import { CycleHistory } from "./CycleHistory";
@@ -171,6 +172,19 @@ export function AnalyticsView({
                   </article>
                 ))}
               </div>
+              <h3 className={styles.subhead}>Most overdue</h3>
+              {page.mostOverdue.length === 0 ? <p className={styles.muted}>No overdue learners.</p> : (
+                <div className={styles.overdueList}>
+                  {page.mostOverdue.map((learner) => (
+                    <div key={learner.gtaId} className={styles.overduePerson}>
+                      <Link href={apprenticeLearnerPath(workspace, learner.gtaId)}>{learner.name}</Link>
+                      <span>{learner.tutor}</span>
+                      <span>{plannedLabel(learner.plannedOn)}</span>
+                      <strong className={styles.redText}>{learner.days} days</strong>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
             <section className={styles.card}>
               <h2>Overdue by tutor</h2>
@@ -280,7 +294,14 @@ function ColumnChart({ weeks, max }: { weeks: Page["page"]["trend"]; max: number
       </div>
       <table className={styles.weekTable}>
         <thead>
-          <tr><th>Week</th><th>Released</th><th>Received</th><th>Completed</th><th>Visits</th><th>Calls/Teams</th></tr>
+          <tr>
+            <th>Week</th>
+            <th><i className={styles.rel} />Released</th>
+            <th><i className={styles.rec} />Received</th>
+            <th><i className={styles.comp} />Completed</th>
+            <th><i className={styles.vis} />Visits</th>
+            <th><i className={styles.call} />Calls/Teams</th>
+          </tr>
         </thead>
         <tbody>
           {weeks.map((week) => (
@@ -296,6 +317,12 @@ function ColumnChart({ weeks, max }: { weeks: Page["page"]["trend"]; max: number
         </tbody>
       </table>
     </>
+  );
+}
+
+function plannedLabel(iso: string): string {
+  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(
+    new Date(`${iso}T00:00:00Z`),
   );
 }
 
