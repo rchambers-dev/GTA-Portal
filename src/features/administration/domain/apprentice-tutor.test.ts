@@ -130,6 +130,10 @@ describe("apprentice tutor rule", () => {
     expect(learnerSectionHref("/administration/onboarding/apprentice/GTA-000002", "tutor")).toBe(
       "/administration/onboarding/apprentice/GTA-000002?tab=tutor",
     );
+    expect(learnerSectionHref("/administration/onboarding/apprentice/GTA-000002", "reviews")).toBe(
+      "/administration/onboarding/apprentice/GTA-000002?tab=reviews",
+    );
+    expect(learnerSectionFromQuery("reviews")).toBe("reviews");
   });
 
   it("formats tutor dates in the London calendar day", () => {
