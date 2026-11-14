@@ -203,9 +203,11 @@ describe("review analytics", () => {
       { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
     );
     expect(page.reviewsPerWeek).toHaveLength(5);
-    expect(page.trend).toHaveLength(5);
+    expect(page.trend.length).toBeGreaterThanOrEqual(11);
+    expect(page.trend[0]?.id).toBe("2026-08-31");
     expect(page.trend.at(-1)).toMatchObject({ current: true, visits: 1, received: 1, completed: 1, callsTeams: 0 });
-    expect(page.trend[0]).toHaveProperty("released");
+    expect(page.months.map((month) => month.label)).toEqual(["Sep", "Oct", "Nov"]);
+    expect(page.months.at(-1)).toMatchObject({ current: true, visits: 1, received: 1, completed: 1 });
   });
 
   it("logs the note, calls a nameless actor System, and skips created events", () => {

@@ -361,24 +361,30 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     { label: "Teams", now: methodWeek(thisMonday, "teams"), previous: methodWeek(lastMonday, "teams") },
   ].map((item) => ({ ...item, delta: item.now - item.previous }));
 
-  const trend = lastFiveWeeks(thisMonday).map((monday) => {
+  const trendStart = weekStartMonday("2026-09-04");
+  const trend = weeksFrom(trendStart <= thisMonday ? trendStart : thisMonday, thisMonday).map((monday) => {
     const friday = addDays(monday, 4);
-    const inWeek = (day: string) => day >= monday && day <= friday;
-    const completed = events.filter((event) => event.type === "completed" && inWeek(londonDay(event.at))).length;
-    const start = countedFrom > monday ? countedFrom : monday;
-    const end = source.today < friday ? source.today : friday;
-    const weekExpected = end < start ? 0 : quota * countWeekdays(start, end);
+    const counts = periodCounts(events, reviews, (day) => day >= monday && day <= friday);
+    const paceStart = countedFrom > monday ? countedFrom : monday;
+    const paceEnd = source.today < friday ? source.today : friday;
+    const weekExpected = paceEnd < paceStart ? 0 : quota * countWeekdays(paceStart, paceEnd);
     return {
+      id: monday,
       label: monthDay(monday),
       current: monday === thisMonday,
-      released: events.filter((event) => event.type === "released" && inWeek(londonDay(event.at))).length,
-      received: events.filter((event) => event.type === "submitted" && inWeek(londonDay(event.at))).length,
-      completed,
-      visits: reviews.filter((review) => review.status === "completed" && review.method === "in_person" && inWeek(review.actualOn?.slice(0, 10) || "")).length,
-      callsTeams: reviews.filter((review) => review.status === "completed" && (review.method === "phone" || review.method === "teams") && inWeek(review.actualOn?.slice(0, 10) || "")).length,
-      behind: monday === thisMonday && completed < weekExpected,
+      ...counts,
+      behind: monday === thisMonday && counts.completed < weekExpected,
     };
   });
+  const trendMonthStart = "2026-09";
+  const trendMonthEnd = source.today.slice(0, 7);
+  const months = monthKeys(trendMonthStart <= trendMonthEnd ? trendMonthStart : trendMonthEnd, trendMonthEnd).map((key) => ({
+    id: key,
+    label: MONTH_NAMES[Number(key.slice(5, 7)) - 1] || key,
+    current: key === trendMonthEnd,
+    ...periodCounts(events, reviews, (day) => day.slice(0, 7) === key),
+    behind: false,
+  }));
 
   const reviewsPerWeek = lastFiveWeeks(thisMonday).map((monday) => {
     const friday = addDays(monday, 4);
@@ -550,6 +556,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     reviewsPerWeek,
     weekday,
     trend,
+    months,
     risk: RISK_LABELS.map((item) => ({ ...item, count: risk[item.id], tone: riskTone(item.id) })),
     overdueByTutor: [...overdueByTutor.entries()]
       .map(([name, count]) => ({ name, count }))
@@ -617,6 +624,41 @@ function countedOptions(
 
 function lastFiveWeeks(thisMonday: string): string[] {
   return [4, 3, 2, 1, 0].map((ago) => addDays(thisMonday, -7 * ago));
+}
+
+function weeksFrom(startMonday: string, thisMonday: string): string[] {
+  const weeks: string[] = [];
+  for (let monday = startMonday; monday <= thisMonday; monday = addDays(monday, 7)) weeks.push(monday);
+  return weeks;
+}
+
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function monthKeys(start: string, end: string): string[] {
+  const keys: string[] = [];
+  let year = Number(start.slice(0, 4));
+  let month = Number(start.slice(5, 7));
+  const last = end.slice(0, 7);
+  while (`${year}-${String(month).padStart(2, "0")}` <= last && keys.length < 36) {
+    keys.push(`${year}-${String(month).padStart(2, "0")}`);
+    month += 1;
+    if (month === 13) {
+      month = 1;
+      year += 1;
+    }
+  }
+  return keys;
+}
+
+function periodCounts(events: AnalyticsEvent[], reviews: AnalyticsReview[], inPeriod: (day: string) => boolean) {
+  const eventDay = (value: string) => (/^\d{4}-\d{2}-\d{2}$/.test(value) ? value : londonDay(value));
+  return {
+    released: events.filter((event) => event.type === "released" && inPeriod(eventDay(event.at))).length,
+    received: events.filter((event) => event.type === "submitted" && inPeriod(eventDay(event.at))).length,
+    completed: events.filter((event) => event.type === "completed" && inPeriod(eventDay(event.at))).length,
+    visits: reviews.filter((review) => review.status === "completed" && review.method === "in_person" && inPeriod(review.actualOn?.slice(0, 10) || "")).length,
+    callsTeams: reviews.filter((review) => review.status === "completed" && (review.method === "phone" || review.method === "teams") && inPeriod(review.actualOn?.slice(0, 10) || "")).length,
+  };
 }
 
 function firstWeekday(day: string): string {

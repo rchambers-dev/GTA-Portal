@@ -3,6 +3,7 @@ import { apprenticeLearnerPath } from "@/features/administration/domain/apprenti
 import { Fragment } from "react";
 import { ANALYTICS_RANGES, coverageTone, percent, type AnalyticsFilters, type Urgency } from "../domain/analytics";
 import { CycleHistory } from "./CycleHistory";
+import { TrendCard } from "./TrendCard";
 import type { loadAnalytics } from "../domain/analytics-repository";
 import { JumpSelect, PrintReport } from "./PrintReport";
 import styles from "./analytics.module.css";
@@ -35,7 +36,6 @@ export function AnalyticsView({
   const maxWeek = Math.max(1, ...page.reviewsPerWeek.map((week) => week.total));
   const maxDay = Math.max(1, ...page.weekday.map((day) => day.total));
   const maxMix = Math.max(1, ...page.programmes.map((item) => item.count));
-  const maxTrend = Math.max(1, ...page.trend.flatMap((week) => [week.released, week.received, week.completed, week.visits, week.callsTeams]));
   const paceLabel = page.cycle.pace === "on-pace" ? "On pace" : page.cycle.pace === "slightly-behind" ? "Slightly behind" : "Behind";
   const paceTone: Urgency = page.cycle.pace === "on-pace" ? "green" : page.cycle.pace === "slightly-behind" ? "amber" : "red";
   const previous = page.history.find((row) => !row.current);
@@ -149,17 +149,7 @@ export function AnalyticsView({
             </section>
           </div>
           <TutorList page={page} />
-          <section className={styles.card}>
-            <h2>Weekly trend</h2>
-            <p className={styles.legend}>
-              <i className={styles.rel} />Reviews released
-              <i className={styles.rec} />Forms received
-              <i className={styles.comp} />Reviews completed
-              <i className={styles.vis} />Visits
-              <i className={styles.call} />Calls/Teams
-            </p>
-            <ColumnChart weeks={page.trend} max={maxTrend} />
-          </section>
+          <TrendCard weeks={page.trend} months={page.months} />
           <div className={styles.split}>
             <section className={styles.card}>
               <h2>Overdue and at risk</h2>
@@ -261,62 +251,6 @@ function Stat({ label, value, note, delta: change, tone = "neutral" }: { label: 
       {note ? <span className={styles.note}>{note}</span> : null}
       {change == null ? null : <span className={change > 0 ? styles.up : change < 0 ? styles.down : styles.note}>{change > 0 ? `+${change}` : change} on last week</span>}
     </article>
-  );
-}
-
-function ColumnChart({ weeks, max }: { weeks: Page["page"]["trend"]; max: number }) {
-  const ticks = [max, Math.ceil(max / 2), 0];
-  const series = [
-    { key: "released" as const, className: styles.rel, name: "Reviews released" },
-    { key: "received" as const, className: styles.rec, name: "Forms received" },
-    { key: "completed" as const, className: styles.comp, name: "Reviews completed" },
-    { key: "visits" as const, className: styles.vis, name: "Visits" },
-    { key: "callsTeams" as const, className: styles.call, name: "Calls/Teams" },
-  ];
-  return (
-    <>
-      <div className={styles.chart}>
-        <div className={styles.axis} aria-hidden="true">
-          {ticks.map((tick) => <span key={tick}>{tick}</span>)}
-        </div>
-        <div className={styles.plot} role="img" aria-label="Released, received, completed, visits and calls or Teams over the last five weeks">
-          {[0, 50, 100].map((mark) => <span key={mark} className={styles.grid} style={{ bottom: `${mark}%` }} />)}
-          {weeks.map((week) => (
-            <div key={week.label} className={week.current && week.behind ? `${styles.cluster} ${styles.behind}` : week.current ? `${styles.cluster} ${styles.currentWeek}` : styles.cluster}>
-              {series.map((item) => {
-                const value = week[item.key];
-                return <i key={item.key} className={item.className} title={`${item.name}: ${value}`} style={{ height: value ? `${Math.round((value / max) * 100)}%` : 0, minHeight: value ? 2 : 0 }} />;
-              })}
-              <span>{week.label}{week.current ? " · This week" : ""}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <table className={styles.weekTable}>
-        <thead>
-          <tr>
-            <th>Week</th>
-            <th><i className={styles.rel} />Released</th>
-            <th><i className={styles.rec} />Received</th>
-            <th><i className={styles.comp} />Completed</th>
-            <th><i className={styles.vis} />Visits</th>
-            <th><i className={styles.call} />Calls/Teams</th>
-          </tr>
-        </thead>
-        <tbody>
-          {weeks.map((week) => (
-            <tr key={week.label} className={week.behind ? styles.behindRow : undefined}>
-              <td>{week.label}{week.current ? " · This week" : ""}</td>
-              <td>{week.released}</td>
-              <td>{week.received}</td>
-              <td>{week.completed}</td>
-              <td>{week.visits}</td>
-              <td>{week.callsTeams}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
   );
 }
 
