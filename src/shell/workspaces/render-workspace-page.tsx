@@ -44,6 +44,7 @@ import { AddApprenticeScreen } from "@/features/administration/screens/AddAppren
 import { ApprenticeLearnerScreen } from "@/features/administration/screens/ApprenticeLearnerScreen";
 import { apprenticeLearnerGtaId } from "@/features/administration/domain/apprentice-tutor";
 import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
+import { AnalyticsScreen } from "@/features/reviews/screens/AnalyticsScreen";
 import { CycleScreen } from "@/features/reviews/screens/CycleScreen";
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
 import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
@@ -468,7 +469,16 @@ export async function renderWorkspacePage(
       case "reviews/archive":
         return <ReviewStubScreen title="Archive" />;
       case "reviews/analytics":
-        return <ReviewStubScreen title="Analytics" />;
+        return (
+          <AnalyticsScreen
+            workspace="administration"
+            range={searchValue(search?.range)}
+            tutor={searchValue(search?.tutor)}
+            programme={searchValue(search?.programme)}
+            employer={searchValue(search?.employer)}
+            view={searchValue(search?.view)}
+          />
+        );
       case "reviews/tutor-reviews":
         return <TutorReviewsScreen workspace="administration" />;
       case "reviews/settings":
@@ -546,7 +556,16 @@ export async function renderWorkspacePage(
       case "reviews/archive":
         return <ReviewStubScreen title="Archive" />;
       case "reviews/analytics":
-        return <ReviewStubScreen title="Analytics" />;
+        return (
+          <AnalyticsScreen
+            workspace="management"
+            range={searchValue(search?.range)}
+            tutor={searchValue(search?.tutor)}
+            programme={searchValue(search?.programme)}
+            employer={searchValue(search?.employer)}
+            view={searchValue(search?.view)}
+          />
+        );
       case "reviews/tutor-reviews":
         return <TutorReviewsScreen workspace="management" />;
       case "reviews/settings":
