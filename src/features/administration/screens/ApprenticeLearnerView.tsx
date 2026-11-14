@@ -14,6 +14,8 @@ import { ApprenticeProgrammePanel } from "./ApprenticeProgrammePanel";
 import { LearnerEmployerPanel } from "./LearnerEmployerPanel";
 import { LearnerExitPanel } from "./LearnerExitPanel";
 import type { ApprenticeLearnerPage } from "../domain/apprentice-tutor-repository";
+import { LearnerReviewsPanel } from "@/features/reviews/screens/LearnerReviewsPanel";
+import type { LearnerReviews } from "@/features/reviews/domain/cycle-view";
 import { employmentSiteLabel, type CurrentApprenticeEmployment } from "../domain/employer-record";
 import {
   LEARNER_SECTIONS,
@@ -36,6 +38,7 @@ export function ApprenticeLearnerView({
   programme,
   exits,
   placements,
+  reviews,
 }: {
   workspace: "administration" | "management";
   canAssign: boolean;
@@ -44,6 +47,7 @@ export function ApprenticeLearnerView({
   programme: ApprenticeProgrammePage | null;
   exits: LearnerExitPage;
   placements: ApprenticePlacementPage;
+  reviews: LearnerReviews | null;
 }) {
   const pathname = usePathname() ?? apprenticeLearnerPath(workspace, page.requestedId);
   const searchParams = useSearchParams();
@@ -107,6 +111,14 @@ export function ApprenticeLearnerView({
                 gtaId={apprentice.gtaId}
                 placements={placements}
               />
+            ) : section === "reviews" ? (
+              reviews ? (
+                <LearnerReviewsPanel reviews={reviews} canChangeReviewer={canManageProgramme} />
+              ) : (
+                <p className={styles.error} role="alert">
+                  Reviews could not be loaded.
+                </p>
+              )
             ) : section === "programme" ? (
               programme ? (
                 <ApprenticeProgrammePanel

@@ -44,6 +44,7 @@ import { AddApprenticeScreen } from "@/features/administration/screens/AddAppren
 import { ApprenticeLearnerScreen } from "@/features/administration/screens/ApprenticeLearnerScreen";
 import { apprenticeLearnerGtaId } from "@/features/administration/domain/apprentice-tutor";
 import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
+import { CycleScreen } from "@/features/reviews/screens/CycleScreen";
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
 import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
 import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
@@ -461,7 +462,7 @@ export async function renderWorkspacePage(
           />
         );
       case "reviews/cycle":
-        return <ReviewStubScreen title="Review cycle" />;
+        return <CycleScreen workspace="administration" />;
       case "reviews/out":
         return <ReviewStubScreen title="Out" />;
       case "reviews/archive":
@@ -539,7 +540,7 @@ export async function renderWorkspacePage(
           />
         );
       case "reviews/cycle":
-        return <ReviewStubScreen title="Review cycle" />;
+        return <CycleScreen workspace="management" />;
       case "reviews/out":
         return <ReviewStubScreen title="Out" />;
       case "reviews/archive":

@@ -16,7 +16,6 @@ import {
   completeDayAction,
   excludeStopAction,
   recordSafeguardingAction,
-  reverseSafeguardingAction,
   setNotesAction,
   verifyStopAction,
 } from "./plan-actions";
@@ -660,21 +659,21 @@ function StopCard({
           </p>
           <p className={styles.pills}>
             <span className={`${styles.tag} ${priority}`}>{stop.dueState === "ok" ? "On track" : stop.dueLabel}</span>
-            <button
-              type="button"
-              className={stop.safeguarding ? styles.safeOn : styles.safeOff}
-              onClick={(event) => {
-                event.stopPropagation();
-                if (!canWrite) return;
-                void onRun(() =>
-                  stop.safeguarding && stop.signoffId
-                    ? reverseSafeguardingAction({ signoffId: stop.signoffId })
-                    : recordSafeguardingAction({ gtaId: stop.gtaId, date }),
-                );
-              }}
-            >
-              Safeguarding
-            </button>
+            {stop.safeguarding ? (
+              <span className={styles.safeOn}>Safeguarding signed</span>
+            ) : (
+              <button
+                type="button"
+                className={styles.safeOff}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  if (!canWrite) return;
+                  void onRun(() => recordSafeguardingAction({ gtaId: stop.gtaId, date }));
+                }}
+              >
+                Safeguarding
+              </button>
+            )}
             {stop.completed ? <span className={styles.tagDone}>Review done</span> : null}
             {!stop.completed && stop.verified ? <span className={styles.tagDone}>Verified</span> : null}
             {stop.locked ? <span className={styles.tagLock}>Locked</span> : null}
