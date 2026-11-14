@@ -82,9 +82,11 @@ export function AnalyticsView({
                 </Fragment>
               ))}
             </div>
+          </section>
+          <section className={styles.card}>
             <div className={styles.pace}>
               <div className={styles.paceTop}>
-                <strong>This cycle</strong>
+                <h2>This cycle</h2>
                 <span className={styles.note}>{page.cycle.dates}</span>
                 <span className={`${styles.paceBadge} ${toneClass(paceTone)}`}>{paceLabel}</span>
               </div>
@@ -98,8 +100,12 @@ export function AnalyticsView({
                 </p>
               ) : null}
             </div>
-            <CycleHistory workspace={workspace} filters={filters} view={view} rows={page.history} />
           </section>
+          {page.history.length > 0 ? (
+            <section className={styles.card}>
+              <CycleHistory workspace={workspace} filters={filters} view={view} rows={page.history} />
+            </section>
+          ) : null}
           <section className={styles.card}>
             <h2>Overall</h2>
             <div className={styles.overallGrid}>
@@ -118,24 +124,27 @@ export function AnalyticsView({
           <div className={styles.split}>
             <section className={styles.card}>
               <h2>Reviews per week</h2>
-              {page.reviewsPerWeek.length === 0 ? <p className={styles.muted}>No reviews to show yet.</p> : page.reviewsPerWeek.map((week) => (
-                <div key={week.label} className={week.current ? `${styles.bar} ${styles.current}` : styles.bar}>
-                  <span className={styles.barLabel}>{week.label}{week.current ? " · This week" : ""}</span>
-                  <span className={styles.track}><i className={styles.fill} style={{ width: `${Math.max(8, Math.round((week.total / maxWeek) * 100))}%` }} /></span>
-                  <span>{week.total}</span>
-                </div>
-              ))}
+              <div className={styles.bars}>
+                {page.reviewsPerWeek.length === 0 ? <p className={styles.muted}>No reviews to show yet.</p> : page.reviewsPerWeek.map((week) => (
+                  <div key={week.label} className={week.current ? `${styles.bar} ${styles.current}` : styles.bar}>
+                    <span className={styles.barLabel}>{week.label}{week.current ? " · This week" : ""}</span>
+                    <span className={styles.track}><i className={styles.fill} style={{ width: `${Math.max(8, Math.round((week.total / maxWeek) * 100))}%` }} /></span>
+                    <span>{week.total}</span>
+                  </div>
+                ))}
+              </div>
             </section>
             <section className={styles.card}>
               <h2>Reviews by day</h2>
-              {page.weekday.map((day) => (
-                <div key={day.label} className={day.today ? `${styles.bar} ${styles.today}` : styles.bar}>
-                  <span className={styles.barLabel}>{day.label}{day.today ? " · Today" : ""}</span>
-                  <span className={styles.track}><i className={styles.fill} style={{ width: `${day.total ? Math.max(8, Math.round((day.total / maxDay) * 100)) : 0}%` }} /></span>
-                  <span>{day.total}</span>
-                </div>
-              ))}
-              {page.weekend ? <p className={styles.note}>There is no Today mark.</p> : null}
+              <div className={styles.bars}>
+                {page.weekday.map((day) => (
+                  <div key={day.label} className={day.today ? `${styles.bar} ${styles.today}` : styles.bar}>
+                    <span className={styles.barLabel}>{day.label}{day.today ? " · Today" : ""}</span>
+                    <span className={styles.track}><i className={styles.fill} style={{ width: `${day.total ? Math.max(8, Math.round((day.total / maxDay) * 100)) : 0}%` }} /></span>
+                    <span>{day.total}</span>
+                  </div>
+                ))}
+              </div>
             </section>
           </div>
           <TutorList page={page} />

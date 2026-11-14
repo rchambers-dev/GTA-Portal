@@ -4,8 +4,12 @@
   gap: 16px;
   min-width: 0;
   max-width: 100%;
+  padding: 0.25rem;
+  background: var(--bg-page, #f5f6f8);
   color: #1a1f3d;
   font-family: var(--font-body), "Source Sans 3", sans-serif;
+  --panel-line: color-mix(in srgb, var(--color-navy-800) 22%, white);
+  --panel-line-strong: color-mix(in srgb, var(--color-navy-800) 32%, white);
 }
 
 .head {
@@ -26,6 +30,13 @@
 .head p { margin: 0.2rem 0 0; color: #5c6478; }
 
 .actions, .pills, .filters { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+.filters, .key {
+  background: #fff;
+  border: 1px solid var(--panel-line-strong);
+  border-radius: 0.9rem;
+  box-shadow: 0 1px 2px rgb(13 16 36 / 0.06), 0 10px 24px rgb(13 16 36 / 0.07);
+  padding: 0.7rem 0.85rem;
+}
 
 .actions a, .actions button, .pills a, .filters a, .filters select {
   height: 2rem;
@@ -46,9 +57,9 @@
 
 .card {
   background: #fff;
-  border: 1px solid #e8eaef;
+  border: 1px solid var(--panel-line-strong);
   border-radius: 0.9rem;
-  box-shadow: 0 1px 2px rgb(20 24 51 / 5%);
+  box-shadow: 0 1px 2px rgb(13 16 36 / 0.06), 0 10px 24px rgb(13 16 36 / 0.07);
   padding: 0.9rem 1rem 1rem;
   min-width: 0;
   max-width: 100%;
@@ -65,6 +76,7 @@
 .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .tiles, .riskGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: 16px; }
 .split { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: stretch; }
+.split > .card { height: 100%; display: flex; flex-direction: column; }
 .mix { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .concerns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
@@ -104,10 +116,10 @@
 .overallGrid > article strong { font-size: 1.7rem; line-height: 1; }
 
 .stat, .tile, .stepCard {
-  border: 1px solid #e8eaef;
+  border: 1px solid var(--panel-line);
   border-radius: 0.7rem;
   padding: 0.7rem 0.75rem;
-  background: #f5f6f8;
+  background: #f3f5f8;
   min-width: 0;
   min-height: 5.5rem;
   box-sizing: border-box;
@@ -123,9 +135,10 @@
 .stepCard em { display: block; font-style: normal; font-family: var(--font-display), "Plus Jakarta Sans", sans-serif; font-size: 1.7rem; line-height: 1; }
 .stepCard strong { display: block; margin-top: 0.35rem; font-size: 0.82rem; }
 .chevron { align-self: center; color: #8b93a7; font-size: 1.35rem; line-height: 1; }
-.pace { margin-top: 0.8rem; }
-.history { margin-top: 16px; max-width: 100%; overflow-x: auto; }
-.history h3 { margin: 0 0 0.35rem; font-family: var(--font-display), "Plus Jakarta Sans", sans-serif; font-size: 0.95rem; }
+.pace { margin-top: 0; }
+.paceTop h2 { margin: 0; }
+.history { margin-top: 0; max-width: 100%; overflow-x: auto; }
+.history h3 { margin: 0 0 0.7rem; font-family: var(--font-display), "Plus Jakarta Sans", sans-serif; font-size: 1rem; color: inherit; }
 .cycleRow {
   display: grid;
   grid-template-columns: minmax(12rem, 1.45fr) repeat(7, minmax(4.4rem, 1fr));
@@ -239,19 +252,55 @@
 .swatchGreen { background: #1f8a62; }
 .swatchNeutral { background: #8b93a7; }
 
-.bar { display: grid; grid-template-columns: 7rem 1fr auto; gap: 0.4rem; align-items: center; margin-top: 0.35rem; }
+.bars { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 0.7rem; }
+.bar { display: grid; grid-template-columns: 7rem 1fr auto; gap: 0.4rem; align-items: center; margin-top: 0; min-height: 1.85rem; }
 .track { height: 8px; background: #eef1f6; border-radius: 999px; overflow: hidden; margin-top: 0.4rem; }
 .track i, .coverage i, .fill { display: block; height: 100%; }
 .fill { background: #1a1f3d; }
 .track i.red, .coverage i.red { background: #9c2f2f; }
 .track i.amber, .coverage i.amber { background: #d3922a; }
 .track i.green, .coverage i.green { background: #1f8a62; }
-.current .fill { background: #d3922a; }
+.current .fill, .today .fill { background: #d3922a; }
 .today { font-weight: 700; }
+.today .barLabel { color: #8a5a12; font-weight: 700; }
 
-.lineChartFrame { width: 100%; height: 260px; }
+.lineChartFrame { position: relative; width: 100%; height: 260px; }
 .lineChart { display: block; overflow: visible; }
 .gridLine { stroke: #e8eaef; stroke-width: 1; }
+.guideLine { stroke: color-mix(in srgb, var(--color-navy-800) 28%, white); stroke-width: 1; }
+.hit {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.hit:focus-visible { outline: 2px solid var(--color-navy-800); outline-offset: -2px; }
+.tip {
+  position: absolute;
+  z-index: 3;
+  width: 13.5rem;
+  pointer-events: none;
+  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--color-navy-800) 18%, white);
+  border-radius: 0.7rem;
+  box-shadow: 0 1px 2px rgb(13 16 36 / 0.06), 0 10px 24px rgb(13 16 36 / 0.12);
+  padding: 0.55rem 0.7rem 0.6rem;
+  font-family: var(--font-body), "Source Sans 3", sans-serif;
+}
+.tip p {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a1f3d;
+}
+.tip ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.22rem; }
+.tip li { display: grid; grid-template-columns: 0.55rem 1fr auto; gap: 0.4rem; align-items: center; font-size: 0.78rem; color: #1a1f3d; }
+.tip i { width: 0.55rem; height: 0.55rem; border-radius: 2px; }
+.tip b { font-variant-numeric: tabular-nums; font-weight: 700; }
 .axisText, .axisCurrent { font-size: 12px; font-family: var(--font-body), "Source Sans 3", sans-serif; }
 .axisText { fill: #5c6478; font-weight: 400; }
 .axisCurrent { fill: #8a5a12; font-weight: 700; }
