@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { analyticsNowStep, buildAnalytics, countWeekdays, isLiveApprentice, neededEachDay, percent, type AnalyticsSource } from "./analytics";
+import { analyticsNowStep, buildAnalytics, countWeekdays, cyclePace, isLiveApprentice, neededEachDay, percent, type AnalyticsSource } from "./analytics";
 
 const today = "2026-11-13";
 
@@ -46,6 +46,9 @@ describe("review analytics", () => {
     expect(neededEachDay(4, 4, 5)).toBe(0);
     expect(countWeekdays("2026-11-13", "2026-11-13")).toBe(1);
     expect(countWeekdays("2026-11-14", "2026-11-15")).toBe(0);
+    expect(cyclePace(2, 0, 4)).toBe("on-pace");
+    expect(cyclePace(3, 4, 4)).toBe("slightly-behind");
+    expect(cyclePace(0, 8, 4)).toBe("behind");
   });
 
   it("counts the four current steps and totals visits from completed reviews", () => {
@@ -155,13 +158,14 @@ describe("review analytics", () => {
     expect(page.risk.find((item) => item.id === "with-tutor")?.count).toBe(1);
   });
 
-  it("counts completed this cycle from the latest completed pack and names the weekday the quota starts", () => {
+  it("measures this cycle against every learner and the pace since the count-from Monday", () => {
     const page = buildAnalytics(
       source({
         today: "2026-11-14",
         reviews: [
           { id: "r1", gtaId: "A", status: "completed", plannedOn: "2026-09-01", actualOn: "2026-09-04", method: "in_person" },
-          { id: "r2", gtaId: "B", status: "completed", plannedOn: "2026-11-01", actualOn: "2026-11-12", method: "in_person" },
+          { id: "r2", gtaId: "B", status: "completed", plannedOn: "2026-11-01", actualOn: "2026-11-12", method: "phone" },
+          { id: "r3", gtaId: "B", status: "completed", plannedOn: "2026-11-14", actualOn: "2026-11-14", method: "teams" },
         ],
         events: [
           { packId: "pk1", gtaId: "A", type: "completed", at: "2026-09-04T10:00:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "" },
@@ -170,14 +174,16 @@ describe("review analytics", () => {
       }),
       { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
     );
-    expect(page.completedThisCycle).toBe(1);
-    expect(page.overall.completed).toBe(2);
+    expect(page.cycle).toMatchObject({ done: 1, needed: 2, expected: 0, pace: "on-pace", lastDone: 1 });
+    expect(page.overall.completed).toBe(3);
     expect(page.overall.cycleNote).toBe("13 Nov 2026 to 21 Jan 2027, counted from Mon 16 Nov");
     expect(page.weekend).toBe(true);
     expect(page.weekOnWeek.find((item) => item.label === "Completed")?.now).toBe(1);
+    expect(page.flow.find((step) => step.id === "booking")?.tone).toBe("red");
+    expect(page.flow.find((step) => step.id === "waiting")?.tone).toBe("neutral");
   });
 
-  it("charts the last five weeks of visits and forms received", () => {
+  it("charts the last five weeks with released, received, completed, visits and calls", () => {
     const page = buildAnalytics(
       source({
         events: [
@@ -189,8 +195,8 @@ describe("review analytics", () => {
     );
     expect(page.reviewsPerWeek).toHaveLength(5);
     expect(page.trend).toHaveLength(5);
-    expect(page.trend.at(-1)).toMatchObject({ current: true, visits: 1, received: 1 });
-    expect("released" in (page.trend[0] || {})).toBe(false);
+    expect(page.trend.at(-1)).toMatchObject({ current: true, visits: 1, received: 1, completed: 1, callsTeams: 0 });
+    expect(page.trend[0]).toHaveProperty("released");
   });
 
   it("logs the note, calls a nameless actor System, and skips created events", () => {

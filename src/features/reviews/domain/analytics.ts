@@ -113,12 +113,15 @@ export function londonDay(value: string): string {
 
 export type NowStepId = "released" | "booking" | "booked" | "waiting";
 
-const NOW_STEPS: { id: NowStepId; label: string; tone: "red" | "amber" | "green" }[] = [
-  { id: "released", label: "Review released", tone: "amber" },
-  { id: "booking", label: "Needs booking", tone: "red" },
-  { id: "booked", label: "Review booked", tone: "green" },
-  { id: "waiting", label: "Waiting", tone: "green" },
+const NOW_STEPS: { id: NowStepId; label: string }[] = [
+  { id: "released", label: "Review released" },
+  { id: "booking", label: "Needs booking" },
+  { id: "booked", label: "Review booked" },
+  { id: "waiting", label: "Waiting" },
 ];
+
+export type Urgency = "red" | "amber" | "green" | "neutral";
+export type Pace = "on-pace" | "slightly-behind" | "behind";
 
 /**
  * The Portal rests on four steps. A finished pack is Waiting once the next
@@ -166,6 +169,26 @@ function monthDay(iso: string): string {
 }
 
 /** Needed-each-day quota for a 10-week cycle, matching dailyReviewQuota. */
+export function cyclePace(done: number, expected: number, perDay: number): Pace {
+  if (done >= expected) return "on-pace";
+  if (expected - done < Math.max(perDay, 1)) return "slightly-behind";
+  return "behind";
+}
+
+export function rateTone(value: number | null): Urgency {
+  if (value == null) return "neutral";
+  if (value >= 0.8) return "green";
+  if (value >= 0.5) return "amber";
+  return "red";
+}
+
+function riskTone(id: RiskId): Urgency {
+  if (id === "overdue" || id === "booking") return "red";
+  if (id === "due-this-week" || id === "with-tutor") return "amber";
+  if (id === "on-track") return "green";
+  return "neutral";
+}
+
 export function neededEachDay(learnerCount: number, completedThisCycle: number, weekdaysLeft: number): number {
   const remaining = Math.max(0, learnerCount - completedThisCycle);
   if (!remaining) return 0;
@@ -231,7 +254,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     list.sort((a, b) => String(b.actualOn).localeCompare(String(a.actualOn)));
   }
 
-  const flow = NOW_STEPS.map((step) => ({ ...step, count: 0 }));
+  const flow = NOW_STEPS.map((step) => ({ ...step, count: 0, tone: "neutral" as Urgency }));
   const stepOf = new Map<string, NowStepId>();
   for (const learner of learners) {
     const pack = packByGta.get(learner.gtaId);
@@ -269,19 +292,18 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const earliest = completedReviews.map((review) => review.actualOn || "").filter(Boolean).sort()[0] || null;
   const bounds = cycleBounds(source.today, earliest);
   const countedFrom = firstWeekday(source.today);
-  const latestCompletedPack = new Map<string, string>();
-  for (const event of events) {
-    if (event.type !== "completed") continue;
-    const day = londonDay(event.at);
-    const previous = latestCompletedPack.get(event.gtaId);
-    if (!previous || day > previous) latestCompletedPack.set(event.gtaId, day);
-  }
-  let completedThisCycle = 0;
-  for (const day of latestCompletedPack.values()) {
-    if (day >= bounds.start && day <= bounds.end) completedThisCycle += 1;
-  }
+  const doneThisCycle = new Set(
+    completedReviews
+      .filter((review) => {
+        const day = review.actualOn?.slice(0, 10) || "";
+        return day >= bounds.start && day <= bounds.end && day <= source.today;
+      })
+      .map((review) => review.gtaId),
+  );
   const weekdaysLeft = countWeekdays(countedFrom, bounds.end);
-  const quota = neededEachDay(learners.length, completedThisCycle, weekdaysLeft);
+  const quota = neededEachDay(learners.length, doneThisCycle.size, weekdaysLeft);
+  const elapsed = source.today < countedFrom ? 0 : countWeekdays(countedFrom, source.today);
+  const expected = quota * elapsed;
   const completedTotal = filters.range === "all" ? completedReviews.length : countType("completed");
 
   const thisMonday = weekStartMonday(source.today);
@@ -291,28 +313,37 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
       const day = event.at.slice(0, 10);
       return event.type === type && day >= start && day <= addDays(start, 4) && inWindow(event.at, window);
     }).length;
-  const visitWeek = (start: string) =>
+  const methodWeek = (start: string, method: string) =>
     reviews.filter((review) => {
       const day = review.actualOn?.slice(0, 10) || "";
-      return review.status === "completed" && review.method === "in_person" && day >= start && day <= addDays(start, 4) && inWindow(review.actualOn, window);
+      return review.status === "completed" && review.method === method && day >= start && day <= addDays(start, 4) && inWindow(review.actualOn, window);
     }).length;
+  const visitWeek = (start: string) => methodWeek(start, "in_person");
   const weekOnWeek = [
     { label: "Released", now: weekCount(thisMonday, "released"), previous: weekCount(lastMonday, "released") },
     { label: "Received", now: weekCount(thisMonday, "submitted"), previous: weekCount(lastMonday, "submitted") },
     { label: "Completed", now: weekCount(thisMonday, "completed"), previous: weekCount(lastMonday, "completed") },
     { label: "Visits", now: visitWeek(thisMonday), previous: visitWeek(lastMonday) },
+    { label: "Calls", now: methodWeek(thisMonday, "phone"), previous: methodWeek(lastMonday, "phone") },
+    { label: "Teams", now: methodWeek(thisMonday, "teams"), previous: methodWeek(lastMonday, "teams") },
   ].map((item) => ({ ...item, delta: item.now - item.previous }));
 
   const trend = lastFiveWeeks(thisMonday).map((monday) => {
     const friday = addDays(monday, 4);
+    const inWeek = (day: string) => day >= monday && day <= friday;
+    const completed = events.filter((event) => event.type === "completed" && inWeek(londonDay(event.at))).length;
+    const start = countedFrom > monday ? countedFrom : monday;
+    const end = source.today < friday ? source.today : friday;
+    const weekExpected = end < start ? 0 : quota * countWeekdays(start, end);
     return {
       label: monthDay(monday),
       current: monday === thisMonday,
-      received: events.filter((event) => event.type === "submitted" && londonDay(event.at) >= monday && londonDay(event.at) <= friday).length,
-      visits: reviews.filter((review) => {
-        const day = review.actualOn?.slice(0, 10) || "";
-        return review.status === "completed" && day >= monday && day <= friday;
-      }).length,
+      released: events.filter((event) => event.type === "released" && inWeek(londonDay(event.at))).length,
+      received: events.filter((event) => event.type === "submitted" && inWeek(londonDay(event.at))).length,
+      completed,
+      visits: reviews.filter((review) => review.status === "completed" && review.method === "in_person" && inWeek(review.actualOn?.slice(0, 10) || "")).length,
+      callsTeams: reviews.filter((review) => review.status === "completed" && (review.method === "phone" || review.method === "teams") && inWeek(review.actualOn?.slice(0, 10) || "")).length,
+      behind: monday === thisMonday && completed < weekExpected,
     };
   });
 
@@ -353,6 +384,12 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     if (tutorLate) risk["with-tutor"] += 1;
     if (!datePassed && !dueThisWeek && !bookingLate && !tutorLate) risk["on-track"] += 1;
   }
+  for (const step of flow) {
+    if (step.id === "booking") step.tone = risk.booking > 0 ? "red" : step.count > 0 ? "amber" : "neutral";
+    else if (step.id === "released") step.tone = risk["with-tutor"] > 0 ? "amber" : "neutral";
+    else if (step.id === "booked") step.tone = step.count > 0 ? "green" : "neutral";
+  }
+  const waitingNowCount = flow.find((step) => step.id === "waiting")?.count || 0;
 
   const gaps = (from: string, to: string) => {
     const values: number[] = [];
@@ -438,11 +475,19 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   return {
     learners: learners.length,
     flow,
-    completedThisCycle,
     weekend: weekdayName(source.today) === "Saturday" || weekdayName(source.today) === "Sunday",
+    cycle: {
+      done: doneThisCycle.size,
+      needed: learners.length,
+      expected,
+      pace: cyclePace(doneThisCycle.size, expected, quota),
+      lastDone: waitingNowCount,
+      countedFrom,
+    },
     overall: {
       neededEachDay: quota,
       cycleNote: `${longDate(bounds.start)} to ${longDate(bounds.end)}, counted from ${countedFromLabel(countedFrom)}`,
+      rangeLabel: filters.range === "week" ? "This week" : filters.range === "4" ? "Last 4 weeks" : filters.range === "12" ? "Last 12 weeks" : "All time",
       released: countType("released"),
       received: countType("submitted"),
       completed: completedTotal,
@@ -454,13 +499,15 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
     reviewsPerWeek,
     weekday,
     trend,
-    risk: RISK_LABELS.map((item) => ({ ...item, count: risk[item.id] })),
+    risk: RISK_LABELS.map((item) => ({ ...item, count: risk[item.id], tone: riskTone(item.id) })),
     overdueByTutor: [...overdueByTutor.entries()]
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)),
     completion: {
       allTime: releasedPacks.size ? completedPacks.size / releasedPacks.size : null,
+      allTimeTone: rateTone(releasedPacks.size ? completedPacks.size / releasedPacks.size : null),
       currentCycle: learners.length ? waitingNow / learners.length : null,
+      currentCycleTone: rateTone(learners.length ? waitingNow / learners.length : null),
       inFlight: Math.max(0, learners.length - waitingNow),
       releaseToReceived: gaps("released", "submitted"),
       receivedToCompleted: gaps("submitted", "completed"),
@@ -471,6 +518,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
       without: Math.max(0, learners.length - active.size),
       reversed: reversed.size,
       live: learners.length,
+      tone: rateTone(learners.length ? recent.size / learners.length : null),
     },
     concerns: { open: openConcerns, resolved: resolvedConcerns, breaks: openBreaks },
     programmes: [...programmes.entries()]
