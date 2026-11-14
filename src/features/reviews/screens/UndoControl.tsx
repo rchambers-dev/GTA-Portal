@@ -2,10 +2,26 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { undoReviewPackEventAction } from "./log-actions";
+import { undoReviewDayCompletionAction, undoReviewPackEventAction } from "./log-actions";
 import styles from "./review-log.module.css";
 
-export function UndoControl({ ready, summary, eventId }: { ready: boolean; summary: string; eventId: string }) {
+export function UndoControl({
+  ready,
+  summary,
+  label = "Undo",
+  title = "Undo this event?",
+  learners = [],
+  eventId,
+  dayId,
+}: {
+  ready: boolean;
+  summary: string;
+  label?: string;
+  title?: string;
+  learners?: { gtaId: string; name: string }[];
+  eventId?: string;
+  dayId?: string;
+}) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -13,26 +29,32 @@ export function UndoControl({ ready, summary, eventId }: { ready: boolean; summa
   if (!ready) {
     return (
       <button type="button" className={styles.undo} disabled title="Undo is waiting for the database change Reiss needs to approve.">
-        Undo
+        {label}
       </button>
     );
   }
   return (
     <>
-      <button type="button" className={styles.undo} onClick={() => { setError(null); setOpen(true); }}>Undo</button>
+      <button type="button" className={styles.undo} onClick={() => { setError(null); setOpen(true); }}>{label}</button>
       {open ? (
         <div className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="undo-title">
           <div className={styles.dialogCard}>
-            <h2 id="undo-title">Undo this event?</h2>
+            <h2 id="undo-title">{title}</h2>
             <p>{summary}</p>
+            {learners.length > 0 ? (
+              <ul>
+                {learners.map((learner) => <li key={learner.gtaId}>{learner.name}</li>)}
+              </ul>
+            ) : null}
             {error ? <p className={styles.error} role="alert">{error}</p> : null}
             <div className={styles.dialogActions}>
               <button
                 type="button"
                 disabled={pending}
                 onClick={() => {
+                  const action = dayId ? undoReviewDayCompletionAction(dayId) : undoReviewPackEventAction(eventId || "");
                   setPending(true);
-                  void undoReviewPackEventAction(eventId).then((result) => {
+                  void action.then((result) => {
                     setPending(false);
                     if (!result.ok) {
                       setError(result.formError);
