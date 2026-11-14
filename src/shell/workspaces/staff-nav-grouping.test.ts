@@ -49,16 +49,24 @@ describe("sidebar grouping", () => {
       expect(staff?.items[0]?.permission).toBe(PERMISSIONS.ADMIN_USERS_MANAGE);
       expect(onboarding?.items.map((item) => item.label)).toEqual([
         "Overview",
-        "Add apprentice",
+        "Candidates",
         "Add employers",
         "Interviews",
       ]);
       expect(onboarding?.items.map((item) => item.href)).toEqual([
         `/${workspace}/onboarding`,
-        `/${workspace}/onboarding/apprentice`,
+        `/${workspace}/onboarding/candidates`,
         `/${workspace}/onboarding/employer`,
         `/${workspace}/onboarding/interviews`,
       ]);
+      const top = sections.find((section) => !section.title);
+      expect(top?.items.map((item) => item.label)).toContain("Add apprentice");
+      expect(top?.items.find((item) => item.label === "Add apprentice")?.href).toBe(
+        `/${workspace}/onboarding/apprentice`,
+      );
+      expect(top?.items.find((item) => item.label === "Add apprentice")?.permission).toBe(
+        PERMISSIONS.ADMIN_RECORDS_MANAGE,
+      );
       expect(marketing?.items.map((item) => item.label)).toEqual([
         "Overview",
         "Employers & vacancies",
