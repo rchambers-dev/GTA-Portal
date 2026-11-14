@@ -154,9 +154,9 @@ export function AnalyticsView({
               </div>
               <h3 className={styles.subhead}>Most overdue</h3>
               {page.mostOverdue.length === 0 ? <p className={styles.muted}>No overdue learners.</p> : (
-                <div className={styles.overdueList}>
+                <div className={`${styles.fixedGrid} ${styles.fixedOverdue}`}>
                   {page.mostOverdue.map((learner) => (
-                    <div key={learner.gtaId} className={styles.overduePerson}>
+                    <div key={learner.gtaId} className={styles.fixedRow}>
                       <Link href={apprenticeLearnerPath(workspace, learner.gtaId)}>{learner.name}</Link>
                       <span>{learner.tutor}</span>
                       <span>{plannedLabel(learner.plannedOn)}</span>
@@ -169,10 +169,13 @@ export function AnalyticsView({
             <section className={styles.card}>
               <h2>Overdue by tutor</h2>
               {page.overdueByTutor.length === 0 ? <p className={styles.muted}>No overdue learners.</p> : (
-                <div className={styles.sheet}>
-                  <div className={`${styles.pair} ${styles.sheetHead}`}><span>Tutor</span><span>Overdue</span></div>
+                <div className={`${styles.fixedGrid} ${styles.fixedTutors}`}>
+                  <div className={styles.fixedRow}><span className={styles.headCell}>Tutor</span><span className={styles.headCell}>Overdue</span></div>
                   {page.overdueByTutor.map((tutor) => (
-                    <div key={tutor.name} className={styles.pair}><span>{tutor.name}</span><strong className={styles.redText}>{tutor.count}</strong></div>
+                    <div key={tutor.name} className={styles.fixedRow}>
+                      <span>{tutor.name}</span>
+                      <strong className={styles.redText}>{tutor.count}</strong>
+                    </div>
                   ))}
                 </div>
               )}

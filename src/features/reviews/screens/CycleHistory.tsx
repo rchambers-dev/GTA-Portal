@@ -141,10 +141,10 @@ function MissedPanel({ workspace, row }: { workspace: "administration" | "manage
         </div>
       )}
       {row.missedLearners.length === 0 ? null : (
-        <div className={styles.missedList}>
-          <div className={`${styles.missedPerson} ${styles.cycleHead}`}><span>Learner</span><span>GTA ID</span><span>Tutor</span><span>Employer</span></div>
+        <div className={`${styles.fixedGrid} ${styles.fixedMissed}`}>
+          <div className={styles.fixedRow}><span className={styles.headCell}>Learner</span><span className={styles.headCell}>GTA ID</span><span className={styles.headCell}>Tutor</span><span className={styles.headCell}>Employer</span></div>
           {row.missedLearners.map((learner) => (
-            <div key={learner.gtaId} className={styles.missedPerson}>
+            <div key={learner.gtaId} className={styles.fixedRow}>
               <Link href={apprenticeLearnerPath(workspace, learner.gtaId)}>{learner.name}</Link>
               <span>{learner.gtaId}</span>
               <span>{learner.tutor}</span>
