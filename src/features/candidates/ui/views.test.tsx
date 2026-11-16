@@ -21,12 +21,16 @@ describe("candidates pages", () => {
     expect(html).not.toContain("supabase");
   });
 
-  it("asks for email and phone at entry", () => {
+  it("asks for email and phone at entry and does not offer an ID field", () => {
     const html = renderToStaticMarkup(createElement(AddCandidate, props));
     expect(html).toContain("Email");
     expect(html).toContain("Phone");
     expect(html).toContain('name="firstContact"');
     expect(html).toContain("GTA-C-000001");
+    expect(html).toContain("cannot be typed");
+    expect(html).not.toContain('name="externalId"');
+    expect(html).not.toContain("Existing ID");
+    expect(html).not.toContain("GTA-EMP-");
   });
 
   it("requires the candidate name before a permanent delete", () => {

@@ -140,6 +140,18 @@ begin
 end;
 $$;
 
+-- The apprentice GTA ID becomes the main ID. The original candidate ID stays
+-- on the apprentice and on candidates.converted_gta_id so either record can be found.
+alter table public.apprentices
+  add column if not exists source_candidate_id text;
+
+create unique index if not exists apprentices_source_candidate_id_key
+  on public.apprentices (source_candidate_id)
+  where source_candidate_id is not null;
+
+comment on column public.apprentices.source_candidate_id is
+  'Original GTA-C candidate ID. Kept after conversion. Assigned by the system and not editable.';
+
 create or replace function public.confirm_induction_attendance(p_booking_id uuid, p_actual_on date)
 returns text
 language plpgsql
@@ -168,8 +180,8 @@ begin
     into v_gta
   from public.apprentices
   where gta_id ~ '^GTA-[0-9]{6}$';
-  insert into public.apprentices (gta_id, first_name, middle_names, last_name, email, programme_id, status)
-  values (v_gta, v_candidate.first_name, v_candidate.middle_names, v_candidate.last_name, v_candidate.email, v_candidate.programme_id, 'active');
+  insert into public.apprentices (gta_id, first_name, middle_names, last_name, email, programme_id, status, source_candidate_id)
+  values (v_gta, v_candidate.first_name, v_candidate.middle_names, v_candidate.last_name, v_candidate.email, v_candidate.programme_id, 'active', v_candidate.candidate_id);
   if v_candidate.employer_id is not null
      and v_candidate.employer_site_id is not null
      and v_candidate.employer_manager_id is not null then

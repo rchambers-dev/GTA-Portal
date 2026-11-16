@@ -1,5 +1,5 @@
 import styles from "./ui/candidates.module.css";
-import { loadCandidatesReady } from "./load";
+import { loadCandidatesReady, loadEmployerChoices } from "./load";
 import {
   ActionsPage,
   AddCandidate,
@@ -24,6 +24,8 @@ export async function CandidatesArea({
   error,
   site,
   deleteName,
+  tab,
+  date,
 }: {
   workspace: "administration" | "management";
   segment: string;
@@ -31,21 +33,27 @@ export async function CandidatesArea({
   error: string | null;
   site?: string;
   deleteName?: string;
+  tab?: string;
+  date?: string;
 }) {
   const loaded = example ? { ready: false, notice: null } : await loadCandidatesReady();
+  const employers = example ? [] : await loadEmployerChoices();
   const props: CandidatesViewProps = {
     base: `/${workspace}/onboarding`,
     example,
     missing: !example && !loaded.ready,
     error: error || loaded.notice,
     query: site || "",
+    tab,
+    date,
+    employers,
   };
   const rest = segment.slice("onboarding/".length);
   let page = <OverviewPage {...props} />;
   if (rest === "candidates") page = <CandidatesList {...props} />;
   else if (rest === "candidates/new") page = <AddCandidate {...props} />;
   else if (rest === "candidates/due") page = <DuePage {...props} confirmName={deleteName || null} />;
-  else if (rest.startsWith("candidates/")) page = <CandidateRecord {...props} />;
+  else if (rest.startsWith("candidates/")) page = <CandidateRecord {...props} recordId={decodeURIComponent(rest.slice("candidates/".length))} />;
   else if (rest === "interviews") page = <InterviewsPage {...props} />;
   else if (rest === "inductions") page = <InductionsPage {...props} />;
   else if (rest === "employers") page = <EmployersPage {...props} />;

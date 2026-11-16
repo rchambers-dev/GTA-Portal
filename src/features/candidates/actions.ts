@@ -65,9 +65,14 @@ export async function createCandidateAction(formData: FormData) {
   const idResult = await supabase.rpc("next_candidate_id");
   if (idResult.error || !idResult.data) bounce(returnTo, explain(idResult.error) || TABLES_MISSING);
   const candidateId = String(idResult.data);
+  const employerId = text(formData, "employerId");
+  if (employerId) {
+    const employer = await supabase.from("employers").select("employer_id").eq("employer_id", employerId).maybeSingle();
+    if (employer.error) bounce(returnTo, explain(employer.error) || employer.error.message);
+    if (!employer.data) bounce(returnTo, "Choose an employer from the list. Employer IDs cannot be typed.");
+  }
   const inserted = await supabase.from("candidates").insert({
     candidate_id: candidateId,
-    external_id: text(formData, "externalId") || null,
     first_name: firstName,
     last_name: lastName,
     email,
@@ -78,7 +83,7 @@ export async function createCandidateAction(formData: FormData) {
     enquiry_source_id: source.data.id,
     enquiry_source_detail: text(formData, "sourceDetail") || null,
     employer_status: text(formData, "employerStatus") || "needed",
-    employer_id: text(formData, "employerId") || null,
+    employer_id: employerId || null,
     notes: text(formData, "notes") || null,
     responsiveness: "responsive",
     review_due_on: reviewDueOn(firstContact, "responsive"),
@@ -343,8 +348,12 @@ export async function deleteCandidateAction(formData: FormData) {
 export async function addVacancyAction(formData: FormData) {
   const returnTo = text(formData, "returnTo");
   const { supabase, userId } = await gate(returnTo);
+  const employerId = text(formData, "employerId");
+  const employer = await supabase.from("employers").select("employer_id").eq("employer_id", employerId).maybeSingle();
+  if (employer.error) bounce(returnTo, explain(employer.error) || employer.error.message);
+  if (!employer.data) bounce(returnTo, "Choose an employer from the list. Employer IDs cannot be typed.");
   const saved = await supabase.from("employer_vacancies").insert({
-    employer_id: text(formData, "employerId"),
+    employer_id: employerId,
     title: text(formData, "title"),
     status: text(formData, "status") || "open",
     total_places: Number(text(formData, "places") || "1"),
@@ -355,11 +364,28 @@ export async function addVacancyAction(formData: FormData) {
   redirect(returnTo);
 }
 
+export async function logCandidateContactAction(formData: FormData) {
+  const returnTo = text(formData, "returnTo");
+  const { supabase, userId } = await gate(returnTo);
+  const saved = await supabase.from("candidate_events").insert({
+    candidate_id: text(formData, "candidateId"),
+    event_type: "contact",
+    actual_on: text(formData, "actualOn") || isoTodayLondon(),
+    entered_by: userId,
+    detail: { type: text(formData, "activityType") || "Call", notes: text(formData, "notes") },
+  });
+  if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  redirect(returnTo);
+}
+
 export async function addEmployerActivityAction(formData: FormData) {
   const returnTo = text(formData, "returnTo");
   const { supabase, userId } = await gate(returnTo);
+  const named = await supabase.from("employers").select("employer_id").eq("company_name", text(formData, "employerName")).maybeSingle();
+  if (named.error) bounce(returnTo, explain(named.error) || named.error.message);
+  if (!named.data) bounce(returnTo, "That employer could not be found. Employer IDs cannot be typed.");
   const saved = await supabase.from("employer_activities").insert({
-    employer_id: text(formData, "employerId"),
+    employer_id: named.data.employer_id,
     activity_type: text(formData, "activityType") || "Call",
     actual_on: text(formData, "actualOn") || isoTodayLondon(),
     notes: text(formData, "notes") || null,

@@ -185,6 +185,12 @@ function OverviewPanel({
         <dd className={styles.assignedId} data-learner-gta-id={apprentice.gtaId}>
           {apprentice.gtaId}
         </dd>
+        {apprentice.sourceCandidateId ? (
+          <>
+            <dt>Candidate ID</dt>
+            <dd data-source-candidate-id={apprentice.sourceCandidateId}>{apprentice.sourceCandidateId}</dd>
+          </>
+        ) : null}
         <dt>Status</dt>
         <dd data-learner-status={apprentice.statusLabel}>{apprentice.statusLabel}</dd>
         <dt>Email</dt>

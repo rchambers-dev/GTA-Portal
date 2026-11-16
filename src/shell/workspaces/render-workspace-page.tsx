@@ -111,6 +111,8 @@ function renderOnboarding(
         error={error}
         site={searchValue(search?.site)}
         deleteName={searchValue(search?.delete)}
+        tab={searchValue(search?.tab)}
+        date={searchValue(search?.date)}
       />
     );
   }

@@ -28,7 +28,9 @@ const props = {
 
 const pages: Array<[string, React.ReactElement]> = [
   ["01-candidates-list", createElement(CandidatesList, props)],
+  ["01b-started", createElement(CandidatesList, { ...props, tab: "started" })],
   ["02-candidate-record", createElement(CandidateRecord, props)],
+  ["02b-started-record", createElement(CandidateRecord, { ...props, recordId: "GTA-000214" })],
   ["03-add-candidate", createElement(AddCandidate, props)],
   ["04-interviews", createElement(InterviewsPage, props)],
   ["05-overview", createElement(OverviewPage, props)],
@@ -55,6 +57,6 @@ describe("candidate preview shots", () => {
         `<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><link rel="stylesheet" href="${css}"></head><body style="width:1280px;margin:0"><div class="content" style="width:992px">${body}</div></body></html>`,
       );
     }
-    expect(pages.length).toBe(14);
+    expect(pages.length).toBe(16);
   });
 });

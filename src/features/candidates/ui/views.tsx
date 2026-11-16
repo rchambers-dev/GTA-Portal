@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   bookResitAction,
   addCalendarEventAction,
-  addEmployerActivityAction,
   addIntakeAction,
   addRecruitmentAction,
   addVacancyAction,
@@ -14,6 +13,10 @@ import {
   saveDeadlineSettingAction,
   setResponsivenessAction,
 } from "../actions";
+import { EXAMPLE_EMPLOYERS, type EmployerChoice } from "../domain/employers";
+import { ukDate } from "../domain/format";
+import { ContactEventButton } from "./ContactEventModal";
+import { EmployerPicker } from "./EmployerPicker";
 import { BackLink, ExampleChip, MissingNote, PageHead, Pill, Plus, Tick } from "./parts";
 
 export type CandidatesViewProps = {
@@ -22,7 +25,16 @@ export type CandidatesViewProps = {
   missing: boolean;
   error: string | null;
   query: string;
+  tab?: string;
+  date?: string;
+  employers?: EmployerChoice[];
+  recordId?: string;
 };
+
+function employerChoices(props: CandidatesViewProps): EmployerChoice[] {
+  if (props.example) return EXAMPLE_EMPLOYERS;
+  return props.employers ?? [];
+}
 
 function q(example: boolean, extra = ""): string {
   const params = new URLSearchParams(extra);
@@ -64,9 +76,15 @@ const ROWS = [
   ["Harper Quinn", "GTA-C-000152", "Sheffield", "Heavy Vehicle", "grey", "Stage 1", "red", "Employer needed", "green", "Responsive", "Record English result", false],
 ] as const;
 
+const STARTED_ROWS = [
+  ["Reuben Clark", "GTA-000214", "GTA-C-000018", "Doncaster", "Autocare", "Started 2 Nov 2026"],
+  ["Dylan Shore", "GTA-000215", "GTA-C-000019", "Sheffield", "Light Vehicle", "Started 2 Nov 2026"],
+] as const;
+
 export function CandidatesList(props: CandidatesViewProps) {
-  const { base, example } = props;
+  const { base, example, tab } = props;
   const show = example;
+  const started = tab === "started";
   return (
     <Frame props={props}>
       <PageHead
@@ -81,10 +99,10 @@ export function CandidatesList(props: CandidatesViewProps) {
         }
       />
       <div className="tabs">
-        <div className="tab-on">Active <span className="count">{show ? "24" : "0"}</span></div>
+        <Link className={started ? "tab" : "tab-on"} href={`${base}/candidates${q(example)}`}>Active <span className="count">{show ? "24" : "0"}</span></Link>
         <Link className="tab-amber" href={`${base}/candidates/due${q(example)}`}>Due for review <span className="count">{show ? "5" : "0"}</span></Link>
         <Link className="tab" href={`${base}/candidates${q(example, "tab=archived")}`}>Archived <span className="count">{show ? "11" : "0"}</span></Link>
-        <Link className="tab" href={`${base}/candidates${q(example, "tab=started")}`}>Started <span className="count">{show ? "2" : "0"}</span></Link>
+        <Link className={started ? "tab-on" : "tab"} href={`${base}/candidates${q(example, "tab=started")}`}>Started <span className="count">{show ? "2" : "0"}</span></Link>
       </div>
       <div className="card card-pad">
         <form className="filters" method="get">
@@ -114,7 +132,18 @@ export function CandidatesList(props: CandidatesViewProps) {
             </tr>
           </thead>
           <tbody>
-            {show ? ROWS.map((row) => (
+            {show && started ? STARTED_ROWS.map((row) => (
+              <tr key={row[1]}>
+                <td><Link className="name" href={`${base}/candidates/${row[1]}${q(example)}`}>{row[0]}</Link><div className="note-inline">Candidate ID {row[2]}</div></td>
+                <td className="mono muted nowrap">{row[1]}</td>
+                <td className="nowrap">{row[3]}</td>
+                <td className="nowrap">{row[4]}</td>
+                <td><Pill tone="green">Started</Pill></td>
+                <td><Pill tone="green">Confirmed</Pill></td>
+                <td><Pill tone="green">Responsive</Pill></td>
+                <td className="next-step">{row[5]}</td>
+              </tr>
+            )) : show ? ROWS.map((row) => (
               <tr key={row[0]}>
                 <td><Link className="name" href={`${base}/candidates/${row[0] === "Maya Henshaw" ? "GTA-C-000042" : row[1]}${q(example)}`}>{row[0]}</Link></td>
                 <td className="mono muted nowrap">{row[1]}</td>
@@ -136,26 +165,68 @@ export function CandidatesList(props: CandidatesViewProps) {
   );
 }
 
+function startedIdentity(recordId: string | undefined) {
+  if (recordId === "GTA-000214" || recordId === "GTA-C-000018") {
+    return { name: "Reuben Clark", candidateId: "GTA-C-000018", apprenticeId: "GTA-000214", site: "Doncaster", programme: "Autocare", started: "2 Nov 2026" };
+  }
+  if (recordId === "GTA-000215" || recordId === "GTA-C-000019") {
+    return { name: "Dylan Shore", candidateId: "GTA-C-000019", apprenticeId: "GTA-000215", site: "Sheffield", programme: "Light Vehicle", started: "2 Nov 2026" };
+  }
+  return null;
+}
+
 export function CandidateRecord(props: CandidatesViewProps) {
-  const { base, example } = props;
+  const { base, example, recordId } = props;
+  const started = startedIdentity(recordId);
+  const name = started?.name ?? "Maya Henshaw";
+  const candidateId = started?.candidateId ?? "GTA-C-000042";
+  const mainId = started?.apprenticeId ?? candidateId;
   return (
     <Frame props={props}>
-      <BackLink href={`${base}/candidates${q(example)}`}>Candidates</BackLink>
+      <BackLink href={`${base}/candidates${q(example, started ? "tab=started" : "")}`}>Candidates</BackLink>
       <PageHead
-        crumb={<>Onboarding / Candidates / <span>Maya Henshaw</span></>}
-        title="Maya Henshaw"
-        actions={<ExampleChip show={example} />}
+        crumb={<>Onboarding / Candidates / <span>{name}</span></>}
+        title={name}
+        actions={
+          <>
+            <ExampleChip show={example} />
+            <ContactEventButton returnTo={`${base}/candidates/${encodeURIComponent(candidateId)}${q(example)}`} candidateId={candidateId} />
+          </>
+        }
       />
-      <div className="meta-row" style={{ marginTop: -8 }}>
-        <span className="pill pill-grey mono">GTA-C-000042</span>
-        <span className="muted">Doncaster</span>
-        <span className="meta-dot">·</span>
-        <span className="muted">Light Vehicle</span>
-        <span className="meta-dot">·</span>
-        <span className="muted">First contact 3 Mar 2026 · School event</span>
-        <span className="meta-dot">·</span>
-        <span className="muted">maya.henshaw@example.com · 07700 900042</span>
+      <div className="id-row">
+        <div>
+          <div className="side-label">{started ? "Main ID" : "Candidate ID"}</div>
+          <div className="readonly-id" aria-readonly="true">{mainId}</div>
+        </div>
+        {started ? (
+          <div>
+            <div className="side-label">Candidate ID</div>
+            <div className="readonly-id" aria-readonly="true">{candidateId}</div>
+            <div className="hint">Kept as a reference. It cannot be edited.</div>
+          </div>
+        ) : (
+          <div className="hint">Assigned by the system. After a start, the apprentice GTA ID becomes the main ID and this candidate ID stays as a reference.</div>
+        )}
       </div>
+      <div className="meta-row" style={{ marginTop: -8 }}>
+        <span className="muted">{started?.site ?? "Doncaster"}</span>
+        <span className="meta-dot">·</span>
+        <span className="muted">{started?.programme ?? "Light Vehicle"}</span>
+        <span className="meta-dot">·</span>
+        <span className="muted">{started ? `Started ${started.started}` : "First contact 3 Mar 2026 · School event"}</span>
+        {started ? null : (
+          <>
+            <span className="meta-dot">·</span>
+            <span className="muted">maya.henshaw@example.com · 07700 900042</span>
+          </>
+        )}
+      </div>
+      {started ? (
+        <div className="banner banner-green">
+          <div><strong>Started {started.started}.</strong> The apprentice GTA ID {started.apprenticeId} is now the main ID. Candidate ID {started.candidateId} is kept on this record and on the apprentice, and it cannot be edited.</div>
+        </div>
+      ) : null}
       <div className="progress">
         <div className="prog-step done"><div className="prog-num"><Tick /></div><div className="prog-label">Stage 1</div></div>
         <div className="prog-rule on" />
@@ -287,13 +358,18 @@ export function AddCandidate(props: CandidatesViewProps) {
             <label className="field"><span className="label">Last name</span><input name="lastName" defaultValue={example ? "Colton" : ""} required /></label>
             <label className="field"><span className="label">Email</span><input name="email" type="email" required placeholder="name@example.com" /></label>
             <label className="field"><span className="label">Phone</span><input name="phone" type="tel" required placeholder="07…" /></label>
-            <label className="field"><span className="label">Existing ID, optional</span><input name="externalId" placeholder="If they already have a GTA ID" /></label>
+            <div className="field">
+              <span className="label">Candidate ID</span>
+              <div className="readonly-id" aria-readonly="true">Assigned on save</div>
+              <div className="hint">The next ID looks like GTA-C-000001. It cannot be typed or edited.</div>
+            </div>
             <label className="field"><span className="label">Site</span><select name="centre" defaultValue="doncaster"><option value="doncaster">Doncaster</option><option value="sheffield">Sheffield</option></select></label>
             <label className="field"><span className="label">Programme</span><select name="programme"><option>Autocare</option><option>Light Vehicle</option><option>Heavy Vehicle</option><option>Vehicle Paint</option><option>Vehicle Panel</option><option>Business Admin</option><option>Customer Service</option></select></label>
             <label className="field"><span className="label">Original first-contact date</span><input name="firstContact" required placeholder="dd/mm/yyyy" defaultValue={example ? "14/11/2026" : ""} /></label>
             <label className="field"><span className="label">Source</span><select name="source"><option>Website</option><option>Social media</option><option>School event</option><option>Google</option><option>Word of mouth</option><option>Leaflet</option><option>Flyer</option><option>GTA prospectus</option><option>Other</option></select></label>
             <label className="field"><span className="label">Employer status</span><select name="employerStatus" defaultValue="needed"><option value="needed">Employer needed</option><option value="identified">Identified</option><option value="confirmed">Confirmed</option></select></label>
-            <label className="field wide"><span className="label">Employer</span><input name="employerId" placeholder="Employer ID, optional — a vacancy is not required" /><div className="hint">Required later: a candidate can be interviewed without an employer, but cannot enter Stage 2 until the employer is confirmed.</div></label>
+            <EmployerPicker employers={employerChoices(props)} />
+            <div className="field wide"><div className="hint">A vacancy is not required. A candidate can be interviewed without an employer, but cannot enter Stage 2 until the employer is confirmed.</div></div>
             <label className="field wide"><span className="label">Notes</span><textarea name="notes" defaultValue={example ? "Called after seeing the Autocare page on the GTA website. Interested in a January start if a place is available." : ""} /></label>
           </div>
           <div style={{ display: "flex", gap: 8, marginTop: 18, justifyContent: "flex-end" }}>
@@ -311,7 +387,7 @@ export function AddCandidate(props: CandidatesViewProps) {
               <li>Maths pass or fail, with the actual date</li>
               <li>English pass or fail, with the actual date</li>
             </ul>
-            <div className="side-sub" style={{ marginTop: 12 }}>The new ID is GTA-C-000001. Review is due 1 year from the original first-contact date while Responsive, or 3 months if Unresponsive.</div>
+            <div className="side-sub" style={{ marginTop: 12 }}>The system assigns the next candidate ID, such as GTA-C-000001. Review is due 1 year from the original first-contact date while Responsive, or 3 months if Unresponsive.</div>
           </div>
         </div>
       </div>
@@ -337,6 +413,7 @@ export function InterviewsPage(props: CandidatesViewProps) {
         lede="Group sessions run on Mondays, with a maximum of 8 candidates. Bank holidays are skipped. Resits are booked on their own dates. A candidate can be interviewed without an employer, but cannot enter Stage 2 until one is confirmed."
         actions={<ExampleChip show={example} />}
       />
+      {props.date ? <div className="banner banner-green"><div><strong>Monday {ukDate(props.date)}.</strong> Interviews for this Monday. Group sessions are on Mondays, and bank-holiday Mondays are skipped.</div></div> : null}
       <div className="overview-grid">
         <div className="card card-pad">
           <div className="card-title" style={{ marginBottom: 4 }}>Latest session · Monday 9 Nov 2026</div>
@@ -400,7 +477,15 @@ export function InterviewsPage(props: CandidatesViewProps) {
         <p className="muted" style={{ margin: "-4px 0 12px" }}>A resit is its own date. It is not added to a Monday group of 8. Three failures, then 6 months from the third failure, then one final attempt with a manual outcome.</p>
         <form className="filters" action={bookResitAction}>
           <input type="hidden" name="returnTo" value={`${base}/interviews${q(example)}`} />
-          <label className="field"><span className="label">Candidate ID</span><input name="candidateId" placeholder="GTA-C-000001" required /></label>
+          <label className="field"><span className="label">Candidate</span>
+            <select name="candidateId" required defaultValue="">
+              <option value="" disabled>Choose a candidate</option>
+              <option value="GTA-C-000014">Noah Bennett</option>
+              <option value="GTA-C-000120">Jordan Blake</option>
+              <option value="GTA-C-000108">Callum Briggs</option>
+            </select>
+            <div className="hint">The candidate ID stays on the record. It is not typed here.</div>
+          </label>
           <label className="field"><span className="label">Resit date</span><input name="resitOn" type="date" required /></label>
           <label className="field"><span className="label">Site</span><select name="centre"><option value="doncaster">Doncaster</option><option value="sheffield">Sheffield</option></select></label>
           <label className="field"><span className="label">Free the Monday place?</span><select name="freesPlace" defaultValue="no"><option value="no">Keep the place taken</option><option value="yes">Anne-Marie frees the place</option></select></label>
@@ -545,7 +630,7 @@ export function EmployersPage(props: CandidatesViewProps) {
         <h2 className="card-title">Add vacancy</h2>
         <input type="hidden" name="returnTo" value={`${base}/vacancies${q(example)}`} />
         <div className="form-grid">
-          <label className="field"><span className="label">Employer ID</span><input name="employerId" placeholder="GTA-EMP-000001" required /></label>
+          <EmployerPicker employers={employerChoices(props)} required />
           <label className="field"><span className="label">Title</span><input name="title" required /></label>
           <label className="field"><span className="label">Places</span><input name="places" type="number" min={1} defaultValue={1} /></label>
           <label className="field"><span className="label">Status</span><select name="status"><option value="potential">Potential</option><option value="open">Open</option></select></label>
@@ -619,7 +704,13 @@ export function EmployerRecord(props: CandidatesViewProps & { employer: string }
       <PageHead
         crumb={<>Onboarding / Employers & vacancies / <span>{name}</span></>}
         title={name}
-        actions={<><ExampleChip show={example} /><Link className="btn" href={`${base}/vacancies${q(example)}`}><Plus /> Add vacancy</Link></>}
+        actions={
+          <>
+            <ExampleChip show={example} />
+            <ContactEventButton returnTo={`${base}/employers/${encodeURIComponent(name)}${q(example)}`} employerName={name} />
+            <Link className="btn-secondary" href={`${base}/vacancies${q(example)}`}><Plus /> Add vacancy</Link>
+          </>
+        }
       />
       <div className="meta-row" style={{ marginTop: -8 }}>
         <span className="muted">Diane Copeland · Workshop manager</span><span className="meta-dot">·</span><span className="muted">diane.copeland@northbridge-motors.example</span>
@@ -654,17 +745,6 @@ export function EmployerRecord(props: CandidatesViewProps & { employer: string }
           ]} />
         </>
       ) : <p className="muted">No vacancies or linked candidates yet.</p>}
-      <form className="card card-pad" action={addEmployerActivityAction}>
-        <h2 className="card-title">Log a contact attempt</h2>
-        <input type="hidden" name="returnTo" value={`${base}/employers/${encodeURIComponent(name)}${q(example)}`} />
-        <div className="form-grid">
-          <label className="field"><span className="label">Employer ID</span><input name="employerId" placeholder="GTA-EMP-000001" required /></label>
-          <label className="field"><span className="label">Type</span><select name="activityType"><option>Call</option><option>Email</option><option>Visit</option></select></label>
-          <label className="field"><span className="label">Actual date</span><input name="actualOn" type="date" required /></label>
-          <label className="field wide"><span className="label">Notes</span><textarea name="notes" /></label>
-        </div>
-        <div style={{ marginTop: 12, display: "flex", justifyContent: "flex-end" }}><button className="btn" type="submit">Save activity</button></div>
-      </form>
     </Frame>
   );
 }
@@ -681,11 +761,14 @@ function SimpleTable({ title, heads, rows }: { title: string; heads: string[]; r
   );
 }
 
+function calendarIso(index: number): string {
+  const date = new Date(Date.UTC(2026, 9, 26 + index));
+  return date.toISOString().slice(0, 10);
+}
+
 export function CalendarPage(props: CandidatesViewProps) {
   const { example } = props;
-  const days = example
-    ? ["26", "27", "28", "29", "30", "31", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "1", "2", "3", "4", "5", "6"]
-    : [];
+  const days = ["26", "27", "28", "29", "30", "31", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "1", "2", "3", "4", "5", "6"];
   return (
     <Frame props={props}>
       <PageHead
@@ -710,13 +793,28 @@ export function CalendarPage(props: CandidatesViewProps) {
             const mute = index < 6 || index > 35;
             const today = index === 19;
             const selected = index === 23;
-            const event = index === 9 ? "Hall Cross talk" : index === 16 ? "Open evening" : index === 23 ? "Roadshow" : index === 30 ? "Social campaign" : index === 32 ? "Breakfast" : "";
+            const monday = index % 7 === 0;
+            const event = !example ? "" : index === 9 ? "Hall Cross talk" : index === 16 ? "Open evening" : index === 23 ? "Roadshow" : index === 30 ? "Social campaign" : index === 32 ? "Breakfast" : "";
             const tone = index === 9 || index === 16 ? "done" : index === 32 ? "booked" : "planned";
-            return (
-              <div className={`cal-day${mute ? " mute" : ""}${today ? " today" : ""}${selected ? " selected" : ""}`} key={`${day}-${index}`}>
+            const iso = calendarIso(index);
+            const body = (
+              <>
                 <div className="cal-num">{day}</div>
+                {monday ? <div className="cal-ev interview">Interviews</div> : null}
                 {event ? <div className={`cal-ev ${tone}`}>{event}</div> : null}
-              </div>
+              </>
+            );
+            if (!monday) {
+              return (
+                <div className={`cal-day${mute ? " mute" : ""}${today ? " today" : ""}${selected ? " selected" : ""}`} key={`${day}-${index}`}>
+                  {body}
+                </div>
+              );
+            }
+            return (
+              <Link className={`cal-day interview${mute ? " mute" : ""}${today ? " today" : ""}`} key={`${day}-${index}`} href={`${props.base}/interviews${q(example, `date=${iso}`)}`}>
+                {body}
+              </Link>
             );
           })}
         </div>
@@ -992,7 +1090,7 @@ export function DuePage(props: CandidatesViewProps & { confirmName: string | nul
             <input type="hidden" name="candidateId" value={confirmName} />
             <div className="dialog-actions">
               <Link className="btn-secondary" href={`${base}/candidates/due${q(example)}`}>Cancel</Link>
-              <button className="btn-danger solid" type="submit">Delete permanently</button>
+              <button className="btn-danger" type="submit">Delete permanently</button>
             </div>
           </form>
         </div>
