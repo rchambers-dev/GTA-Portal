@@ -139,6 +139,7 @@ export default function App() {
         setStored(result.state);
         await saveSyncState(userId, result.state);
         setSummary(result.summary);
+        setNotice(result.notice);
         setProgress(null);
       } catch (error: unknown) {
         setNotice(error instanceof Error ? error.message : "Sync did not finish.");

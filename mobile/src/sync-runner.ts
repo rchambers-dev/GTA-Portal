@@ -8,6 +8,7 @@ import {
 } from "./device-contacts";
 import { collapseTutorAndStaff } from "./contact-groups";
 import { deviceIdsToRemove, toDeviceDraft, type DraftResult } from "./map-contact";
+import { syncProblemMessage } from "./ios-contacts";
 import { planSync, type SyncSummary } from "./plan-sync";
 import type { StoredSync } from "./storage";
 import type { AddressBookRow, ContactGroup } from "./types";
@@ -17,7 +18,7 @@ export async function runSync(input: {
   groups: readonly ContactGroup[];
   state: StoredSync;
   onProgress?: (done: number, total: number) => void;
-}): Promise<{ state: StoredSync; summary: SyncSummary }> {
+}): Promise<{ state: StoredSync; summary: SyncSummary; notice: string | null }> {
   const selected = new Set(input.groups);
   const prepared = input.rows.filter((row) => selected.has(row.contactGroup)).map((row) => toDeviceDraft(row));
   const drafts = uniteTutorAndStaff(prepared);
@@ -33,6 +34,8 @@ export async function runSync(input: {
   let added = 0;
   let updated = 0;
   let failed = 0;
+  let foldersFailed = groups.unavailable;
+  let failureDetail: string | null = null;
   let missingPhone = 0;
   let missingEmail = 0;
   const total = plan.add.length + plan.update.length;
@@ -46,11 +49,13 @@ export async function runSync(input: {
 
   for (const draft of plan.add) {
     try {
-      const deviceId = await createDeviceContact(draft, groups);
-      remember(draft.contactKey, deviceId, draft.missingPhone, draft.missingEmail);
+      const saved = await createDeviceContact(draft, groups);
+      if (saved.foldersFailed) foldersFailed = true;
+      remember(draft.contactKey, saved.id, draft.missingPhone, draft.missingEmail);
       added += 1;
-    } catch {
+    } catch (error) {
       failed += 1;
+      failureDetail ??= errorText(error);
     }
     done += 1;
     input.onProgress?.(done, total);
@@ -58,16 +63,19 @@ export async function runSync(input: {
 
   for (const item of plan.update) {
     try {
-      await updateDeviceContact(item.deviceContactId, item.draft, groups);
+      const folderProblem = await updateDeviceContact(item.deviceContactId, item.draft, groups);
+      if (folderProblem) foldersFailed = true;
       remember(item.draft.contactKey, item.deviceContactId, item.draft.missingPhone, item.draft.missingEmail);
       updated += 1;
-    } catch {
+    } catch (error) {
       try {
-        const deviceId = await createDeviceContact(item.draft, groups);
-        remember(item.draft.contactKey, deviceId, item.draft.missingPhone, item.draft.missingEmail);
+        const saved = await createDeviceContact(item.draft, groups);
+        if (saved.foldersFailed) foldersFailed = true;
+        remember(item.draft.contactKey, saved.id, item.draft.missingPhone, item.draft.missingEmail);
         added += 1;
-      } catch {
+      } catch (createError) {
         failed += 1;
+        failureDetail ??= errorText(createError);
       }
     }
     done += 1;
@@ -88,7 +96,14 @@ export async function runSync(input: {
       missingPhone,
       missingEmail,
     },
+    notice: [syncProblemMessage({ failed, foldersUnavailable: foldersFailed }), failed > 0 ? failureDetail : null]
+      .filter((part): part is string => Boolean(part))
+      .join(" ") || null,
   };
+}
+
+function errorText(error: unknown): string {
+  return error instanceof Error && error.message.trim() ? error.message.trim() : "A contact could not be saved.";
 }
 
 export async function runRemove(state: StoredSync): Promise<{ state: StoredSync; removed: number; failed: number }> {

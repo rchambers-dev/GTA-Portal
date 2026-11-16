@@ -7,7 +7,9 @@ import {
   type Contact as ContactInstance,
   type Group as GroupInstance,
 } from "expo-contacts";
+import Constants from "expo-constants";
 import { Platform } from "react-native";
+import { contactNotesEnabled, contactScanFields, contactWriteBody } from "./ios-contacts";
 import {
   addressBookGroupName,
   isPortalAddressBookGroup,
@@ -40,9 +42,11 @@ export type PortalGroupSet = {
   folders: Partial<Record<ContactGroup, GroupInstance | null>>;
   /** Every Portal folder that already exists, including the old shared "GTA Portal" folder. */
   managed: { name: string; group: GroupInstance }[];
+  /** True when iPhone folders were attempted and could not be used. Contacts can still sync. */
+  unavailable: boolean;
 };
 
-const EMPTY_GROUPS: PortalGroupSet = { folders: {}, managed: [] };
+const EMPTY_GROUPS: PortalGroupSet = { folders: {}, managed: [], unavailable: false };
 
 const PAGE = 500;
 
@@ -110,9 +114,9 @@ export async function openAddressBookGroups(): Promise<PortalGroupSet> {
         folders[contactGroup] = null;
       }
     }
-    return { folders, managed };
+    return { folders, managed, unavailable: false };
   } catch {
-    return EMPTY_GROUPS;
+    return { ...EMPTY_GROUPS, unavailable: true };
   }
 }
 
@@ -135,18 +139,21 @@ export async function deletePortalAddressBookGroups(): Promise<void> {
   }
 }
 
-export async function createDeviceContact(draft: DeviceDraft, groups: PortalGroupSet): Promise<string> {
-  const contact = await createWithOptionalNote(draft);
-  await tagContact(contact, draft, groups);
+export async function createDeviceContact(
+  draft: DeviceDraft,
+  groups: PortalGroupSet,
+): Promise<{ id: string; foldersFailed: boolean }> {
+  const contact = await createContactRecord(draft);
+  const foldersFailed = !(await tagContact(contact, draft, groups));
   if (!contact.id) throw new Error("The phone did not return a contact id.");
-  return contact.id;
+  return { id: contact.id, foldersFailed };
 }
 
 export async function updateDeviceContact(
   deviceContactId: string,
   draft: DeviceDraft,
   groups: PortalGroupSet,
-): Promise<void> {
+): Promise<boolean> {
   const contact = new Contact(deviceContactId);
   const label = addressBookGroupName(draft.contactGroup);
   const [phones, emails] = await Promise.all([contact.getPhones(), contact.getEmails()]);
@@ -161,38 +168,25 @@ export async function updateDeviceContact(
     phones: mergePhones(phones, draft.phone, label),
     emails: mergeEmails(emails, draft.email, label),
   });
-  await tagContact(contact, draft, groups);
+  const foldersFailed = !(await tagContact(contact, draft, groups));
+  return foldersFailed;
 }
 
 export async function deleteDeviceContact(deviceContactId: string): Promise<void> {
   await new Contact(deviceContactId).delete();
 }
 
-async function createWithOptionalNote(draft: DeviceDraft): Promise<ContactInstance> {
-  const record = {
-    givenName: draft.givenName,
-    ...(draft.familyName ? { familyName: draft.familyName } : {}),
-    ...(draft.middleName ? { middleName: draft.middleName } : {}),
-    ...(draft.organisation ? { company: draft.organisation } : {}),
-    ...(draft.jobTitle ? { jobTitle: draft.jobTitle } : {}),
-    department: addressBookGroupName(draft.contactGroup),
-    ...(draft.phone
-      ? { phones: [{ label: addressBookGroupName(draft.contactGroup), number: draft.phone }] }
-      : {}),
-    ...(draft.email
-      ? { emails: [{ label: addressBookGroupName(draft.contactGroup), address: draft.email }] }
-      : {}),
-    ...(Platform.OS === "ios" ? { nickname: draft.contactKey } : {}),
-    ...(Platform.OS === "android"
-      ? { extraNames: [{ label: "nickname", name: draft.contactKey }] }
-      : {}),
-    note: draft.note,
-  };
+async function createContactRecord(draft: DeviceDraft): Promise<ContactInstance> {
+  const notesEnabled = notesAllowed();
+  const record = contactWriteBody(
+    { ...draft, department: addressBookGroupName(draft.contactGroup) },
+    { platform: Platform.OS, notesEnabled },
+  );
+  if (!notesEnabled) return Contact.create(record);
   try {
     return await Contact.create(record);
-  } catch (error) {
-    if (!record.note) throw error;
-    const { note, ...withoutNote } = record;
+  } catch {
+    const { note: _note, ...withoutNote } = record;
     return Contact.create(withoutNote);
   }
 }
@@ -201,11 +195,13 @@ async function tagContact(
   contact: ContactInstance,
   draft: DeviceDraft,
   groups: PortalGroupSet,
-): Promise<void> {
-  try {
-    await contact.setNote(draft.note);
-  } catch {
-    // iOS notes need an entitlement Expo Go does not have. The id map and nickname still dedupe.
+): Promise<boolean> {
+  if (notesAllowed()) {
+    try {
+      await contact.setNote(draft.note);
+    } catch {
+      // A custom build can still refuse the note. The id map and nickname still dedupe.
+    }
   }
   if (Platform.OS === "android") {
     try {
@@ -217,7 +213,7 @@ async function tagContact(
       // The local id map still updates this contact on the next sync.
     }
   }
-  await placeInAddressBookGroup(contact, draft, groups);
+  return placeInAddressBookGroup(contact, draft, groups);
 }
 
 /** iPhone folders. On Android the Group class throws, so this does nothing. */
@@ -225,23 +221,28 @@ async function placeInAddressBookGroup(
   contact: ContactInstance,
   draft: DeviceDraft,
   groups: PortalGroupSet,
-): Promise<void> {
-  if (Platform.OS !== "ios") return;
-  const destinationName = addressBookGroupName(draft.contactGroup);
-  for (const entry of groups.managed) {
-    if (entry.name === destinationName) continue;
-    try {
-      await entry.group.removeContact(contact);
-    } catch {
-      // The contact was not in that folder.
-    }
-  }
-  const destination = groups.folders[draft.contactGroup];
-  if (!destination) return;
+): Promise<boolean> {
+  if (Platform.OS !== "ios" || groups.unavailable) return !groups.unavailable;
   try {
-    await destination.addContact(contact);
+    const destinationName = addressBookGroupName(draft.contactGroup);
+    for (const entry of groups.managed) {
+      if (entry.name === destinationName) continue;
+      try {
+        await entry.group.removeContact(contact);
+      } catch {
+        // The contact was not in that folder.
+      }
+    }
+    const destination = groups.folders[draft.contactGroup];
+    if (!destination) return false;
+    try {
+      await destination.addContact(contact);
+    } catch {
+      return false;
+    }
+    return true;
   } catch {
-    // Already in the folder, or this container cannot take group members.
+    return false;
   }
 }
 
@@ -283,27 +284,28 @@ function ownedByPortal(
 }
 
 async function loadPage(offset: number): Promise<TaggedContactSource[]> {
-  const withNote = [ContactField.NICKNAME, ContactField.EXTRA_NAMES, ContactField.NOTE] as const;
-  try {
-    const page = await Contact.getAllDetails(withNote, { limit: PAGE, offset });
-    return page.map((item) => ({
-      id: item.id,
-      nickname: item.nickname ?? null,
-      note: item.note ?? null,
-      extraNames: item.extraNames ?? null,
-    }));
-  } catch {
-    const page = await Contact.getAllDetails(
-      [ContactField.NICKNAME, ContactField.EXTRA_NAMES] as const,
-      { limit: PAGE, offset },
-    );
-    return page.map((item) => ({
-      id: item.id,
-      nickname: item.nickname ?? null,
-      note: null,
-      extraNames: item.extraNames ?? null,
-    }));
-  }
+  const requested = contactScanFields(notesAllowed()).map(scanField);
+  const page = await Contact.getAllDetails(requested, { limit: PAGE, offset });
+  return page.map((item) => ({
+    id: item.id,
+    nickname: "nickname" in item ? (item.nickname ?? null) : null,
+    note: "note" in item ? (item.note ?? null) : null,
+    extraNames: "extraNames" in item ? (item.extraNames ?? null) : null,
+  }));
+}
+
+function scanField(name: string) {
+  if (name === "extraNames") return ContactField.EXTRA_NAMES;
+  if (name === "note") return ContactField.NOTE;
+  return ContactField.NICKNAME;
+}
+
+function notesAllowed(): boolean {
+  return contactNotesEnabled({
+    platform: Platform.OS,
+    expoGo: Constants.executionEnvironment === "storeClient" || Constants.appOwnership === "expo",
+    flag: process.env.EXPO_PUBLIC_CONTACTS_NOTES,
+  });
 }
 
 function toPermission(

@@ -153,7 +153,11 @@ export function SyncScreen(props: Props) {
           {props.lastSyncedAt ? `Last synced ${formatSyncedAt(props.lastSyncedAt)}` : "Not synced yet"}
         </Text>
         {props.summary ? <Summary summary={props.summary} /> : null}
-        {props.notice ? <Text style={styles.notice}>{props.notice}</Text> : null}
+        {props.notice ? (
+          <Text style={props.notice.includes("could not") || props.notice.includes("could not be") ? styles.noticeBad : styles.notice}>
+            {props.notice}
+          </Text>
+        ) : null}
 
         <Pressable
           accessibilityRole="button"
@@ -285,6 +289,7 @@ const styles = StyleSheet.create({
   summaryValue: { color: colors.navy, fontSize: 15, fontWeight: "700" },
   summaryNote: { color: colors.muted, fontSize: 13, lineHeight: 18 },
   notice: { color: colors.green, fontSize: 15, lineHeight: 21 },
+  noticeBad: { color: colors.redPressed, fontSize: 15, lineHeight: 21 },
   errorBox: { backgroundColor: colors.dangerSoft, borderRadius: 16, padding: space.lg, gap: space.sm },
   errorText: { color: colors.redPressed, fontSize: 15, lineHeight: 21 },
   remove: { minHeight: 44, justifyContent: "center", alignItems: "center" },

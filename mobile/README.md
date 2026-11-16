@@ -17,7 +17,7 @@ The app reads `public.portal_address_book`. That view is `security_invoker`, so 
 
 Test apprentices are left out. Archived and disabled profiles are left out. A tutor still only receives the apprentices `tutor_can_see` already allows.
 
-Running sync again updates the same phone contacts. The app keeps a local map from the Portal id (`learner:GTA-000042`, `employer:<uuid>`, `profile:<uuid>`) to the phone contact id. It also stores that id as a nickname, and as a note when the phone allows notes. iOS notes need an entitlement that Expo Go does not have, so Expo Go relies on the local map and the nickname.
+Running sync again updates the same phone contacts. The app keeps a local map from the Portal id (`learner:GTA-000042`, `employer:<uuid>`, `profile:<uuid>`) to the phone contact id, and stores that id as the contact nickname. Expo Go never reads or writes the iOS contact note. That field needs an Apple entitlement Expo Go does not have, and touching it closes the app. A custom build can opt in with `EXPO_PUBLIC_CONTACTS_NOTES=true` only after Apple grants `com.apple.developer.contacts.notes`.
 
 UK numbers are stored as E.164 (`01302 893277` becomes `+441302893277`) when the number is a normal UK length. Anything else is kept only when it still looks like a phone number.
 
@@ -71,7 +71,7 @@ npx eas-cli@latest build --platform ios --profile preview
 
 An EAS build uses the same public defaults. Set `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` on the build profile only when you want a different Supabase project.
 
-iOS notes in a real build also need Apple's contact-notes entitlement. `ios.accessesContactNotes` is already set. Expo Go still will not write notes.
+Expo Go does not write iOS contact notes. A custom iOS build that has Apple's contact-notes entitlement can set `EXPO_PUBLIC_CONTACTS_NOTES=true` and `ios.accessesContactNotes` in `app.json`. Leave both off for Expo Go.
 
 ## Tests
 

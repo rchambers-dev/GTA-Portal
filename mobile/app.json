@@ -10,7 +10,6 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "uk.co.doncastergta.portal",
-      "accessesContactNotes": true,
       "infoPlist": {
         "NSContactsUsageDescription": "GTA Portal copies contacts you can already see onto this phone. It never changes the Portal."
       }
