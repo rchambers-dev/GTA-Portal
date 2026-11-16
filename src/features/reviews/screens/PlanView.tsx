@@ -9,14 +9,16 @@ import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, we
 import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
 import { moveRouteIds, visitsAreInOrder, type PackedDay } from "../domain/plan-route";
-import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
+import type { ConcernReason, PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
 import {
   acceptDayAction,
   applyRouteAction,
   completeDayAction,
   excludeStopAction,
   lockStopAction,
+  raisePlanConcernAction,
   recordSafeguardingAction,
+  resolvePlanConcernAction,
   setNotesAction,
   unlockDayAction,
   unlockStopAction,
@@ -392,6 +394,9 @@ export function PlanView({
           workspace={workspace}
           people={visible}
           canWrite={page.canWrite}
+          reasons={page.concernReasons}
+          onRun={run}
+          onStatus={setMessage}
           empty={
             tab === "locked"
               ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
@@ -579,14 +584,20 @@ const RosterList = memo(function RosterList({
   workspace,
   people,
   canWrite,
+  reasons,
   empty,
   onNote,
+  onRun,
+  onStatus,
 }: {
   workspace: "administration" | "management";
   people: PlanPerson[];
   canWrite: boolean;
+  reasons: ConcernReason[];
   empty: string;
   onNote: (person: PlanPerson) => void;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
+  onStatus: (message: string | null) => void;
 }) {
   return (
     <ul className={styles.list}>
@@ -599,7 +610,10 @@ const RosterList = memo(function RosterList({
             workspace={workspace}
             person={person}
             canWrite={canWrite}
+            reasons={reasons}
             onNote={() => onNote(person)}
+            onRun={onRun}
+            onStatus={onStatus}
           />
         ))
       )}
@@ -611,12 +625,18 @@ function RosterCard({
   workspace,
   person,
   canWrite,
+  reasons,
   onNote,
+  onRun,
+  onStatus,
 }: {
   workspace: "administration" | "management";
   person: PlanPerson;
   canWrite: boolean;
+  reasons: ConcernReason[];
   onNote: () => void;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
+  onStatus: (message: string | null) => void;
 }) {
   return (
     <li
@@ -630,6 +650,7 @@ function RosterCard({
         <span className={styles.college}>College {person.releaseDay}</span>
       </span>
       <DuePill person={person} />
+      <ConcernChip person={person} reasons={reasons} canWrite={canWrite} onRun={onRun} onStatus={onStatus} />
       {canWrite && person.reviewId ? (
         <button type="button" className={person.notes ? styles.noteOn : styles.pill} onClick={onNote}>
           {person.notes ? "Edit note" : "Add note"}
@@ -760,6 +781,7 @@ function StopCard({
   settings,
   days,
   people,
+  reasons,
   loadedMonth,
   canWrite,
   canDrag,
@@ -782,6 +804,7 @@ function StopCard({
   settings: PlanSettings;
   days: PlanDay[];
   people: PlanPerson[];
+  reasons: ConcernReason[];
   loadedMonth: string;
   canWrite: boolean;
   canDrag: boolean;
@@ -904,6 +927,15 @@ function StopCard({
             {!stop.completed && verified ? <span className={styles.tagDone}>Verified</span> : null}
             {bookedOnDay ? <span className={styles.tagDone}>Booked time</span> : null}
             {locked ? <span className={styles.tagLock}>Locked</span> : null}
+            {people.find((person) => person.gtaId === stop.gtaId) ? (
+              <ConcernChip
+                person={people.find((person) => person.gtaId === stop.gtaId)!}
+                reasons={reasons}
+                canWrite={canWrite}
+                onRun={onRun}
+                onStatus={onStatus}
+              />
+            ) : null}
           </p>
         </div>
         <span className={styles.contactLine}>
@@ -1189,6 +1221,112 @@ function dateOnly(value: string): string {
   return value.slice(0, 10);
 }
 
+function ConcernChip({
+  person,
+  reasons,
+  canWrite,
+  onRun,
+  onStatus,
+}: {
+  person: PlanPerson;
+  reasons: ConcernReason[];
+  canWrite: boolean;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
+  onStatus: (message: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [reasonId, setReasonId] = useState("");
+  const [note, setNote] = useState("");
+  const label = person.concern ? "Concern · 5 weeks" : "Concern";
+  if (!canWrite && !person.concern) return null;
+  if (!canWrite) return <span className={styles.concernOn}>{label}</span>;
+  return (
+    <span className={styles.concernWrap} onMouseDown={(event) => event.stopPropagation()}>
+      <button
+        type="button"
+        className={person.concern ? styles.concernOn : styles.concernOff}
+        aria-pressed={person.concern}
+        aria-expanded={open}
+        draggable={false}
+        onClick={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          setOpen((value) => !value);
+        }}
+      >
+        {label}
+      </button>
+      {open ? (
+        <form
+          className={styles.concernPanel}
+          onClick={(event) => event.stopPropagation()}
+          onSubmit={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (person.concern && person.concernId) {
+              void onRun(
+                () => resolvePlanConcernAction({ concernId: person.concernId || "", note }),
+                `${person.gtaId}:concern`,
+              ).then((result) => {
+                if (!result.ok) return;
+                onStatus(`${person.name} is back on the 10-week schedule.`);
+                setNote("");
+                setOpen(false);
+              });
+              return;
+            }
+            void onRun(
+              () => raisePlanConcernAction({ gtaId: person.gtaId, reasonId, note }),
+              `${person.gtaId}:concern`,
+            ).then((result) => {
+              if (!result.ok) return;
+              onStatus(`${person.name} is on a 5-week concern schedule.`);
+              setNote("");
+              setReasonId("");
+              setOpen(false);
+            });
+          }}
+        >
+          {person.concern ? (
+            <>
+              <p>Clear this concern. The next review goes back to 10 weeks, unless a visit is already booked.</p>
+              <label>
+                Resolution note
+                <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Optional" />
+              </label>
+              <div className={styles.concernActions}>
+                <button type="submit">Clear concern</button>
+                <button type="button" onClick={() => setOpen(false)}>Cancel</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <label>
+                Reason
+                <select value={reasonId} required onChange={(event) => setReasonId(event.target.value)}>
+                  <option value="">Choose a reason</option>
+                  {reasons.map((reason) => (
+                    <option key={reason.id} value={reason.id}>{reason.label}</option>
+                  ))}
+                </select>
+              </label>
+              {reasons.length === 0 ? <p>No concern reasons are available.</p> : null}
+              <label>
+                Note
+                <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Optional" />
+              </label>
+              <div className={styles.concernActions}>
+                <button type="submit" disabled={!reasonId}>Flag concern</button>
+                <button type="button" onClick={() => setOpen(false)}>Cancel</button>
+              </div>
+            </>
+          )}
+        </form>
+      ) : null}
+    </span>
+  );
+}
+
 function DuePill({ person }: { person: PlanPerson }) {
   const tone = person.dueState === "overdue" ? styles.tagOver : person.dueState === "due-soon" ? styles.tagSoon : styles.tagOk;
   const label = person.dueState === "ok" ? "On track" : person.dueState === "due-soon" ? "Due this week" : person.dueLabel;
@@ -1309,6 +1447,7 @@ function DayTimeline({
               settings={page.settings}
               days={page.days}
               people={page.people}
+              reasons={page.concernReasons}
               loadedMonth={date.slice(0, 7)}
               canWrite={page.canWrite && !day.completed}
               canDrag={page.canWrite && !day.completed && stops.length > 1 && stop.appointmentOn !== date}

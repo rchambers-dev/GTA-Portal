@@ -548,6 +548,95 @@
   cursor: pointer;
 }
 
+.concernWrap {
+  position: relative;
+}
+
+.concernOff,
+.concernOn {
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.concernOff {
+  background: #fff;
+  color: #24324f;
+  border: 1px solid #24324f;
+}
+
+.concernOn {
+  background: #24324f;
+  color: #fff;
+  border: 1px solid #24324f;
+}
+
+.concernPanel {
+  position: absolute;
+  z-index: 8;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 16rem;
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.75rem;
+  background: #fff;
+  color: #1a1f3d;
+  border: 1px solid #24324f;
+  border-radius: 0.85rem;
+  box-shadow: 0 12px 28px rgb(26 31 61 / 14%);
+  text-align: left;
+}
+
+.concernPanel p,
+.concernPanel label {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #1a1f3d;
+}
+
+.concernPanel select,
+.concernPanel textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+  border: 1px solid #d1d5de;
+  border-radius: 0.55rem;
+  font: inherit;
+  color: #1a1f3d;
+  background: #fff;
+}
+
+.concernPanel textarea {
+  min-height: 4rem;
+  padding: 0.4rem 0.5rem;
+}
+
+.concernActions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.concernActions button {
+  border-radius: 999px;
+  border: 1px solid #24324f;
+  background: #fff;
+  color: #24324f;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.concernActions button[type="submit"] {
+  background: #24324f;
+  color: #fff;
+}
+
 .clearNote {
   background: #fff8f5;
   color: #8f351c;

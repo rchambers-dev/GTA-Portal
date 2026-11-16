@@ -7,6 +7,7 @@ import { rebookAppointmentArgs } from "../domain/rebook-appointment";
 import { phoneReviewTimeFits } from "../domain/rebook-slots";
 import { timeToMinutes, weekdayName } from "../domain/plan-due";
 import { readRebookMonth, type RebookMonthDay } from "../domain/plan-repository";
+import { revalidatePath } from "next/cache";
 import { revalidateAnalytics } from "../domain/revalidate-analytics";
 
 const DENIED = "You do not have permission to change the plan. Administrator and Management can.";
@@ -36,6 +37,45 @@ async function saved<T extends { ok: true }>(error: { message?: string } | null,
   if (failed) return failed;
   await revalidateAnalytics();
   return success;
+}
+
+function refreshReviewDates() {
+  revalidatePath("/administration/reviews/plan");
+  revalidatePath("/management/reviews/plan");
+  revalidatePath("/administration/reviews/cycle");
+  revalidatePath("/management/reviews/cycle");
+}
+
+export async function raisePlanConcernAction(input: { gtaId: string; reasonId: string; note: string }) {
+  const access = await writer();
+  if (!access.ok) return access;
+  if (!input.reasonId) return { ok: false as const, formError: "Choose a reason." };
+  const { error } = await access.supabase.rpc("raise_concern", {
+    p_gta_id: input.gtaId,
+    p_reason_id: input.reasonId,
+    p_notes: input.note.trim() || null,
+    p_raised_on: null,
+  });
+  const failed = fail(error);
+  if (failed) return failed;
+  refreshReviewDates();
+  await revalidateAnalytics();
+  return { ok: true as const };
+}
+
+export async function resolvePlanConcernAction(input: { concernId: string; note: string }) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const { error } = await access.supabase.rpc("resolve_concern", {
+    p_concern_id: input.concernId,
+    p_resolution_note: input.note.trim() || null,
+    p_resolved_on: null,
+  });
+  const failed = fail(error);
+  if (failed) return failed;
+  refreshReviewDates();
+  await revalidateAnalytics();
+  return { ok: true as const };
 }
 
 export async function pinOnDayAction(input: { date: string; gtaIds: string[] }) {

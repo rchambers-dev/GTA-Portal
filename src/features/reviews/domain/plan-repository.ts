@@ -41,7 +41,10 @@ export type PlanPerson = {
   nextDate: string | null;
   safeguarding: boolean;
   concern: boolean;
+  concernId: string | null;
 };
+
+export type ConcernReason = { id: string; label: string };
 
 export type PlanStop = {
   gtaId: string;
@@ -113,6 +116,7 @@ export type PlanPageData = {
   counts: Record<PlanCounter, number>;
   settings: PlanSettings;
   tutors: { id: string; name: string; department: string }[];
+  concernReasons: ConcernReason[];
   monthMarks: { date: string; accepted: boolean; completed: boolean }[];
   /** Every day in the loaded month that has a route or a completed review. */
   days: PlanDay[];
@@ -159,6 +163,7 @@ export async function readPlanPage(
     managersResult,
     reviewsResult,
     concernsResult,
+    concernReasonsResult,
     signoffsResult,
     tutorsResult,
     settingsResult,
@@ -178,7 +183,8 @@ export async function readPlanPage(
     supabase
       .from("reviews")
       .select("id, gta_id, status, planned_on, actual_on, method, notes, interval_weeks"),
-    supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
+    supabase.from("learner_concerns").select("id, gta_id").is("resolved_on", null),
+    supabase.from("reasons").select("id, label, sort_order").eq("used_for_concerns", true).eq("active", true).order("sort_order", { ascending: true }),
     supabase.from("apprentice_safeguarding_signoffs").select("id, gta_id").is("reversed_at", null),
     supabase
       .from("profiles")
@@ -270,9 +276,15 @@ export async function readPlanPage(
       [row.first_name, row.middle_names, row.last_name].filter((part) => part && part.trim()).join(" "),
     ]),
   );
-  const concerns = new Set(
-    ((concernsResult.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id),
+  const concerns = new Map(
+    ((concernsResult.data ?? []) as { id: string; gta_id: string }[]).map((row) => [row.gta_id, row.id]),
   );
+  const concernReasons: ConcernReason[] = concernReasonsResult.error
+    ? []
+    : ((concernReasonsResult.data ?? []) as { id: string; label: string }[]).map((row) => ({
+        id: row.id,
+        label: row.label,
+      }));
   const signed = new Map(
     ((signoffsResult.data ?? []) as { id: string; gta_id: string }[]).map((row) => [row.gta_id, row.id]),
   );
@@ -380,6 +392,7 @@ export async function readPlanPage(
       nextDate: due.nextDate,
       safeguarding: signed.has(row.gta_id),
       concern: concerns.has(row.gta_id),
+      concernId: concerns.get(row.gta_id) ?? null,
     });
   }
   const dueRank = { overdue: 3, "due-soon": 2, ok: 1, unknown: 0 } as const;
@@ -552,6 +565,7 @@ export async function readPlanPage(
       outEnabled: settingsRow?.out_enabled ?? false,
     },
     tutors: officialTutors((tutorsResult.data ?? []) as { id: string; display_name: string | null; email: string | null }[]),
+    concernReasons,
     monthMarks: dayRows.map((row) => ({
       date: row.date_on,
       accepted: row.accepted,
