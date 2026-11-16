@@ -5,7 +5,7 @@ export type ContactGroup = (typeof CONTACT_GROUPS)[number];
 export const GROUP_COPY: Record<ContactGroup, { title: string; hint: string }> = {
   learner: { title: "Learners", hint: "Apprentices" },
   employer: { title: "Employers", hint: "Workplace contacts" },
-  tutor: { title: "Tutors", hint: "Apprenticeship tutors" },
+  tutor: { title: "Tutors", hint: "Filed with staff" },
   staff: { title: "Staff", hint: "Other Portal accounts" },
 };
 

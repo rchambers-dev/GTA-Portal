@@ -77,7 +77,7 @@ export function SyncScreen(props: Props) {
         refreshControl={<RefreshControl refreshing={props.loading} onRefresh={props.onReload} tintColor={colors.red} />}
       >
         <Text style={styles.intro}>
-          Choose who to copy onto this phone. Running sync again updates the same contacts.
+          Choose who to copy onto this phone. On iPhone, learners, employers, and staff each get a contacts folder. Tutors are filed with staff. Running sync again updates the same people.
         </Text>
 
         <View style={styles.card}>
@@ -169,7 +169,7 @@ export function SyncScreen(props: Props) {
           }}
           style={styles.remove}
         >
-          <Text style={styles.removeText}>Remove contacts added by this app</Text>
+          <Text style={styles.removeText}>Remove contacts and folders added by this app</Text>
         </Pressable>
       </ScrollView>
     </View>
@@ -205,7 +205,7 @@ function SummaryLine({ label, value }: { label: string; value: number }) {
 function confirmRemove(onRemove: () => void) {
   Alert.alert(
     "Remove Portal contacts?",
-    "This deletes contacts this app added on this phone. Portal records stay as they are.",
+    "This deletes contacts this app added on this phone, and removes the GTA folders on iPhone. Portal records stay as they are.",
     [
       { text: "Cancel", style: "cancel" },
       { text: "Remove", style: "destructive", onPress: onRemove },

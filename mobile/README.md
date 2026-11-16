@@ -17,9 +17,25 @@ The app reads `public.portal_address_book`. That view is `security_invoker`, so 
 
 Test apprentices are left out. Archived and disabled profiles are left out. A tutor still only receives the apprentices `tutor_can_see` already allows.
 
-Running sync again updates the same phone contacts. The app keeps a local map from the Portal id (`learner:GTA-000042`, `employer:<uuid>`, `profile:<uuid>`) to the phone contact id. It also tags the contact: a GTA Portal group on iPhone, a nickname where the phone allows it, and a note when the phone allows notes. iOS contact notes need an entitlement that Expo Go does not have, so Expo Go relies on the local map and the nickname.
+Running sync again updates the same phone contacts. The app keeps a local map from the Portal id (`learner:GTA-000042`, `employer:<uuid>`, `profile:<uuid>`) to the phone contact id. It also stores that id as a nickname, and as a note when the phone allows notes. iOS notes need an entitlement that Expo Go does not have, so Expo Go relies on the local map and the nickname.
 
 UK numbers are stored as E.164 (`01302 893277` becomes `+441302893277`) when the number is a normal UK length. Anything else is kept only when it still looks like a phone number.
+
+## Folders on the phone
+
+Each synced choice is filed under its own name:
+
+| Choice | Folder |
+| --- | --- |
+| Employers | GTA Employers |
+| Learners | GTA Learners |
+| Tutors and staff | GTA Staff |
+
+Tutors are staff, so there is no GTA Tutors folder. A person who appears in both the tutor list and the staff list is saved once, in GTA Staff.
+
+On an iPhone, the app looks up each folder in the default contacts account and creates it only when it is missing. A later sync reuses it. Someone left in an older GTA Tutors folder, or in the first version's GTA Portal folder, is moved into GTA Staff. Remove all synced contacts also deletes these folders, including a leftover GTA Tutors folder. Other folders, such as Family, are left alone. Deleting a folder does not delete people who were not added by this app.
+
+On Android, Expo's contacts library cannot create or read contact groups. The app does not call those methods, so it does not crash. Each synced person is tagged instead: the department and the phone or email label are set to the folder name, for example GTA Learners. You can filter or search the address book by that label. Remove all deletes the people this app added. There is no Android folder to remove.
 
 ## Run it in Expo Go
 
