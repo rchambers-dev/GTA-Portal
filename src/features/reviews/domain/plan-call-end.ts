@@ -32,7 +32,7 @@ export function londonClock(now = new Date()): { today: string; minutes: number 
   return { today, minutes: (hour === 24 ? 0 : hour) * 60 + minute };
 }
 
-/** 22:00 Europe/London on the calendar day after the lock was set. DST-safe: 22:00 is never the UK changeover hour. */
+/** 10:00 Europe/London on the calendar day after the lock was set. DST-safe: 10:00 is not the UK changeover hour. */
 export function lockExpiry(lockedAtIso: string, now = new Date()): { active: boolean; label: string } {
   const set = new Date(lockedAtIso);
   if (Number.isNaN(set.getTime())) return { active: false, label: "" };
@@ -40,7 +40,7 @@ export function lockExpiry(lockedAtIso: string, now = new Date()): { active: boo
   const [year, month, day] = setDay.split("-").map(Number);
   const next = new Date(Date.UTC(year, month - 1, day + 1));
   const nextDay = next.toISOString().slice(0, 10);
-  const expires = londonWallTime(nextDay, 22, 0);
+  const expires = londonWallTime(nextDay, 10, 0);
   const when = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Europe/London",
     weekday: "short",

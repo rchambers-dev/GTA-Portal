@@ -1,8 +1,8 @@
 -- Out visit marks, shelving finished reviews, and lock expiry.
 -- Apply this in the SQL editor after review. Do not run it against production from a test.
 --
--- A lock lasts until 22:00 Europe/London on the calendar day after it was set.
--- 22:00 is never the UK clock-change hour, so the conversion stays DST-safe.
+-- A lock lasts until 10:00 Europe/London on the calendar day after it was set.
+-- 10:00 is not the UK clock-change hour, so the conversion stays DST-safe.
 -- When that time has passed, release_expired_review_locks clears the lock and
 -- plan_counters stops counting it, so the learner returns to To book.
 -- The morning job calls that clear before it releases packs.
@@ -19,7 +19,7 @@ alter table public.review_day_stops
 update public.review_day_stops
    set lock_expires_at = timezone(
          'Europe/London',
-         (((locked_at at time zone 'Europe/London')::date + 1) + time '22:00')
+         (((locked_at at time zone 'Europe/London')::date + 1) + time '10:00')
        )
  where locked_at is not null
    and lock_expires_at is null;
@@ -32,7 +32,7 @@ set search_path to ''
 as $$
   select timezone(
     'Europe/London',
-    (((p_set_at at time zone 'Europe/London')::date + 1) + time '22:00')
+    (((p_set_at at time zone 'Europe/London')::date + 1) + time '10:00')
   );
 $$;
 
@@ -58,9 +58,9 @@ begin
   insert into public.review_day_stops (
     date_on, gta_id, locked_until_minutes, lock_arrive_minutes, lock_leave_minutes, locked_at, lock_expires_at
   )
-  values (p_date, p_gta_id, 1320, p_arrive, p_leave, v_set, v_expires)
+  values (p_date, p_gta_id, 600, p_arrive, p_leave, v_set, v_expires)
   on conflict (date_on, gta_id) do update set
-    locked_until_minutes = 1320,
+    locked_until_minutes = 600,
     lock_arrive_minutes = coalesce(excluded.lock_arrive_minutes, public.review_day_stops.lock_arrive_minutes),
     lock_leave_minutes = coalesce(excluded.lock_leave_minutes, public.review_day_stops.lock_leave_minutes),
     locked_at = excluded.locked_at,
@@ -233,7 +233,7 @@ select f.gta_id, f.name, f.tutor, f.stage, f.tutor_hidden, f.appointment_on, f.a
   from flags3 f;
 
 comment on view public.plan_counters is
-  'Plan roster counters. A lock counts only until 22:00 Europe/London on the day after it was set. After that the learner returns to To book.';
+  'Plan roster counters. A lock counts only until 10:00 Europe/London on the day after it was set. After that the learner returns to To book.';
 
 -- The existing morning job. Clears expired locks first, then releases waiting packs.
 create or replace function public.review_packs_run_daily()

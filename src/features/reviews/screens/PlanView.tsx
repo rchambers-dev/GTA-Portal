@@ -1018,7 +1018,7 @@ function StopCard({
                       onStatus(
                         locked
                           ? `${stop.name} is unlocked. Fill day selected can move that slot if needed.`
-                          : `${stop.name} is locked until 22:00 London time tomorrow. After that they go back to To book.`,
+                          : `${stop.name} is locked until 10:00 London time tomorrow. After that they go back to To book.`,
                       );
                     }
                     return result;
