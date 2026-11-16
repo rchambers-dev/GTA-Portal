@@ -48,6 +48,19 @@ function fillCaption(learner: { band: string; fillRemaining: number; fillStarted
   return "Fill this review";
 }
 
+function wordCount(value: string) {
+  const trimmed = value.trim();
+  return trimmed ? trimmed.split(/\s+/).length : 0;
+}
+
+function wordCounter(value: string, words: number) {
+  return `${wordCount(value)} / ${words} words`;
+}
+
+function sectionValue(review: DigitalReview, label: string) {
+  return review.section1.find((row) => row.label === label)?.value || "";
+}
+
 export function TutorReviewForm({ review }: { review: DigitalReview }) {
   const [form, setForm] = useState<TutorFormDraft>(review.form || emptyTutorForm());
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -198,11 +211,16 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
     });
   }
 
+  const company = sectionValue(review, "Employer / workplace");
+  const postcode = sectionValue(review, "Postcode");
+  const last = review.previousReview;
   return (
     <div className={styles.page}>
-      <Link className={styles.back} href="/reviews?from=tutor">Back to reviews</Link>
+      <Link className={styles.back} href="/reviews?from=tutor">Back to your learners</Link>
       <h1 className={styles.title}>{review.name || "Digital review"}</h1>
+      <p className={styles.meta}>{company} · {postcode}</p>
       <p className={styles.status} role="status">{status}</p>
+      {review.reviewerNote ? <p className={styles.note}><strong>Reviewer note:</strong> {review.reviewerNote}</p> : null}
       <section className={styles.card}>
         <div className={styles.head}>
           <h2>Section 1 — Review details</h2>
@@ -225,14 +243,38 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
       </section>
 
       <section className={styles.compare}>
+        <p className={styles.meta}>{last ? `Last review ${last.dateLabel}` : "No previous review saved yet."}</p>
+        <p className={styles.meta}>Current review. Look left for last time.</p>
         <div className={`${styles.previous} ${tone("previous-1", form.previousTargets.every((target) => !target.action.trim() || target.status !== "open") ? true : false)}`}>
           <div className={styles.head}>
-            <h2>Section 7 — Previous targets</h2>
+            <h2>Section 2 — Previous review</h2>
           </div>
+          <label className={styles.field}>
+            <span>Tutor summary of the previous review</span>
+            <textarea value={last?.summary || ""} readOnly />
+            <p className={styles.count}>{wordCounter(last?.summary || "", 65)}</p>
+          </label>
           {form.previousTargets.map((target) => (
             <div key={target.slot} id={target.slot === 1 ? "previous-1" : undefined} className={styles.row}>
               <p className={styles.meta}>Target {target.slot}</p>
-              <p>{target.action.trim() || "No previous target"}</p>
+              <label className={styles.field}>
+                <span>Action / target</span>
+                <textarea value={target.action} readOnly />
+                <p className={styles.count}>{wordCounter(target.action, 38)}</p>
+              </label>
+              <label className={styles.label}>
+                Owner
+                <input value={target.owner || "Apprentice, employer or tutor"} readOnly />
+              </label>
+              <label className={styles.label}>
+                Target date
+                <input value={target.targetDate || "Choose a date"} readOnly />
+              </label>
+              <label className={styles.field}>
+                <span>Success measure / support</span>
+                <textarea value={target.measure} readOnly />
+                <p className={styles.count}>{wordCounter(target.measure, 47)}</p>
+              </label>
               <div className={styles.statuses}>
                 {([
                   ["met", "Met"],
@@ -255,12 +297,15 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
                   </button>
                 ))}
               </div>
+              {target.status === "carry-forward" ? (
+                <p className={styles.meta}>This target is copied into the current targets on the right.</p>
+              ) : null}
             </div>
           ))}
         </div>
         <div className={styles.current}>
           <div className={styles.head}>
-            <h2>Section 2 — Current targets</h2>
+            <h2>Section 2 — Current review</h2>
             <button type="button" className={styles.help} aria-label="Help" onClick={() => setHelp("target")}>?</button>
           </div>
           <div id="summary" className={`${styles.field} ${tone("summary", Boolean(form.previousSummary.trim()))}`}>
@@ -273,8 +318,8 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
                 setForm({ ...form, previousSummary: limit(event.target.value, 65) });
               }}
             />
-            <button type="button" className={styles.ai} onClick={() => improve("summary", form.previousSummary, 65, (next) => setForm({ ...form, previousSummary: next }))}>✦ AI</button>
-            <p className={styles.count}>{form.previousSummary.trim() ? form.previousSummary.trim().split(/\s+/).length : 0}/65</p>
+            <button type="button" className={styles.ai} aria-label="Improve wording" onClick={() => improve("summary", form.previousSummary, 65, (next) => setForm({ ...form, previousSummary: next }))}>AI</button>
+            <p className={styles.count}>{wordCounter(form.previousSummary, 65)}</p>
           </div>
           {form.newTargets.map((target) => {
             const started = Boolean(target.action || target.owner || target.measure || target.targetDate);
@@ -287,11 +332,14 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
                   <textarea
                     value={target.action}
                     readOnly={!review.editable}
+                    placeholder="What needs to happen?"
                     onChange={(event) => {
                       touch(`target-${target.slot}`);
                       updateTarget("new", target.slot, { action: limit(event.target.value, 38) });
                     }}
                   />
+                  <button type="button" className={styles.ai} aria-label="Improve wording" disabled={!review.editable} onClick={() => improve("action", target.action, 38, (next) => updateTarget("new", target.slot, { action: next }))}>AI</button>
+                  <p className={styles.count}>{wordCounter(target.action, 38)}</p>
                 </label>
                 <label className={styles.label}>
                   Owner
@@ -303,7 +351,7 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
                       updateTarget("new", target.slot, { owner: event.target.value });
                     }}
                   >
-                    <option value="">Choose</option>
+                    <option value="">Apprentice, employer or tutor</option>
                     {TARGET_OWNERS.map((owner) => <option key={owner}>{owner}</option>)}
                   </select>
                 </label>
@@ -321,7 +369,7 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
                   />
                 </div>
                 <label className={styles.field}>
-                  <span>Success measure</span>
+                  <span>Success measure / support</span>
                   <textarea
                     value={target.measure}
                     readOnly={!review.editable}
@@ -330,6 +378,8 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
                       updateTarget("new", target.slot, { measure: limit(event.target.value, 47) });
                     }}
                   />
+                  <button type="button" className={styles.ai} aria-label="Improve wording" disabled={!review.editable} onClick={() => improve("measure", target.measure, 47, (next) => updateTarget("new", target.slot, { measure: next }))}>AI</button>
+                  <p className={styles.count}>{wordCounter(target.measure, 47)}</p>
                 </label>
               </div>
             );
@@ -338,49 +388,68 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
       </section>
 
       <section className={styles.card}>
-        <div className={styles.head}>
+        <div className={styles.compareHead}>
           <h2>Section 3 — Progress update</h2>
-          <button type="button" className={styles.help} aria-label="How to fill progress" onClick={() => setHelp("overall_progress")}>?</button>
+          <h2>Section 3 — Progress update <button type="button" className={styles.help} aria-label="How to fill progress" onClick={() => setHelp("overall_progress")}>?</button></h2>
         </div>
         {form.progress.map((row) => (
-          <ProgressRow
-            key={row.area}
-            row={row}
-            editable={review.editable}
-            className={tone(`progress-${row.area}`, progressComplete(row))}
-            onTouch={() => touch(`progress-${row.area}`)}
-            onChange={(patch) => {
-              setForm((current) => ({
-                ...current,
-                progress: current.progress.map((item) => (item.area === row.area ? { ...item, ...patch } : item)),
-              }));
-            }}
-            onImprove={(value, words, apply) => improve("evidence", value, words, apply)}
-            onHelp={() => setHelp(row.area)}
-          />
+          <div key={row.area} className={styles.compareRow}>
+            <ProgressRow
+              row={last?.progress.find((item) => item.area === row.area) || emptyTutorForm().progress.find((item) => item.area === row.area) || row}
+              editable={false}
+              className=""
+              onTouch={() => undefined}
+              onChange={() => undefined}
+              onImprove={() => undefined}
+              onHelp={() => undefined}
+            />
+            <ProgressRow
+              row={row}
+              editable={review.editable}
+              className={tone(`progress-${row.area}`, progressComplete(row))}
+              onTouch={() => touch(`progress-${row.area}`)}
+              onChange={(patch) => {
+                setForm((current) => ({
+                  ...current,
+                  progress: current.progress.map((item) => (item.area === row.area ? { ...item, ...patch } : item)),
+                }));
+              }}
+              onImprove={(value, words, apply) => improve("evidence", value, words, apply)}
+              onHelp={() => setHelp(row.area)}
+            />
+          </div>
         ))}
       </section>
 
       <section id="comment" className={`${styles.card} ${tone("comment", Boolean(form.tutorComment.trim()))}`}>
-        <div className={styles.head}>
+        <div className={styles.compareHead}>
           <h2>Section 4 — GTA tutor comments</h2>
-          <button type="button" className={styles.help} aria-label="Help" onClick={() => setHelp("comment")}>?</button>
+          <h2>Section 4 — GTA tutor comments <button type="button" className={styles.help} aria-label="Help" onClick={() => setHelp("comment")}>?</button></h2>
         </div>
-        <div className={styles.field}>
-          <textarea
-            value={form.tutorComment}
-            readOnly={!review.editable}
-            onChange={(event) => {
-              touch("comment");
-              setForm({ ...form, tutorComment: limit(event.target.value, 400) });
-            }}
-          />
-          <button type="button" className={styles.ai} onClick={() => improve("comment", form.tutorComment, 400, (next) => setForm({ ...form, tutorComment: next }))}>✦ AI</button>
-          <p className={styles.count}>{form.tutorComment.trim() ? form.tutorComment.trim().split(/\s+/).length : 0}/400</p>
+        <div className={styles.compareRow}>
+          <div className={styles.field}>
+            <span>GTA tutor contribution</span>
+            <textarea value={last?.comment || ""} readOnly />
+            <p className={styles.count}>{wordCounter(last?.comment || "", 400)}</p>
+          </div>
+          <div className={styles.field}>
+            <span>GTA tutor contribution</span>
+            <textarea
+              value={form.tutorComment}
+              readOnly={!review.editable}
+              onChange={(event) => {
+                touch("comment");
+                setForm({ ...form, tutorComment: limit(event.target.value, 400) });
+              }}
+            />
+            <button type="button" className={styles.ai} aria-label="Improve wording" onClick={() => improve("comment", form.tutorComment, 400, (next) => setForm({ ...form, tutorComment: next }))}>AI</button>
+            <p className={styles.count}>{wordCounter(form.tutorComment, 400)}</p>
+          </div>
         </div>
       </section>
 
       <div className={styles.bar}>
+        <Link className={styles.back} href="/reviews?from=tutor">Back to your learners</Link>
         <span className={styles.meta}>{review.editable ? "Autosave is on." : "This review is read only."}</span>
         <div className={styles.actions}>
           <button type="button" onClick={preview}>Preview PDF</button>
@@ -438,11 +507,11 @@ function ProgressRow({
         <div className={styles.grid}>
           <label className={styles.label}>
             Target hours
-            <input type="number" min={0} value={row.targetHours} disabled={!editable} onChange={(event) => { onTouch(); onChange({ targetHours: event.target.value }); }} />
+            <input type="number" min={0} step={0.5} value={row.targetHours} disabled={!editable} onChange={(event) => { onTouch(); onChange({ targetHours: event.target.value }); }} />
           </label>
           <label className={styles.label}>
             Current hours
-            <input type="number" min={0} value={row.currentHours} disabled={!editable} onChange={(event) => { onTouch(); onChange({ currentHours: event.target.value }); }} />
+            <input type="number" min={0} step={0.5} value={row.currentHours} disabled={!editable} onChange={(event) => { onTouch(); onChange({ currentHours: event.target.value }); }} />
           </label>
         </div>
       ) : null}
@@ -470,15 +539,17 @@ function ProgressRow({
           readOnly={!editable}
           onChange={(event) => { onTouch(); onChange({ evidence: limit(event.target.value, 90) }); }}
         />
-        <button type="button" className={styles.ai} onClick={() => onImprove(row.evidence, 90, (next) => onChange({ evidence: next }))}>✦ AI</button>
+        {editable ? <button type="button" className={styles.ai} aria-label="Improve wording" onClick={() => onImprove(row.evidence, 90, (next) => onChange({ evidence: next }))}>AI</button> : null}
+        <p className={styles.count}>{wordCounter(row.evidence, 90)}</p>
       </label>
       <label className={styles.label}>
-        Action ref (optional)
+        Action ref
         <input
           value={row.actionRef}
           disabled={!editable}
           onChange={(event) => { onTouch(); onChange({ actionRef: limit(event.target.value, 15) }); }}
         />
+        <p className={styles.count}>{wordCounter(row.actionRef, 15)}</p>
       </label>
     </div>
   );
@@ -486,7 +557,9 @@ function ProgressRow({
 
 export function TutorReviewList({
   learners,
+  tutorName,
 }: {
+  tutorName: string;
   learners: { gtaId: string; name: string; company: string; postcode: string; programme: string; collegeDay: string; timing: string; band: string; packId: string | null; late: boolean; fillPercent: number; fillRemaining: number; fillStarted: boolean; noticeDays: number | null }[];
 }) {
   const [query, setQuery] = useState("");
@@ -503,7 +576,7 @@ export function TutorReviewList({
   );
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>Reviews</h1>
+      <h1 className={styles.title}>{tutorName ? `${tutorName}’s learners` : "Your learners"}</h1>
       <p className={styles.meta}>Your learners are listed by due date. A review can be filled from two weeks before it is due.</p>
       <input
         className={styles.search}
@@ -512,13 +585,20 @@ export function TutorReviewList({
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
+      {!rows.length ? (
+        <p className={styles.meta}>No learners are assigned to you yet. They appear here once your name is set on their GTA tutor dropdown.</p>
+      ) : null}
       {groups.map(([id, label]) => {
         const group = rows.filter((learner) => learner.band === id);
         if (!group.length) return null;
         return (
           <section key={id}>
             <h2 className={styles.group}>{label} · {group.length}</h2>
-            {group.map((learner) => (
+            {group.map((learner) => {
+              const canOpen = Boolean(learner.packId) && (id === "need-doing" || id === "sent-back");
+              const openText = id === "sent-back" ? "Open review" : learner.fillStarted ? "Fill review" : "Start review";
+              const stateChip = id === "sent-back" ? "Sent back" : id === "need-doing" ? (learner.fillStarted ? "Started" : "Need doing") : "Not due yet";
+              return (
               <div key={learner.gtaId}>
                 <div className={styles.listBtn}>
                   <button type="button" className={styles.listName} onClick={() => setOpen(open === learner.gtaId ? null : learner.gtaId)}>
@@ -526,8 +606,8 @@ export function TutorReviewList({
                   </button>
                   <span className={styles.chips}>
                     <span className={`${styles.chip} ${learner.late ? styles.red : ""}`}>{learner.timing}</span>
-                    {id === "sent-back" ? <span className={styles.chip}>Sent back</span> : null}
-                    {learner.packId ? <Link href={`/reviews?from=tutor&pack=${learner.packId}`}>Open review</Link> : null}
+                    <span className={styles.chip}>{stateChip}</span>
+                    {canOpen ? <Link href={`/reviews?from=tutor&pack=${learner.packId}`}>{openText}</Link> : <span>{fillCaption(learner)}</span>}
                   </span>
                 </div>
                 {open === learner.gtaId ? (
@@ -540,7 +620,8 @@ export function TutorReviewList({
                   </div>
                 ) : null}
               </div>
-            ))}
+              );
+            })}
           </section>
         );
       })}

@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       messages: [
         {
           role: "system",
-          content: `You improve wording for a UK GTA apprenticeship tripartite progress review. ${hint} Write as the GTA tutor. Keep the same facts. Do not invent evidence, names, dates or outcomes. Use clear professional UK English. Return only the rewritten text.${words ? ` Use at most ${words} words.` : ""}`,
+          content: `You improve wording for a UK GTA apprenticeship tripartite progress review. ${hint} Write as the GTA tutor. Keep the same facts. Do not invent evidence, names, dates or outcomes. Do not invent a conversation with the employer, workplace mentor, apprentice, or another tutor unless the source text already says that conversation happened. Use clear professional UK English. Return only the rewritten text.${words ? ` Use at most ${words} words.` : ""}`,
         },
         { role: "user", content: text },
       ],

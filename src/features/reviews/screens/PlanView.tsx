@@ -18,6 +18,7 @@ import {
   lockStopAction,
   recordSafeguardingAction,
   setNotesAction,
+  unlockDayAction,
   unlockStopAction,
   verifyStopAction,
 } from "./plan-actions";
@@ -175,9 +176,17 @@ export function PlanView({
       setMessage("This route is already accepted. Unlock it before changing the drive times.");
       return;
     }
+    const hiddenTutors = new Set(
+      page.tutors.filter((tutor) => page.settings.hiddenTutorIds.includes(tutor.id)).map((tutor) => tutor.name),
+    );
+    const visibleExtras = extras.filter((person) => !hiddenTutors.has(person.tutor));
+    if (extras.length && !visibleExtras.length) {
+      setMessage("That tutor is hidden from the plan, so they are left off the round.");
+      return;
+    }
     const weekday = weekdayName(selectedDate);
-    const allowed = extras.filter((person) => person.releaseDay !== weekday && person.method !== "phone");
-    const blocked = extras.filter((person) => !allowed.includes(person));
+    const allowed = visibleExtras.filter((person) => person.releaseDay !== weekday && person.method !== "phone");
+    const blocked = visibleExtras.filter((person) => !allowed.includes(person));
     if (blocked.length && !allowed.length) {
       const person = blocked[0];
       setMessage(
@@ -447,6 +456,7 @@ export function PlanView({
           today={page.today}
           booked={bookedDays}
           completed={completedDays}
+          skipped={page.settings.skipToday ? page.today : null}
           onPick={(next) => go(next, next.slice(0, 7))}
           onMonth={(next) => go(selectedDate, next)}
         />
@@ -471,7 +481,7 @@ export function PlanView({
             </div>
           ) : (
             <div className={styles.routeBar}>
-              {page.canWrite ? (
+              {page.canWrite && !activeDay.accepted && selectedDate >= page.today ? (
                 <button
                   type="button"
                   className={styles.fill}
@@ -485,6 +495,19 @@ export function PlanView({
                   }
                 >
                   Fill Day
+                </button>
+              ) : null}
+              {page.canWrite && activeDay.accepted && !activeDay.completed ? (
+                <button
+                  type="button"
+                  className={styles.fill}
+                  onClick={() =>
+                    void run(() => unlockDayAction({ date: selectedDate })).then((result) => {
+                      if (result.ok) setMessage("This day is unlocked. You can change the round again.");
+                    })
+                  }
+                >
+                  Unlock day
                 </button>
               ) : null}
               {page.canWrite && activeDay.stops.length > 0 ? (
@@ -879,25 +902,34 @@ function StopCard({
             )}
             {stop.completed ? <span className={styles.tagDone}>Review done</span> : null}
             {!stop.completed && verified ? <span className={styles.tagDone}>Verified</span> : null}
+            {bookedOnDay ? <span className={styles.tagDone}>Booked time</span> : null}
             {locked ? <span className={styles.tagLock}>Locked</span> : null}
           </p>
         </div>
         <span className={styles.contactLine}>
-          {stop.contact ? <strong>{stop.contact}</strong> : null}
-          {stop.phone ? (
+          {stop.contact || stop.phone ? (
             <>
-              {stop.contact ? " · " : ""}
-              <a href={`tel:${phoneDigits}`} onClick={(event) => event.stopPropagation()}>{stop.phone}</a>
+              {stop.contact ? <strong>{stop.contact}</strong> : null}
+              {stop.phone ? (
+                <>
+                  {stop.contact ? " · " : ""}
+                  <a href={`tel:${phoneDigits}`} onClick={(event) => event.stopPropagation()}>{stop.phone}</a>
+                </>
+              ) : null}
             </>
-          ) : null}
+          ) : (
+            "No contact saved"
+          )}
         </span>
         {canWrite && !stop.completed ? (
           <div className={styles.stopExtra} onClick={(event) => event.stopPropagation()}>
             <div className={styles.stopExtraInner}>
             <p className={styles.placeLine}>
               {stop.company} · {stop.postcode} · tutor {stop.tutor} · college {stop.releaseDay}
+              {stop.kind === "phone" ? " · 20 minutes from the office · no driving" : ""}
             </p>
             <div className={styles.actionGrid}>
+            {bookedOnDay ? null : (
             <button
               type="button"
               className={[verified ? styles.actionGhost : styles.actionPrimary, mine && busyKey?.endsWith(":verify") ? styles.pending : ""].filter(Boolean).join(" ")}
@@ -926,6 +958,7 @@ function StopCard({
             >
               {mine && busyKey?.endsWith(":verify") ? "Saving…" : verified ? "Undo verify" : "Verify"}
             </button>
+            )}
             <button type="button" className={styles.actionBlue} disabled={held} aria-expanded={open === "book" && bookMethod === "in_person"} onClick={() => { setBookMethod("in_person"); setOpen(open === "book" && bookMethod === "in_person" ? null : "book"); }}>
               Rebook
             </button>
@@ -974,9 +1007,11 @@ function StopCard({
             <Link className={styles.actionBlue} href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
               Edit details
             </Link>
+            {dayAccepted ? null : (
             <button type="button" className={[styles.actionDanger, mine && busyKey?.endsWith(":off") ? styles.pending : ""].filter(Boolean).join(" ")} disabled={held} aria-busy={mine && busyKey?.endsWith(":off")} onClick={() => onTakeOff(stop.gtaId)}>
               {mine && busyKey?.endsWith(":off") ? "Taking off…" : "Take off this round"}
             </button>
+            )}
             </div>
             {stop.notes ? (
               <p className={styles.noteBox}>
@@ -1077,6 +1112,7 @@ function Calendar({
   today,
   booked,
   completed,
+  skipped,
   onPick,
   onMonth,
 }: {
@@ -1085,6 +1121,7 @@ function Calendar({
   today: string;
   booked: Set<string>;
   completed: Set<string>;
+  skipped: string | null;
   onPick: (date: string) => void;
   onMonth: (month: string) => void;
 }) {
@@ -1133,6 +1170,7 @@ function Calendar({
                 iso === date ? styles.dayOn : "",
                 iso === today && iso !== date ? styles.dayToday : "",
                 completed.has(iso) ? styles.dayDone : booked.has(iso) ? styles.dayBooked : "",
+                iso === skipped ? styles.daySkipped : "",
               ].filter(Boolean).join(" ")}
               onClick={() => onPick(iso)}
             >
@@ -1213,10 +1251,41 @@ function DayTimeline({
   const leave = packed?.leaveMinutes ?? timeToMinutes(page.settings.startTime) ?? 10 * 60;
   const back = home?.arrive ?? packed?.returnArrive;
   const backTravel = home?.travel ?? packed?.returnTravel;
-  if (!stops.length) return null;
+  if (!stops.length) {
+    const passed = date < page.today;
+    const skipped = date === page.today && page.settings.skipToday;
+    const label = weekdayName(date);
+    return (
+      <p className={styles.empty}>
+        {day.completed
+          ? "This route is completed."
+          : passed
+            ? `${label} has already passed. Reviews are planned from today onwards.`
+            : skipped
+              ? `Skipping ${label} so you can book tomorrow. Uncheck “Skip today” if you need a round today.`
+              : `No visits on ${label}. Either everyone is in college, or they already fit on remaining days.`}
+      </p>
+    );
+  }
+  const callStart = timeToMinutes(page.settings.startTime) ?? leave;
+  const callEnd = callStart + page.settings.callMinutes;
   return (
     <div className={locked ? styles.lockedPanel : styles.timeline}>
       {locked ? <p className={styles.lockNote}>This day is locked. The visits can’t be changed.</p> : null}
+      {day.droppedUnverified ? (
+        <p className={styles.lockNote}>
+          The {page.settings.callMinutes}-minute call window ended. Anyone not verified has been moved off this round.
+        </p>
+      ) : null}
+      {page.settings.callMinutes > 0 && stops.some((stop) => stop.kind !== "phone") ? (
+        <div className={styles.stop}>
+          <div className={styles.when}>{minutesToTime(callStart)}–{minutesToTime(callEnd)}</div>
+          <div>
+            <strong>Confirmation calls</strong>
+            <div className={styles.meta}>{page.settings.officePostcode} · {page.settings.callMinutes} minutes for anyone not yet verified. Then set off at {minutesToTime(leave)}.</div>
+          </div>
+        </div>
+      ) : null}
       <div className={styles.stop}>
         <div className={styles.when}>{minutesToTime(leave)}</div>
         <div>
@@ -1295,6 +1364,7 @@ function planDayFor(page: PlanPageData, date: string): PlanDay {
       completed: false,
       stops: [],
       completedReviews: [],
+      droppedUnverified: 0,
     }
   );
 }

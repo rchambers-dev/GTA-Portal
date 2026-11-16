@@ -610,6 +610,7 @@
   box-shadow: inset 0 0 0 2px #b44a2c;
 }
 
+.daySkipped { text-decoration: line-through; }
 .dayBooked {
   box-shadow: inset 0 -3px 0 #2f6b56;
 }

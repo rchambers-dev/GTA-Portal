@@ -1,5 +1,5 @@
 import type { CycleDueTone, CycleStepId, StepTone, TutorBand } from "./cycle";
-import type { TutorFormDraft } from "./tutor-form-rules";
+import type { ProgressDraft, TutorFormDraft } from "./tutor-form-rules";
 
 export type CycleStepView = {
   id: CycleStepId;
@@ -81,6 +81,14 @@ export type LearnerReviews = {
   loadError: string | null;
 };
 
+/** The last completed review, shown read-only on the left of the tutor form. */
+export type PreviousReviewSnapshot = {
+  dateLabel: string;
+  summary: string;
+  comment: string;
+  progress: ProgressDraft[];
+};
+
 export type DigitalReview = {
   packId: string;
   gtaId: string;
@@ -91,6 +99,8 @@ export type DigitalReview = {
   today: string;
   section1: { label: string; value: string }[];
   form: TutorFormDraft;
+  reviewerNote: string;
+  previousReview: PreviousReviewSnapshot | null;
   savedAt: string | null;
   loadError: string | null;
 };

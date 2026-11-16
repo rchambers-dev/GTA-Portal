@@ -40,7 +40,7 @@ export default async function ReviewsQueuePage({
     return (
       <ApprenticePageShell eyebrow="Reviews" title="Reviews" hideHeader>
         {page.loadError ? <p role="alert">{page.loadError}</p> : null}
-        <TutorReviewList learners={mine} />
+        <TutorReviewList learners={mine} tutorName={session.account.name} />
       </ApprenticePageShell>
     );
   }

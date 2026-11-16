@@ -102,6 +102,8 @@ export type PlanDay = {
   completed: boolean;
   stops: PlanStop[];
   completedReviews: CompletedReview[];
+  /** Stops taken off this day because the confirmation-call window ended. */
+  droppedUnverified: number;
 };
 
 export type PlanPageData = {
@@ -461,7 +463,9 @@ export async function readPlanPage(
       leave: minutesToTime(leave),
       arriveMinutes: arrive,
       leaveMinutes: leave,
-      locked: stop.locked_until_minutes != null,
+      locked:
+        stop.locked_until_minutes != null &&
+        (stop.date_on > clock.today || (stop.date_on === clock.today && stop.locked_until_minutes > clock.minutes)),
       dueLabel: person?.dueLabel || "Not set",
       dueState: person?.dueState || "unknown",
       tutor: person?.tutor || "",
@@ -474,12 +478,14 @@ export async function readPlanPage(
     };
   }
   const stopsByDate = new Map<string, PlanStop[]>();
+  const droppedByDate = new Map<string, number>();
   for (const stop of (stopsResult.data ?? []) as StopRow[]) {
     const built = toStop(stop);
     if (
       !bookingResult.error &&
       heldPastCallEnd(built, { date: stop.date_on, today: clock.today, nowMinutes: clock.minutes, callEnd })
     ) {
+      droppedByDate.set(stop.date_on, (droppedByDate.get(stop.date_on) ?? 0) + 1);
       continue;
     }
     const list = stopsByDate.get(stop.date_on) ?? [];
@@ -516,6 +522,7 @@ export async function readPlanPage(
     completed: Boolean(dayMeta.get(dateOn)?.completed_at),
     stops: stopsByDate.get(dateOn) ?? [],
     completedReviews: completedByDate.get(dateOn) ?? [],
+    droppedUnverified: droppedByDate.get(dateOn) ?? 0,
   }));
   const emptyDay = {
     date: options.date,
@@ -523,6 +530,7 @@ export async function readPlanPage(
     completed: Boolean(dayMeta.get(options.date)?.completed_at),
     stops: [],
     completedReviews: [],
+    droppedUnverified: droppedByDate.get(options.date) ?? 0,
   };
 
   return {
