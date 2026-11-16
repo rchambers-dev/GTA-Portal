@@ -30,12 +30,12 @@ describe("rebook appointment arguments", () => {
     expect(rebookAppointmentArgs({ ...base, method: "teams" }).p_method).toBe("teams");
   });
 
-  it("stores a phone call as a phone stop with no drive times", () => {
-    expect(rebookAppointmentArgs({ ...base, method: "phone" })).toMatchObject({
+  it("stores a phone call on its date with a time inside 9:00 to 10:00", () => {
+    expect(rebookAppointmentArgs({ ...base, method: "phone", arriveMinutes: 9 * 60, leaveMinutes: 9 * 60 + 20 })).toMatchObject({
       p_method: "phone",
       p_kind: "phone",
-      p_arrive: null,
-      p_leave: null,
+      p_arrive: 9 * 60,
+      p_leave: 9 * 60 + 20,
       p_gta_ids: [],
       p_date: "2026-11-16",
     });

@@ -494,3 +494,14 @@ export function emptyPackedDay(settings: RouteSettings): PackedDay {
     callEnd: calls.callEnd,
   };
 }
+
+/** Same insert rule as the Review Assistant: moving down lands after the target, moving up lands before it. */
+export function moveRouteIds(ids: string[], fromId: string, toId: string): string[] {
+  const from = ids.indexOf(fromId);
+  const to = ids.indexOf(toId);
+  if (from < 0 || to < 0 || from === to) return ids;
+  const next = ids.filter((id) => id !== fromId);
+  const insertAt = next.indexOf(toId) + (from < to ? 1 : 0);
+  next.splice(insertAt, 0, fromId);
+  return next;
+}

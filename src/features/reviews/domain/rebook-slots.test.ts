@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fittingArrivals, rebookDayChoice, type RebookClock } from "./rebook-slots";
+import { fittingArrivals, phoneReviewSlots, phoneReviewTimeFits, rebookDayChoice, type RebookClock } from "./rebook-slots";
 
 const clock: RebookClock = {
   startMinutes: 10 * 60,
@@ -48,6 +48,30 @@ describe("rebook days", () => {
     expect(pastThursday).toEqual({ bookable: false, struck: false });
     expect(futureThursday).toEqual({ bookable: false, struck: true });
     expect(monday).toEqual({ bookable: true, struck: false });
+  });
+
+  it("lets a phone review be booked only on the learner's release day", () => {
+    const phone = {
+      today: "2026-11-16",
+      missedDate: "2026-11-16",
+      releaseDay: "Thursday",
+      nowMinutes: 9 * 60,
+      skipToday: true,
+      returnBy: clock.returnBy,
+      accepted: false,
+      completed: false,
+      method: "phone" as const,
+    };
+    expect(rebookDayChoice({ ...phone, date: "2026-11-19" })).toEqual({ bookable: true, struck: false });
+    expect(rebookDayChoice({ ...phone, date: "2026-11-26" })).toEqual({ bookable: true, struck: false });
+    expect(rebookDayChoice({ ...phone, date: "2026-11-18" }).bookable).toBe(false);
+    expect(rebookDayChoice({ ...phone, date: "2026-11-20" }).bookable).toBe(false);
+    expect(rebookDayChoice({ ...phone, date: "2026-11-12" }).bookable).toBe(false);
+    expect(rebookDayChoice({ ...phone, releaseDay: "", date: "2026-11-19" }).bookable).toBe(false);
+    expect(phoneReviewSlots()).toEqual([9 * 60, 9 * 60 + 20, 9 * 60 + 40]);
+    expect(phoneReviewTimeFits(9 * 60)).toBe(true);
+    expect(phoneReviewTimeFits(10 * 60)).toBe(false);
+    expect(phoneReviewTimeFits(8 * 60 + 40)).toBe(false);
   });
 });
 

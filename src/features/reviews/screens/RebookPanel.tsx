@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { drivingMatrix, geocodePostcodes, normalisePostcode } from "../domain/geo";
 import { minutesToTime, timeToMinutes, weekdayName } from "../domain/plan-due";
 import type { PlanDay, PlanPerson, PlanSettings, PlanStop, RebookMonthDay } from "../domain/plan-repository";
-import { fittingArrivals, rebookDayChoice, rebookWindowEnd } from "../domain/rebook-slots";
+import { fittingArrivals, phoneReviewSlots, PHONE_REVIEW_MINUTES, rebookDayChoice, rebookWindowEnd } from "../domain/rebook-slots";
 import { loadRebookMonthAction, rebookAppointmentAction } from "./plan-actions";
 import styles from "./plan.module.css";
 
@@ -144,8 +144,9 @@ export function RebookPanel({
   const atStart = month <= today.slice(0, 7);
   const atEnd = month >= windowEnd.slice(0, 7);
 
-  function choiceFor(date: string) {
+  function choiceFor(date: string, methodOverride = method) {
     const day = marks.get(date);
+    const booking = methodOverride === "phone" ? "phone" : methodOverride === "teams" ? "teams" : "in_person";
     return rebookDayChoice({
       date,
       today,
@@ -156,17 +157,24 @@ export function RebookPanel({
       returnBy: timeToMinutes(settings.returnBy) ?? 16 * 60 + 45,
       accepted: Boolean(day?.accepted),
       completed: Boolean(day?.completed),
+      method: booking,
     });
   }
 
+  const releaseDay = stop.releaseDay.trim();
+  const phoneNeedsReleaseDay = method === "phone" && !releaseDay;
+
   async function pickDay(date: string, methodOverride = method) {
-    const choice = choiceFor(date);
+    const choice = choiceFor(date, methodOverride);
     if (!choice.bookable || monthPending) return;
     setChosen(date);
     setMinute(null);
     setSlots([]);
     setSlotError(null);
-    if (methodOverride === "phone") return;
+    if (methodOverride === "phone") {
+      setSlots(phoneReviewSlots());
+      return;
+    }
     setChecking(true);
     try {
       const existing = (marks.get(date)?.stops ?? []).filter((item) => item.gtaId !== stop.gtaId && item.arriveMinutes != null);
@@ -234,8 +242,8 @@ export function RebookPanel({
       aria-labelledby={`rebook-title-${stop.gtaId}`}
       onSubmit={(event) => {
         event.preventDefault();
-        if (!chosen || !stop.reviewId) return;
-        if (method !== "phone" && minute == null) return;
+        if (!chosen || !stop.reviewId || minute == null) return;
+        if (phoneNeedsReleaseDay) return;
         const stay = settings.stayMinutes || 30;
         const others = (marks.get(chosen)?.stops ?? []).filter((item) => item.gtaId !== stop.gtaId);
         const ordered = method === "phone"
@@ -250,8 +258,9 @@ export function RebookPanel({
             missedDate,
             date: chosen,
             method,
-            arriveMinutes: method === "phone" ? null : minute,
-            leaveMinutes: method === "phone" || minute == null ? null : minute + stay,
+            releaseDay: stop.releaseDay,
+            arriveMinutes: minute,
+            leaveMinutes: method === "phone" ? minute + PHONE_REVIEW_MINUTES : minute + stay,
             orderedGtaIds: ordered,
             backToQueue: false,
           }),
@@ -267,7 +276,16 @@ export function RebookPanel({
           setMinute(null);
           setSlots([]);
           setSlotError(null);
-          if (chosen && next !== "phone") void pickDay(chosen, next);
+          if (!chosen) return;
+          if (next === "phone" && !stop.releaseDay.trim()) {
+            setChosen("");
+            return;
+          }
+          if (next === "phone" && weekdayName(chosen).toLowerCase() !== stop.releaseDay.trim().toLowerCase()) {
+            setChosen("");
+            return;
+          }
+          void pickDay(chosen, next);
         }}>
           <option value="in_person">In person</option>
           <option value="teams">Teams</option>
@@ -306,11 +324,15 @@ export function RebookPanel({
           );
         })}
       </div>
-      {method === "phone" ? <p className={styles.rebookHint}>{when ? `${when} phone review. No drive time.` : "Pick a weekday for the phone review."}</p> : null}
+      {phoneNeedsReleaseDay ? (
+        <p className={styles.rebookBlocked} role="status">Set this learner&apos;s release day before booking a phone review.</p>
+      ) : method === "phone" ? (
+        <p className={styles.rebookHint}>{when ? `${when} phone review, between 9:00 and 10:00. No drive time.` : `Pick a ${releaseDay || "release day"}. A phone review can only be booked on that day.`}</p>
+      ) : null}
       <p className={slotError || monthError ? styles.rebookBlocked : styles.srOnly} role="status">
         {monthError || slotError || (checking ? `Checking the drive and whether you are back by ${settings.returnBy}…` : when ? `${when} is selected. Tap a time that fits.` : "Pick a working day.")}
       </p>
-      {method !== "phone" && slots.length ? (
+      {slots.length ? (
         <div className={styles.rebookSlots}>
           {slots.map((value) => (
             <button
@@ -325,7 +347,7 @@ export function RebookPanel({
           ))}
         </div>
       ) : null}
-      <button type="submit" className={styles.rebookBook} disabled={!chosen || (method !== "phone" && minute == null) || checking || monthPending}>
+      <button type="submit" className={styles.rebookBook} disabled={!chosen || minute == null || checking || monthPending || phoneNeedsReleaseDay}>
         Book Appointment
       </button>
       <button
@@ -340,6 +362,7 @@ export function RebookPanel({
               missedDate,
               date: null,
               method: "in_person",
+              releaseDay: stop.releaseDay,
               arriveMinutes: null,
               leaveMinutes: null,
               orderedGtaIds: [],
