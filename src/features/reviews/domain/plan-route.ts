@@ -298,7 +298,7 @@ function packLinearSequence(
       }
       stops.push(makeStop(learner, fromPrev, arrive, leave));
       placedIds.add(learner.id);
-      time = leave;
+      time = Math.max(time, leave);
       location = learner.matrixIndex;
       continue;
     }
@@ -493,6 +493,14 @@ export function emptyPackedDay(settings: RouteSettings): PackedDay {
     callStart: calls.callStart,
     callEnd: calls.callEnd,
   };
+}
+
+/** A later visit must not start before the one in front of it has finished. */
+export function visitsAreInOrder(stops: { arrive: number; leave: number }[]): boolean {
+  for (let index = 1; index < stops.length; index += 1) {
+    if (stops[index].arrive + 0.5 < stops[index - 1].leave) return false;
+  }
+  return true;
 }
 
 /** Same insert rule as the Review Assistant: moving down lands after the target, moving up lands before it. */

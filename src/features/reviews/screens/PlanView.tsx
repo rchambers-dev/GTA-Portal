@@ -8,7 +8,7 @@ import { fitStops, routeSettings } from "../domain/plan-drive";
 import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
-import { moveRouteIds, type PackedDay } from "../domain/plan-route";
+import { moveRouteIds, visitsAreInOrder, type PackedDay } from "../domain/plan-route";
 import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
 import {
   acceptDayAction,
@@ -52,6 +52,7 @@ export function PlanView({
   const [notesOpen, setNotesOpen] = useState(false);
   const [notePerson, setNotePerson] = useState<PlanPerson | null>(null);
   const [packed, setPacked] = useState<PackedDay | null>(null);
+  const [home, setHome] = useState<{ travel: number; arrive: number } | null>(null);
   const [packedFor, setPackedFor] = useState(serverDate);
   const [officePoint, setOfficePoint] = useState<{ lat: number; lon: number; postcode: string } | null>(null);
   const routeDragId = useRef("");
@@ -116,6 +117,7 @@ export function PlanView({
         }).then((fitted) => {
           if (cancel) return;
           setPacked(fitted.packed);
+          setHome(fitted.home);
           setPackedFor(selectedDate);
           setOfficePoint(fitted.office);
         });
@@ -175,6 +177,7 @@ export function PlanView({
       people: page.people,
     });
     setPacked(fitted.packed);
+    setHome(fitted.home);
     setPackedFor(selectedDate);
     setOfficePoint(fitted.office);
     if (!fitted.office) {
@@ -217,9 +220,16 @@ export function PlanView({
         people: page.people,
       });
       const kept = new Map(remaining.map((stop) => [stop.gtaId, stop]));
+      const held = remaining.filter((stop) => stop.verified || stop.locked || stop.appointmentOn);
       retimed = fitted.packed.stops.flatMap((stop) => {
         const original = kept.get(stop.id);
         if (!original || original.verified || original.locked || original.appointmentOn) return [];
+        const overlapsFixed = held.some((fixed) => {
+          const start = fixed.arriveMinutes ?? 0;
+          const end = fixed.leaveMinutes ?? 0;
+          return stop.arrive < end && stop.leave > start;
+        });
+        if (overlapsFixed) return [];
         return [{ gtaId: stop.id, arrive: stop.arrive, leave: stop.leave }];
       });
     }
@@ -231,7 +241,7 @@ export function PlanView({
     routeDragId.current = "";
     if (!fromId || fromId === targetId || activeDay.completed || !page.canWrite) return;
     const ordered = [...activeDay.stops].sort(
-      (a, b) => a.sortOrder - b.sortOrder || (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0),
+      (a, b) => (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0) || a.sortOrder - b.sortOrder,
     );
     const dragged = ordered.find((stop) => stop.gtaId === fromId);
     if (!dragged || dragged.appointmentOn === selectedDate) return;
@@ -264,6 +274,10 @@ export function PlanView({
       }];
     });
     const place = nextIds.indexOf(fromId) + 1;
+    if (!visitsAreInOrder(stops)) {
+      setMessage(`${dragged.name} does not fit there. Fixed times on this round were left as they are.`);
+      return;
+    }
     await run(async () => {
       const result = await applyRouteAction({ date: selectedDate, stops });
       if (result.ok) {
@@ -288,6 +302,7 @@ export function PlanView({
       people: page.people,
     });
     setPacked(fitted.packed);
+    setHome(fitted.home);
     setPackedFor(selectedDate);
     setOfficePoint(fitted.office);
     if (fitted.missing.length) setMessage(`Could not find: ${fitted.missing.join(", ")}`);
@@ -450,6 +465,7 @@ export function PlanView({
             day={activeDay}
             date={selectedDate}
             packed={route}
+            home={packedFor === selectedDate ? home : null}
             locked={activeDay.completed}
             onRun={run}
             onTakeOff={(gtaId) => void takeOff(gtaId)}
@@ -833,18 +849,22 @@ function StopCard({
             <button
               type="button"
               className={stop.verified ? styles.actionGhost : styles.actionPrimary}
-              onClick={() =>
+              onClick={() => {
+                if (!stop.verified && (stop.arriveMinutes == null || stop.leaveMinutes == null)) {
+                  onStatus("This visit has no time yet, so it can't be verified.");
+                  return;
+                }
                 void onRun(() =>
                   verifyStopAction({
                     date,
                     gtaId: stop.gtaId,
                     verified: !stop.verified,
-                    arrive: stop.arrive || "10:00",
-                    leave: stop.leave || "10:30",
+                    arrive: stop.arrive,
+                    leave: stop.leave,
                     dayGtaIds: dayIds,
                   }),
-                )
-              }
+                );
+              }}
             >
               {stop.verified ? "Undo verify" : "Verify"}
             </button>
@@ -1084,6 +1104,7 @@ function DayTimeline({
   day,
   date,
   packed,
+  home,
   locked,
   onRun,
   onTakeOff,
@@ -1097,6 +1118,7 @@ function DayTimeline({
   day: PlanDay;
   date: string;
   packed: PackedDay | null;
+  home: { travel: number; arrive: number } | null;
   locked: boolean;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
   onTakeOff: (gtaId: string) => void;
@@ -1105,11 +1127,14 @@ function DayTimeline({
   onStatus: (message: string) => void;
   onNote: (gtaId: string) => void;
 }) {
-  const stops = [...day.stops].sort((a, b) => a.sortOrder - b.sortOrder || (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0));
+  const stops = [...day.stops].sort(
+    (a, b) => (a.arriveMinutes ?? Number.MAX_SAFE_INTEGER) - (b.arriveMinutes ?? Number.MAX_SAFE_INTEGER) || a.sortOrder - b.sortOrder,
+  );
   const lunchStart = timeToMinutes(page.settings.lunchStart) ?? 12 * 60 + 30;
   const lunchEnd = lunchStart + page.settings.lunchMinutes;
   const leave = packed?.leaveMinutes ?? timeToMinutes(page.settings.startTime) ?? 10 * 60;
-  const back = packed?.returnArrive;
+  const back = home?.arrive ?? packed?.returnArrive;
+  const backTravel = home?.travel ?? packed?.returnTravel;
   if (!stops.length) return null;
   return (
     <div className={locked ? styles.lockedPanel : styles.timeline}>
@@ -1163,7 +1188,7 @@ function DayTimeline({
           <strong>Back at office</strong>
           <div className={styles.meta}>
             {page.settings.officePostcode}
-            {packed ? ` · ${Math.round(packed.returnTravel)} min drive` : ""}
+            {backTravel != null ? ` · ${Math.round(backTravel)} min drive` : ""}
           </div>
         </div>
       </div>
