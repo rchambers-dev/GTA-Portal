@@ -88,7 +88,7 @@ export function rangeWindow(range: AnalyticsRange, today: string): { start: stri
 
 function inWindow(date: string | null, window: { start: string | null; end: string }): boolean {
   if (!date) return false;
-  const day = date.slice(0, 10);
+  const day = londonDay(date);
   if (day > window.end) return false;
   if (window.start && day < window.start) return false;
   return true;
@@ -293,7 +293,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   for (const learner of learners) {
     const pack = packByGta.get(learner.gtaId);
     const last = completedByLearner.get(learner.gtaId)?.[0]?.actualOn?.slice(0, 10) || null;
-    const planned = openReview.get(learner.gtaId)?.plannedOn?.slice(0, 10) || (last ? addDays(last, 70) : null);
+    const planned = openReview.get(learner.gtaId)?.plannedOn?.slice(0, 10) || (last ? addDays(last, (source.openConcerns.includes(learner.gtaId) ? 5 : 10) * 7) : null);
     const windowOpen = tutorDueBand({
       today: source.today,
       plannedOn: planned,
@@ -337,14 +337,19 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const quota = neededEachDay(learners.length, doneThisCycle.size, weekdaysLeft);
   const elapsed = source.today < countedFrom ? 0 : countWeekdays(countedFrom, source.today);
   const expected = quota * elapsed;
-  const completedTotal = filters.range === "all" && !selected ? completedReviews.length : countType("completed");
+  const completedTotal = filters.range === "all" && !selected ? completedReviews.length : completedReviews.filter((review) => inWindow(review.actualOn, window)).length;
 
   const thisMonday = weekStartMonday(source.today);
   const lastMonday = addDays(thisMonday, -7);
   const weekCount = (start: string, type: string) =>
     events.filter((event) => {
-      const day = event.at.slice(0, 10);
+      const day = londonDay(event.at);
       return event.type === type && day >= start && day <= addDays(start, 4) && inWindow(event.at, window);
+    }).length;
+  const completedWeek = (start: string) =>
+    reviews.filter((review) => {
+      const day = review.actualOn ? londonDay(review.actualOn) : "";
+      return review.status === "completed" && day >= start && day <= addDays(start, 4) && inWindow(review.actualOn, window);
     }).length;
   const methodWeek = (start: string, method: string) =>
     reviews.filter((review) => {
@@ -355,7 +360,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const weekOnWeek = [
     { label: "Released", now: weekCount(thisMonday, "released"), previous: weekCount(lastMonday, "released") },
     { label: "Received", now: weekCount(thisMonday, "submitted"), previous: weekCount(lastMonday, "submitted") },
-    { label: "Completed", now: weekCount(thisMonday, "completed"), previous: weekCount(lastMonday, "completed") },
+    { label: "Completed", now: completedWeek(thisMonday), previous: completedWeek(lastMonday) },
     { label: "Visits", now: visitWeek(thisMonday), previous: visitWeek(lastMonday) },
     { label: "Calls", now: methodWeek(thisMonday, "phone"), previous: methodWeek(lastMonday, "phone") },
     { label: "Teams", now: methodWeek(thisMonday, "teams"), previous: methodWeek(lastMonday, "teams") },
@@ -450,7 +455,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
       const start = list.find((event) => event.type === from && inWindow(event.at, window));
       const end = list.find((event) => event.type === to && inWindow(event.at, window));
       if (!start || !end) continue;
-      const days = daysBetween(start.at.slice(0, 10), end.at.slice(0, 10));
+      const days = daysBetween(start.at, end.at);
       if (days >= 0) values.push(days);
     }
     return { median: median(values), average: average(values), count: values.length };
@@ -655,7 +660,7 @@ function periodCounts(events: AnalyticsEvent[], reviews: AnalyticsReview[], inPe
   return {
     released: events.filter((event) => event.type === "released" && inPeriod(eventDay(event.at))).length,
     received: events.filter((event) => event.type === "submitted" && inPeriod(eventDay(event.at))).length,
-    completed: events.filter((event) => event.type === "completed" && inPeriod(eventDay(event.at))).length,
+    completed: reviews.filter((review) => review.status === "completed" && review.actualOn && inPeriod(londonDay(review.actualOn))).length,
     visits: reviews.filter((review) => review.status === "completed" && review.method === "in_person" && inPeriod(review.actualOn?.slice(0, 10) || "")).length,
     callsTeams: reviews.filter((review) => review.status === "completed" && (review.method === "phone" || review.method === "teams") && inPeriod(review.actualOn?.slice(0, 10) || "")).length,
   };

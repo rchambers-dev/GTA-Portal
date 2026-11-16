@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
-import { getRedirectForDeniedRoute, getRequiredPermission } from "@/lib/permissions/route-access";
+import { canAccessRoute, getRedirectForDeniedRoute, getRequiredPermission } from "@/lib/permissions/route-access";
 import type { EffectiveSession } from "@/lib/portal/types";
 
 function session(workspace: EffectiveSession["account"]["workspace"], permissions: string[]): EffectiveSession {
@@ -22,6 +22,14 @@ function session(workspace: EffectiveSession["account"]["workspace"], permission
 }
 
 describe("reviews routes across workspaces", () => {
+  it("lets a tutor open their review list without the management review tools", () => {
+    const tutor = session("staff", [PERMISSIONS.STAFF_WORKSPACE_VIEW, PERMISSIONS.REVIEWS_TUTOR]);
+    expect(canAccessRoute(tutor, "/reviews")).toBe(true);
+    expect(canAccessRoute(tutor, "/administration/reviews/plan")).toBe(false);
+    const manager = session("administration", [PERMISSIONS.ADMIN_WORKSPACE_VIEW, PERMISSIONS.REVIEWS_MANAGE]);
+    expect(canAccessRoute(manager, "/reviews")).toBe(true);
+  });
+
   it("leaves the public tutor review link outside the portal login rules", () => {
     expect(getRequiredPermission("/tutor-review/one-time-token")).toBeNull();
   });

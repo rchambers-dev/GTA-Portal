@@ -185,6 +185,7 @@ export function permissionsForStaffRole(role: AdminPortalRole | string): string[
         "apprentice.workspace.view",
         "modules.deliver",
         "lifecycle.kanban.view",
+        "reviews.tutor",
       ];
     case "Apprentice":
       return [

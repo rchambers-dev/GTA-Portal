@@ -174,11 +174,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
     } else {
       sections.push({
         title: "Staff Workspace",
-        items: STAFF_BASE_NAV.filter((item) => !item.href.startsWith("/reviews")),
-      });
-      sections.push({
-        title: "Reviews",
-        items: STAFF_BASE_NAV.filter((item) => item.href.startsWith("/reviews")),
+        items: STAFF_BASE_NAV,
       });
     }
 

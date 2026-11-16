@@ -108,6 +108,7 @@ function permissionsForRole(role) {
     "apprentice.workspace.view",
     "modules.deliver",
     "lifecycle.kanban.view",
+    "reviews.tutor",
   ];
 }
 

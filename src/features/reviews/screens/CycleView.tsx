@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CYCLE_STEPS } from "../domain/cycle";
 import { peersFor, type CycleLearner, type CyclePage } from "../domain/cycle-view";
-import { signSafeguardingAction } from "./cycle-actions";
+import { releaseReviewToTutorAction, signSafeguardingAction } from "./cycle-actions";
 import styles from "./cycle.module.css";
 
 function signCountLabel(count: number) {
@@ -27,6 +27,8 @@ export function CycleView({
   const [picked, setPicked] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [sending, setSending] = useState<string | null>(null);
+  const [notice, setNotice] = useState("");
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -87,6 +89,7 @@ export function CycleView({
         <p>Search a name, tutor, company or postcode.</p>
       </header>
       {page.loadError ? <p className={styles.error} role="alert">{page.loadError}</p> : null}
+      {notice ? <p className={styles.error} role="status">{notice}</p> : null}
       <div className={styles.tools}>
         <input
           className={styles.search}
@@ -158,6 +161,30 @@ export function CycleView({
                   </span>
                   <span className={styles.chip}>{learner.stepLabel}</span>
                   <span className={styles.grow} />
+                  {learner.stepId === "waiting" && learner.packId ? (
+                    <button
+                      type="button"
+                      className={styles.signBtn}
+                      disabled={!learner.tutorId || sending === learner.gtaId}
+                      title={learner.tutorId ? "Send this review to the tutor now" : "Set a tutor before sending this review"}
+                      onClick={() => {
+                        if (!learner.packId) return;
+                        setNotice("");
+                        setSending(learner.gtaId);
+                        void releaseReviewToTutorAction({ packId: learner.packId }).then((result) => {
+                          setSending(null);
+                          if (!result.ok) {
+                            setNotice(result.formError);
+                            return;
+                          }
+                          setNotice(`${learner.name} was sent to ${learner.tutor}.`);
+                          router.refresh();
+                        });
+                      }}
+                    >
+                      {sending === learner.gtaId ? "Sending…" : "Send to tutor"}
+                    </button>
+                  ) : null}
                   {learner.signedLabel ? (
                     <span className={styles.signed}>{learner.signedLabel}</span>
                   ) : (

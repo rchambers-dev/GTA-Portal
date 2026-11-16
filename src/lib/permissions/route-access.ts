@@ -48,6 +48,9 @@ export function canAccessRoute(
   session: EffectiveSession,
   pathname: string,
 ): boolean {
+  if (pathname === "/reviews") {
+    return hasPermission(session, PERMISSIONS.REVIEWS_MANAGE) || hasPermission(session, PERMISSIONS.REVIEWS_TUTOR);
+  }
   const required = getRequiredPermission(pathname);
   if (!required) return true;
   return hasPermission(session, required);

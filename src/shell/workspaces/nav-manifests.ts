@@ -15,7 +15,7 @@ export const STAFF_BASE_NAV: NavItem[] = [
     label: "OTJ hours",
     permission: PERMISSIONS.MODULES_DELIVER,
   },
-  { href: "/reviews?from=tutor", label: "Reviews", permission: PERMISSIONS.REVIEWS_MANAGE },
+  { href: "/reviews?from=tutor", label: "Reviews", permission: PERMISSIONS.REVIEWS_TUTOR },
   { href: "/staff/shared-drive", label: "Shared Drive", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
   { href: "/staff/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
 ];
