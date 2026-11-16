@@ -84,3 +84,17 @@ export async function submitTutorFormAction(input: { packId: string; form: Tutor
   await revalidateAnalytics();
   return { ok: true as const };
 }
+
+export async function releaseReviewToTutorAction(input: { packId: string }) {
+  const session = await getSupabaseEffectiveSession();
+  if (!session) return { ok: false as const, formError: "Sign in again to send this review to the tutor." };
+  if (!canAddApprentice(session)) return { ok: false as const, formError: DENIED };
+  const packId = input.packId.trim();
+  if (!packId) return { ok: false as const, formError: "Choose a review to send." };
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("release_review_to_tutor", { p_pack_id: packId, p_note: null });
+  const blocked = fail(error, "Sending a review to the tutor is waiting for the database change. Nothing was sent.");
+  if (blocked) return blocked;
+  await revalidateAnalytics();
+  return { ok: true as const };
+}

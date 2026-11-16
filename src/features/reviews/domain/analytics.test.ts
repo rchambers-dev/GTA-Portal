@@ -80,6 +80,34 @@ describe("review analytics", () => {
     expect(page.programmes[0]?.share).toBe(0.5);
   });
 
+  it("counts a stage change on the London day and a missing plan date at five weeks during a concern", () => {
+    const london = buildAnalytics(
+      source({
+        today: "2026-07-17",
+        events: [
+          { packId: "pk1", gtaId: "A", type: "released", at: "2026-07-12T23:30:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "" },
+        ],
+      }),
+      { range: "week", tutorId: "all", programmeId: "all", employerId: "all", cycle: null },
+    );
+    expect(london.overall.released).toBe(1);
+    const concern = buildAnalytics(
+      source({
+        today: "2026-07-17",
+        openConcerns: ["A"],
+        reviews: [
+          { id: "done", gtaId: "A", status: "completed", plannedOn: "2026-06-01", actualOn: "2026-06-01", method: "in_person" },
+          { id: "next", gtaId: "A", status: "open", plannedOn: null, actualOn: null, method: null },
+        ],
+        packs: [{ id: "pk1", gtaId: "A", stage: "completed", stageSince: "2026-06-01" }],
+        events: [],
+      }),
+      { range: "all", tutorId: "all", programmeId: "all", employerId: "all", cycle: null },
+    );
+    expect(concern.flow.find((step) => step.id === "released")?.count).toBe(1);
+    expect(concern.overall.completed).toBe(1);
+  });
+
   it("drops events outside the selected weeks", () => {
     const page = buildAnalytics(source(), { range: "week", tutorId: "all", programmeId: "all", employerId: "all" });
     expect(page.overall.released).toBe(0);

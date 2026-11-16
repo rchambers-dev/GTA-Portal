@@ -11,6 +11,8 @@ export const PERMISSIONS = {
   MODULES_DELIVER: "modules.deliver",
   ASSESSMENTS_MARK: "assessments.mark",
   REVIEWS_MANAGE: "reviews.manage",
+  /** A tutor's own review list and form. Not the management review tools. */
+  REVIEWS_TUTOR: "reviews.tutor",
   RESOURCES_OWN_MANAGE: "resources.own.manage",
   CURRICULUM_FEEDBACK_SUBMIT: "curriculum.feedback.submit",
   MESSAGES_VIEW: "messages.view",
@@ -104,7 +106,7 @@ export const STANDARD_TUTOR_PACK: Permission[] = [
   PERMISSIONS.CURRICULUM_PUBLISHED_VIEW,
   PERMISSIONS.MODULES_DELIVER,
   PERMISSIONS.ASSESSMENTS_MARK,
-  PERMISSIONS.REVIEWS_MANAGE,
+  PERMISSIONS.REVIEWS_TUTOR,
   PERMISSIONS.RESOURCES_OWN_MANAGE,
   PERMISSIONS.CURRICULUM_FEEDBACK_SUBMIT,
   PERMISSIONS.MESSAGES_VIEW,

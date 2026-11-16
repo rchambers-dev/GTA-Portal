@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
+import { PERMISSIONS } from "@/lib/permissions/capabilities";
+import { hasPermission } from "@/lib/permissions/effective-permissions";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { loadDigitalReview, loadReviewCycle } from "@/features/reviews/domain/cycle-repository";
 import { TutorReviewForm, TutorReviewList } from "@/features/reviews/screens/TutorReviewForm";
@@ -20,8 +22,10 @@ export default async function ReviewsQueuePage({
   const params = await searchParams;
   const from = one(params.from);
   const pack = one(params.pack);
-  if (from === "tutor" || pack) {
-    const session = await getSupabaseEffectiveSession();
+  const session = await getSupabaseEffectiveSession();
+  const tutorOnly = Boolean(session && hasPermission(session, PERMISSIONS.REVIEWS_TUTOR) && !hasPermission(session, PERMISSIONS.REVIEWS_MANAGE));
+  if (tutorOnly && from !== "tutor" && !pack) redirect("/reviews?from=tutor");
+  if (from === "tutor" || pack || tutorOnly) {
     if (!session) redirect(getUnauthenticatedRedirect(pack ? `/reviews?pack=${pack}` : "/reviews?from=tutor"));
     if (pack) {
       const review = await loadDigitalReview(pack, session.account.id);
