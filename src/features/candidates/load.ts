@@ -1,5 +1,6 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
-import type { EmployerChoice } from "./domain/employers";
+import { buildEmployerDirectory, type EmployerChoice, type EmployerDirectoryRow } from "./domain/employers";
+import { isoTodayLondon } from "./domain/format";
 import { tablesMissing } from "./domain/missing";
 
 export type CandidatesLoad = {
@@ -26,19 +27,30 @@ export async function loadCandidatesReady(): Promise<CandidatesLoad> {
   }
 }
 
-/** Existing employers for the name search. Empty when the tables are missing. */
-export async function loadEmployerChoices(): Promise<EmployerChoice[]> {
+export type EmployerLoad = {
+  choices: EmployerChoice[];
+  rows: EmployerDirectoryRow[];
+};
+
+/** Existing employers for the name search and the Employers tab. Empty when the tables are missing. */
+export async function loadEmployerChoices(): Promise<EmployerLoad> {
+  const empty = { choices: [], rows: [] };
   try {
     const supabase = await createSupabaseServerClient();
     const employers = await supabase.from("employers").select("employer_id, company_name").order("company_name");
-    if (employers.error || !employers.data) return [];
-    const [sites, managers] = await Promise.all([
+    if (employers.error || !employers.data) return empty;
+    const [sites, managers, vacancies, allocations, reoffers, activities, followUps] = await Promise.all([
       supabase.from("employer_sites").select("employer_id, postcode, area_name, is_active"),
       supabase.from("employer_managers").select("employer_id, first_name, middle_names, last_name, phone, email"),
+      supabase.from("employer_vacancies").select("id, employer_id, status, total_places"),
+      supabase.from("vacancy_allocations").select("vacancy_id, released_at, release_reason"),
+      supabase.from("vacancy_reoffer_decisions").select("vacancy_id, decision"),
+      supabase.from("employer_activities").select("id, employer_id, actual_on"),
+      supabase.from("employer_follow_ups").select("activity_id, due_on, completed_on"),
     ]);
     const siteRows = sites.error ? [] : sites.data ?? [];
     const managerRows = managers.error ? [] : managers.data ?? [];
-    return employers.data.map((employer) => {
+    const choices = employers.data.map((employer) => {
       const site = siteRows.find((row) => row.employer_id === employer.employer_id && row.is_active !== false) ?? siteRows.find((row) => row.employer_id === employer.employer_id);
       const manager = managerRows.find((row) => row.employer_id === employer.employer_id);
       const contact = manager
@@ -54,7 +66,43 @@ export async function loadEmployerChoices(): Promise<EmployerChoice[]> {
         email: manager?.email || "No email recorded",
       };
     });
+    const rows = buildEmployerDirectory({
+      today: isoTodayLondon(),
+      employers: employers.data.map((row) => ({ employerId: row.employer_id, name: row.company_name })),
+      sites: siteRows.map((row) => ({
+        employerId: row.employer_id,
+        areaName: row.area_name || "",
+        postcode: row.postcode || "",
+        active: row.is_active !== false,
+      })),
+      vacancies: vacancies.error ? [] : (vacancies.data ?? []).map((row) => ({
+        id: row.id,
+        employerId: row.employer_id,
+        status: row.status,
+        totalPlaces: row.total_places,
+      })),
+      allocations: allocations.error ? [] : (allocations.data ?? []).map((row) => ({
+        vacancyId: row.vacancy_id,
+        released: Boolean(row.released_at),
+        releaseReason: row.release_reason,
+      })),
+      reoffers: reoffers.error ? [] : (reoffers.data ?? []).map((row) => ({
+        vacancyId: row.vacancy_id,
+        decision: row.decision,
+      })),
+      activities: activities.error ? [] : (activities.data ?? []).map((row) => ({
+        id: row.id,
+        employerId: row.employer_id,
+        actualOn: row.actual_on,
+      })),
+      followUps: followUps.error ? [] : (followUps.data ?? []).map((row) => ({
+        activityId: row.activity_id,
+        dueOn: row.due_on,
+        completedOn: row.completed_on,
+      })),
+    });
+    return { choices, rows };
   } catch {
-    return [];
+    return empty;
   }
 }
