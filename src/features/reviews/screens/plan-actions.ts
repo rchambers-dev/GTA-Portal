@@ -17,9 +17,17 @@ async function writer() {
   return { ok: true as const, supabase: await createSupabaseServerClient() };
 }
 
+function plainPlanError(message: string): string {
+  if (message.includes("review_bookings_no_appointment_for_phone")) {
+    return "The phone review was not saved. A phone booking is still not allowed to keep a date and time.";
+  }
+  if (message.includes("release day")) return message.replace(/^.*exception\s*/i, "");
+  return message;
+}
+
 function fail(error: { message?: string } | null): { ok: false; formError: string } | null {
   if (!error) return null;
-  return { ok: false, formError: error.message || "The plan could not be saved." };
+  return { ok: false, formError: plainPlanError(error.message || "The plan could not be saved.") };
 }
 
 export async function pinOnDayAction(input: { date: string; gtaIds: string[] }) {
