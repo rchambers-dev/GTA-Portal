@@ -232,6 +232,18 @@ export async function readApprenticeLearner(
     problems.push("This apprentice has more than one current tutor.");
   }
 
+  let sourceCandidateId: string | null = null;
+  if (apprenticeRow) {
+    const source = await supabase
+      .from("apprentices")
+      .select("source_candidate_id")
+      .eq("gta_id", requestedId)
+      .maybeSingle();
+    if (!source.error && source.data && typeof source.data.source_candidate_id === "string") {
+      sourceCandidateId = source.data.source_candidate_id;
+    }
+  }
+
   const programme = programmeResult.error
     ? null
     : (programmeResult.data as ProgrammeRow | null);
@@ -255,7 +267,7 @@ export async function readApprenticeLearner(
   return {
     requestedId,
     apprentice: apprenticeRow
-      ? learnerRecordFromRow(apprenticeRow, programme
+      ? learnerRecordFromRow({ ...apprenticeRow, source_candidate_id: sourceCandidateId }, programme
           ? { name: programme.name, standardCode: programme.standard_code ?? "" }
           : null)
       : null,

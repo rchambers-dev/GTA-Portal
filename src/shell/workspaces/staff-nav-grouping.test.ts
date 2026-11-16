@@ -49,16 +49,32 @@ describe("sidebar grouping", () => {
       expect(staff?.items[0]?.permission).toBe(PERMISSIONS.ADMIN_USERS_MANAGE);
       expect(onboarding?.items.map((item) => item.label)).toEqual([
         "Overview",
-        "Add apprentice",
-        "Add employers",
+        "Candidates",
         "Interviews",
+        "Inductions",
+        "Employers & vacancies",
+        "Activity calendar",
+        "Actions",
+        "Reports",
       ]);
       expect(onboarding?.items.map((item) => item.href)).toEqual([
         `/${workspace}/onboarding`,
-        `/${workspace}/onboarding/apprentice`,
-        `/${workspace}/onboarding/employer`,
+        `/${workspace}/onboarding/candidates`,
         `/${workspace}/onboarding/interviews`,
+        `/${workspace}/onboarding/inductions`,
+        `/${workspace}/onboarding/employers`,
+        `/${workspace}/onboarding/calendar`,
+        `/${workspace}/onboarding/actions`,
+        `/${workspace}/onboarding/reports`,
       ]);
+      const top = sections.find((section) => !section.title);
+      expect(top?.items.map((item) => item.label)).toContain("Add apprentice");
+      expect(top?.items.find((item) => item.label === "Add apprentice")?.href).toBe(
+        `/${workspace}/onboarding/apprentice`,
+      );
+      expect(top?.items.find((item) => item.label === "Add apprentice")?.permission).toBe(
+        PERMISSIONS.ADMIN_RECORDS_MANAGE,
+      );
       expect(marketing?.items.map((item) => item.label)).toEqual([
         "Overview",
         "Employers & vacancies",
