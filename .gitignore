@@ -33,6 +33,7 @@ yarn-error.log*
 .env*.local
 .env*
 !.env.example
+!mobile/.env.example
 
 # vercel local link
 .vercel
@@ -45,6 +46,8 @@ next-env.d.ts
 *.tsbuildinfo
 
 .env*
+!.env.example
+!mobile/.env.example
 .vercel
 .cursor/
 
