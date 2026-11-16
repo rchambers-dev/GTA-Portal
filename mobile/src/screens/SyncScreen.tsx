@@ -77,7 +77,7 @@ export function SyncScreen(props: Props) {
         refreshControl={<RefreshControl refreshing={props.loading} onRefresh={props.onReload} tintColor={colors.red} />}
       >
         <Text style={styles.intro}>
-          Choose who to copy onto this phone. On iPhone, each choice gets its own contacts folder. Running sync again updates the same people.
+          Choose who to copy onto this phone. On iPhone, learners, employers, and staff each get a contacts folder. Tutors are filed with staff. Running sync again updates the same people.
         </Text>
 
         <View style={styles.card}>

@@ -29,10 +29,11 @@ Each synced choice is filed under its own name:
 | --- | --- |
 | Employers | GTA Employers |
 | Learners | GTA Learners |
-| Tutors | GTA Tutors |
-| Staff | GTA Staff |
+| Tutors and staff | GTA Staff |
 
-On an iPhone, the app looks up that folder in the default contacts account and creates it only when it is missing. A later sync reuses it. If someone moves from Tutors to Staff, the contact leaves GTA Tutors and joins GTA Staff. The old shared folder named GTA Portal, from the first version of the app, is cleared the same way. Remove all synced contacts also deletes these folders. Other folders, such as Family, are left alone. Deleting a folder does not delete people who were not added by this app.
+Tutors are staff, so there is no GTA Tutors folder. A person who appears in both the tutor list and the staff list is saved once, in GTA Staff.
+
+On an iPhone, the app looks up each folder in the default contacts account and creates it only when it is missing. A later sync reuses it. Someone left in an older GTA Tutors folder, or in the first version's GTA Portal folder, is moved into GTA Staff. Remove all synced contacts also deletes these folders, including a leftover GTA Tutors folder. Other folders, such as Family, are left alone. Deleting a folder does not delete people who were not added by this app.
 
 On Android, Expo's contacts library cannot create or read contact groups. The app does not call those methods, so it does not crash. Each synced person is tagged instead: the department and the phone or email label are set to the folder name, for example GTA Learners. You can filter or search the address book by that label. Remove all deletes the people this app added. There is no Android folder to remove.
 

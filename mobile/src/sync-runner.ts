@@ -6,7 +6,8 @@ import {
   readDeviceIndex,
   updateDeviceContact,
 } from "./device-contacts";
-import { deviceIdsToRemove, toDeviceDraft } from "./map-contact";
+import { collapseTutorAndStaff } from "./contact-groups";
+import { deviceIdsToRemove, toDeviceDraft, type DraftResult } from "./map-contact";
 import { planSync, type SyncSummary } from "./plan-sync";
 import type { StoredSync } from "./storage";
 import type { AddressBookRow, ContactGroup } from "./types";
@@ -18,7 +19,8 @@ export async function runSync(input: {
   onProgress?: (done: number, total: number) => void;
 }): Promise<{ state: StoredSync; summary: SyncSummary }> {
   const selected = new Set(input.groups);
-  const drafts = input.rows.filter((row) => selected.has(row.contactGroup)).map((row) => toDeviceDraft(row));
+  const prepared = input.rows.filter((row) => selected.has(row.contactGroup)).map((row) => toDeviceDraft(row));
+  const drafts = uniteTutorAndStaff(prepared);
   const index = await readDeviceIndex();
   const plan = planSync({
     drafts,
@@ -110,4 +112,10 @@ export async function runRemove(state: StoredSync): Promise<{ state: StoredSync;
     }
   }
   return { state: { mapping, lastSyncedAt: state.lastSyncedAt }, removed: removedIds.size, failed };
+}
+
+function uniteTutorAndStaff(drafts: readonly DraftResult[]): DraftResult[] {
+  const skipped = drafts.filter((item) => !item.ok);
+  const people = collapseTutorAndStaff(drafts.flatMap((item) => (item.ok ? [item.draft] : [])));
+  return [...people.map((draft) => ({ ok: true as const, draft })), ...skipped];
 }
