@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState, type FormEvent } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,15 +8,17 @@ import { fitStops, routeSettings } from "../domain/plan-drive";
 import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
-import type { PackedDay } from "../domain/plan-route";
+import { moveRouteIds, type PackedDay } from "../domain/plan-route";
 import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
 import {
   acceptDayAction,
   applyRouteAction,
   completeDayAction,
   excludeStopAction,
+  lockStopAction,
   recordSafeguardingAction,
   setNotesAction,
+  unlockStopAction,
   verifyStopAction,
 } from "./plan-actions";
 import { PlanMap } from "./PlanMap";
@@ -52,6 +54,7 @@ export function PlanView({
   const [packed, setPacked] = useState<PackedDay | null>(null);
   const [packedFor, setPackedFor] = useState(serverDate);
   const [officePoint, setOfficePoint] = useState<{ lat: number; lon: number; postcode: string } | null>(null);
+  const routeDragId = useRef("");
   const noted = page.people
     .filter((person) => person.notes)
     .slice()
@@ -221,6 +224,57 @@ export function PlanView({
       });
     }
     await run(() => excludeStopAction({ date: selectedDate, gtaId, retimed }));
+  }
+
+  async function reorderStop(targetId: string) {
+    const fromId = routeDragId.current;
+    routeDragId.current = "";
+    if (!fromId || fromId === targetId || activeDay.completed || !page.canWrite) return;
+    const ordered = [...activeDay.stops].sort(
+      (a, b) => a.sortOrder - b.sortOrder || (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0),
+    );
+    const dragged = ordered.find((stop) => stop.gtaId === fromId);
+    if (!dragged || dragged.appointmentOn === selectedDate) return;
+    const currentIds = ordered.map((stop) => stop.gtaId);
+    const nextIds = moveRouteIds(currentIds, fromId, targetId);
+    if (nextIds.join(",") === currentIds.join(",")) return;
+    const byId = new Map(ordered.map((stop) => [stop.gtaId, stop]));
+    const nextStops = nextIds
+      .map((id) => byId.get(id))
+      .filter((stop): stop is PlanStop => Boolean(stop))
+      .map((stop) => (stop.gtaId === fromId && stop.verified ? { ...stop, verified: false } : stop));
+    const fitted = await fitStops({
+      officePostcode: page.settings.officePostcode,
+      existing: nextStops,
+      extras: [],
+      settings: routeSettings(page.settings),
+      people: page.people,
+    });
+    const timed = new Map(fitted.packed.stops.map((stop) => [stop.id, stop]));
+    const stops = nextIds.flatMap((id) => {
+      const original = byId.get(id);
+      if (!original) return [];
+      const held =
+        original.locked || original.appointmentOn === selectedDate || (original.verified && id !== fromId);
+      const next = timed.get(id);
+      return [{
+        gtaId: id,
+        arrive: held ? original.arriveMinutes ?? timeToMinutes(original.arrive) ?? 0 : next?.arrive ?? original.arriveMinutes ?? 0,
+        leave: held ? original.leaveMinutes ?? timeToMinutes(original.leave) ?? 0 : next?.leave ?? original.leaveMinutes ?? 0,
+      }];
+    });
+    const place = nextIds.indexOf(fromId) + 1;
+    await run(async () => {
+      const result = await applyRouteAction({ date: selectedDate, stops });
+      if (result.ok) {
+        setMessage(
+          dragged.verified
+            ? `${dragged.name} was moved to stop ${place}. Their visit time was updated to match.`
+            : `${dragged.name} was moved to stop ${place}. Verified times on this round were left as they are.`,
+        );
+      }
+      return result;
+    });
   }
 
   async function showMap() {
@@ -399,6 +453,9 @@ export function PlanView({
             locked={activeDay.completed}
             onRun={run}
             onTakeOff={(gtaId) => void takeOff(gtaId)}
+            onReorder={(gtaId) => void reorderStop(gtaId)}
+            routeDragId={routeDragId}
+            onStatus={setMessage}
             onNote={(gtaId) => {
               const person = page.people.find((item) => item.gtaId === gtaId);
               if (person) setNotePerson(person);
@@ -626,9 +683,14 @@ function StopCard({
   people,
   loadedMonth,
   canWrite,
+  canDrag,
   dayIds,
+  dayAccepted,
   onRun,
   onTakeOff,
+  onReorder,
+  routeDragId,
+  onStatus,
   onNote,
 }: {
   workspace: "administration" | "management";
@@ -641,9 +703,14 @@ function StopCard({
   people: PlanPerson[];
   loadedMonth: string;
   canWrite: boolean;
+  canDrag: boolean;
+  dayAccepted: boolean;
   dayIds: string[];
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
   onTakeOff: (gtaId: string) => void;
+  onReorder: (gtaId: string) => void;
+  routeDragId: { current: string };
+  onStatus: (message: string) => void;
   onNote: (gtaId: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
@@ -651,11 +718,31 @@ function StopCard({
   const [bookMethod, setBookMethod] = useState("in_person");
   const phoneDigits = stop.phone.replace(/\D/g, "");
   const priority = stop.dueState === "overdue" ? styles.tagOver : stop.dueState === "due-soon" ? styles.tagSoon : styles.tagOk;
+  const bookedOnDay = stop.appointmentOn === date;
   return (
     <article
       className={`${styles.stop} ${styles.planCard} ${expanded ? "" : styles.closed}`}
       data-stop={stop.gtaId}
+      data-route-booked={bookedOnDay ? "true" : "false"}
       onClick={() => setExpanded((value) => !value)}
+      onDragOver={(event) => {
+        if (!routeDragId.current || routeDragId.current === stop.gtaId) return;
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+        event.currentTarget.classList.add(styles.dragOver);
+      }}
+      onDragLeave={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          event.currentTarget.classList.remove(styles.dragOver);
+        }
+      }}
+      onDrop={(event) => {
+        event.preventDefault();
+        event.currentTarget.classList.remove(styles.dragOver, styles.dragging);
+        const from = event.dataTransfer.getData("text/plain");
+        if (from) routeDragId.current = from;
+        onReorder(stop.gtaId);
+      }}
     >
       <p className={styles.when}>
         <span className={styles.arrive}>{minutesToTime(stop.arriveMinutes) || "—"}</span>
@@ -664,9 +751,33 @@ function StopCard({
       <div className={styles.stopBody}>
         <div className={styles.stopHead}>
           <p className={styles.stopName}>
-            {canWrite ? (
-              <span className={styles.handle} aria-hidden="true">
-                <svg viewBox="0 0 12 16">
+            {canDrag ? (
+              <button
+                type="button"
+                className={styles.handle}
+                draggable
+                aria-label={`Move ${stop.name} earlier or later in this route`}
+                onClick={(event) => event.stopPropagation()}
+                onDragStart={(event) => {
+                  if (bookedOnDay) {
+                    event.preventDefault();
+                    return;
+                  }
+                  event.stopPropagation();
+                  routeDragId.current = stop.gtaId;
+                  event.dataTransfer.effectAllowed = "move";
+                  event.dataTransfer.setData("text/plain", stop.gtaId);
+                  const card = event.currentTarget.closest("article");
+                  if (card) {
+                    event.dataTransfer.setDragImage(card, 24, 24);
+                    card.classList.add(styles.dragging);
+                  }
+                }}
+                onDragEnd={(event) => {
+                  event.currentTarget.closest("article")?.classList.remove(styles.dragging);
+                }}
+              >
+                <svg viewBox="0 0 12 16" aria-hidden="true">
                   <circle cx="4" cy="3" r="1.35" />
                   <circle cx="8" cy="3" r="1.35" />
                   <circle cx="4" cy="8" r="1.35" />
@@ -674,7 +785,7 @@ function StopCard({
                   <circle cx="4" cy="13" r="1.35" />
                   <circle cx="8" cy="13" r="1.35" />
                 </svg>
-              </span>
+              </button>
             ) : null}
             <span className={styles.stopNum}>{index + 1}</span>
             <Link href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
@@ -740,6 +851,36 @@ function StopCard({
             <button type="button" className={styles.actionBlue} aria-expanded={open === "book" && bookMethod === "in_person"} onClick={() => { setBookMethod("in_person"); setOpen(open === "book" && bookMethod === "in_person" ? null : "book"); }}>
               Rebook
             </button>
+            {!dayAccepted && !stop.verified && !bookedOnDay ? (
+              <button
+                type="button"
+                className={stop.locked ? styles.actionLockOn : styles.actionLock}
+                aria-pressed={stop.locked}
+                onClick={() =>
+                  void onRun(async () => {
+                    const result = stop.locked
+                      ? await unlockStopAction({ gtaId: stop.gtaId })
+                      : await lockStopAction({
+                          date,
+                          gtaId: stop.gtaId,
+                          arrive: stop.arrive || "10:00",
+                          leave: stop.leave || "10:30",
+                          until: "23:45",
+                        });
+                    if (result.ok) {
+                      onStatus(
+                        stop.locked
+                          ? `${stop.name} is unlocked. Fill day selected can move that slot if needed.`
+                          : `${stop.name} is locked on this round until you unlock them.`,
+                      );
+                    }
+                    return result;
+                  })
+                }
+              >
+                {stop.locked ? "Unlock" : "Lock"}
+              </button>
+            ) : null}
             <button type="button" className={styles.actionBlue} onClick={() => { setBookMethod("phone"); setOpen(open === "book" && bookMethod === "phone" ? null : "book"); }}>
               Phone review
             </button>
@@ -946,6 +1087,9 @@ function DayTimeline({
   locked,
   onRun,
   onTakeOff,
+  onReorder,
+  routeDragId,
+  onStatus,
   onNote,
 }: {
   workspace: "administration" | "management";
@@ -956,6 +1100,9 @@ function DayTimeline({
   locked: boolean;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
   onTakeOff: (gtaId: string) => void;
+  onReorder: (gtaId: string) => void;
+  routeDragId: { current: string };
+  onStatus: (message: string) => void;
   onNote: (gtaId: string) => void;
 }) {
   const stops = [...day.stops].sort((a, b) => a.sortOrder - b.sortOrder || (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0));
@@ -992,9 +1139,14 @@ function DayTimeline({
               people={page.people}
               loadedMonth={date.slice(0, 7)}
               canWrite={page.canWrite && !day.completed}
+              canDrag={page.canWrite && !day.completed && stops.length > 1 && stop.appointmentOn !== date}
+              dayAccepted={day.accepted}
               dayIds={stops.map((item) => item.gtaId)}
               onRun={onRun}
               onTakeOff={onTakeOff}
+              onReorder={onReorder}
+              routeDragId={routeDragId}
+              onStatus={onStatus}
               onNote={onNote}
             />
             {crosses ? (

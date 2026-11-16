@@ -33,6 +33,23 @@ export function rebookWindowEnd(today: string): string {
   return addDays(today, REBOOK_WINDOW_WEEKS * 7);
 }
 
+/** A phone review is a 20 minute call, and it has to start and finish inside 9:00–10:00. */
+export const PHONE_REVIEW_MINUTES = 20;
+export const PHONE_WINDOW_START = 9 * 60;
+export const PHONE_WINDOW_END = 10 * 60;
+
+export function phoneReviewSlots(): number[] {
+  const slots: number[] = [];
+  for (let minute = PHONE_WINDOW_START; minute + PHONE_REVIEW_MINUTES <= PHONE_WINDOW_END; minute += PHONE_REVIEW_MINUTES) {
+    slots.push(minute);
+  }
+  return slots;
+}
+
+export function phoneReviewTimeFits(arrive: number): boolean {
+  return arrive >= PHONE_WINDOW_START && arrive + PHONE_REVIEW_MINUTES <= PHONE_WINDOW_END;
+}
+
 export function rebookDayChoice(input: {
   date: string;
   today: string;
@@ -43,12 +60,17 @@ export function rebookDayChoice(input: {
   returnBy: number;
   accepted: boolean;
   completed: boolean;
+  method?: "in_person" | "teams" | "phone";
 }): RebookDayChoice {
   const { date, today } = input;
   if (date === input.missedDate) return { bookable: false, struck: false };
   if (date < today) return { bookable: false, struck: false };
-  const struck = sameDay(input.releaseDay, date);
-  if (struck) return { bookable: false, struck: true };
+  const releaseMatch = sameDay(input.releaseDay, date);
+  if (input.method === "phone") {
+    if (!releaseMatch) return { bookable: false, struck: false };
+  } else if (releaseMatch) {
+    return { bookable: false, struck: true };
+  }
   if (input.completed || input.accepted) return { bookable: false, struck: false };
   if (date === today && input.skipToday) return { bookable: false, struck: false };
   if (date === today && input.nowMinutes >= input.returnBy) return { bookable: false, struck: false };

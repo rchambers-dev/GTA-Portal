@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { DriveMatrix } from "./geo";
 import { noteUntilPresets } from "./plan-notes";
-import { appendFitLearners, emptyPackedDay, packDay, retimeDay, type RouteLearner, type RouteSettings } from "./plan-route";
+import { appendFitLearners, emptyPackedDay, moveRouteIds, packDay, retimeDay, type RouteLearner, type RouteSettings } from "./plan-route";
 import { minutesToTime } from "./plan-due";
 
 const settings: RouteSettings = {
@@ -115,6 +115,12 @@ describe("plan route", () => {
       stops.map((stop) => `${stop.id} ${minutesToTime(stop.arrive)}–${minutesToTime(stop.leave)}`).join(", ");
     expect(clock(full.stops)).toBe("a 10:10–10:40, b 10:50–11:20, c 11:30–12:00");
     expect(clock(withoutB.stops)).toBe("a 10:10–10:40, c 10:50–11:20");
+  });
+
+  it("reorders a route the same way as dropping a stop onto another", () => {
+    expect(moveRouteIds(["a", "b", "c"], "a", "c")).toEqual(["b", "c", "a"]);
+    expect(moveRouteIds(["a", "b", "c"], "c", "a")).toEqual(["c", "a", "b"]);
+    expect(moveRouteIds(["a", "b", "c"], "b", "b")).toEqual(["a", "b", "c"]);
   });
 });
 

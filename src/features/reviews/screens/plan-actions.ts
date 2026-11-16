@@ -4,6 +4,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
 import { rebookAppointmentArgs } from "../domain/rebook-appointment";
+import { phoneReviewTimeFits } from "../domain/rebook-slots";
 import { timeToMinutes, weekdayName } from "../domain/plan-due";
 import { readRebookMonth, type RebookMonthDay } from "../domain/plan-repository";
 
@@ -116,12 +117,23 @@ export async function bookReviewAction(input: {
   const access = await writer();
   if (!access.ok) return access;
   const method = input.method === "teams" || input.method === "phone" ? input.method : "in_person";
+  const minutes = timeToMinutes(input.time);
+  if (method === "phone") {
+    const day = input.phoneDay.trim();
+    if (!day) return { ok: false as const, formError: "Set this learner's release day before booking a phone review." };
+    if (input.date && weekdayName(input.date).toLowerCase() !== day.toLowerCase()) {
+      return { ok: false as const, formError: "A phone review must be on the learner's release day." };
+    }
+    if (minutes == null || !phoneReviewTimeFits(minutes)) {
+      return { ok: false as const, formError: "A phone review must be between 9:00 and 10:00." };
+    }
+  }
   const { error } = await access.supabase.rpc("book_review", {
     p_review_id: input.reviewId,
     p_method: method,
-    p_on: method === "phone" ? null : input.date,
-    p_minutes: method === "phone" ? null : timeToMinutes(input.time),
-    p_phone_day: method === "phone" ? input.phoneDay || weekdayName(input.date) : null,
+    p_on: input.date,
+    p_minutes: minutes,
+    p_phone_day: method === "phone" ? input.phoneDay.trim() : null,
   });
   return fail(error) ?? { ok: true as const };
 }
@@ -136,12 +148,26 @@ export async function loadRebookMonthAction(month: string): Promise<{ ok: true; 
   return { ok: true, days: loaded.days };
 }
 
+function phoneBookingError(input: { method: string; date: string | null; releaseDay: string; arriveMinutes: number | null }): string | null {
+  if (input.method !== "phone") return null;
+  const release = input.releaseDay.trim();
+  if (!release) return "Set this learner's release day before booking a phone review.";
+  if (!input.date || weekdayName(input.date).toLowerCase() !== release.toLowerCase()) {
+    return "A phone review must be on the learner's release day.";
+  }
+  if (input.arriveMinutes == null || !phoneReviewTimeFits(input.arriveMinutes)) {
+    return "A phone review must be between 9:00 and 10:00.";
+  }
+  return null;
+}
+
 export async function rebookAppointmentAction(input: {
   reviewId: string;
   gtaId: string;
   missedDate: string;
   date: string | null;
   method: string;
+  releaseDay: string;
   arriveMinutes: number | null;
   leaveMinutes: number | null;
   orderedGtaIds: string[];
@@ -149,6 +175,10 @@ export async function rebookAppointmentAction(input: {
 }) {
   const access = await writer();
   if (!access.ok) return access;
+  if (!input.backToQueue) {
+    const phoneError = phoneBookingError(input);
+    if (phoneError) return { ok: false as const, formError: phoneError };
+  }
   const { error } = await access.supabase.rpc("rebook_review_appointment", rebookAppointmentArgs(input));
   return fail(error) ?? { ok: true as const };
 }

@@ -41,8 +41,8 @@ export function rebookAppointmentArgs(input: RebookAppointmentInput): RebookAppo
       p_back_to_queue: true,
     };
   }
-  const arrive = method === "phone" || input.arriveMinutes == null ? null : Math.round(input.arriveMinutes);
-  const leave = method === "phone" || input.leaveMinutes == null ? null : Math.round(input.leaveMinutes);
+  const arrive = input.arriveMinutes == null ? null : Math.round(input.arriveMinutes);
+  const leave = input.leaveMinutes == null ? null : Math.round(input.leaveMinutes);
   const ids = method === "phone" ? [] : [...new Set(input.orderedGtaIds.includes(input.gtaId) ? input.orderedGtaIds : [...input.orderedGtaIds, input.gtaId])];
   return {
     p_review_id: input.reviewId,
