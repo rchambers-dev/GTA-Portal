@@ -4,7 +4,7 @@ import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { GTA_TUTORS } from "./gta-tutors";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
-import { callEndMinutes, heldPastCallEnd, londonClock } from "./plan-call-end";
+import { callEndMinutes, heldPastCallEnd, lockExpiry, londonClock } from "./plan-call-end";
 import {
   methodLabel,
   minutesToTime,
@@ -65,6 +65,7 @@ export type PlanStop = {
   arriveMinutes: number | null;
   leaveMinutes: number | null;
   locked: boolean;
+  lockLabel: string;
   dueLabel: string;
   dueState: DueState;
   tutor: string;
@@ -149,6 +150,9 @@ export async function readPlanPage(
   const released = await supabase.rpc("release_unverified_after_call_end");
   const releaseMissing = released.error?.code === "PGRST202"
     || /release_unverified_after_call_end/i.test(released.error?.message || "");
+  const expired = await supabase.rpc("release_expired_review_locks");
+  const expiredMissing = expired.error?.code === "PGRST202"
+    || /release_expired_review_locks/i.test(expired.error?.message || "");
   const monthStart = `${options.month}-01`;
   const [year, month] = options.month.split("-").map(Number);
   const nextMonthDate = new Date(Date.UTC(year, month, 1));
@@ -202,7 +206,7 @@ export async function readPlanPage(
     supabase
       .from("review_day_stops")
       .select(
-        "date_on, gta_id, sort_order, kind, verified, completed, accepted, excluded, arrive_minutes, leave_minutes, locked_until_minutes, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
+        "date_on, gta_id, sort_order, kind, verified, completed, accepted, excluded, arrive_minutes, leave_minutes, locked_until_minutes, locked_at, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
       )
       .gte("date_on", monthStart)
       .lt("date_on", nextMonth)
@@ -227,6 +231,7 @@ export async function readPlanPage(
     if (result.error) problems.push(result.error.message);
   }
   if (released.error && !releaseMissing) problems.push(released.error.message);
+  if (expired.error && !expiredMissing) problems.push(expired.error.message);
 
   const employers = new Map(
     ((employersResult.data ?? []) as { employer_id: string; company_name: string }[]).map((row) => [
@@ -445,6 +450,7 @@ export async function readPlanPage(
     arrive_minutes: number | null;
     leave_minutes: number | null;
     locked_until_minutes: number | null;
+    locked_at: string | null;
     lock_arrive_minutes: number | null;
     lock_leave_minutes: number | null;
     accepted_arrive_minutes: number | null;
@@ -476,9 +482,8 @@ export async function readPlanPage(
       leave: minutesToTime(leave),
       arriveMinutes: arrive,
       leaveMinutes: leave,
-      locked:
-        stop.locked_until_minutes != null &&
-        (stop.date_on > clock.today || (stop.date_on === clock.today && stop.locked_until_minutes > clock.minutes)),
+      locked: stop.locked_at ? lockExpiry(stop.locked_at, new Date()).active : false,
+      lockLabel: stop.locked_at ? lockExpiry(stop.locked_at, new Date()).label : "",
       dueLabel: person?.dueLabel || "Not set",
       dueState: person?.dueState || "unknown",
       tutor: person?.tutor || "",

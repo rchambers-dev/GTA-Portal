@@ -342,9 +342,26 @@ function buildLearner(loaded: Loaded, apprentice: ApprenticeRow, today: string):
 export async function readReviewCycle(supabase: SupabaseClient): Promise<CyclePage> {
   const today = londonToday();
   const loaded = await loadShared(supabase);
-  const learners = loaded.apprentices
+  const built = loaded.apprentices
     .map((apprentice) => buildLearner(loaded, apprentice, today))
     .sort((a, b) => (a.daysLeft ?? 9999) - (b.daysLeft ?? 9999) || a.name.localeCompare(b.name));
+  const shelved = await supabase
+    .from("reviews")
+    .select("gta_id, actual_on, shelved_at")
+    .eq("status", "completed");
+  const aside = new Set<string>();
+  if (!shelved.error) {
+    const latest = new Map<string, { actual: string; shelved: boolean }>();
+    for (const row of (shelved.data ?? []) as { gta_id: string; actual_on: string | null; shelved_at: string | null }[]) {
+      const actual = row.actual_on || "";
+      const current = latest.get(row.gta_id);
+      if (!current || actual >= current.actual) latest.set(row.gta_id, { actual, shelved: Boolean(row.shelved_at) });
+    }
+    for (const [gtaId, row] of latest) {
+      if (row.shelved) aside.add(gtaId);
+    }
+  }
+  const learners = built.filter((learner) => learner.stepId !== "archived" || !aside.has(learner.gtaId));
   const tutors = [...new Set(learners.map((learner) => learner.tutor))].sort((a, b) => a.localeCompare(b));
   return { today, learners, tutors, loadError: loaded.error };
 }
