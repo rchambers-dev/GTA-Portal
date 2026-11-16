@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { createSupabaseBrowserClient } from "@/adapters/supabase/client";
+import { createSupabaseBrowserClient } from "@/adapters/supabase/browser";
 import { ANALYTICS_REFRESH_MS, ANALYTICS_TABLES, queueRefresh } from "../domain/analytics-live";
 import { revalidateAnalytics } from "../domain/revalidate-analytics";
 
