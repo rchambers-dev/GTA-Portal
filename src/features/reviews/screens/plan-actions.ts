@@ -70,15 +70,32 @@ export async function verifyStopAction(input: {
 }) {
   const access = await writer();
   if (!access.ok) return access;
+  const arrive = timeToMinutes(input.arrive);
+  const leave = timeToMinutes(input.leave);
+  if (input.verified && (arrive == null || leave == null)) {
+    return { ok: false as const, formError: "This visit has no time yet, so it can't be verified." };
+  }
   const { error } = await access.supabase.rpc("verify_review_day_stop", {
     p_date: input.date,
     p_gta_id: input.gtaId,
     p_verified: input.verified,
-    p_arrive: timeToMinutes(input.arrive),
-    p_leave: timeToMinutes(input.leave),
+    p_arrive: arrive,
+    p_leave: leave,
     p_day_gta_ids: input.dayGtaIds,
   });
-  return fail(error) ?? { ok: true as const };
+  const verified = fail(error);
+  if (verified) return verified;
+  if (!input.verified && arrive != null && leave != null) {
+    const timed = await access.supabase.rpc("set_review_day_stop_times", {
+      p_date: input.date,
+      p_gta_id: input.gtaId,
+      p_arrive: arrive,
+      p_leave: leave,
+    });
+    const timeError = fail(timed.error);
+    if (timeError) return timeError;
+  }
+  return { ok: true as const };
 }
 
 export async function lockStopAction(input: {

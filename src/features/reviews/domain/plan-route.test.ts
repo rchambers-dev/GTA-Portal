@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { DriveMatrix } from "./geo";
 import { noteUntilPresets } from "./plan-notes";
-import { appendFitLearners, emptyPackedDay, moveRouteIds, packDay, retimeDay, type RouteLearner, type RouteSettings } from "./plan-route";
+import { appendFitLearners, emptyPackedDay, moveRouteIds, packDay, retimeDay, visitsAreInOrder, type RouteLearner, type RouteSettings } from "./plan-route";
 import { minutesToTime } from "./plan-due";
 
 const settings: RouteSettings = {
@@ -115,6 +115,39 @@ describe("plan route", () => {
       stops.map((stop) => `${stop.id} ${minutesToTime(stop.arrive)}–${minutesToTime(stop.leave)}`).join(", ");
     expect(clock(full.stops)).toBe("a 10:10–10:40, b 10:50–11:20, c 11:30–12:00");
     expect(clock(withoutB.stops)).toBe("a 10:10–10:40, c 10:50–11:20");
+  });
+
+  it("keeps a frozen time and does not pull the next visit back before it", () => {
+    const people = [
+      learner("a", 1, "North", "DN1 1AA"),
+      learner("b", 2, "East", "DN2 2BB"),
+      learner("c", 3, "South", "DN4 4CC"),
+    ];
+    const ten = 10 * 60;
+    const drive = matrix([
+      [0, ten, ten, ten],
+      [ten, 0, ten, ten],
+      [ten, ten, 0, ten],
+      [ten, ten, ten, 0],
+    ]);
+    const packed = retimeDay(people, drive, 0, settings, {
+      b: { arrive: 10 * 60, leave: 10 * 60 + 30 },
+    });
+    const byId = Object.fromEntries(packed.stops.map((stop) => [stop.id, stop]));
+    expect(byId.b.arrive).toBe(10 * 60);
+    expect(byId.b.leave).toBe(10 * 60 + 30);
+    expect(byId.c.arrive).toBeGreaterThanOrEqual(byId.a.leave);
+    const last = packed.stops[packed.stops.length - 1];
+    expect(last.id).toBe("c");
+    expect(packed.returnArrive).toBe(last.leave + 10);
+    expect(visitsAreInOrder([
+      { arrive: 11 * 60, leave: 11 * 60 + 30 },
+      { arrive: 10 * 60, leave: 10 * 60 + 30 },
+    ])).toBe(false);
+    expect(visitsAreInOrder([
+      { arrive: 10 * 60 + 8, leave: 10 * 60 + 38 },
+      { arrive: 11 * 60 + 15, leave: 11 * 60 + 45 },
+    ])).toBe(true);
   });
 
   it("reorders a route the same way as dropping a stop onto another", () => {

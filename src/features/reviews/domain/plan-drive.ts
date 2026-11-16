@@ -1,6 +1,7 @@
 import { drivingMatrix, geocodePostcodes, normalisePostcode, type GeoPoint } from "./geo";
 import { timeToMinutes } from "./plan-due";
 import {
+  addTravel,
   appendFitLearners,
   emptyPackedDay,
   retimeDay,
@@ -75,13 +76,13 @@ export async function fitStops(input: {
   extras: DrivePerson[];
   settings: RouteSettings;
   people: DrivePerson[];
-}): Promise<{ packed: PackedDay; missing: string[]; office: (GeoPoint & { postcode: string }) | null }> {
+}): Promise<{ packed: PackedDay; missing: string[]; office: (GeoPoint & { postcode: string }) | null; home: { travel: number; arrive: number } | null }> {
   const postcodes = [input.officePostcode, ...input.existing.map((stop) => stop.postcode), ...input.extras.map((person) => person.postcode)];
   const geo = await geocodePostcodes(postcodes);
   const officePoint = geo[normalisePostcode(input.officePostcode)];
   const settings = input.settings;
   if (!officePoint) {
-    return { packed: emptyPackedDay(settings), missing: [input.officePostcode], office: null };
+    return { packed: emptyPackedDay(settings), missing: [input.officePostcode], office: null, home: null };
   }
   const missing = input.extras.filter((person) => !geo[normalisePostcode(person.postcode)]).map((person) => person.postcode);
   const located: RouteLearner[] = [];
@@ -138,5 +139,19 @@ export async function fitStops(input: {
   const packed = extraLearners.length
     ? appendFitLearners(current, existingLearners, extraLearners, matrix, 0, settings, frozen)
     : retimeDay(existingLearners, matrix, 0, settings, frozen);
-  return { packed, missing, office: { ...officePoint, postcode: input.officePostcode } };
+  const lastStored = [...input.existing]
+    .filter((stop) => (stop.arriveMinutes ?? timeToMinutes(stop.arrive)) != null)
+    .sort((a, b) => (a.arriveMinutes ?? timeToMinutes(a.arrive) ?? 0) - (b.arriveMinutes ?? timeToMinutes(b.arrive) ?? 0))
+    .at(-1);
+  let home: { travel: number; arrive: number } | null = null;
+  if (lastStored) {
+    const learner = byId.get(lastStored.gtaId);
+    const leave = lastStored.leaveMinutes ?? timeToMinutes(lastStored.leave) ?? 0;
+    const seconds = learner ? matrix.durations?.[learner.matrixIndex]?.[0] : null;
+    if (learner && seconds != null && !Number.isNaN(seconds)) {
+      const travel = seconds / 60;
+      home = { travel, arrive: addTravel(leave, travel, settings.lunchStart, settings.lunchEnd) };
+    }
+  }
+  return { packed, missing, office: { ...officePoint, postcode: input.officePostcode }, home };
 }
