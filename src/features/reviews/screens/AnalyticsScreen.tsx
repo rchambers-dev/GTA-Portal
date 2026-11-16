@@ -1,5 +1,6 @@
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { loadAnalytics, parseAnalyticsFilters } from "../domain/analytics-repository";
+import { AnalyticsLive } from "./AnalyticsLive";
 import { AnalyticsView } from "./AnalyticsView";
 
 export async function AnalyticsScreen({
@@ -24,6 +25,7 @@ export async function AnalyticsScreen({
   const mode = view === "tutors" || view === "log" ? view : "reviews";
   return (
     <ApprenticePageShell eyebrow="Reviews" title="Review analytics" hideHeader>
+      <AnalyticsLive />
       <AnalyticsView workspace={workspace} data={data} view={mode} />
     </ApprenticePageShell>
   );

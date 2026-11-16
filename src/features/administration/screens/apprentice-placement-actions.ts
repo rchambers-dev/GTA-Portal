@@ -12,6 +12,7 @@ import {
   PLACEMENT_PERMISSION_ERROR,
   type PlacementActionResult,
 } from "../domain/apprentice-placement";
+import { revalidateAnalytics } from "@/features/reviews/domain/revalidate-analytics";
 
 const SIGN_IN_ERROR = "Sign in again to change a placement.";
 
@@ -24,6 +25,7 @@ async function authorised(): Promise<
   if (!canManageApprenticeProgramme(session)) {
     return { ok: false, formError: PLACEMENT_PERMISSION_ERROR };
   }
+  await revalidateAnalytics();
   return { ok: true, supabase: await createSupabaseServerClient() };
 }
 

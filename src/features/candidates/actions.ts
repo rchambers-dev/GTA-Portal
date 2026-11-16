@@ -7,6 +7,7 @@ import { CANDIDATES_PERMISSION_ERROR, canManageCandidates } from "./domain/acces
 import { TABLES_MISSING, tablesMissing } from "./domain/missing";
 import { reviewDueOn } from "./domain/rules";
 import { isoTodayLondon } from "./domain/format";
+import { revalidateAnalytics } from "@/features/reviews/domain/revalidate-analytics";
 
 function bounce(returnTo: string, message: string): never {
   const url = new URL(returnTo, "http://portal.local");
@@ -18,6 +19,7 @@ async function gate(returnTo: string) {
   const session = await getSupabaseEffectiveSession();
   if (!session) bounce(returnTo, "Sign in again to change candidates.");
   if (!canManageCandidates(session)) bounce(returnTo, CANDIDATES_PERMISSION_ERROR);
+  await revalidateAnalytics();
   return { supabase: await createSupabaseServerClient(), userId: session.account.id };
 }
 

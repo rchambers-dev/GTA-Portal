@@ -23,6 +23,7 @@ import {
   type ProgrammeActionResult,
 } from "../domain/apprentice-programme";
 import { londonToday } from "../domain/apprentice-tutor";
+import { revalidateAnalytics } from "@/features/reviews/domain/revalidate-analytics";
 
 const SIGN_IN_ERROR = "Sign in again to change the programme.";
 
@@ -35,6 +36,7 @@ async function authorisedClient(): Promise<
   if (!canManageApprenticeProgramme(session)) {
     return { ok: false, formError: PROGRAMME_PERMISSION_ERROR };
   }
+  await revalidateAnalytics();
   return { ok: true, supabase: await createSupabaseServerClient() };
 }
 
