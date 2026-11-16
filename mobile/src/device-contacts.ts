@@ -9,14 +9,19 @@ import {
 } from "expo-contacts";
 import { Platform } from "react-native";
 import {
-  PORTAL_DEPARTMENT,
-  PORTAL_FIELD_LABEL,
-  PORTAL_GROUP_NAME,
+  addressBookGroupName,
+  isPortalAddressBookGroup,
+  isPortalContactLabel,
+  resolveGroupId,
+  type NamedGroup,
+} from "./contact-groups";
+import {
   contactKeyFromTag,
   indexTaggedContacts,
   type DeviceDraft,
   type TaggedContactSource,
 } from "./map-contact";
+import { CONTACT_GROUPS, type ContactGroup } from "./types";
 
 export type ContactsAccess = "granted" | "limited" | "denied";
 
@@ -30,7 +35,14 @@ export type DeviceIndex = {
   tagged: Map<string, string>;
 };
 
-type PortalGroup = GroupInstance | null;
+export type PortalGroupSet = {
+  /** Folder for each Portal group. Null on Android, where folders are not available. */
+  folders: Partial<Record<ContactGroup, GroupInstance | null>>;
+  /** Every Portal folder that already exists, including the old shared "GTA Portal" folder. */
+  managed: { name: string; group: GroupInstance }[];
+};
+
+const EMPTY_GROUPS: PortalGroupSet = { folders: {}, managed: [] };
 
 const PAGE = 500;
 
@@ -59,23 +71,73 @@ export async function readDeviceIndex(): Promise<DeviceIndex> {
   return { ids, tagged: indexTaggedContacts(sources) };
 }
 
-export async function openPortalGroup(): Promise<PortalGroup> {
-  if (Platform.OS !== "ios") return null;
+/**
+ * On iPhone, find or create one folder per Portal group. An existing folder
+ * with the same name is reused. Android has no contacts-group API in this
+ * SDK, so this returns an empty set and the caller tags the contact instead.
+ */
+export async function openAddressBookGroups(): Promise<PortalGroupSet> {
+  if (Platform.OS !== "ios") return EMPTY_GROUPS;
   try {
-    const groups = await Group.getAll();
-    for (const group of groups) {
-      const name = await group.getName();
-      if (name === PORTAL_GROUP_NAME) return group;
+    const listed = await Group.getAll();
+    const named: NamedGroup[] = [];
+    const byId = new Map<string, GroupInstance>();
+    for (const group of listed) {
+      const name = (await group.getName())?.trim() ?? "";
+      if (!name || !group.id) continue;
+      named.push({ id: group.id, name });
+      byId.set(group.id, group);
     }
-    return await Group.create(PORTAL_GROUP_NAME);
+    const folders: PortalGroupSet["folders"] = {};
+    const managed = named
+      .filter((group) => isPortalAddressBookGroup(group.name))
+      .map((group) => ({ name: group.name, group: byId.get(group.id)! }));
+    for (const contactGroup of CONTACT_GROUPS) {
+      const folderName = addressBookGroupName(contactGroup);
+      const existingId = resolveGroupId(folderName, named);
+      if (existingId && byId.has(existingId)) {
+        folders[contactGroup] = byId.get(existingId) ?? null;
+        continue;
+      }
+      try {
+        const created = await Group.create(folderName);
+        folders[contactGroup] = created;
+        if (created.id) {
+          named.push({ id: created.id, name: folderName });
+          managed.push({ name: folderName, group: created });
+        }
+      } catch {
+        folders[contactGroup] = null;
+      }
+    }
+    return { folders, managed };
   } catch {
-    return null;
+    return EMPTY_GROUPS;
   }
 }
 
-export async function createDeviceContact(draft: DeviceDraft, group: PortalGroup): Promise<string> {
+/** Deletes Portal folders. iOS leaves the people in the address book; callers delete those first. */
+export async function deletePortalAddressBookGroups(): Promise<void> {
+  if (Platform.OS !== "ios") return;
+  try {
+    const listed = await Group.getAll();
+    for (const group of listed) {
+      const name = await group.getName();
+      if (!isPortalAddressBookGroup(name)) continue;
+      try {
+        await group.delete();
+      } catch {
+        // A folder that is already gone does not stop the rest of the clear.
+      }
+    }
+  } catch {
+    // Android, or a phone that cannot list groups.
+  }
+}
+
+export async function createDeviceContact(draft: DeviceDraft, groups: PortalGroupSet): Promise<string> {
   const contact = await createWithOptionalNote(draft);
-  await tagContact(contact, draft, group);
+  await tagContact(contact, draft, groups);
   if (!contact.id) throw new Error("The phone did not return a contact id.");
   return contact.id;
 }
@@ -83,9 +145,10 @@ export async function createDeviceContact(draft: DeviceDraft, group: PortalGroup
 export async function updateDeviceContact(
   deviceContactId: string,
   draft: DeviceDraft,
-  group: PortalGroup,
+  groups: PortalGroupSet,
 ): Promise<void> {
   const contact = new Contact(deviceContactId);
+  const label = addressBookGroupName(draft.contactGroup);
   const [phones, emails] = await Promise.all([contact.getPhones(), contact.getEmails()]);
   await contact.patch({
     givenName: draft.givenName,
@@ -93,12 +156,12 @@ export async function updateDeviceContact(
     middleName: draft.middleName,
     company: draft.organisation,
     jobTitle: draft.jobTitle,
-    department: PORTAL_DEPARTMENT,
+    department: label,
     ...(Platform.OS === "ios" ? { nickname: draft.contactKey } : {}),
-    phones: mergePhones(phones, draft.phone),
-    emails: mergeEmails(emails, draft.email),
+    phones: mergePhones(phones, draft.phone, label),
+    emails: mergeEmails(emails, draft.email, label),
   });
-  await tagContact(contact, draft, group);
+  await tagContact(contact, draft, groups);
 }
 
 export async function deleteDeviceContact(deviceContactId: string): Promise<void> {
@@ -112,9 +175,13 @@ async function createWithOptionalNote(draft: DeviceDraft): Promise<ContactInstan
     ...(draft.middleName ? { middleName: draft.middleName } : {}),
     ...(draft.organisation ? { company: draft.organisation } : {}),
     ...(draft.jobTitle ? { jobTitle: draft.jobTitle } : {}),
-    department: PORTAL_DEPARTMENT,
-    ...(draft.phone ? { phones: [{ label: PORTAL_FIELD_LABEL, number: draft.phone }] } : {}),
-    ...(draft.email ? { emails: [{ label: PORTAL_FIELD_LABEL, address: draft.email }] } : {}),
+    department: addressBookGroupName(draft.contactGroup),
+    ...(draft.phone
+      ? { phones: [{ label: addressBookGroupName(draft.contactGroup), number: draft.phone }] }
+      : {}),
+    ...(draft.email
+      ? { emails: [{ label: addressBookGroupName(draft.contactGroup), address: draft.email }] }
+      : {}),
     ...(Platform.OS === "ios" ? { nickname: draft.contactKey } : {}),
     ...(Platform.OS === "android"
       ? { extraNames: [{ label: "nickname", name: draft.contactKey }] }
@@ -133,7 +200,7 @@ async function createWithOptionalNote(draft: DeviceDraft): Promise<ContactInstan
 async function tagContact(
   contact: ContactInstance,
   draft: DeviceDraft,
-  group: PortalGroup,
+  groups: PortalGroupSet,
 ): Promise<void> {
   try {
     await contact.setNote(draft.note);
@@ -150,35 +217,56 @@ async function tagContact(
       // The local id map still updates this contact on the next sync.
     }
   }
-  if (group) {
+  await placeInAddressBookGroup(contact, draft, groups);
+}
+
+/** iPhone folders. On Android the Group class throws, so this does nothing. */
+async function placeInAddressBookGroup(
+  contact: ContactInstance,
+  draft: DeviceDraft,
+  groups: PortalGroupSet,
+): Promise<void> {
+  if (Platform.OS !== "ios") return;
+  const destinationName = addressBookGroupName(draft.contactGroup);
+  for (const entry of groups.managed) {
+    if (entry.name === destinationName) continue;
     try {
-      await group.addContact(contact);
+      await entry.group.removeContact(contact);
     } catch {
-      // The contact is already in the group, or this container has no groups.
+      // The contact was not in that folder.
     }
+  }
+  const destination = groups.folders[draft.contactGroup];
+  if (!destination) return;
+  try {
+    await destination.addContact(contact);
+  } catch {
+    // Already in the folder, or this container cannot take group members.
   }
 }
 
 function mergePhones(
   existing: { id?: string; label?: string | null; number?: string | null; isPrimary?: boolean }[],
   next: string | null,
+  label: string,
 ) {
   const kept = existing
     .filter((item) => !ownedByPortal(item.label, item.number ?? null, next))
     .map((item) => ({ ...item, label: item.label ?? undefined, number: item.number ?? undefined }));
   if (!next) return kept;
-  return [...kept, { label: PORTAL_FIELD_LABEL, number: next }];
+  return [...kept, { label, number: next }];
 }
 
 function mergeEmails(
   existing: { id?: string; label?: string | null; address?: string | null; isPrimary?: boolean }[],
   next: string | null,
+  label: string,
 ) {
   const kept = existing
     .filter((item) => !ownedByPortal(item.label, item.address ?? null, next))
     .map((item) => ({ ...item, label: item.label ?? undefined, address: item.address ?? undefined }));
   if (!next) return kept;
-  return [...kept, { label: PORTAL_FIELD_LABEL, address: next }];
+  return [...kept, { label, address: next }];
 }
 
 function ownedByPortal(
@@ -186,7 +274,7 @@ function ownedByPortal(
   current: string | null,
   next: string | null,
 ): boolean {
-  if ((label ?? "").trim().toLowerCase() === PORTAL_FIELD_LABEL.toLowerCase()) return true;
+  if (isPortalContactLabel(label)) return true;
   if (!next || !current) return false;
   if (current.trim().toLowerCase() === next.trim().toLowerCase()) return true;
   const currentDigits = current.replace(/\D/g, "");

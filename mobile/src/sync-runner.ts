@@ -1,7 +1,8 @@
 import {
   createDeviceContact,
   deleteDeviceContact,
-  openPortalGroup,
+  deletePortalAddressBookGroups,
+  openAddressBookGroups,
   readDeviceIndex,
   updateDeviceContact,
 } from "./device-contacts";
@@ -25,7 +26,7 @@ export async function runSync(input: {
     existingDeviceIds: index.ids,
     taggedDeviceIds: index.tagged,
   });
-  const group = await openPortalGroup();
+  const groups = await openAddressBookGroups();
   const mapping = { ...input.state.mapping };
   let added = 0;
   let updated = 0;
@@ -43,7 +44,7 @@ export async function runSync(input: {
 
   for (const draft of plan.add) {
     try {
-      const deviceId = await createDeviceContact(draft, group);
+      const deviceId = await createDeviceContact(draft, groups);
       remember(draft.contactKey, deviceId, draft.missingPhone, draft.missingEmail);
       added += 1;
     } catch {
@@ -55,12 +56,12 @@ export async function runSync(input: {
 
   for (const item of plan.update) {
     try {
-      await updateDeviceContact(item.deviceContactId, item.draft, group);
+      await updateDeviceContact(item.deviceContactId, item.draft, groups);
       remember(item.draft.contactKey, item.deviceContactId, item.draft.missingPhone, item.draft.missingEmail);
       updated += 1;
     } catch {
       try {
-        const deviceId = await createDeviceContact(item.draft, group);
+        const deviceId = await createDeviceContact(item.draft, groups);
         remember(item.draft.contactKey, deviceId, item.draft.missingPhone, item.draft.missingEmail);
         added += 1;
       } catch {
@@ -101,6 +102,7 @@ export async function runRemove(state: StoredSync): Promise<{ state: StoredSync;
       failed += 1;
     }
   }
+  await deletePortalAddressBookGroups();
   const mapping: Record<string, string> = {};
   if (failed > 0) {
     for (const [key, id] of Object.entries(state.mapping)) {
