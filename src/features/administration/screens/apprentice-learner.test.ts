@@ -35,6 +35,10 @@ vi.mock("./apprentice-email-actions", () => ({
   setApprenticeEmailAction: vi.fn(),
 }));
 
+vi.mock("./apprentice-phone-actions", () => ({
+  setApprenticePhoneAction: vi.fn(),
+}));
+
 vi.mock("./learner-exit-actions", () => ({
   recordLearnerExitAction: vi.fn(),
   reverseLearnerExitAction: vi.fn(),
@@ -73,6 +77,7 @@ function page(overrides: Partial<ApprenticeLearnerPage> = {}): ApprenticeLearner
       status: "in_learning",
       statusLabel: "In learning",
       email: "jack@example.com",
+      phone: "+447700900123",
     },
     currentTutor: {
       id: "open",
@@ -264,6 +269,10 @@ describe("learner page", () => {
     expect(html).toContain('href="/administration/onboarding/apprentice/GTA-000002?tab=tutor"');
     expect(html).toContain('href="/administration/onboarding/apprentice"');
     expect(html).toContain("No current employer");
+    expect(html).toContain('data-learner-phone="+447700900123"');
+    expect(html).toContain('data-learner-phone-form="GTA-000002"');
+    expect(html).toContain("Save phone");
+    expect(html).toContain("Save email");
     expect(html).not.toContain("data-tutor-assign");
   });
 
@@ -386,6 +395,8 @@ describe("learner page", () => {
     expect(html).not.toContain("Recovering after surgery.");
     expect(html).not.toContain('data-break-section');
     expect(html).not.toContain("Start break in learning");
+    expect(html).not.toContain("data-learner-phone-form");
+    expect(html).not.toContain("Save phone");
     expect(html).not.toContain("data-date-change-request");
     expect(html).not.toContain("data-save-course-dates");
     expect(html).not.toContain("data-approve-change");

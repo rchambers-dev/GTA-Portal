@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "GTA Portal",
+    "slug": "gta-portal",
+    "scheme": "gtaportal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "uk.co.doncastergta.portal",
+      "accessesContactNotes": true,
+      "infoPlist": {
+        "NSContactsUsageDescription": "GTA Portal copies contacts you can already see onto this phone. It never changes the Portal."
+      }
+    },
+    "android": {
+      "package": "uk.co.doncastergta.portal",
+      "permissions": [
+        "android.permission.READ_CONTACTS",
+        "android.permission.WRITE_CONTACTS"
+      ],
+      "adaptiveIcon": {
+        "backgroundColor": "#0b0e1c",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "GTA Portal copies contacts you can already see onto this phone. It never changes the Portal."
+        }
+      ]
+    ]
+  }
+}

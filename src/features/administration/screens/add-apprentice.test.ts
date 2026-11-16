@@ -58,6 +58,8 @@ describe("Add apprentice page", () => {
     expect(html).toContain('data-entry-field="middleNames"');
     expect(html).toContain('data-entry-field="email"');
     expect(html).toContain(">Email<");
+    expect(html).toContain('data-entry-field="phone"');
+    expect(html).toContain(">Phone<");
     expect(html).toContain('data-entry-field="programmeId"');
     expect(html).toContain('data-entry-field="status"');
     expect(html).toContain("In learning");

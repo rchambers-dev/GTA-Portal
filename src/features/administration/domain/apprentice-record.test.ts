@@ -23,6 +23,7 @@ const savedRow = {
   programme_id: programmeId,
   status: "in_learning",
   email: null,
+  phone: null,
   created_at: "2026-11-09T12:00:00.000Z",
   updated_at: "2026-11-09T12:00:00.000Z",
 };
@@ -86,6 +87,43 @@ describe("add apprentice record", () => {
     if (saved.ok) expect(saved.value.email).toBe("alex@example.com");
   });
 
+  it("stores a UK phone as E.164 and rejects a number that is not one", () => {
+    const saved = validateNewApprentice({
+      firstName: "Alex",
+      middleNames: "",
+      lastName: "Smith",
+      phone: "(01302) 893277",
+      programmeId: "",
+      status: "in_learning",
+    });
+    expect(saved.ok).toBe(true);
+    if (saved.ok) expect(saved.value.phone).toBe("+441302893277");
+
+    const blank = validateNewApprentice({
+      firstName: "Alex",
+      middleNames: "",
+      lastName: "Smith",
+      phone: "  ",
+      programmeId: "",
+      status: "in_learning",
+    });
+    expect(blank.ok).toBe(true);
+    if (blank.ok) expect(blank.value.phone).toBeNull();
+
+    const invalid = validateNewApprentice({
+      firstName: "Alex",
+      middleNames: "",
+      lastName: "Smith",
+      phone: "call the office",
+      programmeId: "",
+      status: "in_learning",
+    });
+    expect(invalid.ok).toBe(false);
+    if (!invalid.ok) {
+      expect(invalid.fieldErrors.phone).toBe("Enter a UK phone number, such as 07700 900123.");
+    }
+  });
+
   it("explains a duplicate email in plain language", () => {
     expect(
       explainApprenticeWriteError({
@@ -133,6 +171,7 @@ describe("add apprentice record", () => {
       middle_names: null,
       last_name: "Smith",
       email: null,
+      phone: null,
       programme_id: null,
       status: "in_learning",
     });
@@ -218,6 +257,7 @@ describe("add apprentice record", () => {
       middleNames: "Jay",
       lastName: "Smith",
       email: null,
+      phone: null,
       programmeId,
       status: "in_learning",
     };
@@ -227,6 +267,7 @@ describe("add apprentice record", () => {
       middle_names: "Jay",
       last_name: "Smith",
       email: null,
+      phone: null,
       programme_id: programmeId,
       status: "in_learning",
     });
@@ -242,6 +283,7 @@ describe("add apprentice record", () => {
         middleNames: "Jay",
         lastName: "Smith",
         email: null,
+        phone: null,
         programmeId,
         status: "in_learning",
         createdAt: savedRow.created_at,
