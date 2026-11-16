@@ -97,6 +97,7 @@ export type ApprenticeLearnerRecord = {
   status: string;
   statusLabel: string;
   email: string | null;
+  phone: string | null;
   /** Original GTA-C ID, kept after the apprentice GTA ID becomes the main ID. */
   sourceCandidateId?: string | null;
 };
@@ -332,6 +333,7 @@ export function learnerRecordFromRow(
     middle_names: string | null;
     last_name: string;
     email?: string | null;
+    phone?: string | null;
     programme_id: string | null;
     status: string;
     source_candidate_id?: string | null;
@@ -357,6 +359,7 @@ export function learnerRecordFromRow(
     status: row.status,
     statusLabel: apprenticeStatusLabel(row.status),
     email: row.email ?? null,
+    phone: row.phone ?? null,
     sourceCandidateId: row.source_candidate_id ?? null,
   };
 }

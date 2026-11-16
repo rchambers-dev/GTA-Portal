@@ -31,14 +31,32 @@ export async function pinOnDayAction(input: { date: string; gtaIds: string[] }) 
   return fail(error) ?? { ok: true as const };
 }
 
-export async function excludeStopAction(input: { date: string; gtaId: string }) {
+export async function excludeStopAction(input: {
+  date: string;
+  gtaId: string;
+  /** Free stops only. Locked, verified and booked times are not sent. */
+  retimed?: { gtaId: string; arrive: number; leave: number }[];
+}) {
   const access = await writer();
   if (!access.ok) return access;
   const { error } = await access.supabase.rpc("exclude_review_day_stop", {
     p_date: input.date,
     p_gta_id: input.gtaId,
   });
-  return fail(error) ?? { ok: true as const };
+  const excluded = fail(error);
+  if (excluded) return excluded;
+  for (const stop of input.retimed ?? []) {
+    if (stop.gtaId === input.gtaId) continue;
+    const timed = await access.supabase.rpc("set_review_day_stop_times", {
+      p_date: input.date,
+      p_gta_id: stop.gtaId,
+      p_arrive: stop.arrive,
+      p_leave: stop.leave,
+    });
+    const timeError = fail(timed.error);
+    if (timeError) return timeError;
+  }
+  return { ok: true as const };
 }
 
 export async function verifyStopAction(input: {

@@ -35,7 +35,20 @@ type DriveStop = DrivePerson & {
   leaveMinutes?: number | null;
   verified: boolean;
   locked: boolean;
+  /** A booked appointment. Its time is kept, the same as a verified or locked stop. */
+  booked?: boolean;
+  appointmentOn?: string | null;
 };
+
+/** Locked, verified and booked stops keep the time they already have. */
+export function stopTimeIsHeld(stop: {
+  verified: boolean;
+  locked: boolean;
+  booked?: boolean;
+  appointmentOn?: string | null;
+}): boolean {
+  return stop.verified || stop.locked || Boolean(stop.booked) || Boolean(stop.appointmentOn);
+}
 
 export function routeSettings(settings: DriveSettings): RouteSettings {
   const lunch = timeToMinutes(settings.lunchStart) ?? 13 * 60;
@@ -106,7 +119,9 @@ export async function fitStops(input: {
     const stop = input.existing.find((item) => item.gtaId === learner.id);
     const arrive = stop?.arriveMinutes ?? timeToMinutes(stop?.arrive || "") ?? settings.startMinutes;
     const leave = stop?.leaveMinutes ?? timeToMinutes(stop?.leave || "") ?? arrive + settings.stayMinutes;
-    if (stop?.arrive && stop.leave) frozen[learner.id] = { arrive, leave, booked: stop.verified || stop.locked };
+    if (stop && stopTimeIsHeld(stop) && stop.arrive && stop.leave) {
+      frozen[learner.id] = { arrive, leave };
+    }
     return {
       id: learner.id,
       name: learner.name,

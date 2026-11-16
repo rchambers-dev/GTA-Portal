@@ -31,6 +31,7 @@ const EMPTY_FORM = {
   middleNames: "",
   lastName: "",
   email: "",
+  phone: "",
   programmeId: "",
   status: DEFAULT_APPRENTICE_STATUS as string,
 };
@@ -150,7 +151,7 @@ export function AddApprenticeForm({
             <p className={styles.learnerKicker}>Manual entry</p>
             <h2 className={styles.learnerHeading}>Add apprentice</h2>
             <p className={styles.learnerMuted}>
-              Middle names, programme, and email can be left blank. Status starts as In learning.
+              Middle names, programme, email, and phone can be left blank. Status starts as In learning.
             </p>
             <article className={styles.learnerCard}>
               <form onSubmit={onSubmit} noValidate>
@@ -192,6 +193,16 @@ export function AddApprenticeForm({
                     error={fieldErrors.email}
                     disabled={pending}
                     autoComplete="email"
+                    onChange={setField}
+                  />
+                  <TextField
+                    field="phone"
+                    label="Phone"
+                    type="tel"
+                    value={form.phone}
+                    error={fieldErrors.phone}
+                    disabled={pending}
+                    autoComplete="tel"
                     onChange={setField}
                   />
                   <ChoiceField
@@ -289,7 +300,7 @@ export function AddApprenticeForm({
   );
 }
 
-type EntryField = "firstName" | "middleNames" | "lastName" | "email" | "programmeId" | "status";
+type EntryField = "firstName" | "middleNames" | "lastName" | "email" | "phone" | "programmeId" | "status";
 
 function TextField({
   field,
@@ -302,14 +313,14 @@ function TextField({
   type = "text",
   onChange,
 }: {
-  field: "firstName" | "middleNames" | "lastName" | "email";
+  field: "firstName" | "middleNames" | "lastName" | "email" | "phone";
   label: string;
   value: string;
   error?: string;
   required?: boolean;
   disabled: boolean;
   autoComplete: string;
-  type?: "text" | "email";
+  type?: "text" | "email" | "tel";
   onChange: (field: EntryField, value: string) => void;
 }) {
   const errorId = error ? `${field}-error` : undefined;
