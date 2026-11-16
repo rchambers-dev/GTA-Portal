@@ -37,7 +37,7 @@ export async function CandidatesArea({
   date?: string;
 }) {
   const loaded = example ? { ready: false, notice: null } : await loadCandidatesReady();
-  const employers = example ? [] : await loadEmployerChoices();
+  const loadedEmployers = example ? { choices: [], rows: [] } : await loadEmployerChoices();
   const props: CandidatesViewProps = {
     base: `/${workspace}/onboarding`,
     example,
@@ -46,7 +46,8 @@ export async function CandidatesArea({
     query: site || "",
     tab,
     date,
-    employers,
+    employers: loadedEmployers.choices,
+    employerRows: loadedEmployers.rows,
   };
   const rest = segment.slice("onboarding/".length);
   let page = <OverviewPage {...props} />;

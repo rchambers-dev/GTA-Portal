@@ -13,7 +13,7 @@ import {
   saveDeadlineSettingAction,
   setResponsivenessAction,
 } from "../actions";
-import { EXAMPLE_EMPLOYERS, type EmployerChoice } from "../domain/employers";
+import { EXAMPLE_EMPLOYERS, type EmployerChoice, type EmployerDirectoryRow } from "../domain/employers";
 import { ukDate } from "../domain/format";
 import { ContactEventButton } from "./ContactEventModal";
 import { EmployerPicker } from "./EmployerPicker";
@@ -28,8 +28,14 @@ export type CandidatesViewProps = {
   tab?: string;
   date?: string;
   employers?: EmployerChoice[];
+  employerRows?: EmployerDirectoryRow[];
   recordId?: string;
 };
+
+function employerTotal(props: CandidatesViewProps): string {
+  if (props.example) return "8";
+  return String(props.employerRows?.length ?? props.employers?.length ?? 0);
+}
 
 function employerChoices(props: CandidatesViewProps): EmployerChoice[] {
   if (props.example) return EXAMPLE_EMPLOYERS;
@@ -605,7 +611,7 @@ export function EmployersPage(props: CandidatesViewProps) {
         actions={<><ExampleChip show={example} /><Link className="btn-secondary" href={`${base}/employer`}>Add employer</Link><Link className="btn" href={`${base}/vacancies${q(example)}`}><Plus /> Add vacancy</Link></>}
       />
       <div className="tabs">
-        <div className="tab-on">Employers <span className="count">{example ? "8" : "0"}</span></div>
+        <div className="tab-on">Employers <span className="count">{employerTotal(props)}</span></div>
         <Link className="tab" href={`${base}/vacancies${q(example)}`}>Vacancies <span className="count">{example ? "10" : "0"}</span></Link>
       </div>
       <div className="card table-wrap">
@@ -622,7 +628,18 @@ export function EmployersPage(props: CandidatesViewProps) {
                 <td className="nowrap">{row[6] === "—" ? "—" : row[7] ? <span className="date-overdue">{row[6]}</span> : row[6]}</td>
                 <td className="nowrap">{row[8]}</td>
               </tr>
-            )) : <tr><td colSpan={7} className="muted">No employer activity yet. Existing employers are unchanged.</td></tr>}
+            )) : (props.employerRows ?? []).map((row) => (
+              <tr key={row.employerId}>
+                <td><Link className="name" href={`${base}/employers/${encodeURIComponent(row.name)}${q(example)}`}>{row.name}</Link>{row.detail ? <div className="note-inline">{row.detail}</div> : null}</td>
+                <td className="nowrap">{row.site}</td>
+                <td className="frac">{row.openVacancies}</td>
+                <td className="frac">{row.placesAvailable}</td>
+                <td className="nowrap">{ukDate(row.lastContact)}</td>
+                <td className="nowrap">{row.nextFollowUp ? row.followUpOverdue ? <span className="date-overdue">{ukDate(row.nextFollowUp)}</span> : ukDate(row.nextFollowUp) : "—"}</td>
+                <td className="nowrap">{row.source || "—"}</td>
+              </tr>
+            ))}
+            {!example && !(props.employerRows ?? []).length ? <tr><td colSpan={7} className="muted">No employers yet.</td></tr> : null}
           </tbody>
         </table>
       </div>
@@ -654,7 +671,7 @@ export function VacanciesPage(props: CandidatesViewProps) {
         actions={<><ExampleChip show={example} /><Link className="btn" href={`${base}/employers${q(example)}`}><Plus /> Add vacancy</Link></>}
       />
       <div className="tabs">
-        <Link className="tab" href={`${base}/employers${q(example)}`}>Employers <span className="count">{example ? "8" : "0"}</span></Link>
+        <Link className="tab" href={`${base}/employers${q(example)}`}>Employers <span className="count">{employerTotal(props)}</span></Link>
         <div className="tab-on">Vacancies <span className="count">{example ? "10" : "0"}</span></div>
       </div>
       <div className="card table-wrap">
