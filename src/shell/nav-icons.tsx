@@ -77,6 +77,7 @@ export function navGlyphForHref(href: string): NavGlyph {
 
   if (key.includes("/employer-concerns")) return "alert";
   if (key.includes("/onboarding/apprentice")) return "person-plus";
+  if (key.includes("/onboarding/candidates")) return "people";
   if (key.includes("/onboarding/employer")) return "workplace-plus";
   if (key.includes("/onboarding/directory")) return "directory";
   if (key.includes("/onboarding")) return "door";
@@ -109,6 +110,14 @@ export function navGlyphForHref(href: string): NavGlyph {
   if (key.includes("/history")) return "history";
   if (key.includes("/attendance")) return "calendar-check";
   if (key.includes("/schedule")) return "calendar";
+  if (key.includes("/reviews/plan")) return "calendar";
+  if (key.includes("/reviews/cycle")) return "clipboard";
+  if (key.includes("/reviews/out")) return "workplace";
+  if (key.includes("/reviews/archive")) return "folder";
+  if (key.includes("/reviews/analytics")) return "chart";
+  if (key.includes("/reviews/log")) return "history";
+  if (key.includes("/reviews/tutor-reviews")) return "comment";
+  if (key.includes("/reviews/settings")) return "gear";
   if (key.includes("/reviews")) return "reviews";
   if (key.includes("/messages")) return "messages";
   if (key.includes("/support")) return "support";

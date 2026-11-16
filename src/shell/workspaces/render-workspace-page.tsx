@@ -53,6 +53,7 @@ import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
 import { TutorReviewsScreen } from "@/features/tutor-reviews/screens/TutorReviewsScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
+import { CandidatesScreen } from "@/features/administration/screens/CandidatesScreen";
 import { OnboardingOverview } from "@/features/administration/screens/OnboardingOverview";
 import { RecruitmentGapScreen } from "@/features/administration/screens/RecruitmentGapScreen";
 import { SharedDriveScreen } from "@/features/shared-drive";
@@ -110,6 +111,7 @@ function renderOnboarding(
     );
   }
   if (segment === "onboarding/apprentice") return <AddApprenticeScreen />;
+  if (segment === "onboarding/candidates") return <CandidatesScreen />;
   if (segment === "onboarding/employer") return <EmployersScreen />;
   if (segment === "onboarding/directory" || segment === "onboarding/directory/apprentices") {
     return <OnboardingDirectory initialView="apprentices" />;
@@ -450,6 +452,7 @@ export async function renderWorkspacePage(
       case "onboarding/apprentices":
       case "onboarding/interviews":
       case "onboarding/apprentice":
+      case "onboarding/candidates":
       case "onboarding/employer":
       case "onboarding/directory":
       case "onboarding/directory/apprentices":
@@ -550,6 +553,7 @@ export async function renderWorkspacePage(
       case "onboarding/apprentices":
       case "onboarding/interviews":
       case "onboarding/apprentice":
+      case "onboarding/candidates":
       case "onboarding/employer":
       case "onboarding/directory":
       case "onboarding/directory/apprentices":
