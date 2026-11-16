@@ -2439,6 +2439,12 @@
   cursor: not-allowed;
 }
 
+.rebookBook.pending:disabled {
+  background: #245544;
+  color: #fff;
+  cursor: wait;
+}
+
 .rebookQueue {
   justify-self: start;
   min-height: 44px;
@@ -2903,6 +2909,15 @@
   background: #2f6b56;
   opacity: 0.55;
   cursor: not-allowed;
+}
+.actionGrid button:active:not(:disabled),
+.actionGrid a:active {
+  filter: brightness(0.9);
+}
+.actionGrid button.pending:disabled {
+  opacity: 1;
+  filter: brightness(0.88);
+  cursor: wait;
 }
 .actionGrid .actionDanger {
   background: #b44a2c;

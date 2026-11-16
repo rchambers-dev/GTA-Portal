@@ -95,6 +95,7 @@ export function RebookPanel({
   loadedMonth,
   initialMethod,
   onRun,
+  onSaved,
 }: {
   stop: PlanStop;
   missedDate: string;
@@ -104,7 +105,8 @@ export function RebookPanel({
   people: PlanPerson[];
   loadedMonth: string;
   initialMethod: string;
-  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
+  onSaved?: (message: string) => void;
 }) {
   const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
   const [month, setMonth] = useState(today.slice(0, 7));
@@ -116,6 +118,8 @@ export function RebookPanel({
   const [slotError, setSlotError] = useState<string | null>(null);
   const [fetched, setFetched] = useState<Record<string, DayMark[]>>({});
   const [monthError, setMonthError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const windowEnd = rebookWindowEnd(today);
   const loadedMarks = useMemo(() => marksFromPlan(days), [days]);
   const monthPending = month !== loadedMonth && !fetched[month];
@@ -242,8 +246,12 @@ export function RebookPanel({
       aria-labelledby={`rebook-title-${stop.gtaId}`}
       onSubmit={(event) => {
         event.preventDefault();
-        if (!chosen || !stop.reviewId || minute == null) return;
-        if (phoneNeedsReleaseDay) return;
+        if (submitting) return;
+        if (!chosen || minute == null || phoneNeedsReleaseDay) return;
+        if (!stop.reviewId) {
+          setFormError("This learner has no open review, so the appointment cannot be booked.");
+          return;
+        }
         const stay = settings.stayMinutes || 30;
         const others = (marks.get(chosen)?.stops ?? []).filter((item) => item.gtaId !== stop.gtaId);
         const ordered = method === "phone"
@@ -251,6 +259,9 @@ export function RebookPanel({
           : [...others.map((item) => ({ id: item.gtaId, arrive: item.arriveMinutes ?? 24 * 60 })), { id: stop.gtaId, arrive: minute ?? 0 }]
               .sort((a, b) => a.arrive - b.arrive)
               .map((item) => item.id);
+        const bookedFor = method === "phone" ? `${when} at ${minutesToTime(minute)}` : when;
+        setSubmitting(true);
+        setFormError(null);
         void onRun(() =>
           rebookAppointmentAction({
             reviewId: stop.reviewId || "",
@@ -264,7 +275,14 @@ export function RebookPanel({
             orderedGtaIds: ordered,
             backToQueue: false,
           }),
-        );
+        `${stop.gtaId}:book`).then((result) => {
+          setSubmitting(false);
+          if (!result.ok) {
+            setFormError(result.formError || "The appointment was not saved.");
+            return;
+          }
+          onSaved?.(`${stop.name}: ${bookedFor} is booked.`);
+        });
       }}
     >
       <h3 id={`rebook-title-${stop.gtaId}`} className={styles.srOnly}>Rebook {stop.name}</h3>
@@ -347,8 +365,10 @@ export function RebookPanel({
           ))}
         </div>
       ) : null}
-      <button type="submit" className={styles.rebookBook} disabled={!chosen || minute == null || checking || monthPending || phoneNeedsReleaseDay}>
-        Book Appointment
+      {formError ? <p className={styles.rebookBlocked} role="alert">{formError}</p> : null}
+      {submitting ? <p className={styles.rebookHint} role="status">Saving {when}{minute != null ? ` at ${minutesToTime(minute)}` : ""}…</p> : null}
+      <button type="submit" className={submitting ? `${styles.rebookBook} ${styles.pending}` : styles.rebookBook} disabled={!chosen || minute == null || checking || monthPending || phoneNeedsReleaseDay || submitting} aria-busy={submitting}>
+        {submitting ? "Booking…" : "Book Appointment"}
       </button>
       <button
         type="button"

@@ -48,6 +48,9 @@ export function PlanView({
   const [tab, setTab] = useState<PlanCounter>("to_book");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState<string | null>(null);
+  const [busyKey, setBusyKey] = useState<string | null>(null);
+  const [hiddenStops, setHiddenStops] = useState<string[]>([]);
+  const busyRef = useRef(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
   const [notePerson, setNotePerson] = useState<PlanPerson | null>(null);
@@ -139,15 +142,31 @@ export function PlanView({
     router.push(planHref(workspace, nextDate, nextMonth));
   }
 
-  async function run(work: () => Promise<{ ok: boolean; formError?: string | null }>) {
-    setMessage(null);
-    const result = await work();
-    if (!result.ok) {
-      setMessage(result.formError || "The plan could not be saved.");
-      return;
+  async function run(work: () => Promise<{ ok: boolean; formError?: string | null }>, key = "plan", held = false) {
+    if (!held) {
+      if (busyRef.current) return { ok: false as const, formError: "Please wait for the last change to finish." };
+      busyRef.current = true;
+      setBusyKey(key);
     }
-    if (result.formError) setMessage(result.formError);
-    router.refresh();
+    setMessage(null);
+    try {
+      const result = await work();
+      if (!result?.ok) {
+        const formError = result?.formError || "The plan could not be saved.";
+        setMessage(formError);
+        return { ok: false as const, formError };
+      }
+      if (result.formError) setMessage(result.formError);
+      void router.refresh();
+      return result;
+    } catch {
+      const formError = "The plan could not be saved.";
+      setMessage(formError);
+      return { ok: false as const, formError };
+    } finally {
+      busyRef.current = false;
+      setBusyKey(null);
+    }
   }
 
   async function placePeople(extras: PlanPerson[]) {
@@ -209,8 +228,15 @@ export function PlanView({
   }
 
   async function takeOff(gtaId: string) {
+    if (busyRef.current) return;
+    busyRef.current = true;
+    const hide = `${selectedDate}:${gtaId}`;
+    setBusyKey(`${gtaId}:off`);
+    setHiddenStops((current) => (current.includes(hide) ? current : [...current, hide]));
     const remaining = activeDay.stops.filter((stop) => stop.gtaId !== gtaId);
     let retimed: { gtaId: string; arrive: number; leave: number }[] = [];
+    let handed = false;
+    try {
     if (remaining.length) {
       const fitted = await fitStops({
         officePostcode: page.settings.officePostcode,
@@ -233,7 +259,17 @@ export function PlanView({
         return [{ gtaId: stop.id, arrive: stop.arrive, leave: stop.leave }];
       });
     }
-    await run(() => excludeStopAction({ date: selectedDate, gtaId, retimed }));
+      handed = true;
+      const result = await run(() => excludeStopAction({ date: selectedDate, gtaId, retimed }), `${gtaId}:off`, true);
+      if (!result.ok) setHiddenStops((current) => current.filter((id) => id !== hide));
+    } catch {
+      setHiddenStops((current) => current.filter((id) => id !== hide));
+      setMessage("The plan could not be saved.");
+      if (!handed) {
+        busyRef.current = false;
+        setBusyKey(null);
+      }
+    }
   }
 
   async function reorderStop(targetId: string) {
@@ -472,6 +508,9 @@ export function PlanView({
             onReorder={(gtaId) => void reorderStop(gtaId)}
             routeDragId={routeDragId}
             onStatus={setMessage}
+            busyKey={busyKey}
+            hiddenStops={hiddenStops}
+            onBooked={(gtaId) => setHiddenStops((current) => (current.includes(`${selectedDate}:${gtaId}`) ? current : [...current, `${selectedDate}:${gtaId}`]))}
             onNote={(gtaId) => {
               const person = page.people.find((item) => item.gtaId === gtaId);
               if (person) setNotePerson(person);
@@ -501,8 +540,9 @@ export function PlanView({
               until={notePerson.notesUntil}
               today={page.today}
               onRun={async (work) => {
-                await run(work);
-                setNotePerson(null);
+                const result = await run(work, `${notePerson.gtaId}:note`);
+                if (result.ok) setNotePerson(null);
+                return result;
               }}
             />
           </div>
@@ -590,7 +630,7 @@ function DayActions({
   day: PlanDay;
   date: string;
   packed: PackedDay | null;
-  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
   onStatus: (message: string) => void;
 }) {
   const stops = day.stops;
@@ -708,6 +748,8 @@ function StopCard({
   routeDragId,
   onStatus,
   onNote,
+  onBooked,
+  busyKey,
 }: {
   workspace: "administration" | "management";
   stop: PlanStop;
@@ -722,16 +764,26 @@ function StopCard({
   canDrag: boolean;
   dayAccepted: boolean;
   dayIds: string[];
-  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
   onTakeOff: (gtaId: string) => void;
   onReorder: (gtaId: string) => void;
   routeDragId: { current: string };
   onStatus: (message: string) => void;
   onNote: (gtaId: string) => void;
+  onBooked: (gtaId: string) => void;
+  busyKey: string | null;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState<"book" | "note" | "lock" | null>(null);
   const [bookMethod, setBookMethod] = useState("in_person");
+  const [verified, setVerified] = useState(stop.verified);
+  const [locked, setLocked] = useState(stop.locked);
+  useEffect(() => {
+    setVerified(stop.verified);
+    setLocked(stop.locked);
+  }, [stop.verified, stop.locked]);
+  const mine = busyKey?.startsWith(stop.gtaId) ?? false;
+  const held = Boolean(busyKey);
   const phoneDigits = stop.phone.replace(/\D/g, "");
   const priority = stop.dueState === "overdue" ? styles.tagOver : stop.dueState === "due-soon" ? styles.tagSoon : styles.tagOk;
   const bookedOnDay = stop.appointmentOn === date;
@@ -826,8 +878,8 @@ function StopCard({
               </button>
             )}
             {stop.completed ? <span className={styles.tagDone}>Review done</span> : null}
-            {!stop.completed && stop.verified ? <span className={styles.tagDone}>Verified</span> : null}
-            {stop.locked ? <span className={styles.tagLock}>Locked</span> : null}
+            {!stop.completed && verified ? <span className={styles.tagDone}>Verified</span> : null}
+            {locked ? <span className={styles.tagLock}>Locked</span> : null}
           </p>
         </div>
         <span className={styles.contactLine}>
@@ -848,37 +900,47 @@ function StopCard({
             <div className={styles.actionGrid}>
             <button
               type="button"
-              className={stop.verified ? styles.actionGhost : styles.actionPrimary}
+              className={[verified ? styles.actionGhost : styles.actionPrimary, mine && busyKey?.endsWith(":verify") ? styles.pending : ""].filter(Boolean).join(" ")}
+              disabled={held}
+              aria-busy={mine && busyKey?.endsWith(":verify")}
               onClick={() => {
-                if (!stop.verified && (stop.arriveMinutes == null || stop.leaveMinutes == null)) {
+                if (!verified && (stop.arriveMinutes == null || stop.leaveMinutes == null)) {
                   onStatus("This visit has no time yet, so it can't be verified.");
                   return;
                 }
+                const next = !verified;
+                setVerified(next);
                 void onRun(() =>
                   verifyStopAction({
                     date,
                     gtaId: stop.gtaId,
-                    verified: !stop.verified,
+                    verified: next,
                     arrive: stop.arrive,
                     leave: stop.leave,
                     dayGtaIds: dayIds,
                   }),
-                );
+                `${stop.gtaId}:verify`).then((result) => {
+                  if (!result.ok) setVerified(!next);
+                });
               }}
             >
-              {stop.verified ? "Undo verify" : "Verify"}
+              {mine && busyKey?.endsWith(":verify") ? "Saving…" : verified ? "Undo verify" : "Verify"}
             </button>
-            <button type="button" className={styles.actionBlue} aria-expanded={open === "book" && bookMethod === "in_person"} onClick={() => { setBookMethod("in_person"); setOpen(open === "book" && bookMethod === "in_person" ? null : "book"); }}>
+            <button type="button" className={styles.actionBlue} disabled={held} aria-expanded={open === "book" && bookMethod === "in_person"} onClick={() => { setBookMethod("in_person"); setOpen(open === "book" && bookMethod === "in_person" ? null : "book"); }}>
               Rebook
             </button>
-            {!dayAccepted && !stop.verified && !bookedOnDay ? (
+            {!dayAccepted && !verified && !bookedOnDay ? (
               <button
                 type="button"
-                className={stop.locked ? styles.actionLockOn : styles.actionLock}
-                aria-pressed={stop.locked}
-                onClick={() =>
+                className={[locked ? styles.actionLockOn : styles.actionLock, mine && busyKey?.endsWith(":lock") ? styles.pending : ""].filter(Boolean).join(" ")}
+                aria-pressed={locked}
+                disabled={held}
+                aria-busy={mine && busyKey?.endsWith(":lock")}
+                onClick={() => {
+                  const next = !locked;
+                  setLocked(next);
                   void onRun(async () => {
-                    const result = stop.locked
+                    const result = locked
                       ? await unlockStopAction({ gtaId: stop.gtaId })
                       : await lockStopAction({
                           date,
@@ -889,29 +951,31 @@ function StopCard({
                         });
                     if (result.ok) {
                       onStatus(
-                        stop.locked
+                        locked
                           ? `${stop.name} is unlocked. Fill day selected can move that slot if needed.`
                           : `${stop.name} is locked on this round until you unlock them.`,
                       );
                     }
                     return result;
-                  })
-                }
+                  }, `${stop.gtaId}:lock`).then((result) => {
+                    if (!result.ok) setLocked(!next);
+                  });
+                }}
               >
-                {stop.locked ? "Unlock" : "Lock"}
+                {mine && busyKey?.endsWith(":lock") ? "Saving…" : locked ? "Unlock" : "Lock"}
               </button>
             ) : null}
-            <button type="button" className={styles.actionBlue} onClick={() => { setBookMethod("phone"); setOpen(open === "book" && bookMethod === "phone" ? null : "book"); }}>
+            <button type="button" className={styles.actionBlue} disabled={held} onClick={() => { setBookMethod("phone"); setOpen(open === "book" && bookMethod === "phone" ? null : "book"); }}>
               Phone review
             </button>
-            <button type="button" className={stop.notes ? `${styles.actionGrey} ${styles.actionGreyOn}` : styles.actionGrey} onClick={() => onNote(stop.gtaId)}>
+            <button type="button" className={stop.notes ? `${styles.actionGrey} ${styles.actionGreyOn}` : styles.actionGrey} disabled={held} onClick={() => onNote(stop.gtaId)}>
               {stop.notes ? "Edit note" : "Add note"}
             </button>
             <Link className={styles.actionBlue} href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
               Edit details
             </Link>
-            <button type="button" className={styles.actionDanger} onClick={() => onTakeOff(stop.gtaId)}>
-              Take off this round
+            <button type="button" className={[styles.actionDanger, mine && busyKey?.endsWith(":off") ? styles.pending : ""].filter(Boolean).join(" ")} disabled={held} aria-busy={mine && busyKey?.endsWith(":off")} onClick={() => onTakeOff(stop.gtaId)}>
+              {mine && busyKey?.endsWith(":off") ? "Taking off…" : "Take off this round"}
             </button>
             </div>
             {stop.notes ? (
@@ -932,6 +996,11 @@ function StopCard({
             loadedMonth={loadedMonth}
             initialMethod={bookMethod}
             onRun={onRun}
+            onSaved={(text) => {
+              onStatus(text);
+              setOpen(null);
+              onBooked(stop.gtaId);
+            }}
           />
         ) : null}
             </div>
@@ -953,18 +1022,21 @@ function NoteForm({
   notes: string;
   until: string;
   today: string;
-  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
 }) {
   const presets = noteUntilPresets(today);
   const [text, setText] = useState(notes);
   const [end, setEnd] = useState(dateOnly(until) || presets.week);
+  const [saving, setSaving] = useState(false);
   const selected = dateOnly(end);
   return (
     <form
       className={styles.inline}
       onSubmit={(event) => {
         event.preventDefault();
-        void onRun(async () => (await setNotesAction({ reviewId, notes: text, until: text.trim() ? end : "" })) ?? { ok: false, formError: "The note could not be saved." });
+        if (saving) return;
+        setSaving(true);
+        void onRun(async () => (await setNotesAction({ reviewId, notes: text, until: text.trim() ? end : "" })) ?? { ok: false, formError: "The note could not be saved." }).finally(() => setSaving(false));
       }}
     >
       <label>
@@ -989,7 +1061,7 @@ function NoteForm({
         End date
         <input type="date" min={today} value={end} onChange={(event) => setEnd(event.target.value)} />
       </label>
-      <button type="submit" className={styles.noteOn}>Save note</button>
+      <button type="submit" className={saving ? `${styles.noteOn} ${styles.pending}` : styles.noteOn} disabled={saving} aria-busy={saving}>{saving ? "Saving…" : "Save note"}</button>
       {notes ? (
         <button type="button" className={styles.clearNote} onClick={() => void onRun(async () => (await setNotesAction({ reviewId, notes: "", until: "" })) ?? { ok: false, formError: "The note could not be saved." })}>
           Clear
@@ -1112,6 +1184,9 @@ function DayTimeline({
   routeDragId,
   onStatus,
   onNote,
+  onBooked,
+  busyKey,
+  hiddenStops,
 }: {
   workspace: "administration" | "management";
   page: PlanPageData;
@@ -1120,14 +1195,17 @@ function DayTimeline({
   packed: PackedDay | null;
   home: { travel: number; arrive: number } | null;
   locked: boolean;
-  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
   onTakeOff: (gtaId: string) => void;
   onReorder: (gtaId: string) => void;
   routeDragId: { current: string };
   onStatus: (message: string) => void;
   onNote: (gtaId: string) => void;
+  onBooked: (gtaId: string) => void;
+  busyKey: string | null;
+  hiddenStops: string[];
 }) {
-  const stops = [...day.stops].sort(
+  const stops = [...day.stops].filter((stop) => !hiddenStops.includes(`${date}:${stop.gtaId}`)).sort(
     (a, b) => (a.arriveMinutes ?? Number.MAX_SAFE_INTEGER) - (b.arriveMinutes ?? Number.MAX_SAFE_INTEGER) || a.sortOrder - b.sortOrder,
   );
   const lunchStart = timeToMinutes(page.settings.lunchStart) ?? 12 * 60 + 30;
@@ -1173,6 +1251,8 @@ function DayTimeline({
               routeDragId={routeDragId}
               onStatus={onStatus}
               onNote={onNote}
+              onBooked={onBooked}
+              busyKey={busyKey}
             />
             {crosses ? (
               <div className={styles.lunch}>
