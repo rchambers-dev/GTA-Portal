@@ -289,18 +289,11 @@ function packLinearSequence(
     const measured = driveMinutesBetween(matrix, location, learner.matrixIndex);
     const travel = lastStop && sameWorkplace(lastStop, learner) ? 0 : (measured ?? 0);
     if (frozen && frozen.arrive != null && frozen.leave != null) {
-      let arrive = frozen.arrive;
-      let leave = frozen.leave;
+      const arrive = frozen.arrive;
+      const leave = frozen.leave;
       let fromPrev = travel;
-      if (lastStop && sameWorkplace(lastStop, learner)) {
-        fromPrev = 0;
-        const stay = stayMinutesFor(learner, lastStop, sequence, settings);
-        if (lastStop.leave > arrive - 0.01) {
-          arrive = lastStop.leave;
-          leave = arrive + stay;
-        }
-      }
-      if (!(lastStop && lastStop.leave <= arrive)) {
+      if (lastStop && sameWorkplace(lastStop, learner)) fromPrev = 0;
+      else if (!(lastStop && lastStop.leave <= arrive)) {
         fromPrev = driveMinutesBetween(matrix, officeIndex, learner.matrixIndex) ?? fromPrev;
       }
       stops.push(makeStop(learner, fromPrev, arrive, leave));

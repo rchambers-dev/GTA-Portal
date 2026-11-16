@@ -202,6 +202,27 @@ export function PlanView({
     await placePeople([person]);
   }
 
+  async function takeOff(gtaId: string) {
+    const remaining = activeDay.stops.filter((stop) => stop.gtaId !== gtaId);
+    let retimed: { gtaId: string; arrive: number; leave: number }[] = [];
+    if (remaining.length) {
+      const fitted = await fitStops({
+        officePostcode: page.settings.officePostcode,
+        existing: remaining,
+        extras: [],
+        settings: routeSettings(page.settings),
+        people: page.people,
+      });
+      const kept = new Map(remaining.map((stop) => [stop.gtaId, stop]));
+      retimed = fitted.packed.stops.flatMap((stop) => {
+        const original = kept.get(stop.id);
+        if (!original || original.verified || original.locked || original.appointmentOn) return [];
+        return [{ gtaId: stop.id, arrive: stop.arrive, leave: stop.leave }];
+      });
+    }
+    await run(() => excludeStopAction({ date: selectedDate, gtaId, retimed }));
+  }
+
   async function showMap() {
     setMapOpen((value) => !value);
     if (mapOpen || !activeDay.stops.length) return;
@@ -377,6 +398,7 @@ export function PlanView({
             packed={route}
             locked={activeDay.completed}
             onRun={run}
+            onTakeOff={(gtaId) => void takeOff(gtaId)}
             onNote={(gtaId) => {
               const person = page.people.find((item) => item.gtaId === gtaId);
               if (person) setNotePerson(person);
@@ -606,6 +628,7 @@ function StopCard({
   canWrite,
   dayIds,
   onRun,
+  onTakeOff,
   onNote,
 }: {
   workspace: "administration" | "management";
@@ -620,6 +643,7 @@ function StopCard({
   canWrite: boolean;
   dayIds: string[];
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onTakeOff: (gtaId: string) => void;
   onNote: (gtaId: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
@@ -725,7 +749,7 @@ function StopCard({
             <Link className={styles.actionBlue} href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
               Edit details
             </Link>
-            <button type="button" className={styles.actionDanger} onClick={() => void onRun(() => excludeStopAction({ date, gtaId: stop.gtaId }))}>
+            <button type="button" className={styles.actionDanger} onClick={() => onTakeOff(stop.gtaId)}>
               Take off this round
             </button>
             </div>
@@ -921,6 +945,7 @@ function DayTimeline({
   packed,
   locked,
   onRun,
+  onTakeOff,
   onNote,
 }: {
   workspace: "administration" | "management";
@@ -930,6 +955,7 @@ function DayTimeline({
   packed: PackedDay | null;
   locked: boolean;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>) => Promise<void>;
+  onTakeOff: (gtaId: string) => void;
   onNote: (gtaId: string) => void;
 }) {
   const stops = [...day.stops].sort((a, b) => a.sortOrder - b.sortOrder || (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0));
@@ -968,6 +994,7 @@ function DayTimeline({
               canWrite={page.canWrite && !day.completed}
               dayIds={stops.map((item) => item.gtaId)}
               onRun={onRun}
+              onTakeOff={onTakeOff}
               onNote={onNote}
             />
             {crosses ? (

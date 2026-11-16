@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { DriveMatrix } from "./geo";
 import { noteUntilPresets } from "./plan-notes";
-import { appendFitLearners, emptyPackedDay, packDay, type RouteLearner, type RouteSettings } from "./plan-route";
+import { appendFitLearners, emptyPackedDay, packDay, retimeDay, type RouteLearner, type RouteSettings } from "./plan-route";
+import { minutesToTime } from "./plan-due";
 
 const settings: RouteSettings = {
   startMinutes: 10 * 60,
@@ -72,6 +73,48 @@ describe("plan route", () => {
     expect(frozen?.leave).toBe(11 * 60 + 30);
     expect(extra).toBeTruthy();
     expect(extra!.travelMinutes).toBeGreaterThan(0);
+  });
+
+  it("closes the gap when a free stop is removed and leaves a held time where it is", () => {
+    const people = [
+      learner("a", 1, "North", "DN1 1AA"),
+      learner("b", 2, "East", "DN2 2BB"),
+      learner("c", 3, "South", "DN4 4CC"),
+    ];
+    const ten = 10 * 60;
+    const drive = matrix([
+      [0, ten, ten, ten],
+      [ten, 0, ten, ten],
+      [ten, ten, 0, ten],
+      [ten, ten, ten, 0],
+    ]);
+    const full = retimeDay(people, drive, 0, settings, {});
+    expect(full.stops.map((stop) => [stop.id, stop.arrive, stop.leave])).toEqual([
+      ["a", 10 * 60 + 10, 10 * 60 + 40],
+      ["b", 10 * 60 + 50, 11 * 60 + 20],
+      ["c", 11 * 60 + 30, 12 * 60],
+    ]);
+
+    const withoutB = retimeDay([people[0], people[2]], drive, 0, settings, {});
+    expect(withoutB.stops.map((stop) => [stop.id, stop.arrive, stop.leave])).toEqual([
+      ["a", 10 * 60 + 10, 10 * 60 + 40],
+      ["c", 10 * 60 + 50, 11 * 60 + 20],
+    ]);
+
+    const held = retimeDay(people, drive, 0, settings, {
+      b: { arrive: 10 * 60 + 50, leave: 11 * 60 + 20 },
+    });
+    const locked = held.stops.find((stop) => stop.id === "b");
+    expect(locked?.arrive).toBe(10 * 60 + 50);
+    expect(locked?.leave).toBe(11 * 60 + 20);
+    expect(held.stops.find((stop) => stop.id === "a")?.arrive).toBe(10 * 60 + 10);
+    expect(held.stops.find((stop) => stop.id === "c")?.arrive).toBe(11 * 60 + 30);
+    expect(held.stops.map((stop) => stop.id)).toEqual(["a", "b", "c"]);
+
+    const clock = (stops: { id: string; arrive: number; leave: number }[]) =>
+      stops.map((stop) => `${stop.id} ${minutesToTime(stop.arrive)}–${minutesToTime(stop.leave)}`).join(", ");
+    expect(clock(full.stops)).toBe("a 10:10–10:40, b 10:50–11:20, c 11:30–12:00");
+    expect(clock(withoutB.stops)).toBe("a 10:10–10:40, c 10:50–11:20");
   });
 });
 
