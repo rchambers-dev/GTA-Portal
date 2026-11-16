@@ -9,6 +9,7 @@ import {
   type AddApprenticeResult,
   type NewApprenticeInput,
 } from "../domain/apprentice-record";
+import { revalidateAnalytics } from "@/features/reviews/domain/revalidate-analytics";
 
 const PERMISSION_ERROR =
   "You do not have permission to add an apprentice. Administrator and Management can add apprentices.";
@@ -34,5 +35,7 @@ export async function addApprenticeAction(
   }
 
   const supabase = await createSupabaseServerClient();
-  return insertApprenticeRecord(supabase, parsed.value);
+  const saved = await insertApprenticeRecord(supabase, parsed.value);
+  if (saved.ok) await revalidateAnalytics();
+  return saved;
 }

@@ -5,6 +5,7 @@ import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { formPayload, type TutorFormDraft } from "../domain/tutor-form-rules";
+import { revalidateAnalytics } from "../domain/revalidate-analytics";
 
 const DENIED = "You do not have permission to change this. Administrator and Management can.";
 
@@ -29,6 +30,7 @@ export async function signSafeguardingAction(input: { gtaIds: string[] }) {
     "Safeguarding sign-off is waiting for the one-way database change. It has not been written.",
   );
   if (blocked) return blocked;
+  await revalidateAnalytics();
   return { ok: true as const, signed: typeof data === "number" ? data : ids.length, date: londonToday() };
 }
 
@@ -41,7 +43,10 @@ export async function setReviewerAction(input: { reviewId: string; reviewerId: s
     p_review_id: input.reviewId,
     p_reviewer_id: input.reviewerId,
   });
-  return fail(error, "Changing the reviewer is waiting for the database change. It has not been written.") ?? { ok: true as const };
+  const blocked = fail(error, "Changing the reviewer is waiting for the database change. It has not been written.");
+  if (blocked) return blocked;
+  await revalidateAnalytics();
+  return { ok: true as const };
 }
 
 async function tutorWriter() {
@@ -61,7 +66,10 @@ export async function saveTutorFormAction(input: { packId: string; form: TutorFo
     p_pack_id: input.packId,
     p_payload: formPayload(input.form),
   });
-  return fail(error) ?? { ok: true as const };
+  const blocked = fail(error);
+  if (blocked) return blocked;
+  await revalidateAnalytics();
+  return { ok: true as const };
 }
 
 export async function submitTutorFormAction(input: { packId: string; form: TutorFormDraft }) {
@@ -71,5 +79,8 @@ export async function submitTutorFormAction(input: { packId: string; form: Tutor
     p_pack_id: input.packId,
     p_payload: formPayload(input.form),
   });
-  return fail(error) ?? { ok: true as const };
+  const blocked = fail(error);
+  if (blocked) return blocked;
+  await revalidateAnalytics();
+  return { ok: true as const };
 }

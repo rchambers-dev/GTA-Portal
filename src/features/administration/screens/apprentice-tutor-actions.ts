@@ -9,6 +9,7 @@ import {
   validateTutorAssignment,
   type AssignTutorResult,
 } from "../domain/apprentice-tutor";
+import { revalidateAnalytics } from "@/features/reviews/domain/revalidate-analytics";
 
 const PERMISSION_ERROR =
   "You do not have permission to change the tutor. Administrator and Management can assign a tutor.";
@@ -29,5 +30,7 @@ export async function assignApprenticeTutorAction(input: {
   if (!parsed.ok) return { ok: false, formError: parsed.formError };
 
   const supabase = await createSupabaseServerClient();
-  return assignApprenticeTutor(supabase, parsed.value, londonToday());
+  const saved = await assignApprenticeTutor(supabase, parsed.value, londonToday());
+  if (saved.ok) await revalidateAnalytics();
+  return saved;
 }

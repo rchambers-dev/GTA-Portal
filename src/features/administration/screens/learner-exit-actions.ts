@@ -6,6 +6,7 @@ import { canManageApprenticeProgramme } from "../domain/apprentice-programme";
 import { recordLearnerExit, reverseLearnerExit } from "../domain/learner-exit-repository";
 import { EXIT_PERMISSION_ERROR, type ExitActionResult } from "../domain/learner-exit";
 import { londonToday } from "../domain/apprentice-tutor";
+import { revalidateAnalytics } from "@/features/reviews/domain/revalidate-analytics";
 
 const SIGN_IN_ERROR = "Sign in again to change an exit.";
 
@@ -18,6 +19,7 @@ async function authorised(): Promise<
   if (!canManageApprenticeProgramme(session)) {
     return { ok: false, formError: EXIT_PERMISSION_ERROR };
   }
+  await revalidateAnalytics();
   return { ok: true, supabase: await createSupabaseServerClient() };
 }
 

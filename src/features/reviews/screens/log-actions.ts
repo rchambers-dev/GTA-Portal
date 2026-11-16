@@ -3,6 +3,7 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
+import { revalidateAnalytics } from "../domain/revalidate-analytics";
 
 const DENIED = "You do not have permission to undo a review event. Administrator and Management can.";
 const WAITING = "Undo is waiting for the database change Reiss needs to approve. Nothing was changed.";
@@ -15,7 +16,10 @@ export async function undoReviewPackEventAction(eventId: string) {
   if (!id) return { ok: false as const, formError: "Choose an event to undo." };
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.rpc("undo_review_pack_event", { p_event_id: id });
-  if (!error) return { ok: true as const };
+  if (!error) {
+    await revalidateAnalytics();
+    return { ok: true as const };
+  }
   if (error.code === "PGRST202" || /could not find the function/i.test(error.message || "")) {
     return { ok: false as const, formError: WAITING };
   }

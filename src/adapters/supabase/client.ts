@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { createBrowserClient, createServerClient } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 
 function getSupabaseUrl(): string {
   const value = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
@@ -17,10 +17,6 @@ function getSupabaseServiceRoleKey(): string {
   const value = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
   if (!value) throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
   return value;
-}
-
-export function createSupabaseBrowserClient() {
-  return createBrowserClient(getSupabaseUrl(), getSupabaseAnonKey());
 }
 
 export async function createSupabaseServerClient() {

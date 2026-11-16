@@ -7,6 +7,7 @@ import { rebookAppointmentArgs } from "../domain/rebook-appointment";
 import { phoneReviewTimeFits } from "../domain/rebook-slots";
 import { timeToMinutes, weekdayName } from "../domain/plan-due";
 import { readRebookMonth, type RebookMonthDay } from "../domain/plan-repository";
+import { revalidateAnalytics } from "../domain/revalidate-analytics";
 
 const DENIED = "You do not have permission to change the plan. Administrator and Management can.";
 
@@ -30,6 +31,13 @@ function fail(error: { message?: string } | null): { ok: false; formError: strin
   return { ok: false, formError: plainPlanError(error.message || "The plan could not be saved.") };
 }
 
+async function saved<T extends { ok: true }>(error: { message?: string } | null, success: T) {
+  const failed = fail(error);
+  if (failed) return failed;
+  await revalidateAnalytics();
+  return success;
+}
+
 export async function pinOnDayAction(input: { date: string; gtaIds: string[] }) {
   const access = await writer();
   if (!access.ok) return access;
@@ -37,7 +45,7 @@ export async function pinOnDayAction(input: { date: string; gtaIds: string[] }) 
     p_date: input.date,
     p_gta_ids: input.gtaIds,
   });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function excludeStopAction(input: {
@@ -122,14 +130,14 @@ export async function lockStopAction(input: {
     p_leave: timeToMinutes(input.leave),
     p_until_minutes: timeToMinutes(input.until) ?? 23 * 60 + 45,
   });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function unlockStopAction(input: { gtaId: string }) {
   const access = await writer();
   if (!access.ok) return access;
   const { error } = await access.supabase.rpc("unlock_review_day_stop", { p_gta_id: input.gtaId });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function bookReviewAction(input: {
@@ -160,7 +168,7 @@ export async function bookReviewAction(input: {
     p_minutes: minutes,
     p_phone_day: method === "phone" ? input.phoneDay.trim() : null,
   });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function loadRebookMonthAction(month: string): Promise<{ ok: true; days: RebookMonthDay[] } | { ok: false; formError: string; days: [] }> {
@@ -205,14 +213,14 @@ export async function rebookAppointmentAction(input: {
     if (phoneError) return { ok: false as const, formError: phoneError };
   }
   const { error } = await access.supabase.rpc("rebook_review_appointment", rebookAppointmentArgs(input));
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function clearBookingAction(input: { reviewId: string }) {
   const access = await writer();
   if (!access.ok) return access;
   const { error } = await access.supabase.rpc("clear_review_booking", { p_review_id: input.reviewId });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function setNotesAction(input: { reviewId: string; notes: string; until: string }) {
@@ -230,7 +238,7 @@ export async function setNotesAction(input: { reviewId: string; notes: string; u
     p_review_id: input.reviewId,
     p_notes: notes,
   });
-  return fail(error) ?? { ok: true as const, formError: "The note was saved. The end date is waiting for the notes migration." };
+  return saved(error, { ok: true as const, formError: "The note was saved. The end date is waiting for the notes migration." });
 }
 
 export async function acceptDayAction(input: {
@@ -251,14 +259,14 @@ export async function acceptDayAction(input: {
       })),
     },
   });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function unlockDayAction(input: { date: string }) {
   const access = await writer();
   if (!access.ok) return access;
   const { error } = await access.supabase.rpc("unlock_review_day", { p_date: input.date });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function completeDayAction(input: { date: string; gtaIds: string[] }) {
@@ -268,7 +276,7 @@ export async function completeDayAction(input: { date: string; gtaIds: string[] 
     p_date: input.date,
     p_gta_ids: input.gtaIds,
   });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function reverseSafeguardingAction() {
@@ -308,7 +316,7 @@ export async function recordSafeguardingAction(input: { gtaId: string; date: str
     p_signed_on: input.date,
     p_notes: null,
   });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
 
 export async function savePlanSettingsAction(input: {
@@ -343,5 +351,5 @@ export async function savePlanSettingsAction(input: {
     p_out_enabled: input.outEnabled,
     p_report_auto_email: true,
   });
-  return fail(error) ?? { ok: true as const };
+  return saved(error, { ok: true as const });
 }
