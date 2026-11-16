@@ -9,6 +9,7 @@ import type { ApprenticeProgrammePage } from "../domain/apprentice-programme";
 import type { ApprenticePlacementPage } from "../domain/apprentice-placement";
 import type { LearnerExitPage } from "../domain/learner-exit";
 import { setApprenticeEmailAction } from "./apprentice-email-actions";
+import { setApprenticePhoneAction } from "./apprentice-phone-actions";
 import { assignApprenticeTutorAction } from "./apprentice-tutor-actions";
 import { ApprenticeProgrammePanel } from "./ApprenticeProgrammePanel";
 import { LearnerEmployerPanel } from "./LearnerEmployerPanel";
@@ -189,6 +190,8 @@ function OverviewPanel({
         <dd data-learner-status={apprentice.statusLabel}>{apprentice.statusLabel}</dd>
         <dt>Email</dt>
         <dd data-learner-email={apprentice.email ?? ""}>{apprentice.email || "No email"}</dd>
+        <dt>Phone</dt>
+        <dd data-learner-phone={apprentice.phone ?? ""}>{apprentice.phone || "No phone"}</dd>
         <dt>Employer</dt>
         <dd>
           <Link
@@ -202,7 +205,12 @@ function OverviewPanel({
           </Link>
         </dd>
       </dl>
-      {canEdit ? <EmailEditor gtaId={apprentice.gtaId} email={apprentice.email} /> : null}
+      {canEdit ? (
+        <>
+          <EmailEditor gtaId={apprentice.gtaId} email={apprentice.email} />
+          <PhoneEditor gtaId={apprentice.gtaId} phone={apprentice.phone} />
+        </>
+      ) : null}
     </section>
   );
 }
@@ -250,6 +258,56 @@ function EmailEditor({ gtaId, email }: { gtaId: string; email: string | null }) 
       <div className={styles.learnerActions}>
         <button type="submit" className={styles.primaryBtn} disabled={pending}>
           {pending ? "Saving…" : "Save email"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function PhoneEditor({ gtaId, phone }: { gtaId: string; phone: string | null }) {
+  const router = useRouter();
+  const [value, setValue] = useState(phone ?? "");
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+  const errorId = error ? "learner-phone-error" : undefined;
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPending(true);
+    setError(null);
+    const result = await setApprenticePhoneAction({ gtaId, phone: value });
+    setPending(false);
+    if (!result.ok) {
+      setError(result.fieldError || result.formError || "The phone number could not be saved.");
+      return;
+    }
+    setValue(result.phone ?? "");
+    router.refresh();
+  }
+
+  return (
+    <form className={styles.learnerGrid} onSubmit={onSubmit} data-learner-phone-form={gtaId}>
+      <label className={styles.learnerField} data-entry-field="phone">
+        <span>Phone</span>
+        <input
+          type="tel"
+          value={value}
+          disabled={pending}
+          autoComplete="tel"
+          placeholder="07700 900123"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={errorId}
+          onChange={(event) => setValue(event.target.value)}
+        />
+        {error ? (
+          <p id={errorId} className={styles.error} role="alert">
+            {error}
+          </p>
+        ) : null}
+      </label>
+      <div className={styles.learnerActions}>
+        <button type="submit" className={styles.primaryBtn} disabled={pending}>
+          {pending ? "Saving…" : "Save phone"}
         </button>
       </div>
     </form>

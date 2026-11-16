@@ -144,6 +144,7 @@ export async function insertApprenticeRecord(
       middleNames: row.middle_names,
       lastName: row.last_name,
       email: row.email,
+      phone: row.phone,
       programmeId: row.programme_id,
       status: row.status,
       createdAt: row.created_at,

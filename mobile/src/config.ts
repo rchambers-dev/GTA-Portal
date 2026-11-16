@@ -1,18 +1,21 @@
+/** Public Portal project. These are the same client values the website already ships. */
+export const PUBLIC_SUPABASE_URL = "https://cjtgjxgghfiskqnuttzd.supabase.co";
+export const PUBLIC_SUPABASE_ANON_KEY = "sb_publishable_SjLAYAI9Y8xTLjj7dI6r3Q_5vt1P8GC";
+
 export type SupabaseConfig = {
   url: string;
   anonKey: string;
 };
 
 /**
- * The companion app uses the same public Supabase URL and anon (or publishable) key
- * as the Portal. A service-role key is rejected so it cannot be bundled into the phone.
+ * Uses the public Portal project unless EXPO_PUBLIC_SUPABASE_URL or
+ * EXPO_PUBLIC_SUPABASE_ANON_KEY is set. A service-role key is rejected.
  */
 export function readSupabaseConfig(
   env: Record<string, string | undefined> = process.env,
 ): SupabaseConfig | null {
-  const url = (env.EXPO_PUBLIC_SUPABASE_URL ?? "").trim().replace(/\/$/, "");
-  const anonKey = (env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? "").trim();
-  if (!url || !anonKey) return null;
+  const url = (env.EXPO_PUBLIC_SUPABASE_URL ?? "").trim().replace(/\/$/, "") || PUBLIC_SUPABASE_URL;
+  const anonKey = (env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? "").trim() || PUBLIC_SUPABASE_ANON_KEY;
   if (!/^https:\/\//i.test(url)) return null;
   if (keyRole(anonKey) === "service_role") return null;
   return { url, anonKey };

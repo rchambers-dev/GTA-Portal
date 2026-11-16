@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readSupabaseConfig } from "./config";
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL, readSupabaseConfig } from "./config";
 
 function jwt(payload: object): string {
   const encode = (value: object) => Buffer.from(JSON.stringify(value)).toString("base64url");
@@ -39,8 +39,22 @@ describe("Supabase app config", () => {
     ).toBeNull();
   });
 
-  it("refuses a missing URL or key", () => {
-    expect(readSupabaseConfig({ EXPO_PUBLIC_SUPABASE_URL: url })).toBeNull();
-    expect(readSupabaseConfig({ EXPO_PUBLIC_SUPABASE_ANON_KEY: "anon" })).toBeNull();
+  it("uses the public Portal project when no env file is set", () => {
+    expect(readSupabaseConfig({})).toEqual({
+      url: PUBLIC_SUPABASE_URL,
+      anonKey: PUBLIC_SUPABASE_ANON_KEY,
+    });
+  });
+
+  it("lets env vars replace the public defaults", () => {
+    expect(
+      readSupabaseConfig({
+        EXPO_PUBLIC_SUPABASE_URL: url,
+        EXPO_PUBLIC_SUPABASE_ANON_KEY: "sb_publishable_override",
+      }),
+    ).toEqual({
+      url: "https://example.supabase.co",
+      anonKey: "sb_publishable_override",
+    });
   });
 });

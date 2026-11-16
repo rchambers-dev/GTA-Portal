@@ -4,6 +4,7 @@
  */
 
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
+import { validateContactPhone } from "./uk-phone";
 
 export const APPRENTICE_STATUSES = [
   "in_learning",
@@ -27,7 +28,7 @@ export const DEFAULT_APPRENTICE_STATUS: ApprenticeStatus = "in_learning";
 
 /** Columns this page reads and writes. gta_id is returned, never written. */
 export const APPRENTICE_COLUMNS =
-  "gta_id, first_name, middle_names, last_name, email, programme_id, status, created_at, updated_at";
+  "gta_id, first_name, middle_names, last_name, email, phone, programme_id, status, created_at, updated_at";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -46,6 +47,7 @@ export type NewApprenticeInput = {
   middleNames: string;
   lastName: string;
   email?: string;
+  phone?: string;
   programmeId: string;
   status: string;
 };
@@ -55,6 +57,7 @@ export type ValidatedApprentice = {
   middleNames: string | null;
   lastName: string;
   email: string | null;
+  phone: string | null;
   programmeId: string | null;
   status: ApprenticeStatus;
 };
@@ -65,6 +68,7 @@ export type ApprenticeInsert = {
   middle_names: string | null;
   last_name: string;
   email: string | null;
+  phone: string | null;
   programme_id: string | null;
   status: ApprenticeStatus;
 };
@@ -75,6 +79,7 @@ export type SavedApprentice = {
   middleNames: string | null;
   lastName: string;
   email: string | null;
+  phone: string | null;
   programmeId: string | null;
   status: ApprenticeStatus;
   createdAt: string;
@@ -96,7 +101,7 @@ export type ApprenticeListItem = {
 export type ApprenticeField = keyof ApprenticeFieldErrors;
 
 export type ApprenticeFieldErrors = Partial<
-  Record<"firstName" | "middleNames" | "lastName" | "email" | "programmeId" | "status", string>
+  Record<"firstName" | "middleNames" | "lastName" | "email" | "phone" | "programmeId" | "status", string>
 >;
 
 export type AddApprenticeResult =
@@ -109,6 +114,7 @@ export type ApprenticeRow = {
   middle_names: string | null;
   last_name: string;
   email: string | null;
+  phone: string | null;
   programme_id: string | null;
   status: string;
   created_at: string;
@@ -204,12 +210,14 @@ export function validateNewApprentice(
   const lastName = input.lastName.trim();
   const middleNames = input.middleNames.trim();
   const email = validateApprenticeEmail(input.email);
+  const phone = validateContactPhone(input.phone);
   const programmeId = input.programmeId.trim();
   const status = input.status.trim();
 
   if (!firstName) fieldErrors.firstName = "Enter a first name.";
   if (!lastName) fieldErrors.lastName = "Enter a last name.";
   if (!email.ok) fieldErrors.email = email.error;
+  if (!phone.ok) fieldErrors.phone = phone.error;
   if (programmeId && !UUID_PATTERN.test(programmeId)) {
     fieldErrors.programmeId = "Choose a programme from the list.";
   }
@@ -228,6 +236,7 @@ export function validateNewApprentice(
       middleNames: middleNames || null,
       lastName,
       email: email.ok ? email.email : null,
+      phone: phone.ok ? phone.phone : null,
       programmeId: programmeId || null,
       status: status as ApprenticeStatus,
     },
@@ -240,6 +249,7 @@ export function toApprenticeInsert(value: ValidatedApprentice): ApprenticeInsert
     middle_names: value.middleNames,
     last_name: value.lastName,
     email: value.email,
+    phone: value.phone,
     programme_id: value.programmeId,
     status: value.status,
   };
@@ -265,6 +275,12 @@ export function explainApprenticeWriteError(error: {
   }
   if (message.includes("apprentices_email_format")) {
     return { fieldErrors: { email: "Enter a valid email address." }, formError: null };
+  }
+  if (message.includes("apprentices_phone_e164") || /uk phone number/i.test(message)) {
+    return {
+      fieldErrors: { phone: "Enter a UK phone number, such as 07700 900123." },
+      formError: null,
+    };
   }
   if (message.includes("apprentices_email_lower_key") || (error.code === "23505" && /email/i.test(message))) {
     return {

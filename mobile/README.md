@@ -10,10 +10,10 @@ The app reads `public.portal_address_book`. That view is `security_invoker`, so 
 
 | Group | Source | What lands on the phone |
 | --- | --- | --- |
-| Learners | `apprentices`, plus the current row in `apprentice_employments` and `employers` | Name, employer, programme. There is no phone column on apprentices, and emails are often empty. Those contacts are saved with the name only. |
+| Learners | `apprentices`, plus the current row in `apprentice_employments` and `employers` | Name, phone, email, employer, and programme. Phone and email are optional until someone enters them on the learner page. |
 | Employers | `employer_managers`, with `employers` and `employer_sites` | Name, phone, email, company, site |
-| Tutors | `profiles` where `base_role` is Tutor | Name, email, job title. Profiles have no phone column. |
-| Staff | Other active or invited `profiles` | Name, email, job title |
+| Tutors | `profiles` where `base_role` is Tutor | Name, email, and job title. Staff profiles store the login email, not a separate phone number. |
+| Staff | Other active or invited `profiles` | Name, email, and job title |
 
 Test apprentices are left out. Archived and disabled profiles are left out. A tutor still only receives the apprentices `tutor_can_see` already allows.
 
@@ -28,27 +28,16 @@ Use a recent Expo Go from the App Store or Play Store. SDK 58 needs a matching E
 ```bash
 cd mobile
 npm install
-cp .env.example .env
-```
-
-Fill `.env` with the Portal's public Supabase values:
-
-```bash
-EXPO_PUBLIC_SUPABASE_URL=        # same as NEXT_PUBLIC_SUPABASE_URL
-EXPO_PUBLIC_SUPABASE_ANON_KEY=   # same as NEXT_PUBLIC_SUPABASE_ANON_KEY
-```
-
-Do not paste `SUPABASE_SERVICE_ROLE_KEY`. The app refuses a key whose JWT role is `service_role`.
-
-```bash
 npx expo start
 ```
 
+No env file is required. The app is wired to the public Portal Supabase project (`https://cjtgjxgghfiskqnuttzd.supabase.co`) and its publishable key. `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` override those defaults when set. Do not put `SUPABASE_SERVICE_ROLE_KEY` in the app. A JWT whose role is `service_role` is refused.
+
 Scan the QR code with the iPhone camera or the Android Expo Go app. Sign in with a Portal email and password, allow contacts, choose the groups, and tap Sync.
 
-The address book returns nothing useful until the migration `supabase/migrations/20261116060147_portal_address_book.sql` has been applied to the Supabase project. Apply it with the project's usual migration process. This app does not apply it.
+Password sign-in does not ask for a captcha. The Portal's own hCaptcha check stays off unless `NEXT_PUBLIC_HCAPTCHA_ENABLED` is exactly `true`. Turning captcha on in Supabase Auth would block this app, because the phone cannot complete that check.
 
-If the Portal project requires hCaptcha on password sign-in, the phone cannot complete that check. Password sign-in has to be allowed without captcha for this app.
+Learner phone numbers appear after `supabase/migrations/20261116062747_apprentice_contact_phone.sql` is applied. Until then, learner rows sync with whatever phone the address book already returns.
 
 ## Build with EAS
 
@@ -64,7 +53,7 @@ npx eas-cli@latest build --platform ios --profile preview
 
 `preview` produces an internal Android APK and an internal iOS build. `production` is for the stores. The first build asks you to create an Expo project for the slug `gta-portal`. Bundle ids are `uk.co.doncastergta.portal` on both platforms; change them in `app.json` before a store submission if Doncaster GTA uses different ids.
 
-Set `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` as EAS environment variables for the build profile. EAS does not read your local `.env` unless you opt into that.
+An EAS build uses the same public defaults. Set `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` on the build profile only when you want a different Supabase project.
 
 iOS notes in a real build also need Apple's contact-notes entitlement. `ios.accessesContactNotes` is already set. Expo Go still will not write notes.
 
