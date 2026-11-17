@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { FormField, Select, StatusBadge, TextArea, type StatusTone } from "@/components/ui";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
@@ -346,7 +347,8 @@ function BookingDrawer({
   }
 
   const cancelled = booking.status === "cancelled";
-  return (
+  if (typeof document === "undefined") return null;
+  return createPortal(
     <>
       <button type="button" className={local.backdrop} aria-label="Close booking details" onClick={onClose} />
       <aside className={local.drawer} role="dialog" aria-modal="true" aria-labelledby={titleId} data-booking-drawer="">
@@ -363,6 +365,7 @@ function BookingDrawer({
             Close
           </button>
         </div>
+        <div className={local.drawerBody}>
         <div className={local.badgeRow}>
           <StatusBadge tone="neutral">{BOOKING_TYPE_LABELS[booking.bookingType]}</StatusBadge>
           <StatusBadge tone={bookingTone(booking.status)}>{BOOKING_STATUS_LABELS[booking.status]}</StatusBadge>
@@ -454,7 +457,9 @@ function BookingDrawer({
             </button>
           )}
         </div>
+        </div>
       </aside>
-    </>
+    </>,
+    document.body,
   );
 }

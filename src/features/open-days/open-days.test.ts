@@ -80,6 +80,18 @@ describe("open days access and fallback", () => {
     expect(migration).toContain("create table public.open_day_booking_vehicles");
     expect(migration).toContain("Not applied");
     expect(migration.toLowerCase()).not.toContain("parking");
+    const drawerCss = readFileSync(
+      path.join(process.cwd(), "src/features/open-days/screens/open-days.module.css"),
+      "utf8",
+    );
+    expect(drawerCss).toContain("top: calc(var(--header-height) + var(--space-3))");
+    expect(drawerCss).toContain("max-height: calc(100dvh - var(--header-height) - var(--space-3))");
+    const drawer = readFileSync(
+      path.join(process.cwd(), "src/features/open-days/screens/OpenDayDetail.tsx"),
+      "utf8",
+    );
+    expect(drawer).toContain("createPortal");
+    expect(drawer).toContain("document.body");
   });
 });
 
