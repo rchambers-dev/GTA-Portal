@@ -4,6 +4,7 @@ import { memo, useEffect, useMemo, useRef, useState, type FormEvent } from "reac
 import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { dayUndoSummary, withinUndoWindow } from "../domain/review-log";
 import { fitStops, routeSettings } from "../domain/plan-drive";
 import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
@@ -21,6 +22,7 @@ import {
   unlockStopAction,
   verifyStopAction,
 } from "./plan-actions";
+import { UndoControl } from "./UndoControl";
 import { PlanMap } from "./PlanMap";
 import { RebookPanel } from "./RebookPanel";
 import styles from "./plan.module.css";
@@ -468,9 +470,20 @@ export function PlanView({
               <span className={styles.completedPill}>
                 <LockIcon /> Route completed
               </span>
+              {page.canWrite && activeDay.completedAt && withinUndoWindow(activeDay.completedAt, new Date()) ? (
+                <UndoControl
+                  ready={page.dayUndoReady}
+                  label="Undo complete"
+                  title="Undo this day's completion?"
+                  summary={dayUndoSummary(selectedDate)}
+                  learners={activeDay.stops.filter((stop) => stop.completed).map((stop) => ({ gtaId: stop.gtaId, name: stop.name }))}
+                  dayId={selectedDate}
+                />
+              ) : null}
             </div>
           ) : (
             <div className={styles.routeBar}>
+              {activeDay.accepted ? <span className={styles.acceptedPill}>Route accepted</span> : null}
               {page.canWrite ? (
                 <button
                   type="button"
@@ -1293,6 +1306,7 @@ function planDayFor(page: PlanPageData, date: string): PlanDay {
       date,
       accepted: false,
       completed: false,
+      completedAt: null,
       stops: [],
       completedReviews: [],
     }

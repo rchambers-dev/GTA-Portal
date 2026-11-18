@@ -28,9 +28,11 @@ export async function ReviewLogScreen({
       <ReviewLogView
         workspace={workspace}
         events={data.events}
+        days={data.days}
         filters={filters}
         today={data.today}
         undoReady={data.undoReady}
+        dayUndoReady={data.dayUndoReady}
         canUndo={canAddApprentice(session)}
         loadError={data.loadError}
       />

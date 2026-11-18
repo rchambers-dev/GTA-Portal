@@ -100,6 +100,7 @@ export type PlanDay = {
   date: string;
   accepted: boolean;
   completed: boolean;
+  completedAt: string | null;
   stops: PlanStop[];
   completedReviews: CompletedReview[];
 };
@@ -107,6 +108,7 @@ export type PlanDay = {
 export type PlanPageData = {
   today: string;
   canWrite: boolean;
+  dayUndoReady: boolean;
   people: PlanPerson[];
   counts: Record<PlanCounter, number>;
   settings: PlanSettings;
@@ -133,6 +135,11 @@ function asRows<T>(data: unknown): T[] {
 
 function isCounter(value: string): value is PlanCounter {
   return value === "waiting" || value === "to_book" || value === "locked" || value === "booked";
+}
+
+function dayUndoMissing(error: { code?: string; message?: string } | null): boolean {
+  if (!error) return false;
+  return error.code === "PGRST202" || /could not find the function/i.test(error.message || "");
 }
 
 export async function readPlanPage(
@@ -163,6 +170,7 @@ export async function readPlanPage(
     daysResult,
     stopsResult,
     completedResult,
+    dayUndoProbe,
   ] = await Promise.all([
     supabase.from("plan_counters").select("gta_id, name, tutor, stage, counter, appointment_on"),
     loadPlanApprentices(supabase),
@@ -205,6 +213,7 @@ export async function readPlanPage(
       .eq("status", "completed")
       .order("actual_on", { ascending: false })
       .limit(200),
+    supabase.rpc("undo_review_day_completion", { p_day_id: "1900-01-01" }),
   ]);
 
   const problems: string[] = [];
@@ -514,6 +523,7 @@ export async function readPlanPage(
     date: dateOn,
     accepted: Boolean(dayMeta.get(dateOn)?.accepted),
     completed: Boolean(dayMeta.get(dateOn)?.completed_at),
+    completedAt: dayMeta.get(dateOn)?.completed_at ?? null,
     stops: stopsByDate.get(dateOn) ?? [],
     completedReviews: completedByDate.get(dateOn) ?? [],
   }));
@@ -521,6 +531,7 @@ export async function readPlanPage(
     date: options.date,
     accepted: Boolean(dayMeta.get(options.date)?.accepted),
     completed: Boolean(dayMeta.get(options.date)?.completed_at),
+    completedAt: dayMeta.get(options.date)?.completed_at ?? null,
     stops: [],
     completedReviews: [],
   };
@@ -528,6 +539,7 @@ export async function readPlanPage(
   return {
     today,
     canWrite: options.canWrite,
+    dayUndoReady: !dayUndoMissing(dayUndoProbe.error),
     people,
     counts,
     settings: {
