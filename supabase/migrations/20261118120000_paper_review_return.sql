@@ -90,7 +90,7 @@ begin
     raise exception 'Review pack not found' using errcode = 'P0002';
   end if;
   if v_pack.stage not in ('waiting', 'with_tutor') then
-    raise exception 'Only a waiting review, or one still with the tutor, can come back on paper (this one is %)', v_pack.stage using errcode = '23514';
+    raise exception 'Only a waiting review, or one still with the tutor, can be marked received (this one is %)', v_pack.stage using errcode = '23514';
   end if;
   v_sent := v_pack.stage = 'with_tutor';
   insert into public.review_tutor_forms (pack_id) values (p_pack_id) on conflict (pack_id) do nothing;
@@ -129,20 +129,20 @@ begin
     raise exception 'Review pack not found' using errcode = 'P0002';
   end if;
   if v_pack.stage <> 'to_book' then
-    raise exception 'A paper return can only be undone while it is still To book (this one is %)', v_pack.stage using errcode = '23514';
+    raise exception 'A received review can only be undone while it is still To book (this one is %)', v_pack.stage using errcode = '23514';
   end if;
   if not exists (
     select 1 from public.review_tutor_forms f
      where f.pack_id = p_pack_id and f.entry_method = 'paper'
   ) then
-    raise exception 'This pack was not returned on paper' using errcode = '23514';
+    raise exception 'This review was not marked received' using errcode = '23514';
   end if;
   if exists (
     select 1 from public.review_bookings b
      where b.review_id = v_pack.review_id
        and (b.appointment_on is not null or b.phone_day is not null)
   ) then
-    raise exception 'This paper return is already booked, so it cannot be undone' using errcode = '23514';
+    raise exception 'This review is already booked, so receiving it cannot be undone' using errcode = '23514';
   end if;
   select e.id into v_event_id
     from public.review_pack_events e
@@ -165,7 +165,7 @@ begin
    where pack_id = p_pack_id;
   perform public.review_pack_record(
     p_pack_id, 'undone', v_back, 'user', false, now(),
-    jsonb_build_object('undoes', v_event_id, 'on_paper', true, 'note', 'Paper return undone')
+    jsonb_build_object('undoes', v_event_id, 'on_paper', true, 'note', 'Received review undone')
   );
 end;
 $$;

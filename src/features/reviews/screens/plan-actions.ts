@@ -49,7 +49,7 @@ function refreshReviewDates() {
 function missingRpc(error: { message?: string; code?: string } | null, name: string) {
   if (!error) return null;
   if (error.code === "PGRST202" || (error.message || "").includes(name)) {
-    return { ok: false as const, formError: "Paper returns are in the migration and are not on the database yet." };
+    return { ok: false as const, formError: "Receiving a review this way is in the migration and is not on the database yet." };
   }
   return null;
 }

@@ -236,18 +236,18 @@ export function PlanView({
     if (!person?.packId) return;
     const waitingPack = person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor");
     if (!waitingPack) {
-      setMessage(`${person.name} is not waiting for a paper review.`);
+      setMessage(`${person.name} is not waiting for a review to be received.`);
       return;
     }
     const result = await run(() => recordPaperReturnAction({ packId: person.packId || "" }), `${person.gtaId}:paper`);
-    if (result.ok) setMessage(`${person.name} was returned on paper and is now To book.`);
+    if (result.ok) setMessage(`${person.name}'s review was received and is now To book.`);
   }
 
   async function undoPaper(gtaId: string) {
     const person = page.people.find((item) => item.gtaId === gtaId);
     if (!person?.packId || !person.paperReturn || person.stage !== "to_book" || person.appointmentOn) return;
     const result = await run(() => undoPaperReturnAction({ packId: person.packId || "" }), `${person.gtaId}:paper`);
-    if (result.ok) setMessage(`${person.name}'s paper return was cleared.`);
+    if (result.ok) setMessage(`${person.name}'s received review was undone.`);
   }
 
   async function dropPerson(gtaId: string) {
@@ -693,16 +693,16 @@ function RosterCard({
       <ConcernChip person={person} reasons={reasons} canWrite={canWrite} onRun={onRun} onStatus={onStatus} />
       {canWrite && person.packId && person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor") ? (
         <button type="button" className={styles.pill} onClick={() => void onRun(() => recordPaperReturnAction({ packId: person.packId || "" })).then((result) => {
-          if (result.ok) onStatus(`${person.name} was returned on paper and is now To book.`);
+          if (result.ok) onStatus(`${person.name}'s review was received and is now To book.`);
         })}>
-          Got paper review
+          Review received
         </button>
       ) : null}
       {canWrite && person.paperReturn && person.stage === "to_book" && !person.appointmentOn ? (
         <button type="button" className={styles.pill} onClick={() => void onRun(() => undoPaperReturnAction({ packId: person.packId || "" })).then((result) => {
-          if (result.ok) onStatus(`${person.name}'s paper return was cleared.`);
+          if (result.ok) onStatus(`${person.name}'s received review was undone.`);
         })}>
-          Undo paper return
+          Undo received
         </button>
       ) : null}
       {canWrite && person.reviewId ? (

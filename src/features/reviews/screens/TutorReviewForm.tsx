@@ -221,7 +221,7 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
       <p className={styles.meta}>{company} · {postcode}</p>
       <p className={styles.status} role="status">{status}</p>
       {review.paperReturnedOn ? (
-        <p className={styles.note}>This review was returned on paper on {review.paperReturnedOn}. The form is empty and read only.</p>
+        <p className={styles.note}>Review received on {review.paperReturnedOn}.</p>
       ) : null}
       {review.reviewerNote ? <p className={styles.note}><strong>Reviewer note:</strong> {review.reviewerNote}</p> : null}
       <section className={styles.card}>
