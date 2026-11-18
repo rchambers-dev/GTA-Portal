@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { formatTutorDate, londonToday } from "@/features/administration/domain/apprentice-tutor";
+import { londonClock } from "./plan-call-end";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
 import {
@@ -95,6 +96,7 @@ type Loaded = {
   concerns: Set<string>;
   reviewers: { id: string; name: string; isDefault: boolean }[];
   forms: Map<string, TutorFormDraft>;
+  paper: Map<string, string>;
 };
 
 async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
@@ -131,7 +133,7 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
     supabase.from("profiles").select("id, display_name"),
     supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
     supabase.from("review_reviewers").select("profile_id, is_default"),
-    supabase.from("review_tutor_forms").select("pack_id, previous_summary, tutor_comment"),
+    supabase.from("review_tutor_forms").select("pack_id, previous_summary, tutor_comment, entry_method, submitted_at"),
     supabase.from("review_targets").select("pack_id, kind, slot, action, owner, measure, target_date, status, carried_from_id"),
     supabase.from("review_progress_rows").select("pack_id, area, evidence, action_ref, rag, target_hours, current_hours"),
   ]);
@@ -181,7 +183,17 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
       isDefault: Boolean(row.is_default),
     })),
     forms: savedForms(formsResult.data, targetsResult.data, progressResult.data),
+    paper: paperReturns(formsResult.data),
   };
+}
+
+function paperReturns(forms: unknown): Map<string, string> {
+  const paper = new Map<string, string>();
+  asRows<{ pack_id: string; entry_method: string | null; submitted_at: string | null }>(forms).forEach((row) => {
+    if (row.entry_method !== "paper" || !row.submitted_at) return;
+    paper.set(row.pack_id, formatTutorDate(londonClock(new Date(row.submitted_at)).today));
+  });
+  return paper;
 }
 
 function savedForms(forms: unknown, targets: unknown, progress: unknown): Map<string, TutorFormDraft> {
@@ -336,6 +348,8 @@ function buildLearner(loaded: Loaded, apprentice: ApprenticeRow, today: string):
     fillRemaining: fill.remaining,
     fillStarted: fill.started,
     noticeDays,
+    paperReturn: Boolean(latestPack && loaded.paper.has(latestPack.id)),
+    paperReturnedOn: latestPack ? loaded.paper.get(latestPack.id) ?? null : null,
   };
 }
 
@@ -388,6 +402,8 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
     method: null,
     openReviewId: null,
     booked: false,
+    paperReturn: false,
+    paperReturnedOn: null,
     inBreak: false,
     history: [],
     loadError: loaded.error,
@@ -411,6 +427,7 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
       actualOn: review.actual_on ? formatTutorDate(review.actual_on) : "—",
       method: review.method ? methodLabel(review.method) : "—",
       status: "Completed",
+      paperReturn: Boolean(pack && loaded.paper.has(pack.id)),
     };
   });
   return {
@@ -427,6 +444,8 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
     method: open?.method ? methodLabel(open.method) : null,
     openReviewId: open?.id ?? null,
     booked: learner.stepId === "booked" || learner.stepId === "completed",
+    paperReturn: learner.paperReturn,
+    paperReturnedOn: learner.paperReturnedOn,
     inBreak: apprentice.status === "break_in_learning",
     history,
   };
@@ -472,6 +491,7 @@ export async function readDigitalReview(supabase: SupabaseClient, packId: string
     today,
     section1: [],
     form: blank,
+    paperReturnedOn: null,
     reviewerNote: "",
     previousReview: null,
     savedAt: null,
@@ -483,7 +503,7 @@ export async function readDigitalReview(supabase: SupabaseClient, packId: string
   const [apprenticeResult, reviewResult, formResult, targetsResult, progressResult, employmentResult, earlierResult] = await Promise.all([
     supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, programme_id, release_day, status, course_start, planned_course_end").eq("gta_id", pack.gta_id).maybeSingle(),
     supabase.from("reviews").select("id, planned_on, actual_on, method, interval_weeks, reviewer_id, notes").eq("id", pack.review_id).maybeSingle(),
-    supabase.from("review_tutor_forms").select("previous_summary, tutor_comment, draft_saved_at").eq("pack_id", packId).maybeSingle(),
+    supabase.from("review_tutor_forms").select("previous_summary, tutor_comment, draft_saved_at, entry_method, submitted_at").eq("pack_id", packId).maybeSingle(),
     supabase.from("review_targets").select("id, kind, slot, action, owner, measure, target_date, status, carried_from_id").eq("pack_id", packId),
     supabase.from("review_progress_rows").select("area, evidence, action_ref, rag, target_hours, current_hours").eq("pack_id", packId),
     supabase.from("apprentice_employments").select("employer_id, site_id, manager_id").eq("gta_id", pack.gta_id).is("end_date", null).maybeSingle(),
@@ -559,11 +579,14 @@ export async function readDigitalReview(supabase: SupabaseClient, packId: string
     gtaId: pack.gta_id,
     name,
     stage: pack.stage,
-    editable: pack.stage === "with_tutor" && Boolean(userId) && pack.tutor_id === userId,
+    editable: pack.stage === "with_tutor" && Boolean(userId) && pack.tutor_id === userId && formResult.data?.entry_method !== "paper",
     intervalWeeks: reviewResult.data?.interval_weeks || 10,
     today,
     section1,
     form,
+    paperReturnedOn: formResult.data?.entry_method === "paper" && formResult.data.submitted_at
+      ? formatTutorDate(londonClock(new Date(formResult.data.submitted_at)).today)
+      : null,
     reviewerNote: reviewResult.data?.notes?.trim() || "",
     previousReview,
     savedAt: formResult.data?.draft_saved_at || null,

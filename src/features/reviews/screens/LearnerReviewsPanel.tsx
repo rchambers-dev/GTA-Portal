@@ -74,6 +74,7 @@ export function LearnerReviewsPanel({
           <div>
             <span>Method</span>
             <strong>{reviews.booked && reviews.method ? reviews.method : "Once booked"}</strong>
+            {reviews.paperReturn ? <span>Paper{reviews.paperReturnedOn ? ` · ${reviews.paperReturnedOn}` : ""}</span> : null}
           </div>
         </div>
         {error ? <p className={styles.error} role="alert">{error}</p> : null}
@@ -103,7 +104,7 @@ export function LearnerReviewsPanel({
                   <td>{row.plannedOn}</td>
                   <td>{row.actualOn}</td>
                   <td>{row.method}</td>
-                  <td>{row.status}</td>
+                  <td>{row.status}{row.paperReturn ? " · Paper" : ""}</td>
                   <td>
                     {row.packId ? (
                       <Link className={styles.link} href={`/reviews?pack=${row.packId}`}>

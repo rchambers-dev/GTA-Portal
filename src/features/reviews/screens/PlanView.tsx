@@ -17,9 +17,11 @@ import {
   excludeStopAction,
   lockStopAction,
   raisePlanConcernAction,
+  recordPaperReturnAction,
   recordSafeguardingAction,
   resolvePlanConcernAction,
   setNotesAction,
+  undoPaperReturnAction,
   unlockDayAction,
   unlockStopAction,
   verifyStopAction,
@@ -49,6 +51,7 @@ export function PlanView({
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(serverDate);
   const [tab, setTab] = useState<PlanCounter>("to_book");
+  const [dropTab, setDropTab] = useState<PlanCounter | null>(null);
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [busyKey, setBusyKey] = useState<string | null>(null);
@@ -228,6 +231,25 @@ export function PlanView({
     if (fitted.missing.length) setMessage(`Could not find: ${fitted.missing.join(", ")}`);
   }
 
+  async function paperReturn(gtaId: string) {
+    const person = page.people.find((item) => item.gtaId === gtaId);
+    if (!person?.packId) return;
+    const waitingPack = person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor");
+    if (!waitingPack) {
+      setMessage(`${person.name} is not waiting for a paper review.`);
+      return;
+    }
+    const result = await run(() => recordPaperReturnAction({ packId: person.packId || "" }), `${person.gtaId}:paper`);
+    if (result.ok) setMessage(`${person.name} was returned on paper and is now To book.`);
+  }
+
+  async function undoPaper(gtaId: string) {
+    const person = page.people.find((item) => item.gtaId === gtaId);
+    if (!person?.packId || !person.paperReturn || person.stage !== "to_book" || person.appointmentOn) return;
+    const result = await run(() => undoPaperReturnAction({ packId: person.packId || "" }), `${person.gtaId}:paper`);
+    if (result.ok) setMessage(`${person.name}'s paper return was cleared.`);
+  }
+
   async function dropPerson(gtaId: string) {
     const person = page.people.find((item) => item.gtaId === gtaId);
     if (!person) return;
@@ -365,9 +387,27 @@ export function PlanView({
               type="button"
               role="tab"
               aria-selected={tab === item.id}
-              className={[styles.counterTile, tab === item.id ? (item.id === "locked" ? styles.tabLocked : styles.tabOn) : ""].filter(Boolean).join(" ")}
+              className={[
+                styles.counterTile,
+                tab === item.id ? (item.id === "locked" ? styles.tabLocked : styles.tabOn) : "",
+                dropTab === item.id ? styles.dropOn : "",
+              ].filter(Boolean).join(" ")}
               data-roster-tab={item.id}
               onClick={() => setTab(item.id)}
+              onDragOver={(event) => {
+                if (item.id !== "to_book" && item.id !== "waiting") return;
+                event.preventDefault();
+                setDropTab(item.id);
+              }}
+              onDragLeave={() => setDropTab((current) => (current === item.id ? null : current))}
+              onDrop={(event) => {
+                event.preventDefault();
+                setDropTab(null);
+                const id = event.dataTransfer.getData("text/plain");
+                if (!id) return;
+                if (item.id === "to_book") void paperReturn(id);
+                if (item.id === "waiting") void undoPaper(id);
+              }}
             >
               <strong id={`paper-${item.id}`}>{page.counts[item.id]}</strong>
               <em>{item.label}</em>
@@ -650,7 +690,22 @@ function RosterCard({
         <span className={styles.college}>College {person.releaseDay}</span>
       </span>
       <DuePill person={person} />
+      {person.paperReturn ? <span className={styles.paperTag}>Paper</span> : null}
       <ConcernChip person={person} reasons={reasons} canWrite={canWrite} onRun={onRun} onStatus={onStatus} />
+      {canWrite && person.packId && person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor") ? (
+        <button type="button" className={styles.pill} onClick={() => void onRun(() => recordPaperReturnAction({ packId: person.packId || "" })).then((result) => {
+          if (result.ok) onStatus(`${person.name} was returned on paper and is now To book.`);
+        })}>
+          Got paper review
+        </button>
+      ) : null}
+      {canWrite && person.paperReturn && person.stage === "to_book" && !person.appointmentOn ? (
+        <button type="button" className={styles.pill} onClick={() => void onRun(() => undoPaperReturnAction({ packId: person.packId || "" })).then((result) => {
+          if (result.ok) onStatus(`${person.name}'s paper return was cleared.`);
+        })}>
+          Undo paper return
+        </button>
+      ) : null}
       {canWrite && person.reviewId ? (
         <button type="button" className={person.notes ? styles.noteOn : styles.pill} onClick={onNote}>
           {person.notes ? "Edit note" : "Add note"}
@@ -927,6 +982,7 @@ function StopCard({
             {!stop.completed && verified ? <span className={styles.tagDone}>Verified</span> : null}
             {bookedOnDay ? <span className={styles.tagDone}>Booked time</span> : null}
             {locked ? <span className={styles.tagLock}>{stop.lockLabel || "Locked"}</span> : null}
+            {people.find((person) => person.gtaId === stop.gtaId)?.paperReturn ? <span className={styles.paperTag}>Paper</span> : null}
             {people.find((person) => person.gtaId === stop.gtaId) ? (
               <ConcernChip
                 person={people.find((person) => person.gtaId === stop.gtaId)!}

@@ -20,6 +20,7 @@ function stop(partial: Partial<PlanStop> & Pick<PlanStop, "gtaId" | "name" | "ki
     arriveMinutes: 10 * 60 + 20,
     leaveMinutes: 10 * 60 + 50,
     locked: false,
+    lockLabel: "",
     dueLabel: "On track",
     dueState: "ok",
     tutor: "Alex Tutor",

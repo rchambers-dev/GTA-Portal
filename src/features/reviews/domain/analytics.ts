@@ -44,6 +44,11 @@ export type AnalyticsEvent = {
   gtaId: string;
   type: string;
   at: string;
+  id?: string;
+  undoes?: string;
+  /** Paper return. sentKnown is false when the pack was never sent to the tutor. */
+  paperReturn?: boolean;
+  sentKnown?: boolean;
   actorName: string;
   actorRole: string;
   detail: string;
@@ -268,7 +273,9 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const ids = new Set(learners.map((learner) => learner.gtaId));
   const reviews = source.reviews.filter((review) => ids.has(review.gtaId));
   const packs = source.packs.filter((pack) => ids.has(pack.gtaId));
-  const events = source.events.filter((event) => ids.has(event.gtaId));
+  const rawEvents = source.events.filter((event) => ids.has(event.gtaId));
+  const undoneIds = new Set(rawEvents.flatMap((event) => (event.undoes ? [event.undoes] : [])));
+  const events = rawEvents.filter((event) => event.type !== "undone" && !(event.id && undoneIds.has(event.id)));
   const packByGta = new Map<string, AnalyticsPack>();
   for (const pack of packs) {
     const current = packByGta.get(pack.gtaId);
@@ -309,7 +316,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const waitingNow = flow.find((step) => step.id === "waiting")?.count || 0;
 
   const datedEvents = events.filter((event) => inWindow(event.at, window));
-  const countType = (type: string) => datedEvents.filter((event) => event.type === type).length;
+  const countType = (type: string) => datedEvents.filter((event) => event.type === type && !(type === "released" && event.paperReturn && !event.sentKnown)).length;
 
   let visits = 0;
   let calls = 0;
@@ -344,7 +351,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
   const weekCount = (start: string, type: string) =>
     events.filter((event) => {
       const day = londonDay(event.at);
-      return event.type === type && day >= start && day <= addDays(start, 4) && inWindow(event.at, window);
+      return event.type === type && !(type === "released" && event.paperReturn && !event.sentKnown) && day >= start && day <= addDays(start, 4) && inWindow(event.at, window);
     }).length;
   const completedWeek = (start: string) =>
     reviews.filter((review) => {
@@ -455,6 +462,7 @@ export function buildAnalytics(source: AnalyticsSource, filters: AnalyticsFilter
       const start = list.find((event) => event.type === from && inWindow(event.at, window));
       const end = list.find((event) => event.type === to && inWindow(event.at, window));
       if (!start || !end) continue;
+      if (end.paperReturn && !end.sentKnown) continue;
       const days = daysBetween(start.at, end.at);
       if (days >= 0) values.push(days);
     }
@@ -658,7 +666,7 @@ function monthKeys(start: string, end: string): string[] {
 function periodCounts(events: AnalyticsEvent[], reviews: AnalyticsReview[], inPeriod: (day: string) => boolean) {
   const eventDay = (value: string) => (/^\d{4}-\d{2}-\d{2}$/.test(value) ? value : londonDay(value));
   return {
-    released: events.filter((event) => event.type === "released" && inPeriod(eventDay(event.at))).length,
+    released: events.filter((event) => event.type === "released" && !(event.paperReturn && !event.sentKnown) && inPeriod(eventDay(event.at))).length,
     received: events.filter((event) => event.type === "submitted" && inPeriod(eventDay(event.at))).length,
     completed: reviews.filter((review) => review.status === "completed" && review.actualOn && inPeriod(londonDay(review.actualOn))).length,
     visits: reviews.filter((review) => review.status === "completed" && review.method === "in_person" && inPeriod(review.actualOn?.slice(0, 10) || "")).length,

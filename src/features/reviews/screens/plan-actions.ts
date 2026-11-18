@@ -46,6 +46,40 @@ function refreshReviewDates() {
   revalidatePath("/management/reviews/cycle");
 }
 
+function missingRpc(error: { message?: string; code?: string } | null, name: string) {
+  if (!error) return null;
+  if (error.code === "PGRST202" || (error.message || "").includes(name)) {
+    return { ok: false as const, formError: "Paper returns are in the migration and are not on the database yet." };
+  }
+  return null;
+}
+
+export async function recordPaperReturnAction(input: { packId: string }) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const { error } = await access.supabase.rpc("record_paper_review_return", { p_pack_id: input.packId });
+  const missing = missingRpc(error, "record_paper_review_return");
+  if (missing) return missing;
+  const failed = fail(error);
+  if (failed) return failed;
+  refreshReviewDates();
+  await revalidateAnalytics();
+  return { ok: true as const };
+}
+
+export async function undoPaperReturnAction(input: { packId: string }) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const { error } = await access.supabase.rpc("undo_paper_review_return", { p_pack_id: input.packId });
+  const missing = missingRpc(error, "undo_paper_review_return");
+  if (missing) return missing;
+  const failed = fail(error);
+  if (failed) return failed;
+  refreshReviewDates();
+  await revalidateAnalytics();
+  return { ok: true as const };
+}
+
 export async function raisePlanConcernAction(input: { gtaId: string; reasonId: string; note: string }) {
   const access = await writer();
   if (!access.ok) return access;

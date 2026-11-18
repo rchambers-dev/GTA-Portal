@@ -220,6 +220,9 @@ export function TutorReviewForm({ review }: { review: DigitalReview }) {
       <h1 className={styles.title}>{review.name || "Digital review"}</h1>
       <p className={styles.meta}>{company} · {postcode}</p>
       <p className={styles.status} role="status">{status}</p>
+      {review.paperReturnedOn ? (
+        <p className={styles.note}>This review was returned on paper on {review.paperReturnedOn}. The form is empty and read only.</p>
+      ) : null}
       {review.reviewerNote ? <p className={styles.note}><strong>Reviewer note:</strong> {review.reviewerNote}</p> : null}
       <section className={styles.card}>
         <div className={styles.head}>
@@ -560,7 +563,7 @@ export function TutorReviewList({
   tutorName,
 }: {
   tutorName: string;
-  learners: { gtaId: string; name: string; company: string; postcode: string; programme: string; collegeDay: string; timing: string; band: string; packId: string | null; late: boolean; fillPercent: number; fillRemaining: number; fillStarted: boolean; noticeDays: number | null }[];
+  learners: { gtaId: string; name: string; company: string; postcode: string; programme: string; collegeDay: string; timing: string; band: string; packId: string | null; late: boolean; fillPercent: number; fillRemaining: number; fillStarted: boolean; noticeDays: number | null; paperReturn?: boolean }[];
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState<string | null>(null);
@@ -607,6 +610,7 @@ export function TutorReviewList({
                   <span className={styles.chips}>
                     <span className={`${styles.chip} ${learner.late ? styles.red : ""}`}>{learner.timing}</span>
                     <span className={styles.chip}>{stateChip}</span>
+                    {learner.paperReturn ? <span className={styles.chip}>Paper</span> : null}
                     {canOpen ? <Link href={`/reviews?from=tutor&pack=${learner.packId}`}>{openText}</Link> : <span>{fillCaption(learner)}</span>}
                   </span>
                 </div>

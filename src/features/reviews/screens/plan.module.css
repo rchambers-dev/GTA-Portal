@@ -548,6 +548,22 @@
   cursor: pointer;
 }
 
+.paperTag {
+  border: 1px solid #24324f;
+  color: #24324f;
+  background: #fff;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.dropOn {
+  outline: 2px solid #24324f;
+  outline-offset: 2px;
+}
+
 .concernWrap {
   position: relative;
 }

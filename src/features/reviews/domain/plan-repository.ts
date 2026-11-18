@@ -5,6 +5,7 @@ import { excludeTestApprentices, isMissingTestColumn } from "@/features/administ
 import { GTA_TUTORS } from "./gta-tutors";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
 import { callEndMinutes, heldPastCallEnd, lockExpiry, londonClock } from "./plan-call-end";
+import { formatTutorDate } from "@/features/administration/domain/apprentice-tutor";
 import {
   methodLabel,
   minutesToTime,
@@ -42,6 +43,9 @@ export type PlanPerson = {
   safeguarding: boolean;
   concern: boolean;
   concernId: string | null;
+  packId: string | null;
+  paperReturn: boolean;
+  paperReturnedOn: string | null;
 };
 
 export type ConcernReason = { id: string; label: string };
@@ -339,6 +343,26 @@ export async function readPlanPage(
     });
   }
 
+  const packRows = await supabase.from("review_packs").select("id, review_id, gta_id, stage");
+  const formRows = packRows.error
+    ? { data: [], error: packRows.error }
+    : await supabase.from("review_tutor_forms").select("pack_id, entry_method, submitted_at");
+  const formByPack = new Map(
+    ((formRows.data ?? []) as { pack_id: string; entry_method: string | null; submitted_at: string | null }[]).map((row) => [row.pack_id, row]),
+  );
+  const packByReview = new Map<string, { id: string; paper: boolean; returnedOn: string | null }>();
+  if (!packRows.error) {
+    for (const row of (packRows.data ?? []) as { id: string; review_id: string; stage: string }[]) {
+      const form = formByPack.get(row.id);
+      const paper = form?.entry_method === "paper";
+      packByReview.set(row.review_id, {
+        id: row.id,
+        paper,
+        returnedOn: paper && form?.submitted_at ? formatTutorDate(londonClock(new Date(form.submitted_at)).today) : null,
+      });
+    }
+  }
+
   const people: PlanPerson[] = [];
   const counts = { ...EMPTY_COUNTS };
   for (const row of (countersResult.data ?? []) as {
@@ -398,6 +422,9 @@ export async function readPlanPage(
       safeguarding: signed.has(row.gta_id),
       concern: concerns.has(row.gta_id),
       concernId: concerns.get(row.gta_id) ?? null,
+      packId: packByReview.get(review?.id || "")?.id ?? null,
+      paperReturn: packByReview.get(review?.id || "")?.paper ?? false,
+      paperReturnedOn: packByReview.get(review?.id || "")?.returnedOn ?? null,
     });
   }
   const dueRank = { overdue: 3, "due-soon": 2, ok: 1, unknown: 0 } as const;

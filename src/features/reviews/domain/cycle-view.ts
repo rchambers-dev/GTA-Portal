@@ -43,6 +43,8 @@ export type CycleLearner = {
   fillStarted: boolean;
   /** Days until the two-week window opens. Null while a break pauses the cycle. */
   noticeDays: number | null;
+  paperReturn: boolean;
+  paperReturnedOn: string | null;
 };
 
 export type CyclePage = {
@@ -61,6 +63,7 @@ export type HistoryRow = {
   actualOn: string;
   method: string;
   status: string;
+  paperReturn: boolean;
 };
 
 export type LearnerReviews = {
@@ -76,6 +79,8 @@ export type LearnerReviews = {
   method: string | null;
   openReviewId: string | null;
   booked: boolean;
+  paperReturn: boolean;
+  paperReturnedOn: string | null;
   inBreak: boolean;
   history: HistoryRow[];
   loadError: string | null;
@@ -99,6 +104,7 @@ export type DigitalReview = {
   today: string;
   section1: { label: string; value: string }[];
   form: TutorFormDraft;
+  paperReturnedOn: string | null;
   reviewerNote: string;
   previousReview: PreviousReviewSnapshot | null;
   savedAt: string | null;
