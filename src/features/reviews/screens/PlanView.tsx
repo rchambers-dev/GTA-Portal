@@ -690,7 +690,6 @@ function RosterCard({
         <span className={styles.college}>College {person.releaseDay}</span>
       </span>
       <DuePill person={person} />
-      {person.paperReturn ? <span className={styles.paperTag}>Paper</span> : null}
       <ConcernChip person={person} reasons={reasons} canWrite={canWrite} onRun={onRun} onStatus={onStatus} />
       {canWrite && person.packId && person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor") ? (
         <button type="button" className={styles.pill} onClick={() => void onRun(() => recordPaperReturnAction({ packId: person.packId || "" })).then((result) => {
@@ -982,7 +981,6 @@ function StopCard({
             {!stop.completed && verified ? <span className={styles.tagDone}>Verified</span> : null}
             {bookedOnDay ? <span className={styles.tagDone}>Booked time</span> : null}
             {locked ? <span className={styles.tagLock}>{stop.lockLabel || "Locked"}</span> : null}
-            {people.find((person) => person.gtaId === stop.gtaId)?.paperReturn ? <span className={styles.paperTag}>Paper</span> : null}
             {people.find((person) => person.gtaId === stop.gtaId) ? (
               <ConcernChip
                 person={people.find((person) => person.gtaId === stop.gtaId)!}

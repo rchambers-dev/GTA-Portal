@@ -161,7 +161,6 @@ export function CycleView({
                     {learner.dueChip}
                   </span>
                   <span className={styles.chip}>{learner.stepLabel}</span>
-                  {learner.paperReturn ? <span className={styles.chip}>Paper</span> : null}
                   <span className={styles.grow} />
                   {learner.stepId === "waiting" && learner.packId ? (
                     <button

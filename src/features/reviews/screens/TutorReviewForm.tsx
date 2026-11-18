@@ -610,7 +610,6 @@ export function TutorReviewList({
                   <span className={styles.chips}>
                     <span className={`${styles.chip} ${learner.late ? styles.red : ""}`}>{learner.timing}</span>
                     <span className={styles.chip}>{stateChip}</span>
-                    {learner.paperReturn ? <span className={styles.chip}>Paper</span> : null}
                     {canOpen ? <Link href={`/reviews?from=tutor&pack=${learner.packId}`}>{openText}</Link> : <span>{fillCaption(learner)}</span>}
                   </span>
                 </div>
