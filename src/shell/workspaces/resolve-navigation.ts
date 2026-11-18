@@ -11,6 +11,7 @@ function marketingSection(workspace: "administration" | "management") {
     title: "Marketing & Recruitment",
     items: [
       { href: base, label: "Overview", permission: records },
+      { href: `${base}/open-days`, label: "Open days", permission: records },
       { href: `${base}/employers`, label: "Employers & vacancies", permission: records },
       { href: `${base}/calendar`, label: "Activity calendar", permission: records },
       { href: `${base}/actions`, label: "Actions", permission: records },

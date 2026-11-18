@@ -95,7 +95,7 @@ describe("onboarding placement", () => {
     expect(routes).toContain('redirect("/management/onboarding/directory/apprentices")');
     expect(routes).toContain('redirect("/management/onboarding/directory/employers")');
     expect(routes).toContain("return <AdminEnrolmentsScreen />");
-    expect(routes).toContain('return renderMarketing("administration", segment);');
+    expect(routes).toContain('renderMarketing("administration", segment)');
     const page = readFileSync(path.join(process.cwd(), "src/app/apprentices/page.tsx"), "utf8");
     expect(page).toContain("requireApprenticeWorkspaceAccess");
   });

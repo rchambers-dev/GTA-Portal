@@ -77,13 +77,24 @@ describe("sidebar grouping", () => {
       );
       expect(marketing?.items.map((item) => item.label)).toEqual([
         "Overview",
+        "Open days",
         "Employers & vacancies",
         "Activity calendar",
         "Actions",
         "Reports",
         "Settings",
       ]);
+      expect(marketing?.items.map((item) => item.href)).toEqual([
+        `/${workspace}/marketing`,
+        `/${workspace}/marketing/open-days`,
+        `/${workspace}/marketing/employers`,
+        `/${workspace}/marketing/calendar`,
+        `/${workspace}/marketing/actions`,
+        `/reports?from=${workspace}-marketing`,
+        `/${workspace}/marketing/settings`,
+      ]);
       expect(marketing?.items.map((item) => item.permission)).toEqual([
+        PERMISSIONS.ADMIN_RECORDS_MANAGE,
         PERMISSIONS.ADMIN_RECORDS_MANAGE,
         PERMISSIONS.ADMIN_RECORDS_MANAGE,
         PERMISSIONS.ADMIN_RECORDS_MANAGE,
