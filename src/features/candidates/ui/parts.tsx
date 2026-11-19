@@ -30,13 +30,13 @@ export function ExampleChip({ show }: { show: boolean }) {
 }
 
 export function MissingNote({ show, message }: { show: boolean; message: string | null }) {
-  if (!show && !message) return null;
+  if (!show) return null;
   return (
     <div className="banner banner-amber" role="status">
       <div>
-        <strong>{show ? "Tables not applied yet. " : ""}</strong>
+        <strong>Tables not applied yet. </strong>
         {message ||
-          "Nothing is shown from the database. Saving will explain that the candidates migration still needs approval. No server error is raised."}
+          "Nothing is shown from the database. Saving will explain that the applicants migration still needs approval. No server error is raised."}
       </div>
     </div>
   );

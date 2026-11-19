@@ -236,6 +236,27 @@
 .cand :global(table) { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .cand :global(.table-wrap) { width: 100%; }
 .cand :global(td.nowrap), .cand :global(.name), .cand :global(.mono) { white-space: nowrap; }
+.cand :global(col.employer-col) { width: 28%; }
+.cand :global(col.vacancy-col) { width: 24%; }
+.cand :global(td.employer-name),
+.cand :global(td.employer-name .name),
+.cand :global(td.vacancy-name),
+.cand :global(td.vacancy-name .name) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.cand :global(.table-scroll) {
+  max-height: calc(2.75rem + 10 * 4.15rem);
+  overflow: auto;
+}
+.cand :global(.table-scroll table) { border-collapse: separate; border-spacing: 0; }
+.cand :global(.table-scroll thead th) {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fbfcfd;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
 .cand :global(th) { white-space: nowrap; }
 .cand :global(th.wrap) { white-space: normal; line-height: 1.3; }
 .cand :global(th) {

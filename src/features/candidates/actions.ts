@@ -5,6 +5,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { CANDIDATES_PERMISSION_ERROR, canManageCandidates } from "./domain/access";
 import { TABLES_MISSING, tablesMissing } from "./domain/missing";
+import { applicantEntryError, programmeChoiceId } from "./domain/programme";
 import { reviewDueOn } from "./domain/rules";
 import { isoTodayLondon } from "./domain/format";
 import { revalidateAnalytics } from "@/features/reviews/domain/revalidate-analytics";
@@ -17,7 +18,7 @@ function bounce(returnTo: string, message: string): never {
 
 async function gate(returnTo: string) {
   const session = await getSupabaseEffectiveSession();
-  if (!session) bounce(returnTo, "Sign in again to change candidates.");
+  if (!session) bounce(returnTo, "Sign in again to change applicants.");
   if (!canManageCandidates(session)) bounce(returnTo, CANDIDATES_PERMISSION_ERROR);
   await revalidateAnalytics();
   return { supabase: await createSupabaseServerClient(), userId: session.account.id };
@@ -52,18 +53,28 @@ export async function createCandidateAction(formData: FormData) {
   if (!firstName || !lastName || !email || !phone || !firstContact) {
     bounce(returnTo, "First name, last name, email, phone and the original first-contact date are required.");
   }
-  const centre = await supabase.from("candidate_centres").select("id").eq("code", text(formData, "centre") || "doncaster").maybeSingle();
-  const centreError = explain(centre.error);
-  if (centreError) bounce(returnTo, centreError);
-  const sourceLabel = text(formData, "source") || "Website";
-  const source = await supabase.from("candidate_enquiry_sources").select("id, needs_detail").eq("label", sourceLabel).maybeSingle();
-  if (explain(source.error)) bounce(returnTo, explain(source.error) as string);
-  const programmeName = text(formData, "programme") || "Autocare";
-  const programme = await supabase.from("programmes").select("id").eq("name", programmeName).maybeSingle();
+  const programmeId = programmeChoiceId(text(formData, "programmeId"));
+  const centreId = programmeChoiceId(text(formData, "centreId"));
+  const sourceId = programmeChoiceId(text(formData, "sourceId"));
+  const entryError = applicantEntryError({
+    firstName,
+    lastName,
+    email,
+    phone,
+    firstContact,
+    programmeId,
+    centreId,
+    sourceId,
+  });
+  if (entryError || !programmeId || !centreId || !sourceId) bounce(returnTo, entryError || "Choose a programme.");
+  const programme = await supabase.from("programmes").select("id").eq("id", programmeId).maybeSingle();
   if (programme.error || !programme.data) {
-    bounce(returnTo, programme.error ? explain(programme.error) || programme.error.message : `Programme “${programmeName}” was not found on the programmes table.`);
+    bounce(returnTo, programme.error ? explain(programme.error) || programme.error.message : "Choose a programme from the list.");
   }
-  if (!centre.data || !source.data) bounce(returnTo, TABLES_MISSING);
+  const centre = await supabase.from("candidate_centres").select("id").eq("id", centreId).maybeSingle();
+  if (centre.error || !centre.data) bounce(returnTo, explain(centre.error) || "Choose a centre from the list.");
+  const source = await supabase.from("candidate_enquiry_sources").select("id, label").eq("id", sourceId).maybeSingle();
+  if (source.error || !source.data) bounce(returnTo, explain(source.error) || "Choose a source from the list.");
   const idResult = await supabase.rpc("next_candidate_id");
   if (idResult.error || !idResult.data) bounce(returnTo, explain(idResult.error) || TABLES_MISSING);
   const candidateId = String(idResult.data);
@@ -98,7 +109,7 @@ export async function createCandidateAction(formData: FormData) {
     event_type: "created",
     actual_on: firstContact,
     entered_by: userId,
-    detail: { source: sourceLabel },
+    detail: { source: source.data.label },
   });
   const list = returnTo.replace(/\/new.*$/, "");
   redirect(`${list}/${encodeURIComponent(candidateId)}`);

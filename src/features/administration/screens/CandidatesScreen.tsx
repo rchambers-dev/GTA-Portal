@@ -3,10 +3,10 @@ import styles from "./candidates.module.css";
 
 export function CandidatesScreen() {
   return (
-    <ApprenticePageShell eyebrow="Onboarding" title="Candidates">
+    <ApprenticePageShell eyebrow="Onboarding" title="Applicants">
       <section className={styles.card}>
-        <h2>Candidates</h2>
-        <p>No candidates yet.</p>
+        <h2>Applicants</h2>
+        <p>No applicants yet.</p>
       </section>
     </ApprenticePageShell>
   );

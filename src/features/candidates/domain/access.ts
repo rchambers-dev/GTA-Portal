@@ -16,4 +16,4 @@ export function canManageCandidates(session: EffectiveSession | null): boolean {
 }
 
 export const CANDIDATES_PERMISSION_ERROR =
-  "You do not have permission to change candidates. Administrator and Management staff with onboarding access can. Tutors cannot.";
+  "You do not have permission to change applicants. Administrator and Management staff with onboarding access can. Tutors cannot.";

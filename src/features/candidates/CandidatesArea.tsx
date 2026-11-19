@@ -1,5 +1,5 @@
 import styles from "./ui/candidates.module.css";
-import { loadCandidatesReady, loadEmployerChoices } from "./load";
+import { loadApplicantFormOptions, loadCandidatesReady, loadEmployerChoices } from "./load";
 import {
   ActionsPage,
   AddCandidate,
@@ -38,11 +38,15 @@ export async function CandidatesArea({
 }) {
   const loaded = example ? { ready: false, notice: null } : await loadCandidatesReady();
   const loadedEmployers = example ? { choices: [], rows: [] } : await loadEmployerChoices();
+  const options = example ? { programmes: [], centres: [], sources: [], notice: null } : await loadApplicantFormOptions();
   const props: CandidatesViewProps = {
     base: `/${workspace}/onboarding`,
     example,
     missing: !example && !loaded.ready,
-    error: error || loaded.notice,
+    error: error || loaded.notice || options.notice,
+    programmes: options.programmes,
+    centres: options.centres,
+    sources: options.sources,
     query: site || "",
     tab,
     date,

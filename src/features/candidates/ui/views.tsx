@@ -30,6 +30,10 @@ export type CandidatesViewProps = {
   employers?: EmployerChoice[];
   employerRows?: EmployerDirectoryRow[];
   recordId?: string;
+  programmes?: { id: string; label: string }[];
+  centres?: { id: string; name: string }[];
+  sources?: { id: string; label: string }[];
+  initialEmployerId?: string;
 };
 
 function employerTotal(props: CandidatesViewProps): string {
@@ -94,13 +98,13 @@ export function CandidatesList(props: CandidatesViewProps) {
   return (
     <Frame props={props}>
       <PageHead
-        crumb={<>Onboarding / <span>Candidates</span></>}
-        title="Candidates"
+        crumb={<>Onboarding / <span>Applicants</span></>}
+        title="Applicants"
         lede="Recruitment records for people who have not yet started as an apprentice. Nothing is removed automatically — overdue reviews stay on Due for review until you archive them."
         actions={
           <>
             <ExampleChip show={example} />
-            <Link className="btn" href={`${base}/candidates/new${q(example)}`}><Plus /> Add candidate</Link>
+            <Link className="btn" href={`${base}/candidates/new${q(example)}`}><Plus /> Add applicant</Link>
           </>
         }
       />
@@ -134,13 +138,13 @@ export function CandidatesList(props: CandidatesViewProps) {
           </colgroup>
           <thead>
             <tr>
-              <th>Candidate</th><th>ID</th><th>Site</th><th>Programme</th><th>Stage</th><th>Employer status</th><th>Responsiveness</th><th>Next step</th>
+              <th>Applicant</th><th>ID</th><th>Site</th><th>Programme</th><th>Stage</th><th>Employer status</th><th>Responsiveness</th><th>Next step</th>
             </tr>
           </thead>
           <tbody>
             {show && started ? STARTED_ROWS.map((row) => (
               <tr key={row[1]}>
-                <td><Link className="name" href={`${base}/candidates/${row[1]}${q(example)}`}>{row[0]}</Link><div className="note-inline">Candidate ID {row[2]}</div></td>
+                <td><Link className="name" href={`${base}/candidates/${row[1]}${q(example)}`}>{row[0]}</Link><div className="note-inline">Applicant ID {row[2]}</div></td>
                 <td className="mono muted nowrap">{row[1]}</td>
                 <td className="nowrap">{row[3]}</td>
                 <td className="nowrap">{row[4]}</td>
@@ -161,12 +165,12 @@ export function CandidatesList(props: CandidatesViewProps) {
                 <td className={row[11] ? "next-step blocked" : "next-step"}>{row[10]}</td>
               </tr>
             )) : (
-              <tr><td colSpan={8} className="muted">No candidates yet.</td></tr>
+              <tr><td colSpan={8} className="muted">No applicants yet.</td></tr>
             )}
           </tbody>
         </table>
       </div>
-      <p className="footer-note">{show ? "Showing 10 of 24 active candidates. Example data only." : "Active candidates appear here after the migration is applied. Started candidates stay off this list."}</p>
+      <p className="footer-note">{show ? "Showing 10 of 24 active applicants. Example data only." : "Active applicants appear here after the migration is applied. Started applicants stay off this list."}</p>
     </Frame>
   );
 }
@@ -189,9 +193,9 @@ export function CandidateRecord(props: CandidatesViewProps) {
   const mainId = started?.apprenticeId ?? candidateId;
   return (
     <Frame props={props}>
-      <BackLink href={`${base}/candidates${q(example, started ? "tab=started" : "")}`}>Candidates</BackLink>
+      <BackLink href={`${base}/candidates${q(example, started ? "tab=started" : "")}`}>Applicants</BackLink>
       <PageHead
-        crumb={<>Onboarding / Candidates / <span>{name}</span></>}
+        crumb={<>Onboarding / Applicants / <span>{name}</span></>}
         title={name}
         actions={
           <>
@@ -202,17 +206,17 @@ export function CandidateRecord(props: CandidatesViewProps) {
       />
       <div className="id-row">
         <div>
-          <div className="side-label">{started ? "Main ID" : "Candidate ID"}</div>
+          <div className="side-label">{started ? "Main ID" : "Applicant ID"}</div>
           <div className="readonly-id" aria-readonly="true">{mainId}</div>
         </div>
         {started ? (
           <div>
-            <div className="side-label">Candidate ID</div>
+            <div className="side-label">Applicant ID</div>
             <div className="readonly-id" aria-readonly="true">{candidateId}</div>
             <div className="hint">Kept as a reference. It cannot be edited.</div>
           </div>
         ) : (
-          <div className="hint">Assigned by the system. After a start, the apprentice GTA ID becomes the main ID and this candidate ID stays as a reference.</div>
+          <div className="hint">Assigned by the system. After a start, the apprentice GTA ID becomes the main ID and this applicant ID stays as a reference.</div>
         )}
       </div>
       <div className="meta-row" style={{ marginTop: -8 }}>
@@ -230,7 +234,7 @@ export function CandidateRecord(props: CandidatesViewProps) {
       </div>
       {started ? (
         <div className="banner banner-green">
-          <div><strong>Started {started.started}.</strong> The apprentice GTA ID {started.apprenticeId} is now the main ID. Candidate ID {started.candidateId} is kept on this record and on the apprentice, and it cannot be edited.</div>
+          <div><strong>Started {started.started}.</strong> The apprentice GTA ID {started.apprenticeId} is now the main ID. Applicant ID {started.candidateId} is kept on this record and on the apprentice, and it cannot be edited.</div>
         </div>
       ) : null}
       <div className="progress">
@@ -263,7 +267,7 @@ export function CandidateRecord(props: CandidatesViewProps) {
               <Check title="TNA completed" sub="Training needs analysis held at Northbridge Motors" date="2 Oct 2026" by="Entered 3 Oct 2026 by J. Hartley" />
               <Check title="H&S visit booked" sub="Visit scheduled for 20 Nov 2026" date="8 Oct 2026" by="Entered 8 Oct 2026 by Anne-Marie" />
               <Check title="H&S visit completed" sub="Waiting for the booked visit on 20 Nov 2026" date="Not yet" by="—" off />
-              <Check title="Learner file created" sub="File opened on the candidate record" date="Not yet" by="—" off />
+              <Check title="Learner file created" sub="File opened on the applicant record" date="Not yet" by="—" off />
               <Check title="Learner file completed" sub="All Stage 2 documents present" date="Not yet" by="—" off />
             </div>
           </section>
@@ -314,7 +318,7 @@ export function CandidateRecord(props: CandidatesViewProps) {
           <Event title="Attended Monday interview (attempt 1)" meta="Actual date 14 Sep 2026 · Entered 14 Sep 2026 by Anne-Marie" />
           <Event title="Maths pass and English pass" meta="Actual date 19 Mar 2026 · Entered 20 Mar 2026 by J. Hartley" />
           <Event title="ID verified" meta="Actual date 12 Mar 2026 · Entered 12 Mar 2026 by Anne-Marie" />
-          <Event title="Candidate record created" meta="Actual date 3 Mar 2026 · Entered 3 Mar 2026 by Anne-Marie · Source: School event" />
+          <Event title="Applicant record created" meta="Actual date 3 Mar 2026 · Entered 3 Mar 2026 by Anne-Marie · Source: School event" />
         </div>
       </div>
     </Frame>
@@ -349,10 +353,10 @@ export function AddCandidate(props: CandidatesViewProps) {
   const { base, example } = props;
   return (
     <Frame props={props}>
-      <BackLink href={`${base}/candidates${q(example)}`}>Candidates</BackLink>
+      <BackLink href={`${base}/candidates${q(example)}`}>Applicants</BackLink>
       <PageHead
-        crumb={<>Onboarding / Candidates / <span>Add candidate</span></>}
-        title="Add candidate"
+        crumb={<>Onboarding / Applicants / <span>Add applicant</span></>}
+        title="Add applicant"
         lede="Manual entry for a new enquiry. An intended intake is a plan date only — it does not book a place. At entry, the personal fields are name, email and phone."
         actions={<ExampleChip show={example} />}
       />
@@ -365,35 +369,35 @@ export function AddCandidate(props: CandidatesViewProps) {
             <label className="field"><span className="label">Email</span><input name="email" type="email" required placeholder="name@example.com" /></label>
             <label className="field"><span className="label">Phone</span><input name="phone" type="tel" required placeholder="07…" /></label>
             <div className="field">
-              <span className="label">Candidate ID</span>
+              <span className="label">Applicant ID</span>
               <div className="readonly-id" aria-readonly="true">Assigned on save</div>
               <div className="hint">The next ID looks like GTA-C-000001. It cannot be typed or edited.</div>
             </div>
-            <label className="field"><span className="label">Site</span><select name="centre" defaultValue="doncaster"><option value="doncaster">Doncaster</option><option value="sheffield">Sheffield</option></select></label>
-            <label className="field"><span className="label">Programme</span><select name="programme"><option>Autocare</option><option>Light Vehicle</option><option>Heavy Vehicle</option><option>Vehicle Paint</option><option>Vehicle Panel</option><option>Business Admin</option><option>Customer Service</option></select></label>
+            <label className="field"><span className="label">Centre</span><select name="centreId" required defaultValue={props.centres?.[0]?.id ?? ""}>{(props.centres ?? []).map((centre) => <option key={centre.id} value={centre.id}>{centre.name}</option>)}{(props.centres ?? []).length === 0 ? <option value="">No centres yet</option> : null}</select></label>
+            <label className="field"><span className="label">Programme</span><select name="programmeId" required defaultValue={props.programmes?.[0]?.id ?? ""}>{(props.programmes ?? []).map((programme) => <option key={programme.id} value={programme.id}>{programme.label}</option>)}{(props.programmes ?? []).length === 0 ? <option value="">No programmes yet</option> : null}</select></label>
             <label className="field"><span className="label">Original first-contact date</span><input name="firstContact" required placeholder="dd/mm/yyyy" defaultValue={example ? "14/11/2026" : ""} /></label>
-            <label className="field"><span className="label">Source</span><select name="source"><option>Website</option><option>Social media</option><option>School event</option><option>Google</option><option>Word of mouth</option><option>Leaflet</option><option>Flyer</option><option>GTA prospectus</option><option>Other</option></select></label>
+            <label className="field"><span className="label">Source</span><select name="sourceId" required defaultValue={props.sources?.[0]?.id ?? ""}>{(props.sources ?? []).map((source) => <option key={source.id} value={source.id}>{source.label}</option>)}{(props.sources ?? []).length === 0 ? <option value="">No sources yet</option> : null}</select></label>
             <label className="field"><span className="label">Employer status</span><select name="employerStatus" defaultValue="needed"><option value="needed">Employer needed</option><option value="identified">Identified</option><option value="confirmed">Confirmed</option></select></label>
-            <EmployerPicker employers={employerChoices(props)} />
-            <div className="field wide"><div className="hint">A vacancy is not required. A candidate can be interviewed without an employer, but cannot enter Stage 2 until the employer is confirmed.</div></div>
+            <EmployerPicker employers={employerChoices(props)} initialEmployerId={props.initialEmployerId} />
+            <div className="field wide"><div className="hint">A vacancy is not required. An applicant can be interviewed without an employer, but cannot enter Stage 2 until the employer is confirmed.</div></div>
             <label className="field wide"><span className="label">Notes</span><textarea name="notes" defaultValue={example ? "Called after seeing the Autocare page on the GTA website. Interested in a January start if a place is available." : ""} /></label>
           </div>
           <div style={{ display: "flex", gap: 8, marginTop: 18, justifyContent: "flex-end" }}>
             <Link className="btn-secondary" href={`${base}/candidates${q(example)}`}>Cancel</Link>
-            <button className="btn" type="submit">Save candidate</button>
+            <button className="btn" type="submit">Save applicant</button>
           </div>
         </form>
         <div className="stack">
           <div className="card side-card">
             <div className="side-label">What happens next</div>
             <div className="side-value">Starts in Stage 1</div>
-            <div className="side-sub">Every new candidate begins in Stage 1. Nothing is marked complete automatically. Maths and English must both be passed before an interview.</div>
+            <div className="side-sub">Every new applicant begins in Stage 1. Nothing is marked complete automatically. Maths and English must both be passed before an interview.</div>
             <ul className="help-list">
               <li>ID verified, with the actual date</li>
               <li>Maths pass or fail, with the actual date</li>
               <li>English pass or fail, with the actual date</li>
             </ul>
-            <div className="side-sub" style={{ marginTop: 12 }}>The system assigns the next candidate ID, such as GTA-C-000001. Review is due 1 year from the original first-contact date while Responsive, or 3 months if Unresponsive.</div>
+            <div className="side-sub" style={{ marginTop: 12 }}>The system assigns the next applicant ID, such as GTA-C-000001. Review is due 1 year from the original first-contact date while Responsive, or 3 months if Unresponsive.</div>
           </div>
         </div>
       </div>
@@ -416,7 +420,7 @@ export function InterviewsPage(props: CandidatesViewProps) {
       <PageHead
         crumb={<>Onboarding / <span>Interviews</span></>}
         title="Interviews"
-        lede="Group sessions run on Mondays, with a maximum of 8 candidates. Bank holidays are skipped. Resits are booked on their own dates. A candidate can be interviewed without an employer, but cannot enter Stage 2 until one is confirmed."
+        lede="Group sessions run on Mondays, with a maximum of 8 applicants. Bank holidays are skipped. Resits are booked on their own dates. An applicant can be interviewed without an employer, but cannot enter Stage 2 until one is confirmed."
         actions={<ExampleChip show={example} />}
       />
       {props.date ? <div className="banner banner-green"><div><strong>Monday {ukDate(props.date)}.</strong> Interviews for this Monday. Group sessions are on Mondays, and bank-holiday Mondays are skipped.</div></div> : null}
@@ -437,7 +441,7 @@ export function InterviewsPage(props: CandidatesViewProps) {
       <div className="card table-wrap">
         <div className="card-pad" style={{ paddingBottom: 8 }}><h2 className="card-title" style={{ margin: 0 }}>Attendees · 9 Nov 2026</h2></div>
         <table>
-          <thead><tr><th>Candidate</th><th>Attendance</th><th>Outcome</th><th>Attempt</th><th>Decision</th></tr></thead>
+          <thead><tr><th>Applicant</th><th>Attendance</th><th>Outcome</th><th>Attempt</th><th>Decision</th></tr></thead>
           <tbody>
             {example ? (
               <>
@@ -483,14 +487,14 @@ export function InterviewsPage(props: CandidatesViewProps) {
         <p className="muted" style={{ margin: "-4px 0 12px" }}>A resit is its own date. It is not added to a Monday group of 8. Three failures, then 6 months from the third failure, then one final attempt with a manual outcome.</p>
         <form className="filters" action={bookResitAction}>
           <input type="hidden" name="returnTo" value={`${base}/interviews${q(example)}`} />
-          <label className="field"><span className="label">Candidate</span>
+          <label className="field"><span className="label">Applicant</span>
             <select name="candidateId" required defaultValue="">
-              <option value="" disabled>Choose a candidate</option>
+              <option value="" disabled>Choose an applicant</option>
               <option value="GTA-C-000014">Noah Bennett</option>
               <option value="GTA-C-000120">Jordan Blake</option>
               <option value="GTA-C-000108">Callum Briggs</option>
             </select>
-            <div className="hint">The candidate ID stays on the record. It is not typed here.</div>
+            <div className="hint">The applicant ID stays on the record. It is not typed here.</div>
           </label>
           <label className="field"><span className="label">Resit date</span><input name="resitOn" type="date" required /></label>
           <label className="field"><span className="label">Site</span><select name="centre"><option value="doncaster">Doncaster</option><option value="sheffield">Sheffield</option></select></label>
@@ -522,7 +526,7 @@ export function OverviewPage(props: CandidatesViewProps) {
     <Frame props={props}>
       <PageHead
         crumb={<>Onboarding / <span>Overview</span></>}
-        title="Candidates overview"
+        title="Applicants overview"
         lede="A snapshot of the recruitment pipeline. Use the site filter to look at Doncaster or Sheffield on their own."
         actions={
           <>
@@ -563,8 +567,8 @@ export function OverviewPage(props: CandidatesViewProps) {
           </div>
           <div className="card card-pad">
             <h2 className="card-title">Pipeline</h2>
-            <div className="side-sub" style={{ marginTop: -4 }}>{example ? "24 active candidates across both sites. 5 are on Due for review and stay there until they are updated or archived — nothing is deleted automatically." : "Counts stay at zero until candidates are saved."}</div>
-            <div style={{ marginTop: 14 }}><Link className="btn-secondary" href={`${base}/candidates${q(example)}`}>Open candidates</Link></div>
+            <div className="side-sub" style={{ marginTop: -4 }}>{example ? "24 active applicants across both sites. 5 are on Due for review and stay there until they are updated or archived — nothing is deleted automatically." : "Counts stay at zero until applicants are saved."}</div>
+            <div style={{ marginTop: 14 }}><Link className="btn-secondary" href={`${base}/candidates${q(example)}`}>Open applicants</Link></div>
           </div>
         </div>
       </div>
@@ -607,20 +611,29 @@ export function EmployersPage(props: CandidatesViewProps) {
       <PageHead
         crumb={<>Onboarding / <span>Employers & vacancies</span></>}
         title="Employers & vacancies"
-        lede="Employers are the Portal’s employer records. Vacancies sit on an employer and can be offered to candidates. A candidate can have a confirmed employer with no vacancy. Filled and cancelled vacancies are kept, but their places are not available."
+        lede="Employers are the Portal’s employer records. Vacancies sit on an employer and can be offered to applicants. An applicant can have a confirmed employer with no vacancy. Filled and cancelled vacancies are kept, but their places are not available."
         actions={<><ExampleChip show={example} /><Link className="btn-secondary" href={`${base}/employer`}>Add employer</Link><Link className="btn" href={`${base}/vacancies${q(example)}`}><Plus /> Add vacancy</Link></>}
       />
       <div className="tabs">
         <div className="tab-on">Employers <span className="count">{employerTotal(props)}</span></div>
         <Link className="tab" href={`${base}/vacancies${q(example)}`}>Vacancies <span className="count">{example ? "10" : "0"}</span></Link>
       </div>
-      <div className="card table-wrap">
+      <div className="card table-wrap table-scroll">
         <table>
+          <colgroup>
+            <col className="employer-col" />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+          </colgroup>
           <thead><tr><th>Employer</th><th>Site</th><th className="wrap">Open vacancies</th><th className="wrap">Places available</th><th className="wrap">Last contact</th><th className="wrap">Next follow-up</th><th>Source</th></tr></thead>
           <tbody>
             {example ? rows.map((row) => (
               <tr key={row[0]}>
-                <td><Link className="name" href={`${base}/employers/${encodeURIComponent(String(row[0]))}${q(example)}`}>{row[0]}</Link><div className="note-inline">{row[1]}</div></td>
+                <td className="employer-name"><Link className="name" title={String(row[0])} href={`${base}/employers/${encodeURIComponent(String(row[0]))}${q(example)}`}>{row[0]}</Link><div className="note-inline">{row[1]}</div></td>
                 <td className="nowrap">{row[2]}</td>
                 <td className="frac">{row[3]}</td>
                 <td className="frac">{row[4]}</td>
@@ -628,9 +641,9 @@ export function EmployersPage(props: CandidatesViewProps) {
                 <td className="nowrap">{row[6] === "—" ? "—" : row[7] ? <span className="date-overdue">{row[6]}</span> : row[6]}</td>
                 <td className="nowrap">{row[8]}</td>
               </tr>
-            )) : (props.employerRows ?? []).map((row) => (
+            )            ) : (props.employerRows ?? []).map((row) => (
               <tr key={row.employerId}>
-                <td><Link className="name" href={`${base}/employers/${encodeURIComponent(row.name)}${q(example)}`}>{row.name}</Link>{row.detail ? <div className="note-inline">{row.detail}</div> : null}</td>
+                <td className="employer-name"><Link className="name" title={row.name} href={`${base}/employers/${encodeURIComponent(row.name)}${q(example)}`}>{row.name}</Link>{row.detail ? <div className="note-inline">{row.detail}</div> : null}</td>
                 <td className="nowrap">{row.site}</td>
                 <td className="frac">{row.openVacancies}</td>
                 <td className="frac">{row.placesAvailable}</td>
@@ -674,14 +687,22 @@ export function VacanciesPage(props: CandidatesViewProps) {
         <Link className="tab" href={`${base}/employers${q(example)}`}>Employers <span className="count">{employerTotal(props)}</span></Link>
         <div className="tab-on">Vacancies <span className="count">{example ? "10" : "0"}</span></div>
       </div>
-      <div className="card table-wrap">
+      <div className="card table-wrap table-scroll">
         <table>
+          <colgroup>
+            <col className="vacancy-col" />
+            <col className="employer-col" />
+            <col />
+            <col />
+            <col />
+            <col />
+          </colgroup>
           <thead><tr><th>Vacancy</th><th>Employer</th><th>Programme</th><th>Site</th><th className="wrap">Total / allocated / available</th><th>Status</th></tr></thead>
           <tbody>
             {example ? (
               <>
-                <Vacancy title="Light Vehicle Technician" note="1 withdrawn place — employer to decide whether to reoffer" employer="Northbridge Motors" programme="Light Vehicle" site="Doncaster" frac="2 / 1 / 0" status="Confirmed / open" tone="green" />
-                <Vacancy title="Autocare Technician" employer="Northbridge Motors" programme="Autocare" site="Doncaster" frac="3 / 1 / 2" status="Confirmed / open" tone="green" />
+                <Vacancy title="Light Vehicle Technician" note="1 withdrawn place — employer to decide whether to reoffer" employer="Adam Bowes Commercials Limited" programme="Light Vehicle" site="Doncaster" frac="2 / 1 / 0" status="Confirmed / open" tone="green" />
+                <Vacancy title="Autocare Technician" employer="All Car Service & MOT Centre Ltd" programme="Autocare" site="Doncaster" frac="3 / 1 / 2" status="Confirmed / open" tone="green" />
                 <Vacancy title="Vehicle Paint Technician" employer="Ashfield Coachworks" programme="Vehicle Paint" site="Sheffield" frac="2 / 0 / 2" status="Potential opportunity" tone="amber" />
                 <Vacancy title="Heavy Vehicle Technician" employer="Riverside Fleet Services" programme="Heavy Vehicle" site="Doncaster" frac="2 / 0 / 2" status="Confirmed / open" tone="green" />
                 <Vacancy title="Light Vehicle Technician" employer="Hallam Street Garage" programme="Light Vehicle" site="Sheffield" frac="2 / 1 / 1" status="Confirmed / open" tone="green" />
@@ -702,8 +723,8 @@ export function VacanciesPage(props: CandidatesViewProps) {
 function Vacancy({ title, note, employer, programme, site, frac, status, tone }: { title: string; note?: string; employer: string; programme: string; site: string; frac: string; status: string; tone: "green" | "amber" | "grey" | "red" }) {
   return (
     <tr>
-      <td><div className="name">{title}</div>{note ? <div className="note-inline">{note}</div> : null}</td>
-      <td className="name">{employer}</td>
+      <td className="vacancy-name"><div className="name" title={title}>{title}</div>{note ? <div className="note-inline">{note}</div> : null}</td>
+      <td className="name employer-name" title={employer}>{employer}</td>
       <td className="nowrap">{programme}</td>
       <td className="nowrap">{site}</td>
       <td className="frac">{frac}</td>
@@ -743,7 +764,7 @@ export function EmployerRecord(props: CandidatesViewProps & { employer: string }
             ["Light Vehicle Technician", "Light Vehicle", "2 / 1 / 0", "Confirmed / open", "1 withdrawn place is not reopened automatically"],
             ["Autocare Technician", "Autocare", "3 / 1 / 2", "Confirmed / open", "—"],
           ]} />
-          <SimpleTable title="Linked candidates" heads={["Candidate", "Vacancy", "Stage", "Place"]} rows={[
+          <SimpleTable title="Linked applicants" heads={["Applicant", "Vacancy", "Stage", "Place"]} rows={[
             ["Maya Henshaw", "Light Vehicle Technician", "Stage 2", "Allocated"],
             ["Noah Bennett", "Autocare Technician", "Interview", "Allocated"],
             ["Theo Wade", "Light Vehicle Technician", "Withdrawn", "Employer to decide whether to reoffer"],
@@ -761,7 +782,7 @@ export function EmployerRecord(props: CandidatesViewProps & { employer: string }
             ["Email", "4 Sep 2026", "First enquiry from Diane after a word-of-mouth referral. Paul Wheatley was copied.", "—"],
           ]} />
         </>
-      ) : <p className="muted">No vacancies or linked candidates yet.</p>}
+      ) : <p className="muted">No vacancies or linked applicants yet.</p>}
     </Frame>
   );
 }
@@ -895,7 +916,7 @@ export function ActionsPage(props: CandidatesViewProps) {
                 <Action title="Confirm whether Northbridge will reoffer Theo Wade’s place" owner="Anne-Marie" deadline="18 Nov 2026" impact="Employer decision recorded on the vacancy — place is not reopened automatically" status="Open" tone="amber" link="Northbridge Motors" />
                 <Action title="Publish January intake dates on the GTA website" owner="Anne-Marie" deadline="21 Nov 2026" impact="Intake dates visible on the public website" status="Open" tone="navy" link="4 Jan induction" />
                 <Action title="Review Amira Khan on the Due for review list" owner="Anne-Marie" deadline="21 Nov 2026" impact="Record marked responsive, archived, or a delete decision recorded" status="Open" tone="navy" link="Amira Khan" />
-                <Action title="Book Maya Henshaw’s H&S visit at Northbridge" owner="Anne-Marie" deadline="8 Oct 2026" impact="Visit appears on the candidate record and employer log" status="Completed" tone="green" link="Maya Henshaw" />
+                <Action title="Book Maya Henshaw’s H&S visit at Northbridge" owner="Anne-Marie" deadline="8 Oct 2026" impact="Visit appears on the applicant record and employer log" status="Completed" tone="green" link="Maya Henshaw" />
               </>
             ) : <tr><td colSpan={6} className="muted">No actions yet.</td></tr>}
           </tbody>
@@ -995,7 +1016,7 @@ export function ReportsPage(props: CandidatesViewProps) {
       <section className="card report-section">
         <h2 className="card-title">Marketing leads and overdue follow-ups</h2>
         <div className="kpi-row">
-          <Kpi k="New candidates this month" v={example ? "3" : "0"} s="Including Hannah Colton’s draft enquiry" />
+          <Kpi k="New applicants this month" v={example ? "3" : "0"} s="Including Hannah Colton’s draft enquiry" />
           <Kpi k="Overdue follow-ups" v={example ? "2" : "0"} s="Jordan Blake and the Northbridge TNA" />
           <Kpi k="Leads from leaflets and flyers" v={example ? "?" : "0"} unknown={example} s="Source mapping still under review" />
           <Kpi k="Paid advertising reach" v="N/A" na s="Not collected in this period" />
@@ -1041,12 +1062,12 @@ export function DuePage(props: CandidatesViewProps & { confirmName: string | nul
   return (
     <Frame props={props}>
       <PageHead
-        crumb={<>Onboarding / Candidates / <span>Due for review</span></>}
+        crumb={<>Onboarding / Applicants / <span>Due for review</span></>}
         title="Due for review"
-        lede="Review is due 1 year after the original entry date if the candidate is Responsive, or 3 months if Unresponsive. Switching back to responsive restores 1 year from that original date. Responsiveness is set manually."
+        lede="Review is due 1 year after the original entry date if the applicant is Responsive, or 3 months if Unresponsive. Switching back to responsive restores 1 year from that original date. Responsiveness is set manually."
         actions={<ExampleChip show={example} />}
       />
-      <div className="banner banner-amber"><div><strong>Nothing is deleted automatically.</strong> Candidates stay on this list until you mark them responsive, archive them, or delete them permanently. Archived records can still be found later.</div></div>
+      <div className="banner banner-amber"><div><strong>Nothing is deleted automatically.</strong> Applicants stay on this list until you mark them responsive, archive them, or delete them permanently. Archived records can still be found later.</div></div>
       <div className="tabs">
         <Link className="tab" href={`${base}/candidates${q(example)}`}>Active <span className="count">{example ? "24" : "0"}</span></Link>
         <div className="tab-on">Due for review <span className="count">{example ? "5" : "0"}</span></div>
@@ -1056,7 +1077,7 @@ export function DuePage(props: CandidatesViewProps & { confirmName: string | nul
         <table>
           <thead>
             <tr>
-              <th>Candidate</th><th className="wrap">Responsiveness</th><th className="wrap">Original entry date</th><th>Rule</th><th className="wrap">Due date</th><th className="wrap">Days overdue</th><th>Actions</th>
+              <th>Applicant</th><th className="wrap">Responsiveness</th><th className="wrap">Original entry date</th><th>Rule</th><th className="wrap">Due date</th><th className="wrap">Days overdue</th><th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -1096,7 +1117,7 @@ export function DuePage(props: CandidatesViewProps & { confirmName: string | nul
         <div className="overlay">
           <form className="dialog" action={deleteCandidateAction}>
             <h2>Delete {confirmName} permanently?</h2>
-            <p>This removes {confirmName}’s personal data from the candidate record, including contact details, notes and the audit trail.</p>
+            <p>This removes {confirmName}’s personal data from the applicant record, including contact details, notes and the audit trail.</p>
             <p>Anonymous totals used in reports are kept, so monthly counts are not lost. The record itself cannot be restored.</p>
             <p className="muted">Nothing else on this list will be changed. Deletion is never automatic.</p>
             <label className="field" style={{ marginTop: 8 }}>
@@ -1123,10 +1144,10 @@ export function InductionsPage(props: CandidatesViewProps) {
       <PageHead
         crumb={<>Onboarding / <span>Inductions</span></>}
         title="Inductions"
-        lede="Intake dates are shared across Doncaster and Sheffield, and each intake has its own booking deadline. There is no default deadline and no capacity cap. Missed deadlines are flagged for Anne-Marie — candidates are never moved automatically."
+        lede="Intake dates are shared across Doncaster and Sheffield, and each intake has its own booking deadline. There is no default deadline and no capacity cap. Missed deadlines are flagged for Anne-Marie — applicants are never moved automatically."
         actions={<ExampleChip show={example} />}
       />
-      {example ? <div className="banner banner-amber"><div><strong>Flagged for Anne-Marie.</strong> Katie Shaw was booked onto the 2 Nov intake two days after the 12 Oct deadline, and two candidates booked on 4 Jan are not yet Stage 2 ready. Nobody has been moved or unbooked automatically.</div></div> : null}
+      {example ? <div className="banner banner-amber"><div><strong>Flagged for Anne-Marie.</strong> Katie Shaw was booked onto the 2 Nov intake two days after the 12 Oct deadline, and two applicants booked on 4 Jan are not yet Stage 2 ready. Nobody has been moved or unbooked automatically.</div></div> : null}
       <form className="card card-pad" action={addIntakeAction}>
         <h2 className="card-title">Add intake date</h2>
         <input type="hidden" name="returnTo" value={`${base}/inductions${q(example)}`} />
@@ -1147,7 +1168,7 @@ export function InductionsPage(props: CandidatesViewProps) {
           <div className="card intake">
             <div className="intake-head"><div><div className="intake-title">Monday 2 Nov 2026</div><div className="side-sub">Shared intake · both sites · booking deadline 12 Oct 2026 (configurable)</div></div><Pill tone="grey">Held</Pill></div>
             <table>
-              <thead><tr><th>Candidate</th><th>Site</th><th>Stage 2 readiness</th><th>Booked</th><th>Attendance</th><th>If absent</th></tr></thead>
+              <thead><tr><th>Applicant</th><th>Site</th><th>Stage 2 readiness</th><th>Booked</th><th>Attendance</th><th>If absent</th></tr></thead>
               <tbody>
                 <tr><td className="name">Reuben Clark</td><td>Doncaster</td><td><Pill tone="green">Stage 2 ready</Pill></td><td>Booked</td><td><Pill tone="green">Attended</Pill></td><td className="muted">—</td></tr>
                 <tr><td className="name">Dylan Shore</td><td>Sheffield</td><td><Pill tone="green">Stage 2 ready</Pill></td><td>Booked</td><td><Pill tone="green">Attended</Pill></td><td className="muted">—</td></tr>
@@ -1159,7 +1180,7 @@ export function InductionsPage(props: CandidatesViewProps) {
           <div className="card intake">
             <div className="intake-head"><div><div className="intake-title">Monday 4 Jan 2027</div><div className="side-sub">Shared intake · both sites · booking deadline 14 Dec 2026 (configurable) · no capacity cap</div></div><Pill tone="navy">Upcoming</Pill></div>
             <table>
-              <thead><tr><th>Candidate</th><th>Site</th><th>Stage 2 readiness</th><th>Booked</th><th>Attendance</th><th>Notes</th></tr></thead>
+              <thead><tr><th>Applicant</th><th>Site</th><th>Stage 2 readiness</th><th>Booked</th><th>Attendance</th><th>Notes</th></tr></thead>
               <tbody>
                 <tr><td className="name">Lewis Cartwright</td><td>Sheffield</td><td><Pill tone="green">Stage 2 ready</Pill></td><td><Pill tone="green">Booked</Pill></td><td className="muted">Not yet held</td><td className="muted">Customer Service · Meadowside</td></tr>
                 <tr><td className="name">Katie Shaw</td><td>Sheffield</td><td><Pill tone="green">Stage 2 ready</Pill></td><td><Pill tone="green">Booked</Pill></td><td className="muted">Not yet held</td><td>Rescheduled from 2 Nov</td></tr>
@@ -1177,13 +1198,13 @@ export function InductionsPage(props: CandidatesViewProps) {
               </div>
               <Pill tone="grey">Open</Pill>
             </div>
-            <div className="card-pad muted">No candidates have been intended or booked on this intake yet.</div>
+            <div className="card-pad muted">No applicants have been intended or booked on this intake yet.</div>
           </div>
         </>
       ) : <p className="muted">No intake dates yet. Add one above. The booking deadline stays empty until you set it.</p>}
       <form action={confirmInductionAction} className="card card-pad">
         <h2 className="card-title">Confirm attendance</h2>
-        <p className="side-sub">Confirming attendance creates the apprentice, links the employer, site and manager, and moves the candidate to Started. It counts once.</p>
+        <p className="side-sub">Confirming attendance creates the apprentice, links the employer, site and manager, and moves the applicant to Started. It counts once.</p>
         <input type="hidden" name="returnTo" value={`${base}/inductions${q(example)}`} />
         <div className="form-grid">
           <label className="field"><span className="label">Booking ID</span><input name="bookingId" required /></label>

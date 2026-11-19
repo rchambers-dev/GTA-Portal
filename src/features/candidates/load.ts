@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { formatProgrammeChoice } from "@/features/administration/domain/apprentice-record";
 import { buildEmployerDirectory, type EmployerChoice, type EmployerDirectoryRow } from "./domain/employers";
 import { isoTodayLondon } from "./domain/format";
 import { tablesMissing } from "./domain/missing";
@@ -23,7 +24,57 @@ export async function loadCandidatesReady(): Promise<CandidatesLoad> {
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     if (tablesMissing(message)) return { ready: false, notice: null };
-    return { ready: false, notice: message || "Candidates could not be loaded." };
+    return { ready: false, notice: message || "Applicants could not be loaded." };
+  }
+}
+
+export type ApplicantProgrammeOption = { id: string; label: string };
+export type ApplicantCentreOption = { id: string; name: string };
+export type ApplicantSourceOption = { id: string; label: string };
+
+export type ApplicantFormOptions = {
+  programmes: ApplicantProgrammeOption[];
+  centres: ApplicantCentreOption[];
+  sources: ApplicantSourceOption[];
+  notice: string | null;
+};
+
+/** Programmes, centres and sources for the add form. Ids only; names are labels. */
+export async function loadApplicantFormOptions(): Promise<ApplicantFormOptions> {
+  const empty = { programmes: [], centres: [], sources: [], notice: null as string | null };
+  try {
+    const supabase = await createSupabaseServerClient();
+    const [programmes, centres, sources] = await Promise.all([
+      supabase.from("programmes").select("id, name, standard_code, status").order("name"),
+      supabase.from("candidate_centres").select("id, name, sort_order, active").order("sort_order"),
+      supabase.from("candidate_enquiry_sources").select("id, label, sort_order, active").order("sort_order"),
+    ]);
+    if (programmes.error) {
+      return { ...empty, notice: `Programmes could not be loaded. ${programmes.error.message}` };
+    }
+    return {
+      programmes: (programmes.data ?? [])
+        .filter((row) => row.id && row.name?.trim() && (row.status === "active" || row.status == null))
+        .map((row) => ({
+          id: row.id,
+          label: formatProgrammeChoice(row.name, row.standard_code ?? ""),
+        })),
+      centres: centres.error
+        ? []
+        : (centres.data ?? [])
+            .filter((row) => row.id && row.name && row.active !== false)
+            .map((row) => ({ id: row.id, name: row.name })),
+      sources: sources.error
+        ? []
+        : (sources.data ?? [])
+            .filter((row) => row.id && row.label && row.active !== false)
+            .map((row) => ({ id: row.id, label: row.label })),
+      notice: null,
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (tablesMissing(message)) return empty;
+    return { ...empty, notice: message || "The add form could not be loaded." };
   }
 }
 

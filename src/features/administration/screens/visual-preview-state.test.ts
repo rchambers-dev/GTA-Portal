@@ -676,7 +676,7 @@ describe("lookup route and menu", () => {
     expect(nav).not.toContain("/apprentices?from=");
     expect(nav).toContain('title: "Onboarding"');
     expect(nav).toContain('label: "Add apprentice"');
-    expect(nav).toContain('label: "Candidates"');
+    expect(nav).toContain('label: "Applicants"');
     expect(nav).toContain('label: "Inductions"');
     expect(nav).toContain('label: "Employers & vacancies"');
     expect(nav).toContain('label: "Activity calendar"');
