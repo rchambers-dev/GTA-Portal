@@ -355,6 +355,9 @@ export async function renderWorkspacePage(
         workspace="staff"
         q={searchValue(search?.q)}
         filter={searchValue(search?.filter)}
+        learners={searchValue(search?.learners)}
+        employers={searchValue(search?.employers)}
+        applicants={searchValue(search?.applicants)}
       />
     );
   }
@@ -474,6 +477,9 @@ export async function renderWorkspacePage(
             workspace="administration"
             q={searchValue(search?.q)}
             filter={searchValue(search?.filter)}
+            learners={searchValue(search?.learners)}
+            employers={searchValue(search?.employers)}
+            applicants={searchValue(search?.applicants)}
           />
         );
       case "users":
@@ -584,6 +590,9 @@ export async function renderWorkspacePage(
             workspace="management"
             q={searchValue(search?.q)}
             filter={searchValue(search?.filter)}
+            learners={searchValue(search?.learners)}
+            employers={searchValue(search?.employers)}
+            applicants={searchValue(search?.applicants)}
           />
         );
       case "accounts":

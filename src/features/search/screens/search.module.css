@@ -51,6 +51,17 @@
 }
 .filters button.on { background: #24324f; color: #fff; border-color: #24324f; }
 .hint, .meta { color: #5c6478; font-size: 0.88rem; }
+.more {
+  margin: 4px 0 12px;
+  border: 1px solid #24324f;
+  background: #fff;
+  color: #24324f;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 14px;
+  cursor: pointer;
+}
 .group { font-family: var(--font-display), "Plus Jakarta Sans", sans-serif; font-size: 1.05rem; margin: 18px 0 8px; }
 .card {
   background: #fff;
