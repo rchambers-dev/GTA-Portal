@@ -114,6 +114,10 @@ function renderOnboarding(
         example={example}
         error={error}
         site={searchValue(search?.site)}
+        programme={searchValue(search?.programme)}
+        stage={searchValue(search?.stage)}
+        employer={searchValue(search?.employer)}
+        q={searchValue(search?.q)}
         deleteName={searchValue(search?.delete)}
         tab={searchValue(search?.tab)}
         date={searchValue(search?.date)}

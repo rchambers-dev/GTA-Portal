@@ -1,5 +1,5 @@
 import styles from "./ui/candidates.module.css";
-import { loadApplicantFormOptions, loadCandidatesReady, loadEmployerChoices } from "./load";
+import { loadApplicantFormOptions, loadApplicantList, loadCandidatesReady, loadEmployerChoices } from "./load";
 import {
   ActionsPage,
   AddCandidate,
@@ -23,6 +23,10 @@ export async function CandidatesArea({
   example,
   error,
   site,
+  programme,
+  stage,
+  employer,
+  q,
   deleteName,
   tab,
   date,
@@ -32,6 +36,10 @@ export async function CandidatesArea({
   example: boolean;
   error: string | null;
   site?: string;
+  programme?: string;
+  stage?: string;
+  employer?: string;
+  q?: string;
   deleteName?: string;
   tab?: string;
   date?: string;
@@ -39,15 +47,22 @@ export async function CandidatesArea({
   const loaded = example ? { ready: false, notice: null } : await loadCandidatesReady();
   const loadedEmployers = example ? { choices: [], rows: [] } : await loadEmployerChoices();
   const options = example ? { programmes: [], centres: [], sources: [], notice: null } : await loadApplicantFormOptions();
+  const listed = example ? { rows: [], today: "", notice: null } : await loadApplicantList();
   const props: CandidatesViewProps = {
     base: `/${workspace}/onboarding`,
     example,
     missing: !example && !loaded.ready,
-    error: error || loaded.notice || options.notice,
+    error: error || loaded.notice || options.notice || listed.notice,
     programmes: options.programmes,
     centres: options.centres,
     sources: options.sources,
-    query: site || "",
+    query: q || "",
+    listSite: site,
+    listProgramme: programme,
+    listStage: stage,
+    listEmployer: employer,
+    applicants: listed.rows,
+    today: listed.today,
     tab,
     date,
     employers: loadedEmployers.choices,

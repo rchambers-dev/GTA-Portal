@@ -17,6 +17,7 @@ import { EXAMPLE_EMPLOYERS, type EmployerChoice, type EmployerDirectoryRow } fro
 import { ukDate } from "../domain/format";
 import { ContactEventButton } from "./ContactEventModal";
 import { EmployerPicker } from "./EmployerPicker";
+import { applicantCounts, filterApplicants, type ApplicantListItem } from "../domain/applicant-list";
 import { BackLink, ExampleChip, MissingNote, PageHead, Pill, Plus, Tick } from "./parts";
 
 export type CandidatesViewProps = {
@@ -34,6 +35,12 @@ export type CandidatesViewProps = {
   centres?: { id: string; name: string }[];
   sources?: { id: string; label: string }[];
   initialEmployerId?: string;
+  applicants?: ApplicantListItem[];
+  today?: string;
+  listSite?: string;
+  listProgramme?: string;
+  listStage?: string;
+  listEmployer?: string;
 };
 
 function employerTotal(props: CandidatesViewProps): string {
@@ -91,10 +98,27 @@ const STARTED_ROWS = [
   ["Dylan Shore", "GTA-000215", "GTA-C-000019", "Sheffield", "Light Vehicle", "Started 2 Nov 2026"],
 ] as const;
 
+function listFilters(props: CandidatesViewProps) {
+  return {
+    query: props.query || "",
+    site: props.listSite || "All sites",
+    programme: props.listProgramme || "All programmes",
+    stage: props.listStage || "All stages",
+    employer: props.listEmployer || "All employer statuses",
+  };
+}
+
 export function CandidatesList(props: CandidatesViewProps) {
   const { base, example, tab } = props;
   const show = example;
   const started = tab === "started";
+  const archived = tab === "archived";
+  const liveTab = started ? "started" : archived ? "archived" : "active";
+  const counts = example ? { active: 24, due: 5, archived: 11, started: 2 } : applicantCounts(props.applicants ?? []);
+  const filters = listFilters(props);
+  const visible = example ? [] : filterApplicants(props.applicants ?? [], { tab: liveTab, ...filters });
+  const sites = [...new Set((props.applicants ?? []).map((row) => row.site).filter((site) => site && site !== "—"))].sort();
+  const programmes = [...new Set([...(props.programmes ?? []).map((row) => row.label), ...(props.applicants ?? []).map((row) => row.programme)].filter((name) => name && name !== "—"))].sort();
   return (
     <Frame props={props}>
       <PageHead
@@ -109,19 +133,21 @@ export function CandidatesList(props: CandidatesViewProps) {
         }
       />
       <div className="tabs">
-        <Link className={started ? "tab" : "tab-on"} href={`${base}/candidates${q(example)}`}>Active <span className="count">{show ? "24" : "0"}</span></Link>
-        <Link className="tab-amber" href={`${base}/candidates/due${q(example)}`}>Due for review <span className="count">{show ? "5" : "0"}</span></Link>
-        <Link className="tab" href={`${base}/candidates${q(example, "tab=archived")}`}>Archived <span className="count">{show ? "11" : "0"}</span></Link>
-        <Link className={started ? "tab-on" : "tab"} href={`${base}/candidates${q(example, "tab=started")}`}>Started <span className="count">{show ? "2" : "0"}</span></Link>
+        <Link className={started || archived ? "tab" : "tab-on"} href={`${base}/candidates${q(example)}`}>Active <span className="count">{counts.active}</span></Link>
+        <Link className="tab-amber" href={`${base}/candidates/due${q(example)}`}>Due for review <span className="count">{counts.due}</span></Link>
+        <Link className={archived ? "tab-on" : "tab"} href={`${base}/candidates${q(example, "tab=archived")}`}>Archived <span className="count">{counts.archived}</span></Link>
+        <Link className={started ? "tab-on" : "tab"} href={`${base}/candidates${q(example, "tab=started")}`}>Started <span className="count">{counts.started}</span></Link>
       </div>
       <div className="card card-pad">
-        <form className="filters" method="get">
+        <form className="filters" method="get" action={`${base}/candidates`}>
           {example ? <input type="hidden" name="example" value="1" /> : null}
-          <label className="field field-grow"><span className="label">Search</span><input type="search" name="q" placeholder="Name or ID" defaultValue="" /></label>
-          <label className="field field-sm"><span className="label">Site</span><select name="site"><option>All sites</option><option>Doncaster</option><option>Sheffield</option></select></label>
-          <label className="field field-md"><span className="label">Programme</span><select name="programme"><option>All programmes</option><option>Autocare</option><option>Light Vehicle</option><option>Heavy Vehicle</option><option>Vehicle Paint</option><option>Vehicle Panel</option><option>Business Admin</option><option>Customer Service</option></select></label>
-          <label className="field field-sm"><span className="label">Stage</span><select name="stage"><option>All stages</option><option>Stage 1</option><option>Interview</option><option>Stage 2</option><option>Induction</option></select></label>
-          <label className="field field-md"><span className="label">Employer</span><select name="employer"><option>All employer statuses</option><option>Employer needed</option><option>Identified</option><option>Confirmed</option></select></label>
+          {tab ? <input type="hidden" name="tab" value={tab} /> : null}
+          <label className="field field-grow"><span className="label">Search</span><input type="search" name="q" placeholder="Name or ID" defaultValue={filters.query} /></label>
+          <label className="field field-sm"><span className="label">Site</span><select name="site" defaultValue={filters.site}><option>All sites</option>{(example ? ["Doncaster", "Sheffield"] : sites).map((site) => <option key={site}>{site}</option>)}</select></label>
+          <label className="field field-md"><span className="label">Programme</span><select name="programme" defaultValue={filters.programme}><option>All programmes</option>{(example ? ["Autocare", "Light Vehicle", "Heavy Vehicle", "Vehicle Paint", "Vehicle Panel", "Business Admin", "Customer Service"] : programmes).map((name) => <option key={name}>{name}</option>)}</select></label>
+          <label className="field field-sm"><span className="label">Stage</span><select name="stage" defaultValue={filters.stage}><option>All stages</option><option>Stage 1</option><option>Interview</option><option>Stage 2</option><option>Induction</option><option>Started</option></select></label>
+          <label className="field field-md"><span className="label">Employer</span><select name="employer" defaultValue={filters.employer}><option>All employer statuses</option><option>Employer needed</option><option>Identified</option><option>Confirmed</option></select></label>
+          <button className="btn-secondary" type="submit">Apply</button>
         </form>
       </div>
       <div className="card table-wrap">
@@ -164,13 +190,27 @@ export function CandidatesList(props: CandidatesViewProps) {
                 <td><Pill tone={row[8]}>{row[9]}</Pill></td>
                 <td className={row[11] ? "next-step blocked" : "next-step"}>{row[10]}</td>
               </tr>
+            )) : visible.length ? visible.map((row) => (
+              <tr key={row.candidateId}>
+                <td>
+                  <Link className="name" href={`${base}/candidates/${encodeURIComponent(row.bucket === "started" && row.gtaId ? row.gtaId : row.candidateId)}`}>{row.name}</Link>
+                  {row.bucket === "started" ? <div className="note-inline">Applicant ID {row.candidateId}</div> : null}
+                </td>
+                <td className="mono muted nowrap">{row.bucket === "started" && row.gtaId ? row.gtaId : row.candidateId}</td>
+                <td className="nowrap">{row.site}</td>
+                <td>{row.programme}</td>
+                <td><Pill tone={row.stageTone}>{row.stage}</Pill></td>
+                <td><Pill tone={row.employerTone}>{row.employerStatus}</Pill></td>
+                <td><Pill tone={row.responsivenessTone}>{row.responsiveness}</Pill></td>
+                <td className={row.nextBlocked ? "next-step blocked" : "next-step"}>{row.nextStep}</td>
+              </tr>
             )) : (
-              <tr><td colSpan={8} className="muted">No applicants yet.</td></tr>
+              <tr><td colSpan={8} className="muted">{filters.query || filters.site !== "All sites" || filters.programme !== "All programmes" || filters.stage !== "All stages" || filters.employer !== "All employer statuses" ? "No applicants match." : "No applicants yet."}</td></tr>
             )}
           </tbody>
         </table>
       </div>
-      <p className="footer-note">{show ? "Showing 10 of 24 active applicants. Example data only." : "Active applicants appear here after the migration is applied. Started applicants stay off this list."}</p>
+      {show ? <p className="footer-note">Showing 10 of 24 active applicants. Example data only.</p> : null}
     </Frame>
   );
 }
@@ -1057,8 +1097,21 @@ const DUE = [
   ["Lila Bennett", "Doncaster", "green", "Responsive", "20 Nov 2025", "1 year if Responsive", "20 Nov 2026", "Due in 6 days", false, "2025-11-20"],
 ] as const;
 
+function daysFromToday(dueOn: string, today: string): string {
+  const due = Date.parse(`${dueOn}T00:00:00Z`);
+  const now = Date.parse(`${today}T00:00:00Z`);
+  if (Number.isNaN(due) || Number.isNaN(now)) return "—";
+  const days = Math.round((now - due) / 86400000);
+  if (days > 0) return `${days} ${days === 1 ? "day" : "days"} overdue`;
+  if (days < 0) return `Due in ${-days} ${-days === 1 ? "day" : "days"}`;
+  return "Due today";
+}
+
 export function DuePage(props: CandidatesViewProps & { confirmName: string | null }) {
   const { base, example, confirmName } = props;
+  const counts = example ? { active: 24, due: 5, archived: 11, started: 2 } : applicantCounts(props.applicants ?? []);
+  const dueRows = (props.applicants ?? []).filter((row) => row.due);
+  const today = props.today || "";
   return (
     <Frame props={props}>
       <PageHead
@@ -1069,9 +1122,9 @@ export function DuePage(props: CandidatesViewProps & { confirmName: string | nul
       />
       <div className="banner banner-amber"><div><strong>Nothing is deleted automatically.</strong> Applicants stay on this list until you mark them responsive, archive them, or delete them permanently. Archived records can still be found later.</div></div>
       <div className="tabs">
-        <Link className="tab" href={`${base}/candidates${q(example)}`}>Active <span className="count">{example ? "24" : "0"}</span></Link>
-        <div className="tab-on">Due for review <span className="count">{example ? "5" : "0"}</span></div>
-        <Link className="tab" href={`${base}/candidates${q(example, "tab=archived")}`}>Archived <span className="count">{example ? "11" : "0"}</span></Link>
+        <Link className="tab" href={`${base}/candidates${q(example)}`}>Active <span className="count">{counts.active}</span></Link>
+        <div className="tab-on">Due for review <span className="count">{counts.due}</span></div>
+        <Link className="tab" href={`${base}/candidates${q(example, "tab=archived")}`}>Archived <span className="count">{counts.archived}</span></Link>
       </div>
       <div className="card table-wrap">
         <table>
@@ -1109,7 +1162,39 @@ export function DuePage(props: CandidatesViewProps & { confirmName: string | nul
                   </div>
                 </td>
               </tr>
-            )) : <tr><td colSpan={7} className="muted">Nobody is due for review.</td></tr>}
+            )) : dueRows.length ? dueRows.map((row) => {
+              const overdue = today ? row.reviewDueOn < today : false;
+              const when = today ? daysFromToday(row.reviewDueOn, today) : ukDate(row.reviewDueOn);
+              return (
+                <tr key={row.candidateId}>
+                  <td><div className="name">{row.name}</div><div className="note-inline">{row.site}</div></td>
+                  <td><Pill tone={row.responsivenessTone}>{row.responsiveness}</Pill></td>
+                  <td className="nowrap">{ukDate(row.firstContactOn)}</td>
+                  <td>{row.responsiveness === "Unresponsive" ? "3 months if Unresponsive" : "1 year if Responsive"}</td>
+                  <td className="nowrap">{ukDate(row.reviewDueOn)}</td>
+                  <td>{overdue ? <span className="date-overdue">{when}</span> : when}</td>
+                  <td>
+                    <div className="btn-col">
+                      {row.responsiveness === "Unresponsive" ? (
+                        <form action={setResponsivenessAction}>
+                          <input type="hidden" name="returnTo" value={`${base}/candidates/due`} />
+                          <input type="hidden" name="candidateId" value={row.candidateId} />
+                          <input type="hidden" name="firstContact" value={row.firstContactOn} />
+                          <input type="hidden" name="responsiveness" value="responsive" />
+                          <button className="btn-secondary btn-sm" type="submit">Mark responsive</button>
+                        </form>
+                      ) : null}
+                      <form action={archiveCandidateAction}>
+                        <input type="hidden" name="returnTo" value={`${base}/candidates/due`} />
+                        <input type="hidden" name="candidateId" value={row.candidateId} />
+                        <button className="btn-secondary btn-sm" type="submit">Archive</button>
+                      </form>
+                      <Link className="btn-danger btn-sm" href={`${base}/candidates/due?delete=${encodeURIComponent(row.name)}`}>Delete permanently</Link>
+                    </div>
+                  </td>
+                </tr>
+              );
+            }) : <tr><td colSpan={7} className="muted">Nobody is due for review.</td></tr>}
           </tbody>
         </table>
       </div>

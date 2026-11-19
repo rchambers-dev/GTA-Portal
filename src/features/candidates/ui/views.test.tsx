@@ -12,6 +12,42 @@ const props = {
 };
 
 describe("candidates pages", () => {
+  it("lists a saved applicant and does not mention the migration", () => {
+    const html = renderToStaticMarkup(
+      createElement(CandidatesList, {
+        ...props,
+        example: false,
+        applicants: [
+          {
+            candidateId: "GTA-C-000001",
+            name: "Reiss Chambers",
+            gtaId: null,
+            site: "Doncaster",
+            programme: "Autocare L2 (ST0499)",
+            stage: "Stage 1",
+            stageTone: "grey",
+            employerStatus: "Employer needed",
+            employerTone: "red",
+            responsiveness: "Responsive",
+            responsivenessTone: "green",
+            nextStep: "Verify ID",
+            nextBlocked: false,
+            bucket: "active",
+            due: false,
+            reviewDueOn: "2027-11-19",
+            firstContactOn: "2026-11-19",
+          },
+        ],
+      }),
+    );
+    expect(html).toContain("GTA-C-000001");
+    expect(html).toContain("Reiss Chambers");
+    expect(html).toContain("Stage 1");
+    expect(html).toContain("Verify ID");
+    expect(html).toContain(">1<");
+    expect(html).not.toContain("migration is applied");
+  });
+
   it("uses the approved candidate id and keeps the started tab off the active list", () => {
     const html = renderToStaticMarkup(createElement(CandidatesList, props));
     expect(html).toContain("GTA-C-000042");
