@@ -7,13 +7,15 @@ import type { EmployerChoice } from "../domain/employers";
 export function EmployerPicker({
   employers,
   required = false,
+  initialEmployerId = "",
 }: {
   employers: EmployerChoice[];
   required?: boolean;
+  initialEmployerId?: string;
 }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
+  const [selectedId, setSelectedId] = useState(initialEmployerId);
   const selected = employers.find((employer) => employer.employerId === selectedId) ?? null;
   const matches = useMemo(() => {
     const needle = query.trim().toLowerCase();

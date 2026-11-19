@@ -49,7 +49,7 @@ describe("sidebar grouping", () => {
       expect(staff?.items[0]?.permission).toBe(PERMISSIONS.ADMIN_USERS_MANAGE);
       expect(onboarding?.items.map((item) => item.label)).toEqual([
         "Overview",
-        "Candidates",
+        "Applicants",
         "Interviews",
         "Inductions",
         "Employers & vacancies",

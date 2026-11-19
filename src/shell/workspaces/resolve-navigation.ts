@@ -91,7 +91,7 @@ function onboardingSection(workspace: "administration" | "management") {
     title: "Onboarding",
     items: [
       { href: base, label: "Overview", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
-      { href: `${base}/candidates`, label: "Candidates", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
+      { href: `${base}/candidates`, label: "Applicants", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/interviews`, label: "Interviews", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/inductions`, label: "Inductions", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
       { href: `${base}/employers`, label: "Employers & vacancies", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },

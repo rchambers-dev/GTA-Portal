@@ -10,9 +10,9 @@ const FILTERS: { value: SearchFilter; label: string }[] = [
 ];
 
 function hint(filter: SearchFilter, query: string): string {
-  if (!query.trim()) return "Type a name, GTA ID, candidate ID, employer, site, manager, programme, tutor, or postcode.";
-  if (filter === "in_learning") return "In learning is on, so only learners who are in learning are listed. Employers and candidates still appear.";
-  if (filter === "review_due") return "Showing learners and candidates with a review due.";
+  if (!query.trim()) return "Type a name, GTA ID, applicant ID, employer, site, manager, programme, tutor, or postcode.";
+  if (filter === "in_learning") return "In learning is on, so only learners who are in learning are listed. Employers and applicants still appear.";
+  if (filter === "review_due") return "Showing learners and applicants with a review due.";
   if (filter === "concern") return "Showing learners with an open concern.";
   return "In learning is off, so people who have left or not started still appear.";
 }
@@ -32,14 +32,14 @@ export function SearchView({
     <div className={styles.page}>
       <h1 className={styles.title}>Search</h1>
       <p className={styles.lead}>
-        All staff. One box searches everyone: name, GTA ID, candidate ID, employer, site, manager, programme, tutor, or postcode.
+        All staff. One box searches everyone: name, GTA ID, applicant ID, employer, site, manager, programme, tutor, or postcode.
       </p>
       <form className={styles.search} action={action} method="get">
         <input
           name="q"
           defaultValue={query}
-          aria-label="Search learners, employers and candidates"
-          placeholder="Search learners, employers and candidates"
+          aria-label="Search learners, employers and applicants"
+          placeholder="Search learners, employers and applicants"
         />
         {selected !== "all" ? <input type="hidden" name="filter" value={selected} /> : null}
         <button type="submit">Search</button>
@@ -96,7 +96,7 @@ export function SearchView({
       ) : null}
       {page.candidates.length ? (
         <section>
-          <h2 className={styles.group}>Candidates · {page.candidates.length}</h2>
+          <h2 className={styles.group}>Applicants · {page.candidates.length}</h2>
           {page.candidates.map((row) => (
             <article key={row.id} className={styles.card}>
               <div>
@@ -106,7 +106,7 @@ export function SearchView({
               <div className={styles.chips}>
                 <span className={row.active ? `${styles.chip} ${styles.green}` : styles.chip}>{row.statusLabel}</span>
                 {row.reviewDue ? <span className={`${styles.chip} ${styles.amber}`}>Review due</span> : null}
-                <Link className={styles.open} href={candidateHref(workspace, row.id)}>Open candidate</Link>
+                <Link className={styles.open} href={candidateHref(workspace, row.id)}>Open applicant</Link>
               </div>
             </article>
           ))}

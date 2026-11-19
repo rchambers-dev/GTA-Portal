@@ -21,6 +21,52 @@ describe("candidates pages", () => {
     expect(html).not.toContain("supabase");
   });
 
+  it("lists programmes by id and shows a save error only once", () => {
+    const programmeId = "80f06b62-c953-4acd-aacf-630db3a861c4";
+    const centreId = "11111111-1111-4111-8111-111111111111";
+    const sourceId = "22222222-2222-4222-8222-222222222222";
+    const html = renderToStaticMarkup(
+      createElement(AddCandidate, {
+        ...props,
+        example: false,
+        error: "Choose a programme from the list.",
+        programmes: [{ id: programmeId, label: "Vehicle Maintenance and Repair L3 (ST0033)" }],
+        centres: [{ id: centreId, name: "Doncaster" }],
+        sources: [{ id: sourceId, label: "Website" }],
+        employers: [
+          {
+            employerId: "GTA-EMP-000001",
+            name: "BCA",
+            site: "Doncaster depot",
+            address: "Doncaster depot, DN1 2AA",
+            contact: "Pat Singh",
+            phone: "07000000000",
+            email: "pat@example.com",
+          },
+        ],
+        initialEmployerId: "GTA-EMP-000001",
+      }),
+    );
+    expect(html).toContain(`value="${programmeId}"`);
+    expect(html).toContain("Vehicle Maintenance and Repair L3 (ST0033)");
+    expect(html).toContain('name="programmeId"');
+    expect(html).toContain('name="centreId"');
+    expect(html).toContain('name="sourceId"');
+    expect(html).toContain('name="employerId"');
+    expect(html).toContain("Doncaster");
+    expect(html).toContain("Website");
+    expect(html).toContain("BCA");
+    expect(html).toContain("Doncaster depot");
+    expect(html).toContain("Pat Singh");
+    expect(html).not.toContain("No employers are available yet");
+    expect(html).not.toContain(">Light Vehicle<");
+    expect(html).not.toContain("was not found on the programmes table");
+    expect(html.match(/banner-red/g)).toHaveLength(1);
+    expect(html).not.toContain("banner-amber");
+    expect(html).toContain("Add applicant");
+    expect(html).toContain("Save applicant");
+  });
+
   it("asks for email and phone at entry and does not offer an ID field", () => {
     const html = renderToStaticMarkup(createElement(AddCandidate, props));
     expect(html).toContain("Email");
@@ -46,7 +92,7 @@ describe("candidates pages", () => {
     const html = renderToStaticMarkup(
       createElement(OverviewPage, { ...props, example: false, missing: true }),
     );
-    expect(html).toContain("Candidates overview");
+    expect(html).toContain("Applicants overview");
     expect(html).toContain("Tables not applied yet");
     expect(html).toContain(">0<");
   });

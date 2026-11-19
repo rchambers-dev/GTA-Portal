@@ -188,7 +188,7 @@ function OverviewPanel({
         </dd>
         {apprentice.sourceCandidateId ? (
           <>
-            <dt>Candidate ID</dt>
+            <dt>Applicant ID</dt>
             <dd data-source-candidate-id={apprentice.sourceCandidateId}>{apprentice.sourceCandidateId}</dd>
           </>
         ) : null}
