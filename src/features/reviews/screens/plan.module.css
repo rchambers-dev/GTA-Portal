@@ -3080,3 +3080,127 @@
   color: #fff;
   border: 1px solid #24324f;
 }
+
+/* One compact chip size for waiting-list actions and the day-row chips. */
+.list .card {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  min-height: 0;
+}
+
+.list .rowMain {
+  flex: 1 1 14rem;
+  min-width: min(100%, 14rem);
+}
+
+.list .rowMain a {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.cardActions {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
+}
+
+.list .card .pill,
+.list .card .noteOn,
+.list .card .concernOff,
+.list .card .concernOn,
+.list .card .duePill,
+.pills .tag,
+.pills .tagOk,
+.pills .tagOver,
+.pills .tagSoon,
+.pills .tagDone,
+.pills .tagLock,
+.pills .safeOn,
+.pills .safeOff,
+.pills .concernOff,
+.pills .concernOn {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 1.75rem;
+  min-height: 1.75rem;
+  max-height: 1.75rem;
+  margin: 0;
+  padding: 0 0.7rem;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 999px;
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.list .card .duePill,
+.pills .duePill {
+  flex-direction: column;
+  gap: 0;
+  padding: 0.1rem 0.7rem;
+}
+
+.list .card .duePill span,
+.list .card .duePill small,
+.pills .duePill span,
+.pills .duePill small {
+  display: block;
+  width: auto;
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.list .card .duePill small,
+.pills .duePill small {
+  font-size: 0.6rem;
+  font-weight: 600;
+}
+
+.list .card .pill,
+.list .card .concernOff,
+.pills .concernOff,
+.pills .safeOff {
+  background: #fff;
+  color: #24324f;
+  border-color: #24324f;
+}
+
+.pills .safeOff {
+  color: #5c6478;
+  border-color: #b7becc;
+}
+
+.list .card .noteOn {
+  background: #e7f4ee;
+  color: #176338;
+  border-color: #176338;
+}
+
+.list .card .concernOn,
+.pills .concernOn {
+  background: #24324f;
+  color: #fff;
+  border-color: #24324f;
+}

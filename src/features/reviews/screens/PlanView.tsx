@@ -689,6 +689,7 @@ function RosterCard({
         <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`}>{person.name}</Link>
         <span className={styles.college}>College {person.releaseDay}</span>
       </span>
+      <span className={styles.cardActions}>
       <DuePill person={person} />
       <ConcernChip person={person} reasons={reasons} canWrite={canWrite} onRun={onRun} onStatus={onStatus} />
       {canWrite && person.packId && person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor") ? (
@@ -710,6 +711,7 @@ function RosterCard({
           {person.notes ? "Edit note" : "Add note"}
         </button>
       ) : null}
+      </span>
     </li>
   );
 }
