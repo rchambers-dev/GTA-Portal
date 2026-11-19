@@ -55,6 +55,7 @@ import { ArchiveScreen } from "@/features/reviews/screens/ArchiveScreen";
 import { TutorReviewsScreen } from "@/features/tutor-reviews/screens/TutorReviewsScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
+import { OpenDaysArea } from "@/features/open-days/OpenDaysArea";
 import { CandidatesArea } from "@/features/candidates/CandidatesArea";
 import { RecruitmentGapScreen } from "@/features/administration/screens/RecruitmentGapScreen";
 import { SharedDriveScreen } from "@/features/shared-drive";
@@ -133,6 +134,9 @@ function renderOnboarding(
 }
 
 function renderMarketing(workspace: "administration" | "management", segment: string) {
+  if (segment === "marketing/open-days" || segment.startsWith("marketing/open-days/")) {
+    return <OpenDaysArea workspace={workspace} segment={segment} />;
+  }
   if (segment === "marketing") return <MarketingOverview workspace={workspace} />;
   if (segment === "marketing/employers") {
     return (
@@ -435,6 +439,10 @@ export async function renderWorkspacePage(
       const onboarding = renderOnboarding("administration", segment, search);
       if (onboarding) return onboarding;
     }
+    if (segment === "marketing" || segment.startsWith("marketing/")) {
+      const marketing = renderMarketing("administration", segment);
+      if (marketing) return marketing;
+    }
     switch (segment) {
       case "dashboard":
         return <AdministrationDashboardScreen />;
@@ -456,12 +464,6 @@ export async function renderWorkspacePage(
         return <AdminTeachingGroupsScreen />;
       case "intake":
         redirect("/administration/onboarding/directory/apprentices");
-      case "marketing":
-      case "marketing/employers":
-      case "marketing/calendar":
-      case "marketing/actions":
-      case "marketing/settings":
-        return renderMarketing("administration", segment);
       case "onboarding":
       case "onboarding/apprentices":
       case "onboarding/interviews":
@@ -539,6 +541,10 @@ export async function renderWorkspacePage(
       const onboarding = renderOnboarding("management", segment, search);
       if (onboarding) return onboarding;
     }
+    if (segment === "marketing" || segment.startsWith("marketing/")) {
+      const marketing = renderMarketing("management", segment);
+      if (marketing) return marketing;
+    }
     switch (segment) {
       case "dashboard":
         return <ManagementDashboardScreen />;
@@ -561,12 +567,6 @@ export async function renderWorkspacePage(
         return <AdminTeachingGroupsScreen />;
       case "intake":
         redirect("/management/onboarding/directory/apprentices");
-      case "marketing":
-      case "marketing/employers":
-      case "marketing/calendar":
-      case "marketing/actions":
-      case "marketing/settings":
-        return renderMarketing("management", segment);
       case "onboarding":
       case "onboarding/apprentices":
       case "onboarding/interviews":

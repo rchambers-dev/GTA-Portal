@@ -15,14 +15,17 @@ export function MarketingOverview({
     <ApprenticePageShell
       eyebrow="Marketing & Recruitment"
       title="Overview"
-      description="Employers use the same example records as Onboarding. Vacancies, the activity calendar, recruitment actions, and settings are not built."
+      description="Open days are managed on their own page. Employers use the same example records as Onboarding. Vacancies, the activity calendar, recruitment actions, and settings are not built."
     >
       <div className={styles.stack} data-marketing-overview={workspace}>
         <p className={styles.previewBanner} role="status">
           EXAMPLE DATA. Saving is disabled. No live counts are loaded.
         </p>
         <div className={styles.toolbarActions}>
-          <Link className={styles.primaryBtn} href={`${base}/employers`}>
+          <Link className={styles.primaryBtn} href={`${base}/open-days`}>
+            Open days
+          </Link>
+          <Link className={styles.secondaryBtn} href={`${base}/employers`}>
             Employers & vacancies
           </Link>
         </div>
