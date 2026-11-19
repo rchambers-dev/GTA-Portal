@@ -41,10 +41,17 @@ export type SearchDirectory = {
   learners: SearchLearner[];
   employers: SearchEmployer[];
   candidates: SearchCandidate[];
+  totals: { learners: number; employers: number; applicants: number };
   loadError: string | null;
 };
 
-const LIMIT = 25;
+export const SEARCH_PAGE = 10;
+
+export function shownCount(value: string | undefined): number {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < SEARCH_PAGE) return SEARCH_PAGE;
+  return Math.min(200, Math.floor(parsed));
+}
 
 export function parseSearchFilter(value: string | undefined): SearchFilter {
   if (value === "in_learning" || value === "review_due" || value === "concern") return value;
@@ -80,12 +87,12 @@ export function searchDirectoryRows(input: {
   learners: SearchLearner[];
   employers: SearchEmployer[];
   candidates: SearchCandidate[];
-}): Pick<SearchDirectory, "learners" | "employers" | "candidates"> {
+  limits?: { learners?: number; employers?: number; applicants?: number };
+}): Pick<SearchDirectory, "learners" | "employers" | "candidates" | "totals"> {
   const needle = input.needle.trim().toLowerCase();
-  if (!needle) return { learners: [], employers: [], candidates: [] };
-  let learners = input.learners.filter((row) => hit(row.searchText, needle));
-  let employers = input.employers.filter((row) => hit(row.searchText, needle));
-  let candidates = input.candidates.filter((row) => hit(row.searchText, needle));
+  let learners = needle ? input.learners.filter((row) => hit(row.searchText, needle)) : [...input.learners];
+  let employers = needle ? input.employers.filter((row) => hit(row.searchText, needle)) : [...input.employers];
+  let candidates = needle ? input.candidates.filter((row) => hit(row.searchText, needle)) : [...input.candidates];
   if (input.filter === "in_learning") {
     learners = learners.filter((row) => row.inLearning);
   } else if (input.filter === "review_due") {
@@ -98,10 +105,19 @@ export function searchDirectoryRows(input: {
     candidates = [];
   }
   const byName = (left: { name: string }, right: { name: string }) => left.name.localeCompare(right.name);
+  learners.sort(byName);
+  employers.sort(byName);
+  candidates.sort(byName);
+  const limits = {
+    learners: input.limits?.learners ?? SEARCH_PAGE,
+    employers: input.limits?.employers ?? SEARCH_PAGE,
+    applicants: input.limits?.applicants ?? SEARCH_PAGE,
+  };
   return {
-    learners: learners.sort(byName).slice(0, LIMIT),
-    employers: employers.sort(byName).slice(0, LIMIT),
-    candidates: candidates.sort(byName).slice(0, LIMIT),
+    learners: learners.slice(0, limits.learners),
+    employers: employers.slice(0, limits.employers),
+    candidates: candidates.slice(0, limits.applicants),
+    totals: { learners: learners.length, employers: employers.length, applicants: candidates.length },
   };
 }
 
@@ -115,33 +131,53 @@ type ApprenticeRow = {
   is_test?: boolean | null;
 };
 
-export async function loadSearchDirectory(query: string, filter: SearchFilter): Promise<SearchDirectory> {
+export async function loadSearchDirectory(
+  query: string,
+  filter: SearchFilter,
+  limits?: { learners?: number; employers?: number; applicants?: number },
+): Promise<SearchDirectory> {
   const supabase = await createSupabaseServerClient();
-  return readSearchDirectory(supabase, query, filter);
+  return readSearchDirectory(supabase, query, filter, limits);
+}
+
+async function everyPage<T>(
+  load: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
+): Promise<{ data: T[]; error: { message: string } | null }> {
+  const size = 1000;
+  const data: T[] = [];
+  for (let from = 0; from < 20000; from += size) {
+    const page = await load(from, from + size - 1);
+    if (page.error) return { data, error: page.error };
+    const rows = page.data ?? [];
+    data.push(...rows);
+    if (rows.length < size) return { data, error: null };
+  }
+  return { data, error: null };
 }
 
 export async function readSearchDirectory(
   supabase: SupabaseClient,
   query: string,
   filter: SearchFilter,
+  limits?: { learners?: number; employers?: number; applicants?: number },
 ): Promise<SearchDirectory> {
   const today = londonToday();
   const needle = query.trim();
-  if (!needle) {
-    return { query, filter, learners: [], employers: [], candidates: [], loadError: null };
-  }
 
   const withTest = "gta_id, first_name, middle_names, last_name, status, programme_id, is_test";
-  let apprentices = await supabase.from("apprentices").select(withTest);
+  const withoutTest = "gta_id, first_name, middle_names, last_name, status, programme_id";
+  let apprentices = await everyPage<ApprenticeRow>((from, to) => supabase.from("apprentices").select(withTest).range(from, to));
   if (apprentices.error && isMissingTestColumn(apprentices.error.message)) {
-    apprentices = await supabase
-      .from("apprentices")
-      .select("gta_id, first_name, middle_names, last_name, status, programme_id");
+    apprentices = await everyPage((from, to) => supabase.from("apprentices").select(withoutTest).range(from, to));
   }
   const [employments, employers, sites, managers, programmes, tutorLinks, reviews, concerns, candidates, centres, profiles] =
     await Promise.all([
-      supabase.from("apprentice_employments").select("gta_id, employer_id, site_id, manager_id").is("end_date", null),
-      supabase.from("employers").select("employer_id, company_name"),
+      everyPage<{ gta_id: string; employer_id: string | null; site_id: string | null; manager_id: string | null }>((from, to) =>
+        supabase.from("apprentice_employments").select("gta_id, employer_id, site_id, manager_id").is("end_date", null).range(from, to),
+      ),
+      everyPage<{ employer_id: string; company_name: string | null }>((from, to) =>
+        supabase.from("employers").select("employer_id, company_name").range(from, to),
+      ),
       supabase.from("employer_sites").select("id, employer_id, postcode, area_name"),
       supabase.from("employer_managers").select("id, employer_id, first_name, middle_names, last_name"),
       supabase.from("programmes").select("id, name"),
@@ -157,10 +193,6 @@ export async function readSearchDirectory(
       supabase.from("candidate_centres").select("id, name"),
       supabase.from("profiles").select("id, display_name, email"),
     ]);
-
-  if (apprentices.error) {
-    return { query, filter, learners: [], employers: [], candidates: [], loadError: apprentices.error.message };
-  }
 
   const programmeName = new Map(
     ((programmes.data ?? []) as { id: string; name: string | null }[]).map((row) => [row.id, row.name || ""]),
@@ -217,7 +249,7 @@ export async function readSearchDirectory(
       .map((row) => row.gta_id),
   );
 
-  const learnerRows = excludeTestApprentices((apprentices.data ?? []) as ApprenticeRow[]).map((row) => {
+  const learnerRows = excludeTestApprentices(apprentices.error ? [] : apprentices.data).map((row) => {
     const job = jobByApprentice.get(row.gta_id);
     const site = job?.site_id ? siteById.get(job.site_id) : undefined;
     const employer = job?.employer_id ? companyName.get(job.employer_id) || "" : "";
@@ -271,7 +303,7 @@ export async function readSearchDirectory(
     placed.set(job.employer_id, (placed.get(job.employer_id) || 0) + 1);
   }
 
-  const employerRows = ((employers.data ?? []) as { employer_id: string; company_name: string | null }[]).map((row) => {
+  const employerRows = (employers.error ? [] : employers.data).map((row) => {
     const siteList = sitesByEmployer.get(row.employer_id) ?? [];
     const managerList = (managersByEmployer.get(row.employer_id) ?? []).filter(Boolean);
     const firstSite = siteList[0];
@@ -340,7 +372,14 @@ export async function readSearchDirectory(
     };
   });
 
-  const matched = searchDirectoryRows({ needle, filter, learners: learnerRows, employers: employerRows, candidates: candidateRows });
-  const problem = employments.error?.message || employers.error?.message || null;
+  const matched = searchDirectoryRows({
+    needle,
+    filter,
+    limits,
+    learners: learnerRows,
+    employers: employerRows,
+    candidates: candidates.error ? [] : candidateRows,
+  });
+  const problem = [apprentices.error?.message, employments.error?.message, employers.error?.message].filter(Boolean).join(" ") || null;
   return { query, filter, ...matched, loadError: problem };
 }

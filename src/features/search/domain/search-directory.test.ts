@@ -55,6 +55,27 @@ describe("search directory", () => {
     expect(learning.candidates.map((row) => row.id)).toEqual(["GTA-C-000042"]);
   });
 
+  it("lists learners and employers when the box is empty, and the chips still apply", () => {
+    const open = searchDirectoryRows({
+      needle: "",
+      filter: "all",
+      learners,
+      employers,
+      candidates,
+      limits: { learners: 1, employers: 10, applicants: 10 },
+    });
+    expect(open.learners.map((row) => row.name)).toEqual(["Amina Shah"]);
+    expect(open.totals.learners).toBe(2);
+    expect(open.employers.map((row) => row.name)).toEqual(["BCA"]);
+    const learning = searchDirectoryRows({ needle: "", filter: "in_learning", learners, employers, candidates });
+    expect(learning.learners.map((row) => row.name)).toEqual(["Joel Richardson"]);
+    expect(learning.employers).toHaveLength(1);
+    expect(learning.candidates).toHaveLength(1);
+    const due = searchDirectoryRows({ needle: "", filter: "review_due", learners, employers, candidates });
+    expect(due.learners.map((row) => row.gtaId)).toEqual(["GTA-000012"]);
+    expect(due.employers).toHaveLength(0);
+  });
+
   it("keeps review due and concern on the people who have them", () => {
     const due = searchDirectoryRows({ needle: "bca", filter: "review_due", learners, employers, candidates });
     expect(due.learners.map((row) => row.gtaId)).toEqual(["GTA-000012"]);

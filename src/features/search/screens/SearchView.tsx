@@ -10,7 +10,7 @@ const FILTERS: { value: SearchFilter; label: string }[] = [
 ];
 
 function hint(filter: SearchFilter, query: string): string {
-  if (!query.trim()) return "Type a name, GTA ID, applicant ID, employer, site, manager, programme, tutor, or postcode.";
+  if (!query.trim() && filter === "all") return "Showing learners and employers. Type a name, GTA ID, applicant ID, employer, site, manager, programme, tutor, or postcode to narrow the list.";
   if (filter === "in_learning") return "In learning is on, so only learners who are in learning are listed. Employers and applicants still appear.";
   if (filter === "review_due") return "Showing learners and applicants with a review due.";
   if (filter === "concern") return "Showing learners with an open concern.";
@@ -61,7 +61,7 @@ export function SearchView({
       ) : null}
       {page.learners.length ? (
         <section>
-          <h2 className={styles.group}>Learners · {page.learners.length}</h2>
+          <h2 className={styles.group}>Learners · {page.learners.length}{page.totals.learners > page.learners.length ? ` of ${page.totals.learners}` : ""}</h2>
           {page.learners.map((row) => (
             <article key={row.gtaId} className={styles.card}>
               <div>
@@ -76,11 +76,14 @@ export function SearchView({
               </div>
             </article>
           ))}
+          {page.totals.learners > page.learners.length ? (
+            <ShowMore workspace={workspace} page={page} group="learners" next={page.learners.length + 10} />
+          ) : null}
         </section>
       ) : null}
       {page.employers.length ? (
         <section>
-          <h2 className={styles.group}>Employers · {page.employers.length}</h2>
+          <h2 className={styles.group}>Employers · {page.employers.length}{page.totals.employers > page.employers.length ? ` of ${page.totals.employers}` : ""}</h2>
           {page.employers.map((row) => (
             <article key={row.id} className={styles.card}>
               <div>
@@ -92,11 +95,14 @@ export function SearchView({
               </div>
             </article>
           ))}
+          {page.totals.employers > page.employers.length ? (
+            <ShowMore workspace={workspace} page={page} group="employers" next={page.employers.length + 10} />
+          ) : null}
         </section>
       ) : null}
       {page.candidates.length ? (
         <section>
-          <h2 className={styles.group}>Applicants · {page.candidates.length}</h2>
+          <h2 className={styles.group}>Applicants · {page.candidates.length}{page.totals.applicants > page.candidates.length ? ` of ${page.totals.applicants}` : ""}</h2>
           {page.candidates.map((row) => (
             <article key={row.id} className={styles.card}>
               <div>
@@ -110,9 +116,41 @@ export function SearchView({
               </div>
             </article>
           ))}
+          {page.totals.applicants > page.candidates.length ? (
+            <ShowMore workspace={workspace} page={page} group="applicants" next={page.candidates.length + 10} />
+          ) : null}
         </section>
       ) : null}
     </div>
+  );
+}
+
+function ShowMore({
+  workspace,
+  page,
+  group,
+  next,
+}: {
+  workspace: "staff" | "administration" | "management";
+  page: SearchDirectory;
+  group: "learners" | "employers" | "applicants";
+  next: number;
+}) {
+  const shown = {
+    learners: page.learners.length,
+    employers: page.employers.length,
+    applicants: page.candidates.length,
+  };
+  shown[group] = next;
+  return (
+    <form action={`/${workspace}/search`} method="get">
+      {page.query.trim() ? <input type="hidden" name="q" value={page.query.trim()} /> : null}
+      {page.filter !== "all" ? <input type="hidden" name="filter" value={page.filter} /> : null}
+      <input type="hidden" name="learners" value={String(shown.learners)} />
+      <input type="hidden" name="employers" value={String(shown.employers)} />
+      <input type="hidden" name="applicants" value={String(shown.applicants)} />
+      <button className={styles.more} type="submit">Show more</button>
+    </form>
   );
 }
 
