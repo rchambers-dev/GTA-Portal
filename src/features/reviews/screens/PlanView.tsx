@@ -686,8 +686,8 @@ function RosterCard({
       data-roster-gta={person.gtaId}
     >
       <span className={styles.rowMain}>
-        <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`}>{person.name}</Link>
-        <span className={styles.college}>College {person.releaseDay}</span>
+        <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`} title={person.name}>{person.name}</Link>
+        <span className={styles.college} title={`College ${person.releaseDay}`}>College {person.releaseDay}</span>
       </span>
       <span className={styles.cardActions}>
       <DuePill person={person} />

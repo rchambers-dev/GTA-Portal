@@ -3081,33 +3081,78 @@
   border: 1px solid #24324f;
 }
 
-/* One compact chip size for waiting-list actions and the day-row chips. */
+/* One compact chip size for waiting-list actions and the day-row chips.
+   On a normal desktop the roster is wide enough for one row: name on the
+   left, chips on the right. A narrow list wraps the chips under the name. */
+@media (min-width: 1200px) {
+  .layout {
+    grid-template-columns: minmax(42rem, 46rem) minmax(18rem, 1fr);
+  }
+}
+
+.roster .list {
+  container-type: inline-size;
+}
+
 .list .card {
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 8px 10px;
   min-height: 0;
+  padding: 8px 10px;
 }
 
 .list .rowMain {
-  flex: 1 1 14rem;
-  min-width: min(100%, 14rem);
+  flex: 1 1 auto;
+  min-width: 10.5rem;
+  max-width: 100%;
 }
 
-.list .rowMain a {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
+.list .rowMain a,
+.list .rowMain .college {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cardActions {
   display: flex;
-  flex: 1 1 auto;
-  flex-wrap: wrap;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
   min-width: 0;
+}
+
+.cardActions .concernWrap {
+  flex: 0 0 auto;
+}
+
+@container (max-width: 36rem) {
+  .list .card {
+    flex-wrap: wrap;
+  }
+
+  .list .rowMain {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .list .rowMain a {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .cardActions {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 }
 
 .list .card .pill,
