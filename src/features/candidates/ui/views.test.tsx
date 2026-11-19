@@ -1,7 +1,8 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { AddCandidate, CandidatesList, DuePage, EmployersPage, OverviewPage, VacanciesPage } from "./views";
+import { AddCandidate, CandidateRecord, CandidatesList, DuePage, EmployersPage, OverviewPage, VacanciesPage } from "./views";
+import type { ApplicantDetail } from "../load";
 
 const props = {
   base: "/administration/onboarding",
@@ -155,6 +156,74 @@ describe("candidates pages", () => {
     expect(vacanciesHtml).toContain("employer-name");
     expect(vacanciesHtml).toContain("Adam Bowes Commercials Limited");
     expect(vacanciesHtml).toContain("All Car Service &amp; MOT Centre Ltd");
+  });
+
+  it("opens the saved applicant and does not fall back to the example", () => {
+    const record: ApplicantDetail = {
+      candidateId: "GTA-C-000001",
+      name: "Kierra Williamson",
+      email: null,
+      phone: null,
+      site: "Doncaster",
+      programme: "Autocare L2 (ST0499)",
+      source: "Website",
+      firstContactOn: "2026-11-19",
+      status: "active",
+      statusReason: null,
+      employerStatus: "Employer needed",
+      employerName: null,
+      employerSite: null,
+      employerManager: null,
+      intendedIntakeOn: null,
+      responsiveness: "responsive",
+      reviewDueOn: "2027-11-19",
+      stage: "Stage 1",
+      stage2Approved: false,
+      actualStartOn: null,
+      convertedGtaId: null,
+      checks: [
+        { code: "id", label: "ID verified", done: false, actualOn: null },
+        { code: "maths", label: "Maths", done: false, actualOn: null },
+        { code: "english", label: "English", done: false, actualOn: null },
+      ],
+      interview: null,
+      inductionBooked: false,
+      inductionOn: null,
+      inductionAttendance: null,
+      events: [{ title: "Applicant record created", meta: "Actual date 19 Nov 2026 · Entered 19 Nov 2026" }],
+    };
+    const html = renderToStaticMarkup(
+      createElement(CandidateRecord, { ...props, example: false, recordId: "GTA-C-000001", applicantRecord: record }),
+    );
+    expect(html).toContain("Kierra Williamson");
+    expect(html).toContain("GTA-C-000001");
+    expect(html).toContain("Autocare L2 (ST0499)");
+    expect(html).toContain("No interview yet");
+    expect(html).toContain("Employer needed");
+    expect(html).toContain("No intended induction");
+    expect(html).toContain("Not yet");
+    expect(html).toContain('value="GTA-C-000001"');
+    expect(html).toContain("Log contact event");
+    expect(html).not.toContain("Maya Henshaw");
+    expect(html).not.toContain("Northbridge");
+    expect(html).not.toContain("4 Jan 2027");
+  });
+
+  it("says the applicant was not found when the id is unknown", () => {
+    const html = renderToStaticMarkup(
+      createElement(CandidateRecord, { ...props, example: false, recordId: "GTA-C-999999", applicantRecord: null }),
+    );
+    expect(html).toContain("Applicant not found");
+    expect(html).toContain("GTA-C-999999");
+    expect(html).not.toContain("Maya Henshaw");
+    expect(html).not.toContain("Log contact event");
+  });
+
+  it("keeps the example applicant behind example mode", () => {
+    const html = renderToStaticMarkup(createElement(CandidateRecord, { ...props, recordId: "GTA-C-000042" }));
+    expect(html).toContain("Maya Henshaw");
+    expect(html).toContain("Unavailable in the example");
+    expect(html).not.toContain('value="GTA-C-000042"');
   });
 
   it("renders an empty overview without throwing when example data is off", () => {
