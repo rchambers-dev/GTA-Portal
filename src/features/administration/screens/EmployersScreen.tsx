@@ -7,7 +7,7 @@ import { EmployersForm } from "./EmployersForm";
  * Onboarding → Add employers.
  * Loads and saves through the signed-in Supabase session so RLS applies.
  */
-export async function EmployersScreen() {
+export async function EmployersScreen({ openId = null }: { openId?: string | null } = {}) {
   const [session, page] = await Promise.all([
     getSupabaseEffectiveSession(),
     loadEmployersPage(),
@@ -18,6 +18,7 @@ export async function EmployersScreen() {
       canWrite={canManageEmployers(session)}
       employers={page.employers}
       loadError={page.loadError}
+      initialOpenId={openId}
     />
   );
 }

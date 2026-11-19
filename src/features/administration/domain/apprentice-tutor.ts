@@ -125,7 +125,7 @@ export function apprenticeListWorkspace(
 }
 
 export function apprenticeLearnerPath(
-  workspace: "administration" | "management",
+  workspace: "administration" | "management" | "staff",
   gtaId: string,
 ): string {
   return `/${workspace}/onboarding/apprentice/${encodeURIComponent(gtaId)}`;

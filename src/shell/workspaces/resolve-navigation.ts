@@ -212,6 +212,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       {
         items: [
           { href: "/management/dashboard", label: "Management Dashboard", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
+          { href: "/management/search", label: "Search", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
           { href: "/management/onboarding/apprentice", label: "Add apprentice", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/management/apprentice-brag", label: "Apprentice progression BRAG", permission: PERMISSIONS.MANAGEMENT_PROGRAMME_SETUP },
           { href: "/management/shared-drive", label: "Shared Drive", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
@@ -233,6 +234,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       {
         items: [
           { href: "/administration/dashboard", label: "Administration Dashboard", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
+          { href: "/administration/search", label: "Search", permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
           { href: "/administration/onboarding/apprentice", label: "Add apprentice", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },
           { href: "/administration/accounts", label: "Apprentice Account Setup", permission: PERMISSIONS.ADMIN_USERS_MANAGE },
           { href: "/administration/shared-drive", label: "Shared Drive", permission: PERMISSIONS.ADMIN_RECORDS_MANAGE },

@@ -17,7 +17,7 @@ export async function ApprenticeLearnerScreen({
   workspace,
   gtaId,
 }: {
-  workspace: "administration" | "management";
+  workspace: "administration" | "management" | "staff";
   gtaId: string;
 }) {
   const session = await getSupabaseEffectiveSession();
