@@ -618,13 +618,22 @@ export function EmployersPage(props: CandidatesViewProps) {
         <div className="tab-on">Employers <span className="count">{employerTotal(props)}</span></div>
         <Link className="tab" href={`${base}/vacancies${q(example)}`}>Vacancies <span className="count">{example ? "10" : "0"}</span></Link>
       </div>
-      <div className="card table-wrap">
+      <div className="card table-wrap table-scroll">
         <table>
+          <colgroup>
+            <col className="employer-col" />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+            <col />
+          </colgroup>
           <thead><tr><th>Employer</th><th>Site</th><th className="wrap">Open vacancies</th><th className="wrap">Places available</th><th className="wrap">Last contact</th><th className="wrap">Next follow-up</th><th>Source</th></tr></thead>
           <tbody>
             {example ? rows.map((row) => (
               <tr key={row[0]}>
-                <td><Link className="name" href={`${base}/employers/${encodeURIComponent(String(row[0]))}${q(example)}`}>{row[0]}</Link><div className="note-inline">{row[1]}</div></td>
+                <td className="employer-name"><Link className="name" title={String(row[0])} href={`${base}/employers/${encodeURIComponent(String(row[0]))}${q(example)}`}>{row[0]}</Link><div className="note-inline">{row[1]}</div></td>
                 <td className="nowrap">{row[2]}</td>
                 <td className="frac">{row[3]}</td>
                 <td className="frac">{row[4]}</td>
@@ -632,9 +641,9 @@ export function EmployersPage(props: CandidatesViewProps) {
                 <td className="nowrap">{row[6] === "—" ? "—" : row[7] ? <span className="date-overdue">{row[6]}</span> : row[6]}</td>
                 <td className="nowrap">{row[8]}</td>
               </tr>
-            )) : (props.employerRows ?? []).map((row) => (
+            )            ) : (props.employerRows ?? []).map((row) => (
               <tr key={row.employerId}>
-                <td><Link className="name" href={`${base}/employers/${encodeURIComponent(row.name)}${q(example)}`}>{row.name}</Link>{row.detail ? <div className="note-inline">{row.detail}</div> : null}</td>
+                <td className="employer-name"><Link className="name" title={row.name} href={`${base}/employers/${encodeURIComponent(row.name)}${q(example)}`}>{row.name}</Link>{row.detail ? <div className="note-inline">{row.detail}</div> : null}</td>
                 <td className="nowrap">{row.site}</td>
                 <td className="frac">{row.openVacancies}</td>
                 <td className="frac">{row.placesAvailable}</td>
@@ -678,14 +687,22 @@ export function VacanciesPage(props: CandidatesViewProps) {
         <Link className="tab" href={`${base}/employers${q(example)}`}>Employers <span className="count">{employerTotal(props)}</span></Link>
         <div className="tab-on">Vacancies <span className="count">{example ? "10" : "0"}</span></div>
       </div>
-      <div className="card table-wrap">
+      <div className="card table-wrap table-scroll">
         <table>
+          <colgroup>
+            <col className="vacancy-col" />
+            <col className="employer-col" />
+            <col />
+            <col />
+            <col />
+            <col />
+          </colgroup>
           <thead><tr><th>Vacancy</th><th>Employer</th><th>Programme</th><th>Site</th><th className="wrap">Total / allocated / available</th><th>Status</th></tr></thead>
           <tbody>
             {example ? (
               <>
-                <Vacancy title="Light Vehicle Technician" note="1 withdrawn place — employer to decide whether to reoffer" employer="Northbridge Motors" programme="Light Vehicle" site="Doncaster" frac="2 / 1 / 0" status="Confirmed / open" tone="green" />
-                <Vacancy title="Autocare Technician" employer="Northbridge Motors" programme="Autocare" site="Doncaster" frac="3 / 1 / 2" status="Confirmed / open" tone="green" />
+                <Vacancy title="Light Vehicle Technician" note="1 withdrawn place — employer to decide whether to reoffer" employer="Adam Bowes Commercials Limited" programme="Light Vehicle" site="Doncaster" frac="2 / 1 / 0" status="Confirmed / open" tone="green" />
+                <Vacancy title="Autocare Technician" employer="All Car Service & MOT Centre Ltd" programme="Autocare" site="Doncaster" frac="3 / 1 / 2" status="Confirmed / open" tone="green" />
                 <Vacancy title="Vehicle Paint Technician" employer="Ashfield Coachworks" programme="Vehicle Paint" site="Sheffield" frac="2 / 0 / 2" status="Potential opportunity" tone="amber" />
                 <Vacancy title="Heavy Vehicle Technician" employer="Riverside Fleet Services" programme="Heavy Vehicle" site="Doncaster" frac="2 / 0 / 2" status="Confirmed / open" tone="green" />
                 <Vacancy title="Light Vehicle Technician" employer="Hallam Street Garage" programme="Light Vehicle" site="Sheffield" frac="2 / 1 / 1" status="Confirmed / open" tone="green" />
@@ -706,8 +723,8 @@ export function VacanciesPage(props: CandidatesViewProps) {
 function Vacancy({ title, note, employer, programme, site, frac, status, tone }: { title: string; note?: string; employer: string; programme: string; site: string; frac: string; status: string; tone: "green" | "amber" | "grey" | "red" }) {
   return (
     <tr>
-      <td><div className="name">{title}</div>{note ? <div className="note-inline">{note}</div> : null}</td>
-      <td className="name">{employer}</td>
+      <td className="vacancy-name"><div className="name" title={title}>{title}</div>{note ? <div className="note-inline">{note}</div> : null}</td>
+      <td className="name employer-name" title={employer}>{employer}</td>
       <td className="nowrap">{programme}</td>
       <td className="nowrap">{site}</td>
       <td className="frac">{frac}</td>

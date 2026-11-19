@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { AddCandidate, CandidatesList, DuePage, OverviewPage } from "./views";
+import { AddCandidate, CandidatesList, DuePage, EmployersPage, OverviewPage, VacanciesPage } from "./views";
 
 const props = {
   base: "/administration/onboarding",
@@ -86,6 +86,39 @@ describe("candidates pages", () => {
     expect(html).toContain("Type the full name to confirm");
     expect(html).toContain("Nothing is deleted automatically");
     expect(html).toContain('name="confirmedName"');
+  });
+
+  it("wraps long employer names and scrolls the employers and vacancies tables", () => {
+    const employers = [
+      "Adam Bowes Commercials Limited",
+      "All Car Service & MOT Centre Ltd",
+      ...Array.from({ length: 10 }, (_, index) => `Employer ${index + 1}`),
+    ].map((name, index) => ({
+      employerId: `GTA-EMP-${String(index + 1).padStart(6, "0")}`,
+      name,
+      site: "Doncaster",
+      detail: "DN1 2AA",
+      openVacancies: 1,
+      placesAvailable: 1,
+      lastContact: "2026-11-12",
+      nextFollowUp: null,
+      followUpOverdue: false,
+      source: null,
+    }));
+    const employersHtml = renderToStaticMarkup(
+      createElement(EmployersPage, { ...props, example: false, employerRows: employers }),
+    );
+    expect(employersHtml).toContain("offered to applicants");
+    expect(employersHtml).not.toContain("offered to candidates");
+    expect(employersHtml).toContain("table-scroll");
+    expect(employersHtml).toContain("employer-name");
+    expect(employersHtml).toContain('title="Adam Bowes Commercials Limited"');
+    expect(employersHtml).toContain('title="All Car Service &amp; MOT Centre Ltd"');
+    const vacanciesHtml = renderToStaticMarkup(createElement(VacanciesPage, { ...props, example: true }));
+    expect(vacanciesHtml).toContain("table-scroll");
+    expect(vacanciesHtml).toContain("employer-name");
+    expect(vacanciesHtml).toContain("Adam Bowes Commercials Limited");
+    expect(vacanciesHtml).toContain("All Car Service &amp; MOT Centre Ltd");
   });
 
   it("renders an empty overview without throwing when example data is off", () => {
