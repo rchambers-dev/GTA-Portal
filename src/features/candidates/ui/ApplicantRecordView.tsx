@@ -1,7 +1,20 @@
-import { setResponsivenessAction } from "../actions";
-import { checkSummary } from "../domain/applicant-record";
+import {
+  approveStage2Action,
+  bookInductionAction,
+  bookInterviewAction,
+  clearApplicantCheckAction,
+  confirmInductionAction,
+  recordApplicantCheckAction,
+  recordInterviewAction,
+  setIntendedIntakeAction,
+  setResponsivenessAction,
+  undoStage2ApprovalAction,
+} from "../actions";
+import { checkSummary, type ApplicantCheckLine } from "../domain/applicant-record";
+import type { EmployerChoice } from "../domain/employers";
 import type { ApplicantDetail } from "../load";
 import { ukDate } from "../domain/format";
+import { EditDetailsButton, EmployerLinkButton, VacancyLinkButton } from "./ApplicantDialogs";
 import { ContactEventButton } from "./ContactEventModal";
 import { BackLink, PageHead, Pill, Tick } from "./parts";
 
@@ -20,10 +33,18 @@ export function ApplicantRecordView({
   base,
   recordId,
   record,
+  programmes = [],
+  centres = [],
+  sources = [],
+  employers = [],
 }: {
   base: string;
   recordId: string;
   record: ApplicantDetail | null;
+  programmes?: { id: string; label: string }[];
+  centres?: { id: string; name: string }[];
+  sources?: { id: string; label: string }[];
+  employers?: EmployerChoice[];
 }) {
   if (!record) {
     return (
@@ -49,8 +70,22 @@ export function ApplicantRecordView({
       <PageHead
         crumb={<>Onboarding / Applicants / <span>{record.name}</span></>}
         title={record.name}
-        lede={record.statusReason ? `Status ${record.status.split("_").join(" ")} · ${record.statusReason}` : `Status ${record.status.split("_").join(" ")}`}
-        actions={<ContactEventButton returnTo={returnTo} candidateId={record.candidateId} />}
+        lede={<StatusBadge status={record.status} stage={record.stage} reason={record.statusReason} />}
+        actions={
+          <>
+            {record.tracking ? (
+              <EditDetailsButton
+                returnTo={returnTo}
+                candidateId={record.candidateId}
+                tracking={record.tracking}
+                programmes={programmes}
+                centres={centres}
+                sources={sources}
+              />
+            ) : null}
+            <ContactEventButton returnTo={returnTo} candidateId={record.candidateId} />
+          </>
+        }
       />
       <div className="id-row">
         <div>
@@ -101,6 +136,9 @@ export function ApplicantRecordView({
               {stage1.map((check) => (
                 <CheckLine key={check.code} title={check.label} date={checkSummary(check)} off={!check.done} />
               ))}
+              {stage1.map((check) => (
+                <CheckForm key={`${check.code}-form`} check={check} returnTo={returnTo} candidateId={record.candidateId} locked={Boolean(record.actualStartOn)} />
+              ))}
             </div>
           </section>
           <section className="section">
@@ -111,14 +149,72 @@ export function ApplicantRecordView({
               ) : (
                 <p className="muted">No interview yet.</p>
               )}
+              {record.tracking && !record.actualStartOn && record.tracking.interviewBookingId ? (
+                <form action={recordInterviewAction} className="track-form">
+                  <input type="hidden" name="returnTo" value={returnTo} />
+                  <input type="hidden" name="bookingId" value={record.tracking.interviewBookingId} />
+                  <label className="field"><span className="label">Attendance</span>
+                    <select name="attendance" defaultValue={record.interview?.attendance ?? ""}>
+                      <option value="">Not recorded</option>
+                      <option value="attended">Attended</option>
+                      <option value="no_show">No show</option>
+                      <option value="rescheduled">Rescheduled</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </label>
+                  <label className="field"><span className="label">Outcome</span>
+                    <select name="outcome" defaultValue={record.interview?.outcome ?? "awaiting"}>
+                      <option value="awaiting">Awaiting</option>
+                      <option value="passed">Passed</option>
+                      <option value="failed">Failed</option>
+                    </select>
+                  </label>
+                  <label className="field"><span className="label">Actual date</span><input name="actualOn" type="date" required defaultValue={record.interview?.sessionOn ?? ""} /></label>
+                  <button className="btn-secondary" type="submit">Save outcome</button>
+                </form>
+              ) : null}
+              {record.tracking && !record.interview && !record.actualStartOn ? (
+                record.tracking.sessions.length ? (
+                  <form action={bookInterviewAction} className="track-form">
+                    <input type="hidden" name="returnTo" value={returnTo} />
+                    <input type="hidden" name="candidateId" value={record.candidateId} />
+                    <label className="field"><span className="label">Session</span>
+                      <select name="sessionId" required defaultValue="">
+                        <option value="" disabled>Choose a session</option>
+                        {record.tracking.sessions.map((session) => <option key={session.id} value={session.id}>{session.label}</option>)}
+                      </select>
+                    </label>
+                    <button className="btn-secondary" type="submit">Book interview</button>
+                  </form>
+                ) : <p className="muted">No interview session is available to book yet.</p>
+              ) : null}
             </div>
           </section>
           <section className="section">
             <div className="section-head"><h2>Stage 2</h2><Pill tone={record.stage2Approved ? "amber" : "grey"}>{record.stage2Approved ? "In progress" : "Not started"}</Pill></div>
             <div className="section-body">
               {record.stage2Approved || stage2.some((check) => check.done) ? stage2.map((check) => (
-                <CheckLine key={check.code} title={check.label} date={checkSummary(check)} off={!check.done} />
-              )) : <p className="muted">Stage 2 has not started. An interview has to be passed and approved first.</p>}
+                <span key={check.code}>
+                  <CheckLine title={check.label} date={checkSummary(check)} off={!check.done} />
+                  {record.stage2Approved ? <CheckForm check={check} returnTo={returnTo} candidateId={record.candidateId} locked={Boolean(record.actualStartOn)} /> : null}
+                </span>
+              )) : <p className="muted">Stage 2 has not started. An interview has to be passed and the employer confirmed before it can be approved.</p>}
+              {record.stage2Approved && !record.actualStartOn && !stage2.some((check) => check.done) ? (
+                <form action={undoStage2ApprovalAction} className="track-form">
+                  <input type="hidden" name="returnTo" value={returnTo} />
+                  <input type="hidden" name="candidateId" value={record.candidateId} />
+                  <button className="btn-secondary" type="submit">Undo Stage 2 approval</button>
+                </form>
+              ) : null}
+              {!record.stage2Approved && !record.actualStartOn ? (
+                record.interview?.outcome === "passed" && record.employerStatus === "Confirmed" ? (
+                  <form action={approveStage2Action} className="track-form">
+                    <input type="hidden" name="returnTo" value={returnTo} />
+                    <input type="hidden" name="candidateId" value={record.candidateId} />
+                    <button className="btn" type="submit">Approve Stage 2</button>
+                  </form>
+                ) : <p className="muted">Approve Stage 2 is unavailable until the interview is passed and the employer is confirmed.</p>
+              ) : null}
             </div>
           </section>
           <section className="section">
@@ -128,6 +224,43 @@ export function ApplicantRecordView({
               <CheckLine title="Induction booked" date={record.inductionBooked ? (record.inductionOn ? ukDate(record.inductionOn) : "Booked") : "Not yet"} off={!record.inductionBooked} />
               <CheckLine title="Attendance" date={record.inductionAttendance ? record.inductionAttendance : "Not yet"} off={!record.inductionAttendance} />
               <CheckLine title="Actual start" date={record.actualStartOn ? ukDate(record.actualStartOn) : "Not yet"} off={!record.actualStartOn} />
+              {record.tracking && !record.actualStartOn ? (
+                <>
+                  <form action={setIntendedIntakeAction} className="track-form">
+                    <input type="hidden" name="returnTo" value={returnTo} />
+                    <input type="hidden" name="candidateId" value={record.candidateId} />
+                    <label className="field"><span className="label">Intended intake</span>
+                      <select name="intakeId" defaultValue="">
+                        <option value="">No intended induction</option>
+                        {record.tracking.intakes.map((intake) => <option key={intake.id} value={intake.id}>{intake.label}</option>)}
+                      </select>
+                    </label>
+                    <button className="btn-secondary" type="submit">Save intended intake</button>
+                  </form>
+                  {!record.inductionBooked && record.tracking.intakes.length ? (
+                    <form action={bookInductionAction} className="track-form">
+                      <input type="hidden" name="returnTo" value={returnTo} />
+                      <input type="hidden" name="candidateId" value={record.candidateId} />
+                      <label className="field"><span className="label">Book an intake</span>
+                        <select name="intakeId" required defaultValue="">
+                          <option value="" disabled>Choose an intake</option>
+                          {record.tracking.intakes.map((intake) => <option key={intake.id} value={intake.id}>{intake.label}</option>)}
+                        </select>
+                      </label>
+                      <button className="btn-secondary" type="submit">Book induction</button>
+                    </form>
+                  ) : null}
+                  {record.tracking.inductionBookingId ? (
+                    <form action={confirmInductionAction} className="track-form">
+                      <p className="muted">Confirming attendance creates the apprentice record and counts a start. It cannot be repeated.</p>
+                      <input type="hidden" name="returnTo" value={returnTo} />
+                      <input type="hidden" name="bookingId" value={record.tracking.inductionBookingId} />
+                      <label className="field"><span className="label">Actual start date</span><input name="actualOn" type="date" required /></label>
+                      <button className="btn" type="submit">Confirm attendance and start</button>
+                    </form>
+                  ) : null}
+                </>
+              ) : null}
             </div>
           </section>
         </div>
@@ -139,6 +272,12 @@ export function ApplicantRecordView({
             {record.employerSite ? <div className="side-sub">{record.employerSite}</div> : null}
             {record.employerManager ? <div className="side-sub">{record.employerManager}</div> : null}
             {record.employerName ? null : <div className="side-sub">No employer is recorded yet.</div>}
+            {record.tracking ? (
+              <div className="side-sub" style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <EmployerLinkButton returnTo={returnTo} candidateId={record.candidateId} tracking={record.tracking} employers={employers} />
+                <VacancyLinkButton returnTo={returnTo} candidateId={record.candidateId} tracking={record.tracking} employers={employers} />
+              </div>
+            ) : null}
           </div>
           <div className="card side-card">
             <div className="side-label">Intended induction</div>
@@ -160,7 +299,7 @@ export function ApplicantRecordView({
           </div>
         </div>
       </div>
-      <p className="muted">Checks, the interview, and induction are shown from what is already saved. There is no control on this page to change them.</p>
+      <p className="muted">Saving a check, interview, Stage 2 decision or induction writes to this applicant. Clearing a check keeps the old row and marks it replaced.</p>
       <div className="card card-pad">
         <h2 className="card-title">Audit trail</h2>
         {record.events.length ? (
@@ -172,6 +311,63 @@ export function ApplicantRecordView({
         ) : <p className="muted">No events recorded yet.</p>}
       </div>
     </>
+  );
+}
+
+function StatusBadge({ status, stage, reason }: { status: string; stage: string; reason: string | null }) {
+  const tone = status === "active" ? "green" : status === "paused" ? "amber" : status === "converted" ? "navy" : status === "rejected" || status.startsWith("withdrawn") ? "red" : "grey";
+  const label = status.split("_").join(" ");
+  return (
+    <span className={`status-badge status-${tone}`}>
+      <span className="status-mark" aria-hidden="true" />
+      <strong>{label}</strong>
+      <span className="status-stage">{stage}</span>
+      {reason ? <span className="status-stage">{reason}</span> : null}
+    </span>
+  );
+}
+
+function CheckForm({
+  check,
+  returnTo,
+  candidateId,
+  locked,
+}: {
+  check: ApplicantCheckLine;
+  returnTo: string;
+  candidateId: string;
+  locked: boolean;
+}) {
+  if (locked || !check.definitionId) return null;
+  const choices = check.code === "maths" || check.code === "english"
+    ? [["pass", "Pass"], ["fail", "Fail"]]
+    : check.code === "hs_booked"
+      ? [["booked", "Booked"], ["done", "Done"]]
+      : [["done", "Done"]];
+  return (
+    <div className="track-row">
+      <form action={recordApplicantCheckAction} className="track-form">
+        <input type="hidden" name="returnTo" value={returnTo} />
+        <input type="hidden" name="candidateId" value={candidateId} />
+        <input type="hidden" name="definitionId" value={check.definitionId} />
+        <span className="check-title" style={{ alignSelf: "center" }}>{check.label}</span>
+        <label className="field"><span className="label">Result</span>
+          <select name="result" defaultValue={check.result && choices.some((choice) => choice[0] === check.result) ? check.result : choices[0][0]}>
+            {choices.map((choice) => <option key={choice[0]} value={choice[0]}>{choice[1]}</option>)}
+          </select>
+        </label>
+        <label className="field"><span className="label">Actual date</span><input name="actualOn" type="date" required defaultValue={check.actualOn ?? ""} /></label>
+        <button className="btn-secondary" type="submit">{check.resultId ? "Update" : "Record"}</button>
+      </form>
+      {check.resultId ? (
+        <form action={clearApplicantCheckAction}>
+          <input type="hidden" name="returnTo" value={returnTo} />
+          <input type="hidden" name="candidateId" value={candidateId} />
+          <input type="hidden" name="resultId" value={check.resultId} />
+          <button className="btn-secondary" type="submit">Clear</button>
+        </form>
+      ) : null}
+    </div>
   );
 }
 

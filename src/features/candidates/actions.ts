@@ -190,6 +190,14 @@ export async function recordInterviewAction(formData: FormData) {
 export async function approveStage2Action(formData: FormData) {
   const returnTo = text(formData, "returnTo");
   const { supabase, userId } = await gate(returnTo);
+  const candidateId = text(formData, "candidateId");
+  const current = await supabase.from("candidates").select("employer_status").eq("candidate_id", candidateId).maybeSingle();
+  if (current.error || !current.data) bounce(returnTo, explain(current.error) || "This applicant could not be found.");
+  const passed = await supabase.from("interview_bookings").select("id").eq("candidate_id", candidateId).eq("outcome", "passed").limit(1);
+  if (passed.error) bounce(returnTo, explain(passed.error) || passed.error.message);
+  if (current.data.employer_status !== "confirmed" || !(passed.data ?? []).length) {
+    bounce(returnTo, "Stage 2 stays locked until the interview is passed and the employer is confirmed.");
+  }
   const saved = await supabase
     .from("candidates")
     .update({ stage2_approved_at: new Date().toISOString(), stage2_approved_by: userId, updated_at: new Date().toISOString() })
@@ -405,6 +413,248 @@ export async function addEmployerActivityAction(formData: FormData) {
     entered_by: userId,
   });
   if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  redirect(returnTo);
+}
+
+export async function updateCandidateDetailsAction(formData: FormData) {
+  const returnTo = text(formData, "returnTo");
+  const { supabase, userId } = await gate(returnTo);
+  const candidateId = text(formData, "candidateId");
+  const firstName = text(formData, "firstName");
+  const middleNames = text(formData, "middleNames");
+  const lastName = text(formData, "lastName");
+  const email = text(formData, "email");
+  const phone = text(formData, "phone");
+  const firstContact = isoDate(text(formData, "firstContact"));
+  const programmeId = programmeChoiceId(text(formData, "programmeId"));
+  const centreId = programmeChoiceId(text(formData, "centreId"));
+  const sourceId = programmeChoiceId(text(formData, "sourceId"));
+  const entryError = applicantEntryError({ firstName, lastName, email, phone, firstContact, programmeId, centreId, sourceId });
+  if (entryError || !programmeId || !centreId || !sourceId) bounce(returnTo, entryError || "Choose a programme.");
+  const current = await supabase.from("candidates").select("responsiveness").eq("candidate_id", candidateId).maybeSingle();
+  if (current.error || !current.data) bounce(returnTo, explain(current.error) || "This applicant could not be found.");
+  const responsiveness = current.data.responsiveness === "unresponsive" ? "unresponsive" : "responsive";
+  const saved = await supabase.from("candidates").update({
+    first_name: firstName,
+    middle_names: middleNames || null,
+    last_name: lastName,
+    email,
+    phone,
+    centre_id: centreId,
+    programme_id: programmeId,
+    first_contact_on: firstContact,
+    enquiry_source_id: sourceId,
+    enquiry_source_detail: text(formData, "sourceDetail") || null,
+    notes: text(formData, "notes") || null,
+    review_due_on: reviewDueOn(firstContact, responsiveness),
+    updated_at: new Date().toISOString(),
+  }).eq("candidate_id", candidateId);
+  if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  await supabase.from("candidate_events").insert({
+    candidate_id: candidateId,
+    event_type: "details_updated",
+    actual_on: isoTodayLondon(),
+    entered_by: userId,
+    detail: { name: [firstName, middleNames, lastName].filter(Boolean).join(" "), email, phone },
+  });
+  redirect(returnTo);
+}
+
+export async function recordApplicantCheckAction(formData: FormData) {
+  const returnTo = text(formData, "returnTo");
+  const { supabase, userId } = await gate(returnTo);
+  const candidateId = text(formData, "candidateId");
+  const definitionId = text(formData, "definitionId");
+  const result = text(formData, "result");
+  const actualOn = isoDate(text(formData, "actualOn")) || isoTodayLondon();
+  if (!["pass", "fail", "done", "booked"].includes(result)) bounce(returnTo, "Choose a result.");
+  if (!definitionId || !/^\d{4}-\d{2}-\d{2}$/.test(actualOn)) bounce(returnTo, "Choose the date this was done.");
+  const existing = await supabase
+    .from("candidate_check_results")
+    .select("id")
+    .eq("candidate_id", candidateId)
+    .eq("definition_id", definitionId)
+    .is("superseded_at", null);
+  if (existing.error) bounce(returnTo, explain(existing.error) || existing.error.message);
+  const previous = (existing.data ?? []) as { id: string }[];
+  const saved = await supabase.from("candidate_check_results").insert({
+    candidate_id: candidateId,
+    definition_id: definitionId,
+    result,
+    actual_on: actualOn,
+    entered_by: userId,
+    supersedes_id: previous[0]?.id ?? null,
+    correction_note: previous.length ? "Updated result" : null,
+  });
+  if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  if (previous.length) {
+    await supabase.from("candidate_check_results").update({
+      superseded_at: new Date().toISOString(),
+      superseded_by: userId,
+    }).in("id", previous.map((row) => row.id));
+  }
+  await supabase.from("candidate_events").insert({
+    candidate_id: candidateId,
+    event_type: "check_recorded",
+    actual_on: actualOn,
+    entered_by: userId,
+    detail: { definition_id: definitionId, result },
+  });
+  redirect(returnTo);
+}
+
+export async function clearApplicantCheckAction(formData: FormData) {
+  const returnTo = text(formData, "returnTo");
+  const { supabase, userId } = await gate(returnTo);
+  const candidateId = text(formData, "candidateId");
+  const resultId = text(formData, "resultId");
+  if (!resultId) bounce(returnTo, "There is no saved result to clear.");
+  const current = await supabase.from("candidates").select("actual_start_on").eq("candidate_id", candidateId).maybeSingle();
+  if (current.error || !current.data) bounce(returnTo, explain(current.error) || "This applicant could not be found.");
+  if (current.data.actual_start_on) bounce(returnTo, "Checks stay as recorded once the applicant has started.");
+  const saved = await supabase.from("candidate_check_results").update({
+    superseded_at: new Date().toISOString(),
+    superseded_by: userId,
+  }).eq("id", resultId).eq("candidate_id", candidateId).is("superseded_at", null);
+  if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  await supabase.from("candidate_events").insert({
+    candidate_id: candidateId,
+    event_type: "check_cleared",
+    actual_on: isoTodayLondon(),
+    entered_by: userId,
+    detail: { result_id: resultId },
+  });
+  redirect(returnTo);
+}
+
+export async function undoStage2ApprovalAction(formData: FormData) {
+  const returnTo = text(formData, "returnTo");
+  const { supabase, userId } = await gate(returnTo);
+  const candidateId = text(formData, "candidateId");
+  const current = await supabase.from("candidates").select("actual_start_on, stage2_approved_at").eq("candidate_id", candidateId).maybeSingle();
+  if (current.error || !current.data) bounce(returnTo, explain(current.error) || "This applicant could not be found.");
+  if (current.data.actual_start_on) bounce(returnTo, "Stage 2 approval stays once the applicant has started.");
+  if (!current.data.stage2_approved_at) bounce(returnTo, "Stage 2 has not been approved.");
+  const saved = await supabase.from("candidates").update({
+    stage2_approved_at: null,
+    stage2_approved_by: null,
+    updated_at: new Date().toISOString(),
+  }).eq("candidate_id", candidateId);
+  if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  await supabase.from("candidate_events").insert({
+    candidate_id: candidateId,
+    event_type: "stage2_approval_cleared",
+    actual_on: isoTodayLondon(),
+    entered_by: userId,
+    detail: {},
+  });
+  redirect(returnTo);
+}
+
+export async function setIntendedIntakeAction(formData: FormData) {
+  const returnTo = text(formData, "returnTo");
+  const { supabase, userId } = await gate(returnTo);
+  const candidateId = text(formData, "candidateId");
+  const intakeId = text(formData, "intakeId");
+  const saved = await supabase.from("candidates").update({
+    intended_intake_id: intakeId || null,
+    updated_at: new Date().toISOString(),
+  }).eq("candidate_id", candidateId);
+  if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  await supabase.from("candidate_events").insert({
+    candidate_id: candidateId,
+    event_type: "intended_intake",
+    actual_on: isoTodayLondon(),
+    entered_by: userId,
+    detail: { intake_id: intakeId || null },
+  });
+  redirect(returnTo);
+}
+
+export async function linkCandidateEmployerAction(formData: FormData) {
+  const returnTo = text(formData, "returnTo");
+  const { supabase, userId } = await gate(returnTo);
+  const candidateId = text(formData, "candidateId");
+  const status = text(formData, "employerStatus");
+  if (!["needed", "identified", "confirmed"].includes(status)) bounce(returnTo, "Choose an employer status.");
+  const employerId = text(formData, "employerId");
+  const siteId = text(formData, "employerSiteId");
+  const managerId = text(formData, "employerManagerId");
+  if (status === "needed") {
+    const saved = await supabase.from("candidates").update({
+      employer_status: "needed",
+      employer_id: null,
+      employer_site_id: null,
+      employer_manager_id: null,
+      updated_at: new Date().toISOString(),
+    }).eq("candidate_id", candidateId);
+    if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  } else {
+    if (!employerId) bounce(returnTo, "Choose an employer from the list.");
+    const employer = await supabase.from("employers").select("employer_id").eq("employer_id", employerId).maybeSingle();
+    if (employer.error || !employer.data) bounce(returnTo, explain(employer.error) || "Choose an employer from the list.");
+    if (siteId) {
+      const site = await supabase.from("employer_sites").select("id").eq("id", siteId).eq("employer_id", employerId).maybeSingle();
+      if (site.error || !site.data) bounce(returnTo, "Choose a site that belongs to that employer.");
+    }
+    if (managerId) {
+      const manager = await supabase.from("employer_managers").select("id").eq("id", managerId).eq("employer_id", employerId).maybeSingle();
+      if (manager.error || !manager.data) bounce(returnTo, "Choose a manager who belongs to that employer.");
+    }
+    const saved = await supabase.from("candidates").update({
+      employer_status: status,
+      employer_id: employerId,
+      employer_site_id: siteId || null,
+      employer_manager_id: managerId || null,
+      updated_at: new Date().toISOString(),
+    }).eq("candidate_id", candidateId);
+    if (saved.error) bounce(returnTo, explain(saved.error) || saved.error.message);
+  }
+  await supabase.from("candidate_events").insert({
+    candidate_id: candidateId,
+    event_type: "employer_linked",
+    actual_on: isoTodayLondon(),
+    entered_by: userId,
+    detail: { employer_status: status, employer_id: status === "needed" ? null : employerId },
+  });
+  redirect(returnTo);
+}
+
+export async function recordVacancyInterestAction(formData: FormData) {
+  const returnTo = text(formData, "returnTo");
+  const { supabase, userId } = await gate(returnTo);
+  const candidateId = text(formData, "candidateId");
+  const vacancyId = text(formData, "vacancyId");
+  const status = text(formData, "interestStatus");
+  if (!["proposed", "applied", "offered", "declined", "withdrawn"].includes(status)) bounce(returnTo, "Choose a vacancy status.");
+  if (!vacancyId) bounce(returnTo, "Choose a vacancy.");
+  const probe = await supabase.from("candidate_vacancy_interests").select("id").limit(1);
+  if (probe.error) {
+    bounce(returnTo, tablesMissing(probe.error.message, probe.error.code)
+      ? "Vacancy interests are not saved yet. The new table still needs to be applied."
+      : explain(probe.error) || probe.error.message);
+  }
+  const saved = await supabase.from("candidate_vacancy_interests").upsert({
+    candidate_id: candidateId,
+    vacancy_id: vacancyId,
+    status,
+    noted_on: isoTodayLondon(),
+    notes: text(formData, "notes") || null,
+    entered_by: userId,
+    updated_at: new Date().toISOString(),
+  }, { onConflict: "candidate_id,vacancy_id" });
+  if (saved.error) {
+    bounce(returnTo, tablesMissing(saved.error.message, saved.error.code)
+      ? "Vacancy interests are not saved yet. The new table still needs to be applied."
+      : explain(saved.error) || saved.error.message);
+  }
+  await supabase.from("candidate_events").insert({
+    candidate_id: candidateId,
+    event_type: "vacancy_interest",
+    actual_on: isoTodayLondon(),
+    entered_by: userId,
+    detail: { vacancy_id: vacancyId, status },
+  });
   redirect(returnTo);
 }
 

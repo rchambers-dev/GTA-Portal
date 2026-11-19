@@ -289,6 +289,33 @@ export type ApplicantDetail = {
   inductionOn: string | null;
   inductionAttendance: string | null;
   events: ApplicantEventLine[];
+  tracking?: ApplicantTracking | null;
+};
+
+export type ApplicantTracking = {
+  firstName: string;
+  middleNames: string | null;
+  lastName: string;
+  email: string | null;
+  phone: string | null;
+  firstContactOn: string;
+  notes: string | null;
+  centreId: string;
+  programmeId: string;
+  sourceId: string;
+  sourceDetail: string | null;
+  employerId: string | null;
+  employerSiteId: string | null;
+  employerManagerId: string | null;
+  employerStatusCode: string;
+  interviewBookingId: string | null;
+  inductionBookingId: string | null;
+  sessions: { id: string; label: string }[];
+  intakes: { id: string; intakeOn: string; label: string }[];
+  sites: { id: string; employerId: string; label: string }[];
+  managers: { id: string; employerId: string; label: string }[];
+  vacancies: { id: string; employerId: string; title: string; status: string }[];
+  vacancyInterestsReady: boolean;
 };
 
 export type ApplicantRecordLoad = {
@@ -312,7 +339,7 @@ export async function loadApplicantRecord(recordId: string): Promise<ApplicantRe
   const today = isoTodayLondon();
   try {
     const supabase = await createSupabaseServerClient();
-    const columns = "candidate_id, first_name, middle_names, last_name, email, phone, status, status_reason_id, employer_status, employer_id, employer_site_id, employer_manager_id, responsiveness, review_due_on, first_contact_on, centre_id, programme_id, enquiry_source_id, enquiry_source_detail, intended_intake_id, converted_gta_id, actual_start_on, stage2_approved_at, created_at";
+    const columns = "candidate_id, first_name, middle_names, last_name, email, phone, notes, status, status_reason_id, employer_status, employer_id, employer_site_id, employer_manager_id, responsiveness, review_due_on, first_contact_on, centre_id, programme_id, enquiry_source_id, enquiry_source_detail, intended_intake_id, converted_gta_id, actual_start_on, stage2_approved_at, created_at";
     let candidate = await supabase.from("candidates").select(columns).eq("candidate_id", recordId).maybeSingle();
     if (!candidate.error && !candidate.data) {
       candidate = await supabase.from("candidates").select(columns).eq("converted_gta_id", recordId).maybeSingle();
@@ -323,7 +350,7 @@ export async function loadApplicantRecord(recordId: string): Promise<ApplicantRe
     }
     if (!candidate.data) return { record: null, notice: null };
     const row = candidate.data;
-    const [centre, programme, source, employer, site, managerRow, reason, intake, definitions, results, interviews, inductions, events, profiles] = await Promise.all([
+    const [centre, programme, source, employer, site, managerRow, reason, intake, definitions, results, interviews, inductions, events, profiles, sessions, intakes, employerSites, employerManagers, vacancies, vacancyProbe] = await Promise.all([
       supabase.from("candidate_centres").select("name").eq("id", row.centre_id).maybeSingle(),
       supabase.from("programmes").select("name, standard_code").eq("id", row.programme_id).maybeSingle(),
       supabase.from("candidate_enquiry_sources").select("label").eq("id", row.enquiry_source_id).maybeSingle(),
@@ -333,32 +360,47 @@ export async function loadApplicantRecord(recordId: string): Promise<ApplicantRe
       row.status_reason_id ? supabase.from("reasons").select("label").eq("id", row.status_reason_id).maybeSingle() : Promise.resolve({ data: null, error: null }),
       row.intended_intake_id ? supabase.from("induction_intakes").select("intake_on").eq("id", row.intended_intake_id).maybeSingle() : Promise.resolve({ data: null, error: null }),
       supabase.from("candidate_check_definitions").select("id, code, label"),
-      supabase.from("candidate_check_results").select("definition_id, result, actual_on, superseded_at").eq("candidate_id", row.candidate_id),
-      supabase.from("interview_bookings").select("outcome, attempt_number, attendance, session_id").eq("candidate_id", row.candidate_id),
-      supabase.from("induction_bookings").select("attendance, intake_id").eq("candidate_id", row.candidate_id),
+      supabase.from("candidate_check_results").select("id, definition_id, result, actual_on, superseded_at").eq("candidate_id", row.candidate_id),
+      supabase.from("interview_bookings").select("id, outcome, attempt_number, attendance, session_id").eq("candidate_id", row.candidate_id),
+      supabase.from("induction_bookings").select("id, attendance, intake_id").eq("candidate_id", row.candidate_id),
       supabase.from("candidate_events").select("event_type, actual_on, entered_at, entered_by, detail").eq("candidate_id", row.candidate_id).order("entered_at", { ascending: false }),
       supabase.from("profiles").select("id, display_name"),
+      supabase.from("interview_sessions").select("id, session_on, kind, centre_id").gte("session_on", today).order("session_on").limit(12),
+      supabase.from("induction_intakes").select("id, intake_on").gte("intake_on", today).order("intake_on").limit(12),
+      supabase.from("employer_sites").select("id, employer_id, area_name, postcode, is_active"),
+      supabase.from("employer_managers").select("id, employer_id, first_name, middle_names, last_name"),
+      supabase.from("employer_vacancies").select("id, employer_id, title, status").in("status", ["potential", "open"]),
+      supabase.from("candidate_vacancy_interests").select("id").limit(1),
     ]);
     const definition = new Map(((definitions.data ?? []) as { id: string; code: string; label: string }[]).map((item) => [item.id, item]));
-    const byCode = new Map<string, { result: string | null; actualOn: string | null }>();
-    for (const result of (results.data ?? []) as { definition_id: string; result: string | null; actual_on: string | null; superseded_at: string | null }[]) {
+    const definitionIdByCode = new Map(((definitions.data ?? []) as { id: string; code: string }[]).map((item) => [item.code, item.id]));
+    const byCode = new Map<string, { id: string; result: string | null; actualOn: string | null }>();
+    for (const result of (results.data ?? []) as { id: string; definition_id: string; result: string | null; actual_on: string | null; superseded_at: string | null }[]) {
       if (result.superseded_at) continue;
       const code = definition.get(result.definition_id)?.code;
-      if (code) byCode.set(code, { result: result.result, actualOn: result.actual_on });
+      if (code) byCode.set(code, { id: result.id, result: result.result, actualOn: result.actual_on });
     }
     const checks = CHECK_LINES.map((item) => {
       const saved = byCode.get(item.code);
       const done = saved?.result === "pass" || saved?.result === "done" || saved?.result === "booked";
-      return { code: item.code, label: item.label, done, actualOn: saved?.actualOn ?? null };
+      return {
+        code: item.code,
+        label: item.label,
+        done,
+        actualOn: saved?.actualOn ?? null,
+        definitionId: definitionIdByCode.get(item.code) ?? null,
+        resultId: saved?.id ?? null,
+        result: saved?.result ?? null,
+      };
     });
-    const interviewRows = (interviews.data ?? []) as { outcome: string; attempt_number: number; attendance: string | null; session_id: string }[];
+    const interviewRows = (interviews.data ?? []) as { id: string; outcome: string; attempt_number: number; attendance: string | null; session_id: string }[];
     const latestInterview = interviewRows.sort((left, right) => right.attempt_number - left.attempt_number)[0] ?? null;
     let sessionOn: string | null = null;
     if (latestInterview) {
       const session = await supabase.from("interview_sessions").select("session_on").eq("id", latestInterview.session_id).maybeSingle();
       sessionOn = session.data?.session_on ?? null;
     }
-    const inductionRows = (inductions.data ?? []) as { attendance: string | null; intake_id: string }[];
+    const inductionRows = (inductions.data ?? []) as { id: string; attendance: string | null; intake_id: string }[];
     const latestInduction = inductionRows[0] ?? null;
     let bookedIntakeOn: string | null = null;
     if (latestInduction) {
@@ -435,6 +477,42 @@ export async function loadApplicantRecord(recordId: string): Promise<ApplicantRe
         inductionOn: bookedIntakeOn,
         inductionAttendance: latestInduction?.attendance ?? null,
         events: eventLines,
+        tracking: {
+          firstName: row.first_name,
+          middleNames: row.middle_names,
+          lastName: row.last_name,
+          email: row.email,
+          phone: row.phone,
+          firstContactOn: row.first_contact_on,
+          notes: row.notes,
+          centreId: row.centre_id,
+          programmeId: row.programme_id,
+          sourceId: row.enquiry_source_id,
+          sourceDetail: row.enquiry_source_detail,
+          employerId: row.employer_id,
+          employerSiteId: row.employer_site_id,
+          employerManagerId: row.employer_manager_id,
+          employerStatusCode: row.employer_status,
+          interviewBookingId: latestInterview?.id ?? null,
+          inductionBookingId: latestInduction?.id ?? null,
+          sessions: ((sessions.data ?? []) as { id: string; session_on: string; kind: string }[]).map((item) => ({
+            id: item.id,
+            label: `${ukDate(item.session_on)} · ${item.kind}`,
+          })),
+          intakes: ((intakes.data ?? []) as { id: string; intake_on: string }[]).map((item) => ({
+            id: item.id,
+            intakeOn: item.intake_on,
+            label: ukDate(item.intake_on),
+          })),
+          sites: ((employerSites.error ? [] : employerSites.data ?? []) as { id: string; employer_id: string; area_name: string | null; postcode: string | null; is_active: boolean | null }[])
+            .filter((item) => item.is_active !== false)
+            .map((item) => ({ id: item.id, employerId: item.employer_id, label: [item.area_name, item.postcode].filter(Boolean).join(" ") || "Site" })),
+          managers: ((employerManagers.error ? [] : employerManagers.data ?? []) as { id: string; employer_id: string; first_name: string | null; middle_names: string | null; last_name: string | null }[])
+            .map((item) => ({ id: item.id, employerId: item.employer_id, label: [item.first_name, item.middle_names, item.last_name].filter(Boolean).join(" ") || "Manager" })),
+          vacancies: ((vacancies.error ? [] : vacancies.data ?? []) as { id: string; employer_id: string; title: string; status: string }[])
+            .map((item) => ({ id: item.id, employerId: item.employer_id, title: item.title, status: item.status })),
+          vacancyInterestsReady: !vacancyProbe.error,
+        },
       },
       notice: related?.error?.message ?? null,
     };

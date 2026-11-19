@@ -191,6 +191,31 @@ describe("candidates pages", () => {
       inductionOn: null,
       inductionAttendance: null,
       events: [{ title: "Applicant record created", meta: "Actual date 19 Nov 2026 · Entered 19 Nov 2026" }],
+      tracking: {
+        firstName: "Kierra",
+        middleNames: null,
+        lastName: "Williamson",
+        email: null,
+        phone: null,
+        firstContactOn: "2026-11-19",
+        notes: null,
+        centreId: "11111111-1111-4111-8111-111111111111",
+        programmeId: "22222222-2222-4222-8222-222222222222",
+        sourceId: "33333333-3333-4333-8333-333333333333",
+        sourceDetail: null,
+        employerId: null,
+        employerSiteId: null,
+        employerManagerId: null,
+        employerStatusCode: "needed",
+        interviewBookingId: null,
+        inductionBookingId: null,
+        sessions: [],
+        intakes: [],
+        sites: [],
+        managers: [],
+        vacancies: [],
+        vacancyInterestsReady: false,
+      },
     };
     const html = renderToStaticMarkup(
       createElement(CandidateRecord, { ...props, example: false, recordId: "GTA-C-000001", applicantRecord: record }),
@@ -203,6 +228,11 @@ describe("candidates pages", () => {
     expect(html).toContain("No intended induction");
     expect(html).toContain("Not yet");
     expect(html).toContain('value="GTA-C-000001"');
+    expect(html).toContain("Edit details");
+    expect(html).toContain("Link employer");
+    expect(html).toContain("No interview session is available to book yet.");
+    expect(html).toContain("status-green");
+    expect(html).toContain("Stage 1");
     expect(html).toContain("Log contact event");
     expect(html).not.toContain("Maya Henshaw");
     expect(html).not.toContain("Northbridge");

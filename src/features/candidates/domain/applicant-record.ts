@@ -5,6 +5,9 @@ export type ApplicantCheckLine = {
   label: string;
   done: boolean;
   actualOn: string | null;
+  definitionId?: string | null;
+  resultId?: string | null;
+  result?: string | null;
 };
 
 export type ApplicantEventLine = {
@@ -13,6 +16,7 @@ export type ApplicantEventLine = {
 };
 
 export function checkSummary(line: ApplicantCheckLine): string {
+  if (line.result === "fail") return line.actualOn ? `Failed ${ukDate(line.actualOn)}` : "Failed";
   if (!line.done) return "Not yet";
   return line.actualOn ? ukDate(line.actualOn) : "Recorded";
 }
