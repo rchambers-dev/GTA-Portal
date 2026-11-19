@@ -32,6 +32,45 @@ export function londonClock(now = new Date()): { today: string; minutes: number 
   return { today, minutes: (hour === 24 ? 0 : hour) * 60 + minute };
 }
 
+/** 10:00 Europe/London on the calendar day after the lock was set. DST-safe: 10:00 is not the UK changeover hour. */
+export function lockExpiry(lockedAtIso: string, now = new Date()): { active: boolean; label: string } {
+  const set = new Date(lockedAtIso);
+  if (Number.isNaN(set.getTime())) return { active: false, label: "" };
+  const setDay = londonClock(set).today;
+  const [year, month, day] = setDay.split("-").map(Number);
+  const next = new Date(Date.UTC(year, month - 1, day + 1));
+  const nextDay = next.toISOString().slice(0, 10);
+  const expires = londonWallTime(nextDay, 10, 0);
+  const when = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(expires);
+  return { active: now.getTime() < expires.getTime(), label: `Locked until ${when}` };
+}
+
+function londonWallTime(date: string, hour: number, minute: number): Date {
+  const guess = new Date(`${date}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00Z`);
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(guess);
+  const value = (type: string) => Number(parts.find((part) => part.type === type)?.value ?? "0");
+  const hourPart = value("hour") === 24 ? 0 : value("hour");
+  const asLondon = Date.UTC(value("year"), value("month") - 1, value("day"), hourPart, value("minute"), value("second"));
+  return new Date(guess.getTime() - (asLondon - guess.getTime()));
+}
+
 export type CallEndStop = {
   verified: boolean;
   completed: boolean;

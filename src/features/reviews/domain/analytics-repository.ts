@@ -51,7 +51,7 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
       supabase.from("profiles").select("id, display_name, base_role"),
       supabase.from("reviews").select("id, gta_id, status, planned_on, actual_on, method"),
       supabase.from("review_packs").select("id, gta_id, stage, stage_since"),
-      supabase.from("review_pack_events").select("pack_id, event_type, occurred_at, actor_profile_id, actor_role, detail"),
+      supabase.from("review_pack_events").select("id, pack_id, event_type, occurred_at, actor_profile_id, actor_role, detail"),
       supabase.from("apprentice_safeguarding_signoffs").select("gta_id, signed_on, reversed_at"),
       supabase.from("learner_concerns").select("gta_id, resolved_on"),
       supabase.from("breaks_in_learning").select("apprentice_id, actual_return"),
@@ -104,17 +104,24 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
       stage: row.stage,
       stageSince: row.stage_since,
     })),
-    events: rows<{ pack_id: string; event_type: string; occurred_at: string; actor_profile_id: string | null; actor_role: string | null; detail: unknown }>(
+    events: rows<{ id: string; pack_id: string; event_type: string; occurred_at: string; actor_profile_id: string | null; actor_role: string | null; detail: unknown }>(
       events.data,
-    ).map((row) => ({
-      packId: row.pack_id,
-      gtaId: packGta.get(row.pack_id) || "",
-      type: row.event_type,
-      at: row.occurred_at,
-      actorName: row.actor_profile_id ? names.get(row.actor_profile_id) || "System" : "System",
-      actorRole: row.actor_profile_id ? row.actor_role || roles.get(row.actor_profile_id) || "" : "System",
-      detail: detailText(row.detail),
-    })).filter((event) => event.gtaId),
+    ).map((row) => {
+      const record = row.detail && typeof row.detail === "object" ? row.detail as Record<string, unknown> : {};
+      return {
+        id: row.id,
+        packId: row.pack_id,
+        gtaId: packGta.get(row.pack_id) || "",
+        type: row.event_type,
+        at: row.occurred_at,
+        undoes: typeof record.undoes === "string" ? record.undoes : "",
+        paperReturn: record.on_paper === true,
+        sentKnown: record.sent_known === true,
+        actorName: row.actor_profile_id ? names.get(row.actor_profile_id) || "System" : "System",
+        actorRole: row.actor_profile_id ? row.actor_role || roles.get(row.actor_profile_id) || "" : "System",
+        detail: detailText(row.detail),
+      };
+    }).filter((event) => event.gtaId),
     activeSignoffs: rows<{ gta_id: string; signed_on: string | null; reversed_at: string | null }>(signoffs.data)
       .filter((row) => !row.reversed_at)
       .map((row) => row.gta_id),

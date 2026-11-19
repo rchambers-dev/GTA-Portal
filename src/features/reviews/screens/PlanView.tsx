@@ -9,15 +9,20 @@ import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, we
 import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
 import { moveRouteIds, visitsAreInOrder, type PackedDay } from "../domain/plan-route";
-import type { PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
+import type { ConcernReason, PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
 import {
   acceptDayAction,
   applyRouteAction,
   completeDayAction,
   excludeStopAction,
   lockStopAction,
+  raisePlanConcernAction,
+  recordPaperReturnAction,
   recordSafeguardingAction,
+  resolvePlanConcernAction,
   setNotesAction,
+  undoPaperReturnAction,
+  unlockDayAction,
   unlockStopAction,
   verifyStopAction,
 } from "./plan-actions";
@@ -46,6 +51,7 @@ export function PlanView({
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(serverDate);
   const [tab, setTab] = useState<PlanCounter>("to_book");
+  const [dropTab, setDropTab] = useState<PlanCounter | null>(null);
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [busyKey, setBusyKey] = useState<string | null>(null);
@@ -175,9 +181,17 @@ export function PlanView({
       setMessage("This route is already accepted. Unlock it before changing the drive times.");
       return;
     }
+    const hiddenTutors = new Set(
+      page.tutors.filter((tutor) => page.settings.hiddenTutorIds.includes(tutor.id)).map((tutor) => tutor.name),
+    );
+    const visibleExtras = extras.filter((person) => !hiddenTutors.has(person.tutor));
+    if (extras.length && !visibleExtras.length) {
+      setMessage("That tutor is hidden from the plan, so they are left off the round.");
+      return;
+    }
     const weekday = weekdayName(selectedDate);
-    const allowed = extras.filter((person) => person.releaseDay !== weekday && person.method !== "phone");
-    const blocked = extras.filter((person) => !allowed.includes(person));
+    const allowed = visibleExtras.filter((person) => person.releaseDay !== weekday && person.method !== "phone");
+    const blocked = visibleExtras.filter((person) => !allowed.includes(person));
     if (blocked.length && !allowed.length) {
       const person = blocked[0];
       setMessage(
@@ -215,6 +229,25 @@ export function PlanView({
       }),
     );
     if (fitted.missing.length) setMessage(`Could not find: ${fitted.missing.join(", ")}`);
+  }
+
+  async function paperReturn(gtaId: string) {
+    const person = page.people.find((item) => item.gtaId === gtaId);
+    if (!person?.packId) return;
+    const waitingPack = person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor");
+    if (!waitingPack) {
+      setMessage(`${person.name} is not waiting for a review to be received.`);
+      return;
+    }
+    const result = await run(() => recordPaperReturnAction({ packId: person.packId || "" }), `${person.gtaId}:paper`);
+    if (result.ok) setMessage(`${person.name}'s review was received and is now To book.`);
+  }
+
+  async function undoPaper(gtaId: string) {
+    const person = page.people.find((item) => item.gtaId === gtaId);
+    if (!person?.packId || !person.paperReturn || person.stage !== "to_book" || person.appointmentOn) return;
+    const result = await run(() => undoPaperReturnAction({ packId: person.packId || "" }), `${person.gtaId}:paper`);
+    if (result.ok) setMessage(`${person.name}'s received review was undone.`);
   }
 
   async function dropPerson(gtaId: string) {
@@ -354,9 +387,27 @@ export function PlanView({
               type="button"
               role="tab"
               aria-selected={tab === item.id}
-              className={[styles.counterTile, tab === item.id ? (item.id === "locked" ? styles.tabLocked : styles.tabOn) : ""].filter(Boolean).join(" ")}
+              className={[
+                styles.counterTile,
+                tab === item.id ? (item.id === "locked" ? styles.tabLocked : styles.tabOn) : "",
+                dropTab === item.id ? styles.dropOn : "",
+              ].filter(Boolean).join(" ")}
               data-roster-tab={item.id}
               onClick={() => setTab(item.id)}
+              onDragOver={(event) => {
+                if (item.id !== "to_book" && item.id !== "waiting") return;
+                event.preventDefault();
+                setDropTab(item.id);
+              }}
+              onDragLeave={() => setDropTab((current) => (current === item.id ? null : current))}
+              onDrop={(event) => {
+                event.preventDefault();
+                setDropTab(null);
+                const id = event.dataTransfer.getData("text/plain");
+                if (!id) return;
+                if (item.id === "to_book") void paperReturn(id);
+                if (item.id === "waiting") void undoPaper(id);
+              }}
             >
               <strong id={`paper-${item.id}`}>{page.counts[item.id]}</strong>
               <em>{item.label}</em>
@@ -383,6 +434,9 @@ export function PlanView({
           workspace={workspace}
           people={visible}
           canWrite={page.canWrite}
+          reasons={page.concernReasons}
+          onRun={run}
+          onStatus={setMessage}
           empty={
             tab === "locked"
               ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
@@ -447,6 +501,7 @@ export function PlanView({
           today={page.today}
           booked={bookedDays}
           completed={completedDays}
+          skipped={page.settings.skipToday ? page.today : null}
           onPick={(next) => go(next, next.slice(0, 7))}
           onMonth={(next) => go(selectedDate, next)}
         />
@@ -471,7 +526,7 @@ export function PlanView({
             </div>
           ) : (
             <div className={styles.routeBar}>
-              {page.canWrite ? (
+              {page.canWrite && !activeDay.accepted && selectedDate >= page.today ? (
                 <button
                   type="button"
                   className={styles.fill}
@@ -485,6 +540,19 @@ export function PlanView({
                   }
                 >
                   Fill Day
+                </button>
+              ) : null}
+              {page.canWrite && activeDay.accepted && !activeDay.completed ? (
+                <button
+                  type="button"
+                  className={styles.fill}
+                  onClick={() =>
+                    void run(() => unlockDayAction({ date: selectedDate })).then((result) => {
+                      if (result.ok) setMessage("This day is unlocked. You can change the round again.");
+                    })
+                  }
+                >
+                  Unlock day
                 </button>
               ) : null}
               {page.canWrite && activeDay.stops.length > 0 ? (
@@ -556,14 +624,20 @@ const RosterList = memo(function RosterList({
   workspace,
   people,
   canWrite,
+  reasons,
   empty,
   onNote,
+  onRun,
+  onStatus,
 }: {
   workspace: "administration" | "management";
   people: PlanPerson[];
   canWrite: boolean;
+  reasons: ConcernReason[];
   empty: string;
   onNote: (person: PlanPerson) => void;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
+  onStatus: (message: string | null) => void;
 }) {
   return (
     <ul className={styles.list}>
@@ -576,7 +650,10 @@ const RosterList = memo(function RosterList({
             workspace={workspace}
             person={person}
             canWrite={canWrite}
+            reasons={reasons}
             onNote={() => onNote(person)}
+            onRun={onRun}
+            onStatus={onStatus}
           />
         ))
       )}
@@ -588,12 +665,18 @@ function RosterCard({
   workspace,
   person,
   canWrite,
+  reasons,
   onNote,
+  onRun,
+  onStatus,
 }: {
   workspace: "administration" | "management";
   person: PlanPerson;
   canWrite: boolean;
+  reasons: ConcernReason[];
   onNote: () => void;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
+  onStatus: (message: string | null) => void;
 }) {
   return (
     <li
@@ -607,6 +690,21 @@ function RosterCard({
         <span className={styles.college}>College {person.releaseDay}</span>
       </span>
       <DuePill person={person} />
+      <ConcernChip person={person} reasons={reasons} canWrite={canWrite} onRun={onRun} onStatus={onStatus} />
+      {canWrite && person.packId && person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor") ? (
+        <button type="button" className={styles.pill} onClick={() => void onRun(() => recordPaperReturnAction({ packId: person.packId || "" })).then((result) => {
+          if (result.ok) onStatus(`${person.name}'s review was received and is now To book.`);
+        })}>
+          Review received
+        </button>
+      ) : null}
+      {canWrite && person.paperReturn && person.stage === "to_book" && !person.appointmentOn ? (
+        <button type="button" className={styles.pill} onClick={() => void onRun(() => undoPaperReturnAction({ packId: person.packId || "" })).then((result) => {
+          if (result.ok) onStatus(`${person.name}'s received review was undone.`);
+        })}>
+          Undo received
+        </button>
+      ) : null}
       {canWrite && person.reviewId ? (
         <button type="button" className={person.notes ? styles.noteOn : styles.pill} onClick={onNote}>
           {person.notes ? "Edit note" : "Add note"}
@@ -737,6 +835,7 @@ function StopCard({
   settings,
   days,
   people,
+  reasons,
   loadedMonth,
   canWrite,
   canDrag,
@@ -759,6 +858,7 @@ function StopCard({
   settings: PlanSettings;
   days: PlanDay[];
   people: PlanPerson[];
+  reasons: ConcernReason[];
   loadedMonth: string;
   canWrite: boolean;
   canDrag: boolean;
@@ -879,25 +979,43 @@ function StopCard({
             )}
             {stop.completed ? <span className={styles.tagDone}>Review done</span> : null}
             {!stop.completed && verified ? <span className={styles.tagDone}>Verified</span> : null}
-            {locked ? <span className={styles.tagLock}>Locked</span> : null}
+            {bookedOnDay ? <span className={styles.tagDone}>Booked time</span> : null}
+            {locked ? <span className={styles.tagLock}>{stop.lockLabel || "Locked"}</span> : null}
+            {people.find((person) => person.gtaId === stop.gtaId) ? (
+              <ConcernChip
+                person={people.find((person) => person.gtaId === stop.gtaId)!}
+                reasons={reasons}
+                canWrite={canWrite}
+                onRun={onRun}
+                onStatus={onStatus}
+              />
+            ) : null}
           </p>
         </div>
         <span className={styles.contactLine}>
-          {stop.contact ? <strong>{stop.contact}</strong> : null}
-          {stop.phone ? (
+          {stop.contact || stop.phone ? (
             <>
-              {stop.contact ? " · " : ""}
-              <a href={`tel:${phoneDigits}`} onClick={(event) => event.stopPropagation()}>{stop.phone}</a>
+              {stop.contact ? <strong>{stop.contact}</strong> : null}
+              {stop.phone ? (
+                <>
+                  {stop.contact ? " · " : ""}
+                  <a href={`tel:${phoneDigits}`} onClick={(event) => event.stopPropagation()}>{stop.phone}</a>
+                </>
+              ) : null}
             </>
-          ) : null}
+          ) : (
+            "No contact saved"
+          )}
         </span>
         {canWrite && !stop.completed ? (
           <div className={styles.stopExtra} onClick={(event) => event.stopPropagation()}>
             <div className={styles.stopExtraInner}>
             <p className={styles.placeLine}>
               {stop.company} · {stop.postcode} · tutor {stop.tutor} · college {stop.releaseDay}
+              {stop.kind === "phone" ? " · 20 minutes from the office · no driving" : ""}
             </p>
             <div className={styles.actionGrid}>
+            {bookedOnDay ? null : (
             <button
               type="button"
               className={[verified ? styles.actionGhost : styles.actionPrimary, mine && busyKey?.endsWith(":verify") ? styles.pending : ""].filter(Boolean).join(" ")}
@@ -926,6 +1044,7 @@ function StopCard({
             >
               {mine && busyKey?.endsWith(":verify") ? "Saving…" : verified ? "Undo verify" : "Verify"}
             </button>
+            )}
             <button type="button" className={styles.actionBlue} disabled={held} aria-expanded={open === "book" && bookMethod === "in_person"} onClick={() => { setBookMethod("in_person"); setOpen(open === "book" && bookMethod === "in_person" ? null : "book"); }}>
               Rebook
             </button>
@@ -953,7 +1072,7 @@ function StopCard({
                       onStatus(
                         locked
                           ? `${stop.name} is unlocked. Fill day selected can move that slot if needed.`
-                          : `${stop.name} is locked on this round until you unlock them.`,
+                          : `${stop.name} is locked until 10:00 London time tomorrow. After that they go back to To book.`,
                       );
                     }
                     return result;
@@ -974,9 +1093,11 @@ function StopCard({
             <Link className={styles.actionBlue} href={`/${workspace}/onboarding/apprentice/${stop.gtaId}`} onClick={(event) => event.stopPropagation()}>
               Edit details
             </Link>
+            {dayAccepted ? null : (
             <button type="button" className={[styles.actionDanger, mine && busyKey?.endsWith(":off") ? styles.pending : ""].filter(Boolean).join(" ")} disabled={held} aria-busy={mine && busyKey?.endsWith(":off")} onClick={() => onTakeOff(stop.gtaId)}>
               {mine && busyKey?.endsWith(":off") ? "Taking off…" : "Take off this round"}
             </button>
+            )}
             </div>
             {stop.notes ? (
               <p className={styles.noteBox}>
@@ -1077,6 +1198,7 @@ function Calendar({
   today,
   booked,
   completed,
+  skipped,
   onPick,
   onMonth,
 }: {
@@ -1085,6 +1207,7 @@ function Calendar({
   today: string;
   booked: Set<string>;
   completed: Set<string>;
+  skipped: string | null;
   onPick: (date: string) => void;
   onMonth: (month: string) => void;
 }) {
@@ -1133,6 +1256,7 @@ function Calendar({
                 iso === date ? styles.dayOn : "",
                 iso === today && iso !== date ? styles.dayToday : "",
                 completed.has(iso) ? styles.dayDone : booked.has(iso) ? styles.dayBooked : "",
+                iso === skipped ? styles.daySkipped : "",
               ].filter(Boolean).join(" ")}
               onClick={() => onPick(iso)}
             >
@@ -1149,6 +1273,112 @@ function Calendar({
 
 function dateOnly(value: string): string {
   return value.slice(0, 10);
+}
+
+function ConcernChip({
+  person,
+  reasons,
+  canWrite,
+  onRun,
+  onStatus,
+}: {
+  person: PlanPerson;
+  reasons: ConcernReason[];
+  canWrite: boolean;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
+  onStatus: (message: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [reasonId, setReasonId] = useState("");
+  const [note, setNote] = useState("");
+  const label = person.concern ? "Concern · 5 weeks" : "Concern";
+  if (!canWrite && !person.concern) return null;
+  if (!canWrite) return <span className={styles.concernOn}>{label}</span>;
+  return (
+    <span className={styles.concernWrap} onMouseDown={(event) => event.stopPropagation()}>
+      <button
+        type="button"
+        className={person.concern ? styles.concernOn : styles.concernOff}
+        aria-pressed={person.concern}
+        aria-expanded={open}
+        draggable={false}
+        onClick={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          setOpen((value) => !value);
+        }}
+      >
+        {label}
+      </button>
+      {open ? (
+        <form
+          className={styles.concernPanel}
+          onClick={(event) => event.stopPropagation()}
+          onSubmit={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (person.concern && person.concernId) {
+              void onRun(
+                () => resolvePlanConcernAction({ concernId: person.concernId || "", note }),
+                `${person.gtaId}:concern`,
+              ).then((result) => {
+                if (!result.ok) return;
+                onStatus(`${person.name} is back on the 10-week schedule.`);
+                setNote("");
+                setOpen(false);
+              });
+              return;
+            }
+            void onRun(
+              () => raisePlanConcernAction({ gtaId: person.gtaId, reasonId, note }),
+              `${person.gtaId}:concern`,
+            ).then((result) => {
+              if (!result.ok) return;
+              onStatus(`${person.name} is on a 5-week concern schedule.`);
+              setNote("");
+              setReasonId("");
+              setOpen(false);
+            });
+          }}
+        >
+          {person.concern ? (
+            <>
+              <p>Clear this concern. The next review goes back to 10 weeks, unless a visit is already booked.</p>
+              <label>
+                Resolution note
+                <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Optional" />
+              </label>
+              <div className={styles.concernActions}>
+                <button type="submit">Clear concern</button>
+                <button type="button" onClick={() => setOpen(false)}>Cancel</button>
+              </div>
+            </>
+          ) : (
+            <>
+              <label>
+                Reason
+                <select value={reasonId} required onChange={(event) => setReasonId(event.target.value)}>
+                  <option value="">Choose a reason</option>
+                  {reasons.map((reason) => (
+                    <option key={reason.id} value={reason.id}>{reason.label}</option>
+                  ))}
+                </select>
+              </label>
+              {reasons.length === 0 ? <p>No concern reasons are available.</p> : null}
+              <label>
+                Note
+                <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Optional" />
+              </label>
+              <div className={styles.concernActions}>
+                <button type="submit" disabled={!reasonId}>Flag concern</button>
+                <button type="button" onClick={() => setOpen(false)}>Cancel</button>
+              </div>
+            </>
+          )}
+        </form>
+      ) : null}
+    </span>
+  );
 }
 
 function DuePill({ person }: { person: PlanPerson }) {
@@ -1213,10 +1443,41 @@ function DayTimeline({
   const leave = packed?.leaveMinutes ?? timeToMinutes(page.settings.startTime) ?? 10 * 60;
   const back = home?.arrive ?? packed?.returnArrive;
   const backTravel = home?.travel ?? packed?.returnTravel;
-  if (!stops.length) return null;
+  if (!stops.length) {
+    const passed = date < page.today;
+    const skipped = date === page.today && page.settings.skipToday;
+    const label = weekdayName(date);
+    return (
+      <p className={styles.empty}>
+        {day.completed
+          ? "This route is completed."
+          : passed
+            ? `${label} has already passed. Reviews are planned from today onwards.`
+            : skipped
+              ? `Skipping ${label} so you can book tomorrow. Uncheck “Skip today” if you need a round today.`
+              : `No visits on ${label}. Either everyone is in college, or they already fit on remaining days.`}
+      </p>
+    );
+  }
+  const callStart = timeToMinutes(page.settings.startTime) ?? leave;
+  const callEnd = callStart + page.settings.callMinutes;
   return (
     <div className={locked ? styles.lockedPanel : styles.timeline}>
       {locked ? <p className={styles.lockNote}>This day is locked. The visits can’t be changed.</p> : null}
+      {day.droppedUnverified ? (
+        <p className={styles.lockNote}>
+          The {page.settings.callMinutes}-minute call window ended. Anyone not verified has been moved off this round.
+        </p>
+      ) : null}
+      {page.settings.callMinutes > 0 && stops.some((stop) => stop.kind !== "phone") ? (
+        <div className={styles.stop}>
+          <div className={styles.when}>{minutesToTime(callStart)}–{minutesToTime(callEnd)}</div>
+          <div>
+            <strong>Confirmation calls</strong>
+            <div className={styles.meta}>{page.settings.officePostcode} · {page.settings.callMinutes} minutes for anyone not yet verified. Then set off at {minutesToTime(leave)}.</div>
+          </div>
+        </div>
+      ) : null}
       <div className={styles.stop}>
         <div className={styles.when}>{minutesToTime(leave)}</div>
         <div>
@@ -1240,6 +1501,7 @@ function DayTimeline({
               settings={page.settings}
               days={page.days}
               people={page.people}
+              reasons={page.concernReasons}
               loadedMonth={date.slice(0, 7)}
               canWrite={page.canWrite && !day.completed}
               canDrag={page.canWrite && !day.completed && stops.length > 1 && stop.appointmentOn !== date}
@@ -1295,6 +1557,7 @@ function planDayFor(page: PlanPageData, date: string): PlanDay {
       completed: false,
       stops: [],
       completedReviews: [],
+      droppedUnverified: 0,
     }
   );
 }

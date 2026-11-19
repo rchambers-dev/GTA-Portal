@@ -100,14 +100,15 @@ export function CycleView({
         />
         <select className={styles.select} value={tutor} onChange={(event) => setTutor(event.target.value)} aria-label="All tutors">
           <option value="all">All tutors</option>
-          {page.tutors.map((name) => (
+          {(page.tutors.includes("No tutor set") ? page.tutors : [...page.tutors, "No tutor set"]).map((name) => (
             <option key={name} value={name}>{name}</option>
           ))}
         </select>
         <span className={styles.count}>{filtered.length} learners</span>
       </div>
+      {!filtered.length ? <p className={styles.emptyStep}>No learners match that search.</p> : null}
       <div className={styles.sections}>
-      {groups.map((group) => {
+      {groups.filter((group) => group.rows.length > 0).map((group) => {
         const sectionOpen = openSection === group.id;
         return (
         <section key={group.id} className={sectionOpen ? styles.group : `${styles.group} ${styles.groupClosed}`}>

@@ -4,7 +4,8 @@ import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { GTA_TUTORS } from "./gta-tutors";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
-import { callEndMinutes, heldPastCallEnd, londonClock } from "./plan-call-end";
+import { callEndMinutes, heldPastCallEnd, lockExpiry, londonClock } from "./plan-call-end";
+import { formatTutorDate } from "@/features/administration/domain/apprentice-tutor";
 import {
   methodLabel,
   minutesToTime,
@@ -41,7 +42,13 @@ export type PlanPerson = {
   nextDate: string | null;
   safeguarding: boolean;
   concern: boolean;
+  concernId: string | null;
+  packId: string | null;
+  paperReturn: boolean;
+  paperReturnedOn: string | null;
 };
+
+export type ConcernReason = { id: string; label: string };
 
 export type PlanStop = {
   gtaId: string;
@@ -62,6 +69,7 @@ export type PlanStop = {
   arriveMinutes: number | null;
   leaveMinutes: number | null;
   locked: boolean;
+  lockLabel: string;
   dueLabel: string;
   dueState: DueState;
   tutor: string;
@@ -102,6 +110,8 @@ export type PlanDay = {
   completed: boolean;
   stops: PlanStop[];
   completedReviews: CompletedReview[];
+  /** Stops taken off this day because the confirmation-call window ended. */
+  droppedUnverified: number;
 };
 
 export type PlanPageData = {
@@ -111,6 +121,7 @@ export type PlanPageData = {
   counts: Record<PlanCounter, number>;
   settings: PlanSettings;
   tutors: { id: string; name: string; department: string }[];
+  concernReasons: ConcernReason[];
   monthMarks: { date: string; accepted: boolean; completed: boolean }[];
   /** Every day in the loaded month that has a route or a completed review. */
   days: PlanDay[];
@@ -143,6 +154,9 @@ export async function readPlanPage(
   const released = await supabase.rpc("release_unverified_after_call_end");
   const releaseMissing = released.error?.code === "PGRST202"
     || /release_unverified_after_call_end/i.test(released.error?.message || "");
+  const expired = await supabase.rpc("release_expired_review_locks");
+  const expiredMissing = expired.error?.code === "PGRST202"
+    || /release_expired_review_locks/i.test(expired.error?.message || "");
   const monthStart = `${options.month}-01`;
   const [year, month] = options.month.split("-").map(Number);
   const nextMonthDate = new Date(Date.UTC(year, month, 1));
@@ -157,6 +171,7 @@ export async function readPlanPage(
     managersResult,
     reviewsResult,
     concernsResult,
+    concernReasonsResult,
     signoffsResult,
     tutorsResult,
     settingsResult,
@@ -176,7 +191,8 @@ export async function readPlanPage(
     supabase
       .from("reviews")
       .select("id, gta_id, status, planned_on, actual_on, method, notes, interval_weeks"),
-    supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
+    supabase.from("learner_concerns").select("id, gta_id").is("resolved_on", null),
+    supabase.from("reasons").select("id, label, sort_order").eq("used_for_concerns", true).eq("active", true).order("sort_order", { ascending: true }),
     supabase.from("apprentice_safeguarding_signoffs").select("id, gta_id").is("reversed_at", null),
     supabase
       .from("profiles")
@@ -194,7 +210,7 @@ export async function readPlanPage(
     supabase
       .from("review_day_stops")
       .select(
-        "date_on, gta_id, sort_order, kind, verified, completed, accepted, excluded, arrive_minutes, leave_minutes, locked_until_minutes, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
+        "date_on, gta_id, sort_order, kind, verified, completed, accepted, excluded, arrive_minutes, leave_minutes, locked_until_minutes, locked_at, lock_arrive_minutes, lock_leave_minutes, accepted_arrive_minutes, accepted_leave_minutes",
       )
       .gte("date_on", monthStart)
       .lt("date_on", nextMonth)
@@ -219,6 +235,7 @@ export async function readPlanPage(
     if (result.error) problems.push(result.error.message);
   }
   if (released.error && !releaseMissing) problems.push(released.error.message);
+  if (expired.error && !expiredMissing) problems.push(expired.error.message);
 
   const employers = new Map(
     ((employersResult.data ?? []) as { employer_id: string; company_name: string }[]).map((row) => [
@@ -268,9 +285,15 @@ export async function readPlanPage(
       [row.first_name, row.middle_names, row.last_name].filter((part) => part && part.trim()).join(" "),
     ]),
   );
-  const concerns = new Set(
-    ((concernsResult.data ?? []) as { gta_id: string }[]).map((row) => row.gta_id),
+  const concerns = new Map(
+    ((concernsResult.data ?? []) as { id: string; gta_id: string }[]).map((row) => [row.gta_id, row.id]),
   );
+  const concernReasons: ConcernReason[] = concernReasonsResult.error
+    ? []
+    : ((concernReasonsResult.data ?? []) as { id: string; label: string }[]).map((row) => ({
+        id: row.id,
+        label: row.label,
+      }));
   const signed = new Map(
     ((signoffsResult.data ?? []) as { id: string; gta_id: string }[]).map((row) => [row.gta_id, row.id]),
   );
@@ -318,6 +341,26 @@ export async function readPlanPage(
       minutes: row.appointment_minutes,
       method: row.method,
     });
+  }
+
+  const packRows = await supabase.from("review_packs").select("id, review_id, gta_id, stage");
+  const formRows = packRows.error
+    ? { data: [], error: packRows.error }
+    : await supabase.from("review_tutor_forms").select("pack_id, entry_method, submitted_at");
+  const formByPack = new Map(
+    ((formRows.data ?? []) as { pack_id: string; entry_method: string | null; submitted_at: string | null }[]).map((row) => [row.pack_id, row]),
+  );
+  const packByReview = new Map<string, { id: string; paper: boolean; returnedOn: string | null }>();
+  if (!packRows.error) {
+    for (const row of (packRows.data ?? []) as { id: string; review_id: string; stage: string }[]) {
+      const form = formByPack.get(row.id);
+      const paper = form?.entry_method === "paper";
+      packByReview.set(row.review_id, {
+        id: row.id,
+        paper,
+        returnedOn: paper && form?.submitted_at ? formatTutorDate(londonClock(new Date(form.submitted_at)).today) : null,
+      });
+    }
   }
 
   const people: PlanPerson[] = [];
@@ -378,6 +421,10 @@ export async function readPlanPage(
       nextDate: due.nextDate,
       safeguarding: signed.has(row.gta_id),
       concern: concerns.has(row.gta_id),
+      concernId: concerns.get(row.gta_id) ?? null,
+      packId: packByReview.get(review?.id || "")?.id ?? null,
+      paperReturn: packByReview.get(review?.id || "")?.paper ?? false,
+      paperReturnedOn: packByReview.get(review?.id || "")?.returnedOn ?? null,
     });
   }
   const dueRank = { overdue: 3, "due-soon": 2, ok: 1, unknown: 0 } as const;
@@ -430,6 +477,7 @@ export async function readPlanPage(
     arrive_minutes: number | null;
     leave_minutes: number | null;
     locked_until_minutes: number | null;
+    locked_at: string | null;
     lock_arrive_minutes: number | null;
     lock_leave_minutes: number | null;
     accepted_arrive_minutes: number | null;
@@ -461,7 +509,8 @@ export async function readPlanPage(
       leave: minutesToTime(leave),
       arriveMinutes: arrive,
       leaveMinutes: leave,
-      locked: stop.locked_until_minutes != null,
+      locked: stop.locked_at ? lockExpiry(stop.locked_at, new Date()).active : false,
+      lockLabel: stop.locked_at ? lockExpiry(stop.locked_at, new Date()).label : "",
       dueLabel: person?.dueLabel || "Not set",
       dueState: person?.dueState || "unknown",
       tutor: person?.tutor || "",
@@ -474,12 +523,14 @@ export async function readPlanPage(
     };
   }
   const stopsByDate = new Map<string, PlanStop[]>();
+  const droppedByDate = new Map<string, number>();
   for (const stop of (stopsResult.data ?? []) as StopRow[]) {
     const built = toStop(stop);
     if (
       !bookingResult.error &&
       heldPastCallEnd(built, { date: stop.date_on, today: clock.today, nowMinutes: clock.minutes, callEnd })
     ) {
+      droppedByDate.set(stop.date_on, (droppedByDate.get(stop.date_on) ?? 0) + 1);
       continue;
     }
     const list = stopsByDate.get(stop.date_on) ?? [];
@@ -516,6 +567,7 @@ export async function readPlanPage(
     completed: Boolean(dayMeta.get(dateOn)?.completed_at),
     stops: stopsByDate.get(dateOn) ?? [],
     completedReviews: completedByDate.get(dateOn) ?? [],
+    droppedUnverified: droppedByDate.get(dateOn) ?? 0,
   }));
   const emptyDay = {
     date: options.date,
@@ -523,6 +575,7 @@ export async function readPlanPage(
     completed: Boolean(dayMeta.get(options.date)?.completed_at),
     stops: [],
     completedReviews: [],
+    droppedUnverified: droppedByDate.get(options.date) ?? 0,
   };
 
   return {
@@ -544,6 +597,7 @@ export async function readPlanPage(
       outEnabled: settingsRow?.out_enabled ?? false,
     },
     tutors: officialTutors((tutorsResult.data ?? []) as { id: string; display_name: string | null; email: string | null }[]),
+    concernReasons,
     monthMarks: dayRows.map((row) => ({
       date: row.date_on,
       accepted: row.accepted,

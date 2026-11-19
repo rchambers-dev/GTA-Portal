@@ -285,6 +285,22 @@ describe("review analytics", () => {
     expect(filtered.history.find((cycle) => cycle.number === 2)?.missedLearners).toEqual([]);
   });
 
+  it("counts an unknown paper return as received, and keeps it out of sent and turnaround", () => {
+    const page = buildAnalytics(
+      source({
+        events: [
+          { packId: "pk1", gtaId: "A", type: "submitted", at: "2026-11-12T12:00:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "", paperReturn: true, sentKnown: false },
+          { packId: "pk2", gtaId: "B", type: "released", at: "2026-11-01T12:00:00Z", actorName: "Reiss", actorRole: "Administrator", detail: "" },
+          { packId: "pk2", gtaId: "B", type: "submitted", at: "2026-11-12T12:00:00Z", actorName: "Tutor", actorRole: "Tutor", detail: "", paperReturn: true, sentKnown: true },
+        ],
+      }),
+      { range: "all", tutorId: "all", programmeId: "all", employerId: "all" },
+    );
+    expect(page.overall.released).toBe(1);
+    expect(page.overall.received).toBe(2);
+    expect(page.completion.releaseToReceived.count).toBe(1);
+  });
+
   it("limits the page to one tutor", () => {
     const page = buildAnalytics(source(), { range: "all", tutorId: "t2", programmeId: "all", employerId: "all" });
     expect(page.learners).toBe(1);

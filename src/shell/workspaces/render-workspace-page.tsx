@@ -50,6 +50,8 @@ import { CycleScreen } from "@/features/reviews/screens/CycleScreen";
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
 import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
 import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
+import { OutScreen } from "@/features/reviews/screens/OutScreen";
+import { ArchiveScreen } from "@/features/reviews/screens/ArchiveScreen";
 import { TutorReviewsScreen } from "@/features/tutor-reviews/screens/TutorReviewsScreen";
 import { OnboardingDirectory } from "@/features/administration/screens/OnboardingDirectory";
 import { MarketingOverview } from "@/features/administration/screens/MarketingOverview";
@@ -483,9 +485,9 @@ export async function renderWorkspacePage(
       case "reviews/cycle":
         return <CycleScreen workspace="administration" />;
       case "reviews/out":
-        return <ReviewStubScreen title="Out" />;
+        return <OutScreen />;
       case "reviews/archive":
-        return <ReviewStubScreen title="Archive" />;
+        return <ArchiveScreen />;
       case "reviews/analytics":
         return (
           <AnalyticsScreen
@@ -586,9 +588,9 @@ export async function renderWorkspacePage(
       case "reviews/cycle":
         return <CycleScreen workspace="management" />;
       case "reviews/out":
-        return <ReviewStubScreen title="Out" />;
+        return <OutScreen />;
       case "reviews/archive":
-        return <ReviewStubScreen title="Archive" />;
+        return <ArchiveScreen />;
       case "reviews/analytics":
         return (
           <AnalyticsScreen

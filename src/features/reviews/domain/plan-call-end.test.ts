@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { emptyPackedDay, type RouteSettings } from "./plan-route";
-import { callEndMinutes, heldPastCallEnd, type CallEndStop } from "./plan-call-end";
+import { callEndMinutes, heldPastCallEnd, lockExpiry, type CallEndStop } from "./plan-call-end";
 
 const settings: RouteSettings = {
   startMinutes: 10 * 60,
@@ -46,6 +46,16 @@ describe("unverified drop", () => {
     expect(heldPastCallEnd(stop({ verified: false, appointmentOn: "2026-11-16" }), when)).toBe(true);
     expect(heldPastCallEnd(stop({ verified: false, completed: true }), when)).toBe(false);
     expect(heldPastCallEnd(stop({ verified: false, accepted: true }), when)).toBe(false);
+  });
+
+  it("keeps a lock until 10:00 London on the next day, including British Summer Time", () => {
+    const winter = lockExpiry("2026-11-16T15:00:00Z", new Date("2026-11-17T09:59:00Z"));
+    expect(winter.active).toBe(true);
+    expect(winter.label).toContain("10:00");
+    expect(lockExpiry("2026-11-16T15:00:00Z", new Date("2026-11-17T10:00:00Z")).active).toBe(false);
+    const summerSet = lockExpiry("2026-07-16T14:00:00Z", new Date("2026-07-17T08:59:00Z"));
+    expect(summerSet.active).toBe(true);
+    expect(lockExpiry("2026-07-16T14:00:00Z", new Date("2026-07-17T09:00:00Z")).active).toBe(false);
   });
 
   it("does not drop a stop on any other day", () => {

@@ -9,6 +9,8 @@
 .grid dt { color: #5c6478; font-size: 0.75rem; }
 .grid dd { margin: 0 0 0.35rem; }
 .compare { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+.compareHead, .compareRow { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.note { background: #f7f4ee; border-radius: 0.55rem; padding: 0.55rem 0.7rem; }
 .previous { background: #f7f4ee; padding: 0.75rem; }
 .current { background: #fff; padding: 0.75rem; position: relative; }
 .head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }

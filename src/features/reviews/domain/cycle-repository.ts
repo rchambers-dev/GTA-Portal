@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { formatTutorDate, londonToday } from "@/features/administration/domain/apprentice-tutor";
+import { londonClock } from "./plan-call-end";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { formatManagerName } from "@/features/administration/domain/employer-record";
 import {
@@ -24,9 +25,9 @@ import {
   type TargetStatus,
   type TutorFormDraft,
 } from "./tutor-form-rules";
-import type { CycleLearner, CyclePage, CycleStepView, DigitalReview, HistoryRow, LearnerReviews } from "./cycle-view";
+import type { CycleLearner, CyclePage, CycleStepView, DigitalReview, HistoryRow, LearnerReviews, PreviousReviewSnapshot } from "./cycle-view";
 
-export type { CycleLearner, CyclePage, CycleStepView, DigitalReview, HistoryRow, LearnerReviews };
+export type { CycleLearner, CyclePage, CycleStepView, DigitalReview, HistoryRow, LearnerReviews, PreviousReviewSnapshot };
 
 type ApprenticeRow = {
   gta_id: string;
@@ -95,6 +96,7 @@ type Loaded = {
   concerns: Set<string>;
   reviewers: { id: string; name: string; isDefault: boolean }[];
   forms: Map<string, TutorFormDraft>;
+  paper: Map<string, string>;
 };
 
 async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
@@ -131,7 +133,7 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
     supabase.from("profiles").select("id, display_name"),
     supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
     supabase.from("review_reviewers").select("profile_id, is_default"),
-    supabase.from("review_tutor_forms").select("pack_id, previous_summary, tutor_comment"),
+    supabase.from("review_tutor_forms").select("pack_id, previous_summary, tutor_comment, entry_method, submitted_at"),
     supabase.from("review_targets").select("pack_id, kind, slot, action, owner, measure, target_date, status, carried_from_id"),
     supabase.from("review_progress_rows").select("pack_id, area, evidence, action_ref, rag, target_hours, current_hours"),
   ]);
@@ -181,7 +183,17 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
       isDefault: Boolean(row.is_default),
     })),
     forms: savedForms(formsResult.data, targetsResult.data, progressResult.data),
+    paper: paperReturns(formsResult.data),
   };
+}
+
+function paperReturns(forms: unknown): Map<string, string> {
+  const paper = new Map<string, string>();
+  asRows<{ pack_id: string; entry_method: string | null; submitted_at: string | null }>(forms).forEach((row) => {
+    if (row.entry_method !== "paper" || !row.submitted_at) return;
+    paper.set(row.pack_id, formatTutorDate(londonClock(new Date(row.submitted_at)).today));
+  });
+  return paper;
 }
 
 function savedForms(forms: unknown, targets: unknown, progress: unknown): Map<string, TutorFormDraft> {
@@ -336,15 +348,34 @@ function buildLearner(loaded: Loaded, apprentice: ApprenticeRow, today: string):
     fillRemaining: fill.remaining,
     fillStarted: fill.started,
     noticeDays,
+    paperReturn: Boolean(latestPack && loaded.paper.has(latestPack.id)),
+    paperReturnedOn: latestPack ? loaded.paper.get(latestPack.id) ?? null : null,
   };
 }
 
 export async function readReviewCycle(supabase: SupabaseClient): Promise<CyclePage> {
   const today = londonToday();
   const loaded = await loadShared(supabase);
-  const learners = loaded.apprentices
+  const built = loaded.apprentices
     .map((apprentice) => buildLearner(loaded, apprentice, today))
     .sort((a, b) => (a.daysLeft ?? 9999) - (b.daysLeft ?? 9999) || a.name.localeCompare(b.name));
+  const shelved = await supabase
+    .from("reviews")
+    .select("gta_id, actual_on, shelved_at")
+    .eq("status", "completed");
+  const aside = new Set<string>();
+  if (!shelved.error) {
+    const latest = new Map<string, { actual: string; shelved: boolean }>();
+    for (const row of (shelved.data ?? []) as { gta_id: string; actual_on: string | null; shelved_at: string | null }[]) {
+      const actual = row.actual_on || "";
+      const current = latest.get(row.gta_id);
+      if (!current || actual >= current.actual) latest.set(row.gta_id, { actual, shelved: Boolean(row.shelved_at) });
+    }
+    for (const [gtaId, row] of latest) {
+      if (row.shelved) aside.add(gtaId);
+    }
+  }
+  const learners = built.filter((learner) => learner.stepId !== "archived" || !aside.has(learner.gtaId));
   const tutors = [...new Set(learners.map((learner) => learner.tutor))].sort((a, b) => a.localeCompare(b));
   return { today, learners, tutors, loadError: loaded.error };
 }
@@ -371,6 +402,8 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
     method: null,
     openReviewId: null,
     booked: false,
+    paperReturn: false,
+    paperReturnedOn: null,
     inBreak: false,
     history: [],
     loadError: loaded.error,
@@ -394,6 +427,7 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
       actualOn: review.actual_on ? formatTutorDate(review.actual_on) : "—",
       method: review.method ? methodLabel(review.method) : "—",
       status: "Completed",
+      paperReturn: Boolean(pack && loaded.paper.has(pack.id)),
     };
   });
   return {
@@ -410,6 +444,8 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
     method: open?.method ? methodLabel(open.method) : null,
     openReviewId: open?.id ?? null,
     booked: learner.stepId === "booked" || learner.stepId === "completed",
+    paperReturn: learner.paperReturn,
+    paperReturnedOn: learner.paperReturnedOn,
     inBreak: apprentice.status === "break_in_learning",
     history,
   };
@@ -455,6 +491,9 @@ export async function readDigitalReview(supabase: SupabaseClient, packId: string
     today,
     section1: [],
     form: blank,
+    paperReturnedOn: null,
+    reviewerNote: "",
+    previousReview: null,
     savedAt: null,
     loadError: message,
   });
@@ -463,12 +502,12 @@ export async function readDigitalReview(supabase: SupabaseClient, packId: string
   const pack = packResult.data;
   const [apprenticeResult, reviewResult, formResult, targetsResult, progressResult, employmentResult, earlierResult] = await Promise.all([
     supabase.from("apprentices").select("gta_id, first_name, middle_names, last_name, programme_id, release_day, status, course_start, planned_course_end").eq("gta_id", pack.gta_id).maybeSingle(),
-    supabase.from("reviews").select("id, planned_on, actual_on, method, interval_weeks, reviewer_id").eq("id", pack.review_id).maybeSingle(),
-    supabase.from("review_tutor_forms").select("previous_summary, tutor_comment, draft_saved_at").eq("pack_id", packId).maybeSingle(),
+    supabase.from("reviews").select("id, planned_on, actual_on, method, interval_weeks, reviewer_id, notes").eq("id", pack.review_id).maybeSingle(),
+    supabase.from("review_tutor_forms").select("previous_summary, tutor_comment, draft_saved_at, entry_method, submitted_at").eq("pack_id", packId).maybeSingle(),
     supabase.from("review_targets").select("id, kind, slot, action, owner, measure, target_date, status, carried_from_id").eq("pack_id", packId),
     supabase.from("review_progress_rows").select("area, evidence, action_ref, rag, target_hours, current_hours").eq("pack_id", packId),
     supabase.from("apprentice_employments").select("employer_id, site_id, manager_id").eq("gta_id", pack.gta_id).is("end_date", null).maybeSingle(),
-    supabase.from("reviews").select("actual_on").eq("gta_id", pack.gta_id).eq("status", "completed").order("actual_on", { ascending: false }).limit(2),
+    supabase.from("reviews").select("id, actual_on").eq("gta_id", pack.gta_id).eq("status", "completed").order("actual_on", { ascending: false }).limit(3),
   ]);
   const apprentice = apprenticeResult.data;
   const form = emptyTutorForm();
@@ -508,45 +547,82 @@ export async function readDigitalReview(supabase: SupabaseClient, packId: string
   const [employer, site, manager, programme, reviewer, tutor] = await Promise.all([
     employerId ? supabase.from("employers").select("company_name").eq("employer_id", employerId).maybeSingle() : Promise.resolve({ data: null }),
     siteId ? supabase.from("employer_sites").select("postcode").eq("id", siteId).maybeSingle() : Promise.resolve({ data: null }),
-    managerId ? supabase.from("employer_managers").select("first_name, middle_names, last_name, phone").eq("id", managerId).maybeSingle() : Promise.resolve({ data: null }),
+    managerId ? supabase.from("employer_managers").select("first_name, middle_names, last_name, phone, email").eq("id", managerId).maybeSingle() : Promise.resolve({ data: null }),
     apprentice?.programme_id ? supabase.from("programmes").select("name").eq("id", apprentice.programme_id).maybeSingle() : Promise.resolve({ data: null }),
     reviewResult.data?.reviewer_id ? supabase.from("profiles").select("display_name").eq("id", reviewResult.data.reviewer_id).maybeSingle() : Promise.resolve({ data: null }),
     pack.tutor_id ? supabase.from("profiles").select("display_name").eq("id", pack.tutor_id).maybeSingle() : Promise.resolve({ data: null }),
   ]);
   const name = apprentice ? personName(apprentice) : pack.gta_id;
-  const earlier = asRows<{ actual_on: string | null }>(earlierResult.data).find(
-    (row) => row.actual_on && row.actual_on.slice(0, 10) !== (reviewResult.data?.actual_on || "").slice(0, 10),
+  const earlier = asRows<{ id: string; actual_on: string | null }>(earlierResult.data).find(
+    (row) => row.id !== pack.review_id && row.actual_on,
   );
   const section1 = [
     ["Apprentice name", name],
     ["Review date", "Filled in once the review is verified from the Plan page"],
-    ["Apprenticeship standard / route / level", programme.data?.name || "Not recorded"],
-    ["Release day", apprentice?.release_day || "Not recorded"],
+    ["Apprenticeship standard / route / level", programme.data?.name || "Not set"],
+    ["Release day", apprentice?.release_day || "Not set"],
     ["GTA tutor", tutor.data?.display_name || "Not set"],
     ["GTA reviewer", reviewer.data?.display_name || "Reiss"],
     ["Apprenticeship start date", apprentice?.course_start ? formatTutorDate(String(apprentice.course_start).slice(0, 10)) : "Not set"],
     ["Apprenticeship planned end date", apprentice?.planned_course_end ? formatTutorDate(String(apprentice.planned_course_end).slice(0, 10)) : "Not set"],
-    ["Employer / workplace", employer.data?.company_name || "Not recorded"],
-    ["Postcode", site.data?.postcode || "Not recorded"],
-    ["Employer contact name", manager.data ? formatManagerName({ firstName: manager.data.first_name, middleNames: manager.data.middle_names, lastName: manager.data.last_name }) : "Not recorded"],
-    ["Employer contact phone", manager.data?.phone || "Not recorded"],
-    ["Employer contact email", "Not set"],
+    ["Employer / workplace", employer.data?.company_name || "Not set"],
+    ["Postcode", site.data?.postcode || "Not set"],
+    ["Employer contact name", manager.data ? formatManagerName({ firstName: manager.data.first_name, middleNames: manager.data.middle_names, lastName: manager.data.last_name }) : "Not set"],
+    ["Employer contact phone", manager.data?.phone || "Not set"],
+    ["Employer contact email", manager.data?.email?.trim() || "Not set"],
     ["Planned review date", reviewResult.data?.planned_on ? formatTutorDate(reviewResult.data.planned_on) : "Not set"],
     ["Previous review date", earlier?.actual_on ? formatTutorDate(earlier.actual_on.slice(0, 10)) : "Not set"],
   ].map(([label, value]) => ({ label, value }));
+  const previousReview = earlier?.actual_on ? await readPreviousReview(supabase, earlier.id, earlier.actual_on) : null;
   return {
     packId,
     gtaId: pack.gta_id,
     name,
     stage: pack.stage,
-    editable: pack.stage === "with_tutor" && Boolean(userId) && pack.tutor_id === userId,
+    editable: pack.stage === "with_tutor" && Boolean(userId) && pack.tutor_id === userId && formResult.data?.entry_method !== "paper",
     intervalWeeks: reviewResult.data?.interval_weeks || 10,
     today,
     section1,
     form,
+    paperReturnedOn: formResult.data?.entry_method === "paper" && formResult.data.submitted_at
+      ? formatTutorDate(londonClock(new Date(formResult.data.submitted_at)).today)
+      : null,
+    reviewerNote: reviewResult.data?.notes?.trim() || "",
+    previousReview,
     savedAt: formResult.data?.draft_saved_at || null,
     loadError: null,
   };
+}
+
+async function readPreviousReview(
+  supabase: SupabaseClient,
+  reviewId: string,
+  actualOn: string,
+): Promise<PreviousReviewSnapshot> {
+  const snapshot: PreviousReviewSnapshot = {
+    dateLabel: formatTutorDate(actualOn.slice(0, 10)),
+    summary: "",
+    comment: "",
+    progress: emptyTutorForm().progress,
+  };
+  const pack = await supabase.from("review_packs").select("id").eq("review_id", reviewId).maybeSingle();
+  if (!pack.data?.id) return snapshot;
+  const [formResult, progressResult] = await Promise.all([
+    supabase.from("review_tutor_forms").select("previous_summary, tutor_comment").eq("pack_id", pack.data.id).maybeSingle(),
+    supabase.from("review_progress_rows").select("area, evidence, action_ref, rag, target_hours, current_hours").eq("pack_id", pack.data.id),
+  ]);
+  snapshot.summary = formResult.data?.previous_summary || "";
+  snapshot.comment = formResult.data?.tutor_comment || "";
+  asRows<{ area: string; evidence: string | null; action_ref: string | null; rag: string | null; target_hours: number | null; current_hours: number | null }>(progressResult.data).forEach((row) => {
+    const progress = snapshot.progress.find((item) => item.area === row.area);
+    if (!progress) return;
+    progress.evidence = row.evidence || "";
+    progress.actionRef = row.action_ref || "";
+    progress.rag = (row.rag as Rag) || "";
+    progress.targetHours = row.target_hours == null ? "" : String(row.target_hours);
+    progress.currentHours = row.current_hours == null ? "" : String(row.current_hours);
+  });
+  return snapshot;
 }
 
 export async function loadDigitalReview(packId: string, userId: string | null): Promise<DigitalReview> {
