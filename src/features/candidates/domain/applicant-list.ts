@@ -163,6 +163,34 @@ export function applicantCounts(rows: ApplicantListItem[]): { active: number; du
   };
 }
 
+const ALL_SITES = "All sites";
+const ALL_PROGRAMMES = "All programmes";
+const ALL_STAGES = "All stages";
+const ALL_EMPLOYERS = "All employer statuses";
+
+/** Query string for the applicants list. Blank filters stay out of the URL. */
+export function applicantListSearch(input: {
+  example?: boolean;
+  tab?: string;
+  query?: string;
+  site?: string;
+  programme?: string;
+  stage?: string;
+  employer?: string;
+}): string {
+  const params = new URLSearchParams();
+  if (input.example) params.set("example", "1");
+  if (input.tab) params.set("tab", input.tab);
+  const query = input.query?.trim() ?? "";
+  if (query) params.set("q", query);
+  if (input.site && input.site !== ALL_SITES) params.set("site", input.site);
+  if (input.programme && input.programme !== ALL_PROGRAMMES) params.set("programme", input.programme);
+  if (input.stage && input.stage !== ALL_STAGES) params.set("stage", input.stage);
+  if (input.employer && input.employer !== ALL_EMPLOYERS) params.set("employer", input.employer);
+  const text = params.toString();
+  return text ? `?${text}` : "";
+}
+
 export function filterApplicants(rows: ApplicantListItem[], filters: ApplicantListFilters): ApplicantListItem[] {
   const query = filters.query.trim().toLowerCase();
   return rows.filter((row) => {

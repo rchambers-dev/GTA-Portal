@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { applicantCounts, describeApplicant, filterApplicants, type ApplicantFacts } from "./applicant-list";
+import { applicantCounts, applicantListSearch, describeApplicant, filterApplicants, type ApplicantFacts } from "./applicant-list";
 
 const fresh: ApplicantFacts = {
   candidateId: "GTA-C-000001",
@@ -42,5 +42,17 @@ describe("applicant list", () => {
     const rows = [describeApplicant(fresh, "2026-11-19"), started];
     expect(filterApplicants(rows, { tab: "active", query: "chambers", site: "All sites", programme: "All programmes", stage: "All stages", employer: "All employer statuses" }).map((row) => row.candidateId)).toEqual(["GTA-C-000001"]);
     expect(filterApplicants(rows, { tab: "started", query: "", site: "All sites", programme: "All programmes", stage: "All stages", employer: "All employer statuses" })).toHaveLength(1);
+  });
+
+  it("keeps only active filters in the applicants URL", () => {
+    expect(applicantListSearch({ query: "  ", site: "All sites", programme: "All programmes", stage: "All stages", employer: "All employer statuses" })).toBe("");
+    expect(applicantListSearch({
+      tab: "archived",
+      query: "Kierra",
+      site: "Doncaster",
+      programme: "All programmes",
+      stage: "Stage 1",
+      employer: "All employer statuses",
+    })).toBe("?tab=archived&q=Kierra&site=Doncaster&stage=Stage+1");
   });
 });
