@@ -41,7 +41,7 @@ export function ApprenticeLearnerView({
   placements,
   reviews,
 }: {
-  workspace: "administration" | "management";
+  workspace: "administration" | "management" | "staff";
   canAssign: boolean;
   canManageProgramme: boolean;
   page: ApprenticeLearnerPage;
@@ -54,7 +54,7 @@ export function ApprenticeLearnerView({
   const searchParams = useSearchParams();
   const section = learnerSectionFromQuery(searchParams.get("tab"));
   const basePath = pathname.split("?")[0] || apprenticeLearnerPath(workspace, page.requestedId);
-  const listHref = `/${workspace}/onboarding/apprentice`;
+  const listHref = workspace === "staff" ? "/staff/search" : `/${workspace}/onboarding/apprentice`;
   const apprentice = page.apprentice;
 
   return (

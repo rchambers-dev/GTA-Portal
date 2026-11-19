@@ -44,6 +44,7 @@ import { AddApprenticeScreen } from "@/features/administration/screens/AddAppren
 import { ApprenticeLearnerScreen } from "@/features/administration/screens/ApprenticeLearnerScreen";
 import { apprenticeLearnerGtaId } from "@/features/administration/domain/apprentice-tutor";
 import { EmployersScreen } from "@/features/administration/screens/EmployersScreen";
+import { SearchScreen } from "@/features/search/screens/SearchScreen";
 import { AnalyticsScreen } from "@/features/reviews/screens/AnalyticsScreen";
 import { ReviewLogScreen } from "@/features/reviews/screens/ReviewLogScreen";
 import { CycleScreen } from "@/features/reviews/screens/CycleScreen";
@@ -123,7 +124,7 @@ function renderOnboarding(
     redirect(`/${workspace}/onboarding/apprentice`);
   }
   if (segment === "onboarding/apprentice") return <AddApprenticeScreen />;
-  if (segment === "onboarding/employer") return <EmployersScreen />;
+  if (segment === "onboarding/employer") return <EmployersScreen openId={searchValue(search?.open)} />;
   if (segment === "onboarding/directory" || segment === "onboarding/directory/apprentices") {
     return <OnboardingDirectory initialView="apprentices" />;
   }
@@ -348,6 +349,27 @@ export async function renderWorkspacePage(
     if (page) return page;
   }
 
+  if (workspace === "staff" && segment === "search") {
+    return (
+      <SearchScreen
+        workspace="staff"
+        q={searchValue(search?.q)}
+        filter={searchValue(search?.filter)}
+      />
+    );
+  }
+
+  if (workspace === "staff") {
+    const learnerGtaId = apprenticeLearnerGtaId(segment);
+    if (learnerGtaId) {
+      return <ApprenticeLearnerScreen workspace="staff" gtaId={learnerGtaId} />;
+    }
+  }
+
+  if (workspace === "staff" && segment === "onboarding/employer") {
+    return <EmployersScreen openId={searchValue(search?.open)} />;
+  }
+
   if (workspace === "staff" && segment === "otj-approvals") {
     return <TutorOtjApprovalsScreen />;
   }
@@ -446,6 +468,14 @@ export async function renderWorkspacePage(
     switch (segment) {
       case "dashboard":
         return <AdministrationDashboardScreen />;
+      case "search":
+        return (
+          <SearchScreen
+            workspace="administration"
+            q={searchValue(search?.q)}
+            filter={searchValue(search?.filter)}
+          />
+        );
       case "users":
         redirect("/administration/onboarding/directory/apprentices");
       case "enrolments":
@@ -548,6 +578,14 @@ export async function renderWorkspacePage(
     switch (segment) {
       case "dashboard":
         return <ManagementDashboardScreen />;
+      case "search":
+        return (
+          <SearchScreen
+            workspace="management"
+            q={searchValue(search?.q)}
+            filter={searchValue(search?.filter)}
+          />
+        );
       case "accounts":
         return <AdminUsersScreen scope="apprentice" eyebrow="Management" />;
       case "staff-accounts":

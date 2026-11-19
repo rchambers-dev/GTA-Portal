@@ -52,7 +52,8 @@ export type NavGlyph =
   | "trend"
   | "flag"
   | "paperclip"
-  | "checklist";
+  | "checklist"
+  | "search";
 
 const common = {
   width: 18,
@@ -100,6 +101,7 @@ export function navGlyphForHref(href: string): NavGlyph {
   if (key.includes("/interventions")) return "flag";
   if (key.includes("/employer/apprentice")) return "person";
 
+  if (key.endsWith("/search")) return "search";
   if (key.endsWith("/dashboard") || key.endsWith("/overview")) return "dashboard";
   if (key.includes("/learning")) return "book";
   if (
@@ -406,6 +408,13 @@ function Glyph({ name }: { name: NavGlyph }) {
           <path d="M4 21V5a1 1 0 0 1 1-1h9v17H4z" />
           <path d="M14 4h6v17" />
           <path d="M11.5 12h.01" />
+        </svg>
+      );
+    case "search":
+      return (
+        <svg {...common}>
+          <circle cx="11" cy="11" r="6" />
+          <path d="m20 20-3.5-3.5" />
         </svg>
       );
     case "directory":

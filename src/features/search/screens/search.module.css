@@ -1,0 +1,79 @@
+.page {
+  background: #f5f6f8;
+  color: #1a1f3d;
+  font-family: var(--font-body), "Source Sans 3", sans-serif;
+  min-height: 100%;
+  padding: 8px 4px 32px;
+}
+.title {
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+.lead { margin: 0 0 16px; color: #5c6478; }
+.search {
+  background: #fff;
+  border: 1px solid #24324f;
+  border-radius: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 6px 4px 14px;
+}
+.search input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 1.05rem;
+  color: #1a1f3d;
+  padding: 12px 4px;
+}
+.search button, .filters button {
+  border: 0;
+  background: #24324f;
+  color: #fff;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 8px; }
+.filters form { margin: 0; }
+.filters button {
+  background: #fff;
+  color: #24324f;
+  border: 1px solid #d1d5de;
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+.filters button.on { background: #24324f; color: #fff; border-color: #24324f; }
+.hint, .meta { color: #5c6478; font-size: 0.88rem; }
+.group { font-family: var(--font-display), "Plus Jakarta Sans", sans-serif; font-size: 1.05rem; margin: 18px 0 8px; }
+.card {
+  background: #fff;
+  border: 1px solid #d1d5de;
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 16px;
+  align-items: center;
+}
+.name { font-family: var(--font-display), "Plus Jakarta Sans", sans-serif; font-weight: 700; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+.chip { border-radius: 999px; padding: 3px 8px; font-size: 0.75rem; font-weight: 700; background: #eef0f4; color: #24324f; }
+.navy { background: #e8edf6; }
+.amber { background: #fbf3df; color: #8a5a12; }
+.red { background: #fdecea; color: #8d2f22; }
+.green { background: #e7f4ee; color: #1f6b45; }
+.open { color: #24324f; font-weight: 700; text-decoration: none; }
+@media (max-width: 700px) {
+  .search { flex-direction: column; align-items: stretch; padding: 8px; }
+  .search button { width: 100%; }
+  .card { grid-template-columns: 1fr; }
+  .chips { justify-content: flex-start; }
+}
