@@ -611,3 +611,42 @@
 .cand :global(.dialog .dialog-actions) { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
 
 .cand :global(.contact-chip) { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; }
+
+.cand :global(.status-badge) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 5px 12px 5px 8px;
+  border-radius: 999px;
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.cand :global(.status-mark) {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 22%, transparent);
+}
+.cand :global(.status-stage) { font-weight: 650; }
+.cand :global(.status-stage)::before { content: "·"; margin-right: 8px; font-weight: 700; }
+.cand :global(.status-green) { background: #e4f5eb; color: #1f7a45; }
+.cand :global(.status-amber) { background: #fef3d9; color: #8a5a10; }
+.cand :global(.status-red) { background: #fde8e8; color: #a81f28; }
+.cand :global(.status-navy) { background: #e7edf6; color: #24324f; }
+.cand :global(.status-grey) { background: #e8eaef; color: #5a6174; }
+.cand :global(.track-form),
+.cand :global(.track-row) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+.cand :global(.track-form .field) { min-width: 9rem; margin: 0; }
+.cand :global(.track-form .btn),
+.cand :global(.track-form .btn-secondary),
+.cand :global(.track-row > form .btn-secondary) { margin-bottom: 1px; }

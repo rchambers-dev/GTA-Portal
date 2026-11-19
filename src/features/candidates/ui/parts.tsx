@@ -9,7 +9,7 @@ export function PageHead({
 }: {
   crumb: ReactNode;
   title: string;
-  lede?: string;
+  lede?: ReactNode;
   actions?: ReactNode;
 }) {
   return (

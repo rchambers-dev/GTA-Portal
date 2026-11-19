@@ -233,7 +233,15 @@ export function CandidateRecord(props: CandidatesViewProps) {
   if (!example) {
     return (
       <Frame props={props}>
-        <ApplicantRecordView base={base} recordId={recordId || ""} record={props.applicantRecord ?? null} />
+        <ApplicantRecordView
+          base={base}
+          recordId={recordId || ""}
+          record={props.applicantRecord ?? null}
+          programmes={props.programmes}
+          centres={props.centres}
+          sources={props.sources}
+          employers={props.employers}
+        />
       </Frame>
     );
   }
