@@ -18,6 +18,8 @@ import { ukDate } from "../domain/format";
 import { ContactEventButton } from "./ContactEventModal";
 import { EmployerPicker } from "./EmployerPicker";
 import { applicantCounts, filterApplicants, type ApplicantListItem } from "../domain/applicant-list";
+import type { ApplicantDetail } from "../load";
+import { ApplicantRecordView } from "./ApplicantRecordView";
 import { BackLink, ExampleChip, MissingNote, PageHead, Pill, Plus, Tick } from "./parts";
 
 export type CandidatesViewProps = {
@@ -37,6 +39,7 @@ export type CandidatesViewProps = {
   initialEmployerId?: string;
   applicants?: ApplicantListItem[];
   today?: string;
+  applicantRecord?: ApplicantDetail | null;
   listSite?: string;
   listProgramme?: string;
   listStage?: string;
@@ -227,6 +230,13 @@ function startedIdentity(recordId: string | undefined) {
 
 export function CandidateRecord(props: CandidatesViewProps) {
   const { base, example, recordId } = props;
+  if (!example) {
+    return (
+      <Frame props={props}>
+        <ApplicantRecordView base={base} recordId={recordId || ""} record={props.applicantRecord ?? null} />
+      </Frame>
+    );
+  }
   const started = startedIdentity(recordId);
   const name = started?.name ?? "Maya Henshaw";
   const candidateId = started?.candidateId ?? "GTA-C-000042";
@@ -240,7 +250,7 @@ export function CandidateRecord(props: CandidatesViewProps) {
         actions={
           <>
             <ExampleChip show={example} />
-            <ContactEventButton returnTo={`${base}/candidates/${encodeURIComponent(candidateId)}${q(example)}`} candidateId={candidateId} />
+            <button className="btn" type="button" disabled>Log contact event</button>
           </>
         }
       />
@@ -338,13 +348,10 @@ export function CandidateRecord(props: CandidatesViewProps) {
             <div className="side-value">Responsive</div>
             <div className="side-sub">Counted from the original first-contact date, 3 Mar 2026. Switching back to responsive restores the 1-year date.</div>
             <div className="side-sub" style={{ marginTop: 10 }}><Pill tone="grey">Review due 3 Mar 2027</Pill></div>
-            <form action={setResponsivenessAction} style={{ marginTop: 12 }}>
-              <input type="hidden" name="returnTo" value={`${base}/candidates/GTA-C-000042${q(example)}`} />
-              <input type="hidden" name="candidateId" value="GTA-C-000042" />
-              <input type="hidden" name="firstContact" value="2026-03-03" />
-              <input type="hidden" name="responsiveness" value="unresponsive" />
-              <button className="btn-secondary" type="submit">Mark unresponsive</button>
-            </form>
+            <div style={{ marginTop: 12 }}>
+              <button className="btn-secondary" type="button" disabled>Mark unresponsive</button>
+              <div className="side-sub">Unavailable in the example. It does not change a saved applicant.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -464,20 +471,22 @@ export function InterviewsPage(props: CandidatesViewProps) {
         actions={<ExampleChip show={example} />}
       />
       {props.date ? <div className="banner banner-green"><div><strong>Monday {ukDate(props.date)}.</strong> Interviews for this Monday. Group sessions are on Mondays, and bank-holiday Mondays are skipped.</div></div> : null}
-      <div className="overview-grid">
-        <div className="card card-pad">
-          <div className="card-title" style={{ marginBottom: 4 }}>Latest session · Monday 9 Nov 2026</div>
-          <p className="muted" style={{ marginBottom: 14 }}>Doncaster · awaiting Anne-Marie’s approval on the outstanding outcomes</p>
-          <div className="places"><strong>{example ? "7" : "0"}</strong> <span>of 8 places used · 1 no-show</span></div>
-          <div className="meter"><i style={{ width: example ? "87.5%" : "0%" }} /></div>
+      {example ? (
+        <div className="overview-grid">
+          <div className="card card-pad">
+            <div className="card-title" style={{ marginBottom: 4 }}>Latest session · Monday 9 Nov 2026</div>
+            <p className="muted" style={{ marginBottom: 14 }}>Doncaster · awaiting Anne-Marie’s approval on the outstanding outcomes</p>
+            <div className="places"><strong>7</strong> <span>of 8 places used · 1 no-show</span></div>
+            <div className="meter"><i style={{ width: "87.5%" }} /></div>
+          </div>
+          <div className="card card-pad">
+            <div className="card-title" style={{ marginBottom: 4 }}>Next Monday · 16 Nov 2026</div>
+            <p className="muted" style={{ marginBottom: 14 }}>Doncaster · bookings only, session not yet held</p>
+            <div className="places"><strong>6</strong> <span>of 8 places booked</span></div>
+            <div className="meter"><i style={{ width: "75%" }} /></div>
+          </div>
         </div>
-        <div className="card card-pad">
-          <div className="card-title" style={{ marginBottom: 4 }}>Next Monday · 16 Nov 2026</div>
-          <p className="muted" style={{ marginBottom: 14 }}>Doncaster · bookings only, session not yet held</p>
-          <div className="places"><strong>{example ? "6" : "0"}</strong> <span>of 8 places booked</span></div>
-          <div className="meter"><i style={{ width: example ? "75%" : "0%" }} /></div>
-        </div>
-      </div>
+      ) : <p className="muted">No interview sessions yet.</p>}
       <div className="card table-wrap">
         <div className="card-pad" style={{ paddingBottom: 8 }}><h2 className="card-title" style={{ margin: 0 }}>Attendees · 9 Nov 2026</h2></div>
         <table>
@@ -525,6 +534,7 @@ export function InterviewsPage(props: CandidatesViewProps) {
       <div className="card card-pad">
         <h2 className="card-title">Resits</h2>
         <p className="muted" style={{ margin: "-4px 0 12px" }}>A resit is its own date. It is not added to a Monday group of 8. Three failures, then 6 months from the third failure, then one final attempt with a manual outcome.</p>
+        {example ? (
         <form className="filters" action={bookResitAction}>
           <input type="hidden" name="returnTo" value={`${base}/interviews${q(example)}`} />
           <label className="field"><span className="label">Applicant</span>
@@ -541,6 +551,7 @@ export function InterviewsPage(props: CandidatesViewProps) {
           <label className="field"><span className="label">Free the Monday place?</span><select name="freesPlace" defaultValue="no"><option value="no">Keep the place taken</option><option value="yes">Anne-Marie frees the place</option></select></label>
           <button className="btn" type="submit">Book resit</button>
         </form>
+        ) : <p className="muted">Booking a resit is unavailable here. The example list is not a real applicant.</p>}
       </div>
     </Frame>
   );
@@ -600,7 +611,7 @@ export function OverviewPage(props: CandidatesViewProps) {
           <div className="card card-pad">
             <h2 className="card-title">Next interview</h2>
             <div className="side-value">{example ? "Monday 16 Nov 2026" : "No session booked"}</div>
-            <div className="side-sub">Doncaster · group session, maximum of 8</div>
+            <div className="side-sub">{example ? "Doncaster · group session, maximum of 8" : "Nothing is booked yet."}</div>
             <div className="places" style={{ marginTop: 12 }}><strong>{example ? "6" : "0"}</strong> <span>of 8 places booked</span></div>
             <div className="meter"><i style={{ width: example ? "75%" : "0%" }} /></div>
             <div style={{ marginTop: 14 }}><Link className="btn-secondary" href={`${base}/interviews${q(example)}`}>Open interviews</Link></div>
@@ -775,7 +786,7 @@ function Vacancy({ title, note, employer, programme, site, frac, status, tone }:
 
 export function EmployerRecord(props: CandidatesViewProps & { employer: string }) {
   const { base, example, employer } = props;
-  const name = employer === "Northbridge Motors" || !employer ? "Northbridge Motors" : employer;
+  const name = example && (!employer || employer === "Northbridge Motors") ? "Northbridge Motors" : employer || "Employer";
   return (
     <Frame props={props}>
       <BackLink href={`${base}/employers${q(example)}`}>Employers & vacancies</BackLink>
@@ -790,12 +801,14 @@ export function EmployerRecord(props: CandidatesViewProps & { employer: string }
           </>
         }
       />
-      <div className="meta-row" style={{ marginTop: -8 }}>
-        <span className="muted">Diane Copeland · Workshop manager</span><span className="meta-dot">·</span><span className="muted">diane.copeland@northbridge-motors.example</span>
-      </div>
+      {example ? (
+        <div className="meta-row" style={{ marginTop: -8 }}>
+          <span className="muted">Diane Copeland · Workshop manager</span><span className="meta-dot">·</span><span className="muted">diane.copeland@northbridge-motors.example</span>
+        </div>
+      ) : null}
       <div className="card card-pad">
         <div className="side-label">Contact attempts</div>
-        <div className="places"><strong>{example ? "7" : "0"}</strong> <span>attempts across 2 distinct contacts</span></div>
+        <div className="places"><strong>{example ? "7" : "0"}</strong> <span>{example ? "attempts across 2 distinct contacts" : "attempts recorded"}</span></div>
         <div className="side-sub">The counter is attempts, not people — both figures are kept so a busy contact is not counted as several employers.</div>
       </div>
       {example ? (
@@ -1022,7 +1035,7 @@ export function ReportsPage(props: CandidatesViewProps) {
         <p className="side-sub" style={{ margin: "-6px 0 12px" }}>A start is counted only when induction attendance is confirmed. Booking or an intended intake date is not a start.</p>
         <div className="kpi-row" style={{ gridTemplateColumns: "repeat(3, minmax(0,1fr))" }}>
           <Kpi k="Starts this month" v="0" s="Confirmed attendance in November" />
-          <Kpi k="Starts year to date" v={example ? "2" : "0"} s="Reuben Clark and Dylan Shore, 2 Nov intake" />
+          <Kpi k="Starts year to date" v={example ? "2" : "0"} s={example ? "Reuben Clark and Dylan Shore, 2 Nov intake" : "Confirmed starts this year"} />
           <Kpi k="Expected January starts" v={example ? "?" : "0"} unknown={example} s="Under review — bookings are still open" />
         </div>
       </section>
@@ -1056,8 +1069,8 @@ export function ReportsPage(props: CandidatesViewProps) {
       <section className="card report-section">
         <h2 className="card-title">Marketing leads and overdue follow-ups</h2>
         <div className="kpi-row">
-          <Kpi k="New applicants this month" v={example ? "3" : "0"} s="Including Hannah Colton’s draft enquiry" />
-          <Kpi k="Overdue follow-ups" v={example ? "2" : "0"} s="Jordan Blake and the Northbridge TNA" />
+          <Kpi k="New applicants this month" v={example ? "3" : "0"} s={example ? "Including Hannah Colton’s draft enquiry" : "Applicants created this month"} />
+          <Kpi k="Overdue follow-ups" v={example ? "2" : "0"} s={example ? "Jordan Blake and the Northbridge TNA" : "Follow-ups past their date"} />
           <Kpi k="Leads from leaflets and flyers" v={example ? "?" : "0"} unknown={example} s="Source mapping still under review" />
           <Kpi k="Paid advertising reach" v="N/A" na s="Not collected in this period" />
         </div>
@@ -1076,9 +1089,9 @@ export function ReportsPage(props: CandidatesViewProps) {
         <h2 className="card-title">Actions and decisions</h2>
         <div className="kpi-row">
           <Kpi k="Open" v={example ? "4" : "0"} s="Including 1 due today" />
-          <Kpi k="In progress" v={example ? "1" : "0"} s="Jordan Blake no-show follow-up" />
+          <Kpi k="In progress" v={example ? "1" : "0"} s={example ? "Jordan Blake no-show follow-up" : "Still open"} />
           <Kpi k="Overdue" v={example ? "2" : "0"} s="Shown in red on the Actions page" />
-          <Kpi k="Completed this month" v={example ? "1" : "0"} s="Maya Henshaw H&S visit booked" />
+          <Kpi k="Completed this month" v={example ? "1" : "0"} s={example ? "Maya Henshaw H&S visit booked" : "Completed this month"} />
         </div>
       </section>
     </Frame>

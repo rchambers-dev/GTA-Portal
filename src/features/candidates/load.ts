@@ -1,8 +1,9 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { formatProgrammeChoice } from "@/features/administration/domain/apprentice-record";
 import { describeApplicant, type ApplicantFacts, type ApplicantListItem } from "./domain/applicant-list";
+import { contactEventTitle, type ApplicantCheckLine, type ApplicantEventLine } from "./domain/applicant-record";
 import { buildEmployerDirectory, type EmployerChoice, type EmployerDirectoryRow } from "./domain/employers";
-import { isoTodayLondon } from "./domain/format";
+import { isoTodayLondon, ukDate } from "./domain/format";
 import { tablesMissing } from "./domain/missing";
 
 export type CandidatesLoad = {
@@ -257,5 +258,189 @@ export async function loadApplicantList(): Promise<ApplicantListLoad> {
     const message = error instanceof Error ? error.message : "";
     if (tablesMissing(message)) return empty;
     return { ...empty, notice: message || "Applicants could not be loaded." };
+  }
+}
+
+export type ApplicantDetail = {
+  candidateId: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  site: string;
+  programme: string;
+  source: string;
+  firstContactOn: string;
+  status: string;
+  statusReason: string | null;
+  employerStatus: string;
+  employerName: string | null;
+  employerSite: string | null;
+  employerManager: string | null;
+  intendedIntakeOn: string | null;
+  responsiveness: "responsive" | "unresponsive";
+  reviewDueOn: string;
+  stage: string;
+  stage2Approved: boolean;
+  actualStartOn: string | null;
+  convertedGtaId: string | null;
+  checks: ApplicantCheckLine[];
+  interview: { sessionOn: string | null; outcome: string; attempt: number; attendance: string | null } | null;
+  inductionBooked: boolean;
+  inductionOn: string | null;
+  inductionAttendance: string | null;
+  events: ApplicantEventLine[];
+};
+
+export type ApplicantRecordLoad = {
+  record: ApplicantDetail | null;
+  notice: string | null;
+};
+
+const CHECK_LINES: { code: string; label: string }[] = [
+  { code: "id", label: "ID verified" },
+  { code: "maths", label: "Maths" },
+  { code: "english", label: "English" },
+  { code: "tna", label: "TNA completed" },
+  { code: "hs_booked", label: "H&S visit booked" },
+  { code: "hs_completed", label: "H&S visit completed" },
+  { code: "file_created", label: "Learner file created" },
+  { code: "file_completed", label: "Learner file completed" },
+];
+
+/** One applicant for the detail page. Null when that id is not in the table. */
+export async function loadApplicantRecord(recordId: string): Promise<ApplicantRecordLoad> {
+  const today = isoTodayLondon();
+  try {
+    const supabase = await createSupabaseServerClient();
+    const columns = "candidate_id, first_name, middle_names, last_name, email, phone, status, status_reason_id, employer_status, employer_id, employer_site_id, employer_manager_id, responsiveness, review_due_on, first_contact_on, centre_id, programme_id, enquiry_source_id, enquiry_source_detail, intended_intake_id, converted_gta_id, actual_start_on, stage2_approved_at, created_at";
+    let candidate = await supabase.from("candidates").select(columns).eq("candidate_id", recordId).maybeSingle();
+    if (!candidate.error && !candidate.data) {
+      candidate = await supabase.from("candidates").select(columns).eq("converted_gta_id", recordId).maybeSingle();
+    }
+    if (candidate.error) {
+      if (tablesMissing(candidate.error.message, candidate.error.code)) return { record: null, notice: null };
+      return { record: null, notice: candidate.error.message };
+    }
+    if (!candidate.data) return { record: null, notice: null };
+    const row = candidate.data;
+    const [centre, programme, source, employer, site, managerRow, reason, intake, definitions, results, interviews, inductions, events, profiles] = await Promise.all([
+      supabase.from("candidate_centres").select("name").eq("id", row.centre_id).maybeSingle(),
+      supabase.from("programmes").select("name, standard_code").eq("id", row.programme_id).maybeSingle(),
+      supabase.from("candidate_enquiry_sources").select("label").eq("id", row.enquiry_source_id).maybeSingle(),
+      row.employer_id ? supabase.from("employers").select("company_name").eq("employer_id", row.employer_id).maybeSingle() : Promise.resolve({ data: null, error: null }),
+      row.employer_site_id ? supabase.from("employer_sites").select("area_name, postcode").eq("id", row.employer_site_id).maybeSingle() : Promise.resolve({ data: null, error: null }),
+      row.employer_manager_id ? supabase.from("employer_managers").select("first_name, middle_names, last_name").eq("id", row.employer_manager_id).maybeSingle() : Promise.resolve({ data: null, error: null }),
+      row.status_reason_id ? supabase.from("reasons").select("label").eq("id", row.status_reason_id).maybeSingle() : Promise.resolve({ data: null, error: null }),
+      row.intended_intake_id ? supabase.from("induction_intakes").select("intake_on").eq("id", row.intended_intake_id).maybeSingle() : Promise.resolve({ data: null, error: null }),
+      supabase.from("candidate_check_definitions").select("id, code, label"),
+      supabase.from("candidate_check_results").select("definition_id, result, actual_on, superseded_at").eq("candidate_id", row.candidate_id),
+      supabase.from("interview_bookings").select("outcome, attempt_number, attendance, session_id").eq("candidate_id", row.candidate_id),
+      supabase.from("induction_bookings").select("attendance, intake_id").eq("candidate_id", row.candidate_id),
+      supabase.from("candidate_events").select("event_type, actual_on, entered_at, entered_by, detail").eq("candidate_id", row.candidate_id).order("entered_at", { ascending: false }),
+      supabase.from("profiles").select("id, display_name"),
+    ]);
+    const definition = new Map(((definitions.data ?? []) as { id: string; code: string; label: string }[]).map((item) => [item.id, item]));
+    const byCode = new Map<string, { result: string | null; actualOn: string | null }>();
+    for (const result of (results.data ?? []) as { definition_id: string; result: string | null; actual_on: string | null; superseded_at: string | null }[]) {
+      if (result.superseded_at) continue;
+      const code = definition.get(result.definition_id)?.code;
+      if (code) byCode.set(code, { result: result.result, actualOn: result.actual_on });
+    }
+    const checks = CHECK_LINES.map((item) => {
+      const saved = byCode.get(item.code);
+      const done = saved?.result === "pass" || saved?.result === "done" || saved?.result === "booked";
+      return { code: item.code, label: item.label, done, actualOn: saved?.actualOn ?? null };
+    });
+    const interviewRows = (interviews.data ?? []) as { outcome: string; attempt_number: number; attendance: string | null; session_id: string }[];
+    const latestInterview = interviewRows.sort((left, right) => right.attempt_number - left.attempt_number)[0] ?? null;
+    let sessionOn: string | null = null;
+    if (latestInterview) {
+      const session = await supabase.from("interview_sessions").select("session_on").eq("id", latestInterview.session_id).maybeSingle();
+      sessionOn = session.data?.session_on ?? null;
+    }
+    const inductionRows = (inductions.data ?? []) as { attendance: string | null; intake_id: string }[];
+    const latestInduction = inductionRows[0] ?? null;
+    let bookedIntakeOn: string | null = null;
+    if (latestInduction) {
+      if (latestInduction.intake_id === row.intended_intake_id) bookedIntakeOn = intake.data?.intake_on ?? null;
+      else {
+        const bookedIntake = await supabase.from("induction_intakes").select("intake_on").eq("id", latestInduction.intake_id).maybeSingle();
+        bookedIntakeOn = bookedIntake.data?.intake_on ?? null;
+      }
+    }
+    const names = new Map(((profiles.data ?? []) as { id: string; display_name: string | null }[]).map((item) => [item.id, item.display_name || ""]));
+    const eventLines = ((events.data ?? []) as { event_type: string; actual_on: string | null; entered_at: string; entered_by: string | null; detail: { type?: string; notes?: string; source?: string } | null }[]).map((event) => {
+      const who = event.entered_by ? names.get(event.entered_by) : "";
+      const meta = [`Actual date ${ukDate(event.actual_on)}`, `Entered ${ukDate(event.entered_at)}`, who ? `by ${who}` : ""].filter(Boolean).join(" · ");
+      if (event.event_type === "created") {
+        const sourceLabel = event.detail?.source ? ` · Source: ${event.detail.source}` : "";
+        return { title: "Applicant record created", meta: `${meta}${sourceLabel}` };
+      }
+      if (event.event_type === "contact") return { title: contactEventTitle(event.detail), meta };
+      return { title: event.event_type.split("_").join(" "), meta };
+    });
+    const managerName = managerRow.data
+      ? [managerRow.data.first_name, managerRow.data.middle_names, managerRow.data.last_name].filter(Boolean).join(" ")
+      : null;
+    const siteLabel = site.data ? [site.data.area_name, site.data.postcode].filter(Boolean).join(" ") : null;
+    const facts: ApplicantFacts = {
+      candidateId: row.candidate_id,
+      firstName: row.first_name,
+      middleNames: row.middle_names,
+      lastName: row.last_name,
+      status: row.status,
+      employerStatus: row.employer_status,
+      responsiveness: row.responsiveness,
+      reviewDueOn: row.review_due_on,
+      firstContactOn: row.first_contact_on,
+      centreName: centre.data?.name || "",
+      programmeLabel: programme.data ? formatProgrammeChoice(programme.data.name || "", programme.data.standard_code || "") : "",
+      convertedGtaId: row.converted_gta_id,
+      actualStartOn: row.actual_start_on,
+      stage2Approved: Boolean(row.stage2_approved_at),
+      checks: checks.filter((item) => item.done).map((item) => ({ code: item.code, result: "done" })),
+      interviewOutcome: latestInterview?.outcome ?? null,
+      inductionOn: bookedIntakeOn,
+      inductionAttendance: latestInduction?.attendance ?? null,
+    };
+    const described = describeApplicant(facts, today);
+    const related = [centre, programme, source, employer, site, managerRow, reason, intake, definitions, results, interviews, inductions, events].find((item) => item.error);
+    const sourceLabel = [source.data?.label, row.enquiry_source_detail].filter(Boolean).join(" · ") || "—";
+    return {
+      record: {
+        candidateId: row.candidate_id,
+        name: described.name,
+        email: row.email,
+        phone: row.phone,
+        site: described.site,
+        programme: described.programme,
+        source: sourceLabel,
+        firstContactOn: row.first_contact_on,
+        status: row.status,
+        statusReason: reason.data?.label ?? null,
+        employerStatus: described.employerStatus,
+        employerName: employer.data?.company_name ?? null,
+        employerSite: siteLabel,
+        employerManager: managerName,
+        intendedIntakeOn: intake.data?.intake_on ?? null,
+        responsiveness: row.responsiveness === "unresponsive" ? "unresponsive" : "responsive",
+        reviewDueOn: row.review_due_on,
+        stage: described.stage,
+        stage2Approved: Boolean(row.stage2_approved_at),
+        actualStartOn: row.actual_start_on,
+        convertedGtaId: row.converted_gta_id,
+        checks,
+        interview: latestInterview ? { sessionOn, outcome: latestInterview.outcome, attempt: latestInterview.attempt_number, attendance: latestInterview.attendance } : null,
+        inductionBooked: Boolean(latestInduction),
+        inductionOn: bookedIntakeOn,
+        inductionAttendance: latestInduction?.attendance ?? null,
+        events: eventLines,
+      },
+      notice: related?.error?.message ?? null,
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (tablesMissing(message)) return { record: null, notice: null };
+    return { record: null, notice: message || "This applicant could not be loaded." };
   }
 }

@@ -1,5 +1,5 @@
 import styles from "./ui/candidates.module.css";
-import { loadApplicantFormOptions, loadApplicantList, loadCandidatesReady, loadEmployerChoices } from "./load";
+import { loadApplicantFormOptions, loadApplicantList, loadApplicantRecord, loadCandidatesReady, loadEmployerChoices } from "./load";
 import {
   ActionsPage,
   AddCandidate,
@@ -48,11 +48,14 @@ export async function CandidatesArea({
   const loadedEmployers = example ? { choices: [], rows: [] } : await loadEmployerChoices();
   const options = example ? { programmes: [], centres: [], sources: [], notice: null } : await loadApplicantFormOptions();
   const listed = example ? { rows: [], today: "", notice: null } : await loadApplicantList();
+  const recordKey = segment.startsWith("onboarding/candidates/") ? segment.slice("onboarding/candidates/".length) : "";
+  const detailId = recordKey && recordKey !== "new" && recordKey !== "due" ? decodeURIComponent(recordKey) : "";
+  const detail = !example && detailId ? await loadApplicantRecord(detailId) : { record: null, notice: null };
   const props: CandidatesViewProps = {
     base: `/${workspace}/onboarding`,
     example,
     missing: !example && !loaded.ready,
-    error: error || loaded.notice || options.notice || listed.notice,
+    error: error || loaded.notice || options.notice || listed.notice || detail.notice,
     programmes: options.programmes,
     centres: options.centres,
     sources: options.sources,
@@ -63,6 +66,7 @@ export async function CandidatesArea({
     listEmployer: employer,
     applicants: listed.rows,
     today: listed.today,
+    applicantRecord: detail.record,
     tab,
     date,
     employers: loadedEmployers.choices,
