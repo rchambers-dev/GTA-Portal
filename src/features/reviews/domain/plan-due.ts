@@ -62,6 +62,16 @@ export function reviewDueLabel(input: {
   };
 }
 
+/** Short date for a compact chip, matching the rest of the plan: "8 Oct". */
+export function formatChipDate(iso: string | null): string {
+  if (!iso) return "";
+  const [year, month, day] = iso.split("-").map(Number);
+  if (!year || !month || !day) return "";
+  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }).format(
+    new Date(Date.UTC(year, month - 1, day)),
+  );
+}
+
 export function formatShortNumericDate(iso: string | null): string {
   if (!iso) return "";
   const [year, month, day] = iso.split("-").map(Number);

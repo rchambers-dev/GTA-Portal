@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { formatWeeksAndDays, reviewDueLabel } from "./plan-due";
+import { formatChipDate, formatWeeksAndDays, reviewDueLabel } from "./plan-due";
 
 describe("plan due pill", () => {
   it("formats overdue weeks and days the way the assistant does", () => {
     expect(formatWeeksAndDays(-97)).toBe("13 weeks 6 days");
     expect(formatWeeksAndDays(-7)).toBe("1 week");
     expect(formatWeeksAndDays(-1)).toBe("1 day");
+    expect(formatChipDate("2026-10-08")).toBe("8 Oct");
   });
 
   it("marks the week that contains the next review", () => {

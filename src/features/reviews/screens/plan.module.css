@@ -3080,3 +3080,204 @@
   color: #fff;
   border: 1px solid #24324f;
 }
+
+/* One compact chip size for waiting-list actions and the day-row chips.
+   On a normal desktop the roster is wide enough for one row: name on the
+   left, chips on the right. A narrow list wraps the chips under the name. */
+@media (min-width: 1200px) {
+  .layout {
+    grid-template-columns: minmax(42rem, 46rem) minmax(18rem, 1fr);
+  }
+}
+
+.roster .list {
+  container-type: inline-size;
+}
+
+.list .card {
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px 12px;
+  overflow: visible;
+}
+
+.list .rowMain {
+  flex: 1 1 8rem;
+  min-width: 5.5rem;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.list .rowMain a,
+.list .rowMain .college {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardActions {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: min(100%, max-content);
+  max-width: 100%;
+}
+
+.cardActions .concernWrap {
+  flex: 0 0 auto;
+}
+
+@container (max-width: 36rem) {
+  .list .card {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  .list .rowMain {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .cardActions {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .list .card .duePill {
+    height: auto;
+    max-height: none;
+    align-items: flex-start;
+    padding: 0.28rem 0.7rem;
+  }
+}
+
+.list .card .pill,
+.list .card button.pill,
+.list .card .noteOn,
+.list .card button.noteOn,
+.list .card .concernOff,
+.list .card .concernOn,
+.list .card .concernWrap button,
+.list .card .duePill,
+.pills .tag,
+.pills .tagOk,
+.pills .tagOver,
+.pills .tagSoon,
+.pills .tagDone,
+.pills .tagLock,
+.pills .safeOn,
+.pills .safeOff,
+.pills .concernOff,
+.pills .concernOn {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: none;
+  height: 1.75rem;
+  min-height: 1.75rem;
+  max-height: 1.75rem;
+  margin: 0;
+  padding: 0 0.7rem;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 999px;
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+}
+
+.list .card .duePill,
+.pills .duePill {
+  gap: 0.35rem;
+  padding: 0 0.7rem;
+}
+
+.list .card .duePill span,
+.list .card .duePill small,
+.pills .duePill span,
+.pills .duePill small {
+  display: inline;
+  width: auto;
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.list .card .duePill small,
+.pills .duePill small {
+  font-size: 0.62rem;
+  font-weight: 600;
+}
+
+.list .card .pill,
+.list .card .concernOff,
+.pills .concernOff,
+.pills .safeOff {
+  background: #fff;
+  color: #24324f;
+  border-color: #24324f;
+}
+
+.pills .safeOff {
+  color: #5c6478;
+  border-color: #b7becc;
+}
+
+.list .card .noteOn {
+  background: #e7f4ee;
+  color: #176338;
+  border-color: #176338;
+}
+
+.list .card .concernOn,
+.pills .concernOn {
+  background: #24324f;
+  color: #fff;
+  border-color: #24324f;
+}
+
+@container (max-width: 36rem) {
+  .list .card .duePill {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    height: auto;
+    max-height: none;
+    padding: 0.2rem 0.65rem;
+  }
+
+  .list .card .duePill small {
+    display: block;
+    font-size: 0.6rem;
+  }
+}
