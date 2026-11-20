@@ -5,7 +5,7 @@ import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
-import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
+import { formatChipDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
 import { moveRouteIds, visitsAreInOrder, type PackedDay } from "../domain/plan-route";
@@ -1389,7 +1389,7 @@ function DuePill({ person }: { person: PlanPerson }) {
   return (
     <span className={`${styles.duePill} ${tone}`}>
       <span>{label}</span>
-      {person.nextDate ? <small>{formatShortNumericDate(person.nextDate)}</small> : null}
+      {person.nextDate ? <small>{formatChipDate(person.nextDate)}</small> : null}
     </span>
   );
 }

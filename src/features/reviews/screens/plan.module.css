@@ -3099,18 +3099,23 @@
   align-items: center;
   gap: 8px 10px;
   min-height: 0;
+  min-width: 0;
+  width: 100%;
   padding: 8px 10px;
+  overflow: hidden;
 }
 
 .list .rowMain {
-  flex: 1 1 auto;
-  min-width: 10.5rem;
+  flex: 1 1 0;
+  min-width: 9rem;
   max-width: 100%;
+  overflow: hidden;
 }
 
 .list .rowMain a,
 .list .rowMain .college {
   display: block;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3123,7 +3128,8 @@
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
-  min-width: 0;
+  min-width: max-content;
+  max-width: 100%;
 }
 
 .cardActions .concernWrap {
@@ -3133,17 +3139,12 @@
 @container (max-width: 36rem) {
   .list .card {
     flex-wrap: wrap;
+    overflow: visible;
   }
 
   .list .rowMain {
     flex: 1 1 100%;
     min-width: 0;
-  }
-
-  .list .rowMain a {
-    white-space: normal;
-    overflow: visible;
-    text-overflow: unset;
   }
 
   .cardActions {
@@ -3153,12 +3154,22 @@
     flex-wrap: wrap;
     justify-content: flex-start;
   }
+
+  .list .card .duePill {
+    height: auto;
+    max-height: none;
+    align-items: flex-start;
+    padding: 0.28rem 0.7rem;
+  }
 }
 
 .list .card .pill,
+.list .card button.pill,
 .list .card .noteOn,
+.list .card button.noteOn,
 .list .card .concernOff,
 .list .card .concernOn,
+.list .card .concernWrap button,
 .list .card .duePill,
 .pills .tag,
 .pills .tagOk,
@@ -3173,10 +3184,12 @@
   box-sizing: border-box;
   display: inline-flex;
   flex: 0 0 auto;
+  flex-shrink: 0;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: auto;
+  width: max-content;
+  max-width: none;
   height: 1.75rem;
   min-height: 1.75rem;
   max-height: 1.75rem;
@@ -3192,26 +3205,27 @@
   letter-spacing: 0;
   text-transform: none;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-decoration: none;
 }
 
 .list .card .duePill,
 .pills .duePill {
-  flex-direction: column;
-  gap: 0;
-  padding: 0.1rem 0.7rem;
+  gap: 0.35rem;
+  padding: 0 0.7rem;
 }
 
 .list .card .duePill span,
 .list .card .duePill small,
 .pills .duePill span,
 .pills .duePill small {
-  display: block;
+  display: inline;
   width: auto;
   margin: 0;
   font-size: 0.68rem;
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1;
   letter-spacing: 0;
   text-align: center;
   white-space: nowrap;
@@ -3219,7 +3233,7 @@
 
 .list .card .duePill small,
 .pills .duePill small {
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   font-weight: 600;
 }
 
@@ -3248,4 +3262,20 @@
   background: #24324f;
   color: #fff;
   border-color: #24324f;
+}
+
+@container (max-width: 36rem) {
+  .list .card .duePill {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    height: auto;
+    max-height: none;
+    padding: 0.2rem 0.65rem;
+  }
+
+  .list .card .duePill small {
+    display: block;
+    font-size: 0.6rem;
+  }
 }
