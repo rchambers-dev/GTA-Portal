@@ -1,6 +1,10 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ replace: () => undefined }),
+}));
 import { AddCandidate, CandidateRecord, CandidatesList, DuePage, EmployersPage, OverviewPage, VacanciesPage } from "./views";
 import type { ApplicantDetail } from "../load";
 
@@ -43,10 +47,51 @@ describe("candidates pages", () => {
     );
     expect(html).toContain("GTA-C-000001");
     expect(html).toContain("Reiss Chambers");
+    expect(html).toContain('aria-label="Search applicants by name or ID"');
+    expect(html).not.toContain(">Apply<");
     expect(html).toContain("Stage 1");
     expect(html).toContain("Verify ID");
     expect(html).toContain(">1<");
     expect(html).not.toContain("migration is applied");
+  });
+
+  it("shows the active filters as removable chips and no Apply button", () => {
+    const html = renderToStaticMarkup(
+      createElement(CandidatesList, {
+        ...props,
+        example: false,
+        query: "Reiss",
+        listSite: "Doncaster",
+        applicants: [
+          {
+            candidateId: "GTA-C-000001",
+            name: "Reiss Chambers",
+            gtaId: null,
+            site: "Doncaster",
+            programme: "Autocare L2 (ST0499)",
+            stage: "Stage 1",
+            stageTone: "grey",
+            employerStatus: "Employer needed",
+            employerTone: "red",
+            responsiveness: "Responsive",
+            responsivenessTone: "green",
+            nextStep: "Verify ID",
+            nextBlocked: false,
+            bucket: "active",
+            due: false,
+            reviewDueOn: "2027-11-19",
+            firstContactOn: "2026-11-19",
+          },
+        ],
+      }),
+    );
+    expect(html).toContain("1 applicant");
+    expect(html).toContain("Search: Reiss");
+    expect(html).toContain("Site: Doncaster");
+    expect(html).toContain("Clear all");
+    expect(html).toContain("is-on");
+    expect(html).toContain("q=Reiss");
+    expect(html).not.toContain(">Apply<");
   });
 
   it("uses the approved candidate id and keeps the started tab off the active list", () => {

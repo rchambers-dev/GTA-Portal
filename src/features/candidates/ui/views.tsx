@@ -18,6 +18,7 @@ import { ukDate } from "../domain/format";
 import { ContactEventButton } from "./ContactEventModal";
 import { EmployerPicker } from "./EmployerPicker";
 import { applicantCounts, filterApplicants, type ApplicantListItem } from "../domain/applicant-list";
+import { ApplicantFilters } from "./ApplicantFilters";
 import type { ApplicantDetail } from "../load";
 import { ApplicantRecordView } from "./ApplicantRecordView";
 import { BackLink, ExampleChip, MissingNote, PageHead, Pill, Plus, Tick } from "./parts";
@@ -141,18 +142,15 @@ export function CandidatesList(props: CandidatesViewProps) {
         <Link className={archived ? "tab-on" : "tab"} href={`${base}/candidates${q(example, "tab=archived")}`}>Archived <span className="count">{counts.archived}</span></Link>
         <Link className={started ? "tab-on" : "tab"} href={`${base}/candidates${q(example, "tab=started")}`}>Started <span className="count">{counts.started}</span></Link>
       </div>
-      <div className="card card-pad">
-        <form className="filters" method="get" action={`${base}/candidates`}>
-          {example ? <input type="hidden" name="example" value="1" /> : null}
-          {tab ? <input type="hidden" name="tab" value={tab} /> : null}
-          <label className="field field-grow"><span className="label">Search</span><input type="search" name="q" placeholder="Name or ID" defaultValue={filters.query} /></label>
-          <label className="field field-sm"><span className="label">Site</span><select name="site" defaultValue={filters.site}><option>All sites</option>{(example ? ["Doncaster", "Sheffield"] : sites).map((site) => <option key={site}>{site}</option>)}</select></label>
-          <label className="field field-md"><span className="label">Programme</span><select name="programme" defaultValue={filters.programme}><option>All programmes</option>{(example ? ["Autocare", "Light Vehicle", "Heavy Vehicle", "Vehicle Paint", "Vehicle Panel", "Business Admin", "Customer Service"] : programmes).map((name) => <option key={name}>{name}</option>)}</select></label>
-          <label className="field field-sm"><span className="label">Stage</span><select name="stage" defaultValue={filters.stage}><option>All stages</option><option>Stage 1</option><option>Interview</option><option>Stage 2</option><option>Induction</option><option>Started</option></select></label>
-          <label className="field field-md"><span className="label">Employer</span><select name="employer" defaultValue={filters.employer}><option>All employer statuses</option><option>Employer needed</option><option>Identified</option><option>Confirmed</option></select></label>
-          <button className="btn-secondary" type="submit">Apply</button>
-        </form>
-      </div>
+      <ApplicantFilters
+        base={base}
+        example={example}
+        tab={tab}
+        filters={filters}
+        sites={example ? ["Doncaster", "Sheffield"] : sites}
+        programmes={example ? ["Autocare", "Light Vehicle", "Heavy Vehicle", "Vehicle Paint", "Vehicle Panel", "Business Admin", "Customer Service"] : programmes}
+        resultCount={example ? 0 : visible.length}
+      />
       <div className="card table-wrap">
         <table>
           <colgroup>
