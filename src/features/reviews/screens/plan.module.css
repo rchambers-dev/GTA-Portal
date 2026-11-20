@@ -3095,19 +3095,21 @@
 }
 
 .list .card {
-  flex-wrap: nowrap;
+  box-sizing: border-box;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px 10px;
   min-height: 0;
   min-width: 0;
   width: 100%;
-  padding: 8px 10px;
-  overflow: hidden;
+  max-width: 100%;
+  padding: 8px 12px;
+  overflow: visible;
 }
 
 .list .rowMain {
-  flex: 1 1 0;
-  min-width: 9rem;
+  flex: 1 1 8rem;
+  min-width: 5.5rem;
   max-width: 100%;
   overflow: hidden;
 }
@@ -3123,12 +3125,12 @@
 
 .cardActions {
   display: flex;
-  flex: 0 0 auto;
-  flex-wrap: nowrap;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
-  min-width: max-content;
+  min-width: min(100%, max-content);
   max-width: 100%;
 }
 
