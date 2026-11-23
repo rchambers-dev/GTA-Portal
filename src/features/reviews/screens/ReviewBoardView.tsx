@@ -33,60 +33,73 @@ export function ReviewBoardView({
   board: ReviewBoard;
 }) {
   const shown = board.weeks.reduce((sum, week) => sum + week.cards.length, 0) + board.overdue.length;
+  const [firstHalf, secondHalf] = [board.weeks.slice(0, 5), board.weeks.slice(5)];
+  const laterNote = board.laterCount === 0
+    ? "No reviews are planned after these 10 weeks."
+    : `${board.laterCount} ${board.laterCount === 1 ? "review is" : "reviews are"} planned after these 10 weeks.`;
+  const undatedNote = board.undatedCount
+    ? ` ${board.undatedCount} open ${board.undatedCount === 1 ? "review has" : "reviews have"} no planned date.`
+    : "";
   return (
     <div className={styles.page} data-review-board="">
       <div className={styles.toolbar}>
         <Link className={styles.link} href={`/${workspace}/reviews/plan`}>Back to Plan</Link>
         <PrintBoardButton className={styles.print} />
       </div>
-      <header className={styles.header}>
-        <div>
-          <p className={styles.kicker}>Reviews</p>
-          <h1>Review board</h1>
-        </div>
-        <p className={styles.summary}>
-          {shown} on this sheet
-          {board.laterCount ? ` · ${board.laterCount} after week 10` : ""}
-          {board.undatedCount ? ` · ${board.undatedCount} with no date` : ""}
-        </p>
-      </header>
-      <section className={styles.overdue} aria-label="Overdue">
-        <h2>Overdue <span>{board.overdue.length}</span></h2>
-        <div className={styles.overdueCards} style={{ ["--cards" as string]: String(Math.max(board.overdue.length, 1)) }}>
-          {board.overdue.length === 0 ? <p className={styles.none}>None before this week.</p> : board.overdue.map((card) => <Card key={card.gtaId} card={card} />)}
-        </div>
-      </section>
-      <div className={styles.rows}>
-        {[board.weeks.slice(0, 5), board.weeks.slice(5)].map((row) => (
-          <div className={styles.row} key={row[0]?.start}>
-            {row.map((week) => (
-              <section
-                key={week.start}
-                className={styles.column}
-                style={{ ["--cards" as string]: String(Math.max(week.cards.length, 1)) }}
-                aria-label={week.label}
-              >
-                <header>
-                  <strong>{week.label}</strong>
-                  <span>{week.range}</span>
-                  <em>{week.cards.length}</em>
-                </header>
-                <div className={styles.stack}>
-                  {week.cards.map((card) => <Card key={card.gtaId} card={card} />)}
-                </div>
-              </section>
-            ))}
+      <section className={styles.sheet}>
+        <header className={styles.header}>
+          <div>
+            <p className={styles.kicker}>Reviews</p>
+            <h1>Review board</h1>
           </div>
-        ))}
-      </div>
-      <footer className={styles.footer}>
-        {board.laterCount === 0
-          ? "No reviews are planned after these 10 weeks."
-          : `${board.laterCount} ${board.laterCount === 1 ? "review is" : "reviews are"} planned after these 10 weeks.`}
-        {board.undatedCount
-          ? ` ${board.undatedCount} open ${board.undatedCount === 1 ? "review has" : "reviews have"} no planned date.`
-          : ""}
-      </footer>
+          <p className={styles.summary}>
+            {shown} on this sheet
+            {board.laterCount ? ` · ${board.laterCount} after week 10` : ""}
+            {board.undatedCount ? ` · ${board.undatedCount} with no date` : ""}
+          </p>
+        </header>
+        <section className={styles.overdue} aria-label="Overdue">
+          <h2>Overdue <span>{board.overdue.length}</span></h2>
+          <div className={styles.overdueCards}>
+            {board.overdue.length === 0 ? <p className={styles.none}>None before this week.</p> : board.overdue.map((card) => <Card key={card.gtaId} card={card} />)}
+          </div>
+        </section>
+        <WeekRow weeks={firstHalf} />
+      </section>
+      <section className={styles.sheet}>
+        <header className={`${styles.header} ${styles.continuation}`}>
+          <div>
+            <p className={styles.kicker}>Reviews</p>
+            <h1>Review board · weeks 6-10</h1>
+          </div>
+        </header>
+        <WeekRow weeks={secondHalf} />
+        <footer className={styles.footer}>{laterNote}{undatedNote}</footer>
+      </section>
+    </div>
+  );
+}
+
+function WeekRow({ weeks }: { weeks: ReviewBoard["weeks"] }) {
+  return (
+    <div className={styles.row}>
+      {weeks.map((week) => (
+        <section
+          key={week.start}
+          className={styles.column}
+          style={{ ["--cards" as string]: String(Math.max(week.cards.length, 1)) }}
+          aria-label={week.label}
+        >
+          <header>
+            <strong>{week.label}</strong>
+            <span>{week.range}</span>
+            <em>{week.cards.length}</em>
+          </header>
+          <div className={styles.stack}>
+            {week.cards.map((card) => <Card key={card.gtaId} card={card} />)}
+          </div>
+        </section>
+      ))}
     </div>
   );
 }
