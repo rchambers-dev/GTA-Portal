@@ -42,6 +42,32 @@ export function noteUntilLabel(until: string, today: string): { overdue: boolean
   return { overdue: false, label: `Until ${formatNoteDate(until)}` };
 }
 
+export function holdUntilPresets(today: string): { week: string; fortnight: string; month: string } {
+  return {
+    week: addDays(today, 7),
+    fortnight: addDays(today, 14),
+    month: addDays(today, 28),
+  };
+}
+
+export const HOLD_UNTIL_PRESETS: { id: keyof ReturnType<typeof holdUntilPresets>; label: string }[] = [
+  { id: "week", label: "1 week" },
+  { id: "fortnight", label: "2 weeks" },
+  { id: "month", label: "1 month" },
+];
+
+export function holdBadgeLabel(until: string): string {
+  return `On hold until ${formatNoteDate(until)}`;
+}
+
+export function fillDayPeople<T extends { gtaId: string; counter: string; holdUntil: string }>(
+  people: T[],
+  placedIds: Iterable<string>,
+): T[] {
+  const placed = new Set(placedIds);
+  return people.filter((person) => person.counter === "to_book" && !person.holdUntil && !placed.has(person.gtaId));
+}
+
 export function formatNoteDate(iso: string): string {
   const [year, month, day] = iso.split("-").map(Number);
   return new Intl.DateTimeFormat("en-GB", {

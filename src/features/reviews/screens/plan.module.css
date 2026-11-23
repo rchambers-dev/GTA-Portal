@@ -548,6 +548,41 @@
   cursor: pointer;
 }
 
+.holdBadge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  height: 1.75rem;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  background: var(--status-monitoring-bg, #fef3d9);
+  color: var(--status-monitoring-fg, #9a5b00);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.holdBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-subtle, #e8eaef);
+}
+
+.holdBox h3 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.holdState {
+  margin: 0;
+  color: var(--status-monitoring-fg, #9a5b00);
+  font-weight: 700;
+}
+
 .dropOn {
   outline: 2px solid #24324f;
   outline-offset: 2px;

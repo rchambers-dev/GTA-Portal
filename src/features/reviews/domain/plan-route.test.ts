@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { DriveMatrix } from "./geo";
-import { noteUntilPresets } from "./plan-notes";
+import { fillDayPeople, holdBadgeLabel, holdUntilPresets, noteUntilPresets } from "./plan-notes";
 import { appendFitLearners, emptyPackedDay, moveRouteIds, packDay, retimeDay, visitsAreInOrder, type RouteLearner, type RouteSettings } from "./plan-route";
 import { minutesToTime } from "./plan-due";
 
@@ -154,6 +154,27 @@ describe("plan route", () => {
     expect(moveRouteIds(["a", "b", "c"], "a", "c")).toEqual(["b", "c", "a"]);
     expect(moveRouteIds(["a", "b", "c"], "c", "a")).toEqual(["c", "a", "b"]);
     expect(moveRouteIds(["a", "b", "c"], "b", "b")).toEqual(["a", "b", "c"]);
+  });
+});
+
+describe("learner hold", () => {
+  it("offers one week, two weeks and one month, and names the badge", () => {
+    expect(holdUntilPresets("2026-11-23")).toEqual({
+      week: "2026-11-30",
+      fortnight: "2026-12-07",
+      month: "2026-12-21",
+    });
+    expect(holdBadgeLabel("2026-12-07")).toBe("On hold until 7 Dec");
+  });
+
+  it("leaves held learners out of Fill Day and keeps everyone else who still needs booking", () => {
+    const people = [
+      { gtaId: "a", counter: "to_book", holdUntil: "" },
+      { gtaId: "b", counter: "to_book", holdUntil: "2026-12-07" },
+      { gtaId: "c", counter: "waiting", holdUntil: "" },
+      { gtaId: "d", counter: "to_book", holdUntil: "" },
+    ];
+    expect(fillDayPeople(people, ["d"]).map((person) => person.gtaId)).toEqual(["a"]);
   });
 });
 
