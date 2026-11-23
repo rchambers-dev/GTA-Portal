@@ -5,7 +5,7 @@ import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
-import { formatShortNumericDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
+import { formatChipDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
 import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
 import { moveRouteIds, visitsAreInOrder, type PackedDay } from "../domain/plan-route";
@@ -686,9 +686,10 @@ function RosterCard({
       data-roster-gta={person.gtaId}
     >
       <span className={styles.rowMain}>
-        <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`}>{person.name}</Link>
-        <span className={styles.college}>College {person.releaseDay}</span>
+        <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`} title={person.name}>{person.name}</Link>
+        <span className={styles.college} title={`College ${person.releaseDay}`}>College {person.releaseDay}</span>
       </span>
+      <span className={styles.cardActions}>
       <DuePill person={person} />
       <ConcernChip person={person} reasons={reasons} canWrite={canWrite} onRun={onRun} onStatus={onStatus} />
       {canWrite && person.packId && person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor") ? (
@@ -710,6 +711,7 @@ function RosterCard({
           {person.notes ? "Edit note" : "Add note"}
         </button>
       ) : null}
+      </span>
     </li>
   );
 }
@@ -1387,7 +1389,7 @@ function DuePill({ person }: { person: PlanPerson }) {
   return (
     <span className={`${styles.duePill} ${tone}`}>
       <span>{label}</span>
-      {person.nextDate ? <small>{formatShortNumericDate(person.nextDate)}</small> : null}
+      {person.nextDate ? <small>{formatChipDate(person.nextDate)}</small> : null}
     </span>
   );
 }
