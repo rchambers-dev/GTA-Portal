@@ -5,11 +5,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
-import {
-  addedToReviewCycleMessage,
-  changedReviewDateMessage,
-  parsePlannedReviewDate,
-} from "../domain/cycle";
+import { nextReviewSetMessage, parsePlannedReviewDate } from "../domain/cycle";
 import { formPayload, type TutorFormDraft } from "../domain/tutor-form-rules";
 import { revalidateAnalytics } from "../domain/revalidate-analytics";
 
@@ -65,7 +61,7 @@ export async function openReviewAction(input: { gtaId: string; plannedOn: string
   if (blocked) return blocked;
   await revalidateAnalytics();
   refreshLearnerReviews(gtaId);
-  return { ok: true as const, message: addedToReviewCycleMessage(plannedOn) };
+  return { ok: true as const, message: nextReviewSetMessage(plannedOn) };
 }
 
 export async function rescheduleReviewAction(input: { gtaId: string; reviewId: string; plannedOn: string }) {
@@ -82,7 +78,7 @@ export async function rescheduleReviewAction(input: { gtaId: string; reviewId: s
   if (blocked) return blocked;
   await revalidateAnalytics();
   refreshLearnerReviews(input.gtaId.trim());
-  return { ok: true as const, message: changedReviewDateMessage(plannedOn) };
+  return { ok: true as const, message: nextReviewSetMessage(plannedOn) };
 }
 
 export async function setReviewerAction(input: { reviewId: string; reviewerId: string }) {

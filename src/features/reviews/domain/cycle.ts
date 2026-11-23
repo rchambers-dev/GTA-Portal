@@ -144,12 +144,19 @@ export function parsePlannedReviewDate(value: string): string | null {
   return date;
 }
 
-export function addedToReviewCycleMessage(iso: string): string {
-  return `Added to the review cycle — due ${dayMonth(iso)}`;
+export function nextReviewSetMessage(iso: string): string {
+  return `Next review set — due ${dayMonth(iso)}`;
 }
 
-export function changedReviewDateMessage(iso: string): string {
-  return `Next review date changed — due ${dayMonth(iso)}`;
+export type NextReviewTone = "overdue" | "soon" | "on-track" | "none";
+
+/** Overdue, due soon within two weeks, or on track. No date is not set. */
+export function nextReviewStanding(today: string, dueOn: string | null): { label: string; tone: NextReviewTone } {
+  if (!dueOn) return { label: "Not set", tone: "none" };
+  const days = daysBetween(today, dueOn);
+  if (days < 0) return { label: "Overdue", tone: "overdue" };
+  if (days <= 14) return { label: "Due soon", tone: "soon" };
+  return { label: "On track", tone: "on-track" };
 }
 
 export function currentStepDetail(late: boolean, daysLeft: number | null): string {

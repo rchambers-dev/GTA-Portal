@@ -68,8 +68,7 @@
   font-size: 0.9rem;
 }
 
-.dueForm button,
-.changeDate {
+.dueForm button {
   height: 2rem;
   padding: 0 0.75rem;
   border: 1px solid #1a1f3d;
@@ -84,25 +83,53 @@
   cursor: pointer;
 }
 
-.dueForm button:disabled,
-.changeDate:disabled {
+.dueForm button:disabled {
   opacity: 0.55;
   cursor: default;
 }
 
-.changeDate,
-.dueForm .quiet {
-  margin-top: 0.35rem;
-  background: #fff;
-  color: #1a1f3d;
+.standingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.dueForm .quiet {
+.standingRow strong {
+  display: inline;
   margin-top: 0;
+}
+
+.standing {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.15rem;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.overdue {
+  background: #fde8e6;
+  color: #9c2f2f;
+}
+
+.soon {
+  background: #fef3d9;
+  color: #9a5b00;
+}
+
+.onTrack {
+  background: #e4f5eb;
+  color: #1f7a45;
 }
 
 .aside {
   display: block;
+  width: 100%;
   margin-top: 0.15rem;
   color: #5c6478;
   font-size: 0.78rem;
