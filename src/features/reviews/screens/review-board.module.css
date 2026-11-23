@@ -98,10 +98,12 @@
   font-size: 0.78rem;
 }
 
-.rows {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.sheet + .sheet {
+  margin-top: 8px;
+}
+
+.continuation {
+  display: none;
 }
 
 .row {
@@ -162,6 +164,7 @@
 .with_tutor { --edge: #1a1f3d; }
 .to_book { --edge: #c47f17; }
 .booked { --edge: #1f7a45; }
+.locked { --edge: #b44a2c; }
 .other { --edge: #343c6b; }
 
 .line {
@@ -230,6 +233,7 @@
 .with_tutor .stage { background: #e8eaf3; color: #1a1f3d; }
 .to_book .stage { background: #fef3d9; color: #9a5b00; }
 .booked .stage { background: #e4f5eb; color: #1f7a45; }
+.locked .stage { background: #b44a2c; color: #fff; }
 .other .stage { background: #eef0f7; color: #343c6b; }
 .hold { background: #fef3d9; color: #9a5b00; }
 .concern { background: #fde8e6; color: #9c2f2f; }
@@ -238,6 +242,64 @@
   margin: 8px 0 0;
   color: var(--muted);
   font-size: 0.78rem;
+}
+
+.waiting {
+  margin-top: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.waiting h2,
+.waitingGroup h3 {
+  margin: 0;
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.85rem;
+}
+
+.waiting h2 span,
+.waitingGroup h3 span {
+  margin-left: 6px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.waitingGroups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.chip {
+  display: inline-flex;
+  gap: 4px;
+  align-items: baseline;
+  max-width: 100%;
+  background: #f5f6f8;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.75rem;
+}
+
+.chip strong {
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
+  color: var(--navy);
+}
+
+.chip span {
+  color: var(--muted);
+  white-space: nowrap;
 }
 
 @media print {
@@ -266,16 +328,36 @@
 
   .page {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 414mm;
-    height: 291mm;
+    height: auto;
     padding: 0;
-    overflow: hidden;
+    overflow: visible;
     background: #f5f6f8;
-    display: flex;
-    flex-direction: column;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
+  }
+
+  .sheet,
+  .sheet + .sheet {
+    display: flex;
+    flex-direction: column;
+    width: 414mm;
+    height: 289mm;
+    margin: 0;
+    overflow: hidden;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .continuation {
+    display: flex;
   }
 
   .header {
@@ -283,51 +365,17 @@
     flex: 0 0 auto;
   }
 
-  .kicker {
-    font-size: 7pt;
-  }
-
-  .header h1 {
-    font-size: 13pt;
-  }
-
-  .summary {
-    font-size: 8pt;
-  }
-
   .overdue {
     flex: 0 0 auto;
-    max-height: 24mm;
-    overflow: hidden;
-    margin-bottom: 1.5mm;
-    padding: 1mm 1.5mm;
-  }
-
-  .overdue h2 {
-    font-size: 8pt;
-  }
-
-  .overdue .card {
-    flex: 0 0 auto;
-    height: auto;
-    padding: 0.4mm 1.2mm;
-  }
-
-  .overdue .line {
-    font-size: 6.5pt;
-    line-height: 1.05;
     max-height: none;
-  }
-
-  .rows {
-    flex: 1 1 auto;
-    min-height: 0;
-    gap: 1.5mm;
+    overflow: visible;
+    margin-bottom: 1.5mm;
   }
 
   .row {
+    flex: 1 1 auto;
     min-height: 0;
-    height: 50%;
+    height: auto;
     gap: 1.5mm;
   }
 
@@ -336,7 +384,6 @@
     height: 100%;
     overflow: hidden;
     padding: 1.2mm;
-    border-radius: 2mm;
   }
 
   .column header {
@@ -344,59 +391,90 @@
     flex: 0 0 auto;
   }
 
-  .column header strong {
-    font-size: 8pt;
-  }
-
-  .column header span,
-  .column header em {
-    font-size: 6.5pt;
-  }
-
   .stack {
-    container-type: size;
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-content: flex-start;
     gap: 0.4mm;
   }
 
-  .stack .card {
+  .card,
+  .stack .card,
+  .overdue .card {
     flex: 0 0 auto;
-    height: min(7.4mm, calc((100cqh - (var(--cards) - 1) * 0.4mm) / var(--cards)));
+    height: auto;
     min-height: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0;
-    padding: 0 0.8mm;
-    border-radius: 1mm;
+    padding: 0.15mm 1mm;
   }
 
-  .stack .line {
-    font-size: min(7.5pt, calc(100cqh / var(--cards) * 0.34));
-    line-height: 1.05;
-    max-height: 1.15em;
-    overflow: hidden;
-    gap: 0.45mm;
+  .line,
+  .stack .line,
+  .overdue .line {
+    font-size: 11px;
+    line-height: 1.08;
+    max-height: none;
+    gap: 4px;
   }
 
+  .stage,
+  .hold,
+  .concern,
   .stack .stage,
   .stack .hold,
   .stack .concern {
-    font-size: 0.78em;
-    line-height: 1;
-    padding: 0 0.5mm;
+    font-size: 0.85em;
+    line-height: 1.3;
+    padding: 0 4px;
+  }
+
+  .sheet:last-child .row {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .waiting {
+    flex: 0 0 28%;
+    min-height: 0;
+    overflow: hidden;
+    margin: 1.2mm 0 0;
+    padding: 1mm 1.5mm;
+    border-radius: 2mm;
+  }
+
+  .waiting h2 {
+    font-size: 9pt;
+  }
+
+  .waitingGroups {
+    display: block;
+    columns: 4;
+    column-gap: 3mm;
+    margin-top: 0.8mm;
+  }
+
+  .waitingGroup {
+    break-inside: avoid;
+    margin-bottom: 1.2mm;
+  }
+
+  .waitingGroup h3 {
+    font-size: 8pt;
+  }
+
+  .chips {
+    gap: 0.6mm;
+  }
+
+  .chip {
+    font-size: 8pt;
+    padding: 0 1.2mm;
   }
 
   .footer {
     flex: 0 0 auto;
     margin-top: 1.2mm;
-    font-size: 7.5pt;
   }
 }

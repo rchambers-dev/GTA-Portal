@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
-import { buildReviewBoard, latestCompletedOn, stagePresentation, type BoardCard, type ReviewBoard } from "./review-board";
+import { buildReviewBoard, earliestBookedOn, latestCompletedOn, planBoardPill, stagePresentation, waitingOnTutors, type BoardCard, type ReviewBoard } from "./review-board";
 
 export type ReviewBoardPage = ReviewBoard & { loadError: string | null };
 
@@ -38,8 +38,10 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     concernsResult,
     exitsResult,
     completedResult,
+    countersResult,
+    stopsResult,
   ] = await Promise.all([
-    supabase.from("review_packs").select("review_id, stage"),
+    supabase.from("review_packs").select("review_id, stage, stage_since"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
     supabase.from("profiles").select("id, display_name"),
     supabase.from("apprentice_employments").select("gta_id, employer_id").is("end_date", null),
@@ -51,9 +53,34 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     everyPage<{ gta_id: string; actual_on: string | null }>((from, to) =>
       supabase.from("reviews").select("gta_id, actual_on").eq("status", "completed").not("actual_on", "is", null).range(from, to),
     ),
+    supabase.from("plan_counters").select("gta_id, stage, counter, appointment_on, awaiting_date"),
+    everyPage<{ gta_id: string; date_on: string; verified: boolean | null; completed: boolean | null; accepted: boolean | null; kind: string | null }>((from, to) =>
+      supabase
+        .from("review_day_stops")
+        .select("gta_id, date_on, verified, completed, accepted, kind")
+        .gte("date_on", today)
+        .order("date_on", { ascending: true })
+        .range(from, to),
+    ),
   ]);
 
-  const problems = [apprenticesResult, reviewsResult, completedResult].filter((result) => result.error).map((result) => result.error?.message);
+  const problems = [apprenticesResult, reviewsResult, completedResult, countersResult, stopsResult]
+    .filter((result) => result.error)
+    .map((result) => result.error?.message);
+  const counterOf = new Map(
+    rows<{ gta_id: string; stage: string | null; counter: string | null; appointment_on: string | null; awaiting_date: string | null }>(
+      countersResult.data,
+    ).map((row) => [row.gta_id, row]),
+  );
+  const nextBooked = earliestBookedOn(
+    rows<{ gta_id: string; date_on: string; verified: boolean | null; completed: boolean | null }>(stopsResult.data).map((row) => ({
+      gtaId: row.gta_id,
+      dateOn: row.date_on,
+      verified: Boolean(row.verified),
+      completed: Boolean(row.completed),
+    })),
+    today,
+  );
   const lastOn = latestCompletedOn(
     rows<{ gta_id: string; actual_on: string | null }>(completedResult.data).map((row) => ({
       gtaId: row.gta_id,
@@ -78,7 +105,12 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
   const employerName = new Map(
     rows<{ employer_id: string; company_name: string | null }>(employersResult.data).map((row) => [row.employer_id, row.company_name?.trim() || "Employer"]),
   );
-  const stageOf = new Map(rows<{ review_id: string; stage: string | null }>(packsResult.data).map((row) => [row.review_id, row.stage]));
+  const packOf = new Map(
+    rows<{ review_id: string; stage: string | null; stage_since?: string | null }>(packsResult.data).map((row) => [
+      row.review_id,
+      { stage: row.stage, sentOn: row.stage_since?.slice(0, 10) || null },
+    ]),
+  );
   const concern = new Set(rows<{ gta_id: string }>(concernsResult.data).map((row) => row.gta_id));
   const exited = new Set(
     exitsResult.error
@@ -111,6 +143,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
   }
 
   const cards: BoardCard[] = [];
+  const withTutor: { gtaId: string; name: string; tutor: string; stage: string | null; sentOn: string | null }[] = [];
   for (const row of excludeTestApprentices(
     rows<{
       gta_id: string;
@@ -127,13 +160,29 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     if (tutorId && hidden.has(tutorId)) continue;
     const review = firstOpen.get(row.gta_id);
     if (!review) continue;
-    const stage = stagePresentation(stageOf.get(review.id) ?? null);
+    const pack = packOf.get(review.id);
+    const packStage = pack?.stage ?? null;
+    const counter = counterOf.get(row.gta_id);
+    const stage = counter
+      ? planBoardPill({
+          counter: counter.counter,
+          stage: counter.stage ?? packStage,
+          appointmentOn: counter.appointment_on,
+          nextBookedOn: nextBooked.get(row.gta_id) ?? null,
+          awaitingDate: counter.awaiting_date,
+        })
+      : stagePresentation(packStage);
     const employerId = employerOf.get(row.gta_id);
+    const name = [row.first_name, row.middle_names, row.last_name].filter((part) => part && part.trim()).join(" ") || row.gta_id;
+    const tutor = tutorId ? names.get(tutorId) || "Tutor" : "No tutor";
+    if (packStage === "with_tutor") {
+      withTutor.push({ gtaId: row.gta_id, name, tutor, stage: packStage, sentOn: pack?.sentOn ?? null });
+    }
     cards.push({
       gtaId: row.gta_id,
-      name: [row.first_name, row.middle_names, row.last_name].filter((part) => part && part.trim()).join(" ") || row.gta_id,
+      name,
       employer: employerId ? employerName.get(employerId) || "Employer" : "No employer",
-      tutor: tutorId ? names.get(tutorId) || "Tutor" : "No tutor",
+      tutor,
       plannedOn: review.planned_on,
       lastOn: lastOn.get(row.gta_id) ?? null,
       stage: stage.stage,
@@ -143,7 +192,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     });
   }
 
-  return { ...buildReviewBoard(cards, today), loadError: problems[0] ?? null };
+  return { ...buildReviewBoard(cards, today), waiting: waitingOnTutors(withTutor, today), loadError: problems[0] ?? null };
 }
 
 async function everyPage<T>(
