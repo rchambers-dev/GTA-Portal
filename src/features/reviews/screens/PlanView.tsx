@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type FormEvent, type RefObject } from "react";
 import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -88,11 +88,10 @@ export function PlanView({
       return [person.name, person.tutor, person.company].join(" ").toLowerCase().includes(term);
     });
   }, [page.people, query, tab]);
-  const [shown, setShown] = useState(10);
+  const listRef = useRef<HTMLUListElement>(null);
   useEffect(() => {
-    setShown(10);
+    listRef.current?.scrollTo({ top: 0 });
   }, [query, tab]);
-  const listed = visible.slice(0, shown);
   const heading = planDateParts(selectedDate);
   const stopKey = activeDay.stops.map((stop) => `${stop.gtaId}:${stop.arrive}:${stop.leave}`).join("|");
 
@@ -435,36 +434,34 @@ export function PlanView({
             ) : null}
           </span>
         </label>
-        <RosterList
-          workspace={workspace}
-          people={listed}
-          canWrite={page.canWrite}
-          reasons={page.concernReasons}
-          onRun={run}
-          onStatus={setMessage}
-          empty={
-            query.trim()
-              ? "No one matches that search."
-              : tab === "locked"
-                ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
-                : tab === "booked"
-                  ? "No one is booked yet."
-                  : tab === "waiting"
-                    ? "No one is waiting."
-                    : "No one needs booking."
-          }
-          onNote={setNotePerson}
-        />
         {visible.length > 0 ? (
-          <div className={styles.listFoot}>
-            <p>Showing {listed.length} of {visible.length}</p>
-            {listed.length < visible.length ? (
-              <button type="button" className={styles.showMore} onClick={() => setShown((count) => count + 10)}>
-                Show more
-              </button>
-            ) : null}
-          </div>
+          <p className={styles.listCount}>
+            {visible.length} {visible.length === 1 ? "apprentice" : "apprentices"}
+          </p>
         ) : null}
+        <div className={visible.length > 5 ? styles.rosterWell : undefined}>
+          <RosterList
+            listRef={listRef}
+            workspace={workspace}
+            people={visible}
+            canWrite={page.canWrite}
+            reasons={page.concernReasons}
+            onRun={run}
+            onStatus={setMessage}
+            empty={
+              query.trim()
+                ? "No one matches that search."
+                : tab === "locked"
+                  ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
+                  : tab === "booked"
+                    ? "No one is booked yet."
+                    : tab === "waiting"
+                      ? "No one is waiting."
+                      : "No one needs booking."
+            }
+            onNote={setNotePerson}
+          />
+        </div>
       </section>
       <section className={styles.plan} aria-labelledby="plan-title">
         <div className={styles.head}>
@@ -638,6 +635,7 @@ export function PlanView({
 }
 
 const RosterList = memo(function RosterList({
+  listRef,
   workspace,
   people,
   canWrite,
@@ -647,6 +645,7 @@ const RosterList = memo(function RosterList({
   onRun,
   onStatus,
 }: {
+  listRef?: RefObject<HTMLUListElement | null>;
   workspace: "administration" | "management";
   people: PlanPerson[];
   canWrite: boolean;
@@ -657,7 +656,7 @@ const RosterList = memo(function RosterList({
   onStatus: (message: string | null) => void;
 }) {
   return (
-    <ul className={styles.list}>
+    <ul className={styles.list} ref={listRef}>
       {people.length === 0 ? (
         <li className={styles.empty}>{empty}</li>
       ) : (
