@@ -8,6 +8,8 @@ export type BoardCard = {
   employer: string;
   tutor: string;
   plannedOn: string | null;
+  /** Most recent completed review's actual date, or null when none is completed. */
+  lastOn: string | null;
   stage: BoardStage;
   stageLabel: string;
   hold: boolean;
@@ -38,6 +40,24 @@ export function boardDayLabel(iso: string): string {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
   if (!match) return iso;
   return `${Number(match[3])} ${MONTHS[Number(match[2]) - 1] ?? ""}`.trim();
+}
+
+/** Compact label for the last completed review. Uses the actual date, never the planned date. */
+export function lastReviewLabel(actualOn: string | null): string {
+  const day = actualOn?.slice(0, 10) || "";
+  return day ? `Last: ${boardDayLabel(day)}` : "Last: none";
+}
+
+/** Latest actual_on per learner among completed reviews. */
+export function latestCompletedOn(rows: { gtaId: string; actualOn: string | null }[]): Map<string, string> {
+  const last = new Map<string, string>();
+  for (const row of rows) {
+    const day = row.actualOn?.slice(0, 10) || "";
+    if (!day) continue;
+    const current = last.get(row.gtaId);
+    if (!current || day > current) last.set(row.gtaId, day);
+  }
+  return last;
 }
 
 export function stagePresentation(stage: string | null): { stage: BoardStage; label: string } {

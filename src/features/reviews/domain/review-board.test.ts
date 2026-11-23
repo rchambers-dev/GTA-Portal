@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildReviewBoard, stagePresentation, type BoardCard } from "./review-board";
+import { buildReviewBoard, lastReviewLabel, latestCompletedOn, stagePresentation, type BoardCard } from "./review-board";
 
 function card(partial: Partial<BoardCard> & Pick<BoardCard, "gtaId" | "name" | "plannedOn">): BoardCard {
   return {
@@ -9,6 +9,7 @@ function card(partial: Partial<BoardCard> & Pick<BoardCard, "gtaId" | "name" | "
     stageLabel: "Waiting",
     hold: false,
     concern: false,
+    lastOn: null,
     ...partial,
   };
 }
@@ -36,6 +37,21 @@ describe("review board weeks", () => {
     expect(board.overdue.map((item) => item.name)).toEqual(["Old"]);
     expect(board.laterCount).toBe(1);
     expect(board.undatedCount).toBe(1);
+  });
+
+  it("labels the latest completed actual date, not a planned date", () => {
+    expect(lastReviewLabel(null)).toBe("Last: none");
+    expect(lastReviewLabel("")).toBe("Last: none");
+    expect(lastReviewLabel("2026-09-15")).toBe("Last: 15 Sep");
+    const latest = latestCompletedOn([
+      { gtaId: "a", actualOn: "2026-06-01" },
+      { gtaId: "a", actualOn: "2026-09-15" },
+      { gtaId: "a", actualOn: null },
+      { gtaId: "b", actualOn: "2026-01-02T00:00:00" },
+    ]);
+    expect(latest.get("a")).toBe("2026-09-15");
+    expect(latest.get("b")).toBe("2026-01-02");
+    expect(lastReviewLabel(latest.get("a") ?? null)).toBe("Last: 15 Sep");
   });
 
   it("names the pack stages used on the card edge", () => {

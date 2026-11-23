@@ -193,6 +193,19 @@
   color: var(--muted);
 }
 
+.dates {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45em;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.last {
+  color: var(--muted);
+}
+
 .pills {
   display: inline-flex;
   gap: 3px;

@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
-import { buildReviewBoard, stagePresentation, type BoardCard, type ReviewBoard } from "./review-board";
+import { buildReviewBoard, latestCompletedOn, stagePresentation, type BoardCard, type ReviewBoard } from "./review-board";
 
 export type ReviewBoardPage = ReviewBoard & { loadError: string | null };
 
@@ -37,6 +37,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     holdsResult,
     concernsResult,
     exitsResult,
+    completedResult,
   ] = await Promise.all([
     supabase.from("review_packs").select("review_id, stage"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
@@ -47,9 +48,18 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     supabase.from("review_holds").select("review_id, held_until, released_at"),
     supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
     supabase.from("learner_exits").select("gta_id, reversed_at"),
+    everyPage<{ gta_id: string; actual_on: string | null }>((from, to) =>
+      supabase.from("reviews").select("gta_id, actual_on").eq("status", "completed").not("actual_on", "is", null).range(from, to),
+    ),
   ]);
 
-  const problems = [apprenticesResult, reviewsResult].filter((result) => result.error).map((result) => result.error?.message);
+  const problems = [apprenticesResult, reviewsResult, completedResult].filter((result) => result.error).map((result) => result.error?.message);
+  const lastOn = latestCompletedOn(
+    rows<{ gta_id: string; actual_on: string | null }>(completedResult.data).map((row) => ({
+      gtaId: row.gta_id,
+      actualOn: row.actual_on,
+    })),
+  );
   const settingsRows = Array.isArray(settingsResult.data)
     ? settingsResult.data
     : settingsResult.data
@@ -125,6 +135,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
       employer: employerId ? employerName.get(employerId) || "Employer" : "No employer",
       tutor: tutorId ? names.get(tutorId) || "Tutor" : "No tutor",
       plannedOn: review.planned_on,
+      lastOn: lastOn.get(row.gta_id) ?? null,
       stage: stage.stage,
       stageLabel: stage.label,
       hold: holds.has(review.id),
@@ -133,6 +144,21 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
   }
 
   return { ...buildReviewBoard(cards, today), loadError: problems[0] ?? null };
+}
+
+async function everyPage<T>(
+  load: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
+): Promise<{ data: T[]; error: { message: string } | null }> {
+  const size = 1000;
+  const data: T[] = [];
+  for (let from = 0; from < 20000; from += size) {
+    const page = await load(from, from + size - 1);
+    if (page.error) return { data, error: page.error };
+    const batch = page.data ?? [];
+    data.push(...batch);
+    if (batch.length < size) return { data, error: null };
+  }
+  return { data, error: null };
 }
 
 export async function loadReviewBoard(): Promise<ReviewBoardPage> {

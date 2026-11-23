@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { boardDayLabel, type BoardCard, type ReviewBoard } from "../domain/review-board";
+import { boardDayLabel, lastReviewLabel, type BoardCard, type ReviewBoard } from "../domain/review-board";
 import { PrintBoardButton } from "./PrintBoardButton";
 import styles from "./review-board.module.css";
 
@@ -8,7 +8,10 @@ function Card({ card }: { card: BoardCard }) {
     <article className={`${styles.card} ${styles[card.stage]}`} data-stage={card.stage}>
       <p className={styles.line}>
         <strong>{card.name}</strong>
-        <span>{card.plannedOn ? boardDayLabel(card.plannedOn) : "No date"}</span>
+        <span className={styles.dates}>
+          <span className={styles.last}>{lastReviewLabel(card.lastOn)}</span>
+          <span>{card.plannedOn ? boardDayLabel(card.plannedOn) : "No date"}</span>
+        </span>
       </p>
       <p className={styles.line}>
         <span className={styles.meta}>{card.employer} · {card.tutor}</span>
