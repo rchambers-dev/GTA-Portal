@@ -119,6 +119,7 @@ export function navGlyphForHref(href: string): NavGlyph {
   if (key.includes("/attendance")) return "calendar-check";
   if (key.includes("/schedule")) return "calendar";
   if (key.includes("/reviews/plan")) return "calendar";
+  if (key.includes("/reviews/board")) return "clipboard";
   if (key.includes("/reviews/cycle")) return "clipboard";
   if (key.includes("/reviews/out")) return "workplace";
   if (key.includes("/reviews/archive")) return "folder";
