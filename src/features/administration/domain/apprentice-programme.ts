@@ -191,12 +191,17 @@ export type ApprenticeBreaks = {
   multipleOpen: boolean;
 };
 
+export const COLLEGE_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] as const;
+
+export type CollegeDay = (typeof COLLEGE_DAYS)[number];
+
 export type ApprenticeProgrammePage = {
   dates: StoredDates | null;
   effective: EffectiveDates | null;
   changes: DateChangeRecord[];
   dateChangeReasons: ReasonOption[];
   breaks: ApprenticeBreaks | null;
+  releaseDay: CollegeDay | null;
   loadError: string | null;
   today: string;
 };
@@ -373,6 +378,30 @@ export function dateChangeActorLines(change: DateChangeRecord): string[] {
   return lines;
 }
 
+export function collegeDayValue(value: unknown): CollegeDay | null {
+  if (typeof value !== "string") return null;
+  const day = value.trim();
+  return (COLLEGE_DAYS as readonly string[]).includes(day) ? (day as CollegeDay) : null;
+}
+
+/** True when the picker differs from the saved college day, including a first choice. */
+export function collegeDayChanged(saved: string | null, selected: string): boolean {
+  return selected !== (saved ?? "");
+}
+
+export function validateCollegeDaySave(input: {
+  gtaId: string;
+  collegeDay: string;
+}): { ok: true; gtaId: string; collegeDay: CollegeDay } | { ok: false; formError: string } {
+  const gtaId = normaliseGtaId(input.gtaId);
+  if (!isAssignedGtaId(gtaId)) {
+    return { ok: false, formError: "GTA IDs look like GTA-000002." };
+  }
+  const collegeDay = collegeDayValue(input.collegeDay);
+  if (!collegeDay) return { ok: false, formError: "Choose Monday to Friday." };
+  return { ok: true, gtaId, collegeDay };
+}
+
 export function emptyProgrammePage(today: string, loadError: string | null): ApprenticeProgrammePage {
   return {
     dates: null,
@@ -380,6 +409,7 @@ export function emptyProgrammePage(today: string, loadError: string | null): App
     changes: [],
     dateChangeReasons: [],
     breaks: null,
+    releaseDay: null,
     loadError,
     today,
   };

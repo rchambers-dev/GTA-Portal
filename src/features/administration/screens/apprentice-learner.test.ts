@@ -210,6 +210,7 @@ function programmePage(
       multipleOpen: false,
     },
     loadError: null,
+    releaseDay: "Thursday",
     ...overrides,
   };
 }
@@ -309,6 +310,11 @@ describe("learner page", () => {
     expect(html).toContain("Passed, no actual date");
     expect(html).not.toContain('data-date-overdue="epa"');
     expect(html).toContain('data-save-course-dates="live"');
+    expect(html).toContain('data-college-day="live"');
+    expect(html).toContain("College day");
+    expect(html).toContain('data-college-day-current="Thursday"');
+    expect(html).toContain('data-save-college-day="live"');
+    expect(html).toMatch(/<button(?=[^>]*data-save-college-day="live")(?=[^>]*disabled)[^>]*>/);
     expect(html).toContain('data-date-change-request="live"');
     expect(html).toContain("employer, the learner and the tutor");
     expect(html).toContain("Extension paperwork must be ticked before this course end change can be approved.");
@@ -323,6 +329,15 @@ describe("learner page", () => {
     expect(html).toContain("Recovering after surgery.");
     expect(html).toContain("Family funeral.");
     expect(html).toContain("18 Jan 2027");
+  });
+
+  it("shows Not set in amber when the college day is empty", () => {
+    nav.search = "tab=programme";
+    const html = render(page(), { programme: programmePage({ releaseDay: null }) });
+    expect(html).toContain('data-college-day-current="none"');
+    expect(html).toContain("Not set");
+    expect(html).toContain('data-tone="amber"');
+    expect(html).toMatch(/<button(?=[^>]*data-save-college-day="live")(?=[^>]*disabled)[^>]*>/);
   });
 
   it("offers a start-break form when the learner is not already on a break", () => {
@@ -399,6 +414,8 @@ describe("learner page", () => {
     expect(html).not.toContain("Save phone");
     expect(html).not.toContain("data-date-change-request");
     expect(html).not.toContain("data-save-course-dates");
+    expect(html).toContain('data-college-day-current="Thursday"');
+    expect(html).not.toContain("data-save-college-day");
     expect(html).not.toContain("data-approve-change");
     expect(html).toContain("You can view these dates.");
     expect(html).toContain('data-date-change-history="live"');

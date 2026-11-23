@@ -2681,6 +2681,38 @@ textarea.detailFieldInput {
   padding: 8px 14px;
 }
 
+.dayPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 14px;
+}
+
+.dayOff,
+.dayOn {
+  height: 2.25rem;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: #fff;
+  color: #24324f;
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dayOn {
+  background: #24324f;
+  border-color: #24324f;
+  color: #fff;
+}
+
+.dayOff:disabled,
+.dayOn:disabled {
+  cursor: default;
+}
+
 @media (max-width: 800px) {
   .learnerGrid {
     grid-template-columns: 1fr;

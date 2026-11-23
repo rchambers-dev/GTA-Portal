@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Select } from "@/components/ui";
 import {
   CHECKLIST_EMPTY_NOTE,
+  COLLEGE_DAYS,
+  collegeDayChanged,
   EXTENSION_PAPERWORK_HELP,
   PLANNED_DATE_TYPES,
   PLANNED_RETURN_HELP,
@@ -37,6 +39,7 @@ import {
   rejectPlannedDateChangeAction,
   requestPlannedDateChangeAction,
   returnFromBreakAction,
+  saveApprenticeCollegeDayAction,
   saveApprenticeCourseDatesAction,
   setExtensionPaperworkAction,
   signOffReturnToLearningAction,
@@ -131,6 +134,7 @@ export function ApprenticeProgrammePanel({
         effective={programme.effective}
         today={programme.today}
       />
+      <CollegeDay canManage={canManage} gtaId={apprentice.gtaId} collegeDay={programme.releaseDay} />
       <DateChanges
         canManage={canManage}
         gtaId={apprentice.gtaId}
@@ -334,6 +338,95 @@ function CourseDates({
           Course dates are not available.
         </p>
       )}
+    </section>
+  );
+}
+
+function CollegeDay({
+  canManage,
+  gtaId,
+  collegeDay,
+}: {
+  canManage: boolean;
+  gtaId: string;
+  collegeDay: string | null;
+}) {
+  const router = useRouter();
+  const [selected, setSelected] = useResetWhen(collegeDay ?? "", collegeDay ?? "");
+  const [formError, setFormError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
+  const [pending, setPending] = useState(false);
+  const changed = collegeDayChanged(collegeDay, selected);
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!changed) return;
+    setFormError(null);
+    setSaved(false);
+    setPending(true);
+    try {
+      const result = await saveApprenticeCollegeDayAction({ gtaId, collegeDay: selected });
+      if (!result.ok) {
+        setFormError(result.formError);
+        return;
+      }
+      setSaved(true);
+      router.refresh();
+    } catch (error) {
+      setFormError(messageFrom(error));
+    } finally {
+      setPending(false);
+    }
+  }
+
+  return (
+    <section className={styles.learnerCard} aria-labelledby="college-day-heading" data-college-day="live">
+      <h2 id="college-day-heading" className={styles.formGroupTitle}>
+        College day
+      </h2>
+      <p className={styles.formGroupMeta}>
+        {canManage
+          ? "The weekday this apprentice is at college. Reviews use this day."
+          : "You can view the college day. Administrator and Management can change it."}
+      </p>
+      <p className={styles.dateValue} data-college-day-current={collegeDay ?? "none"}>
+        {collegeDay ? collegeDay : <span className={styles.statusPill} data-static="true" data-tone="amber">Not set</span>}
+      </p>
+      {canManage ? (
+        <form onSubmit={onSubmit}>
+          <div className={styles.dayPicker} role="radiogroup" aria-label="College day">
+            {COLLEGE_DAYS.map((day) => (
+              <button
+                key={day}
+                type="button"
+                role="radio"
+                aria-checked={selected === day}
+                className={selected === day ? styles.dayOn : styles.dayOff}
+                disabled={pending}
+                data-college-day-choice={day}
+                onClick={() => {
+                  setSaved(false);
+                  setSelected(day);
+                }}
+              >
+                {day}
+              </button>
+            ))}
+          </div>
+          {formError ? <p className={styles.error} role="alert">{formError}</p> : null}
+          {saved ? <p className={styles.success} role="status">College day saved.</p> : null}
+          <div className={styles.learnerActions}>
+            <button
+              type="submit"
+              className={styles.primaryBtn}
+              disabled={pending || !changed}
+              data-save-college-day="live"
+            >
+              {pending ? "Saving…" : "Save college day"}
+            </button>
+          </div>
+        </form>
+      ) : null}
     </section>
   );
 }
