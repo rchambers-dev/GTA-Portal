@@ -227,16 +227,14 @@
 }
 
 @media print {
-  @page {
-    size: A3 landscape;
-    margin: 4mm;
-  }
-
-  :global(html),
-  :global(body) {
+  :global(html:has([data-review-board])),
+  :global(body:has([data-review-board])) {
+    page: review-board;
     height: auto !important;
     overflow: visible !important;
     background: #fff !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
   :global(body:has([data-review-board]) *) {
@@ -255,72 +253,131 @@
   .page {
     position: absolute;
     inset: 0;
-    width: 412mm;
-    height: 289mm;
+    width: 414mm;
+    height: 291mm;
     padding: 0;
     overflow: hidden;
     background: #fff;
     display: flex;
     flex-direction: column;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
   .header {
-    margin-bottom: 2mm;
+    margin-bottom: 1.5mm;
+    flex: 0 0 auto;
+  }
+
+  .kicker {
+    font-size: 7pt;
   }
 
   .header h1 {
-    font-size: 14pt;
+    font-size: 13pt;
+  }
+
+  .summary {
+    font-size: 8pt;
   }
 
   .overdue {
-    max-height: 28mm;
+    flex: 0 0 auto;
+    max-height: 18mm;
     overflow: hidden;
-    margin-bottom: 2mm;
-    padding: 1.5mm 2mm;
+    margin-bottom: 1.5mm;
+    padding: 1mm 1.5mm;
+  }
+
+  .overdue h2 {
+    font-size: 8pt;
+  }
+
+  .overdue .card {
+    flex: 0 0 auto;
+    height: auto;
+    padding: 0.4mm 1.2mm;
+  }
+
+  .overdue .line {
+    font-size: 6.5pt;
+    line-height: 1.05;
+    max-height: none;
   }
 
   .rows {
     flex: 1 1 auto;
     min-height: 0;
-    gap: 2mm;
+    gap: 1.5mm;
   }
 
   .row {
     min-height: 0;
     height: 50%;
-    gap: 2mm;
+    gap: 1.5mm;
   }
 
   .column {
     min-height: 0;
     height: 100%;
     overflow: hidden;
-    padding: 1.5mm;
+    padding: 1.2mm;
+    border-radius: 2mm;
+  }
+
+  .column header {
+    margin-bottom: 0.8mm;
+    flex: 0 0 auto;
+  }
+
+  .column header strong {
+    font-size: 8pt;
+  }
+
+  .column header span,
+  .column header em {
+    font-size: 6.5pt;
   }
 
   .stack {
     flex: 1 1 auto;
+    min-height: 0;
     overflow: hidden;
-    gap: 0.6mm;
+    gap: 0.35mm;
   }
 
-  .card {
+  .stack .card {
+    container-type: size;
     flex: 1 1 0;
     min-height: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 1.2mm;
+    gap: 0;
+    padding: 0 0.7mm;
+    border-radius: 1mm;
   }
 
-  .line {
-    font-size: min(8pt, calc(92mm / var(--cards) / 2.5));
-    line-height: 1.05;
+  .stack .line {
+    font-size: min(7.5pt, 40cqh);
+    line-height: 1.02;
+    max-height: 48%;
+    overflow: hidden;
+    gap: 0.5mm;
+  }
+
+  .stack .stage,
+  .stack .hold,
+  .stack .concern {
+    font-size: 0.78em;
+    line-height: 1;
+    padding: 0 0.5mm;
   }
 
   .footer {
-    margin-top: 1.5mm;
-    font-size: 8pt;
+    flex: 0 0 auto;
+    margin-top: 1.2mm;
+    font-size: 7.5pt;
   }
 }
