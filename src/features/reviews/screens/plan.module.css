@@ -3081,12 +3081,62 @@
   border: 1px solid #24324f;
 }
 
-/* Compact chips. Each roster card is two rows: name and status on top, actions underneath. */
+/* Compact chips. Each roster card is two rows: name and status on top, actions underneath.
+   The list scrolls itself and is about five cards tall. Cards stay at their natural height:
+   flex-shrink 0 and min-height min-content, so a max-height here cannot squash them. */
+.listCount {
+  margin: 2px 2px 6px;
+  color: #5d6573;
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.rosterWell {
+  position: relative;
+}
+
+.rosterWell::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 1px;
+  right: 12px;
+  bottom: 1px;
+  height: 1.15rem;
+  pointer-events: none;
+  border-radius: 0 0 15px 15px;
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0), var(--bg-card, #fff) 72%);
+}
+
 .roster .list {
   container-type: inline-size;
   flex: 0 0 auto;
-  max-height: none;
-  overflow: visible;
+  box-sizing: border-box;
+  max-height: min(33.5rem, 70vh);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px;
+  border: 1px solid var(--border-subtle, #e8eaef);
+  border-radius: 16px;
+  background: var(--bg-card, #fff);
+  scrollbar-width: thin;
+  scrollbar-color: #c5cedb transparent;
+}
+
+.roster .list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.roster .list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.roster .list::-webkit-scrollbar-thumb {
+  background: #c5cedb;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
 }
 
 .list .card {
@@ -3143,37 +3193,6 @@
   width: 100%;
   min-width: 0;
   max-width: 100%;
-}
-
-.listFoot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.listFoot p {
-  margin: 0;
-  color: #5d6573;
-  font-size: 0.88rem;
-  font-weight: 650;
-}
-
-.showMore {
-  height: 1.75rem;
-  padding: 0 0.8rem;
-  border: 1px solid #24324f;
-  border-radius: 999px;
-  background: #fff;
-  color: #24324f;
-  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  line-height: 1;
-  white-space: nowrap;
-  cursor: pointer;
 }
 
 .cardActions .concernWrap {
