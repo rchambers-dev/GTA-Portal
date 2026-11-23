@@ -1,9 +1,11 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
+import { nextReviewSetMessage, parsePlannedReviewDate } from "../domain/cycle";
 import { formPayload, type TutorFormDraft } from "../domain/tutor-form-rules";
 import { revalidateAnalytics } from "../domain/revalidate-analytics";
 
@@ -32,6 +34,39 @@ export async function signSafeguardingAction(input: { gtaIds: string[] }) {
   if (blocked) return blocked;
   await revalidateAnalytics();
   return { ok: true as const, signed: typeof data === "number" ? data : ids.length, date: londonToday() };
+}
+
+function refreshLearnerReviews(gtaId: string) {
+  const id = encodeURIComponent(gtaId);
+  revalidatePath(`/administration/onboarding/apprentice/${id}`);
+  revalidatePath(`/management/onboarding/apprentice/${id}`);
+  revalidatePath(`/staff/onboarding/apprentice/${id}`);
+  revalidatePath("/administration/reviews/cycle");
+  revalidatePath("/management/reviews/cycle");
+  revalidatePath("/administration/reviews/plan");
+  revalidatePath("/management/reviews/plan");
+}
+
+export async function openReviewAction(input: { gtaId: string; plannedOn: string }) {
+  const session = await getSupabaseEffectiveSession();
+  if (!session) return { ok: false as const, formError: "Sign in again to add this apprentice to the review cycle." };
+  if (!canAddApprentice(session)) return { ok: false as const, formError: DENIED };
+  const gtaId = input.gtaId.trim();
+  const plannedOn = parsePlannedReviewDate(input.plannedOn);
+  if (!gtaId) return { ok: false as const, formError: "Choose an apprentice." };
+  if (!plannedOn) return { ok: false as const, formError: "Choose the next review date." };
+  const supabase = await createSupabaseServerClient();
+  const existing = await supabase.from("reviews").select("id", { count: "exact", head: true }).eq("gta_id", gtaId);
+  if (existing.error) return { ok: false as const, formError: existing.error.message || "The reviews could not be checked." };
+  if ((existing.count ?? 0) > 0) {
+    return { ok: false as const, formError: "This apprentice already has a review. The date cannot be changed." };
+  }
+  const { error } = await supabase.rpc("open_review", { p_gta_id: gtaId, p_planned_on: plannedOn });
+  const blocked = fail(error, "Opening a review is waiting for the database change. Nothing was added.");
+  if (blocked) return blocked;
+  await revalidateAnalytics();
+  refreshLearnerReviews(gtaId);
+  return { ok: true as const, message: nextReviewSetMessage(plannedOn) };
 }
 
 export async function setReviewerAction(input: { reviewId: string; reviewerId: string }) {

@@ -2,10 +2,54 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import type { LearnerReviews } from "../domain/cycle-view";
-import { setReviewerAction } from "./cycle-actions";
+import { openReviewAction, setReviewerAction } from "./cycle-actions";
 import styles from "./learner-reviews.module.css";
+
+function DueStanding({ reviews, canSet }: { reviews: LearnerReviews; canSet: boolean }) {
+  if (reviews.dueTone === "none") {
+    if (canSet) return null;
+    return <strong>{reviews.inBreak ? "Paused in break" : "Not set"}</strong>;
+  }
+  const tone = reviews.dueTone === "on-track" ? styles.onTrack : reviews.dueTone === "soon" ? styles.soon : styles.overdue;
+  return (
+    <span className={styles.standingRow}>
+      <strong>{reviews.nextDue}</strong>
+      <em className={`${styles.standing} ${tone}`}>{reviews.dueLabel}</em>
+      {reviews.inBreak ? <em className={styles.aside}>Paused in break</em> : null}
+    </span>
+  );
+}
+
+function SetNextReview({
+  pending,
+  onSubmit,
+}: {
+  pending: boolean;
+  onSubmit: (date: string) => void;
+}) {
+  const [dueDate, setDueDate] = useState("");
+  function save(event: FormEvent) {
+    event.preventDefault();
+    onSubmit(dueDate);
+  }
+  return (
+    <form className={styles.dueForm} onSubmit={save} data-review-due="set">
+      <input
+        type="date"
+        required
+        aria-label="Set next review"
+        value={dueDate}
+        disabled={pending}
+        onChange={(event) => setDueDate(event.target.value)}
+      />
+      <button type="submit" disabled={pending || !dueDate}>
+        Set next review
+      </button>
+    </form>
+  );
+}
 
 export function LearnerReviewsPanel({
   reviews,
@@ -16,6 +60,8 @@ export function LearnerReviewsPanel({
 }) {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+  const [pending, setPending] = useState(false);
 
   async function changeReviewer(reviewerId: string) {
     if (!reviews.openReviewId) return;
@@ -25,6 +71,22 @@ export function LearnerReviewsPanel({
       setError(result.formError);
       return;
     }
+    router.refresh();
+  }
+
+  const canSetNext = canChangeReviewer && !reviews.hasReview;
+
+  async function saveNextReview(date: string) {
+    setError("");
+    setNotice("");
+    setPending(true);
+    const result = await openReviewAction({ gtaId: reviews.gtaId, plannedOn: date });
+    setPending(false);
+    if (!result.ok) {
+      setError(result.formError);
+      return;
+    }
+    setNotice(result.message);
     router.refresh();
   }
 
@@ -47,9 +109,12 @@ export function LearnerReviewsPanel({
           ))}
         </div>
         <div className={styles.facts}>
-          <div>
+          <div className={canSetNext ? styles.dueWide : undefined}>
             <span>Next review due</span>
-            <strong>{reviews.inBreak ? "Paused in break" : reviews.nextDue}</strong>
+            <DueStanding reviews={reviews} canSet={canSetNext} />
+            {canSetNext ? (
+              <SetNextReview pending={pending} onSubmit={saveNextReview} />
+            ) : null}
           </div>
           <div>
             <span>Last actual date</span>
@@ -76,6 +141,7 @@ export function LearnerReviewsPanel({
             <strong>{reviews.booked && reviews.method ? reviews.method : "Once booked"}</strong>
           </div>
         </div>
+        {notice ? <p className={styles.saved} role="status">{notice}</p> : null}
         {error ? <p className={styles.error} role="alert">{error}</p> : null}
       </section>
       <section className={styles.tableWrap}>

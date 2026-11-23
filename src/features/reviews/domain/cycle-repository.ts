@@ -9,6 +9,7 @@ import {
   currentStepDetail,
   cycleDueChip,
   cycleStepFromStage,
+  nextReviewStanding,
   daysBetween,
   reviewCountLabel,
   tutorNoticeDate,
@@ -395,12 +396,16 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
     steps: [],
     nextDue: "Not set",
     nextDueState: "unknown",
+    dueLabel: "Not set",
+    dueTone: "none",
+    plannedOn: null,
     lastActual: "No review yet",
     reviewerId: null,
     reviewerName: loaded.reviewers.find((row) => row.isDefault)?.name || "Reiss",
     reviewers: loaded.reviewers.map((row) => ({ id: row.id, name: row.name })),
     method: null,
     openReviewId: null,
+    hasReview: false,
     booked: false,
     paperReturn: false,
     paperReturnedOn: null,
@@ -415,6 +420,7 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
     .filter((review) => review.status === "completed")
     .sort((a, b) => String(a.actual_on).localeCompare(String(b.actual_on)));
   const open = reviews.find((review) => review.status === "open");
+  const standing = nextReviewStanding(today, open ? isoDate(open.planned_on) : null);
   const last = completed.at(-1);
   const history: HistoryRow[] = completed.map((review, index) => {
     const pack = loaded.packs.find((item) => item.review_id === review.id);
@@ -433,8 +439,11 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
   return {
     ...empty,
     steps: learner.steps,
-    nextDue: open?.planned_on ? formatTutorDate(open.planned_on) : learner.timing,
+    nextDue: open?.planned_on ? formatTutorDate(open.planned_on) : "Not set",
     nextDueState: learner.timing,
+    dueLabel: standing.label,
+    dueTone: standing.tone,
+    plannedOn: open ? isoDate(open.planned_on) : null,
     lastActual: last?.actual_on ? formatTutorDate(last.actual_on) : "No review yet",
     reviewerId: open?.reviewer_id ?? last?.reviewer_id ?? loaded.reviewers.find((row) => row.isDefault)?.id ?? null,
     reviewerName:
@@ -443,6 +452,7 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
       "Reiss",
     method: open?.method ? methodLabel(open.method) : null,
     openReviewId: open?.id ?? null,
+    hasReview: reviews.length > 0,
     booked: learner.stepId === "booked" || learner.stepId === "completed",
     paperReturn: learner.paperReturn,
     paperReturnedOn: learner.paperReturnedOn,
