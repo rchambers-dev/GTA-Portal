@@ -395,6 +395,7 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
     steps: [],
     nextDue: "Not set",
     nextDueState: "unknown",
+    plannedOn: null,
     lastActual: "No review yet",
     reviewerId: null,
     reviewerName: loaded.reviewers.find((row) => row.isDefault)?.name || "Reiss",
@@ -435,6 +436,7 @@ export async function readLearnerReviews(supabase: SupabaseClient, gtaId: string
     steps: learner.steps,
     nextDue: open?.planned_on ? formatTutorDate(open.planned_on) : learner.timing,
     nextDueState: learner.timing,
+    plannedOn: open ? isoDate(open.planned_on) : null,
     lastActual: last?.actual_on ? formatTutorDate(last.actual_on) : "No review yet",
     reviewerId: open?.reviewer_id ?? last?.reviewer_id ?? loaded.reviewers.find((row) => row.isDefault)?.id ?? null,
     reviewerName:

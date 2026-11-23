@@ -72,6 +72,8 @@ export type LearnerReviews = {
   steps: CycleStepView[];
   nextDue: string;
   nextDueState: string;
+  /** Open review's planned day, YYYY-MM-DD. Null when there is no open review. */
+  plannedOn: string | null;
   lastActual: string;
   reviewerId: string | null;
   reviewerName: string;

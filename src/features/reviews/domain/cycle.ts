@@ -131,6 +131,27 @@ export const TUTOR_BANDS: { id: TutorBand; label: string }[] = [
   { id: "sent-back", label: "Sent back" },
 ];
 
+/** A real calendar day as YYYY-MM-DD, or null when the value is not a date. */
+export function parsePlannedReviewDate(value: string): string | null {
+  const date = value.trim().slice(0, 10);
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const utc = new Date(Date.UTC(year, month - 1, day));
+  if (utc.getUTCFullYear() !== year || utc.getUTCMonth() !== month - 1 || utc.getUTCDate() !== day) return null;
+  return date;
+}
+
+export function addedToReviewCycleMessage(iso: string): string {
+  return `Added to the review cycle — due ${dayMonth(iso)}`;
+}
+
+export function changedReviewDateMessage(iso: string): string {
+  return `Next review date changed — due ${dayMonth(iso)}`;
+}
+
 export function currentStepDetail(late: boolean, daysLeft: number | null): string {
   if (daysLeft == null || !Number.isFinite(daysLeft)) return "Left · —";
   const days = Math.abs(Math.round(daysLeft));

@@ -1,9 +1,15 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
+import {
+  addedToReviewCycleMessage,
+  changedReviewDateMessage,
+  parsePlannedReviewDate,
+} from "../domain/cycle";
 import { formPayload, type TutorFormDraft } from "../domain/tutor-form-rules";
 import { revalidateAnalytics } from "../domain/revalidate-analytics";
 
@@ -32,6 +38,51 @@ export async function signSafeguardingAction(input: { gtaIds: string[] }) {
   if (blocked) return blocked;
   await revalidateAnalytics();
   return { ok: true as const, signed: typeof data === "number" ? data : ids.length, date: londonToday() };
+}
+
+function refreshLearnerReviews(gtaId: string) {
+  const id = encodeURIComponent(gtaId);
+  revalidatePath(`/administration/onboarding/apprentice/${id}`);
+  revalidatePath(`/management/onboarding/apprentice/${id}`);
+  revalidatePath(`/staff/onboarding/apprentice/${id}`);
+  revalidatePath("/administration/reviews/cycle");
+  revalidatePath("/management/reviews/cycle");
+  revalidatePath("/administration/reviews/plan");
+  revalidatePath("/management/reviews/plan");
+}
+
+export async function openReviewAction(input: { gtaId: string; plannedOn: string }) {
+  const session = await getSupabaseEffectiveSession();
+  if (!session) return { ok: false as const, formError: "Sign in again to add this apprentice to the review cycle." };
+  if (!canAddApprentice(session)) return { ok: false as const, formError: DENIED };
+  const gtaId = input.gtaId.trim();
+  const plannedOn = parsePlannedReviewDate(input.plannedOn);
+  if (!gtaId) return { ok: false as const, formError: "Choose an apprentice." };
+  if (!plannedOn) return { ok: false as const, formError: "Choose the next review date." };
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("open_review", { p_gta_id: gtaId, p_planned_on: plannedOn });
+  const blocked = fail(error, "Opening a review is waiting for the database change. Nothing was added.");
+  if (blocked) return blocked;
+  await revalidateAnalytics();
+  refreshLearnerReviews(gtaId);
+  return { ok: true as const, message: addedToReviewCycleMessage(plannedOn) };
+}
+
+export async function rescheduleReviewAction(input: { gtaId: string; reviewId: string; plannedOn: string }) {
+  const session = await getSupabaseEffectiveSession();
+  if (!session) return { ok: false as const, formError: "Sign in again to change the review date." };
+  if (!canAddApprentice(session)) return { ok: false as const, formError: DENIED };
+  const reviewId = input.reviewId.trim();
+  const plannedOn = parsePlannedReviewDate(input.plannedOn);
+  if (!reviewId) return { ok: false as const, formError: "Choose the open review." };
+  if (!plannedOn) return { ok: false as const, formError: "Choose the next review date." };
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("reschedule_review", { p_review_id: reviewId, p_planned_on: plannedOn });
+  const blocked = fail(error, "Changing the review date is waiting for the database change. Nothing was saved.");
+  if (blocked) return blocked;
+  await revalidateAnalytics();
+  refreshLearnerReviews(input.gtaId.trim());
+  return { ok: true as const, message: changedReviewDateMessage(plannedOn) };
 }
 
 export async function setReviewerAction(input: { reviewId: string; reviewerId: string }) {

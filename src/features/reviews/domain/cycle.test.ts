@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { currentStepDetail, cycleDueChip, cycleStepFromStage, reviewCountLabel, stepTone, tutorDueBand } from "./cycle";
+import { addedToReviewCycleMessage, changedReviewDateMessage, currentStepDetail, cycleDueChip, cycleStepFromStage, parsePlannedReviewDate, reviewCountLabel, stepTone, tutorDueBand } from "./cycle";
 import { firstTutorFormGap, emptyTutorForm, otjTrack, tutorFill, tutorTargetDateError } from "./tutor-form-rules";
 
 describe("review cycle steps", () => {
@@ -20,6 +20,15 @@ describe("review cycle steps", () => {
     expect(currentStepDetail(false, 4)).toBe("Left · 4 days");
     expect(reviewCountLabel(0)).toBe("No review yet");
     expect(reviewCountLabel(2)).toBe("2 reviews");
+  });
+
+  it("checks a planned review date and names it in the confirmation", () => {
+    expect(parsePlannedReviewDate("2026-12-04")).toBe("2026-12-04");
+    expect(parsePlannedReviewDate(" 2026-12-04 ")).toBe("2026-12-04");
+    expect(parsePlannedReviewDate("2026-02-31")).toBeNull();
+    expect(parsePlannedReviewDate("")).toBeNull();
+    expect(addedToReviewCycleMessage("2026-12-04")).toBe("Added to the review cycle — due 4 Dec");
+    expect(changedReviewDateMessage("2026-12-04")).toBe("Next review date changed — due 4 Dec");
   });
 
   it("describes the next review date on the cycle chip", () => {
