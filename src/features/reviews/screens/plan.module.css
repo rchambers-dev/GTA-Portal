@@ -3081,35 +3081,40 @@
   border: 1px solid #24324f;
 }
 
-/* One compact chip size for waiting-list actions and the day-row chips.
-   On a normal desktop the roster is wide enough for one row: name on the
-   left, chips on the right. A narrow list wraps the chips under the name. */
-@media (min-width: 1200px) {
-  .layout {
-    grid-template-columns: minmax(42rem, 46rem) minmax(18rem, 1fr);
-  }
-}
-
+/* Compact chips. Each roster card is two rows: name and status on top, actions underneath. */
 .roster .list {
   container-type: inline-size;
+  flex: 0 0 auto;
+  max-height: none;
+  overflow: visible;
 }
 
 .list .card {
   box-sizing: border-box;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 10px;
-  min-height: 0;
-  min-width: 0;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  height: auto;
+  min-height: min-content;
   width: 100%;
   max-width: 100%;
-  padding: 8px 12px;
+  padding: 10px 12px 12px;
   overflow: visible;
 }
 
+.list .cardTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  width: 100%;
+}
+
 .list .rowMain {
-  flex: 1 1 8rem;
-  min-width: 5.5rem;
+  flex: 1 1 auto;
+  min-width: 0;
   max-width: 100%;
   overflow: hidden;
 }
@@ -3123,15 +3128,52 @@
   white-space: nowrap;
 }
 
+.list .rowMain .college {
+  margin-top: 2px;
+  line-height: 1.35;
+}
+
 .cardActions {
   display: flex;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 6px;
-  min-width: min(100%, max-content);
+  width: 100%;
+  min-width: 0;
   max-width: 100%;
+}
+
+.listFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.listFoot p {
+  margin: 0;
+  color: #5d6573;
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.showMore {
+  height: 1.75rem;
+  padding: 0 0.8rem;
+  border: 1px solid #24324f;
+  border-radius: 999px;
+  background: #fff;
+  color: #24324f;
+  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
 .cardActions .concernWrap {
@@ -3145,15 +3187,10 @@
   }
 
   .list .rowMain {
-    flex: 1 1 100%;
     min-width: 0;
   }
 
   .cardActions {
-    flex: 1 1 100%;
-    max-width: 100%;
-    min-width: 0;
-    flex-wrap: wrap;
     justify-content: flex-start;
   }
 
@@ -3266,7 +3303,8 @@
   border-color: #24324f;
 }
 
-@container (max-width: 36rem) {
+/* The desktop roster column is 440–520px, so a 36rem query stacked the date on every desktop card. Stack only when the list itself is narrower than that column. */
+@container (max-width: 26rem) {
   .list .card .duePill {
     flex-direction: column;
     align-items: flex-start;

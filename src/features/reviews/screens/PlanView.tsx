@@ -88,6 +88,11 @@ export function PlanView({
       return [person.name, person.tutor, person.company].join(" ").toLowerCase().includes(term);
     });
   }, [page.people, query, tab]);
+  const [shown, setShown] = useState(10);
+  useEffect(() => {
+    setShown(10);
+  }, [query, tab]);
+  const listed = visible.slice(0, shown);
   const heading = planDateParts(selectedDate);
   const stopKey = activeDay.stops.map((stop) => `${stop.gtaId}:${stop.arrive}:${stop.leave}`).join("|");
 
@@ -432,22 +437,34 @@ export function PlanView({
         </label>
         <RosterList
           workspace={workspace}
-          people={visible}
+          people={listed}
           canWrite={page.canWrite}
           reasons={page.concernReasons}
           onRun={run}
           onStatus={setMessage}
           empty={
-            tab === "locked"
-              ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
-              : tab === "booked"
-                ? "No one is booked yet."
-                : tab === "waiting"
-                  ? "No one is waiting."
-                  : "No one needs booking."
+            query.trim()
+              ? "No one matches that search."
+              : tab === "locked"
+                ? "No one is locked waiting for a reply. Use the lock on a stop when you are waiting to hear back."
+                : tab === "booked"
+                  ? "No one is booked yet."
+                  : tab === "waiting"
+                    ? "No one is waiting."
+                    : "No one needs booking."
           }
           onNote={setNotePerson}
         />
+        {visible.length > 0 ? (
+          <div className={styles.listFoot}>
+            <p>Showing {listed.length} of {visible.length}</p>
+            {listed.length < visible.length ? (
+              <button type="button" className={styles.showMore} onClick={() => setShown((count) => count + 10)}>
+                Show more
+              </button>
+            ) : null}
+          </div>
+        ) : null}
       </section>
       <section className={styles.plan} aria-labelledby="plan-title">
         <div className={styles.head}>
@@ -685,12 +702,14 @@ function RosterCard({
       onDragStart={(event) => event.dataTransfer.setData("text/plain", person.gtaId)}
       data-roster-gta={person.gtaId}
     >
-      <span className={styles.rowMain}>
-        <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`} title={person.name}>{person.name}</Link>
-        <span className={styles.college} title={`College ${person.releaseDay}`}>College {person.releaseDay}</span>
+      <span className={styles.cardTop}>
+        <span className={styles.rowMain}>
+          <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`} title={person.name}>{person.name}</Link>
+          <span className={styles.college} title={`College ${person.releaseDay}`}>College {person.releaseDay}</span>
+        </span>
+        <DuePill person={person} />
       </span>
       <span className={styles.cardActions}>
-      <DuePill person={person} />
       <ConcernChip person={person} reasons={reasons} canWrite={canWrite} onRun={onRun} onStatus={onStatus} />
       {canWrite && person.packId && person.counter === "waiting" && (person.stage === "waiting" || person.stage === "with_tutor") ? (
         <button type="button" className={styles.pill} onClick={() => void onRun(() => recordPaperReturnAction({ packId: person.packId || "" })).then((result) => {
