@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildReviewBoard, earliestBookedOn, lastReviewLabel, latestCompletedOn, planBoardPill, stagePresentation, type BoardCard } from "./review-board";
+import { buildReviewBoard, daysWaiting, earliestBookedOn, lastReviewLabel, latestCompletedOn, planBoardPill, sentLabel, stagePresentation, waitingOnTutors, type BoardCard } from "./review-board";
 
 function card(partial: Partial<BoardCard> & Pick<BoardCard, "gtaId" | "name" | "plannedOn">): BoardCard {
   return {
@@ -118,6 +118,30 @@ describe("review board weeks", () => {
       "2026-11-23",
     );
     expect(board.weeks[0]?.cards[0]).toMatchObject({ stageLabel: "To book", hold: true });
+  });
+
+  it("groups packs with the tutor by tutor, oldest sent first", () => {
+    const groups = waitingOnTutors(
+      [
+        { gtaId: "a", name: "Ada", tutor: "Amelia Cole", stage: "with_tutor", sentOn: "2026-11-01" },
+        { gtaId: "b", name: "Bea", tutor: "Amelia Cole", stage: "with_tutor", sentOn: "2026-10-01" },
+        { gtaId: "c", name: "Cara", tutor: "John Pearson", stage: "with_tutor", sentOn: "2026-11-10" },
+        { gtaId: "d", name: "Dan", tutor: "John Pearson", stage: "to_book", sentOn: "2026-09-01" },
+        { gtaId: "e", name: "Eve", tutor: "John Pearson", stage: "with_tutor", sentOn: "2026-11-20" },
+        { gtaId: "g", name: "Gus", tutor: "John Pearson", stage: "with_tutor", sentOn: "2026-11-12" },
+        { gtaId: "f", name: "Finn", tutor: "Priya Shah", stage: "with_tutor", sentOn: null },
+      ],
+      "2026-11-23",
+    );
+    expect(groups.map((group) => [group.tutor, group.count])).toEqual([
+      ["John Pearson", 3],
+      ["Amelia Cole", 2],
+      ["Priya Shah", 1],
+    ]);
+    expect(groups[1]?.apprentices.map((person) => person.name)).toEqual(["Bea", "Ada"]);
+    expect(groups[1]?.apprentices[0]).toMatchObject({ sentOn: "2026-10-01", daysWaiting: 53 });
+    expect(sentLabel("2026-11-10", daysWaiting("2026-11-10", "2026-11-23"))).toBe("sent 10 Nov · 13d");
+    expect(groups[2]?.apprentices[0]?.daysWaiting).toBeNull();
   });
 
   it("names the pack stages used on the card edge", () => {

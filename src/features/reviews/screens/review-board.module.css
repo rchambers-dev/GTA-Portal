@@ -244,6 +244,64 @@
   font-size: 0.78rem;
 }
 
+.waiting {
+  margin-top: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.waiting h2,
+.waitingGroup h3 {
+  margin: 0;
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
+  font-size: 0.85rem;
+}
+
+.waiting h2 span,
+.waitingGroup h3 span {
+  margin-left: 6px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.waitingGroups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.chip {
+  display: inline-flex;
+  gap: 4px;
+  align-items: baseline;
+  max-width: 100%;
+  background: #f5f6f8;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.75rem;
+}
+
+.chip strong {
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
+  color: var(--navy);
+}
+
+.chip span {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
 @media print {
   :global(html:has([data-review-board])),
   :global(body:has([data-review-board])) {
@@ -370,6 +428,49 @@
     font-size: 0.85em;
     line-height: 1.3;
     padding: 0 4px;
+  }
+
+  .sheet:last-child .row {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .waiting {
+    flex: 0 0 28%;
+    min-height: 0;
+    overflow: hidden;
+    margin: 1.2mm 0 0;
+    padding: 1mm 1.5mm;
+    border-radius: 2mm;
+  }
+
+  .waiting h2 {
+    font-size: 9pt;
+  }
+
+  .waitingGroups {
+    display: block;
+    columns: 4;
+    column-gap: 3mm;
+    margin-top: 0.8mm;
+  }
+
+  .waitingGroup {
+    break-inside: avoid;
+    margin-bottom: 1.2mm;
+  }
+
+  .waitingGroup h3 {
+    font-size: 8pt;
+  }
+
+  .chips {
+    gap: 0.6mm;
+  }
+
+  .chip {
+    font-size: 8pt;
+    padding: 0 1.2mm;
   }
 
   .footer {

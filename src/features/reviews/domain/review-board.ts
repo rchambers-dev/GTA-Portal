@@ -25,6 +25,19 @@ export type BoardWeek = {
   cards: BoardCard[];
 };
 
+export type WaitingChip = {
+  gtaId: string;
+  name: string;
+  sentOn: string | null;
+  daysWaiting: number | null;
+};
+
+export type WaitingTutorGroup = {
+  tutor: string;
+  count: number;
+  apprentices: WaitingChip[];
+};
+
 export type ReviewBoard = {
   today: string;
   weekStart: string;
@@ -32,6 +45,7 @@ export type ReviewBoard = {
   weeks: BoardWeek[];
   laterCount: number;
   undatedCount: number;
+  waiting: WaitingTutorGroup[];
 };
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -46,6 +60,48 @@ export function boardDayLabel(iso: string): string {
 export function lastReviewLabel(actualOn: string | null): string {
   const day = actualOn?.slice(0, 10) || "";
   return day ? `Last: ${boardDayLabel(day)}` : "Last: none";
+}
+
+export function daysWaiting(sentOn: string | null, today: string): number | null {
+  const sent = sentOn?.slice(0, 10) || "";
+  const start = Date.parse(`${sent}T00:00:00Z`);
+  const end = Date.parse(`${today.slice(0, 10)}T00:00:00Z`);
+  if (!sent || Number.isNaN(start) || Number.isNaN(end)) return null;
+  return Math.max(0, Math.round((end - start) / 86_400_000));
+}
+
+export function sentLabel(sentOn: string | null, days: number | null): string {
+  const sent = sentOn?.slice(0, 10) ? `sent ${boardDayLabel(sentOn.slice(0, 10))}` : "sent —";
+  return days == null ? sent : `${sent} · ${days}d`;
+}
+
+/** with_tutor packs only. Tutors by count, apprentices oldest sent first. */
+export function waitingOnTutors(
+  people: { gtaId: string; name: string; tutor: string; stage: string | null; sentOn: string | null }[],
+  today: string,
+): WaitingTutorGroup[] {
+  const groups = new Map<string, WaitingChip[]>();
+  for (const person of people) {
+    if (person.stage !== "with_tutor") continue;
+    const list = groups.get(person.tutor) ?? [];
+    list.push({
+      gtaId: person.gtaId,
+      name: person.name,
+      sentOn: person.sentOn?.slice(0, 10) || null,
+      daysWaiting: daysWaiting(person.sentOn, today),
+    });
+    groups.set(person.tutor, list);
+  }
+  return [...groups.entries()]
+    .map(([tutor, apprentices]) => ({
+      tutor,
+      count: apprentices.length,
+      apprentices: apprentices.sort((a, b) => {
+        const date = String(a.sentOn || "9999-99-99").localeCompare(String(b.sentOn || "9999-99-99"));
+        return date || a.name.localeCompare(b.name, "en-GB");
+      }),
+    }))
+    .sort((a, b) => b.count - a.count || a.tutor.localeCompare(b.tutor, "en-GB"));
 }
 
 /** Latest actual_on per learner among completed reviews. */
@@ -167,5 +223,5 @@ export function buildReviewBoard(cards: BoardCard[], today: string): ReviewBoard
       cards: list,
     };
   });
-  return { today, weekStart, overdue, weeks, laterCount, undatedCount };
+  return { today, weekStart, overdue, weeks, laterCount, undatedCount, waiting: [] };
 }

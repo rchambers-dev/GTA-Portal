@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { boardDayLabel, lastReviewLabel, type BoardCard, type ReviewBoard } from "../domain/review-board";
+import { boardDayLabel, lastReviewLabel, sentLabel, type BoardCard, type ReviewBoard, type WaitingTutorGroup } from "../domain/review-board";
 import { PrintBoardButton } from "./PrintBoardButton";
 import styles from "./review-board.module.css";
 
@@ -74,9 +74,35 @@ export function ReviewBoardView({
           </div>
         </header>
         <WeekRow weeks={secondHalf} />
+        <WaitingOnTutors groups={board.waiting} />
         <footer className={styles.footer}>{laterNote}{undatedNote}</footer>
       </section>
     </div>
+  );
+}
+
+function WaitingOnTutors({ groups }: { groups: WaitingTutorGroup[] }) {
+  if (!groups.length) return null;
+  const total = groups.reduce((sum, group) => sum + group.count, 0);
+  return (
+    <section className={styles.waiting} aria-label="Waiting on tutors">
+      <h2>Waiting on tutors <span>{total}</span></h2>
+      <div className={styles.waitingGroups}>
+        {groups.map((group) => (
+          <div className={styles.waitingGroup} key={group.tutor}>
+            <h3>{group.tutor} <span>{group.count}</span></h3>
+            <div className={styles.chips}>
+              {group.apprentices.map((person) => (
+                <span className={styles.chip} key={person.gtaId}>
+                  <strong>{person.name}</strong>
+                  <span>{sentLabel(person.sentOn, person.daysWaiting)}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
