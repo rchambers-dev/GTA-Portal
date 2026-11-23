@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
-import { buildReviewBoard, latestCompletedOn, stagePresentation, type BoardCard, type ReviewBoard } from "./review-board";
+import { buildReviewBoard, earliestBookedOn, latestCompletedOn, planBoardPill, stagePresentation, type BoardCard, type ReviewBoard } from "./review-board";
 
 export type ReviewBoardPage = ReviewBoard & { loadError: string | null };
 
@@ -38,6 +38,8 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     concernsResult,
     exitsResult,
     completedResult,
+    countersResult,
+    stopsResult,
   ] = await Promise.all([
     supabase.from("review_packs").select("review_id, stage"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
@@ -51,9 +53,34 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     everyPage<{ gta_id: string; actual_on: string | null }>((from, to) =>
       supabase.from("reviews").select("gta_id, actual_on").eq("status", "completed").not("actual_on", "is", null).range(from, to),
     ),
+    supabase.from("plan_counters").select("gta_id, stage, counter, appointment_on, awaiting_date"),
+    everyPage<{ gta_id: string; date_on: string; verified: boolean | null; completed: boolean | null; accepted: boolean | null; kind: string | null }>((from, to) =>
+      supabase
+        .from("review_day_stops")
+        .select("gta_id, date_on, verified, completed, accepted, kind")
+        .gte("date_on", today)
+        .order("date_on", { ascending: true })
+        .range(from, to),
+    ),
   ]);
 
-  const problems = [apprenticesResult, reviewsResult, completedResult].filter((result) => result.error).map((result) => result.error?.message);
+  const problems = [apprenticesResult, reviewsResult, completedResult, countersResult, stopsResult]
+    .filter((result) => result.error)
+    .map((result) => result.error?.message);
+  const counterOf = new Map(
+    rows<{ gta_id: string; stage: string | null; counter: string | null; appointment_on: string | null; awaiting_date: string | null }>(
+      countersResult.data,
+    ).map((row) => [row.gta_id, row]),
+  );
+  const nextBooked = earliestBookedOn(
+    rows<{ gta_id: string; date_on: string; verified: boolean | null; completed: boolean | null }>(stopsResult.data).map((row) => ({
+      gtaId: row.gta_id,
+      dateOn: row.date_on,
+      verified: Boolean(row.verified),
+      completed: Boolean(row.completed),
+    })),
+    today,
+  );
   const lastOn = latestCompletedOn(
     rows<{ gta_id: string; actual_on: string | null }>(completedResult.data).map((row) => ({
       gtaId: row.gta_id,
@@ -127,7 +154,17 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     if (tutorId && hidden.has(tutorId)) continue;
     const review = firstOpen.get(row.gta_id);
     if (!review) continue;
-    const stage = stagePresentation(stageOf.get(review.id) ?? null);
+    const packStage = stageOf.get(review.id) ?? null;
+    const counter = counterOf.get(row.gta_id);
+    const stage = counter
+      ? planBoardPill({
+          counter: counter.counter,
+          stage: counter.stage ?? packStage,
+          appointmentOn: counter.appointment_on,
+          nextBookedOn: nextBooked.get(row.gta_id) ?? null,
+          awaitingDate: counter.awaiting_date,
+        })
+      : stagePresentation(packStage);
     const employerId = employerOf.get(row.gta_id);
     cards.push({
       gtaId: row.gta_id,

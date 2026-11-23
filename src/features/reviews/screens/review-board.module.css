@@ -162,6 +162,7 @@
 .with_tutor { --edge: #1a1f3d; }
 .to_book { --edge: #c47f17; }
 .booked { --edge: #1f7a45; }
+.locked { --edge: #b44a2c; }
 .other { --edge: #343c6b; }
 
 .line {
@@ -230,6 +231,7 @@
 .with_tutor .stage { background: #e8eaf3; color: #1a1f3d; }
 .to_book .stage { background: #fef3d9; color: #9a5b00; }
 .booked .stage { background: #e4f5eb; color: #1f7a45; }
+.locked .stage { background: #b44a2c; color: #fff; }
 .other .stage { background: #eef0f7; color: #343c6b; }
 .hold { background: #fef3d9; color: #9a5b00; }
 .concern { background: #fde8e6; color: #9c2f2f; }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildReviewBoard, lastReviewLabel, latestCompletedOn, stagePresentation, type BoardCard } from "./review-board";
+import { buildReviewBoard, earliestBookedOn, lastReviewLabel, latestCompletedOn, planBoardPill, stagePresentation, type BoardCard } from "./review-board";
 
 function card(partial: Partial<BoardCard> & Pick<BoardCard, "gtaId" | "name" | "plannedOn">): BoardCard {
   return {
@@ -52,6 +52,72 @@ describe("review board weeks", () => {
     expect(latest.get("a")).toBe("2026-09-15");
     expect(latest.get("b")).toBe("2026-01-02");
     expect(lastReviewLabel(latest.get("a") ?? null)).toBe("Last: 15 Sep");
+  });
+
+  it("uses the Plan counter, including a verified stop when there is no appointment", () => {
+    const today = "2026-11-23";
+    const bookedOn = earliestBookedOn(
+      [
+        { gtaId: "ewan", dateOn: "2026-11-20", verified: true, completed: false },
+        { gtaId: "ewan", dateOn: "2026-11-24", verified: true, completed: false },
+        { gtaId: "ewan", dateOn: "2026-11-28", verified: true, completed: true },
+        { gtaId: "ewan", dateOn: "2026-11-22", verified: false, completed: false },
+      ],
+      today,
+    );
+    expect(bookedOn.get("ewan")).toBe("2026-11-24");
+    expect(planBoardPill({
+      counter: "booked",
+      stage: "to_book",
+      appointmentOn: null,
+      nextBookedOn: bookedOn.get("ewan") ?? null,
+      awaitingDate: null,
+    })).toEqual({ stage: "booked", label: "Booked 24 Nov" });
+    expect(planBoardPill({
+      counter: "booked",
+      stage: "to_book",
+      appointmentOn: "2026-12-01",
+      nextBookedOn: "2026-11-24",
+      awaitingDate: null,
+    })).toEqual({ stage: "booked", label: "Booked 1 Dec" });
+    expect(planBoardPill({
+      counter: "locked",
+      stage: "to_book",
+      appointmentOn: null,
+      nextBookedOn: null,
+      awaitingDate: "2026-11-26",
+    })).toEqual({ stage: "locked", label: "Locked 26 Nov" });
+    expect(planBoardPill({
+      counter: "waiting",
+      stage: "with_tutor",
+      appointmentOn: null,
+      nextBookedOn: null,
+      awaitingDate: null,
+    })).toEqual({ stage: "with_tutor", label: "With tutor" });
+    expect(planBoardPill({
+      counter: "to_book",
+      stage: "reviewed",
+      appointmentOn: null,
+      nextBookedOn: null,
+      awaitingDate: null,
+    }).label).toBe("Reviewed / awaiting return");
+    expect(planBoardPill(null)).toEqual({ stage: "waiting", label: "Waiting" });
+  });
+
+  it("does not let a hold replace To book", () => {
+    const pill = planBoardPill({
+      counter: "to_book",
+      stage: "to_book",
+      appointmentOn: null,
+      nextBookedOn: null,
+      awaitingDate: null,
+    });
+    expect(pill).toEqual({ stage: "to_book", label: "To book" });
+    const board = buildReviewBoard(
+      [card({ gtaId: "h", name: "Held", plannedOn: "2026-11-24", stage: pill.stage, stageLabel: pill.label, hold: true })],
+      "2026-11-23",
+    );
+    expect(board.weeks[0]?.cards[0]).toMatchObject({ stageLabel: "To book", hold: true });
   });
 
   it("names the pack stages used on the card edge", () => {

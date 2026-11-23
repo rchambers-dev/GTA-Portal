@@ -1,6 +1,6 @@
 import { addDays, weekStartMonday } from "./plan-due";
 
-export type BoardStage = "waiting" | "with_tutor" | "to_book" | "booked" | "other";
+export type BoardStage = "waiting" | "with_tutor" | "to_book" | "booked" | "locked" | "other";
 
 export type BoardCard = {
   gtaId: string;
@@ -66,6 +66,57 @@ export function stagePresentation(stage: string | null): { stage: BoardStage; la
   if (stage === "booked") return { stage: "booked", label: "Booked" };
   if (stage === "waiting" || !stage) return { stage: "waiting", label: "Waiting" };
   return { stage: "other", label: stage.replaceAll("_", " ") };
+}
+
+export type PlanBoardPillInput = {
+  counter: string | null;
+  stage: string | null;
+  appointmentOn: string | null;
+  nextBookedOn: string | null;
+  awaitingDate: string | null;
+};
+
+/** Plan roster status. Pack stage is only the fallback when plan_counters has no row. */
+export function planBoardPill(input: PlanBoardPillInput | null): { stage: BoardStage; label: string } {
+  if (!input?.counter) return stagePresentation(input?.stage ?? null);
+  const stage = input.stage;
+  if (input.counter === "locked") {
+    const day = input.awaitingDate?.slice(0, 10) || "";
+    return { stage: "locked", label: day ? `Locked ${boardDayLabel(day)}` : "Locked" };
+  }
+  if (input.counter === "booked") {
+    const day = (input.appointmentOn || input.nextBookedOn || "").slice(0, 10);
+    return { stage: "booked", label: day ? `Booked ${boardDayLabel(day)}` : "Booked" };
+  }
+  if (input.counter === "to_book") {
+    if (stage === "reviewed") return { stage: "to_book", label: "Reviewed / awaiting return" };
+    return { stage: "to_book", label: "To book" };
+  }
+  if (input.counter === "waiting") {
+    if (stage === "with_tutor") return { stage: "with_tutor", label: "With tutor" };
+    if (stage === "reviewed") return { stage: "waiting", label: "Reviewed / awaiting return" };
+    return { stage: "waiting", label: "Waiting" };
+  }
+  return stagePresentation(stage);
+}
+
+export type BoardStop = {
+  gtaId: string;
+  dateOn: string;
+  verified: boolean;
+  completed: boolean;
+};
+
+/** Earliest verified, unfinished stop from today. Matches plan_counters, which does not drop excluded stops. */
+export function earliestBookedOn(stops: BoardStop[], today: string): Map<string, string> {
+  const next = new Map<string, string>();
+  for (const stop of stops) {
+    const day = stop.dateOn.slice(0, 10);
+    if (!day || day < today || !stop.verified || stop.completed) continue;
+    const current = next.get(stop.gtaId);
+    if (!current || day < current) next.set(stop.gtaId, day);
+  }
+  return next;
 }
 
 function byDateThenName(a: BoardCard, b: BoardCard): number {
