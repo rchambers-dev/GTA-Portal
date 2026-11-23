@@ -297,6 +297,30 @@ export async function clearBookingAction(input: { reviewId: string }) {
   return saved(error, { ok: true as const });
 }
 
+export async function holdReviewAction(input: { reviewId: string; heldUntil: string; reason: string }) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const { error } = await access.supabase.rpc("hold_review", {
+    p_review_id: input.reviewId,
+    p_held_until: input.heldUntil,
+    p_reason: input.reason.trim(),
+  });
+  const missing = missingRpc(error, "hold_review");
+  if (missing) return missing;
+  if (!error) refreshReviewDates();
+  return saved(error, { ok: true as const });
+}
+
+export async function releaseReviewHoldAction(input: { reviewId: string }) {
+  const access = await writer();
+  if (!access.ok) return access;
+  const { error } = await access.supabase.rpc("release_review_hold", { p_review_id: input.reviewId });
+  const missing = missingRpc(error, "release_review_hold");
+  if (missing) return missing;
+  if (!error) refreshReviewDates();
+  return saved(error, { ok: true as const });
+}
+
 export async function setNotesAction(input: { reviewId: string; notes: string; until: string }) {
   const access = await writer();
   if (!access.ok) return access;

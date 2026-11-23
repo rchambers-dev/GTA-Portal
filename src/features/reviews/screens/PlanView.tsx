@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { fitStops, routeSettings } from "../domain/plan-drive";
 import { formatChipDate, minutesToTime, planDateParts, timeToMinutes, weekdayName } from "../domain/plan-due";
-import { NOTE_UNTIL_PRESETS, comparePlanNotes, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
+import { NOTE_UNTIL_PRESETS, HOLD_UNTIL_PRESETS, comparePlanNotes, fillDayPeople, holdBadgeLabel, holdUntilPresets, noteUntilLabel, noteUntilPresets } from "../domain/plan-notes";
 import { DEFAULT_ROUTE_EMAIL, buildRouteEmail, buildRoutePrintHtml, routeDateLabel, routeEmailAddresses, sheetStops } from "../domain/plan-route-sheet";
 import { moveRouteIds, visitsAreInOrder, type PackedDay } from "../domain/plan-route";
 import type { ConcernReason, PlanCounter, PlanDay, PlanPageData, PlanPerson, PlanSettings, PlanStop } from "../domain/plan-repository";
@@ -15,10 +15,12 @@ import {
   applyRouteAction,
   completeDayAction,
   excludeStopAction,
+  holdReviewAction,
   lockStopAction,
   raisePlanConcernAction,
   recordPaperReturnAction,
   recordSafeguardingAction,
+  releaseReviewHoldAction,
   resolvePlanConcernAction,
   setNotesAction,
   undoPaperReturnAction,
@@ -66,10 +68,10 @@ export function PlanView({
   const [officePoint, setOfficePoint] = useState<{ lat: number; lon: number; postcode: string } | null>(null);
   const routeDragId = useRef("");
   const noted = page.people
-    .filter((person) => person.notes)
+    .filter((person) => person.notes || person.holdUntil)
     .slice()
     .sort((a, b) => comparePlanNotes(a, b, page.today));
-  const notesDue = noted.filter((person) => noteUntilLabel(person.notesUntil, page.today).overdue).length;
+  const notesDue = noted.filter((person) => person.notes && noteUntilLabel(person.notesUntil, page.today).overdue).length;
   const activeDay = planDayFor(page, selectedDate);
   const route = packedFor === selectedDate ? packed : null;
   const bookedDays = useMemo(
@@ -497,10 +499,10 @@ export function PlanView({
                   {noted.map((person) => {
                     const until = noteUntilLabel(person.notesUntil, page.today);
                     return (
-                      <button key={person.gtaId} type="button" className={`${styles.noteItem} ${until.overdue ? styles.noteDue : ""}`} onClick={() => { setNotesOpen(false); setNotePerson(person); }}>
+                      <button key={person.gtaId} type="button" className={`${styles.noteItem} ${person.notes && until.overdue ? styles.noteDue : ""}`} onClick={() => { setNotesOpen(false); setNotePerson(person); }}>
                         <strong>{person.name}</strong>
-                        <span>{person.notes}</span>
-                        <em>{until.label}</em>
+                        <span>{person.notes || person.holdReason}</span>
+                        <em>{person.holdUntil ? holdBadgeLabel(person.holdUntil) : until.label}</em>
                       </button>
                     );
                   })}
@@ -546,9 +548,9 @@ export function PlanView({
                   className={styles.fill}
                   onClick={() =>
                     void placePeople(
-                      page.people.filter(
-                        (person) =>
-                          person.counter === "to_book" && !activeDay.stops.some((stop) => stop.gtaId === person.gtaId),
+                      fillDayPeople(
+                        page.people,
+                        activeDay.stops.map((stop) => stop.gtaId),
                       ),
                     )
                   }
@@ -621,6 +623,9 @@ export function PlanView({
               notes={notePerson.notes}
               until={notePerson.notesUntil}
               today={page.today}
+              canWrite={page.canWrite}
+              holdUntil={notePerson.holdUntil}
+              holdReason={notePerson.holdReason}
               onRun={async (work) => {
                 const result = await run(work, `${notePerson.gtaId}:note`);
                 if (result.ok) setNotePerson(null);
@@ -706,6 +711,7 @@ function RosterCard({
           <Link href={`/${workspace}/onboarding/apprentice/${person.gtaId}`} title={person.name}>{person.name}</Link>
           <span className={styles.college} title={`College ${person.releaseDay}`}>College {person.releaseDay}</span>
         </span>
+        {person.holdUntil ? <span className={styles.holdBadge}>{holdBadgeLabel(person.holdUntil)}</span> : null}
         <DuePill person={person} />
       </span>
       <span className={styles.cardActions}>
@@ -1157,12 +1163,18 @@ function NoteForm({
   notes,
   until,
   today,
+  canWrite,
+  holdUntil,
+  holdReason,
   onRun,
 }: {
   reviewId: string;
   notes: string;
   until: string;
   today: string;
+  canWrite: boolean;
+  holdUntil: string;
+  holdReason: string;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
 }) {
   const presets = noteUntilPresets(today);
@@ -1208,7 +1220,88 @@ function NoteForm({
           Clear
         </button>
       ) : null}
+      {canWrite && reviewId ? <HoldSection reviewId={reviewId} today={today} notes={text} holdUntil={holdUntil} holdReason={holdReason} onRun={onRun} /> : null}
     </form>
+  );
+}
+
+function HoldSection({
+  reviewId,
+  today,
+  notes,
+  holdUntil,
+  holdReason,
+  onRun,
+}: {
+  reviewId: string;
+  today: string;
+  notes: string;
+  holdUntil: string;
+  holdReason: string;
+  onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
+}) {
+  const presets = holdUntilPresets(today);
+  const [end, setEnd] = useState(holdUntil || presets.week);
+  const [reason, setReason] = useState(holdReason || notes);
+  const [saving, setSaving] = useState(false);
+  const selected = dateOnly(end);
+  if (holdUntil) {
+    return (
+      <section className={styles.holdBox}>
+        <h3>Put learner on hold</h3>
+        <p className={styles.holdState}>{holdBadgeLabel(holdUntil)}</p>
+        {holdReason ? <p className={styles.meta}>{holdReason}</p> : null}
+        <button
+          type="button"
+          className={styles.pill}
+          disabled={saving}
+          onClick={() => {
+            setSaving(true);
+            void onRun(async () => (await releaseReviewHoldAction({ reviewId })) ?? { ok: false, formError: "The hold could not be removed." }).finally(() => setSaving(false));
+          }}
+        >
+          {saving ? "Saving…" : "Take off hold"}
+        </button>
+      </section>
+    );
+  }
+  return (
+    <section className={styles.holdBox}>
+      <h3>Put learner on hold</h3>
+      <p className={styles.meta}>They stay in the queue and still need booking. They are left off Fill Day until this date.</p>
+      <div className={styles.presets}>
+        {HOLD_UNTIL_PRESETS.map((preset) => (
+          <button
+            key={preset.id}
+            type="button"
+            aria-pressed={selected === presets[preset.id]}
+            className={selected === presets[preset.id] ? styles.noteOn : styles.pill}
+            onClick={() => setEnd(presets[preset.id])}
+          >
+            {preset.label}
+          </button>
+        ))}
+      </div>
+      <label>
+        Until
+        <input type="date" min={today} value={end} onChange={(event) => setEnd(event.target.value)} />
+      </label>
+      <label>
+        Reason
+        <textarea value={reason} onChange={(event) => setReason(event.target.value)} rows={3} placeholder="What needs sorting out" />
+      </label>
+      <button
+        type="button"
+        className={styles.noteOn}
+        disabled={saving || !reason.trim() || !end}
+        onClick={() => {
+          setSaving(true);
+          void onRun(async () => (await holdReviewAction({ reviewId, heldUntil: end, reason })) ?? { ok: false, formError: "The hold could not be saved." }).finally(() => setSaving(false));
+        }}
+      >
+        {saving ? "Saving…" : "Put on hold"}
+      </button>
+    </section>
   );
 }
 

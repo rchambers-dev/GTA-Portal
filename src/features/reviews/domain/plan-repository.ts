@@ -46,6 +46,8 @@ export type PlanPerson = {
   packId: string | null;
   paperReturn: boolean;
   paperReturnedOn: string | null;
+  holdUntil: string;
+  holdReason: string;
 };
 
 export type ConcernReason = { id: string; label: string };
@@ -178,6 +180,7 @@ export async function readPlanPage(
     daysResult,
     stopsResult,
     completedResult,
+    holdsResult,
   ] = await Promise.all([
     supabase.from("plan_counters").select("gta_id, name, tutor, stage, counter, appointment_on"),
     loadPlanApprentices(supabase),
@@ -221,6 +224,7 @@ export async function readPlanPage(
       .eq("status", "completed")
       .order("actual_on", { ascending: false })
       .limit(200),
+    supabase.from("review_holds").select("review_id, held_until, reason, released_at"),
   ]);
 
   const problems: string[] = [];
@@ -297,6 +301,14 @@ export async function readPlanPage(
   const signed = new Map(
     ((signoffsResult.data ?? []) as { id: string; gta_id: string }[]).map((row) => [row.gta_id, row.id]),
   );
+  const holds = new Map<string, { until: string; reason: string }>();
+  if (!holdsResult.error) {
+    for (const row of (holdsResult.data ?? []) as { review_id: string; held_until: string | null; reason: string | null; released_at: string | null }[]) {
+      const until = row.held_until?.slice(0, 10) || "";
+      if (row.released_at || !until || until < today) continue;
+      holds.set(row.review_id, { until, reason: row.reason?.trim() || "" });
+    }
+  }
   const noteUntil = new Map<string, string>();
   const untilResult = await supabase.from("reviews").select("id, notes_until");
   if (!untilResult.error) {
@@ -425,6 +437,8 @@ export async function readPlanPage(
       packId: packByReview.get(review?.id || "")?.id ?? null,
       paperReturn: packByReview.get(review?.id || "")?.paper ?? false,
       paperReturnedOn: packByReview.get(review?.id || "")?.returnedOn ?? null,
+      holdUntil: (review && holds.get(review.id)?.until) || "",
+      holdReason: (review && holds.get(review.id)?.reason) || "",
     });
   }
   const dueRank = { overdue: 3, "due-soon": 2, ok: 1, unknown: 0 } as const;
