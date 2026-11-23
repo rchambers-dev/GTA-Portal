@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import type { LearnerReviews } from "../domain/cycle-view";
-import { openReviewAction, rescheduleReviewAction, setReviewerAction } from "./cycle-actions";
+import { openReviewAction, setReviewerAction } from "./cycle-actions";
 import styles from "./learner-reviews.module.css";
 
 function DueStanding({ reviews, canSet }: { reviews: LearnerReviews; canSet: boolean }) {
@@ -23,15 +23,13 @@ function DueStanding({ reviews, canSet }: { reviews: LearnerReviews; canSet: boo
 }
 
 function SetNextReview({
-  initial,
   pending,
   onSubmit,
 }: {
-  initial: string;
   pending: boolean;
   onSubmit: (date: string) => void;
 }) {
-  const [dueDate, setDueDate] = useState(initial);
+  const [dueDate, setDueDate] = useState("");
   function save(event: FormEvent) {
     event.preventDefault();
     onSubmit(dueDate);
@@ -76,13 +74,13 @@ export function LearnerReviewsPanel({
     router.refresh();
   }
 
+  const canSetNext = canChangeReviewer && !reviews.hasReview;
+
   async function saveNextReview(date: string) {
     setError("");
     setNotice("");
     setPending(true);
-    const result = reviews.openReviewId
-      ? await rescheduleReviewAction({ gtaId: reviews.gtaId, reviewId: reviews.openReviewId, plannedOn: date })
-      : await openReviewAction({ gtaId: reviews.gtaId, plannedOn: date });
+    const result = await openReviewAction({ gtaId: reviews.gtaId, plannedOn: date });
     setPending(false);
     if (!result.ok) {
       setError(result.formError);
@@ -111,16 +109,11 @@ export function LearnerReviewsPanel({
           ))}
         </div>
         <div className={styles.facts}>
-          <div className={canChangeReviewer ? styles.dueWide : undefined}>
+          <div className={canSetNext ? styles.dueWide : undefined}>
             <span>Next review due</span>
-            <DueStanding reviews={reviews} canSet={canChangeReviewer} />
-            {canChangeReviewer ? (
-              <SetNextReview
-                key={`${reviews.openReviewId ?? "new"}:${reviews.plannedOn ?? ""}`}
-                initial={reviews.plannedOn ?? ""}
-                pending={pending}
-                onSubmit={saveNextReview}
-              />
+            <DueStanding reviews={reviews} canSet={canSetNext} />
+            {canSetNext ? (
+              <SetNextReview pending={pending} onSubmit={saveNextReview} />
             ) : null}
           </div>
           <div>

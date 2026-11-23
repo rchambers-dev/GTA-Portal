@@ -56,28 +56,16 @@ export async function openReviewAction(input: { gtaId: string; plannedOn: string
   if (!gtaId) return { ok: false as const, formError: "Choose an apprentice." };
   if (!plannedOn) return { ok: false as const, formError: "Choose the next review date." };
   const supabase = await createSupabaseServerClient();
+  const existing = await supabase.from("reviews").select("id", { count: "exact", head: true }).eq("gta_id", gtaId);
+  if (existing.error) return { ok: false as const, formError: existing.error.message || "The reviews could not be checked." };
+  if ((existing.count ?? 0) > 0) {
+    return { ok: false as const, formError: "This apprentice already has a review. The date cannot be changed." };
+  }
   const { error } = await supabase.rpc("open_review", { p_gta_id: gtaId, p_planned_on: plannedOn });
   const blocked = fail(error, "Opening a review is waiting for the database change. Nothing was added.");
   if (blocked) return blocked;
   await revalidateAnalytics();
   refreshLearnerReviews(gtaId);
-  return { ok: true as const, message: nextReviewSetMessage(plannedOn) };
-}
-
-export async function rescheduleReviewAction(input: { gtaId: string; reviewId: string; plannedOn: string }) {
-  const session = await getSupabaseEffectiveSession();
-  if (!session) return { ok: false as const, formError: "Sign in again to change the review date." };
-  if (!canAddApprentice(session)) return { ok: false as const, formError: DENIED };
-  const reviewId = input.reviewId.trim();
-  const plannedOn = parsePlannedReviewDate(input.plannedOn);
-  if (!reviewId) return { ok: false as const, formError: "Choose the open review." };
-  if (!plannedOn) return { ok: false as const, formError: "Choose the next review date." };
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.rpc("reschedule_review", { p_review_id: reviewId, p_planned_on: plannedOn });
-  const blocked = fail(error, "Changing the review date is waiting for the database change. Nothing was saved.");
-  if (blocked) return blocked;
-  await revalidateAnalytics();
-  refreshLearnerReviews(input.gtaId.trim());
   return { ok: true as const, message: nextReviewSetMessage(plannedOn) };
 }
 

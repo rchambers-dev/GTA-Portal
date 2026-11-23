@@ -83,6 +83,8 @@ export type LearnerReviews = {
   reviewers: { id: string; name: string }[];
   method: string | null;
   openReviewId: string | null;
+  /** True when this apprentice already has any review, open or completed. */
+  hasReview: boolean;
   booked: boolean;
   paperReturn: boolean;
   paperReturnedOn: string | null;
