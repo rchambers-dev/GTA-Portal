@@ -5,7 +5,7 @@
   --navy: #1a1f3d;
   background: #f5f6f8;
   color: var(--ink);
-  font-family: var(--font-body), "Source Sans 3", sans-serif;
+  font-family: var(--font-body, "Source Sans 3", sans-serif);
   min-height: 100%;
   padding: 12px;
 }
@@ -23,7 +23,7 @@
   border-radius: 999px;
   background: #fff;
   color: var(--navy);
-  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
   font-size: 0.78rem;
   font-weight: 700;
   text-decoration: none;
@@ -50,7 +50,7 @@
 
 .header h1 {
   margin: 0;
-  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
   font-size: 1.35rem;
   letter-spacing: -0.03em;
 }
@@ -74,7 +74,7 @@
 .overdue h2 {
   margin: 0 0 4px;
   color: #a81f28;
-  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
   font-size: 0.78rem;
 }
 
@@ -129,7 +129,7 @@
 }
 
 .column header strong {
-  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
   font-size: 0.78rem;
 }
 
@@ -171,7 +171,7 @@
   margin: 0;
   min-width: 0;
   line-height: 1.15;
-  font-size: clamp(9px, calc(13px - (var(--cards, 8) - 8) * 0.22px), 12px);
+  font-size: 11px;
 }
 
 .line strong,
@@ -184,7 +184,8 @@
 
 .line strong {
   flex: 1 1 auto;
-  font-family: var(--font-display), "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
+  font-weight: 700;
 }
 
 .line > span:last-child,
@@ -270,7 +271,7 @@
     height: 291mm;
     padding: 0;
     overflow: hidden;
-    background: #fff;
+    background: #f5f6f8;
     display: flex;
     flex-direction: column;
     print-color-adjust: exact;
@@ -296,7 +297,7 @@
 
   .overdue {
     flex: 0 0 auto;
-    max-height: 18mm;
+    max-height: 24mm;
     overflow: hidden;
     margin-bottom: 1.5mm;
     padding: 1mm 1.5mm;
@@ -353,31 +354,36 @@
   }
 
   .stack {
+    container-type: size;
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
-    gap: 0.35mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: flex-start;
+    gap: 0.4mm;
   }
 
   .stack .card {
-    container-type: size;
-    flex: 1 1 0;
+    flex: 0 0 auto;
+    height: min(7.4mm, calc((100cqh - (var(--cards) - 1) * 0.4mm) / var(--cards)));
     min-height: 0;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 0;
-    padding: 0 0.7mm;
+    padding: 0 0.8mm;
     border-radius: 1mm;
   }
 
   .stack .line {
-    font-size: min(7.5pt, 40cqh);
-    line-height: 1.02;
-    max-height: 48%;
+    font-size: min(7.5pt, calc(100cqh / var(--cards) * 0.34));
+    line-height: 1.05;
+    max-height: 1.15em;
     overflow: hidden;
-    gap: 0.5mm;
+    gap: 0.45mm;
   }
 
   .stack .stage,
