@@ -478,6 +478,9 @@ export function PlanView({
             </span>
           </h2>
           <div className={styles.headActions}>
+            <Link className={styles.pill} href={`/${workspace}/reviews/board`}>
+              Print board
+            </Link>
             <button type="button" className={styles.pill} aria-expanded={mapOpen} onClick={() => void showMap()}>
               {mapOpen ? "Hide map" : "Show map"}
             </button>

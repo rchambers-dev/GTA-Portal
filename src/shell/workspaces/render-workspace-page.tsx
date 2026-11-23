@@ -49,6 +49,7 @@ import { AnalyticsScreen } from "@/features/reviews/screens/AnalyticsScreen";
 import { ReviewLogScreen } from "@/features/reviews/screens/ReviewLogScreen";
 import { CycleScreen } from "@/features/reviews/screens/CycleScreen";
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
+import { ReviewBoardScreen } from "@/features/reviews/screens/ReviewBoardScreen";
 import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
 import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
 import { OutScreen } from "@/features/reviews/screens/OutScreen";
@@ -522,6 +523,8 @@ export async function renderWorkspacePage(
             month={searchValue(search?.month)}
           />
         );
+      case "reviews/board":
+        return <ReviewBoardScreen workspace="administration" />;
       case "reviews/cycle":
         return <CycleScreen workspace="administration" />;
       case "reviews/out":
@@ -636,6 +639,8 @@ export async function renderWorkspacePage(
             month={searchValue(search?.month)}
           />
         );
+      case "reviews/board":
+        return <ReviewBoardScreen workspace="management" />;
       case "reviews/cycle":
         return <CycleScreen workspace="management" />;
       case "reviews/out":

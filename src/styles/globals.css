@@ -83,6 +83,12 @@ h4 {
     margin: 12mm;
   }
 
+  /* Review board print. Named so the CV sheet above stays A4. */
+  @page review-board {
+    size: A3 landscape;
+    margin: 3mm;
+  }
+
   html,
   body {
     overflow: visible !important;
