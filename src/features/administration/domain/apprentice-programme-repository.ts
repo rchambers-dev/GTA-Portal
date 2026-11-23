@@ -5,6 +5,7 @@ import {
   PLANNED_DATE_TYPES,
   asIsoDate,
   dateChangeExplanation,
+  collegeDayValue,
   emptyProgrammePage,
   emptyStoredDates,
   explainProgrammeError,
@@ -30,7 +31,7 @@ import {
 import { londonToday, normaliseGtaId } from "./apprentice-tutor";
 
 const DATE_COLUMNS =
-  "course_start, planned_course_end, actual_course_end, planned_gateway_1, actual_gateway_1, planned_gateway_2, actual_gateway_2, planned_epa, actual_epa";
+  "course_start, planned_course_end, actual_course_end, planned_gateway_1, actual_gateway_1, planned_gateway_2, actual_gateway_2, planned_epa, actual_epa, release_day";
 
 type DateRow = {
   course_start: string | null;
@@ -42,6 +43,7 @@ type DateRow = {
   actual_gateway_2: string | null;
   planned_epa: string | null;
   actual_epa: string | null;
+  release_day?: string | null;
 };
 
 type EffectiveRow = {
@@ -302,6 +304,9 @@ export async function readApprenticeProgramme(
     changes,
     dateChangeReasons: options.canManage ? dateChangeReasons : [],
     breaks,
+    releaseDay: datesResult.error || !datesResult.data
+      ? null
+      : collegeDayValue((datesResult.data as DateRow).release_day),
     loadError: problems.length > 0 ? problems.join(" ") : null,
     today,
   };
@@ -516,6 +521,22 @@ export async function saveApprenticeCourseDates(
     }
   }
 
+  return { ok: true };
+}
+
+/** Writes apprentices.release_day through set_release_day, which also audits the change. */
+export async function saveApprenticeCollegeDay(
+  supabase: SupabaseClient,
+  gtaId: string,
+  collegeDay: string,
+): Promise<ProgrammeActionResult> {
+  const day = collegeDayValue(collegeDay);
+  if (!day) return { ok: false, formError: "Choose Monday to Friday." };
+  const { error } = await supabase.rpc("set_release_day", {
+    p_gta_id: gtaId,
+    p_day: day,
+  });
+  if (error) return failure(error);
   return { ok: true };
 }
 

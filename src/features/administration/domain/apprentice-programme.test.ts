@@ -12,7 +12,9 @@ import {
   planCourseDateUpdate,
   programmeIdentity,
   returnFromBreakReady,
+  collegeDayChanged,
   validateBreakStart,
+  validateCollegeDaySave,
   validateCourseDateSubmission,
   validateDateChangeRequest,
   type CourseDateSubmission,
@@ -250,6 +252,18 @@ describe("apprentice programme rules", () => {
         message: "Every active return-to-learning checklist item must be passed",
       }),
     ).toMatch(/checklist item/);
+  });
+
+  it("accepts a weekday college day and ignores an unchanged one", () => {
+    expect(validateCollegeDaySave({ gtaId: "GTA-000173", collegeDay: "Monday" })).toEqual({
+      ok: true,
+      gtaId: "GTA-000173",
+      collegeDay: "Monday",
+    });
+    expect(validateCollegeDaySave({ gtaId: "GTA-000173", collegeDay: "Saturday" }).ok).toBe(false);
+    expect(collegeDayChanged(null, "")).toBe(false);
+    expect(collegeDayChanged(null, "Friday")).toBe(true);
+    expect(collegeDayChanged("Thursday", "Thursday")).toBe(false);
   });
 
   it("loads breaks only for people who can manage the programme", () => {

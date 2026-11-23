@@ -8,6 +8,7 @@ import {
   rejectApprenticePlannedDateChange,
   requestApprenticePlannedDateChange,
   returnApprenticeFromBreak,
+  saveApprenticeCollegeDay,
   saveApprenticeCourseDates,
   setApprenticeExtensionPaperwork,
   signOffApprenticeReturn,
@@ -17,6 +18,7 @@ import {
   PROGRAMME_PERMISSION_ERROR,
   canManageApprenticeProgramme,
   validateBreakStart,
+  validateCollegeDaySave,
   validateCourseDateSubmission,
   validateDateChangeRequest,
   validateRecordId,
@@ -57,6 +59,17 @@ export async function saveApprenticeCourseDatesAction(input: {
   const parsed = validateCourseDateSubmission(input);
   if (!parsed.ok) return parsed;
   return saveApprenticeCourseDates(access.supabase, parsed.value);
+}
+
+export async function saveApprenticeCollegeDayAction(input: {
+  gtaId: string;
+  collegeDay: string;
+}): Promise<ProgrammeActionResult> {
+  const access = await authorisedClient();
+  if (!access.ok) return access;
+  const parsed = validateCollegeDaySave(input);
+  if (!parsed.ok) return parsed;
+  return saveApprenticeCollegeDay(access.supabase, parsed.gtaId, parsed.collegeDay);
 }
 
 export async function requestPlannedDateChangeAction(input: {
