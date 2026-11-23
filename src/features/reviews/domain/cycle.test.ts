@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { currentStepDetail, cycleDueChip, cycleStepFromStage, reviewCountLabel, stepTone, tutorDueBand } from "./cycle";
+import { currentStepDetail, cycleDueChip, cycleStepFromStage, nextReviewSetMessage, nextReviewStanding, parsePlannedReviewDate, reviewCountLabel, stepTone, tutorDueBand } from "./cycle";
 import { firstTutorFormGap, emptyTutorForm, otjTrack, tutorFill, tutorTargetDateError } from "./tutor-form-rules";
 
 describe("review cycle steps", () => {
@@ -20,6 +20,19 @@ describe("review cycle steps", () => {
     expect(currentStepDetail(false, 4)).toBe("Left · 4 days");
     expect(reviewCountLabel(0)).toBe("No review yet");
     expect(reviewCountLabel(2)).toBe("2 reviews");
+  });
+
+  it("checks a planned review date and names it in the confirmation", () => {
+    expect(parsePlannedReviewDate("2026-12-04")).toBe("2026-12-04");
+    expect(parsePlannedReviewDate(" 2026-12-04 ")).toBe("2026-12-04");
+    expect(parsePlannedReviewDate("2026-02-31")).toBeNull();
+    expect(parsePlannedReviewDate("")).toBeNull();
+    expect(nextReviewSetMessage("2026-12-04")).toBe("Next review set — due 4 Dec");
+    expect(nextReviewStanding("2026-11-23", null)).toEqual({ label: "Not set", tone: "none" });
+    expect(nextReviewStanding("2026-11-23", "2026-11-01")).toEqual({ label: "Overdue", tone: "overdue" });
+    expect(nextReviewStanding("2026-11-23", "2026-12-04")).toEqual({ label: "Due soon", tone: "soon" });
+    expect(nextReviewStanding("2026-11-23", "2026-12-07")).toEqual({ label: "Due soon", tone: "soon" });
+    expect(nextReviewStanding("2026-11-23", "2026-12-08")).toEqual({ label: "On track", tone: "on-track" });
   });
 
   it("describes the next review date on the cycle chip", () => {

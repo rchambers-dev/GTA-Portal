@@ -72,12 +72,19 @@ export type LearnerReviews = {
   steps: CycleStepView[];
   nextDue: string;
   nextDueState: string;
+  /** Overdue, Due soon, On track, or Not set. */
+  dueLabel: string;
+  dueTone: "overdue" | "soon" | "on-track" | "none";
+  /** Open review's planned day, YYYY-MM-DD. Null when there is no open review. */
+  plannedOn: string | null;
   lastActual: string;
   reviewerId: string | null;
   reviewerName: string;
   reviewers: { id: string; name: string }[];
   method: string | null;
   openReviewId: string | null;
+  /** True when this apprentice already has any review, open or completed. */
+  hasReview: boolean;
   booked: boolean;
   paperReturn: boolean;
   paperReturnedOn: string | null;
