@@ -1006,7 +1006,7 @@ function StopCard({
             {stop.completed ? <span className={styles.tagDone}>Review done</span> : null}
             {!stop.completed && verified ? <span className={styles.tagDone}>Verified</span> : null}
             {bookedOnDay ? <span className={styles.tagDone}>Booked time</span> : null}
-            {locked ? <span className={styles.tagLock}>{stop.lockLabel || "Locked"}</span> : null}
+            {locked && !verified ? <span className={styles.tagLock}>{stop.lockLabel || "Locked"}</span> : null}
             {people.find((person) => person.gtaId === stop.gtaId) ? (
               <ConcernChip
                 person={people.find((person) => person.gtaId === stop.gtaId)!}
@@ -1054,6 +1054,7 @@ function StopCard({
                 }
                 const next = !verified;
                 setVerified(next);
+                if (next) setLocked(false);
                 void onRun(() =>
                   verifyStopAction({
                     date,
@@ -1064,7 +1065,10 @@ function StopCard({
                     dayGtaIds: dayIds,
                   }),
                 `${stop.gtaId}:verify`).then((result) => {
-                  if (!result.ok) setVerified(!next);
+                  if (!result.ok) {
+                    setVerified(!next);
+                    if (next) setLocked(stop.locked);
+                  }
                 });
               }}
             >
