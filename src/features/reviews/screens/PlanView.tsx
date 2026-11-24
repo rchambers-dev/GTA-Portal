@@ -44,11 +44,13 @@ export function PlanView({
   page,
   date: serverDate,
   month,
+  closedDays = [],
 }: {
   workspace: "administration" | "management";
   page: PlanPageData;
   date: string;
   month: string;
+  closedDays?: { date: string; name: string }[];
 }) {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(serverDate);
@@ -521,6 +523,7 @@ export function PlanView({
           booked={bookedDays}
           completed={completedDays}
           skipped={page.settings.skipToday ? page.today : null}
+          closedDays={closedDays}
           onPick={(next) => go(next, next.slice(0, 7))}
           onMonth={(next) => go(selectedDate, next)}
         />
@@ -597,6 +600,7 @@ export function PlanView({
             onStatus={setMessage}
             busyKey={busyKey}
             hiddenStops={hiddenStops}
+            closedDays={closedDays}
             onBooked={(gtaId) => setHiddenStops((current) => (current.includes(`${selectedDate}:${gtaId}`) ? current : [...current, `${selectedDate}:${gtaId}`]))}
             onNote={(gtaId) => {
               const person = page.people.find((item) => item.gtaId === gtaId);
@@ -878,6 +882,7 @@ function StopCard({
   onNote,
   onBooked,
   busyKey,
+  closedDays = [],
 }: {
   workspace: "administration" | "management";
   stop: PlanStop;
@@ -901,6 +906,7 @@ function StopCard({
   onNote: (gtaId: string) => void;
   onBooked: (gtaId: string) => void;
   busyKey: string | null;
+  closedDays?: { date: string; name: string }[];
 }) {
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState<"book" | "note" | "lock" | null>(null);
@@ -1150,6 +1156,7 @@ function StopCard({
             loadedMonth={loadedMonth}
             initialMethod={bookMethod}
             onRun={onRun}
+            closedDays={closedDays}
             onSaved={(text) => {
               onStatus(text);
               setOpen(null);
@@ -1319,6 +1326,7 @@ function Calendar({
   booked,
   completed,
   skipped,
+  closedDays = [],
   onPick,
   onMonth,
 }: {
@@ -1328,6 +1336,7 @@ function Calendar({
   booked: Set<string>;
   completed: Set<string>;
   skipped: string | null;
+  closedDays?: { date: string; name: string }[];
   onPick: (date: string) => void;
   onMonth: (month: string) => void;
 }) {
@@ -1377,7 +1386,10 @@ function Calendar({
                 iso === today && iso !== date ? styles.dayToday : "",
                 completed.has(iso) ? styles.dayDone : booked.has(iso) ? styles.dayBooked : "",
                 iso === skipped ? styles.daySkipped : "",
+                closedDays.some((day) => day.date === iso) ? styles.dayClosed : "",
               ].filter(Boolean).join(" ")}
+              title={closedDays.find((day) => day.date === iso)?.name}
+              disabled={closedDays.some((day) => day.date === iso)}
               onClick={() => onPick(iso)}
             >
               {Number(iso.slice(-2))}
@@ -1537,6 +1549,7 @@ function DayTimeline({
   onBooked,
   busyKey,
   hiddenStops,
+  closedDays = [],
 }: {
   workspace: "administration" | "management";
   page: PlanPageData;
@@ -1554,6 +1567,7 @@ function DayTimeline({
   onBooked: (gtaId: string) => void;
   busyKey: string | null;
   hiddenStops: string[];
+  closedDays?: { date: string; name: string }[];
 }) {
   const stops = [...day.stops].filter((stop) => !hiddenStops.includes(`${date}:${stop.gtaId}`)).sort(
     (a, b) => (a.arriveMinutes ?? Number.MAX_SAFE_INTEGER) - (b.arriveMinutes ?? Number.MAX_SAFE_INTEGER) || a.sortOrder - b.sortOrder,
@@ -1634,6 +1648,7 @@ function DayTimeline({
               onStatus={onStatus}
               onNote={onNote}
               onBooked={onBooked}
+              closedDays={closedDays}
               busyKey={busyKey}
             />
             {crosses ? (

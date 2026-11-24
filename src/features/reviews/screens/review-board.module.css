@@ -302,6 +302,17 @@
   white-space: nowrap;
 }
 
+.closedNames {
+  margin: 0 0 4px;
+  color: #a81f28;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.columnClosed {
+  background: #f8e8e6;
+}
+
 @media print {
   :global(html:has([data-review-board])),
   :global(body:has([data-review-board])) {

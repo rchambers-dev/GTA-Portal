@@ -39,6 +39,7 @@ import {
   rejectPlannedDateChangeAction,
   requestPlannedDateChangeAction,
   returnFromBreakAction,
+  saveApprenticeCentreAction,
   saveApprenticeCollegeDayAction,
   saveApprenticeCourseDatesAction,
   setExtensionPaperworkAction,
@@ -135,6 +136,13 @@ export function ApprenticeProgrammePanel({
         today={programme.today}
       />
       <CollegeDay canManage={canManage} gtaId={apprentice.gtaId} collegeDay={programme.releaseDay} />
+      <SiteField
+        canManage={canManage}
+        gtaId={apprentice.gtaId}
+        centreId={programme.centreId ?? null}
+        centreName={programme.centreName ?? null}
+        centres={programme.centres ?? []}
+      />
       <DateChanges
         canManage={canManage}
         gtaId={apprentice.gtaId}
@@ -169,6 +177,49 @@ function plannedFacts(
     changed: effective ? effective[row.changedKey] === true : false,
     locked: plannedDateIsSet(stored, effective ? effectiveValue : null),
   };
+}
+
+function SiteField({
+  canManage,
+  gtaId,
+  centreId,
+  centreName,
+  centres,
+}: {
+  canManage: boolean;
+  gtaId: string;
+  centreId: string | null;
+  centreName: string | null;
+  centres: { id: string; name: string }[];
+}) {
+  const router = useRouter();
+  const [value, setValue] = useState(centreId ?? "");
+  const [message, setMessage] = useState<string | null>(null);
+  return (
+    <section className={styles.learnerCard} aria-labelledby="programme-site-heading">
+      <h2 id="programme-site-heading" className={styles.formGroupTitle}>Site</h2>
+      {centreId ? null : <p>Site not set. Open days are treated as Doncaster until a site is chosen.</p>}
+      {centreName ? <p>Current site: {centreName}</p> : null}
+      {canManage ? (
+        <form onSubmit={(event) => {
+          event.preventDefault();
+          void saveApprenticeCentreAction({ gtaId, centreId: value || null }).then((result) => {
+            setMessage(result.ok ? "Site saved." : result.formError || "The site could not be saved.");
+            if (result.ok) router.refresh();
+          });
+        }}>
+          <Select
+            aria-label="Training site"
+            value={value}
+            onChange={setValue}
+            options={[{ value: "", label: "Not set (Doncaster)" }, ...centres.map((centre) => ({ value: centre.id, label: centre.name }))]}
+          />
+          <button type="submit">Save site</button>
+        </form>
+      ) : null}
+      {message ? <p role="status">{message}</p> : null}
+    </section>
+  );
 }
 
 function CourseDates({

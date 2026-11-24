@@ -307,6 +307,7 @@ export async function readApprenticeProgramme(
     releaseDay: datesResult.error || !datesResult.data
       ? null
       : collegeDayValue((datesResult.data as DateRow).release_day),
+    ...(await readApprenticeSite(supabase, requestedId)),
     loadError: problems.length > 0 ? problems.join(" ") : null,
     today,
   };
@@ -525,6 +526,31 @@ export async function saveApprenticeCourseDates(
 }
 
 /** Writes apprentices.release_day through set_release_day, which also audits the change. */
+async function readApprenticeSite(supabase: SupabaseClient, gtaId: string) {
+  const [centres, apprentice] = await Promise.all([
+    supabase.from("candidate_centres").select("id, name").order("sort_order"),
+    supabase.from("apprentices").select("centre_id").eq("gta_id", gtaId).maybeSingle(),
+  ]);
+  if (centres.error || apprentice.error) return {};
+  const list = ((centres.data ?? []) as { id: string; name: string }[]);
+  const centreId = (apprentice.data as { centre_id?: string | null } | null)?.centre_id ?? null;
+  return {
+    centreId,
+    centreName: list.find((centre) => centre.id === centreId)?.name ?? null,
+    centres: list,
+  };
+}
+
+export async function saveApprenticeCentre(
+  supabase: SupabaseClient,
+  gtaId: string,
+  centreId: string | null,
+): Promise<ProgrammeActionResult> {
+  const { error } = await supabase.rpc("set_apprentice_centre", { p_gta_id: gtaId, p_centre_id: centreId });
+  if (error) return failure(error);
+  return { ok: true };
+}
+
 export async function saveApprenticeCollegeDay(
   supabase: SupabaseClient,
   gtaId: string,

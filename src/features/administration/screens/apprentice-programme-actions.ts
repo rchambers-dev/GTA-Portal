@@ -8,6 +8,7 @@ import {
   rejectApprenticePlannedDateChange,
   requestApprenticePlannedDateChange,
   returnApprenticeFromBreak,
+  saveApprenticeCentre,
   saveApprenticeCollegeDay,
   saveApprenticeCourseDates,
   setApprenticeExtensionPaperwork,
@@ -59,6 +60,15 @@ export async function saveApprenticeCourseDatesAction(input: {
   const parsed = validateCourseDateSubmission(input);
   if (!parsed.ok) return parsed;
   return saveApprenticeCourseDates(access.supabase, parsed.value);
+}
+
+export async function saveApprenticeCentreAction(input: {
+  gtaId: string;
+  centreId: string | null;
+}): Promise<ProgrammeActionResult> {
+  const access = await authorisedClient();
+  if (!access.ok) return access;
+  return saveApprenticeCentre(access.supabase, input.gtaId, input.centreId);
 }
 
 export async function saveApprenticeCollegeDayAction(input: {

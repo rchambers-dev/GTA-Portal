@@ -68,6 +68,7 @@ describe("rebook days", () => {
     expect(rebookDayChoice({ ...phone, date: "2026-11-20" }).bookable).toBe(false);
     expect(rebookDayChoice({ ...phone, date: "2026-11-12" }).bookable).toBe(false);
     expect(rebookDayChoice({ ...phone, releaseDay: "", date: "2026-11-19" }).bookable).toBe(false);
+    expect(rebookDayChoice({ ...phone, date: "2026-11-19", closedReason: "Christmas shutdown" })).toEqual({ bookable: false, struck: true });
     expect(phoneReviewSlots()).toEqual([9 * 60, 9 * 60 + 20, 9 * 60 + 40]);
     expect(phoneReviewTimeFits(9 * 60)).toBe(true);
     expect(phoneReviewTimeFits(10 * 60)).toBe(false);
