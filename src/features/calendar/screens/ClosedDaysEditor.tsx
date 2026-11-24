@@ -48,6 +48,8 @@ export function ClosedDaysEditor({
   const [impact, setImpact] = useState<{ gtaId: string; plannedOn: string; wouldMoveTo: string }[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [showPast, setShowPast] = useState(false);
+  const today = new Date().toISOString().slice(0, 10);
 
   const byDate = useMemo(() => {
     const map = new Map<string, { kind: string; name: string }>();
@@ -103,6 +105,10 @@ export function ClosedDaysEditor({
     setOpen(true);
   }
 
+  const visibleRows = [...rows]
+    .filter((row) => showPast || row.endsOn >= today)
+    .sort((a, b) => a.startsOn.localeCompare(b.startsOn) || a.name.localeCompare(b.name));
+
   const checked = lastChecked
     ? new Date(lastChecked).toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })
     : "not yet";
@@ -149,7 +155,7 @@ export function ClosedDaysEditor({
                   cells.push({ day, iso });
                 }
                 return (
-                  <div key={`${year}-${month}`}>
+                  <div className={styles.monthBlock} key={`${year}-${month}`}>
                     <h2>{MONTHS[month]} {year}</h2>
                     <div className={styles.month}>
                       {DOW.map((label) => <span key={label} className={styles.dow}>{label}</span>)}
@@ -168,13 +174,16 @@ export function ClosedDaysEditor({
             </div>
           </section>
           <section className={styles.card}>
-            <h2>Closed days list</h2>
+            <div className={styles.listHead}>
+              <h2>Closed days list</h2>
+              <button type="button" onClick={() => setShowPast((current) => !current)}>{showPast ? "Hide past" : "Show past"}</button>
+            </div>
             <table className={styles.table}>
               <thead>
                 <tr><th>Dates</th><th>Name</th><th>Type</th><th>Source</th><th>Status</th><th></th></tr>
               </thead>
               <tbody>
-                {rows.length === 0 ? <tr><td colSpan={6}>No closed days are loaded yet.</td></tr> : rows.map((row) => (
+                {visibleRows.length === 0 ? <tr><td colSpan={6}>No closed days in this list.</td></tr> : visibleRows.map((row) => (
                   <tr key={row.id}>
                     <td>{rangeLabel(row)}</td>
                     <td><strong>{row.name}</strong>{holidayNote(row) ? <div className={styles.sub}>{holidayNote(row)}</div> : null}</td>
