@@ -813,6 +813,10 @@ begin
   if v_rev.planned_on is not distinct from v_next then
     if v_rev.interval_weeks <> v_weeks then
       update public.reviews set interval_weeks = v_weeks where id = v_rev.id;
+      insert into public.audit_events (actor_profile_id, entity_type, entity_id, action, summary, payload)
+      values (v_uid, 'review', v_rev.id::text, 'interval_set',
+              format('Review for %s interval %s -> %s weeks (concern schedule)', p_gta_id, v_rev.interval_weeks, v_weeks),
+              jsonb_build_object('gta_id', p_gta_id, 'old', v_rev.interval_weeks, 'new', v_weeks, 'reason', 'concern'));
     end if;
     return;
   end if;
