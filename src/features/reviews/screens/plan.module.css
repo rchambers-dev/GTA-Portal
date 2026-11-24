@@ -3379,3 +3379,11 @@
     font-size: 0.6rem;
   }
 }
+
+.limitsMain {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  min-width: 0;
+}
