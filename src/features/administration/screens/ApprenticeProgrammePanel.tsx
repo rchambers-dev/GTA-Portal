@@ -193,17 +193,18 @@ function SiteField({
   centres: { id: string; name: string }[];
 }) {
   const router = useRouter();
-  const [value, setValue] = useState(centreId ?? "");
+  const doncaster = centres.find((centre) => centre.name === "Doncaster") ?? centres[0];
+  const [value, setValue] = useState(centreId || doncaster?.id || "");
   const [message, setMessage] = useState<string | null>(null);
   return (
     <section className={styles.learnerCard} aria-labelledby="programme-site-heading">
       <h2 id="programme-site-heading" className={styles.formGroupTitle}>Site</h2>
-      {centreId ? null : <p>Site not set. Open days are treated as Doncaster until a site is chosen.</p>}
       {centreName ? <p>Current site: {centreName}</p> : null}
       {canManage ? (
         <form onSubmit={(event) => {
           event.preventDefault();
-          void saveApprenticeCentreAction({ gtaId, centreId: value || null }).then((result) => {
+          if (!value) return;
+          void saveApprenticeCentreAction({ gtaId, centreId: value }).then((result) => {
             setMessage(result.ok ? "Site saved." : result.formError || "The site could not be saved.");
             if (result.ok) router.refresh();
           });
@@ -212,7 +213,7 @@ function SiteField({
             aria-label="Training site"
             value={value}
             onChange={setValue}
-            options={[{ value: "", label: "Not set (Doncaster)" }, ...centres.map((centre) => ({ value: centre.id, label: centre.name }))]}
+            options={centres.map((centre) => ({ value: centre.id, label: centre.name }))}
           />
           <button type="submit">Save site</button>
         </form>

@@ -11,8 +11,33 @@ update public.candidate_centres set open_weekdays = '{1,2}' where code = 'sheffi
 alter table public.apprentices
   add column if not exists centre_id uuid references public.candidate_centres(id);
 
+-- Everyone starts at Doncaster. Reiss moves Sheffield learners on the Programme tab.
+do $$
+declare
+  v_doncaster uuid;
+begin
+  select id into v_doncaster from public.candidate_centres where code = 'doncaster';
+  if v_doncaster is null then
+    raise exception 'Doncaster centre is missing' using errcode = 'P0002';
+  end if;
+  update public.apprentices set centre_id = v_doncaster where centre_id is null;
+end $$;
+
+create or replace function public.doncaster_centre_id()
+returns uuid
+language sql
+stable
+security definer
+set search_path to ''
+as $$
+  select id from public.candidate_centres where code = 'doncaster' limit 1
+$$;
+
+alter table public.apprentices alter column centre_id set default public.doncaster_centre_id();
+alter table public.apprentices alter column centre_id set not null;
+
 comment on column public.apprentices.centre_id is
-  'Training site. Null means Doncaster for open-day checks.';
+  'Training site. New and existing apprentices default to Doncaster.';
 
 -- ===== weekly limit settings
 alter table public.review_settings
@@ -1013,8 +1038,8 @@ begin
   if not public.has_portal_role('Administrator','Management') then
     raise exception 'Administrator or Management role required' using errcode = '42501';
   end if;
-  if p_centre_id is not null and not exists (select 1 from public.candidate_centres c where c.id = p_centre_id) then
-    raise exception 'That site is not on the list' using errcode = '22023';
+  if p_centre_id is null or not exists (select 1 from public.candidate_centres c where c.id = p_centre_id) then
+    raise exception 'Choose Doncaster or Sheffield' using errcode = '22023';
   end if;
   update public.apprentices set centre_id = p_centre_id where gta_id = p_gta_id;
   if not found then raise exception 'Apprentice % not found', p_gta_id using errcode = 'P0002'; end if;
