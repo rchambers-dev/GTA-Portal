@@ -19,7 +19,8 @@
   padding: 14px;
 }
 
-h1, h2 {
+.page h1,
+.page h2 {
   font-family: var(--font-display, "Plus Jakarta Sans", sans-serif);
   margin: 0 0 8px;
 }
@@ -70,7 +71,9 @@ h1, h2 {
   border-bottom: 1px solid #e3e6ec;
 }
 
-button, input, select {
+.page button,
+.page input,
+.page select {
   font: inherit;
 }
 
