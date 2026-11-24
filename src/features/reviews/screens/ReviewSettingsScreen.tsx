@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { logoutAction } from "@/app/logout/actions";
 import type { PlanPageData } from "../domain/plan-repository";
 import { savePlanSettingsAction } from "./plan-actions";
-import { applyRebalanceAction, previewRebalanceAction, saveWeekLimitsAction } from "./week-limit-actions";
+import { WeekLimitPanel } from "./WeekLimitPanel";
 import styles from "./plan.module.css";
 
 const TABS = [
@@ -37,10 +37,6 @@ export function ReviewSettingsScreen({
   const [emails, setEmails] = useState(page.settings.extraEmails.join(", "));
   const [hidden, setHidden] = useState(page.settings.hiddenTutorIds);
   const [outEnabled, setOut] = useState(page.settings.outEnabled);
-  const [maxReviews, setMaxReviews] = useState(25);
-  const [earliestWeeks, setEarliest] = useState(8);
-  const [latestWeeks, setLatest] = useState(12);
-  const [preview, setPreview] = useState<{ max?: number; weeks?: { week: string; count: number }[]; moves?: { gtaId: string; from: string; to: string }[] } | null>(null);
 
   useEffect(() => {
     const previous = document.title;
@@ -216,46 +212,7 @@ export function ReviewSettingsScreen({
             </form>
           </section>
         ) : null}
-        {tab === "limits" ? (
-          <section>
-            <h2>Weekly review limit</h2>
-            <p className={styles.meta}>Booked, locked and route-stop reviews count, and they are never moved. First reviews, overdue reviews and the current week stay where they are.</p>
-            <form className={styles.inline} onSubmit={(event) => {
-              event.preventDefault();
-              void saveWeekLimitsAction({ max: maxReviews, earliestWeeks, latestWeeks }).then((result) => {
-                setMessage(result.ok ? "Weekly limit saved." : result.formError || "The limit could not be saved.");
-              });
-            }}>
-              <label>Max reviews per week <input type="number" min={1} value={maxReviews} onChange={(event) => setMaxReviews(Number(event.target.value))} /></label>
-              <label>Earliest move, weeks after the last review <input type="number" min={1} value={earliestWeeks} onChange={(event) => setEarliest(Number(event.target.value))} /></label>
-              <label>Latest move, weeks after the last review <input type="number" min={1} value={latestWeeks} onChange={(event) => setLatest(Number(event.target.value))} /></label>
-              <button type="submit" className={styles.solid}>Save limit</button>
-            </form>
-            <div className={styles.inline}>
-              <button type="button" onClick={() => void previewRebalanceAction().then((result) => {
-                if (!result.ok) setMessage(result.formError || "The preview failed.");
-                else setPreview(result.preview as typeof preview);
-              })}>Rebalance (preview first)</button>
-              <button type="button" className={styles.solid} disabled={!preview} onClick={() => void applyRebalanceAction().then((result) => {
-                setMessage(result.ok ? "Reviews were moved." : result.formError || "The moves were not applied.");
-              })}>Apply moves</button>
-            </div>
-            {preview ? (
-              <div>
-                <h3>Now vs after</h3>
-                <ul>
-                  {(preview.weeks ?? []).map((week) => (
-                    <li key={week.week}>{week.week}: {week.count}/{preview.max ?? maxReviews}</li>
-                  ))}
-                </ul>
-                <h3>What would move</h3>
-                {(preview.moves ?? []).length === 0 ? <p>Nothing would move.</p> : (
-                  <ul>{(preview.moves ?? []).map((move) => <li key={`${move.gtaId}-${move.from}`}>{move.gtaId}: {move.from} → {move.to}</li>)}</ul>
-                )}
-              </div>
-            ) : null}
-          </section>
-        ) : null}
+        {tab === "limits" ? <WeekLimitPanel canWrite={page.canWrite} /> : null}
       </div>
     </div>
   );

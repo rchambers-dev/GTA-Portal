@@ -1,6 +1,6 @@
 "use server";
 
-import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { createSupabaseAdminClient, createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 
 function denied() {
@@ -34,7 +34,7 @@ export async function saveClosureAction(input: {
     p_notes: input.notes,
   });
   if (saved.error) return { ok: false as const, formError: saved.error.message };
-  return { ok: true as const, impact: preview.data ?? [] };
+  return { ok: true as const, id: saved.data as string | null, impact: preview.data ?? [] };
 }
 
 export async function previewClosureAction(startsOn: string, endsOn: string) {
@@ -51,6 +51,25 @@ export async function lockClosureAction(id: string, locked: boolean) {
   const result = await access.supabase.rpc("set_calendar_closure_lock", { p_id: id, p_locked: locked });
   if (result.error) return { ok: false as const, formError: result.error.message };
   return { ok: true as const };
+}
+
+export async function syncBankHolidaysAction() {
+  const access = await managementClient();
+  if (!access.ok) return access;
+  try {
+    const response = await fetch("https://www.gov.uk/bank-holidays.json");
+    if (!response.ok) return { ok: false as const, formError: "GOV.UK bank holidays could not be read." };
+    const body = (await response.json()) as { "england-and-wales"?: { events?: { title?: string; date?: string }[] } };
+    const events = (body["england-and-wales"]?.events ?? [])
+      .filter((event) => event.date)
+      .map((event) => ({ title: event.title ?? "Bank holiday", date: event.date }));
+    const admin = createSupabaseAdminClient();
+    const result = await admin.rpc("sync_bank_holidays", { p_events: events });
+    if (result.error) return { ok: false as const, formError: result.error.message };
+    return { ok: true as const, synced: result.data ?? 0 };
+  } catch {
+    return { ok: false as const, formError: "Bank holidays could not be saved." };
+  }
 }
 
 export async function removeClosureAction(id: string) {

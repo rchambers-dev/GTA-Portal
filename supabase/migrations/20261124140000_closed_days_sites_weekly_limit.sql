@@ -481,6 +481,9 @@ begin
   from public.reviews r
   where r.status = 'open' and r.planned_on is not null
   group by 1;
+  create temp table if not exists _rebalance_before (week_on date primary key, total int) on commit drop;
+  delete from _rebalance_before;
+  insert into _rebalance_before select * from _rebalance_load;
 
   for v_week in select week_on from _rebalance_load where total > v_max and week_on > v_current order by week_on loop
     for v_rec in
@@ -513,7 +516,9 @@ begin
       end loop;
       if v_day is null then continue; end if;
       v_moves := v_moves || jsonb_build_array(jsonb_build_object(
-        'reviewId', v_rec.id, 'gtaId', v_rec.gta_id, 'from', v_rec.planned_on, 'to', v_day, 'reason', 'weekly_limit'));
+        'reviewId', v_rec.id, 'gtaId', v_rec.gta_id,
+        'name', (select btrim(coalesce(a.first_name, '') || ' ' || coalesce(a.last_name, '')) from public.apprentices a where a.gta_id = v_rec.gta_id),
+        'from', v_rec.planned_on, 'to', v_day, 'reason', 'weekly_limit'));
       update _rebalance_load set total = total - 1 where week_on = v_week;
       insert into _rebalance_load (week_on, total) values (date_trunc('week', v_day)::date, 1)
       on conflict (week_on) do update set total = _rebalance_load.total + 1;
@@ -554,7 +559,9 @@ begin
       end loop;
       if v_day is null then continue; end if;
       v_moves := v_moves || jsonb_build_array(jsonb_build_object(
-        'reviewId', v_rec.id, 'gtaId', v_rec.gta_id, 'from', v_rec.planned_on, 'to', v_day, 'reason', 'weekly_limit'));
+        'reviewId', v_rec.id, 'gtaId', v_rec.gta_id,
+        'name', (select btrim(coalesce(a.first_name, '') || ' ' || coalesce(a.last_name, '')) from public.apprentices a where a.gta_id = v_rec.gta_id),
+        'from', v_rec.planned_on, 'to', v_day, 'reason', 'weekly_limit'));
       update _rebalance_load set total = total - 1 where week_on = v_week;
       insert into _rebalance_load (week_on, total) values (date_trunc('week', v_day)::date, 1)
       on conflict (week_on) do update set total = _rebalance_load.total + 1;
@@ -566,8 +573,23 @@ begin
     end loop;
   end loop;
 
-  select coalesce(jsonb_agg(jsonb_build_object('week', week_on, 'count', total) order by week_on), '[]'::jsonb)
-    into v_weeks from _rebalance_load;
+  select coalesce(jsonb_agg(jsonb_build_object(
+    'week', w.week_on,
+    'before', coalesce(b.total, 0),
+    'after', coalesce(a.total, 0),
+    'excluded', public.week_is_excluded(w.week_on, null),
+    'closed', (
+      select string_agg(distinct c.name, ', ')
+      from public.calendar_closures c
+      where c.removed_at is null
+        and daterange(c.starts_on, c.ends_on, '[]') && daterange(w.week_on, w.week_on + 6, '[]')
+    )
+  ) order by w.week_on), '[]'::jsonb)
+  into v_weeks
+  from generate_series(0, 15) as n(step)
+  cross join lateral (select (v_current + (n.step * 7))::date as week_on) as w
+  left join _rebalance_before b on b.week_on = w.week_on
+  left join _rebalance_load a on a.week_on = w.week_on;
   return jsonb_build_object('max', v_max, 'weeks', v_weeks, 'moves', v_moves, 'applied', p_apply);
 end;
 $$;
