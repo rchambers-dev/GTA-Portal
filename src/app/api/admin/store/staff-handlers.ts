@@ -15,6 +15,7 @@ import type {
   AdminPortalUser,
 } from "@/features/administration/domain/types";
 import type { UserInput } from "@/features/administration/domain/store";
+import { canManageTemporaryPassword } from "@/features/administration/domain/profile-access";
 import { generateTempPassword } from "@/features/administration/domain/temp-password";
 import { isMissingSchemaError } from "./cohort-handlers";
 
@@ -85,6 +86,38 @@ async function allocateUniqueUsername(
     if (!data) return candidate;
   }
   return `${base.slice(0, 24)}-${Date.now().toString(36)}`;
+}
+
+async function saveTemporaryPassword(
+  supabase: SupabaseAdmin,
+  profileId: string,
+  password: string,
+  setBy: string | undefined,
+): Promise<string | null> {
+  const { error } = await supabase.from("profile_credentials").upsert(
+    {
+      profile_id: profileId,
+      temporary_password: password,
+      set_at: new Date().toISOString(),
+      set_by: setBy ?? null,
+    },
+    { onConflict: "profile_id" },
+  );
+  return error?.message ?? null;
+}
+
+async function readTemporaryPassword(
+  supabase: SupabaseAdmin,
+  profileId: string,
+): Promise<{ password: string; error: string | null }> {
+  const { data, error } = await supabase
+    .from("profile_credentials")
+    .select("temporary_password")
+    .eq("profile_id", profileId)
+    .maybeSingle();
+  if (error) return { password: "", error: error.message };
+  const password = typeof data?.temporary_password === "string" ? data.temporary_password.trim() : "";
+  return { password, error: null };
 }
 
 function isApprenticePortalAccount(row: {
@@ -254,7 +287,10 @@ export async function handleStaffAction(
         adminPassword: string;
         adminEmail?: string;
       },
-  session?: { account: { email?: string | null; name?: string | null } },
+  session?: {
+    account: { id?: string; email?: string | null; name?: string | null };
+    permissions?: readonly string[];
+  },
 ): Promise<NextResponse | null> {
   if (body.action === "createStaff") {
     const input = body.input;
@@ -451,6 +487,26 @@ export async function handleStaffAction(
   }
 
   if (body.action === "setPortalEnvironment") {
+    if (body.status === "active") {
+      const { data: current, error: currentError } = await supabase
+        .from("profiles")
+        .select("base_role, workspace")
+        .eq("id", body.id)
+        .maybeSingle();
+      if (currentError) {
+        return NextResponse.json({ error: currentError.message }, { status: 500 });
+      }
+      if (
+        current &&
+        isApprenticePortalAccount(current) &&
+        !canManageTemporaryPassword(session?.permissions)
+      ) {
+        return NextResponse.json(
+          { error: "You need permission to manage users before an apprentice password can be set." },
+          { status: 403 },
+        );
+      }
+    }
     const stamp = new Date().toISOString();
     const update: Record<string, unknown> = {
       portal_status: body.status,
@@ -493,15 +549,9 @@ export async function handleStaffAction(
           { status: 500 },
         );
       }
-      const { error: storePasswordError } = await supabase
-        .from("profiles")
-        .update({ temporary_password: temporaryPassword })
-        .eq("id", body.id);
-      if (storePasswordError) {
-        console.warn(
-          "Could not persist temporary_password:",
-          storePasswordError.message,
-        );
+      const stored = await saveTemporaryPassword(supabase, body.id, temporaryPassword, session?.account.id);
+      if (stored) {
+        console.warn("Could not persist temporary password:", stored);
       }
     }
 
@@ -513,8 +563,15 @@ export async function handleStaffAction(
 
   if (body.action === "revealApprenticePassword") {
     // Staff are already authenticated via requireAdminAccess on the route.
+    // Seeing or replacing the stored password also needs admin.users.manage.
     // Do not start another password sign-in here. When captcha is turned back on,
     // this route has no captcha token, so that sign-in would be rejected.
+    if (!canManageTemporaryPassword(session?.permissions)) {
+      return NextResponse.json(
+        { error: "You need permission to manage users before an apprentice password can be shown." },
+        { status: 403 },
+      );
+    }
     const adminEmail = session?.account.email?.trim().toLowerCase() || "";
     if (!adminEmail) {
       return NextResponse.json(
@@ -525,9 +582,7 @@ export async function handleStaffAction(
 
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
-      .select(
-        "id, email, display_name, base_role, workspace, temporary_password",
-      )
+      .select("id, email, display_name, base_role, workspace")
       .eq("id", body.id)
       .single();
     if (profileError || !profile) {
@@ -543,10 +598,11 @@ export async function handleStaffAction(
       );
     }
 
-    let password =
-      typeof profile.temporary_password === "string"
-        ? profile.temporary_password.trim()
-        : "";
+    const saved = await readTemporaryPassword(supabase, body.id);
+    if (saved.error) {
+      return NextResponse.json({ error: saved.error }, { status: 500 });
+    }
+    let password = saved.password;
     if (!password) {
       password = generateTempPassword();
       const { error: passwordError } = await supabase.auth.admin.updateUserById(
@@ -559,15 +615,9 @@ export async function handleStaffAction(
           { status: 500 },
         );
       }
-      const { error: storeError } = await supabase
-        .from("profiles")
-        .update({ temporary_password: password })
-        .eq("id", body.id);
+      const storeError = await saveTemporaryPassword(supabase, body.id, password, session?.account.id);
       if (storeError) {
-        return NextResponse.json(
-          { error: storeError.message },
-          { status: 500 },
-        );
+        return NextResponse.json({ error: storeError }, { status: 500 });
       }
     }
 
