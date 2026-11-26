@@ -218,6 +218,7 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
           { href: "/management/shared-drive", label: "Shared Drive", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
           { href: "/management/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
           { href: "/management/safeguarding", label: "Safeguarding", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
+          { href: "/management/settings/closed-days", label: "Closed days", permission: PERMISSIONS.MANAGEMENT_WORKSPACE_VIEW },
         ],
       },
       apprenticeshipManagementSection("management"),

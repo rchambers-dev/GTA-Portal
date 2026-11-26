@@ -42,6 +42,7 @@ function SetNextReview({
         aria-label="Set next review"
         value={dueDate}
         disabled={pending}
+        title="Closed days are struck through on the Plan calendar and cannot be saved."
         onChange={(event) => setDueDate(event.target.value)}
       />
       <button type="submit" disabled={pending || !dueDate}>

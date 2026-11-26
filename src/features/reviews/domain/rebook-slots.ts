@@ -61,8 +61,10 @@ export function rebookDayChoice(input: {
   accepted: boolean;
   completed: boolean;
   method?: "in_person" | "teams" | "phone";
+  closedReason?: string | null;
 }): RebookDayChoice {
   const { date, today } = input;
+  if (input.closedReason) return { bookable: false, struck: true };
   if (date === input.missedDate) return { bookable: false, struck: false };
   if (date < today) return { bookable: false, struck: false };
   const releaseMatch = sameDay(input.releaseDay, date);

@@ -112,18 +112,23 @@ function WeekRow({ weeks }: { weeks: ReviewBoard["weeks"] }) {
       {weeks.map((week) => (
         <section
           key={week.start}
-          className={styles.column}
+          className={week.excluded ? `${styles.column} ${styles.columnClosed}` : styles.column}
           style={{ ["--cards" as string]: String(Math.max(week.cards.length, 1)) }}
           aria-label={week.label}
         >
           <header>
-            <strong>{week.label}</strong>
+            <strong>{week.excluded ? "Closed" : week.label}</strong>
             <span>{week.range}</span>
-            <em>{week.cards.length}</em>
+            {week.excluded ? null : <em>{week.cards.length}</em>}
           </header>
-          <div className={styles.stack}>
-            {week.cards.map((card) => <Card key={card.gtaId} card={card} />)}
-          </div>
+          {week.closedDays.length ? (
+            <p className={styles.closedNames}>{week.closedDays.map((day) => day.name).join(" · ")}</p>
+          ) : null}
+          {week.excluded ? null : (
+            <div className={styles.stack}>
+              {week.cards.map((card) => <Card key={card.gtaId} card={card} />)}
+            </div>
+          )}
         </section>
       ))}
     </div>

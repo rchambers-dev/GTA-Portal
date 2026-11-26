@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
+import { closedDaysInWeek, weekIsExcluded, type ClosureSpan } from "@/features/calendar/domain/open-days";
 import { buildReviewBoard, earliestBookedOn, latestCompletedOn, planBoardPill, stagePresentation, waitingOnTutors, type BoardCard, type ReviewBoard } from "./review-board";
 
 export type ReviewBoardPage = ReviewBoard & { loadError: string | null };
@@ -40,6 +41,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     completedResult,
     countersResult,
     stopsResult,
+    closuresResult,
   ] = await Promise.all([
     supabase.from("review_packs").select("review_id, stage, stage_since"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
@@ -62,6 +64,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
         .order("date_on", { ascending: true })
         .range(from, to),
     ),
+    supabase.from("calendar_closures").select("name, starts_on, ends_on, removed_at"),
   ]);
 
   const problems = [apprenticesResult, reviewsResult, completedResult, countersResult, stopsResult]
@@ -192,7 +195,18 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     });
   }
 
-  return { ...buildReviewBoard(cards, today), waiting: waitingOnTutors(withTutor, today), loadError: problems[0] ?? null };
+  const built = buildReviewBoard(cards, today);
+  const spans: ClosureSpan[] = closuresResult.error
+    ? []
+    : rows<{ name: string; starts_on: string; ends_on: string; removed_at: string | null }>(closuresResult.data)
+        .filter((row) => !row.removed_at)
+        .map((row) => ({ name: row.name, startsOn: row.starts_on.slice(0, 10), endsOn: row.ends_on.slice(0, 10) }));
+  built.weeks = built.weeks.map((week) => {
+    const closedDays = closedDaysInWeek(week.start, spans);
+    const excluded = weekIsExcluded(week.start, spans);
+    return { ...week, closedDays, excluded, cards: excluded ? [] : week.cards };
+  });
+  return { ...built, waiting: waitingOnTutors(withTutor, today), loadError: problems[0] ?? null };
 }
 
 async function everyPage<T>(

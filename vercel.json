@@ -3,6 +3,10 @@
     {
       "path": "/api/tutor-reviews/ensure-rounds",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/calendar/sync-bank-holidays",
+      "schedule": "0 6 * * *"
     }
   ]
 }

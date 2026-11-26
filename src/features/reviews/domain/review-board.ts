@@ -23,6 +23,8 @@ export type BoardWeek = {
   label: string;
   range: string;
   cards: BoardCard[];
+  closedDays: { date: string; name: string }[];
+  excluded: boolean;
 };
 
 export type WaitingChip = {
@@ -221,6 +223,8 @@ export function buildReviewBoard(cards: BoardCard[], today: string): ReviewBoard
       label: `w/c ${boardDayLabel(start)}`,
       range: `${boardDayLabel(start)} – ${boardDayLabel(end)}`,
       cards: list,
+      closedDays: [],
+      excluded: false,
     };
   });
   return { today, weekStart, overdue, weeks, laterCount, undatedCount, waiting: [] };

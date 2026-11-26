@@ -126,6 +126,7 @@ export function navGlyphForHref(href: string): NavGlyph {
   if (key.includes("/reviews/analytics")) return "chart";
   if (key.includes("/reviews/log")) return "history";
   if (key.includes("/reviews/tutor-reviews")) return "comment";
+  if (key.includes("/settings/closed-days")) return "calendar";
   if (key.includes("/reviews/settings")) return "gear";
   if (key.includes("/reviews")) return "reviews";
   if (key.includes("/messages")) return "messages";
