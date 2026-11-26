@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
@@ -56,7 +57,7 @@ export async function GET() {
     .order("updated_at", { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: clientError('That could not be completed.', error) }, { status: 500 });
   }
 
   const rows = ((data ?? []) as ProgrammeRow[]).map((row) => {
@@ -119,7 +120,7 @@ export async function POST(request: Request) {
 
   if (error || !data) {
     return NextResponse.json(
-      { error: error?.message ?? "Unable to update apprentice programme" },
+      { error: clientError('Unable to update apprentice programme', error) },
       { status: 500 },
     );
   }

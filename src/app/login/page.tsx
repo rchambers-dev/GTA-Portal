@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { getStandalonePorts } from "@/adapters/standalone";
+import { safeNextPath } from "@/lib/auth/safe-next";
 import { getDefaultWorkspaceRoute } from "@/lib/permissions/workspace";
 import { LoginForm } from "./LoginForm";
 import styles from "./login.module.css";
@@ -22,8 +23,7 @@ export default async function LoginPage({
 
   const params = await searchParams;
   const nextParam = Array.isArray(params.next) ? params.next[0] : params.next;
-  const next =
-    typeof nextParam === "string" && nextParam.startsWith("/") ? nextParam : "/";
+  const next = safeNextPath(nextParam);
 
   return (
     <main className={styles.page}>

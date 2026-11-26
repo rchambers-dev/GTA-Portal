@@ -635,6 +635,13 @@ async function readPreviousReview(
   return snapshot;
 }
 
+export async function loadPackTutorId(packId: string): Promise<string | null> {
+  const supabase = await createSupabaseServerClient();
+  const result = await supabase.from("review_packs").select("tutor_id").eq("id", packId).maybeSingle();
+  if (result.error || !result.data?.tutor_id) return null;
+  return result.data.tutor_id;
+}
+
 export async function loadDigitalReview(packId: string, userId: string | null): Promise<DigitalReview> {
   const supabase = await createSupabaseServerClient();
   return readDigitalReview(supabase, packId, userId);

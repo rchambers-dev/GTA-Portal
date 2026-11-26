@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import { NextResponse } from "next/server";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
 import { requireTutorDeliveryAccess } from "@/features/programme-delivery/domain/staff-delivery-access";
@@ -86,7 +87,7 @@ export async function POST(request: Request) {
   } catch (err) {
     if (err instanceof SessionLearningReleaseError) {
       return NextResponse.json(
-        { ok: false, error: err.message },
+        { ok: false, error: clientError('That could not be completed.', err) },
         { status: err.status },
       );
     }

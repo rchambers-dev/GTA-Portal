@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { safeNextPath } from "@/lib/auth/safe-next";
 import { hcaptchaEnabled } from "./captcha";
 
 export type LoginActionState = {
@@ -9,9 +10,7 @@ export type LoginActionState = {
 };
 
 function normaliseNext(raw: FormDataEntryValue | null): string {
-  const value = typeof raw === "string" ? raw.trim() : "";
-  if (!value.startsWith("/") || value.startsWith("//")) return "/";
-  return value;
+  return safeNextPath(typeof raw === "string" ? raw : null);
 }
 
 export async function loginAction(

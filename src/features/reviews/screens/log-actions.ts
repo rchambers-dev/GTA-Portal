@@ -1,5 +1,6 @@
 "use server";
 
+import { clientError } from "@/lib/http/client-error";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
@@ -23,5 +24,5 @@ export async function undoReviewPackEventAction(eventId: string) {
   if (error.code === "PGRST202" || /could not find the function/i.test(error.message || "")) {
     return { ok: false as const, formError: WAITING };
   }
-  return { ok: false as const, formError: error.message || "That event could not be undone." };
+  return { ok: false as const, formError: clientError("That event could not be undone.", error) };
 }

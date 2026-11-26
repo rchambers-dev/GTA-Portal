@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { formatApprenticeName } from "@/features/administration/domain/apprentice-record";
 import type { ReviewQuestionKind } from "./catalogue";
@@ -146,7 +147,7 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
     ? await supabase.from("tutor_review_responses").select("id, round_id, tutor_id, submitted_on")
     : responsesQuery;
   for (const result of [questionsResult, invitesResult, peopleResult, tutorsResult, profilesResult, responsesResult, answersResult]) {
-    if (result.error) return { ...empty, loadError: result.error.message };
+    if (result.error) return { ...empty, loadError: clientError("This page could not be loaded.", result.error) };
   }
 
   const profileRows = (profilesResult.data ?? []) as { id: string; display_name: string | null; portal_status?: string | null; archived_at?: string | null }[];
@@ -283,7 +284,7 @@ export async function loadTutorReviewsPage(): Promise<TutorReviewsPage> {
   let emailQueueReady = true;
   let attemptRows: EmailAttemptRow[] = [];
   if (attemptsResult.error) {
-    if (!missingTable(attemptsResult.error.message)) return { ...empty, loadError: attemptsResult.error.message };
+    if (!missingTable(attemptsResult.error.message)) return { ...empty, loadError: clientError("This page could not be loaded.", attemptsResult.error) };
     emailQueueReady = false;
   } else {
     attemptRows = ((attemptsResult.data ?? []) as {

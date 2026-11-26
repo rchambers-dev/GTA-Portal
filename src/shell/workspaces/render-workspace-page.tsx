@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { FeatureStubScreen } from "@/features/apprentice-lifecycle";
 import {
   ApprenticeAttendanceScreen,
@@ -725,5 +725,6 @@ export async function renderWorkspacePage(
   }
 
   const stub = resolveWorkspaceStub(workspace, slug);
+  if (!stub) notFound();
   return <FeatureStubScreen title={stub.title} description={stub.description} />;
 }

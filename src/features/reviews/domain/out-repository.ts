@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
@@ -46,7 +47,7 @@ export async function readOutPage(supabase: SupabaseClient): Promise<OutPage> {
     .gte("date_on", from)
     .lte("date_on", to)
     .order("date_on");
-  if (daysResult.error) return { today, days: [], marksReady: false, loadError: daysResult.error.message };
+  if (daysResult.error) return { today, days: [], marksReady: false, loadError: clientError("This page could not be loaded.", daysResult.error) };
   const dates = (daysResult.data ?? []).map((row) => row.date_on as string);
   if (!dates.length) return { today, days: [], marksReady: true, loadError: null };
   const stopsResult = await supabase
@@ -55,7 +56,7 @@ export async function readOutPage(supabase: SupabaseClient): Promise<OutPage> {
     .in("date_on", dates)
     .eq("excluded", false)
     .order("sort_order");
-  if (stopsResult.error) return { today, days: [], marksReady: false, loadError: stopsResult.error.message };
+  if (stopsResult.error) return { today, days: [], marksReady: false, loadError: clientError("This page could not be loaded.", stopsResult.error) };
   const ids = [...new Set((stopsResult.data ?? []).map((row) => row.gta_id as string))];
   const [apprentices, jobs, employers, sites, reviews, packs, marks] = await Promise.all([
     ids.length

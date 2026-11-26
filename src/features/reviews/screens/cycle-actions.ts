@@ -1,5 +1,6 @@
 "use server";
 
+import { clientError } from "@/lib/http/client-error";
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
@@ -16,7 +17,7 @@ function fail(error: { message?: string; code?: string } | null, missing?: strin
   if (error.code === "PGRST202" || /could not find the function/i.test(error.message || "")) {
     return { ok: false as const, formError: missing || "This change is waiting for the database migration Reiss needs to approve." };
   }
-  return { ok: false as const, formError: error.message || "That could not be saved." };
+  return { ok: false as const, formError: clientError("That could not be saved.", error) };
 }
 
 export async function signSafeguardingAction(input: { gtaIds: string[] }) {
@@ -57,7 +58,7 @@ export async function openReviewAction(input: { gtaId: string; plannedOn: string
   if (!plannedOn) return { ok: false as const, formError: "Choose the next review date." };
   const supabase = await createSupabaseServerClient();
   const existing = await supabase.from("reviews").select("id", { count: "exact", head: true }).eq("gta_id", gtaId);
-  if (existing.error) return { ok: false as const, formError: existing.error.message || "The reviews could not be checked." };
+  if (existing.error) return { ok: false as const, formError: clientError("The reviews could not be checked.", existing.error) };
   if ((existing.count ?? 0) > 0) {
     return { ok: false as const, formError: "This apprentice already has a review. The date cannot be changed." };
   }

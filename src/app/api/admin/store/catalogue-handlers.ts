@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 /**
  * Employer + programme catalogue handlers for /api/admin/store.
  */
@@ -116,7 +117,7 @@ export async function loadEmployers(supabase: SupabaseAdmin): Promise<{
     if (isMissingSchemaError(result.error.message)) {
       return { employers: [], error: null };
     }
-    return { employers: [], error: result.error.message };
+    return { employers: [], error: clientError('That could not be completed.', result.error) };
   }
   return {
     employers: (result.data ?? []).map((row) => mapEmployer(row as EmployerRow)),
@@ -136,7 +137,7 @@ export async function loadProgrammes(supabase: SupabaseAdmin): Promise<{
     if (isMissingSchemaError(result.error.message)) {
       return { programmes: [], error: null };
     }
-    return { programmes: [], error: result.error.message };
+    return { programmes: [], error: clientError('That could not be completed.', result.error) };
   }
   return {
     programmes: (result.data ?? []).map((row) =>
@@ -178,7 +179,7 @@ export async function handleCatalogueAction(
       .single();
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to create employer" },
+        { error: clientError('Unable to create employer', error) },
         { status: 500 },
       );
     }
@@ -229,7 +230,7 @@ export async function handleCatalogueAction(
       .single();
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to update employer" },
+        { error: clientError('Unable to update employer', error) },
         { status: 500 },
       );
     }
@@ -256,7 +257,7 @@ export async function handleCatalogueAction(
       .single();
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to create programme" },
+        { error: clientError('Unable to create programme', error) },
         { status: 500 },
       );
     }
@@ -297,7 +298,7 @@ export async function handleCatalogueAction(
       .single();
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to update programme" },
+        { error: clientError('Unable to update programme', error) },
         { status: 500 },
       );
     }

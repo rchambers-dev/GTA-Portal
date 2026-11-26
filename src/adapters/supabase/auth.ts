@@ -21,7 +21,7 @@ type ProfileRow = {
   linked_apprentice_id: string | null;
 };
 
-function asWorkspaceId(value: string | null | undefined): WorkspaceId {
+export function asWorkspaceId(value: string | null | undefined): WorkspaceId | null {
   switch (value) {
     case "apprentice":
     case "employer":
@@ -32,7 +32,7 @@ function asWorkspaceId(value: string | null | undefined): WorkspaceId {
     case "safeguarding":
       return value;
     default:
-      return "management";
+      return null;
   }
 }
 
@@ -46,7 +46,10 @@ function initialsFromName(name: string): string {
   return parts.map((part) => part[0]?.toUpperCase() ?? "").join("");
 }
 
-function toPortalAccount(user: User, profile: ProfileRow): PortalAccount {
+export function toPortalAccount(user: User, profile: ProfileRow): PortalAccount | null {
+  const baseRole = profile.base_role?.trim() || "";
+  const workspace = asWorkspaceId(profile.workspace);
+  if (!profile.id || !baseRole || !workspace) return null;
   const displayName =
     profile.display_name?.trim() ||
     user.user_metadata.display_name ||
@@ -61,10 +64,10 @@ function toPortalAccount(user: User, profile: ProfileRow): PortalAccount {
     initials: initialsFromName(displayName),
     email: profile.email || user.email || "",
     username: profile.username?.trim() || undefined,
-    baseRole: profile.base_role?.trim() || "Owner",
+    baseRole,
     responsibilities: profile.responsibilities ?? [],
     department: profile.department?.trim() || undefined,
-    workspace: asWorkspaceId(profile.workspace),
+    workspace,
     permissions: profile.permissions ?? [],
     departmentScope: profile.department_scope ?? undefined,
     programmeScope: profile.programme_scope ?? undefined,
@@ -106,6 +109,7 @@ export const getSupabaseEffectiveSession = cache(
     if (error || !profile) return null;
 
     const account = toPortalAccount(user, profile);
+    if (!account) return null;
 
     return {
       account,

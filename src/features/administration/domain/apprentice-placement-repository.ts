@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { isAssignedGtaId } from "./apprentice-record";
@@ -186,9 +187,9 @@ export async function readApprenticePlacements(
 
   if (catalogue) {
     const [employersResult, sitesResult, managersResult] = catalogue;
-    if (employersResult.error) problems.push(`Employers could not be loaded. ${employersResult.error.message}`);
-    if (sitesResult.error) problems.push(`Sites could not be loaded. ${sitesResult.error.message}`);
-    if (managersResult.error) problems.push(`Managers could not be loaded. ${managersResult.error.message}`);
+    if (employersResult.error) problems.push(clientError('Employers could not be loaded.', employersResult.error));
+    if (sitesResult.error) problems.push(clientError('Sites could not be loaded.', sitesResult.error));
+    if (managersResult.error) problems.push(clientError('Managers could not be loaded.', managersResult.error));
     employerRows = (employersResult.data ?? []) as EmployerNameRow[];
     siteRows = (sitesResult.data ?? []) as EmployerSiteRow[];
     managerRows = (managersResult.data ?? []) as EmployerManagerRow[];
@@ -216,9 +217,9 @@ export async function readApprenticePlacements(
         unique(employmentRows.map((row) => row.manager_id)),
       ),
     ]);
-    if (employersResult.error) problems.push(`Employers could not be loaded. ${employersResult.error.message}`);
-    if (sitesResult.error) problems.push(`Sites could not be loaded. ${sitesResult.error.message}`);
-    if (managersResult.error) problems.push(`Managers could not be loaded. ${managersResult.error.message}`);
+    if (employersResult.error) problems.push(clientError('Employers could not be loaded.', employersResult.error));
+    if (sitesResult.error) problems.push(clientError('Sites could not be loaded.', sitesResult.error));
+    if (managersResult.error) problems.push(clientError('Managers could not be loaded.', managersResult.error));
     employerRows = employersResult.data;
     siteRows = sitesResult.data;
     managerRows = managersResult.data;

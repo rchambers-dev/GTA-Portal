@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
@@ -51,7 +52,7 @@ export async function GET() {
 
   if (apprenticeError || !apprentice) {
     return NextResponse.json(
-      { error: apprenticeError?.message ?? "Apprentice record not found." },
+      { error: clientError('Apprentice record not found.', apprenticeError) },
       { status: 404 },
     );
   }
@@ -67,7 +68,7 @@ export async function GET() {
     .maybeSingle();
 
   if (enrolmentError) {
-    return NextResponse.json({ error: enrolmentError.message }, { status: 500 });
+    return NextResponse.json({ error: clientError('That could not be completed.', enrolmentError) }, { status: 500 });
   }
 
   const displayName =

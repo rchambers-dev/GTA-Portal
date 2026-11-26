@@ -29,7 +29,12 @@ function plainPlanError(message: string): string {
 
 function fail(error: { message?: string } | null): { ok: false; formError: string } | null {
   if (!error) return null;
-  return { ok: false, formError: plainPlanError(error.message || "The plan could not be saved.") };
+  const message = error.message || "";
+  if (message.includes("review_bookings_no_appointment_for_phone") || message.includes("release day")) {
+    return { ok: false, formError: plainPlanError(message) };
+  }
+  console.error(message);
+  return { ok: false, formError: "The plan could not be saved." };
 }
 
 async function saved<T extends { ok: true }>(error: { message?: string } | null, success: T) {

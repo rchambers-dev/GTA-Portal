@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { isAssignedGtaId } from "./apprentice-record";
@@ -105,12 +106,12 @@ export async function readLearnerExits(
   ]);
 
   const problems: string[] = [];
-  if (exitResult.error) problems.push(`Exits could not be loaded. ${exitResult.error.message}`);
+  if (exitResult.error) problems.push(clientError('Exits could not be loaded.', exitResult.error));
   if (courseResult.error) {
-    problems.push(`The course start date could not be loaded. ${courseResult.error.message}`);
+    problems.push(clientError('The course start date could not be loaded.', courseResult.error));
   }
   if (reasonsResult.error) {
-    problems.push(`Withdrawal reasons could not be loaded. ${reasonsResult.error.message}`);
+    problems.push(clientError('Withdrawal reasons could not be loaded.', reasonsResult.error));
   }
 
   const exitRows = exitResult.error ? [] : asRows<ExitRow>(exitResult.data);
@@ -123,7 +124,7 @@ export async function readLearnerExits(
   if (nameIds.length > 0) {
     const nameResult = await supabase.from("profiles").select("id, display_name, email").in("id", nameIds);
     if (nameResult.error) {
-      problems.push(`Names could not be loaded. ${nameResult.error.message}`);
+      problems.push(clientError('Names could not be loaded.', nameResult.error));
     } else {
       for (const row of (nameResult.data ?? []) as ProfileRow[]) {
         names.set(row.id, { display_name: row.display_name, email: row.email });

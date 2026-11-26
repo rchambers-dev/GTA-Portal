@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getStandalonePorts } from "@/adapters/standalone";
@@ -132,7 +133,7 @@ export async function POST(request: Request) {
   } catch (err) {
     if (err instanceof AiAccessDeniedError) {
       return NextResponse.json(
-        { error: err.message, code: err.code },
+        { error: clientError('That could not be completed.', err), code: err.code },
         { status: 403 },
       );
     }
