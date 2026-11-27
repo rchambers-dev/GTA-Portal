@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { NavItem, NavSection } from "@/lib/portal/types";
 import { usePortalSession } from "./session/PortalSessionProvider";
 import { NavIcon } from "./nav-icons";
@@ -69,10 +69,11 @@ export function SidebarNavigation() {
   const workspace = session.account.workspace;
   const owner = groupForPath(navigation, pathname);
   const [focus, setFocus] = useState<FocusState>(() => initialFocus(navigation, pathname));
-
-  useEffect(() => {
-    queueMicrotask(() => setFocus((current) => focusAfterNavigation(current, owner)));
-  }, [owner]);
+  const [focusOwner, setFocusOwner] = useState(owner);
+  if (focusOwner !== owner) {
+    setFocusOwner(owner);
+    setFocus((current) => focusAfterNavigation(current, owner));
+  }
 
   return (
     <div className={styles.sidebarSlot}>

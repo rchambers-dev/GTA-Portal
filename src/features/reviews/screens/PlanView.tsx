@@ -54,6 +54,11 @@ export function PlanView({
 }) {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(serverDate);
+  const [dateSource, setDateSource] = useState({ serverDate, month });
+  if (dateSource.serverDate !== serverDate || dateSource.month !== month) {
+    setDateSource({ serverDate, month });
+    setSelectedDate(serverDate);
+  }
   const [tab, setTab] = useState<PlanCounter>("to_book");
   const [dropTab, setDropTab] = useState<PlanCounter | null>(null);
   const [query, setQuery] = useState("");
@@ -98,10 +103,6 @@ export function PlanView({
   }, [query, tab]);
   const heading = planDateParts(selectedDate);
   const stopKey = activeDay.stops.map((stop) => `${stop.gtaId}:${stop.arrive}:${stop.leave}`).join("|");
-
-  useEffect(() => {
-    queueMicrotask(() => setSelectedDate(serverDate));
-  }, [serverDate, month]);
 
   useEffect(() => {
     const previous = document.title;
@@ -913,12 +914,12 @@ function StopCard({
   const [bookMethod, setBookMethod] = useState("in_person");
   const [verified, setVerified] = useState(stop.verified);
   const [locked, setLocked] = useState(stop.locked);
-  useEffect(() => {
-    queueMicrotask(() => {
-      setVerified(stop.verified);
-      setLocked(stop.locked);
-    });
-  }, [stop.verified, stop.locked]);
+  const [stopSync, setStopSync] = useState({ verified: stop.verified, locked: stop.locked });
+  if (stopSync.verified !== stop.verified || stopSync.locked !== stop.locked) {
+    setStopSync({ verified: stop.verified, locked: stop.locked });
+    setVerified(stop.verified);
+    setLocked(stop.locked);
+  }
   const mine = busyKey?.startsWith(stop.gtaId) ?? false;
   const held = Boolean(busyKey);
   const phoneDigits = stop.phone.replace(/\D/g, "");

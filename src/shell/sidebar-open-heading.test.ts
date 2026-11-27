@@ -63,6 +63,12 @@ async function measureHeading(chrome: ChromeSession) {
   const dir = await mkdtemp(path.join(tmpdir(), "open-heading-"));
   const htmlPath = path.join(dir, "index.html");
   await writeFile(htmlPath, page(tokens, css));
+  await chrome.send("Emulation.setDeviceMetricsOverride", {
+    width: 1280,
+    height: 900,
+    deviceScaleFactor: 1,
+    mobile: false,
+  });
   await chrome.send("Page.enable");
   const loaded = chrome.once("Page.loadEventFired");
   await chrome.send("Page.navigate", { url: `file://${htmlPath}` });
@@ -83,6 +89,7 @@ async function measureHeading(chrome: ChromeSession) {
     };
   const mouse = async (x: number, y: number) => {
     await chrome.send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y, button: "none", clickCount: 0 });
+    await evalJs("new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))");
   };
 
   const collapsed = await read("open");
