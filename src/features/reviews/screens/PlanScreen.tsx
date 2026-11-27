@@ -31,8 +31,9 @@ export async function PlanScreen({
       hideHeader
     >
       <div className={styles.raPage}>
-        {page.loadError ? <p role="alert">{page.loadError}</p> : null}
-        <PlanView workspace={workspace} page={page} date={selected} month={selectedMonth} closedDays={closedDays} />
+        {page.loadError ? <p role="alert">{page.loadError}</p> : (
+          <PlanView workspace={workspace} page={page} date={selected} month={selectedMonth} closedDays={closedDays} />
+        )}
       </div>
     </ApprenticePageShell>
   );

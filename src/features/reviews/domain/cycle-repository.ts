@@ -18,6 +18,7 @@ import {
   type CycleStepId,
 } from "./cycle";
 import { methodLabel, reviewDueLabel } from "./plan-due";
+import { pageAll, REVIEW_LOAD_ERROR } from "./page-all";
 import {
   emptyTutorForm,
   tutorFill,
@@ -58,9 +59,11 @@ function asRows<T>(data: unknown): T[] {
 
 async function loadApprentices(supabase: SupabaseClient) {
   const columns = "gta_id, first_name, middle_names, last_name, programme_id, release_day, status";
-  const withFlag = await supabase.from("apprentices").select(`${columns}, is_test`);
+  const withFlag = await pageAll<ApprenticeRow>((from, to) =>
+    supabase.from("apprentices").select(`${columns}, is_test`).range(from, to),
+  );
   if (withFlag.error && isMissingTestColumn(withFlag.error.message)) {
-    return supabase.from("apprentices").select(columns);
+    return pageAll<ApprenticeRow>((from, to) => supabase.from("apprentices").select(columns).range(from, to));
   }
   return withFlag;
 }
@@ -127,9 +130,9 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
     supabase.from("employer_sites").select("id, postcode"),
     supabase.from("employer_managers").select("id, first_name, middle_names, last_name"),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
-    supabase.from("reviews").select("id, gta_id, status, planned_on, actual_on, method, interval_weeks, reviewer_id"),
-    supabase.from("review_packs").select("id, review_id, gta_id, stage, tutor_id"),
-    supabase.from("review_pack_events").select("pack_id, event_type, occurred_at, to_stage"),
+    pageAll((from, to) => supabase.from("reviews").select("id, gta_id, status, planned_on, actual_on, method, interval_weeks, reviewer_id").range(from, to)),
+    pageAll((from, to) => supabase.from("review_packs").select("id, review_id, gta_id, stage, tutor_id").range(from, to)),
+    pageAll((from, to) => supabase.from("review_pack_events").select("pack_id, event_type, occurred_at, to_stage").range(from, to)),
     supabase.from("apprentice_safeguarding_signoffs").select("gta_id, signed_on, recorded_by").is("reversed_at", null),
     supabase.from("profiles").select("id, display_name"),
     supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
@@ -145,7 +148,9 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
     jobsResult,
     reviewsResult,
     packsResult,
+    eventsResult,
   ].find((result) => result.error);
+  if (failed?.error) console.error("The review cycle could not be loaded.", failed.error.message);
   const profiles = new Map(asRows<{ id: string; display_name: string | null }>(profilesResult.data).map((row) => [row.id, row.display_name || "Unnamed"]));
   const tutorRows = asRows<{ apprentice_id: string; tutor_id: string }>(tutorsResult.data);
   const tutors = new Map<string, { id: string; name: string }>();
@@ -154,7 +159,7 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
   });
   const reviewerRows = asRows<{ profile_id: string; is_default: boolean }>(reviewersResult.data);
   return {
-    error: failed?.error?.message ?? null,
+    error: failed?.error ? REVIEW_LOAD_ERROR : null,
     apprentices: excludeTestApprentices(asRows<ApprenticeRow>(apprenticesResult.data)),
     programmes: new Map(asRows<{ id: string; name: string | null }>(programmesResult.data).map((row) => [row.id, row.name || "Programme"])),
     jobs: new Map(
@@ -360,14 +365,14 @@ export async function readReviewCycle(supabase: SupabaseClient): Promise<CyclePa
   const built = loaded.apprentices
     .map((apprentice) => buildLearner(loaded, apprentice, today))
     .sort((a, b) => (a.daysLeft ?? 9999) - (b.daysLeft ?? 9999) || a.name.localeCompare(b.name));
-  const shelved = await supabase
-    .from("reviews")
-    .select("gta_id, actual_on, shelved_at")
-    .eq("status", "completed");
+  const shelved = await pageAll<{ gta_id: string; actual_on: string | null; shelved_at: string | null }>((from, to) =>
+    supabase.from("reviews").select("gta_id, actual_on, shelved_at").eq("status", "completed").range(from, to),
+  );
   const aside = new Set<string>();
+  if (shelved.error) console.error("Completed reviews could not be paged.", shelved.error.message);
   if (!shelved.error) {
     const latest = new Map<string, { actual: string; shelved: boolean }>();
-    for (const row of (shelved.data ?? []) as { gta_id: string; actual_on: string | null; shelved_at: string | null }[]) {
+    for (const row of shelved.data) {
       const actual = row.actual_on || "";
       const current = latest.get(row.gta_id);
       if (!current || actual >= current.actual) latest.set(row.gta_id, { actual, shelved: Boolean(row.shelved_at) });

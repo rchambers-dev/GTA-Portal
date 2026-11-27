@@ -89,6 +89,8 @@ export function CycleView({
         <p>Search a name, tutor, company or postcode.</p>
       </header>
       {page.loadError ? <p className={styles.error} role="alert">{page.loadError}</p> : null}
+      {page.loadError ? null : (
+      <>
       {notice ? <p className={styles.error} role="status">{notice}</p> : null}
       <div className={styles.tools}>
         <input
@@ -266,6 +268,8 @@ export function CycleView({
           </div>
         </div>
       ) : null}
+      </>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
+import { pageAll, REVIEW_LOAD_ERROR } from "./page-all";
 import { isLiveApprentice } from "./analytics";
 import { type LogRange, type ReviewLogEvent } from "./review-log";
 
@@ -52,16 +53,18 @@ export async function loadReviewLog() {
   const supabase = await createSupabaseServerClient();
   const today = londonToday();
   const columns = "gta_id, first_name, middle_names, last_name, status";
-  const withFlag = await supabase.from("apprentices").select(`${columns}, is_test`);
+  const withFlag = await pageAll<{ gta_id: string; first_name: string | null; middle_names: string | null; last_name: string | null; status: string | null; is_test?: boolean | null }>((from, to) =>
+    supabase.from("apprentices").select(`${columns}, is_test`).range(from, to),
+  );
   const apprenticesResult =
     withFlag.error && isMissingTestColumn(withFlag.error.message)
-      ? await supabase.from("apprentices").select(columns)
+      ? await pageAll<(typeof withFlag.data)[number]>((from, to) => supabase.from("apprentices").select(columns).range(from, to))
       : withFlag;
   const [tutors, profiles, packs, events, probe] = await Promise.all([
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
     supabase.from("profiles").select("id, display_name, base_role"),
-    supabase.from("review_packs").select("id, gta_id"),
-    supabase.from("review_pack_events").select("id, pack_id, event_type, from_stage, to_stage, occurred_at, actor_profile_id, actor_role, detail"),
+    pageAll((from, to) => supabase.from("review_packs").select("id, gta_id").range(from, to)),
+    pageAll((from, to) => supabase.from("review_pack_events").select("id, pack_id, event_type, from_stage, to_stage, occurred_at, actor_profile_id, actor_role, detail").range(from, to)),
     supabase.rpc("undo_review_pack_event", { p_event_id: "00000000-0000-0000-0000-000000000000" }),
   ]);
   const names = new Map(rows<{ id: string; display_name: string | null }>(profiles.data).map((row) => [row.id, row.display_name || "Reviewer"]));
@@ -111,5 +114,6 @@ export async function loadReviewLog() {
   const probeMessage = probe.error?.message || "";
   const undoReady = !probe.error || !(/could not find the function/i.test(probeMessage) || probe.error.code === "PGRST202");
   const failed = [apprenticesResult, packs, events].find((result) => result.error);
-  return { today, events: log, undoReady, loadError: failed?.error?.message ?? null };
+  if (failed?.error) console.error("The review log could not be loaded.", failed.error.message);
+  return { today, events: failed?.error ? [] : log, undoReady, loadError: failed?.error ? REVIEW_LOAD_ERROR : null };
 }

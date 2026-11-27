@@ -10,8 +10,7 @@ export async function ReviewBoardScreen({
   const board = await loadReviewBoard();
   return (
     <ApprenticePageShell eyebrow="Reviews" title="Review board" hideHeader>
-      {board.loadError ? <p role="alert">{board.loadError}</p> : null}
-      <ReviewBoardView workspace={workspace} board={board} />
+      {board.loadError ? <p role="alert">{board.loadError}</p> : <ReviewBoardView workspace={workspace} board={board} />}
     </ApprenticePageShell>
   );
 }

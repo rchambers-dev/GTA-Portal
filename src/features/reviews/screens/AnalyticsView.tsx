@@ -57,6 +57,8 @@ export function AnalyticsView({
         </div>
       </header>
       {data.loadError ? <p className={styles.error} role="alert">{data.loadError}</p> : null}
+      {data.loadError ? null : (
+      <>
       <div className={styles.filters}>
         {ANALYTICS_RANGES.map((range) => (
           <Link key={range.id} className={!filters.cycle && filters.range === range.id ? styles.on : ""} href={href(workspace, filters, view, { range: range.id, cycle: null })}>
@@ -230,6 +232,8 @@ export function AnalyticsView({
               ))}
             </section>
           </div>
+      </>
+      )}
     </div>
   );
 }

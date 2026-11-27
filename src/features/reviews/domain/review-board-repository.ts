@@ -4,6 +4,7 @@ import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { closedDaysInWeek, weekIsExcluded, type ClosureSpan } from "@/features/calendar/domain/open-days";
 import { buildReviewBoard, earliestBookedOn, latestCompletedOn, planBoardPill, stagePresentation, waitingOnTutors, type BoardCard, type ReviewBoard } from "./review-board";
+import { pageAll, REVIEW_LOAD_ERROR } from "./page-all";
 
 export type ReviewBoardPage = ReviewBoard & { loadError: string | null };
 
@@ -18,15 +19,17 @@ function missingRelation(message: string | undefined, name: string): boolean {
 export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewBoardPage> {
   const today = londonToday();
   const apprenticeColumns = "gta_id, first_name, middle_names, last_name, status";
-  const withFlag = await supabase.from("apprentices").select(`${apprenticeColumns}, is_test`);
+  const withFlag = await pageAll<{ gta_id: string; first_name: string | null; middle_names: string | null; last_name: string | null; status: string | null; is_test?: boolean | null }>((from, to) =>
+    supabase.from("apprentices").select(`${apprenticeColumns}, is_test`).range(from, to),
+  );
   const apprenticesResult =
     withFlag.error && isMissingTestColumn(withFlag.error.message)
-      ? await supabase.from("apprentices").select(apprenticeColumns)
+      ? await pageAll<(typeof withFlag.data)[number]>((from, to) => supabase.from("apprentices").select(apprenticeColumns).range(from, to))
       : withFlag;
   const reviewSelect = "id, gta_id, status, planned_on, shelved_at";
-  const reviewFallback = await supabase.from("reviews").select(reviewSelect).eq("status", "open");
+  const reviewFallback = await pageAll((from, to) => supabase.from("reviews").select(reviewSelect).eq("status", "open").range(from, to));
   const reviewsResult = reviewFallback.error && missingRelation(reviewFallback.error.message, "shelved_at")
-    ? await supabase.from("reviews").select("id, gta_id, status, planned_on").eq("status", "open")
+    ? await pageAll((from, to) => supabase.from("reviews").select("id, gta_id, status, planned_on").eq("status", "open").range(from, to))
     : reviewFallback;
   const [
     packsResult,
@@ -43,7 +46,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     stopsResult,
     closuresResult,
   ] = await Promise.all([
-    supabase.from("review_packs").select("review_id, stage, stage_since"),
+    pageAll((from, to) => supabase.from("review_packs").select("review_id, stage, stage_since").range(from, to)),
     supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
     supabase.from("profiles").select("id, display_name"),
     supabase.from("apprentice_employments").select("gta_id, employer_id").is("end_date", null),
@@ -67,7 +70,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     supabase.from("calendar_closures").select("name, starts_on, ends_on, removed_at"),
   ]);
 
-  const problems = [apprenticesResult, reviewsResult, completedResult, countersResult, stopsResult]
+  const problems = [apprenticesResult, reviewsResult, packsResult, completedResult, countersResult, stopsResult]
     .filter((result) => result.error)
     .map((result) => result.error?.message);
   const counterOf = new Map(
@@ -206,7 +209,10 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     const excluded = weekIsExcluded(week.start, spans);
     return { ...week, closedDays, excluded, cards: excluded ? [] : week.cards };
   });
-  return { ...built, waiting: waitingOnTutors(withTutor, today), loadError: problems[0] ?? null };
+  if (problems.length) {
+    for (const message of problems) console.error("The review board could not be loaded.", message);
+  }
+  return { ...built, waiting: waitingOnTutors(withTutor, today), loadError: problems.length ? REVIEW_LOAD_ERROR : null };
 }
 
 async function everyPage<T>(
