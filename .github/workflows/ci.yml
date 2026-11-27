@@ -15,6 +15,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Chrome
+        run: google-chrome --version || (sudo apt-get update && sudo apt-get install -y google-chrome-stable)
       - run: npx tsc --noEmit
       - run: npm run lint
       - run: npm test

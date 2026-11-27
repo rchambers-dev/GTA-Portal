@@ -1,5 +1,5 @@
 import { spawn, type ChildProcess } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { closeSync, openSync, readFileSync, unlinkSync } from "node:fs";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -115,9 +115,9 @@ function page(tokens: string, css: string) {
 ${tokens}
 ${css}
 .sidebarSlot { height: auto; min-height: 7rem; transition: none !important; }
-#openSlot { position: absolute; top: 140px; }
-#longSlot { position: absolute; top: 280px; }
-#closedSlot { position: absolute; top: 460px; }
+#openSlot { position: absolute; top: 16px; left: 16px; }
+#longSlot { position: absolute; top: 16px; left: 420px; }
+#closedSlot { position: absolute; top: 16px; left: 860px; }
 </style></head><body>
 ${rail("openSlot", "open", "categoryButtonOpen", "Onboarding", "left")}
 ${rail("longSlot", "long", "categoryButtonOpen", "Apprenticeship Management and programme records", "left")}
@@ -166,6 +166,7 @@ type ChromeSession = {
 };
 
 async function launchChrome(): Promise<ChromeSession> {
+  await acquireChromeLock();
   const dir = await mkdtemp(path.join(tmpdir(), "heading-chrome-"));
   const port = 20000 + Math.floor(Math.random() * 20000);
   const chrome = spawn(
@@ -236,17 +237,42 @@ async function launchChrome(): Promise<ChromeSession> {
         ws.close();
         await stopChrome(chrome);
         await rm(dir, { recursive: true, force: true }).catch(() => undefined);
+        releaseChromeLock();
       },
     };
   } catch (error) {
     await stopChrome(chrome);
     await rm(dir, { recursive: true, force: true }).catch(() => undefined);
+    releaseChromeLock();
     throw error;
   }
 }
 
+const chromeLock = path.join(tmpdir(), "gta-portal-chrome-test.lock");
+
+async function acquireChromeLock() {
+  for (let attempt = 0; attempt < 200; attempt += 1) {
+    try {
+      closeSync(openSync(chromeLock, "wx"));
+      return;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+  }
+  throw new Error("Chrome test lock timed out");
+}
+
+function releaseChromeLock() {
+  try {
+    unlinkSync(chromeLock);
+  } catch {
+    // The other Chrome test may already have released a stale lock.
+  }
+}
+
 async function waitForChrome(port: number) {
-  for (let attempt = 0; attempt < 50; attempt += 1) {
+  for (let attempt = 0; attempt < 150; attempt += 1) {
     try {
       if ((await fetch(`http://127.0.0.1:${port}/json/version`)).ok) return;
     } catch {
