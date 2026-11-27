@@ -96,6 +96,7 @@ export function RebookPanel({
   initialMethod,
   onRun,
   onSaved,
+  closedDays = [],
 }: {
   stop: PlanStop;
   missedDate: string;
@@ -107,6 +108,7 @@ export function RebookPanel({
   initialMethod: string;
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
   onSaved?: (message: string) => void;
+  closedDays?: { date: string; name: string }[];
 }) {
   const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
   const [month, setMonth] = useState(today.slice(0, 7));
@@ -162,6 +164,7 @@ export function RebookPanel({
       accepted: Boolean(day?.accepted),
       completed: Boolean(day?.completed),
       method: booking,
+      closedReason: closedDays.find((day) => day.date === date)?.name ?? null,
     });
   }
 
@@ -335,6 +338,7 @@ export function RebookPanel({
               aria-pressed={selected}
               aria-disabled={!choice.bookable || monthPending}
               disabled={!choice.bookable || monthPending}
+              title={closedDays.find((day) => day.date === iso)?.name || undefined}
               onClick={() => void pickDay(iso)}
             >
               {Number(iso.slice(8))}

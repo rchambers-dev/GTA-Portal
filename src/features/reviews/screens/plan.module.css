@@ -160,6 +160,12 @@
 .inline button,
 .dialog button,
 .calHead button,
+.dayClosed {
+  text-decoration: line-through;
+  color: #a81f28;
+  background: #f8e8e6;
+}
+
 .day {
   border: 1px solid #c8b79a;
   background: white;
@@ -3372,4 +3378,12 @@
     display: block;
     font-size: 0.6rem;
   }
+}
+
+.limitsMain {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  min-width: 0;
 }

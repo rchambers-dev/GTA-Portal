@@ -202,6 +202,9 @@ export type ApprenticeProgrammePage = {
   dateChangeReasons: ReasonOption[];
   breaks: ApprenticeBreaks | null;
   releaseDay: CollegeDay | null;
+  centreId?: string | null;
+  centreName?: string | null;
+  centres?: { id: string; name: string }[];
   loadError: string | null;
   today: string;
 };

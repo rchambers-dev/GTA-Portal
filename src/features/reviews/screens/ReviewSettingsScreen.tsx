@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { logoutAction } from "@/app/logout/actions";
 import type { PlanPageData } from "../domain/plan-repository";
 import { savePlanSettingsAction } from "./plan-actions";
+import { WeekLimitPanel, type WeekPreview } from "./WeekLimitPanel";
 import styles from "./plan.module.css";
 
 const TABS = [
@@ -12,6 +13,7 @@ const TABS = [
   { id: "out", label: "Out" },
   { id: "accessibility", label: "Accessibility" },
   { id: "feedback", label: "Feedback" },
+  { id: "limits", label: "Limits" },
 ] as const;
 
 type Tab = (typeof TABS)[number]["id"];
@@ -19,11 +21,15 @@ type Tab = (typeof TABS)[number]["id"];
 export function ReviewSettingsScreen({
   email,
   page,
+  initialTab = "account",
+  initialPreview = null,
 }: {
   email: string;
   page: PlanPageData;
+  initialTab?: Tab;
+  initialPreview?: WeekPreview | null;
 }) {
-  const [tab, setTab] = useState<Tab>("account");
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [message, setMessage] = useState<string | null>(null);
   const [skipToday, setSkipToday] = useState(page.settings.skipToday);
   const [officePostcode, setOffice] = useState(page.settings.officePostcode);
@@ -88,7 +94,7 @@ export function ReviewSettingsScreen({
           </button>
         ))}
       </nav>
-      <div className={styles.settingsMain}>
+      <div className={tab === "limits" ? styles.limitsMain : styles.settingsMain}>
         <h2 className={styles.srOnly}>Review settings</h2>
         {message ? <p role="alert">{message}</p> : null}
         {tab === "account" ? (
@@ -210,6 +216,7 @@ export function ReviewSettingsScreen({
             </form>
           </section>
         ) : null}
+        {tab === "limits" ? <WeekLimitPanel canWrite={page.canWrite} initialPreview={initialPreview} /> : null}
       </div>
     </div>
   );

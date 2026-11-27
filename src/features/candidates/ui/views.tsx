@@ -516,7 +516,7 @@ export function InterviewsPage(props: CandidatesViewProps) {
       {example ? <div className="banner banner-red"><div><strong>No-show follow-up.</strong> Jordan Blake did not attend the 9 Nov session (attempt 1). A follow-up was due by 11 Nov 2026 and is now overdue. Responsiveness is already set to Unresponsive, so the review date is 3 months after first contact. An employer is Identified but not confirmed — even after a later pass, Stage 2 stays locked until the employer is confirmed. A cancelled or rescheduled place stays taken unless Anne-Marie chooses to free it.</div></div> : null}
       <div className="card card-pad">
         <h2 className="card-title">Upcoming Mondays</h2>
-        <p className="muted" style={{ margin: "-4px 0 12px" }}>Bank holidays are skipped. Monday 28 Dec 2026 is a substitute Boxing Day holiday, so there is no session that week.</p>
+        <p className="muted" style={{ margin: "-4px 0 12px" }}>Bank holidays and other closed days are skipped. Those dates come from the closed-days calendar.</p>
         <div className="monday-list">
           {(example ? mondays : []).map((row) => (
             <div className="monday" key={row[0]}>
@@ -524,10 +524,6 @@ export function InterviewsPage(props: CandidatesViewProps) {
               <Pill tone={row[2]}>{row[3]}</Pill>
             </div>
           ))}
-          <div className="monday skip">
-            <div><div className="when">Mon 28 Dec 2026</div><div className="seats">Skipped — substitute Boxing Day bank holiday</div></div>
-            <Pill tone="grey">No session</Pill>
-          </div>
           {example ? (
             <div className="monday">
               <div><div className="when">Mon 4 Jan 2027 · Doncaster</div></div>

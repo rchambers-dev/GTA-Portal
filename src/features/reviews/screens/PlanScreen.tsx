@@ -3,6 +3,7 @@ import { canAddApprentice } from "@/features/administration/domain/apprentice-re
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { ApprenticePageShell } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { loadPlanPage } from "../domain/plan-repository";
+import { loadClosureSpans } from "@/features/calendar/domain/closed-days";
 import { PlanView } from "./PlanView";
 import styles from "./plan.module.css";
 
@@ -21,6 +22,7 @@ export async function PlanScreen({
   const selectedMonth = month && /^\d{4}-\d{2}$/.test(month) ? month : selected.slice(0, 7);
   const canWrite = canAddApprentice(session);
   const page = await loadPlanPage({ canWrite, date: selected, month: selectedMonth });
+  const closedDays = await loadClosureSpans();
 
   return (
     <ApprenticePageShell
@@ -30,7 +32,7 @@ export async function PlanScreen({
     >
       <div className={styles.raPage}>
         {page.loadError ? <p role="alert">{page.loadError}</p> : null}
-        <PlanView workspace={workspace} page={page} date={selected} month={selectedMonth} />
+        <PlanView workspace={workspace} page={page} date={selected} month={selectedMonth} closedDays={closedDays} />
       </div>
     </ApprenticePageShell>
   );

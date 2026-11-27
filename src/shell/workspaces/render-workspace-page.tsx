@@ -50,6 +50,7 @@ import { ReviewLogScreen } from "@/features/reviews/screens/ReviewLogScreen";
 import { CycleScreen } from "@/features/reviews/screens/CycleScreen";
 import { PlanScreen } from "@/features/reviews/screens/PlanScreen";
 import { ReviewBoardScreen } from "@/features/reviews/screens/ReviewBoardScreen";
+import { ClosedDaysScreen } from "@/features/calendar/screens/ClosedDaysScreen";
 import { SettingsScreen } from "@/features/reviews/screens/SettingsScreen";
 import { ReviewStubScreen } from "@/features/reviews/screens/ReviewStubScreen";
 import { OutScreen } from "@/features/reviews/screens/OutScreen";
@@ -675,6 +676,8 @@ export async function renderWorkspacePage(
         return <TutorReviewsScreen workspace="management" />;
       case "reviews/settings":
         return <SettingsScreen />;
+      case "settings/closed-days":
+        return <ClosedDaysScreen />;
       case "enrolments":
         return <AdminEnrolmentsScreen />;
       case "apprentice-funding":
