@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
+import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import {
   canReadAllLearnerConcerns,
   concernGtaIdsForReader,
@@ -24,7 +25,12 @@ export async function loadVisibleLearnerConcerns(
       ? supabase.from("profiles").select("portal_status, archived_at").eq("id", session.account.id).maybeSingle()
       : Promise.resolve({ data: null, error: null }),
     session
-      ? supabase.from("apprentice_tutors").select("apprentice_id").eq("tutor_id", session.account.id).is("end_date", null)
+      ? supabase
+          .from("apprentice_tutors")
+          .select("apprentice_id")
+          .eq("tutor_id", session.account.id)
+          .is("end_date", null)
+          .lte("start_date", londonToday())
       : Promise.resolve({ data: [], error: null }),
   ]);
   if (result.error) return { data: [], error: result.error };

@@ -55,9 +55,13 @@ describe("learner concern read access", () => {
     expect(sql).toContain("portal_status is distinct from 'disabled'");
     expect(sql).toContain("archived_at is null");
     expect(sql).toContain("end_date is null");
-    expect(sql).toContain("learner_concerns_select_reader");
-    expect(sql).toContain("grant execute on function public.get_learner_concerns(text) to authenticated");
+    expect(sql).toContain("start_date <= (now() at time zone 'Europe/London')::date");
+    expect(sql).not.toContain("learner_concerns_select_reader");
+    expect(sql).not.toContain("drop policy if exists learner_concerns_select_admin_mgmt");
+    expect(sql).toContain("grant execute on function public.get_learner_concerns(text) to authenticated, service_role");
+    expect(sql).toContain("when others then");
     expect(sql).not.toContain("to anon");
+    expect(sql).toContain("select distinct v_uid, 'learner_concern'");
     expect(sql).toContain("insert into public.audit_events");
     expect(sql).toContain("'learner_concern'");
     expect(sql).toContain("safeguarding.cases.view");
