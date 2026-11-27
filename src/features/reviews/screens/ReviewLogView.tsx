@@ -58,6 +58,8 @@ export function ReviewLogView({
         <Link href={`/${workspace}/reviews/analytics`}>Back to analytics</Link>
       </header>
       {loadError ? <p className={styles.error} role="alert">{loadError}</p> : null}
+      {loadError ? null : (
+      <>
       <form className={styles.filters} method="get">
         <input name="q" defaultValue={filters.query} placeholder="Search learner, detail or actor" aria-label="Search the log" />
         <select name="learner" defaultValue={filters.learnerId} aria-label="Learner">
@@ -113,6 +115,8 @@ export function ReviewLogView({
             {page.page < page.pages ? <Link href={href(workspace, filters, page.page + 1)}>Next</Link> : <span>Next</span>}
           </div>
         </div>
+      )}
+      </>
       )}
     </div>
   );

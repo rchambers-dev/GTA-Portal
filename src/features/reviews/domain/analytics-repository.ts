@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { addDays } from "./plan-due";
+import { pageAll, REVIEW_LOAD_ERROR } from "./page-all";
 import {
   buildAnalytics,
   isLiveApprentice,
@@ -37,26 +38,45 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
   const supabase = await createSupabaseServerClient();
   const today = londonToday();
   const columns = "gta_id, first_name, middle_names, last_name, programme_id, status, course_start";
-  const withFlag = await supabase.from("apprentices").select(`${columns}, is_test`);
+  const withFlag = await pageAll<{ gta_id: string; first_name: string | null; middle_names: string | null; last_name: string | null; programme_id: string | null; status: string | null; course_start: string | null; is_test?: boolean | null }>((from, to) =>
+    supabase.from("apprentices").select(`${columns}, is_test`).range(from, to),
+  );
   const apprenticesResult =
     withFlag.error && isMissingTestColumn(withFlag.error.message)
-      ? await supabase.from("apprentices").select(columns)
+      ? await pageAll<(typeof withFlag.data)[number]>((from, to) => supabase.from("apprentices").select(columns).range(from, to))
       : withFlag;
   const [jobs, employers, programmes, tutors, profiles, reviews, packs, events, signoffs, concerns, breaks] =
     await Promise.all([
-      supabase.from("apprentice_employments").select("gta_id, employer_id").is("end_date", null),
-      supabase.from("employers").select("employer_id, company_name"),
-      supabase.from("programmes").select("id, name"),
-      supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
-      supabase.from("profiles").select("id, display_name, base_role"),
-      supabase.from("reviews").select("id, gta_id, status, planned_on, actual_on, method"),
-      supabase.from("review_packs").select("id, gta_id, stage, stage_since"),
-      supabase.from("review_pack_events").select("id, pack_id, event_type, occurred_at, actor_profile_id, actor_role, detail"),
-      supabase.from("apprentice_safeguarding_signoffs").select("gta_id, signed_on, reversed_at"),
-      supabase.from("learner_concerns").select("gta_id, resolved_on"),
-      supabase.from("breaks_in_learning").select("apprentice_id, actual_return"),
+      pageAll((from, to) => supabase.from("apprentice_employments").select("gta_id, employer_id").is("end_date", null).range(from, to)),
+      pageAll((from, to) => supabase.from("employers").select("employer_id, company_name").range(from, to)),
+      pageAll((from, to) => supabase.from("programmes").select("id, name").range(from, to)),
+      pageAll((from, to) => supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null).range(from, to)),
+      pageAll((from, to) => supabase.from("profiles").select("id, display_name, base_role").range(from, to)),
+      pageAll((from, to) => supabase.from("reviews").select("id, gta_id, status, planned_on, actual_on, method").range(from, to)),
+      pageAll((from, to) => supabase.from("review_packs").select("id, gta_id, stage, stage_since").range(from, to)),
+      pageAll((from, to) => supabase.from("review_pack_events").select("id, pack_id, event_type, occurred_at, actor_profile_id, actor_role, detail").range(from, to)),
+      pageAll((from, to) => supabase.from("apprentice_safeguarding_signoffs").select("gta_id, signed_on, reversed_at").range(from, to)),
+      pageAll((from, to) => supabase.from("learner_concerns").select("gta_id, resolved_on").range(from, to)),
+      pageAll((from, to) => supabase.from("breaks_in_learning").select("apprentice_id, actual_return").range(from, to)),
     ]);
-  const failed = [apprenticesResult, reviews, packs].find((result) => result.error);
+  const failed = [apprenticesResult, reviews, packs, events, jobs, tutors, concerns, breaks].find((result) => result.error);
+  if (failed?.error) {
+    console.error("Review analytics could not be loaded.", failed.error.message);
+    const empty: AnalyticsSource = {
+      today,
+      learners: [],
+      reviews: [],
+      packs: [],
+      events: [],
+      activeSignoffs: [],
+      recentSignoffs: [],
+      reversedSignoffs: [],
+      openConcerns: [],
+      resolvedConcerns: [],
+      openBreaks: [],
+    };
+    return { today, filters, loadError: REVIEW_LOAD_ERROR, page: buildAnalytics(empty, filters) };
+  }
   const names = new Map(rows<{ id: string; display_name: string | null }>(profiles.data).map((row) => [row.id, row.display_name || "Reviewer"]));
   const roles = new Map(rows<{ id: string; base_role: string | null }>(profiles.data).map((row) => [row.id, row.base_role || ""]));
   const employerName = new Map(rows<{ employer_id: string; company_name: string | null }>(employers.data).map((row) => [row.employer_id, row.company_name || "Employer"]));
@@ -145,7 +165,7 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
   return {
     today,
     filters,
-    loadError: failed?.error?.message ?? breaks.error?.message ?? null,
+    loadError: null,
     page: buildAnalytics(source, filters),
   };
 }

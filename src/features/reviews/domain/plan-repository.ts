@@ -15,6 +15,7 @@ import {
   timeToMinutes,
   type DueState,
 } from "./plan-due";
+import { pageAll } from "./page-all";
 
 export type PlanCounter = "waiting" | "to_book" | "locked" | "booked";
 
@@ -192,9 +193,12 @@ export async function readPlanPage(
     supabase.from("employers").select("employer_id, company_name"),
     supabase.from("employer_sites").select("id, postcode, area_name"),
     supabase.from("employer_managers").select("id, first_name, middle_names, last_name, phone"),
-    supabase
-      .from("reviews")
-      .select("id, gta_id, status, planned_on, actual_on, method, notes, interval_weeks"),
+    pageAll((from, to) =>
+      supabase
+        .from("reviews")
+        .select("id, gta_id, status, planned_on, actual_on, method, notes, interval_weeks")
+        .range(from, to),
+    ),
     supabase.from("learner_concerns").select("id, gta_id").is("resolved_on", null),
     supabase.from("reasons").select("id, label, sort_order").eq("used_for_concerns", true).eq("active", true).order("sort_order", { ascending: true }),
     supabase.from("apprentice_safeguarding_signoffs").select("id, gta_id").is("reversed_at", null),
@@ -311,9 +315,11 @@ export async function readPlanPage(
     }
   }
   const noteUntil = new Map<string, string>();
-  const untilResult = await supabase.from("reviews").select("id, notes_until");
+  const untilResult = await pageAll<{ id: string; notes_until: string | null }>((from, to) =>
+    supabase.from("reviews").select("id, notes_until").range(from, to),
+  );
   if (!untilResult.error) {
-    for (const row of (untilResult.data ?? []) as { id: string; notes_until: string | null }[]) {
+    for (const row of untilResult.data) {
       if (row.notes_until) noteUntil.set(row.id, row.notes_until);
     }
   }
@@ -671,10 +677,12 @@ export async function readRebookMonth(
       .lt("date_on", nextMonth)
       .eq("excluded", false),
     supabase.rpc("get_review_settings"),
-    supabase.from("reviews").select("gta_id, review_bookings(appointment_on)").eq("status", "open"),
+    pageAll((from, to) =>
+      supabase.from("reviews").select("gta_id, review_bookings(appointment_on)").eq("status", "open").range(from, to),
+    ),
   ]);
-  if (daysResult.error || stopsResult.error) {
-    return { days: [], error: daysResult.error?.message || stopsResult.error?.message || "That month could not be loaded." };
+  if (daysResult.error || stopsResult.error || reviewsResult.error) {
+    return { days: [], error: "That month could not be loaded." };
   }
   const settingsRow = asRows<{ start_time: string; lunch_start: string; lunch_minutes: number }>(settingsResult.data)[0];
   const lunchStart = timeToMinutes(String(settingsRow?.lunch_start || "13:00").slice(0, 5)) ?? 13 * 60;
@@ -747,9 +755,11 @@ export async function readRebookMonth(
 
 async function loadPlanApprentices(supabase: SupabaseClient) {
   const columns = "gta_id, first_name, middle_names, last_name, release_day";
-  const withFlag = await supabase.from("apprentices").select(`${columns}, is_test`);
+  const withFlag = await pageAll<{ gta_id: string; first_name: string | null; middle_names: string | null; last_name: string | null; release_day: string | null; is_test?: boolean | null }>((from, to) =>
+    supabase.from("apprentices").select(`${columns}, is_test`).range(from, to),
+  );
   if (withFlag.error && isMissingTestColumn(withFlag.error.message)) {
-    return supabase.from("apprentices").select(columns);
+    return pageAll<(typeof withFlag.data)[number]>((from, to) => supabase.from("apprentices").select(columns).range(from, to));
   }
   return withFlag;
 }

@@ -10,6 +10,23 @@ const HINTS: Record<string, string> = {
   comment: "Write the GTA tutor contribution in the tutor's voice, from the work they have seen.",
 };
 
+const MAX_TEXT = 4000;
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_CALLS = 20;
+const recentCalls = new Map<string, number[]>();
+
+function withinRate(accountId: string): boolean {
+  const now = Date.now();
+  const recent = (recentCalls.get(accountId) ?? []).filter((at) => now - at < WINDOW_MS);
+  if (recent.length >= MAX_CALLS) {
+    recentCalls.set(accountId, recent);
+    return false;
+  }
+  recent.push(now);
+  recentCalls.set(accountId, recent);
+  return true;
+}
+
 export async function POST(request: Request) {
   const session = await getSupabaseEffectiveSession();
   if (!session) return NextResponse.json({ error: "Sign in again." }, { status: 401 });
@@ -17,9 +34,15 @@ export async function POST(request: Request) {
   if (role !== "Tutor" && role !== "Administrator" && role !== "Management") {
     return NextResponse.json({ error: "Only a tutor can improve this wording." }, { status: 403 });
   }
+  if (!withinRate(session.account.id)) {
+    return NextResponse.json({ error: "Too many wording requests. Wait a few minutes and try again." }, { status: 429 });
+  }
   const body = (await request.json().catch(() => null)) as { text?: string; field?: string; wordLimit?: number } | null;
   const text = body?.text?.trim() || "";
   if (!text) return NextResponse.json({ error: "Write something in this box first, then use AI to improve it." }, { status: 400 });
+  if (text.length > MAX_TEXT) {
+    return NextResponse.json({ error: "That box is too long to send. Shorten it and try again." }, { status: 400 });
+  }
   const key = process.env.OPENAI_API_KEY;
   if (!key) {
     return NextResponse.json(
@@ -27,7 +50,7 @@ export async function POST(request: Request) {
       { status: 503 },
     );
   }
-  const words = Number(body?.wordLimit) || 0;
+  const words = Math.min(400, Math.max(0, Number(body?.wordLimit) || 0));
   const field = body?.field || "evidence";
   const hint = HINTS[field] || HINTS.evidence;
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
