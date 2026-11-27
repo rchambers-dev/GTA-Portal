@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { loadVisibleLearnerConcerns } from "@/features/administration/domain/concern-reader";
 import { apprenticeStatusLabel } from "@/features/administration/domain/apprentice-record";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
@@ -183,7 +184,7 @@ export async function readSearchDirectory(
       supabase.from("programmes").select("id, name"),
       supabase.from("apprentice_tutors").select("apprentice_id, tutor_id").is("end_date", null),
       supabase.from("reviews").select("gta_id, planned_on, status").eq("status", "open"),
-      supabase.rpc("get_learner_concerns", { p_gta_id: null }),
+      loadVisibleLearnerConcerns(supabase),
       supabase
         .from("candidates")
         .select(

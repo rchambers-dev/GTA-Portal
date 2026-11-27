@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { loadVisibleLearnerConcerns } from "@/features/administration/domain/concern-reader";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { closedDaysInWeek, weekIsExcluded, type ClosureSpan } from "@/features/calendar/domain/open-days";
@@ -53,7 +54,7 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
     supabase.from("employers").select("employer_id, company_name"),
     supabase.rpc("get_review_settings"),
     supabase.from("review_holds").select("review_id, held_until, released_at"),
-    supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
+    loadVisibleLearnerConcerns(supabase),
     supabase.from("learner_exits").select("gta_id, reversed_at"),
     everyPage<{ gta_id: string; actual_on: string | null }>((from, to) =>
       supabase.from("reviews").select("gta_id, actual_on").eq("status", "completed").not("actual_on", "is", null).range(from, to),
@@ -117,7 +118,11 @@ export async function readReviewBoard(supabase: SupabaseClient): Promise<ReviewB
       { stage: row.stage, sentOn: row.stage_since?.slice(0, 10) || null },
     ]),
   );
-  const concern = new Set(rows<{ gta_id: string }>(concernsResult.data).map((row) => row.gta_id));
+  const concern = new Set(
+    rows<{ gta_id: string; resolved_on: string | null }>(concernsResult.data)
+      .filter((row) => !row.resolved_on)
+      .map((row) => row.gta_id),
+  );
   const exited = new Set(
     exitsResult.error
       ? []

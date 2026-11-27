@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { loadVisibleLearnerConcerns } from "@/features/administration/domain/concern-reader";
 import { formatTutorDate, londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { londonClock } from "./plan-call-end";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
@@ -135,7 +136,7 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
     pageAll((from, to) => supabase.from("review_pack_events").select("pack_id, event_type, occurred_at, to_stage").range(from, to)),
     supabase.from("apprentice_safeguarding_signoffs").select("gta_id, signed_on, recorded_by").is("reversed_at", null),
     supabase.from("profiles").select("id, display_name"),
-    supabase.from("learner_concerns").select("gta_id").is("resolved_on", null),
+    loadVisibleLearnerConcerns(supabase),
     supabase.from("review_reviewers").select("profile_id, is_default"),
     supabase.from("review_tutor_forms").select("pack_id, previous_summary, tutor_comment, entry_method, submitted_at"),
     supabase.from("review_targets").select("pack_id, kind, slot, action, owner, measure, target_date, status, carried_from_id"),
@@ -182,7 +183,11 @@ async function loadShared(supabase: SupabaseClient): Promise<Loaded> {
     events: asRows(eventsResult.data),
     signoffs: asRows(signoffsResult.data),
     profiles,
-    concerns: new Set(asRows<{ gta_id: string }>(concernsResult.data).map((row) => row.gta_id)),
+    concerns: new Set(
+      asRows<{ gta_id: string; resolved_on: string | null }>(concernsResult.data)
+        .filter((row) => !row.resolved_on)
+        .map((row) => row.gta_id),
+    ),
     reviewers: reviewerRows.map((row) => ({
       id: row.profile_id,
       name: profiles.get(row.profile_id) || "Reviewer",
