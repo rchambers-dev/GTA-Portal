@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
+import { loadVisibleLearnerConcerns } from "@/features/administration/domain/concern-reader";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
 import { excludeTestApprentices, isMissingTestColumn } from "@/features/administration/domain/test-apprentice";
 import { addDays } from "./plan-due";
@@ -56,7 +57,7 @@ export async function loadAnalytics(filters: AnalyticsFilters) {
       pageAll((from, to) => supabase.from("review_packs").select("id, gta_id, stage, stage_since").range(from, to)),
       pageAll((from, to) => supabase.from("review_pack_events").select("id, pack_id, event_type, occurred_at, actor_profile_id, actor_role, detail").range(from, to)),
       pageAll((from, to) => supabase.from("apprentice_safeguarding_signoffs").select("gta_id, signed_on, reversed_at").range(from, to)),
-      pageAll((from, to) => supabase.from("learner_concerns").select("gta_id, resolved_on").range(from, to)),
+      loadVisibleLearnerConcerns(supabase),
       pageAll((from, to) => supabase.from("breaks_in_learning").select("apprentice_id, actual_return").range(from, to)),
     ]);
   const failed = [apprenticesResult, reviews, packs, events, jobs, tutors, concerns, breaks].find((result) => result.error);
