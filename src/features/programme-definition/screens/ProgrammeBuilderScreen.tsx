@@ -310,7 +310,7 @@ export function ProgrammeBuilderScreen() {
 
   useEffect(() => {
     if (structureLocked && spineMode === "builder") {
-      setSpineMode("view");
+      queueMicrotask(() => setSpineMode("view"));
     }
   }, [structureLocked, spineMode]);
 
@@ -352,14 +352,16 @@ export function ProgrammeBuilderScreen() {
   const checklistGroupIds = checklistGroups.map((g) => g.id).join("|");
 
   useEffect(() => {
-    if (!firstErrorChecklistId) {
-      setOpenChecklistGroupId(null);
-      return;
-    }
-    const ids = checklistGroupIds ? checklistGroupIds.split("|") : [];
-    setOpenChecklistGroupId((current) => {
-      if (current && ids.includes(current)) return current;
-      return firstErrorChecklistId;
+    queueMicrotask(() => {
+      if (!firstErrorChecklistId) {
+        setOpenChecklistGroupId(null);
+        return;
+      }
+      const ids = checklistGroupIds ? checklistGroupIds.split("|") : [];
+      setOpenChecklistGroupId((current) => {
+        if (current && ids.includes(current)) return current;
+        return firstErrorChecklistId;
+      });
     });
   }, [firstErrorChecklistId, checklistGroupIds]);
 
@@ -465,7 +467,9 @@ export function ProgrammeBuilderScreen() {
   useEffect(() => {
     if (!official?.standardCode) return;
     if (!isApiPingDue(official.standardCode)) return;
-    void runScheduledApiPing();
+    queueMicrotask(() => {
+      void runScheduledApiPing();
+    });
   }, [official?.standardCode, nowMs, runScheduledApiPing]);
 
   const hours = programme ? summariseHours(programme) : null;

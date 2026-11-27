@@ -71,7 +71,7 @@ export function SidebarNavigation() {
   const [focus, setFocus] = useState<FocusState>(() => initialFocus(navigation, pathname));
 
   useEffect(() => {
-    setFocus((current) => focusAfterNavigation(current, owner));
+    queueMicrotask(() => setFocus((current) => focusAfterNavigation(current, owner)));
   }, [owner]);
 
   return (

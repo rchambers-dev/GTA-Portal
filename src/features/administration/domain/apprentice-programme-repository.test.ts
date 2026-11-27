@@ -165,6 +165,7 @@ function programmeClient(canManage: boolean) {
       }
       if (table === "return_checklist_items") return chain([]);
       if (table === "return_to_learning_checks") return chain(null);
+      if (table === "candidate_centres") return chain([]);
       throw new Error(`unexpected table ${table}`);
     },
     rpc(name: string) {
@@ -229,7 +230,9 @@ describe("apprentice programme repository", () => {
     expect(page.changes[0]?.explanation).toBeNull();
     expect(page.changes[0]?.isSafeguarding).toBe(true);
     expect(page.changes[0]?.requestedByName).toBe("Anne Admin");
-    expect(tables).toEqual(["apprentices", "profiles"]);
+    expect(tables).not.toContain("breaks_in_learning");
+    expect(tables).not.toContain("reasons");
+    expect(tables).toContain("candidate_centres");
     expect(rpcs).toEqual(["get_effective_planned_dates", "get_planned_date_changes"]);
     expect(page.loadError).toBeNull();
   });

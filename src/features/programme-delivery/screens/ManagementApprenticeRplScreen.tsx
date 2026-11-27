@@ -147,13 +147,7 @@ export function ManagementApprenticeRplScreen() {
   const learnerStartDate = enrolment?.startDate || "2024-09-02";
   const deliveryEnd = enrolment?.originalPlannedEndDate || null;
 
-  const resolution = useMemo(() => {
-    if (!enrolment) return null;
-    return resolveProgrammeForEnrolment({
-      enrolment,
-      programmeState,
-    });
-  }, [enrolment, programmeState]);
+  const resolution = enrolment ? resolveProgrammeForEnrolment({ enrolment, programmeState }) : null;
 
   const pinned =
     resolution?.status === "pinned" ? resolution : null;
@@ -163,13 +157,9 @@ export function ManagementApprenticeRplScreen() {
       : null;
   const official = pinned?.official ?? null;
 
-  const rplDimensions = useMemo(
-    () =>
-      official
-        ? availableRplDimensions(official.ksbs, valueShareProgramme?.parameters)
-        : [],
-    [official, valueShareProgramme?.parameters],
-  );
+  const rplDimensions = official
+    ? availableRplDimensions(official.ksbs, valueShareProgramme?.parameters)
+    : [];
 
   const rplByBlock = getAllApprenticeBlockRpl(apprenticeId);
 

@@ -474,7 +474,7 @@ describe("employer record", () => {
       path.join(root, "src/shell/workspaces/render-workspace-page.tsx"),
       "utf8",
     );
-    expect(route).toContain('if (segment === "onboarding/employer") return <EmployersScreen />;');
+    expect(route).toContain('if (segment === "onboarding/employer") return <EmployersScreen');
     expect(route).toContain('redirect(`/${workspace}/onboarding/apprentice`)');
     expect(route).not.toContain('title="Apprentices"');
   });

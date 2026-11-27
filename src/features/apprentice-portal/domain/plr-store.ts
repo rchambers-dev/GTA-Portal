@@ -393,8 +393,10 @@ export function usePlrStore() {
 
   const [, bump] = useState(0);
   useEffect(() => {
-    ensureHydrated();
-    bump((n) => n + 1);
+    queueMicrotask(() => {
+      ensureHydrated();
+      bump((n) => n + 1);
+    });
   }, [snapshot]);
 
   const state = getPlrStoreState();

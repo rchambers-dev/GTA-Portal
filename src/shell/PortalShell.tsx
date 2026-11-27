@@ -3,11 +3,9 @@
 import { Suspense, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import type { EffectiveSession } from "@/lib/portal/types";
-import {
-  ApprenticeChatDock,
-  ApprenticeChatProvider,
-  PortalShareProvider,
-} from "@/features/apprentice-portal";
+import { ApprenticeChatDock } from "@/features/apprentice-portal/components/ApprenticeChatDock";
+import { ApprenticeChatProvider } from "@/features/apprentice-portal/components/ApprenticeChatProvider";
+import { PortalShareProvider } from "@/features/apprentice-portal/components/portal-share/PortalShareProvider";
 import {
   CHAT_SELF_ADMIN,
   CHAT_SELF_EMPLOYER,

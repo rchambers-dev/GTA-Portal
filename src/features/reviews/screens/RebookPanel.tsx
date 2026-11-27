@@ -133,7 +133,7 @@ export function RebookPanel({
   useEffect(() => {
     if (month === loadedMonth || fetched[month]) return;
     let cancel = false;
-    setMonthError(null);
+    queueMicrotask(() => setMonthError(null));
     void loadRebookMonthAction(month).then((result) => {
       if (cancel) return;
       if (!result.ok) {

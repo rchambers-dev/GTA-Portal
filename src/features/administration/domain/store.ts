@@ -119,7 +119,8 @@ function id(prefix: string): string {
   return prefix + "-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7);
 }
 
-/** Assigned after updateEnrolment — used by cohort ops + enrolment placement. */
+/** Assigned once the helpers above exist. A const cannot be declared here and assigned later. */
+// eslint-disable-next-line prefer-const
 let cohortOps: ReturnType<typeof createCohortOps>;
 
 export function subscribeAdminStore(listener: () => void): () => void {

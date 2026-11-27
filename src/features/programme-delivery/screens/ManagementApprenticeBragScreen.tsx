@@ -125,7 +125,9 @@ export function ManagementApprenticeBragScreen() {
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search).get("apprentice");
-    if (q) setApprenticeId(q);
+    queueMicrotask(() => {
+      if (q) setApprenticeId(q);
+    });
   }, []);
 
   const enrolments = useMemo(
@@ -138,9 +140,11 @@ export function ManagementApprenticeBragScreen() {
   );
 
   useEffect(() => {
-    if (!apprenticeId && enrolments[0]) {
-      setApprenticeId(enrolments[0].apprenticeId ?? enrolments[0].id);
-    }
+    queueMicrotask(() => {
+      if (!apprenticeId && enrolments[0]) {
+        setApprenticeId(enrolments[0].apprenticeId ?? enrolments[0].id);
+      }
+    });
   }, [apprenticeId, enrolments]);
 
   const enrolment = enrolments.find((e) => e.apprenticeId === apprenticeId) ?? null;

@@ -33,28 +33,32 @@ export function usePublishedDeliveryCatalogue(args: {
 
   useEffect(() => {
     if (!enabled) {
-      setState({
-        catalogue: emptyCatalogue("unpinned", "Delivery catalogue idle."),
-        loading: false,
-        error: null,
-      });
+      queueMicrotask(() =>
+        setState({
+          catalogue: emptyCatalogue("unpinned", "Delivery catalogue idle."),
+          loading: false,
+          error: null,
+        }),
+      );
       return;
     }
 
     if (!versionId && !apprenticeId) {
-      setState({
-        catalogue: emptyCatalogue(
-          "unpinned",
-          "No GTA programme version is assigned to this enrolment. Bind a programme version before college tasks can appear.",
-        ),
-        loading: false,
-        error: null,
-      });
+      queueMicrotask(() =>
+        setState({
+          catalogue: emptyCatalogue(
+            "unpinned",
+            "No GTA programme version is assigned to this enrolment. Bind a programme version before college tasks can appear.",
+          ),
+          loading: false,
+          error: null,
+        }),
+      );
       return;
     }
 
     let cancelled = false;
-    setState((prev) => ({ ...prev, loading: true, error: null }));
+    queueMicrotask(() => setState((prev) => ({ ...prev, loading: true, error: null })));
 
     const qs = new URLSearchParams();
     if (versionId) qs.set("programmeVersionId", versionId);

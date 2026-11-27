@@ -2,10 +2,8 @@ import type { NavItem, NavSection } from "@/lib/portal/types";
 import { PERMISSIONS } from "@/lib/permissions/capabilities";
 
 export const STAFF_BASE_NAV: NavItem[] = [
-  { href: "/staff/dashboard", label: "Dashboard", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
   { href: "/staff/search", label: "Search", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
   { href: "/apprentices/lifecycle", label: "My Apprentices", permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
-  { href: "/staff/schedule", label: "Teaching Schedule", permission: PERMISSIONS.SCHEDULE_VIEW },
   {
     href: "/staff/programme-delivery",
     label: "Programme delivery",
@@ -18,7 +16,6 @@ export const STAFF_BASE_NAV: NavItem[] = [
   },
   { href: "/reviews?from=tutor", label: "Reviews", permission: PERMISSIONS.REVIEWS_TUTOR },
   { href: "/staff/shared-drive", label: "Shared Drive", permission: PERMISSIONS.STAFF_WORKSPACE_VIEW },
-  { href: "/staff/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
 ];
 
 /** Grouped Progress Mentor workspace navigation */
@@ -116,14 +113,5 @@ export const MENTOR_NAV_SECTIONS: NavSection[] = [
 ];
 
 export const CURRICULUM_NAV: NavItem[] = [
-  { href: "/curriculum/overview", label: "Curriculum Overview", permission: PERMISSIONS.CURRICULUM_MANAGEMENT_VIEW },
   { href: "/curriculum/course-builder", label: "Course Builder", permission: PERMISSIONS.CURRICULUM_EDIT },
-  { href: "/curriculum/programme", label: "Programme Editor", permission: PERMISSIONS.CURRICULUM_EDIT },
-  { href: "/curriculum/modules", label: "Module Editor", permission: PERMISSIONS.CURRICULUM_EDIT },
-  { href: "/curriculum/resources", label: "Resource Editor", permission: PERMISSIONS.CURRICULUM_RESOURCES_MANAGE },
-  { href: "/curriculum/assessments", label: "Assessment & Answer Editor", permission: PERMISSIONS.CURRICULUM_ASSESSMENTS_MANAGE },
-  { href: "/curriculum/ksb", label: "KSB Mapping", permission: PERMISSIONS.CURRICULUM_KSB_MANAGE },
-  { href: "/curriculum/feedback", label: "Feedback Centre", permission: PERMISSIONS.CURRICULUM_FEEDBACK_MANAGE },
-  { href: "/curriculum/versions", label: "Version Management", permission: PERMISSIONS.CURRICULUM_VERSION_MANAGE },
-  { href: "/curriculum/history", label: "Publishing & Change History", permission: PERMISSIONS.CURRICULUM_HISTORY_VIEW },
 ];

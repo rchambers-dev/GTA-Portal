@@ -8,8 +8,6 @@ export type ClosureSpan = {
 
 export type OpenOverride = { dayOn: string };
 
-const DAY = 86_400_000;
-
 export function isoDow(iso: string): number {
   const date = new Date(`${iso.slice(0, 10)}T00:00:00Z`);
   const day = date.getUTCDay();

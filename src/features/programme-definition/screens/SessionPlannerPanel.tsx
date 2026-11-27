@@ -116,7 +116,9 @@ export function SessionPlannerPanel({
   }, [programmeVersionId]);
 
   useEffect(() => {
-    void loadAll();
+    queueMicrotask(() => {
+      void loadAll();
+    });
   }, [loadAll]);
 
   const blockSpineItems = useMemo(

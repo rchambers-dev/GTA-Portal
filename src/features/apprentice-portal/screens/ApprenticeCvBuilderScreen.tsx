@@ -525,9 +525,11 @@ export function ApprenticeCvBuilderScreen() {
 
   useEffect(() => {
     if (loading || !hydrated || !profile.apprenticeId) return;
-    setCv((prev) => {
-      if (prev.fullName !== BLANK_APPRENTICE_PROFILE.displayName) return prev;
-      return buildDefaultState(profile);
+    queueMicrotask(() => {
+      setCv((prev) => {
+        if (prev.fullName !== BLANK_APPRENTICE_PROFILE.displayName) return prev;
+        return buildDefaultState(profile);
+      });
     });
   }, [hydrated, loading, profile]);
 

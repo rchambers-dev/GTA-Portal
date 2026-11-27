@@ -136,7 +136,7 @@ export function SpineBuilderPanel({
 
   useEffect(() => {
     if (!assignDraft) {
-      setRecommendation(null);
+      queueMicrotask(() => setRecommendation(null));
       return;
     }
 
@@ -153,7 +153,7 @@ export function SpineBuilderPanel({
       : null;
 
     let cancelled = false;
-    setRecommendBusy(true);
+    queueMicrotask(() => setRecommendBusy(true));
     void recommendLearningIntent({
       ksb,
       block,

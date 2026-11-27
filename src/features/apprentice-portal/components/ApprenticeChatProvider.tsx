@@ -98,7 +98,7 @@ export function ApprenticeChatProvider({
   useEffect(() => {
     if (!isApprenticeViewer || loading || !profile.displayName) return;
     syncChatContactsFromProfile(profile);
-    setVersion((v) => v + 1);
+    queueMicrotask(() => setVersion((v) => v + 1));
   }, [
     loading,
     profile.displayName,

@@ -154,11 +154,8 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
       {
         items: [
           { href: "/employer/dashboard", label: "Dashboard", permission: PERMISSIONS.EMPLOYER_WORKSPACE_VIEW },
-          { href: "/employer/apprentice", label: "Apprentice Overview", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
-          { href: "/employer/progress", label: "Progress", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/attendance", label: "Attendance", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/otj", label: "OTJ hours", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
-          { href: "/employer/reviews", label: "Reviews", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/documents", label: "Documents", permission: PERMISSIONS.EMPLOYER_APPRENTICE_VIEW },
           { href: "/employer/messages", label: "Messages", permission: PERMISSIONS.MESSAGES_VIEW },
           { href: "/employer/support", label: "Support & Concerns", permission: PERMISSIONS.EMPLOYER_ASK_GTA },
@@ -190,15 +187,6 @@ export function resolveNavigation(session: EffectiveSession): NavSection[] {
     return filterSections(session, [
       {
         items: [
-          { href: "/quality/dashboard", label: "Quality Dashboard", permission: PERMISSIONS.QUALITY_WORKSPACE_VIEW },
-          { href: "/quality/audits", label: "Curriculum Audits", permission: PERMISSIONS.QUALITY_AUDITS_VIEW },
-          { href: "/quality/observations", label: "Teaching Observations", permission: PERMISSIONS.QUALITY_AUDITS_VIEW },
-          { href: "/quality/sampling", label: "Assessment Sampling", permission: PERMISSIONS.QUALITY_AUDITS_VIEW },
-          { href: "/quality/compliance", label: "Compliance Checks", permission: PERMISSIONS.QUALITY_FINDINGS_VIEW },
-          { href: "/quality/findings", label: "Findings", permission: PERMISSIONS.QUALITY_FINDINGS_VIEW },
-          { href: "/quality/improvements", label: "Improvement Actions", permission: PERMISSIONS.QUALITY_FINDINGS_VIEW },
-          { href: "/quality/feedback-trends", label: "Curriculum Feedback Trends", permission: PERMISSIONS.CURRICULUM_FEEDBACK_MANAGE },
-          { href: "/quality/history", label: "Version & Change History", permission: PERMISSIONS.CURRICULUM_HISTORY_VIEW },
           { href: "/quality/shared-drive", label: "Shared Drive", permission: PERMISSIONS.QUALITY_WORKSPACE_VIEW },
           { href: "/apprentices/lifecycle", label: "Apprentice Lifecycle", permission: PERMISSIONS.LIFECYCLE_KANBAN_VIEW },
         ],

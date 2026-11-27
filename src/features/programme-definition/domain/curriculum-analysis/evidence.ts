@@ -6,6 +6,7 @@
 import { createHash } from "crypto";
 import { existsSync, readFileSync } from "fs";
 import path from "path";
+import { projectRoot } from "../project-root";
 import type {
   EvidenceSourceType,
   EvidenceStatus,
@@ -45,12 +46,12 @@ export type EvidencePack = {
 
 const CORPUS_CANDIDATES = [
   path.join(
-    process.cwd(),
+    projectRoot(),
     "data",
     "curriculum-evidence",
     "autocare-st0499-v1-original-corpus.json",
   ),
-  path.join(process.cwd(), ".tmp-original-curriculum-corpus.json"),
+  path.join(projectRoot(), ".tmp-original-curriculum-corpus.json"),
 ];
 
 function asText(value: unknown): string {

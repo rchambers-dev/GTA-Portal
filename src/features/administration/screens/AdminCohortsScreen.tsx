@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ApprenticePageShell,
-  ApprenticeStatusChip,
 } from "@/features/apprentice-portal/components/ApprenticePageShell";
 import { usePortalSession } from "@/shell/session/PortalSessionProvider";
 import {
