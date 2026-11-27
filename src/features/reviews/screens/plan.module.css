@@ -160,12 +160,6 @@
 .inline button,
 .dialog button,
 .calHead button,
-.dayClosed {
-  text-decoration: line-through;
-  color: #a81f28;
-  background: #f8e8e6;
-}
-
 .day {
   border: 1px solid #c8b79a;
   background: white;
@@ -175,6 +169,12 @@
   cursor: pointer;
   color: inherit;
   text-decoration: none;
+}
+
+.dayClosed {
+  text-decoration: line-through;
+  color: #a81f28;
+  background: #f8e8e6;
 }
 
 .fill {
