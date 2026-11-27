@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { formatTutorDate } from "@/features/administration/domain/apprentice-tutor";
@@ -40,7 +41,7 @@ export async function readArchivePage(supabase: SupabaseClient): Promise<Archive
         .eq("status", "completed")
         .order("actual_on", { ascending: false })
         .limit(400);
-  if (plain.error) return { reviews: [], shelveReady: false, loadError: plain.error.message };
+  if (plain.error) return { reviews: [], shelveReady: false, loadError: clientError("This page could not be loaded.", plain.error) };
   const rows = (plain.data ?? []) as {
     id: string;
     gta_id: string;

@@ -163,21 +163,17 @@ const WORKSPACE_STUBS: Record<
 export function resolveWorkspaceStub(
   workspace: string,
   slug?: string[],
-): { title: string; description: string } {
+): { title: string; description: string } | null {
   const key = slug?.[0] ?? "dashboard";
-  const workspaceStubs = WORKSPACE_STUBS[workspace];
-  if (!workspaceStubs) {
+  const known = WORKSPACE_STUBS[workspace]?.[key];
+  if (known) return known;
+  if (key === "dashboard") {
     return {
-      title: "Workspace",
-      description: "Workspace route shell.",
+      title: `${workspaceLabel(workspace)} dashboard`,
+      description: "This workspace home is not set up yet.",
     };
   }
-  return (
-    workspaceStubs[key] ?? {
-      title: key.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-      description: `${workspace} workspace route shell.`,
-    }
-  );
+  return null;
 }
 
 export function workspaceLabel(workspace: string): string {

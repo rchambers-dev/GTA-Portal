@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 /**
  * Cohort / teaching-group handlers for /api/admin/store.
  * Permanent Supabase tables: cohorts, cohort_teaching_groups, cohort_change_log.
@@ -181,7 +182,7 @@ async function fetchCohortById(
     .eq("id", cohortId)
     .single();
   if (error || !data) {
-    return { error: error?.message ?? "Cohort not found" };
+    return { error: clientError('Cohort not found', error) };
   }
   return mapCohort(data as CohortRow);
 }
@@ -262,7 +263,7 @@ export async function handleCohortAction(
       .single();
     if (existingError || !existingRow) {
       return NextResponse.json(
-        { error: existingError?.message ?? "Cohort not found" },
+        { error: clientError('Cohort not found', existingError) },
         { status: 404 },
       );
     }
@@ -342,7 +343,7 @@ export async function handleCohortAction(
       .single();
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to update cohort" },
+        { error: clientError('Unable to update cohort', error) },
         { status: 500 },
       );
     }
@@ -367,7 +368,7 @@ export async function handleCohortAction(
       .single();
     if (existingError || !existingRow) {
       return NextResponse.json(
-        { error: existingError?.message ?? "Cohort not found" },
+        { error: clientError('Cohort not found', existingError) },
         { status: 404 },
       );
     }
@@ -404,7 +405,7 @@ export async function handleCohortAction(
       .single();
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to lock cohort" },
+        { error: clientError('Unable to lock cohort', error) },
         { status: 500 },
       );
     }
@@ -444,7 +445,7 @@ export async function handleCohortAction(
       .select("id, name, tutor_name, college_days, status")
       .eq("status", "active");
     if (existingError && !isMissingSchemaError(existingError.message)) {
-      return NextResponse.json({ error: existingError.message }, { status: 500 });
+      return NextResponse.json({ error: clientError('That could not be completed.', existingError) }, { status: 500 });
     }
     const clash = (existingRows ?? []).find(
       (row) =>
@@ -506,7 +507,7 @@ export async function handleCohortAction(
     if (existingGroupError || !existingGroup) {
       return NextResponse.json(
         {
-          error: existingGroupError?.message ?? "Teaching group not found",
+          error: clientError('Teaching group not found', existingGroupError),
         },
         {
           status:
@@ -604,7 +605,7 @@ export async function handleCohortAction(
       .single();
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to update teaching group" },
+        { error: clientError('Unable to update teaching group', error) },
         { status: 500 },
       );
     }
@@ -643,7 +644,7 @@ export async function handleCohortAction(
       .maybeSingle();
     if (existingGroupError && !isMissingSchemaError(existingGroupError.message)) {
       return NextResponse.json(
-        { error: existingGroupError.message },
+        { error: clientError('That could not be completed.', existingGroupError) },
         { status: 500 },
       );
     }
@@ -657,7 +658,7 @@ export async function handleCohortAction(
       .eq("teaching_group_id", body.id);
     if (countError) {
       if (!isMissingSchemaError(countError.message)) {
-        return NextResponse.json({ error: countError.message }, { status: 500 });
+        return NextResponse.json({ error: clientError('That could not be completed.', countError) }, { status: 500 });
       }
     } else if ((count ?? 0) > 0) {
       return NextResponse.json(
@@ -676,7 +677,7 @@ export async function handleCohortAction(
     if (membershipCountError) {
       if (!isMissingSchemaError(membershipCountError.message)) {
         return NextResponse.json(
-          { error: membershipCountError.message },
+          { error: clientError('That could not be completed.', membershipCountError) },
           { status: 500 },
         );
       }
@@ -757,7 +758,7 @@ export async function loadTeachingGroupMemberships(
     if (isMissingSchemaError(error.message)) {
       return { memberships: [] };
     }
-    return { memberships: [], error: error.message };
+    return { memberships: [], error: clientError('That could not be completed.', error) };
   }
   return {
     memberships: (data ?? []).map((row) =>
@@ -787,7 +788,7 @@ export async function loadGtaProgrammeVersions(
     if (isMissingSchemaError(error.message)) {
       return { versions: [] };
     }
-    return { versions: [], error: error.message };
+    return { versions: [], error: clientError('That could not be completed.', error) };
   }
 
   const versions: AdminGtaProgrammeVersionOption[] = (data ?? []).map((row) => {
@@ -869,7 +870,7 @@ export async function applyLiveTeachingGroupPlacement(args: {
       .eq("id", args.teachingGroupId)
       .maybeSingle();
     if (error && !isMissingSchemaError(error.message)) {
-      return { error: error.message, status: 500 };
+      return { error: clientError('That could not be completed.', error), status: 500 };
     }
     group = data ? mapTeachingGroup(data as TeachingGroupRow) : null;
   }
@@ -878,7 +879,7 @@ export async function applyLiveTeachingGroupPlacement(args: {
     .from("apprentice_programmes")
     .select("id, teaching_group_id");
   if (enrolmentError) {
-    return { error: enrolmentError.message, status: 500 };
+    return { error: clientError('That could not be completed.', enrolmentError), status: 500 };
   }
 
   let memberships: AdminTeachingGroupMembership[] = [];
@@ -918,7 +919,7 @@ export async function applyLiveTeachingGroupPlacement(args: {
     })
     .eq("id", args.enrolment.id);
   if (enrolmentUpdateError) {
-    return { error: enrolmentUpdateError.message, status: 500 };
+    return { error: clientError('That could not be completed.', enrolmentUpdateError), status: 500 };
   }
 
   if (planned.closeMembershipId) {
@@ -930,7 +931,7 @@ export async function applyLiveTeachingGroupPlacement(args: {
       })
       .eq("id", planned.closeMembershipId);
     if (closeError && !isMissingSchemaError(closeError.message)) {
-      return { error: closeError.message, status: 500 };
+      return { error: clientError('That could not be completed.', closeError), status: 500 };
     }
   }
 
@@ -949,7 +950,7 @@ export async function applyLiveTeachingGroupPlacement(args: {
         notes: planned.newMembership.notes,
       });
     if (insertError && !isMissingSchemaError(insertError.message)) {
-      return { error: insertError.message, status: 500 };
+      return { error: clientError('That could not be completed.', insertError), status: 500 };
     }
   }
 

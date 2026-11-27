@@ -35,9 +35,9 @@ export function loadResourceExtractText(input: {
     }
   }
   const id = input.evidenceResourceId?.trim();
-  if (id) {
-    const fallback = path.join(EXTRACTS_ROOT, `${id}.txt`);
-    if (fs.existsSync(fallback)) {
+  if (id && !id.includes("\0")) {
+    const fallback = resolveExtractAbsolutePath(path.resolve(EXTRACTS_ROOT, `${id}.txt`));
+    if (fallback) {
       return { text: fs.readFileSync(fallback, "utf8"), mode: "extract_file" };
     }
   }

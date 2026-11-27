@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { GiphyFetch } from "@giphy/js-fetch-api";
 import type { IGif } from "@giphy/js-types";
+import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 
 /**
  * GIF / sticker search proxy for the chat composer, backed by the official
@@ -64,14 +65,25 @@ function pickUrls(gif: IGif): {
   };
 }
 
+const MAX_QUERY = 100;
+
 export async function GET(request: Request) {
+  const session = await getSupabaseEffectiveSession();
+  if (!session) {
+    return NextResponse.json({ error: "Sign in to search GIFs." }, { status: 401 });
+  }
+
   const apiKey = process.env.GIPHY_API_KEY?.trim();
   if (!apiKey) {
     return NextResponse.json({ configured: false, items: [] });
   }
 
   const { searchParams } = new URL(request.url);
-  const query = (searchParams.get("q") ?? "").trim().slice(0, 100);
+  const rawQuery = searchParams.get("q") ?? "";
+  if (rawQuery.length > MAX_QUERY) {
+    return NextResponse.json({ error: "That search is too long." }, { status: 400 });
+  }
+  const query = rawQuery.trim().slice(0, MAX_QUERY);
   const typeParam = (searchParams.get("type") ?? "gifs").toLowerCase();
   const mediaType: MediaKind =
     typeParam === "stickers" ? "stickers" : "gifs";

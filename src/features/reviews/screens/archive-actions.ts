@@ -1,5 +1,6 @@
 "use server";
 
+import { clientError } from "@/lib/http/client-error";
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
@@ -19,7 +20,7 @@ function missing(error: { message?: string; code?: string } | null, name: string
   if (error.code === "PGRST202" || (error.message || "").includes(name) || (error.message || "").includes("shelved_at")) {
     return { ok: false as const, formError: "Moving a review to the archive is in the migration and is not on the database yet." };
   }
-  return { ok: false as const, formError: error.message || "The archive could not be saved." };
+  return { ok: false as const, formError: clientError("The archive could not be saved.", error) };
 }
 
 function refresh() {

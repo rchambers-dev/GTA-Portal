@@ -1,5 +1,6 @@
 "use server";
 
+import { clientError } from "@/lib/http/client-error";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { canAddApprentice } from "@/features/administration/domain/apprentice-record";
@@ -19,7 +20,7 @@ function missing(error: { message?: string; code?: string } | null, name: string
   if (error.code === "PGRST202" || (error.message || "").includes(name)) {
     return { ok: false as const, formError: "That visit change is in the migration and is not on the database yet." };
   }
-  return { ok: false as const, formError: error.message || "The visit could not be saved." };
+  return { ok: false as const, formError: clientError("The visit could not be saved.", error) };
 }
 
 export async function stampVisitAction(input: { date: string; gtaId: string; kind: "arrive" | "leave" }) {
@@ -46,7 +47,7 @@ export async function saveOutSignatureAction(input: { packId: string; party: "ap
     p_signer_name: input.name,
     p_signature_image: input.image,
   });
-  if (error) return { ok: false as const, formError: error.message || "The signature could not be saved." };
+  if (error) return { ok: false as const, formError: clientError("The signature could not be saved.", error) };
   revalidatePath("/administration/reviews/out");
   revalidatePath("/management/reviews/out");
   return { ok: true as const };

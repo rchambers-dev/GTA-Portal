@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { excludeTestApprentices, isMissingTestColumn } from "./test-apprentice";
@@ -50,16 +51,16 @@ export async function loadEmployersPage(): Promise<EmployersPageData> {
 
   const problems: string[] = [];
   if (employersResult.error) {
-    problems.push(`Employers could not be loaded. ${employersResult.error.message}`);
+    problems.push(clientError('Employers could not be loaded.', employersResult.error));
   }
   if (sitesResult.error) {
-    problems.push(`Sites could not be loaded. ${sitesResult.error.message}`);
+    problems.push(clientError('Sites could not be loaded.', sitesResult.error));
   }
   if (managersResult.error) {
-    problems.push(`Managers could not be loaded. ${managersResult.error.message}`);
+    problems.push(clientError('Managers could not be loaded.', managersResult.error));
   }
   if (placementsResult.error) {
-    problems.push(`Apprentices could not be loaded. ${placementsResult.error.message}`);
+    problems.push(clientError('Apprentices could not be loaded.', placementsResult.error));
   }
 
   const placements = placementsResult.error
@@ -81,7 +82,7 @@ export async function loadEmployersPage(): Promise<EmployersPageData> {
   }
 
   if (namesResult.error) {
-    problems.push(`Apprentice names could not be loaded. ${namesResult.error.message}`);
+    problems.push(clientError('Apprentice names could not be loaded.', namesResult.error));
   }
   const names = namesResult.error
     ? []

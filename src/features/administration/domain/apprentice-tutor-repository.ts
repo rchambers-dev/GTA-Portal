@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { APPRENTICE_COLUMNS, isAssignedGtaId, type ApprenticeRow } from "./apprentice-record";
@@ -132,7 +133,7 @@ export async function readApprenticeLearner(
     );
   }
   if (assignmentResult.error) {
-    problems.push(`Tutors could not be loaded. ${assignmentResult.error.message}`);
+    problems.push(clientError('Tutors could not be loaded.', assignmentResult.error));
   }
   if (roleTutorResult.error || responsibilityTutorResult.error) {
     const message =
@@ -140,7 +141,7 @@ export async function readApprenticeLearner(
     problems.push(`The tutor list could not be loaded. ${message}`);
   }
   if (employmentResult.error) {
-    problems.push(`The employer could not be loaded. ${employmentResult.error.message}`);
+    problems.push(clientError('The employer could not be loaded.', employmentResult.error));
   }
 
   const apprenticeRow = apprenticeResult.error
@@ -209,10 +210,10 @@ export async function readApprenticeLearner(
     ]);
 
   if (programmeResult.error) {
-    problems.push(`The programme could not be loaded. ${programmeResult.error.message}`);
+    problems.push(clientError('The programme could not be loaded.', programmeResult.error));
   }
   if (extraResult.error) {
-    problems.push(`Tutor names could not be loaded. ${extraResult.error.message}`);
+    problems.push(clientError('Tutor names could not be loaded.', extraResult.error));
   } else {
     for (const row of (extraResult.data ?? []) as NameRow[]) {
       names.set(row.id, { display_name: row.display_name, email: row.email });

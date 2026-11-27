@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { excludeTestApprentices, isMissingTestColumn } from "./test-apprentice";
@@ -56,7 +57,7 @@ export async function loadAddApprenticePage(): Promise<AddApprenticePageData> {
 
   const catalogue: ApprenticeProgrammeOption[] = [];
   if (programmesResult.error) {
-    problems.push(`Programmes could not be loaded. ${programmesResult.error.message}`);
+    problems.push(clientError('Programmes could not be loaded.', programmesResult.error));
   } else {
     for (const row of (programmesResult.data ?? []) as ProgrammeRow[]) {
       if (!row.id || !row.name?.trim()) continue;
@@ -71,7 +72,7 @@ export async function loadAddApprenticePage(): Promise<AddApprenticePageData> {
   }
 
   if (apprenticesResult.error) {
-    problems.push(`Apprentices could not be loaded. ${apprenticesResult.error.message}`);
+    problems.push(clientError('Apprentices could not be loaded.', apprenticesResult.error));
   } else {
     apprentices = excludeTestApprentices((apprenticesResult.data ?? []) as (ApprenticeRow & { is_test?: boolean | null })[]).map((row) =>
       mapApprenticeRow(row, catalogue),

@@ -37,6 +37,13 @@ export const ROUTE_RULES: RouteRule[] = [
   { pattern: /^\/admin/, permission: PERMISSIONS.ADMIN_WORKSPACE_VIEW },
 ];
 
+const PUBLIC_PATH = /^\/(?:login|tutor-review)(?:\/|$)|^\/images\/|^\/favicon\.ico$|^\/_next\//;
+
+/** Login, the public tutor-review form, and static assets. Everything else needs a rule. */
+export function isPublicPath(pathname: string): boolean {
+  return pathname === "/" || PUBLIC_PATH.test(pathname);
+}
+
 export function getRequiredPermission(pathname: string): string | null {
   for (const rule of ROUTE_RULES) {
     if (rule.pattern.test(pathname)) return rule.permission;
@@ -48,11 +55,12 @@ export function canAccessRoute(
   session: EffectiveSession,
   pathname: string,
 ): boolean {
+  if (isPublicPath(pathname)) return true;
   if (pathname === "/reviews") {
     return hasPermission(session, PERMISSIONS.REVIEWS_MANAGE) || hasPermission(session, PERMISSIONS.REVIEWS_TUTOR);
   }
   const required = getRequiredPermission(pathname);
-  if (!required) return true;
+  if (!required) return false;
   return hasPermission(session, required);
 }
 

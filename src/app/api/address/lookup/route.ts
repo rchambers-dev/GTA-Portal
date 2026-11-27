@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { getSupabaseEffectiveSession } from "@/adapters/supabase/auth";
 import { maskUkPostcode } from "@/features/apprentice-portal/domain/cv/validation";
+import { clientError } from "@/lib/http/client-error";
 
 export const runtime = "nodejs";
 
@@ -245,10 +247,18 @@ async function lookupNominatimStrict(
 }
 
 export async function GET(request: Request) {
+  const session = await getSupabaseEffectiveSession();
+  if (!session) {
+    return NextResponse.json({ error: "Sign in to look up an address." }, { status: 401 });
+  }
+
   const { searchParams } = new URL(request.url);
   const house = (searchParams.get("house") || "").trim();
   const postcode = tidyPostcode(searchParams.get("postcode") || "");
 
+  if (house.length > 80 || (searchParams.get("postcode") || "").length > 16) {
+    return NextResponse.json({ error: "That address is too long." }, { status: 400 });
+  }
   if (!house) {
     return NextResponse.json(
       { error: "Enter a house number (or flat) first." },
@@ -297,12 +307,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ suggestions, provider });
   } catch (err) {
     return NextResponse.json(
-      {
-        error:
-          err instanceof Error
-            ? err.message
-            : "Address lookup failed. Try again in a moment.",
-      },
+      { error: clientError("Address lookup failed. Try again in a moment.", err) },
       { status: 502 },
     );
   }

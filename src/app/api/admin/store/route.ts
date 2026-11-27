@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
@@ -226,33 +227,33 @@ export async function GET() {
     loadTeachingGroupMemberships(supabase),
   ]);
   if (usersResult.error) {
-    return NextResponse.json({ error: usersResult.error }, { status: 500 });
+    return NextResponse.json({ error: clientError("Unable to load admin data", usersResult.error) }, { status: 500 });
   }
   if (versionsResult.error) {
-    return NextResponse.json({ error: versionsResult.error }, { status: 500 });
+    return NextResponse.json({ error: clientError("Unable to load admin data", versionsResult.error) }, { status: 500 });
   }
   if (membershipsResult.error) {
-    return NextResponse.json({ error: membershipsResult.error }, { status: 500 });
+    return NextResponse.json({ error: clientError("Unable to load admin data", membershipsResult.error) }, { status: 500 });
   }
 
   if (apprenticesError || enrolmentsError) {
     return NextResponse.json(
       {
-        error:
-          apprenticesError?.message ??
-          enrolmentsError?.message ??
+        error: clientError(
           "Unable to load admin data",
+          apprenticesError ?? enrolmentsError,
+        ),
       },
       { status: 500 },
     );
   }
 
   if (employersResult.error) {
-    return NextResponse.json({ error: employersResult.error }, { status: 500 });
+    return NextResponse.json({ error: clientError("Unable to load admin data", employersResult.error) }, { status: 500 });
   }
   if (programmesResult.error) {
     return NextResponse.json(
-      { error: programmesResult.error },
+      { error: clientError("Unable to load admin data", programmesResult.error) },
       { status: 500 },
     );
   }
@@ -261,7 +262,7 @@ export async function GET() {
   if (cohortsResult.error) {
     if (!isMissingSchemaError(cohortsResult.error.message)) {
       return NextResponse.json(
-        { error: cohortsResult.error.message },
+        { error: clientError('That could not be completed.', cohortsResult.error) },
         { status: 500 },
       );
     }
@@ -275,7 +276,7 @@ export async function GET() {
   if (teachingGroupsResult.error) {
     if (!isMissingSchemaError(teachingGroupsResult.error.message)) {
       return NextResponse.json(
-        { error: teachingGroupsResult.error.message },
+        { error: clientError('That could not be completed.', teachingGroupsResult.error) },
         { status: 500 },
       );
     }
@@ -289,7 +290,7 @@ export async function GET() {
   if (changeLogsResult.error) {
     if (!isMissingSchemaError(changeLogsResult.error.message)) {
       return NextResponse.json(
-        { error: changeLogsResult.error.message },
+        { error: clientError('That could not be completed.', changeLogsResult.error) },
         { status: 500 },
       );
     }
@@ -431,7 +432,7 @@ export async function POST(request: Request) {
       .single();
 
     if (error || !data) {
-      return NextResponse.json({ error: error?.message ?? "Unable to create apprentice" }, { status: 500 });
+      return NextResponse.json({ error: clientError('Unable to create apprentice', error) }, { status: 500 });
     }
 
     return NextResponse.json({ apprentice: mapApprentice(data as ApprenticeRow) });
@@ -473,7 +474,7 @@ export async function POST(request: Request) {
       .single();
 
     if (error || !data) {
-      return NextResponse.json({ error: error?.message ?? "Unable to update apprentice" }, { status: 500 });
+      return NextResponse.json({ error: clientError('Unable to update apprentice', error) }, { status: 500 });
     }
 
     return NextResponse.json({ apprentice: mapApprentice(data as ApprenticeRow) });
@@ -525,7 +526,7 @@ export async function POST(request: Request) {
       .single();
 
     if (error || !data) {
-      return NextResponse.json({ error: error?.message ?? "Unable to create enrolment" }, { status: 500 });
+      return NextResponse.json({ error: clientError('Unable to create enrolment', error) }, { status: 500 });
     }
 
     const created = mapEnrolment(data as ApprenticeProgrammeRow);
@@ -574,7 +575,7 @@ export async function POST(request: Request) {
     .single();
   if (existingError || !existingRow) {
     return NextResponse.json(
-      { error: existingError?.message ?? "Enrolment not found" },
+      { error: clientError('Enrolment not found', existingError) },
       { status: 404 },
     );
   }
@@ -638,7 +639,7 @@ export async function POST(request: Request) {
       .eq("id", body.id);
     if (error) {
       return NextResponse.json(
-        { error: error.message ?? "Unable to update enrolment" },
+        { error: clientError('Unable to update enrolment', error) },
         { status: 500 },
       );
     }
@@ -675,7 +676,7 @@ export async function POST(request: Request) {
       .eq("id", body.id);
     if (leftoverError) {
       return NextResponse.json(
-        { error: leftoverError.message },
+        { error: clientError('That could not be completed.', leftoverError) },
         { status: 500 },
       );
     }
@@ -688,7 +689,7 @@ export async function POST(request: Request) {
     .single();
 
   if (error || !data) {
-    return NextResponse.json({ error: error?.message ?? "Unable to update enrolment" }, { status: 500 });
+    return NextResponse.json({ error: clientError('Unable to update enrolment', error) }, { status: 500 });
   }
 
   const memberships = (await loadTeachingGroupMemberships(supabase)).memberships.filter(

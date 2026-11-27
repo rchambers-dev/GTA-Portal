@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 /**
  * Staff / profiles handlers for /api/admin/store.
  * Tables: profiles (+ portal_status, responsibilities as job titles).
@@ -115,7 +116,7 @@ async function readTemporaryPassword(
     .select("temporary_password")
     .eq("profile_id", profileId)
     .maybeSingle();
-  if (error) return { password: "", error: error.message };
+  if (error) return { password: "", error: clientError('That could not be completed.', error) };
   const password = typeof data?.temporary_password === "string" ? data.temporary_password.trim() : "";
   return { password, error: null };
 }
@@ -254,7 +255,7 @@ export async function loadPortalUsers(
     if (isMissingSchemaError(error.message)) {
       return { users: [] };
     }
-    return { users: [], error: error.message };
+    return { users: [], error: clientError('That could not be completed.', error) };
   }
 
   return {
@@ -346,7 +347,7 @@ export async function handleStaffAction(
         const { data: listed, error: listError } =
           await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 });
         if (listError) {
-          return NextResponse.json({ error: listError.message }, { status: 500 });
+          return NextResponse.json({ error: clientError('That could not be completed.', listError) }, { status: 500 });
         }
         const existing = (listed.users ?? []).find(
           (u) => (u.email ?? "").trim().toLowerCase() === email,
@@ -366,7 +367,7 @@ export async function handleStaffAction(
         { password, email_confirm: true },
       );
       if (pwError) {
-        return NextResponse.json({ error: pwError.message }, { status: 500 });
+        return NextResponse.json({ error: clientError('That could not be completed.', pwError) }, { status: 500 });
       }
     }
 
@@ -437,7 +438,7 @@ export async function handleStaffAction(
         .select("id, display_name, department, responsibilities")
         .neq("id", body.id);
       if (othersError) {
-        return NextResponse.json({ error: othersError.message }, { status: 500 });
+        return NextResponse.json({ error: clientError('That could not be completed.', othersError) }, { status: 500 });
       }
 
       for (const title of titles) {
@@ -478,7 +479,7 @@ export async function handleStaffAction(
 
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to update staff profile" },
+        { error: clientError('Unable to update staff profile', error) },
         { status: 500 },
       );
     }
@@ -494,7 +495,7 @@ export async function handleStaffAction(
         .eq("id", body.id)
         .maybeSingle();
       if (currentError) {
-        return NextResponse.json({ error: currentError.message }, { status: 500 });
+        return NextResponse.json({ error: clientError('That could not be completed.', currentError) }, { status: 500 });
       }
       if (
         current &&
@@ -529,7 +530,7 @@ export async function handleStaffAction(
 
     if (error || !data) {
       return NextResponse.json(
-        { error: error?.message ?? "Unable to update portal environment" },
+        { error: clientError('Unable to update portal environment', error) },
         { status: 500 },
       );
     }
@@ -587,7 +588,7 @@ export async function handleStaffAction(
       .single();
     if (profileError || !profile) {
       return NextResponse.json(
-        { error: profileError?.message ?? "Apprentice not found" },
+        { error: clientError('Apprentice not found', profileError) },
         { status: 404 },
       );
     }
@@ -611,7 +612,7 @@ export async function handleStaffAction(
       );
       if (passwordError) {
         return NextResponse.json(
-          { error: passwordError.message },
+          { error: clientError('That could not be completed.', passwordError) },
           { status: 500 },
         );
       }

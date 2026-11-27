@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { isAssignedGtaId } from "./apprentice-record";
@@ -202,7 +203,7 @@ async function loadNames(
     .from("profiles")
     .select("id, display_name, email")
     .in("id", missing);
-  if (error) return `Names could not be loaded. ${error.message}`;
+  if (error) return clientError('Names could not be loaded.', error);
   for (const row of (data ?? []) as ProfileRow[]) {
     into.set(row.id, { display_name: row.display_name, email: row.email });
   }
@@ -254,16 +255,16 @@ export async function readApprenticeProgramme(
 
   const problems: string[] = [];
   if (datesResult.error) {
-    problems.push(`Course dates could not be loaded. ${datesResult.error.message}`);
+    problems.push(clientError('Course dates could not be loaded.', datesResult.error));
   }
   if (effectiveResult.error) {
-    problems.push(`Current planned dates could not be loaded. ${effectiveResult.error.message}`);
+    problems.push(clientError('Current planned dates could not be loaded.', effectiveResult.error));
   }
   if (changesResult.error) {
-    problems.push(`Date changes could not be loaded. ${changesResult.error.message}`);
+    problems.push(clientError('Date changes could not be loaded.', changesResult.error));
   }
   if (reasonsResult.error) {
-    problems.push(`Date change reasons could not be loaded. ${reasonsResult.error.message}`);
+    problems.push(clientError('Date change reasons could not be loaded.', reasonsResult.error));
   }
 
   if (!datesResult.error && !datesResult.data) {
@@ -338,13 +339,13 @@ async function readBreaks(
   ]);
 
   if (breaksResult.error) {
-    problems.push(`Breaks in learning could not be loaded. ${breaksResult.error.message}`);
+    problems.push(clientError('Breaks in learning could not be loaded.', breaksResult.error));
   }
   if (reasonsResult.error) {
-    problems.push(`Break reasons could not be loaded. ${reasonsResult.error.message}`);
+    problems.push(clientError('Break reasons could not be loaded.', reasonsResult.error));
   }
   if (checklistResult.error) {
-    problems.push(`The return checklist could not be loaded. ${checklistResult.error.message}`);
+    problems.push(clientError('The return checklist could not be loaded.', checklistResult.error));
   }
 
   const breakRows = breaksResult.error ? [] : ((breaksResult.data ?? []) as BreakRow[]);
@@ -383,7 +384,7 @@ async function readBreaks(
       .maybeSingle();
     if (checkResult.error) {
       checksUnavailable = true;
-      problems.push(`The return sign-off could not be loaded. ${checkResult.error.message}`);
+      problems.push(clientError('The return sign-off could not be loaded.', checkResult.error));
     } else {
       check = (checkResult.data as CheckRow | null) ?? null;
       if (check?.id && !checklistResult.error) {
@@ -393,7 +394,7 @@ async function readBreaks(
           .eq("check_id", check.id);
         if (resultsResult.error) {
           checksUnavailable = true;
-          problems.push(`Checklist answers could not be loaded. ${resultsResult.error.message}`);
+          problems.push(clientError('Checklist answers could not be loaded.', resultsResult.error));
         } else {
           results = (resultsResult.data ?? []) as CheckResultRow[];
         }

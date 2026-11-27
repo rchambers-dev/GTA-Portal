@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import { NextResponse } from "next/server";
 import { getStandalonePorts } from "@/adapters/standalone";
 import { createSupabaseAdminClient } from "@/adapters/supabase/client";
@@ -57,7 +58,7 @@ export async function GET() {
     .neq("portal_status", "disabled");
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: clientError('That could not be completed.', error) }, { status: 500 });
   }
 
   const leads = ((data ?? []) as ProfileRow[])

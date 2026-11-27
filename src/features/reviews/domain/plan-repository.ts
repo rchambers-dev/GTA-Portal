@@ -1,3 +1,4 @@
+import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
 import { londonToday } from "@/features/administration/domain/apprentice-tutor";
@@ -236,10 +237,10 @@ export async function readPlanPage(
     settingsResult,
     stopsResult,
   ]) {
-    if (result.error) problems.push(result.error.message);
+    if (result.error) problems.push(clientError("The plan could not be loaded.", result.error));
   }
-  if (released.error && !releaseMissing) problems.push(released.error.message);
-  if (expired.error && !expiredMissing) problems.push(expired.error.message);
+  if (released.error && !releaseMissing) problems.push(clientError("The plan could not be loaded.", released.error));
+  if (expired.error && !expiredMissing) problems.push(clientError("The plan could not be loaded.", expired.error));
 
   const employers = new Map(
     ((employersResult.data ?? []) as { employer_id: string; company_name: string }[]).map((row) => [
@@ -338,7 +339,7 @@ export async function readPlanPage(
   const bookingResult = await supabase
     .from("review_bookings")
     .select("review_id, appointment_on, appointment_minutes, method");
-  if (bookingResult.error) problems.push(bookingResult.error.message);
+  if (bookingResult.error) problems.push(clientError("The plan could not be loaded.", bookingResult.error));
   const reviewById = new Map(reviews.map((row) => [row.id, row]));
   for (const row of (bookingResult.data ?? []) as {
     review_id: string;
