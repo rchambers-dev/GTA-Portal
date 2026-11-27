@@ -189,7 +189,9 @@ export function BlockAuthoringPanel({
   }, [programmeVersionId, block.id]);
 
   useEffect(() => {
-    void loadAll();
+    queueMicrotask(() => {
+      void loadAll();
+    });
   }, [loadAll]);
 
   const resourceById = useMemo(
@@ -200,18 +202,19 @@ export function BlockAuthoringPanel({
   const selectedSession = sessions.find((s) => s.id === selectedSessionId);
 
   useEffect(() => {
-    if (!selectedSession) {
-      setLearnerSummary("");
-      setLearnerLearning("");
-      setLearnerActivity("");
-      return;
-    }
-    const approved = approvedLearnerCopy(selectedSession.learnerFacingContent);
-    const draft =
-      approved || selectedSession.learnerFacingContent.candidate;
-    setLearnerSummary(draft?.summary || selectedSession.topic || "");
-    setLearnerLearning(draft?.learningContent || "");
-    setLearnerActivity(draft?.activityPractice || "");
+    queueMicrotask(() => {
+      if (!selectedSession) {
+        setLearnerSummary("");
+        setLearnerLearning("");
+        setLearnerActivity("");
+        return;
+      }
+      const approved = approvedLearnerCopy(selectedSession.learnerFacingContent);
+      const draft = approved || selectedSession.learnerFacingContent.candidate;
+      setLearnerSummary(draft?.summary || selectedSession.topic || "");
+      setLearnerLearning(draft?.learningContent || "");
+      setLearnerActivity(draft?.activityPractice || "");
+    });
   }, [selectedSession]);
 
   const sessionAttachments = useMemo(
@@ -257,7 +260,7 @@ export function BlockAuthoringPanel({
   // Load candidate activities when session / lesson-plan resource changes
   useEffect(() => {
     if (!lessonPlanResourceId || !selectedSessionId) {
-      setCandidateActivities((prev) => (prev.length === 0 ? prev : []));
+      queueMicrotask(() => setCandidateActivities((prev) => (prev.length === 0 ? prev : [])));
       return;
     }
     let cancelled = false;

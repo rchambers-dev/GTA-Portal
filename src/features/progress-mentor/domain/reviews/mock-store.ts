@@ -23,8 +23,6 @@ import { buildSignOffState } from "./sign-off";
 import {
   REVIEW_CYCLE_LABEL,
   REVIEW_READY_LEAD_DAYS,
-  nextReviewDueDate,
-  readyByDate,
 } from "./policy";
 import type {
   ChecklistItem,

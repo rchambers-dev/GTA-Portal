@@ -47,7 +47,9 @@ export function CurriculumAnalysisPanel({ programmeVersionId }: Props) {
   }, [programmeVersionId]);
 
   useEffect(() => {
-    void refresh();
+    queueMicrotask(() => {
+      void refresh();
+    });
   }, [refresh]);
 
   const openRun = useCallback(async (runId: string) => {

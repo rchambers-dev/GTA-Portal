@@ -316,7 +316,7 @@ describe("add apprentice record", () => {
     );
     expect(route).toContain('if (segment === "onboarding/apprentice") return <AddApprenticeScreen />;');
     expect(route).not.toContain('ApprenticesVisualPreview mode="form"');
-    expect(route).toContain('if (segment === "onboarding/employer") return <EmployersScreen />;');
+    expect(route).toContain('if (segment === "onboarding/employer") return <EmployersScreen');
     expect(route).not.toContain('EmployersVisualPreview mode="form"');
   });
 });

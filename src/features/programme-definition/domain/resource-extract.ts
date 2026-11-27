@@ -5,9 +5,10 @@
 
 import fs from "fs";
 import path from "path";
+import { projectRoot } from "./project-root";
 
 const EXTRACTS_ROOT = path.resolve(
-  process.cwd(),
+  projectRoot(),
   "tests/artifacts/autocare-v1/evidence-enriched/staging/extracts",
 );
 
@@ -16,7 +17,7 @@ export function resolveExtractAbsolutePath(extractPath: string): string | null {
   if (!raw) return null;
   const abs = path.isAbsolute(raw)
     ? path.normalize(raw)
-    : path.resolve(process.cwd(), raw);
+    : path.resolve(projectRoot(), raw);
   const root = path.resolve(EXTRACTS_ROOT);
   const rel = path.relative(root, abs);
   if (rel.startsWith("..") || path.isAbsolute(rel)) return null;

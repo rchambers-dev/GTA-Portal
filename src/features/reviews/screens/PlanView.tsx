@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useRef, useState, type FormEvent, type RefObject } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { flushSync } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -54,6 +54,11 @@ export function PlanView({
 }) {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(serverDate);
+  const [dateSource, setDateSource] = useState({ serverDate, month });
+  if (dateSource.serverDate !== serverDate || dateSource.month !== month) {
+    setDateSource({ serverDate, month });
+    setSelectedDate(serverDate);
+  }
   const [tab, setTab] = useState<PlanCounter>("to_book");
   const [dropTab, setDropTab] = useState<PlanCounter | null>(null);
   const [query, setQuery] = useState("");
@@ -68,7 +73,7 @@ export function PlanView({
   const [home, setHome] = useState<{ travel: number; arrive: number } | null>(null);
   const [packedFor, setPackedFor] = useState(serverDate);
   const [officePoint, setOfficePoint] = useState<{ lat: number; lon: number; postcode: string } | null>(null);
-  const routeDragId = useRef("");
+  const routeDragIdRef = useRef("");
   const noted = page.people
     .filter((person) => person.notes || person.holdUntil)
     .slice()
@@ -98,10 +103,6 @@ export function PlanView({
   }, [query, tab]);
   const heading = planDateParts(selectedDate);
   const stopKey = activeDay.stops.map((stop) => `${stop.gtaId}:${stop.arrive}:${stop.leave}`).join("|");
-
-  useEffect(() => {
-    setSelectedDate(serverDate);
-  }, [serverDate, month]);
 
   useEffect(() => {
     const previous = document.title;
@@ -314,8 +315,8 @@ export function PlanView({
   }
 
   async function reorderStop(targetId: string) {
-    const fromId = routeDragId.current;
-    routeDragId.current = "";
+    const fromId = routeDragIdRef.current;
+    routeDragIdRef.current = "";
     if (!fromId || fromId === targetId || activeDay.completed || !page.canWrite) return;
     const ordered = [...activeDay.stops].sort(
       (a, b) => (a.arriveMinutes ?? 0) - (b.arriveMinutes ?? 0) || a.sortOrder - b.sortOrder,
@@ -596,7 +597,7 @@ export function PlanView({
             onRun={run}
             onTakeOff={(gtaId) => void takeOff(gtaId)}
             onReorder={(gtaId) => void reorderStop(gtaId)}
-            routeDragId={routeDragId}
+            routeDragIdRef={routeDragIdRef}
             onStatus={setMessage}
             busyKey={busyKey}
             hiddenStops={hiddenStops}
@@ -877,7 +878,7 @@ function StopCard({
   onRun,
   onTakeOff,
   onReorder,
-  routeDragId,
+  routeDragIdRef,
   onStatus,
   onNote,
   onBooked,
@@ -901,7 +902,7 @@ function StopCard({
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
   onTakeOff: (gtaId: string) => void;
   onReorder: (gtaId: string) => void;
-  routeDragId: { current: string };
+  routeDragIdRef: { current: string };
   onStatus: (message: string) => void;
   onNote: (gtaId: string) => void;
   onBooked: (gtaId: string) => void;
@@ -913,10 +914,12 @@ function StopCard({
   const [bookMethod, setBookMethod] = useState("in_person");
   const [verified, setVerified] = useState(stop.verified);
   const [locked, setLocked] = useState(stop.locked);
-  useEffect(() => {
+  const [stopSync, setStopSync] = useState({ verified: stop.verified, locked: stop.locked });
+  if (stopSync.verified !== stop.verified || stopSync.locked !== stop.locked) {
+    setStopSync({ verified: stop.verified, locked: stop.locked });
     setVerified(stop.verified);
     setLocked(stop.locked);
-  }, [stop.verified, stop.locked]);
+  }
   const mine = busyKey?.startsWith(stop.gtaId) ?? false;
   const held = Boolean(busyKey);
   const phoneDigits = stop.phone.replace(/\D/g, "");
@@ -929,7 +932,7 @@ function StopCard({
       data-route-booked={bookedOnDay ? "true" : "false"}
       onClick={() => setExpanded((value) => !value)}
       onDragOver={(event) => {
-        if (!routeDragId.current || routeDragId.current === stop.gtaId) return;
+        if (!routeDragIdRef.current || routeDragIdRef.current === stop.gtaId) return;
         event.preventDefault();
         event.dataTransfer.dropEffect = "move";
         event.currentTarget.classList.add(styles.dragOver);
@@ -943,7 +946,7 @@ function StopCard({
         event.preventDefault();
         event.currentTarget.classList.remove(styles.dragOver, styles.dragging);
         const from = event.dataTransfer.getData("text/plain");
-        if (from) routeDragId.current = from;
+        if (from) routeDragIdRef.current = from;
         onReorder(stop.gtaId);
       }}
     >
@@ -967,7 +970,7 @@ function StopCard({
                     return;
                   }
                   event.stopPropagation();
-                  routeDragId.current = stop.gtaId;
+                  routeDragIdRef.current = stop.gtaId;
                   event.dataTransfer.effectAllowed = "move";
                   event.dataTransfer.setData("text/plain", stop.gtaId);
                   const card = event.currentTarget.closest("article");
@@ -1543,7 +1546,7 @@ function DayTimeline({
   onRun,
   onTakeOff,
   onReorder,
-  routeDragId,
+  routeDragIdRef,
   onStatus,
   onNote,
   onBooked,
@@ -1561,7 +1564,7 @@ function DayTimeline({
   onRun: (work: () => Promise<{ ok: boolean; formError?: string | null }>, key?: string) => Promise<{ ok: boolean; formError?: string | null }>;
   onTakeOff: (gtaId: string) => void;
   onReorder: (gtaId: string) => void;
-  routeDragId: { current: string };
+  routeDragIdRef: { current: string };
   onStatus: (message: string) => void;
   onNote: (gtaId: string) => void;
   onBooked: (gtaId: string) => void;
@@ -1644,7 +1647,7 @@ function DayTimeline({
               onRun={onRun}
               onTakeOff={onTakeOff}
               onReorder={onReorder}
-              routeDragId={routeDragId}
+              routeDragIdRef={routeDragIdRef}
               onStatus={onStatus}
               onNote={onNote}
               onBooked={onBooked}

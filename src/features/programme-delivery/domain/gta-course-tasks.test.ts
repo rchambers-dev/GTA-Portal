@@ -349,6 +349,17 @@ describe("course-builder tasks API contracts", () => {
     vi.resetModules();
     vi.doMock("@/adapters/supabase/client", () => ({
       createSupabaseAdminClient: () => ({}),
+      createSupabaseServerClient: async () => ({}),
+    }));
+    vi.doMock("@/adapters/standalone", () => ({
+      getStandalonePorts: () => ({
+        auth: {
+          getEffectiveSession: async () => ({
+            account: { workspace: "management", baseRole: "Management" },
+            permissions: ["management.workspace.view", "management.programme.setup"],
+          }),
+        },
+      }),
     }));
     vi.doMock(
       "@/features/programme-delivery/domain/gta-course-tasks-repository",

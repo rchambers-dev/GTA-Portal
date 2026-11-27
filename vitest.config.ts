@@ -9,6 +9,7 @@ export default defineConfig({
       "**/dist/**",
       "**/.{idea,git,cache,output,temp}/**",
       "**/*.live.test.ts",
+      "mobile/**",
     ],
   },
   resolve: {

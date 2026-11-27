@@ -459,7 +459,7 @@ export function createCohortOps(access: SnapshotAccess) {
       }
     }
 
-    let nextVersion =
+    const nextVersion =
       patch.gtaProgrammeVersionId !== undefined
         ? patch.gtaProgrammeVersionId.trim() || null
         : existing.gtaProgrammeVersionId;

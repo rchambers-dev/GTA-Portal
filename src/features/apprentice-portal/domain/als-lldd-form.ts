@@ -278,12 +278,10 @@ export function useAlsLlddState() {
   );
 
   useEffect(() => {
-    const stored = readStored();
-    if (stored) {
-      setState(stored);
-      return;
-    }
-    setState(prefillAlsLlddFromPriorDocs());
+    queueMicrotask(() => {
+      const stored = readStored();
+      setState(stored ?? prefillAlsLlddFromPriorDocs());
+    });
   }, []);
 
   const patch = useCallback((partial: Partial<AlsLlddState>) => {

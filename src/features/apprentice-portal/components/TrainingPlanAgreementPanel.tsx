@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ApprenticeStatusChip } from "./ApprenticePageShell";
 import {
   TRAINING_PLAN_APPRENTICE_SECTIONS,
@@ -88,10 +88,11 @@ export function TrainingPlanAgreementPanel({
   const { state, sign, setMentorNote, summary } = useTrainingPlanAgreementState();
   const [confirmTicked, setConfirmTicked] = useState(false);
   const [localNote, setLocalNote] = useState(state.mentor.note);
-
-  useEffect(() => {
+  const [seenNote, setSeenNote] = useState(state.mentor.note);
+  if (state.mentor.note !== seenNote) {
+    setSeenNote(state.mentor.note);
     setLocalNote(state.mentor.note);
-  }, [state.mentor.note]);
+  }
 
   const audienceLabel = useMemo(() => {
     switch (audience) {

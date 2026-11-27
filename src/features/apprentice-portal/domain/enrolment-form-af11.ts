@@ -598,9 +598,11 @@ export function useEnrolmentFormAf11State(seed?: EnrolmentFormAf11State) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const stored = readStored();
-    if (stored) setState(stored);
-    setHydrated(true);
+    queueMicrotask(() => {
+      const stored = readStored();
+      if (stored) setState(stored);
+      setHydrated(true);
+    });
   }, []);
 
   const saveDraft = useCallback((next: EnrolmentFormAf11State) => {

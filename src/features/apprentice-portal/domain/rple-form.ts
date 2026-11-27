@@ -406,29 +406,30 @@ export function useRpleAssessmentState() {
   );
 
   useEffect(() => {
-    const stored = readStored();
-    const key = resolveRpleProgrammeKey();
-    if (stored) {
-      // If enrolment course changed after a draft, realign template and keep answers where possible.
-      if (key && stored.programmeKey && key !== stored.programmeKey && !stored.signedAt) {
-        const next = {
-          ...createEmptyRpleState(key),
-          apprenticeName: stored.apprenticeName,
-          dateOfBirth: stored.dateOfBirth,
-          employerName: stored.employerName,
-          employerAddress: stored.employerAddress,
-          lineManagerName: stored.lineManagerName,
-          discussionDate: stored.discussionDate,
-          assessorName: stored.assessorName,
-        };
-        setState(next);
-        writeStored(next);
+    queueMicrotask(() => {
+      const stored = readStored();
+      const key = resolveRpleProgrammeKey();
+      if (stored) {
+        if (key && stored.programmeKey && key !== stored.programmeKey && !stored.signedAt) {
+          const next = {
+            ...createEmptyRpleState(key),
+            apprenticeName: stored.apprenticeName,
+            dateOfBirth: stored.dateOfBirth,
+            employerName: stored.employerName,
+            employerAddress: stored.employerAddress,
+            lineManagerName: stored.lineManagerName,
+            discussionDate: stored.discussionDate,
+            assessorName: stored.assessorName,
+          };
+          setState(next);
+          writeStored(next);
+          return;
+        }
+        setState(stored);
         return;
       }
-      setState(stored);
-      return;
-    }
-    setState(createEmptyRpleState(key));
+      setState(createEmptyRpleState(key));
+    });
   }, []);
 
   const programme = useMemo(

@@ -34,10 +34,11 @@ export function ApplicantFilters({
 }) {
   const router = useRouter();
   const [query, setQuery] = useState(filters.query);
-
-  useEffect(() => {
+  const [seenQuery, setSeenQuery] = useState(filters.query);
+  if (filters.query !== seenQuery) {
+    setSeenQuery(filters.query);
     setQuery(filters.query);
-  }, [filters.query]);
+  }
 
   function visit(next: Partial<FilterValues>, immediate = false) {
     const url = `${base}/candidates${applicantListSearch({

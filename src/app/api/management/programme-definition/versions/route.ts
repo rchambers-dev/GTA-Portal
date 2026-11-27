@@ -4,6 +4,20 @@ import { requireCurriculumAuthoringAccess } from "@/features/programme-definitio
 
 export const runtime = "nodejs";
 
+async function everyMatchingRow<T>(
+  load: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
+): Promise<T[]> {
+  const data: T[] = [];
+  for (let from = 0; from < 20000; from += 1000) {
+    const page = await load(from, from + 999);
+    if (page.error) throw new Error(page.error.message);
+    const batch = page.data ?? [];
+    data.push(...batch);
+    if (batch.length < 1000) return data;
+  }
+  return data;
+}
+
 /**
  * List GTA programme versions for a standard.
  * Explicit catalogue only — never auto-selects "newest".
@@ -57,49 +71,63 @@ export async function GET(request: Request) {
       (programmes ?? []).map((p) => [p.id as string, String(p.title)]),
     );
 
-    const rows = [];
-    for (const v of versions ?? []) {
-      const { count: primaryCount, error: cErr } = await supabase
-        .from("gta_spine_item_ksbs")
-        .select("id", { count: "exact", head: true })
-        .eq("programme_version_id", v.id)
-        .eq("is_primary", true);
-      if (cErr) throw new Error(cErr.message);
-
-      const { data: spine } = await supabase
-        .from("gta_spines")
-        .select("id")
-        .eq("programme_version_id", v.id)
-        .maybeSingle();
-      let spineItemCount = 0;
-      let structuredOtjHours = 0;
-      if (spine?.id) {
-        const { data: items } = await supabase
-          .from("gta_spine_items")
-          .select("planned_otj_hours")
-          .eq("spine_id", spine.id);
-        spineItemCount = items?.length ?? 0;
-        structuredOtjHours = (items ?? []).reduce(
-          (sum, row) => sum + (Number(row.planned_otj_hours) || 0),
-          0,
-        );
-      }
-
-      rows.push({
-        programmeVersionId: v.id as string,
-        programmeId: v.programme_id as string,
-        programmeTitle: titleByProg.get(v.programme_id as string) || "GTA Delivery",
-        internalVersion: String(v.internal_version || "1"),
-        status: String(v.status || "draft"),
-        standardVersionId: v.standard_version_id as string,
-        updatedAt: v.updated_at as string,
-        primaryCount: primaryCount ?? 0,
-        spineItemCount,
-        structuredOtjHours,
-      });
+    const versionList = versions ?? [];
+    const versionIds = versionList.map((version) => version.id as string);
+    const primaryRows = versionIds.length
+      ? await everyMatchingRow<{ programme_version_id: string }>((from, to) =>
+          supabase
+            .from("gta_spine_item_ksbs")
+            .select("programme_version_id")
+            .in("programme_version_id", versionIds)
+            .eq("is_primary", true)
+            .range(from, to),
+        )
+      : [];
+    const spineRows = versionIds.length
+      ? await everyMatchingRow<{ id: string; programme_version_id: string }>((from, to) =>
+          supabase.from("gta_spines").select("id, programme_version_id").in("programme_version_id", versionIds).range(from, to),
+        )
+      : [];
+    const spinesByVersion = new Map<string, string[]>();
+    for (const spine of spineRows) {
+      const ids = spinesByVersion.get(spine.programme_version_id) ?? [];
+      ids.push(spine.id);
+      spinesByVersion.set(spine.programme_version_id, ids);
+    }
+    const spineIds = [...spinesByVersion.values()].filter((ids) => ids.length === 1).map((ids) => ids[0]!);
+    const itemRows = spineIds.length
+      ? await everyMatchingRow<{ spine_id: string; planned_otj_hours: number | null }>((from, to) =>
+          supabase.from("gta_spine_items").select("spine_id, planned_otj_hours").in("spine_id", spineIds).range(from, to),
+        )
+      : [];
+    const primaryCount = new Map<string, number>();
+    for (const row of primaryRows) primaryCount.set(row.programme_version_id, (primaryCount.get(row.programme_version_id) ?? 0) + 1);
+    const itemsBySpine = new Map<string, { count: number; hours: number }>();
+    for (const row of itemRows) {
+      const current = itemsBySpine.get(row.spine_id) ?? { count: 0, hours: 0 };
+      current.count += 1;
+      current.hours += Number(row.planned_otj_hours) || 0;
+      itemsBySpine.set(row.spine_id, current);
     }
 
-    return NextResponse.json({
+    const rows = versionList.map((version) => {
+      const spineId = spinesByVersion.get(version.id as string);
+      const chosen = spineId?.length === 1 ? itemsBySpine.get(spineId[0]!) : undefined;
+      return {
+        programmeVersionId: version.id as string,
+        programmeId: version.programme_id as string,
+        programmeTitle: titleByProg.get(version.programme_id as string) || "GTA Delivery",
+        internalVersion: String(version.internal_version || "1"),
+        status: String(version.status || "draft"),
+        standardVersionId: version.standard_version_id as string,
+        updatedAt: version.updated_at as string,
+        primaryCount: primaryCount.get(version.id as string) ?? 0,
+        spineItemCount: chosen?.count ?? 0,
+        structuredOtjHours: chosen?.hours ?? 0,
+      };
+    });
+
+  return NextResponse.json({
       ok: true,
       standardCode,
       versions: rows,

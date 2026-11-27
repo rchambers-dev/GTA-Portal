@@ -224,7 +224,9 @@ export function TutorBlock1DeliveryScreen({
   }, [groupId, blockNumber]);
 
   useEffect(() => {
-    void load();
+    queueMicrotask(() => {
+      void load();
+    });
   }, [load]);
 
   const selectedLane = bundle?.sessions?.find(

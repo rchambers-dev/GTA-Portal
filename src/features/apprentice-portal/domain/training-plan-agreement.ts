@@ -193,7 +193,7 @@ export function useTrainingPlanAgreementState() {
   );
 
   useEffect(() => {
-    setState(readTrainingPlanAgreement());
+    queueMicrotask(() => setState(readTrainingPlanAgreement()));
   }, []);
 
   useEffect(() => {

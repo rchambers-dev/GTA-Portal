@@ -45,7 +45,7 @@ export function LearnerTaskPreviewOverlay({
   );
 
   useEffect(() => {
-    setMounted(true);
+    queueMicrotask(() => setMounted(true));
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {

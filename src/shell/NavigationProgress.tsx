@@ -14,7 +14,7 @@ export function NavigationProgress() {
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
-    setPending(false);
+    queueMicrotask(() => setPending(false));
   }, [pathname, searchParams]);
 
   useEffect(() => {

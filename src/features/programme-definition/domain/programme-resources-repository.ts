@@ -151,33 +151,34 @@ export async function upsertProgrammeResources(
 ): Promise<ProgrammeResourceRecord[]> {
   const versionId = programmeVersionId.trim();
   if (!versionId) throw new Error("programmeVersionId is required.");
-  const saved: ProgrammeResourceRecord[] = [];
-  for (const r of resources) {
-    const key = r.resourceKey?.trim();
+  const rows = resources.map((resource) => {
+    const key = resource.resourceKey?.trim();
     if (!key) throw new Error("resourceKey is required.");
-    const { data, error } = await supabase
-      .from("gta_programme_resources")
-      .upsert(
-        {
-          programme_version_id: versionId,
-          resource_key: key,
-          title: r.title || "",
-          filename: r.filename || "",
-          source_path: r.sourcePath || "",
-          evidence_resource_id: r.evidenceResourceId || "",
-          extract_path: r.extractPath || "",
-          metadata: r.metadata ?? {},
-        },
-        { onConflict: "programme_version_id,resource_key" },
-      )
-      .select(
-        "id, programme_version_id, resource_key, title, filename, source_path, evidence_resource_id, extract_path, metadata, created_at, updated_at",
-      )
-      .single();
-    if (error) throw new Error(error.message);
-    saved.push(resourceRowToRecord(data as ResourceRow));
-  }
-  return saved;
+    return {
+      programme_version_id: versionId,
+      resource_key: key,
+      title: resource.title || "",
+      filename: resource.filename || "",
+      source_path: resource.sourcePath || "",
+      evidence_resource_id: resource.evidenceResourceId || "",
+      extract_path: resource.extractPath || "",
+      metadata: resource.metadata ?? {},
+    };
+  });
+  if (rows.length === 0) return [];
+  const { data, error } = await supabase
+    .from("gta_programme_resources")
+    .upsert(rows, { onConflict: "programme_version_id,resource_key" })
+    .select(
+      "id, programme_version_id, resource_key, title, filename, source_path, evidence_resource_id, extract_path, metadata, created_at, updated_at",
+    );
+  if (error) throw new Error(error.message);
+  const byKey = new Map(((data ?? []) as ResourceRow[]).map((row) => [row.resource_key, resourceRowToRecord(row)]));
+  return rows.map((row) => {
+    const saved = byKey.get(row.resource_key);
+    if (!saved) throw new Error("A programme resource could not be saved.");
+    return saved;
+  });
 }
 
 export type AttachmentUpsertInput = {

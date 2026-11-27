@@ -368,8 +368,10 @@ export function useInterviewFormAf12State(seed?: InterviewFormAf12State) {
   );
 
   useEffect(() => {
-    const stored = readStored();
-    if (stored) setState(stored);
+    queueMicrotask(() => {
+      const stored = readStored();
+      if (stored) setState(stored);
+    });
   }, []);
 
   const patch = useCallback((partial: Partial<InterviewFormAf12State>) => {

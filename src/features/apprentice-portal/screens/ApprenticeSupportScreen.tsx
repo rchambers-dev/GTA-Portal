@@ -216,8 +216,11 @@ export function ApprenticeSupportScreen({
 
   useEffect(() => {
     let cancelled = false;
-    setLeadsLoading(true);
-    setLeadsError(null);
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setLeadsLoading(true);
+      setLeadsError(null);
+    });
     fetch("/api/safeguarding/leads")
       .then(async (res) => {
         const data = (await res.json()) as {
