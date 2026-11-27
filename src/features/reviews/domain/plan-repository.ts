@@ -1,3 +1,4 @@
+import { loadVisibleLearnerConcerns } from "@/features/administration/domain/concern-reader";
 import { clientError } from "@/lib/http/client-error";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/adapters/supabase/client";
@@ -199,7 +200,7 @@ export async function readPlanPage(
         .select("id, gta_id, status, planned_on, actual_on, method, notes, interval_weeks")
         .range(from, to),
     ),
-    supabase.from("learner_concerns").select("id, gta_id").is("resolved_on", null),
+    loadVisibleLearnerConcerns(supabase),
     supabase.from("reasons").select("id, label, sort_order").eq("used_for_concerns", true).eq("active", true).order("sort_order", { ascending: true }),
     supabase.from("apprentice_safeguarding_signoffs").select("id, gta_id").is("reversed_at", null),
     supabase
@@ -295,7 +296,9 @@ export async function readPlanPage(
     ]),
   );
   const concerns = new Map(
-    ((concernsResult.data ?? []) as { id: string; gta_id: string }[]).map((row) => [row.gta_id, row.id]),
+    ((concernsResult.data ?? []) as { id: string; gta_id: string; resolved_on: string | null }[])
+      .filter((row) => !row.resolved_on)
+      .map((row) => [row.gta_id, row.id]),
   );
   const concernReasons: ConcernReason[] = concernReasonsResult.error
     ? []
